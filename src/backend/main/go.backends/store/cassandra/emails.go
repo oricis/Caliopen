@@ -13,14 +13,14 @@ import (
 )
 
 // part of LDABackend interface implementation
-// return a list of users' ids found in user_name table for the given email addresses list
+// return a list of users' ids found in table identity_lookup for the given email addresses list
 func (cb *CassandraBackend) GetUsersForRecipients(rcpts []string) (user_ids []obj.UUID, err error) {
-	userTable := cb.IKeyspace.MapTable("local_identity", "identifier", &obj.LocalIdentity{})
+	userTable := cb.IKeyspace.MapTable("identity_lookup", "identifier", &obj.UserIdentity{})
 	consistency := gocql.Consistency(cb.CassandraConfig.Consistency)
 
 	// need to overwrite default gocassa naming convention that add `_map_name` to the mapTable name
 	userTable = userTable.WithOptions(gocassa.Options{
-		TableName:   "local_identity",
+		TableName:   "identity_lookup",
 		Consistency: &consistency,
 	})
 

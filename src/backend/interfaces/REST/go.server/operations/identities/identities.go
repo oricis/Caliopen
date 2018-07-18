@@ -35,7 +35,7 @@ func GetLocalIdentity(ctx *gin.Context) {
 //GET …/identities/locals
 func GetLocalsIdentities(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
-	identities, err := caliopen.Facilities.RESTfacility.RetrieveLocalsIdentities(user_id)
+	identities, err := caliopen.Facilities.RESTfacility.RetrieveLocalIdentities(user_id)
 	if err != nil {
 		e := swgErr.New(http.StatusInternalServerError, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
@@ -43,8 +43,8 @@ func GetLocalsIdentities(ctx *gin.Context) {
 		return
 	}
 	ret := struct {
-		Total            int             `json:"total"`
-		LocalsIdentities []LocalIdentity `json:"local_identities"`
+		Total            int            `json:"total"`
+		LocalsIdentities []UserIdentity `json:"local_identities"`
 	}{len(identities), identities}
 	ctx.JSON(http.StatusOK, ret)
 }
@@ -103,7 +103,7 @@ func GetRemoteIdentity(ctx *gin.Context) {
 		return
 	}
 	noCredentials := false // by default do not return Credentials
-	identity, e := caliopen.Facilities.RESTfacility.RetrieveRemoteIdentity(userID, remote_id, noCredentials)
+	identity, e := caliopen.Facilities.RESTfacility.RetrieveUserIdentity(userID, remote_id, noCredentials)
 	if e != nil {
 		returnedErr := new(swgErr.CompositeError)
 		if e.Code() == NotFoundCaliopenErr {
@@ -136,7 +136,7 @@ func NewRemoteIdentity(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	identity := new(RemoteIdentity)
+	identity := new(UserIdentity)
 	identity.MarshallNew()
 	err = ctx.ShouldBindJSON(identity)
 	if err != nil {
@@ -151,7 +151,7 @@ func NewRemoteIdentity(ctx *gin.Context) {
 	identity.LastCheck = time.Time{}
 
 	// call api
-	apiErr := caliopen.Facilities.RESTfacility.CreateRemoteIdentity(identity)
+	apiErr := caliopen.Facilities.RESTfacility.CreateUserIdentity(identity)
 	if apiErr != nil {
 		returnedErr := new(swgErr.CompositeError)
 		switch apiErr.Code() {
@@ -180,8 +180,8 @@ func NewRemoteIdentity(ctx *gin.Context) {
 			Location string `json:"location"`
 			RemoteId string `json:"remote_id"`
 		}{
-			http_middleware.RoutePrefix + http_middleware.IdentitiesRoute + "/remotes/" + identity.RemoteId.String(),
-			identity.RemoteId.String(),
+			http_middleware.RoutePrefix + http_middleware.IdentitiesRoute + "/remotes/" + identity.Id.String(),
+			identity.Id.String(),
 		})
 	}
 	return
@@ -216,7 +216,7 @@ func PatchRemoteIdentity(ctx *gin.Context) {
 	}
 
 	// call REST facility with payload
-	apiErr := caliopen.Facilities.RESTfacility.PatchRemoteIdentity(patch, userId, remote_id)
+	apiErr := caliopen.Facilities.RESTfacility.PatchUserIdentity(patch, userId, remote_id)
 	if apiErr != nil {
 		returnedErr := new(swgErr.CompositeError)
 		switch apiErr.Code() {
@@ -265,7 +265,7 @@ func DeleteRemoteIdentity(ctx *gin.Context) {
 	}
 
 	// call api
-	apiErr := caliopen.Facilities.RESTfacility.DeleteRemoteIdentity(userId, remote_id)
+	apiErr := caliopen.Facilities.RESTfacility.DeleteUserIdentity(userId, remote_id)
 	if apiErr != nil {
 		returnedErr := new(swgErr.CompositeError)
 		switch apiErr.Code() {

@@ -21,7 +21,7 @@ type (
 		Identifier  string            `cql:"identifier"         json:"identifier"                                       patch:"identifier"` // for example: me@caliopen.org, @mastodon_account
 		Infos       map[string]string `cql:"infos"              json:"infos"                                            patch:"user"`
 		LastCheck   time.Time         `cql:"last_check"         json:"last_check,omitempty"                 formatter:"RFC3339Milli"`
-		Protocol    string            `cql:"protocol"           json:"protocol"                                         patch:"user"` // for example: smtp,imap, mastodon
+		Protocol    string            `cql:"protocol"           json:"protocol"                                         patch:"user"` // for example: smtp, imap, mastodon
 		Status      string            `cql:"status"             json:"status"                                           patch:"user"` // for example : active, inactive, deleted
 		Type        string            `cql:"type"               json:"type"                                             patch:"user"` // for example : local, remote
 		UserId      UUID              `cql:"user_id"            json:"user_id"              frontend:"omit"`
@@ -33,13 +33,6 @@ type (
 		Name     string            `cql:"name"      json:"name,omitempty"         patch:"user"`
 		SocialId UUID              `cql:"social_id" json:"social_id,omitempty"    patch:"system"`
 		Type     string            `cql:"type"      json:"type,omitempty"         patch:"user"`
-	}
-
-	//reference embedded in a message
-	Identity struct {
-		Identifier string `cql:"identifier"     json:"identifier"` // legacy field, should be empty most of time
-		Type       string `cql:"type"           json:"type"`       // legacy field, should be empty most of time
-		Id         UUID   `cql:"identity_id"    json:"identity_id"`
 	}
 
 	// Mean of communication for a contact, with on-demand calculated PI.
@@ -59,7 +52,7 @@ type (
 		Source     string `json:"source,omitempty"`     // "participant" or "contact", ie from where this suggestion came from
 	}
 
-	// cassandra table to lookup identities by identifier, protocol, user_id and/or type
+	// cassandra tables to lookup identities by identifier, protocol, user_id and/or type
 	// lookup_tables :  identity_lookup(identifier + protocol + user_id)
 	//                  identity_type_lookup(type + user_id)
 	IdentityLookup struct {
@@ -251,22 +244,12 @@ func (si *SocialIdentity) UnmarshalMap(input map[string]interface{}) error {
 	return nil //TODO: errors handling
 }
 
-func (i *Identity) UnmarshalMap(input map[string]interface{}) error {
-	i.Identifier, _ = input["identifier"].(string)
-	i.Type, _ = input["type"].(string)
-	return nil //TODO: errors handling
-}
-
 // MarshallNew must be a variadic func to implement NewMarshaller interface,
 // but SocialIdentity does not need params to marshal a well-formed SocialIdentity: ...interface{} is ignored
 func (si *SocialIdentity) MarshallNew(...interface{}) {
 	if len(si.SocialId) == 0 || (bytes.Equal(si.SocialId.Bytes(), EmptyUUID.Bytes())) {
 		si.SocialId.UnmarshalBinary(uuid.NewV4().Bytes())
 	}
-}
-
-func (i *Identity) MarshallNew(...interface{}) {
-	//nothing to enforce
 }
 
 // Sort interface implementations
@@ -284,16 +267,16 @@ func (p BySocialIdentityID) Swap(i, j int) {
 	p[i], p[j] = p[j], p[i]
 }
 
-type ByIdentifier []Identity
+type ByUUID []UUID
 
-func (p ByIdentifier) Len() int {
+func (p ByUUID) Len() int {
 	return len(p)
 }
 
-func (p ByIdentifier) Less(i, j int) bool {
-	return p[i].Identifier < p[j].Identifier
+func (p ByUUID) Less(i, j int) bool {
+	return p[i].String() < p[j].String()
 }
 
-func (p ByIdentifier) Swap(i, j int) {
+func (p ByUUID) Swap(i, j int) {
 	p[i], p[j] = p[j], p[i]
 }

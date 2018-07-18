@@ -11,15 +11,15 @@ import (
 	"github.com/gocassa/gocassa"
 )
 
-func (cb *CassandraBackend) CreateCredentials(rId *RemoteIdentity, cred Credentials) error {
+func (cb *CassandraBackend) CreateCredentials(userIdentity *UserIdentity, cred Credentials) error {
 
 	if cb.UseVault {
-		return cb.Vault.CreateCredentials(rId, cred)
+		return cb.Vault.CreateCredentials(userIdentity, cred)
 	}
 
 	//(re)embed credentials into RemoteIdentity that has already been created
-	(*rId).Credentials = cred
-	return cb.UpdateRemoteIdentity(rId, map[string]interface{}{
+	(*userIdentity).Credentials = &cred
+	return cb.UpdateUserIdentity(userIdentity, map[string]interface{}{
 		"Credentials": cred,
 	})
 }
@@ -41,7 +41,7 @@ func (cb *CassandraBackend) UpdateCredentials(userId, remoteId string, cred Cred
 		return cb.Vault.UpdateCredentials(userId, remoteId, cred)
 	}
 
-	ridT := cb.IKeyspace.Table("remote_identity", &RemoteIdentity{}, gocassa.Keys{
+	ridT := cb.IKeyspace.Table("remote_identity", &UserIdentity{}, gocassa.Keys{
 		PartitionKeys: []string{"user_id", "remote_id"},
 	}).WithOptions(gocassa.Options{TableName: "remote_identity"})
 

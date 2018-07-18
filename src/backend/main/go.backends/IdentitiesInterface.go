@@ -12,13 +12,13 @@ import (
 
 type (
 	IdentityStorage interface {
-		RetrieveLocalsIdentities(user_id string) ([]LocalIdentity, error)
-		CreateRemoteIdentity(rId *RemoteIdentity) CaliopenError
-		RetrieveRemoteIdentity(userId, RemoteId string, withCredentials bool) (*RemoteIdentity, error)
-		UpdateRemoteIdentity(rId *RemoteIdentity, fields map[string]interface{}) error
-		DeleteRemoteIdentity(rId *RemoteIdentity) error
-		RetrieveRemoteIdentities(userId string, withCredentials bool) ([]*RemoteIdentity, error)
-		RetrieveAllRemotes(withCredentials bool) (<-chan *RemoteIdentity, error)
+		RetrieveLocalsIdentities(user_id string) ([]UserIdentity, error)
+		CreateUserIdentity(userIdentity *UserIdentity) CaliopenError
+		RetrieveUserIdentity(userId, RemoteId string, withCredentials bool) (*UserIdentity, error)
+		UpdateUserIdentity(userIdentity *UserIdentity, fields map[string]interface{}) error
+		DeleteUserIdentity(userIdentity *UserIdentity) error
+		RetrieveRemoteIdentities(userId string, withCredentials bool) ([]*UserIdentity, error)
+		RetrieveAllRemotes(withCredentials bool) (<-chan *UserIdentity, error)
 		Close()
 	}
 )
