@@ -12,7 +12,6 @@ from .participant import Participant
 from .attachment import Attachment
 from .external_references import ExternalReferences
 from caliopen_main.pi.parameters import PIParameter
-from caliopen_main.user.parameters import Identity
 import caliopen_storage.helpers.json as helpers
 
 RECIPIENT_TYPES = ['To', 'From', 'Cc', 'Bcc', 'Reply-To', 'Sender']
@@ -29,7 +28,7 @@ class NewMessage(Model):
                         tzd=u'utc')
     discussion_id = UUIDType()
     external_references = ModelType(ExternalReferences)
-    identities = ListType(ModelType(Identity), default=lambda: [])
+    identities = ListType(UUIDType(), default=lambda: [])
     importance_level = IntType()
     is_answered = BooleanType()
     is_draft = BooleanType()

@@ -7,7 +7,6 @@ from cassandra.cqlengine import columns
 from caliopen_storage.store.model import BaseModel
 from caliopen_storage.store.mixin import IndexedModelMixin
 from caliopen_main.pi.objects import PIModel
-from caliopen_main.user.store.local_identity import Identity
 
 from .attachment import MessageAttachment
 from .external_references import ExternalReferences
@@ -34,7 +33,7 @@ class Message(BaseModel, IndexedModelMixin):
     date_sort = columns.DateTime()
     discussion_id = columns.UUID()
     external_references = columns.UserDefinedType(ExternalReferences)
-    identities = columns.List(columns.UserDefinedType(Identity))
+    identities = columns.List(columns.UUID)
     importance_level = columns.Integer()
     is_answered = columns.Boolean()
     is_draft = columns.Boolean()

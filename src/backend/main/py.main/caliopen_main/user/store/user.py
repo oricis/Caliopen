@@ -83,19 +83,6 @@ class Settings(BaseModel):
     notification_delay_disappear = columns.Integer()
 
 
-class RemoteIdentity(BaseModel):
-    """User remote identities model."""
-
-    user_id = columns.UUID(primary_key=True)
-    remote_id = columns.UUID(primary_key=True)
-    credentials = columns.Map(columns.Text, columns.Text)
-    display_name = columns.Text()
-    type = columns.Text()
-    status = columns.Text()
-    last_check = columns.DateTime()
-    infos = columns.Map(columns.Text, columns.Text)
-
-
 class IndexUser(object):
     """User index management class."""
 

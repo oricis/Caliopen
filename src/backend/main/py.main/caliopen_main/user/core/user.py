@@ -22,9 +22,8 @@ from ..store import (User as ModelUser,
                      UserTag as ModelUserTag,
                      Settings as ModelSettings,
                      FilterRule as ModelFilterRule,
-                     ReservedName as ModelReservedName,
-                     LocalIdentity as ModelLocalIdentity,
-                     RemoteIdentity as ModelRemoteIdentity)
+                     ReservedName as ModelReservedName)
+from ..store.identity import UserIdentity
 
 from caliopen_storage.core import BaseCore, BaseUserCore
 from caliopen_main.contact.core import Contact as CoreContact
@@ -35,20 +34,6 @@ from .setups import (setup_index, setup_system_tags,
                      setup_settings)
 
 log = logging.getLogger(__name__)
-
-
-class LocalIdentity(BaseCore):
-    """User local identity core class."""
-
-    _model_class = ModelLocalIdentity
-    _pkey_name = 'identifier'
-
-
-class RemoteIdentity(BaseUserCore):
-    """User remote identity core class."""
-
-    _model_class = ModelRemoteIdentity
-    _pkey_name = 'identifier'
 
 
 class Tag(BaseUserCore):
@@ -347,7 +332,7 @@ class User(BaseCore):
     @classmethod
     def by_local_identity(cls, address):
         """Get a user by one of its local identity."""
-        identity = LocalIdentity.get(address.lower())
+        identity = UserIdentity.get_by_identifier(address.lower())
         return cls.get(identity.user_id)
 
     @classmethod
@@ -401,7 +386,7 @@ class User(BaseCore):
         """
         formatted = address.lower()
         try:
-            identity = LocalIdentity.get(formatted)
+            identity = UserIdentity.get(formatted)
             if identity.user_id == self.user_id:
                 if identity.identifier in self.local_identities:
                     # Already in local identities
@@ -409,7 +394,7 @@ class User(BaseCore):
             raise Exception('Inconsistent local identity {}'.format(address))
         except NotFound:
             display_name = "{} {}".format(self.given_name, self.family_name)
-            identity = LocalIdentity.create(identifier=formatted,
+            identity = UserIdentity.create(identifier=formatted,
                                             user_id=self.user_id,
                                             type='email',
                                             status='active',
@@ -419,28 +404,6 @@ class User(BaseCore):
         except Exception as exc:
             log.error('Unexpected exception {}'.format(exc))
         return False
-
-    def add_remote_identity(self, remote):
-        """Add a remote identity to an user.
-
-        return: the RemoteIdentity created instance.
-        rtype: RemoteIdentity
-        """
-        # XXX check for duplicate before insert
-        identifier = remote.identifier.lower()
-        name = remote.display_name if remote.display_name else identifier
-        identity = RemoteIdentity.create(user_id=self.user_id,
-                                         identifier=identifier,
-                                         display_name=name,
-                                         type=remote.type,
-                                         status=remote.status,
-                                         last_check=None,
-                                         infos=remote.infos)
-        return identity
-
-    def get_remote_identity(self, identifier):
-        """Get an user remote identity."""
-        return RemoteIdentity.get(self, identifier)
 
     @classmethod
     def validate_recovery_email(cls, email):

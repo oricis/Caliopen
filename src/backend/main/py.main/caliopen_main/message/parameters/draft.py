@@ -5,8 +5,8 @@ import re
 import uuid
 from schematics.types import StringType
 from .message import NewInboundMessage
-from caliopen_main.user.objects.identities import LocalIdentity
 from caliopen_main.user.core import User
+from caliopen_main.user.objects.identity import UserIdentity
 from caliopen_main.message.parameters.participant import Participant
 from caliopen_main.message.parameters.external_references import \
     ExternalReferences
@@ -16,7 +16,6 @@ from caliopen_main.discussion.store.discussion_index import \
 from caliopen_main.message.store import Message as ModelMessage
 from caliopen_main.discussion.core import Discussion
 from caliopen_main.common import errors as err
-import caliopen_main.common.errors as main_errors
 
 import logging
 
@@ -93,15 +92,14 @@ class Draft(NewInboundMessage):
         if len(self['identities']) != 1:
             raise err.PatchUnprocessable
 
-        provided_identity = self['identities'][0]
-        local_identity = LocalIdentity(
-            identifier=provided_identity['identifier'])
+        user_identity = UserIdentity(
+            identity_id=self['identities'][0])
         try:
-            local_identity.get_db()
-            local_identity.unmarshall_db()
+            user_identity.get_db()
+            user_identity.unmarshall_db()
         except NotFound:
             raise NotFound
-        if str(local_identity.user_id) != user_id:
+        if str(user_identity.user_id) != user_id:
             raise err.ForbiddenAction(message="Action forbidden for this user")
 
         # add 'from' participant with local identity's identifier
@@ -115,8 +113,8 @@ class Draft(NewInboundMessage):
                         self.participants.pop(i)
 
         from_participant = Participant()
-        from_participant.address = local_identity.identifier
-        from_participant.label = local_identity.display_name
+        from_participant.address = user_identity.identifier
+        from_participant.label = user_identity.display_name
         from_participant.protocol = "email"
         from_participant.type = "From"
         from_participant.contact_ids = [user.contact.contact_id]

@@ -7,32 +7,24 @@ from schematics.types.compound import DictType
 
 import caliopen_storage.helpers.json as helpers
 
-REMOTE_IDENTITY_TYPES = ['imap']
-REMOTE_IDENTITY_STATUS = ['active', 'inactive', 'deleted']
+USER_IDENTITY_PROTOCOLS = ['smtp', 'imap']
+USER_IDENTITY_STATUS = ['active', 'inactive', 'deleted']
+USER_IDENTITY_TYPES = ['local', 'remote']
 
 
-class Identity(Model):
-    identifier = StringType()
-    type = StringType()
-
-
-class LocalIdentity(Model):
+class NewUserIdentity(Model):
+    credentials = DictType(StringType, default=lambda: {})
     display_name = StringType()
     identifier = StringType(required=True)
-    status = StringType()
-    type = StringType()
-    user_id = UUIDType()
-
-
-class NewRemoteIdentity(Model):
-    identifier = StringType(required=True)
-    display_name = StringType()
-    status = StringType(default='active', choices=REMOTE_IDENTITY_STATUS)
-    type = StringType(choices=REMOTE_IDENTITY_TYPES)
     infos = DictType(StringType, default=lambda: {})
+    protocol = StringType(choices=USER_IDENTITY_PROTOCOLS)
+    status = StringType(default='active', choices=USER_IDENTITY_STATUS)
+    type = StringType(choices=USER_IDENTITY_TYPES)
 
 
-class RemoteIdentity(NewRemoteIdentity):
+class UserIdentity(NewUserIdentity):
     user_id = UUIDType()
+    identity_id = UUIDType()
     last_check = DateTimeType(serialized_format=helpers.RFC3339Milli,
                               tzd=u'utc')
+

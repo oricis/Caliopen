@@ -17,8 +17,8 @@ from ..base.exception import AuthenticationError, NotAcceptable, Unprocessable
 from caliopen_storage.exception import NotFound
 from caliopen_main.common.core import PublicKey
 from caliopen_main.user.core import User
-from caliopen_main.user.parameters import NewUser, NewRemoteIdentity, Settings
-from caliopen_main.user.returns.user import ReturnUser, ReturnRemoteIdentity
+from caliopen_main.user.parameters import NewUser, Settings
+from caliopen_main.user.returns.user import ReturnUser
 from caliopen_main.contact.parameters import NewContact, NewEmail
 from caliopen_main.device.core import Device
 

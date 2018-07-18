@@ -9,7 +9,6 @@ from caliopen_storage.store.model import BaseIndexDocument
 from .attachment_index import IndexedMessageAttachment
 from .external_references_index import IndexedExternalReferences
 from caliopen_main.pi.objects import PIIndexModel
-from caliopen_main.user.store.local_identity_index import IndexedIdentity
 from .participant_index import IndexedParticipant
 
 
@@ -27,7 +26,7 @@ class IndexedMessage(BaseIndexDocument):
     date_sort = Date()
     discussion_id = Keyword()
     external_references = Nested(doc_class=IndexedExternalReferences)
-    identities = Nested(doc_class=IndexedIdentity)
+    identities = Keyword(multi=True)
     importance_level = Integer()
     is_answered = Boolean()
     is_draft = Boolean()
