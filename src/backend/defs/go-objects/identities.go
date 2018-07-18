@@ -13,7 +13,7 @@ import (
 )
 
 type (
-	//object stored in db
+	// object stored in db with primary keys on user_id and identity_id
 	UserIdentity struct {
 		Credentials *Credentials      `cql:"credentials"        json:"credentials,omitempty"                            patch:"user"`
 		DisplayName string            `cql:"display_name"       json:"display_name"                                     patch:"user"`
@@ -59,12 +59,15 @@ type (
 		Source     string `json:"source,omitempty"`     // "participant" or "contact", ie from where this suggestion came from
 	}
 
-	// cassandra table to lookup identities by identifier [and protocol]
+	// cassandra table to lookup identities by identifier, protocol, user_id and/or type
+	// lookup_tables :  identity_lookup(identifier + protocol + user_id)
+	//                  identity_type_lookup(type + user_id)
 	IdentityLookup struct {
-		UserId     UUID   `cql:"user_id"`
 		Identifier string `cql:"identifier"`
-		Protocol   string `cql:"protocol"`
 		IdentityId UUID   `cql:"identity_id"`
+		Protocol   string `cql:"protocol"`
+		Type       string `cql:"type"`
+		UserId     UUID   `cql:"user_id"`
 	}
 )
 
