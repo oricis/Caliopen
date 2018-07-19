@@ -26,7 +26,6 @@ class IndexedMessage(BaseIndexDocument):
     date_sort = Date()
     discussion_id = Keyword()
     external_references = Nested(doc_class=IndexedExternalReferences)
-    identities = Keyword(multi=True)
     importance_level = Integer()
     is_answered = Boolean()
     is_draft = Boolean()
@@ -41,6 +40,7 @@ class IndexedMessage(BaseIndexDocument):
     subject = Text()
     tags = Keyword(multi=True)
     type = Keyword()
+    user_identities = Keyword(multi=True)
 
     @property
     def message_id(self):
@@ -86,16 +86,6 @@ class IndexedMessage(BaseIndexDocument):
                            "parent_id": Keyword()
                        })
                 )
-        # identities
-        identities = Nested(doc_class=IndexedExternalReferences,
-                            include_in_all=True)
-        identities.field("identifier", "text", fields={
-            "raw": Keyword(),
-            "parts": {"type": "text", "analyzer": "email_analyzer"}
-        })
-        identities.field("type", "keyword")
-        m.field('identities', identities)
-
         m.field('importance_level', 'short')
         m.field('is_answered', 'boolean')
         m.field('is_draft', 'boolean')
@@ -137,5 +127,6 @@ class IndexedMessage(BaseIndexDocument):
         m.field('subject', 'text')
         m.field('tags', Keyword(multi=True))
         m.field('type', 'keyword')
+        m.field('user_identities', Keyword(multi=True))
 
         return m

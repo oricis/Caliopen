@@ -33,7 +33,6 @@ class Message(BaseModel, IndexedModelMixin):
     date_sort = columns.DateTime()
     discussion_id = columns.UUID()
     external_references = columns.UserDefinedType(ExternalReferences)
-    identities = columns.List(columns.UUID)
     importance_level = columns.Integer()
     is_answered = columns.Boolean()
     is_draft = columns.Boolean()
@@ -48,3 +47,4 @@ class Message(BaseModel, IndexedModelMixin):
     subject = columns.Text()  # Subject of email, the message for short
     tags = columns.List(columns.Text(), db_field="tagnames")
     type = columns.Text()
+    user_identities = columns.List(columns.UUID)

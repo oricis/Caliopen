@@ -48,7 +48,6 @@ class Message(ObjectIndexable):
         'date_sort': datetime.datetime,
         'discussion_id': UUID,
         'external_references': ExternalReferences,
-        'identities': [UUID],
         'importance_level': types.IntType,
         'is_answered': types.BooleanType,
         'is_draft': types.BooleanType,
@@ -64,6 +63,7 @@ class Message(ObjectIndexable):
         'tags': [types.StringType],
         'type': types.StringType,
         'user_id': UUID,
+        'user_identities': [UUID],
     }
 
     _json_model = ParamMessage
@@ -101,11 +101,11 @@ class Message(ObjectIndexable):
         if not strict_patch:
             allowed_properties = [
                 "body",
-                "identities",
                 "message_id",
                 "parent_id",
                 "participants",
                 "subject",
+                "user_identities",
             ]
             for key, value in params.items():
                 if key not in allowed_properties:
@@ -163,7 +163,7 @@ class Message(ObjectIndexable):
             allowed_properties = [
                 "body",
                 "current_state",
-                "identities",
+                "user_identities",
                 "message_id",
                 "parent_id",
                 "participants",
@@ -212,8 +212,8 @@ class Message(ObjectIndexable):
             for participant in self_dict['participants']:
                 draft_param.participants.append(IndexedParticipant(participant))
 
-        if "identities" not in params and self.identities:
-            draft_param.identities = self_dict["identities"]
+        if "user_identities" not in params and self.user_identities:
+            draft_param.user_identities = self_dict["user_identities"]
 
         try:
             draft_param.validate_consistency(str(self.user_id), False)

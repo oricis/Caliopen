@@ -86,21 +86,22 @@ class Draft(NewInboundMessage):
 
     def _add_from_participant(self, user_id):
 
-        if 'identities' not in self:
+        if 'user_identities' not in self:
             raise err.PatchUnprocessable
 
-        if len(self['identities']) != 1:
+        if len(self['user_identities']) != 1:
             raise err.PatchUnprocessable
 
-        user_identity = UserIdentity(
-            identity_id=self['identities'][0])
+        user_identity = UserIdentity(user_id,
+                                     identity_id=str(self['user_identities'][0]))
         try:
             user_identity.get_db()
             user_identity.unmarshall_db()
         except NotFound:
-            raise NotFound
-        if str(user_identity.user_id) != user_id:
-            raise err.ForbiddenAction(message="Action forbidden for this user")
+            raise err.PatchUnprocessable(message="Local identity not found")
+
+        if user_identity.type != 'local':
+            raise err.ForbiddenAction(message="Selected identity is not local")
 
         # add 'from' participant with local identity's identifier
         user = User.get(user_id)

@@ -25,7 +25,7 @@ type Message struct {
 	Date_sort           time.Time          `cql:"date_sort"                json:"date_sort"                                                 formatter:"RFC3339Milli"`
 	Discussion_id       UUID               `cql:"discussion_id"            json:"discussion_id,omitempty"                                   formatter:"rfc4122"`
 	External_references ExternalReferences `cql:"external_references"      json:"external_references,omitempty"`
-	Identities          []UUID             `cql:"identities"               json:"identities,omitempty"       `
+	UserIdentities      []UUID             `cql:"user_identities"          json:"user_identities,omitempty"       `
 	Importance_level    int32              `cql:"importance_level"         json:"importance_level" `
 	Is_answered         bool               `cql:"is_answered"              json:"is_answered"      `
 	Is_draft            bool               `cql:"is_draft"                 json:"is_draft"         `
@@ -187,12 +187,12 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 		msg.External_references.UnmarshalMap(ex_ref.(map[string]interface{}))
 	}
 	if identities, ok := input["identities"]; ok && identities != nil {
-		msg.Identities = []UUID{}
+		msg.UserIdentities = []UUID{}
 		for _, identity := range identities.([]interface{}) {
 			uid := UUID{}
 			if id, err := uuid.FromString(identity.(string)); err == nil {
 				if e := uid.UnmarshalBinary(id.Bytes()); e == nil {
-					msg.Identities = append(msg.Identities, uid)
+					msg.UserIdentities = append(msg.UserIdentities, uid)
 				}
 			}
 		}
@@ -322,11 +322,11 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 		msg.External_references.Parent_id, _ = ex_ref["parent_id"].(string)
 	}
 	if identities, ok := input["identities"]; ok && identities != nil {
-		msg.Identities = []UUID{}
+		msg.UserIdentities = []UUID{}
 		for _, identity := range identities.([]gocql.UUID) {
 			var uid UUID
 			if err := uid.UnmarshalBinary(identity.Bytes()); err == nil {
-				msg.Identities = append(msg.Identities, uid)
+				msg.UserIdentities = append(msg.UserIdentities, uid)
 			}
 		}
 	}
@@ -422,7 +422,7 @@ func (msg *Message) NewEmpty() interface{} {
 	m := new(Message)
 	m.Attachments = []Attachment{}
 	m.External_references = ExternalReferences{}
-	m.Identities = []UUID{}
+	m.UserIdentities = []UUID{}
 	m.Participants = []Participant{}
 	m.Tags = []string{}
 	return m
@@ -466,7 +466,7 @@ func (msg *Message) JsonTags() (tags map[string]string) {
 
 func (msg *Message) SortSlices() {
 	sort.Sort(ByFileName(msg.Attachments))
-	sort.Sort(ByUUID(msg.Identities))
+	sort.Sort(ByUUID(msg.UserIdentities))
 	sort.Sort(ByAddress(msg.Participants))
 	sort.Strings(msg.Tags)
 }

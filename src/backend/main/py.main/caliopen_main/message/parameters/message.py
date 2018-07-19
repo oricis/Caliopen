@@ -28,7 +28,6 @@ class NewMessage(Model):
                         tzd=u'utc')
     discussion_id = UUIDType()
     external_references = ModelType(ExternalReferences)
-    identities = ListType(UUIDType(), default=lambda: [])
     importance_level = IntType()
     is_answered = BooleanType()
     is_draft = BooleanType()
@@ -43,6 +42,7 @@ class NewMessage(Model):
     subject = StringType()
     tags = ListType(StringType(), default=lambda: [])
     type = StringType(choices=MESSAGE_TYPES)
+    user_identities = ListType(UUIDType(), default=lambda: [])
 
     class Options:
         serialize_when_none = False
