@@ -33,7 +33,7 @@ func (cb *CassandraBackend) RetrieveLocalsIdentities(userId string) (identities 
 		identities = append(identities, *identity)
 	}
 	if count == 0 {
-		err = errors.New("[cassandra] : local identities lookup returns empty")
+		err = errors.New("not found")
 		return
 	}
 	return
@@ -134,29 +134,34 @@ func (cb *CassandraBackend) UpdateUserIdentity(userIdentity *UserIdentity, field
 }
 
 func (cb *CassandraBackend) RetrieveRemoteIdentities(userId string, withCredentials bool) (userIdentities []*UserIdentity, err error) {
-	all_ids, err := cb.Session.Query(`SELECT * FROM remote_identity WHERE user_id = ?`, userId).Iter().SliceMap()
-	if err != nil {
-		return
-	}
-	if len(all_ids) == 0 {
-		err = errors.New("remote ids not found")
-		return
-	}
-	for _, identity := range all_ids {
-		id := new(UserIdentity).NewEmpty().(*UserIdentity)
-		id.UnmarshalCQLMap(identity)
+	var count int
+	iter := cb.Session.Query(`SELECT identity_id FROM identity_type_lookup WHERE type = ? AND user_id = ?`, RemoteIdentity, userId).Iter()
+	for {
+		var identityID gocql.UUID
+		if !iter.Scan(&identityID) {
+			break
+		}
+		count++
+		i := make(map[string]interface{})
+		cb.Session.Query(`SELECT * FROM user_identity WHERE user_id = ? AND identity_id = ?`, userId, identityID).MapScan(i)
+		identity := new(UserIdentity)
+		identity.UnmarshalCQLMap(i)
 		if withCredentials {
-			cred, err := cb.RetrieveCredentials(userId, id.Id.String())
+			cred, err := cb.RetrieveCredentials(userId, identity.Id.String())
 			if err != nil {
 				// return remote identity even if credentials retrieval failed
 				cred = Credentials{}
 			}
-			id.Credentials = &cred
+			identity.Credentials = &cred
 		} else {
 			// discard credentials
-			id.Credentials = nil
+			identity.Credentials = nil
 		}
-		userIdentities = append(userIdentities, id)
+		userIdentities = append(userIdentities, identity)
+	}
+	if count == 0 {
+		err = errors.New("not found")
+		return
 	}
 	return
 }

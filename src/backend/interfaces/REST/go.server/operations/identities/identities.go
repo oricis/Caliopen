@@ -36,7 +36,7 @@ func GetLocalIdentity(ctx *gin.Context) {
 func GetLocalsIdentities(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
 	identities, err := caliopen.Facilities.RESTfacility.RetrieveLocalIdentities(user_id)
-	if err != nil {
+	if err != nil && err.Error() != "not found" {
 		e := swgErr.New(http.StatusInternalServerError, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()

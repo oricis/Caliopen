@@ -83,7 +83,7 @@ func (rest *RESTfacility) RetrieveRemoteIdentities(userId string, withCredential
 	var e error
 	ids, e = rest.store.RetrieveRemoteIdentities(userId, withCredentials)
 	if e != nil {
-		if e.Error() == "remote ids not found" {
+		if e.Error() == "not found" {
 			err = WrapCaliopenErr(e, NotFoundCaliopenErr, "store did not found remote ids")
 		} else {
 			err = WrapCaliopenErr(e, DbCaliopenErr, "store failed to retrieve remote ids")

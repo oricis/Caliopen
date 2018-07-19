@@ -46,8 +46,8 @@ const (
 	NotifPasswordReset = "passwordReset"
 
 	//identity types
-	LocalIdentity = "local"
-	RemoteIdenity = "remote"
+	LocalIdentity  = "local"
+	RemoteIdentity = "remote"
 )
 
 // A Initiator specifies what kind of actor is triggering a PATCH method on any object
