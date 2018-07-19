@@ -35,11 +35,9 @@ class DiscussionThreadLookup(BaseModel):
     discussion_id = columns.UUID()
 
 
-class DiscussionRecipientLookup(
-    BaseModel):  # TODO: rename to DiscussionParticipantLookup
+class DiscussionRecipientLookup(BaseModel):
     """Lookup discussion by a recipient name."""
 
-    # XXX temporary, until a recipients able lookup can be design
     user_id = columns.UUID(primary_key=True)
     recipient_name = columns.Text(primary_key=True)
     discussion_id = columns.UUID()

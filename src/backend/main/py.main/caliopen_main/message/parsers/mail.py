@@ -309,24 +309,24 @@ class MailMessage(object):
         """Return list of lookup type, value from a mail message."""
         seq = []
 
-        # first from thread logic :
+        # list lookup first
+        for list_id in self.extra_parameters.get('lists', []):
+            seq.append(('list', list_id))
+
+        # participants then
+        # XXX : manage for more than 2 participants
+        for p in self.participants:
+            if p.type.lower() == 'from' and len(self.participants) == 2:
+                seq.append(('recipient', p.address))
+
         # try to link message to external thread's root message-id
         if len(self.external_references["ancestors_ids"]) > 0:
-            seq.append(("thread", self.external_references["ancestors_ids"][0]))
+            seq.append(("thread",
+                        self.external_references["ancestors_ids"][0]))
         elif self.external_references["parent_id"]:
             seq.append(("thread", self.external_references["parent_id"]))
         elif self.external_references["message_id"]:
             seq.append(("thread", self.external_references["message_id"]))
-
-        # then list lookup
-        for list_id in self.extra_parameters.get('lists', []):
-            seq.append(('list', list_id))
-
-        # TODO:
-        # # last try to lookup by participants
-        # for p in self.participants:
-        #     if p.type == 'from' and len(self.participants) == 2:
-        #         seq.append(('from', p.address))
 
         return seq
 
