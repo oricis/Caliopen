@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Add an email or a social identity to a contact trigger PGP key discovery process
+
 ### Changed
 
 - prevent invalidation of whole discussion during scroll
