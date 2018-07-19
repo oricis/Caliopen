@@ -186,7 +186,7 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 		}
 		msg.External_references.UnmarshalMap(ex_ref.(map[string]interface{}))
 	}
-	if identities, ok := input["identities"]; ok && identities != nil {
+	if identities, ok := input["user_identities"]; ok && identities != nil {
 		msg.UserIdentities = []UUID{}
 		for _, identity := range identities.([]interface{}) {
 			uid := UUID{}
@@ -321,7 +321,7 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 		msg.External_references.Message_id, _ = ex_ref["message_id"].(string)
 		msg.External_references.Parent_id, _ = ex_ref["parent_id"].(string)
 	}
-	if identities, ok := input["identities"]; ok && identities != nil {
+	if identities, ok := input["user_identities"]; ok && identities != nil {
 		msg.UserIdentities = []UUID{}
 		for _, identity := range identities.([]gocql.UUID) {
 			var uid UUID
