@@ -17,29 +17,25 @@ import (
 	"time"
 )
 
-func (cb *CassandraBackend) RetrieveLocalsIdentities(user_id string) (identities []UserIdentity, err error) {
-	user_identities := make(map[string]interface{})
-	err = cb.Session.Query(`SELECT local_identities from user where user_id = ?`, user_id).MapScan(user_identities)
-	if err != nil {
-		return
+func (cb *CassandraBackend) RetrieveLocalsIdentities(userId string) (identities []UserIdentity, err error) {
+	var count int
+	iter := cb.Session.Query(`SELECT identity_id FROM identity_type_lookup WHERE type = ? AND user_id = ?`, LocalIdentity, userId).Iter()
+	for {
+		var identityID gocql.UUID
+		if !iter.Scan(&identityID) {
+			break
+		}
+		count++
+		i := make(map[string]interface{})
+		cb.Session.Query(`SELECT * FROM user_identity WHERE user_id = ? AND identity_id = ?`, userId, identityID).MapScan(i)
+		identity := new(UserIdentity)
+		identity.UnmarshalCQLMap(i)
+		identities = append(identities, *identity)
 	}
-	if user_identities["local_identities"] == nil {
+	if count == 0 {
 		err = errors.New("[cassandra] : local identities lookup returns empty")
 		return
 	}
-	for _, identifier := range user_identities["local_identities"].([]string) {
-		i := make(map[string]interface{})
-		cb.Session.Query(`SELECT * FROM local_identity where identifier = ?`, identifier).MapScan(i)
-		identity := UserIdentity{
-			DisplayName: i["display_name"].(string),
-			Identifier:  i["identifier"].(string),
-			Status:      i["status"].(string),
-			Type:        i["type"].(string),
-		}
-		identity.UserId.UnmarshalBinary(i["user_id"].(gocql.UUID).Bytes())
-		identities = append(identities, identity)
-	}
-
 	return
 }
 
