@@ -68,6 +68,8 @@ def build_discussion(core, index):
     discuss.excerpt = unicode_truncate(index.last_message.body_plain,
                                        maxsize) if index.last_message.body_plain else u''
     discuss.total_count = index.total_count
+    discuss.subject = index.last_message.subject
+    discuss.protocol = index.last_message.type
 
     # TODO
     # discussion.privacy_index = index_message.privacy_index
@@ -81,8 +83,8 @@ def build_discussion(core, index):
         except:
             participant.label = part['address']
         participant.type = part['type']
-        if 'contact_id' in part:
-            participant.contact_id = part['contact_id']
+        if 'contact_ids' in part:
+            participant.contact_ids = part['contact_ids']
         participant.protocol = part['protocol']
         discuss.participants.append(participant)
 
