@@ -9,20 +9,39 @@ from ..store import (UserIdentity as ModelUserIdentity,
                      IdentityTypeLookup as ModelIdentityTypeLookup)
 
 
-class UserIdentity(BaseCore):
+class UserIdentity(BaseUserCore):
     """User's identity core class."""
 
     _model_class = ModelUserIdentity
-    _pkey_name = 'identifier'
+    _pkey_name = 'identity_id'
+
+    @classmethod
+    def get_by_identifier(cls, identifier, protocol, user_id):
+        """return an array of one or more user_identities"""
+        if not protocol:
+            ids = IdentityLookup.find(identifier=identifier)
+        elif not user_id:
+            ids = IdentityLookup.find(identifier=identifier,
+                                      protocol=protocol)
+        else:
+            ids = IdentityLookup.find(identifier=identifier,
+                                      protocol=protocol,
+                                      user_id=user_id)
+        identities = []
+        for id in ids:
+            identities.append(
+                UserIdentity.get_by_user_id(id.user_id, id.identity_id))
+        return identities
 
 
-class IdentityLookup(BaseUserCore):
+class IdentityLookup(BaseCore):
     """Lookup table core class."""
 
     _model_class = ModelIdentityLookup
     _pkey_name = 'identifier'
 
-class IdentityTypeLookup(BaseUserCore):
+
+class IdentityTypeLookup(BaseCore):
     """Lookup table core class"""
 
     _model_class = ModelIdentityTypeLookup

@@ -51,7 +51,6 @@ class User(BaseModel):
     contact_id = columns.UUID()
     main_user_id = columns.UUID()
     recovery_email = columns.Text(required=True)
-    local_identities = columns.List(columns.Text())
 
     privacy_features = columns.Map(columns.Text(), columns.Text())
     pi = columns.UserDefinedType(PIModel)

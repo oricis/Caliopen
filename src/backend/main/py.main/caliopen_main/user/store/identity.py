@@ -26,6 +26,7 @@ class UserIdentity(BaseModel):
     status = columns.Text()
     type = columns.Text()
 
+
 class IdentityLookup(BaseModel):
     """Model for identity_lookup table to retrieve identity by identifier"""
 
@@ -34,9 +35,11 @@ class IdentityLookup(BaseModel):
     user_id = columns.UUID(primary_key=True)
     identity_id = columns.UUID()
 
+
 class IdentityTypeLookup(BaseModel):
-    """Model for identity_type_lookup te retrieve identity by type"""
+    """Model for identity_type_lookup table to retrieve identity by type"""
 
     type = columns.Text(primary_key=True)
     user_id = columns.UUID(primary_key=True)
-    identity_id = columns.UUID()
+    identity_id = columns.UUID(primary_key=True)
+

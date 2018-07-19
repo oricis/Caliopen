@@ -23,7 +23,7 @@ from ..store import (User as ModelUser,
                      Settings as ModelSettings,
                      FilterRule as ModelFilterRule,
                      ReservedName as ModelReservedName)
-from ..store.identity import UserIdentity
+from ..core.identity import UserIdentity, IdentityLookup, IdentityTypeLookup
 
 from caliopen_storage.core import BaseCore, BaseUserCore
 from caliopen_main.contact.core import Contact as CoreContact
@@ -260,8 +260,7 @@ class User(BaseCore):
                                            privacy_features=privacy_features,
                                            pi=pi,
                                            family_name=family_name,
-                                           given_name=given_name
-                                           )
+                                           given_name=given_name)
         except Exception as exc:
             log.info(exc)
             rollback_username_storage(new_user.name)
@@ -330,10 +329,14 @@ class User(BaseCore):
             return True
 
     @classmethod
-    def by_local_identity(cls, address):
-        """Get a user by one of its local identity."""
-        identity = UserIdentity.get_by_identifier(address.lower())
-        return cls.get(identity.user_id)
+    def by_local_identifier(cls, address, protocol):
+        """Get a user by one of a local identifier."""
+        identities = UserIdentity.get_by_identifier(address.lower(), protocol,
+                                                    None)
+        for identity in identities:
+            if identity.type == 'local':
+                return cls.get(identity.user_id)
+        raise NotFound
 
     @classmethod
     def authenticate(cls, user_name, password):
@@ -379,31 +382,50 @@ class User(BaseCore):
 
     def add_local_identity(self, address):
         """
-        Add a local identity to an user.
+        Add a local smtp identity to an user and fill related lookup tables
 
         return: True if success, False otherwise
         rtype: bool
         """
         formatted = address.lower()
         try:
-            identity = UserIdentity.get(formatted)
-            if identity.user_id == self.user_id:
-                if identity.identifier in self.local_identities:
-                    # Already in local identities
-                    return True
-            raise Exception('Inconsistent local identity {}'.format(address))
+            local_identity = User.by_local_identifier(address, 'smtp')
+            if local_identity:
+                log.warn("local identifier {} already exist".format(address))
+                return False
         except NotFound:
-            display_name = "{} {}".format(self.given_name, self.family_name)
-            identity = UserIdentity.create(identifier=formatted,
-                                            user_id=self.user_id,
-                                            type='email',
-                                            status='active',
-                                            display_name=display_name)
-            self.local_identities.append(formatted)
-            return True
-        except Exception as exc:
-            log.error('Unexpected exception {}'.format(exc))
-        return False
+            try:
+                identities = IdentityLookup.find(identifier=formatted)
+                if len(identities) == 0: raise NotFound
+                for id in identities:
+                    identity = UserIdentity.get(self, id.identity_id)
+                    if identity and identity.protocol == 'smtp' and \
+                            identity.user_id == self.user_id:
+                        if identity.identity_id in self.local_identities:
+                            # Local identity already created. Should raise error ?
+                            return True
+                    raise Exception(
+                        'Inconsistent local identity {}'.format(address))
+            except NotFound:
+                display_name = "{} {}".format(self.given_name, self.family_name)
+                identity = UserIdentity.create(self, identifier=formatted,
+                                               identity_id=uuid.uuid4(),
+                                               type='local',
+                                               status='active',
+                                               protocol='smtp',
+                                               display_name=display_name)
+                #  insert entries in relevant lookup tables
+                IdentityLookup.create(identifier=identity.identifier,
+                                      protocol=identity.protocol,
+                                      user_id=identity.user_id,
+                                      identity_id=identity.identity_id)
+                IdentityTypeLookup.create(type=identity.type,
+                                          user_id=identity.user_id,
+                                          identity_id=identity.identity_id)
+                return True
+            except Exception as exc:
+                log.error('Unexpected exception {}'.format(exc))
+            return False
 
     @classmethod
     def validate_recovery_email(cls, email):
