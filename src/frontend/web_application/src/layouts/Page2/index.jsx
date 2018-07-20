@@ -6,11 +6,11 @@ import { PageActions } from '../../modules/control';
 import { UserMenu } from '../../modules/user';
 import StickyNavBar from '../Page/components/Navigation/components/StickyNavBar';
 import Navigation from './components/Navigation';
+import Footer from './components/Footer';
 import PageContainer from '../PageContainer';
 import './style.scss';
 import './header.scss';
 import './navbar.scss';
-import './footer.scss';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class Page extends Component {
@@ -59,16 +59,7 @@ class Page extends Component {
         </PageContainer>
 
         <PageContainer>
-          <div className="l-footer">
-            {/* <div className="l-footer__tips">
-              <b>Astuce : </b>
-              pour améliorer la confidentialitéde vos échanges, saviez-vous que vous pouviez lorem
-              ipsum dolor sit amet!
-            </div> */}
-
-            <div className="l-footer__logo"><Brand className="l-footer__brand" theme="low" /></div>
-            <div className="l-footer__release">v0.0.0 Be good.</div>
-          </div>
+          <Footer />
         </PageContainer>
       </BackgroundImage>
     );

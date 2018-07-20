@@ -1,0 +1,35 @@
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
+import { getConfig } from '../../../../services/config';
+import { Brand } from '../../../../components/';
+import './footer.scss';
+
+class Footer extends PureComponent {
+  static propTypes = {
+    className: PropTypes.string,
+  };
+  static defaultProps = {
+    className: undefined,
+  };
+
+  render() {
+    const { className } = this.props;
+    const { version } = getConfig();
+
+    return (
+      <div className={classnames('l-footer', className)}>
+        {/* <div className="l-footer__tips">
+          <b>Astuce : </b>
+          pour améliorer la confidentialitéde vos échanges, saviez-vous que vous pouviez lorem
+          ipsum dolor sit amet!
+        </div> */}
+
+        <div className="l-footer__logo"><Brand className="l-footer__brand" theme="low" /></div>
+        <div className="l-footer__release">{version} Be good.</div>
+      </div>
+    );
+  }
+}
+
+export default Footer;
