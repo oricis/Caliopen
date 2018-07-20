@@ -158,7 +158,7 @@ func NewRemoteIdentity(ctx *gin.Context) {
 	}
 	// add UserId and type
 	identity.UserId.UnmarshalBinary(uuid.FromStringOrNil(userID).Bytes())
-	identity.Type = "remote"
+	identity.Type = RemoteIdentity
 
 	// call api
 	apiErr := caliopen.Facilities.RESTfacility.CreateUserIdentity(identity)

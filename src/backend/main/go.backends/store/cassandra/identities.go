@@ -184,16 +184,18 @@ func (cb *CassandraBackend) RetrieveAllRemotes(withCredentials bool) (<-chan *Us
 
 	ch := make(chan *UserIdentity)
 	go func(cb *CassandraBackend, ch chan *UserIdentity) {
-		iter := cb.Session.Query(`SELECT * from remote_identity`).Iter()
+		iter := cb.Session.Query(`SELECT user_id, identity_id from identity_type_lookup WHERE type = ?`, RemoteIdentity).Iter()
 
 		for {
-			//new map each iteration
-			remoteID := make(map[string]interface{})
-			if !iter.MapScan(remoteID) {
+			var userId, identityId gocql.UUID
+			if !iter.Scan(&userId, &identityId) {
 				break
 			}
-			userIdentity := new(UserIdentity)
-			userIdentity.UnmarshalCQLMap(remoteID)
+			userIdentity, err := cb.RetrieveUserIdentity(userId.String(), identityId.String(), withCredentials)
+			if err != nil {
+				log.WithError(err).Warnf("[CassandraBackend]RetrieveAllRemotes fails to retrieve identity for user %s and identity_id %", userId.String(), identityId.String())
+				continue
+			}
 			if withCredentials {
 				cred, err := cb.RetrieveCredentials(userIdentity.UserId.String(), userIdentity.Id.String())
 				if err != nil {
@@ -234,4 +236,79 @@ func (cb *CassandraBackend) DeleteUserIdentity(userIdentity *UserIdentity) error
 		}
 	}(cb, userIdentity)
 	return cb.Session.Query(`DELETE FROM user_identity WHERE user_id = ? AND identity_id = ?`, userIdentity.UserId, userIdentity.Id).Exec()
+}
+
+// LookupIdentityByIdentifier retrieve one or more identity_id depending on given parameters :
+// an identifier (mandatory)
+// other params could be protocol string, user_id string
+// returns an array of [user_id, identity_id]
+func (cb *CassandraBackend) LookupIdentityByIdentifier(identifier string, params ...string) (identities [][2]string, err error) {
+	if identifier == "" {
+		err = errors.New("identifier is mandatory")
+		return
+	}
+	var rows []map[string]interface{}
+	switch len(params) {
+	case 0:
+		rows, err = cb.Session.Query(`SELECT * from identity_lookup WHERE identifier = ?`, identifier).Iter().SliceMap()
+		if err != nil {
+			return
+		}
+	case 1:
+		rows, err = cb.Session.Query(`SELECT * from identity_lookup WHERE identifier = ? AND protocol = ?`,
+			identifier, params[0]).Iter().SliceMap()
+		if err != nil {
+			return
+		}
+	case 2:
+		rows, err = cb.Session.Query(`SELECT * from identity_lookup WHERE identifier = ? AND protocol = ? AND user_id = ?`,
+			identifier, params[0], params[1]).Iter().SliceMap()
+		if err != nil {
+			return
+		}
+	default:
+		err = errors.New("too many params provided")
+		return
+	}
+	for _, row := range rows {
+		identities = append(identities, [2]string{
+			row["user_id"].(gocql.UUID).String(),
+			row["identity_id"].(gocql.UUID).String(),
+		})
+	}
+	return
+}
+
+// LookupIdentityByType retrieve one or more identity_id depending on given parameters :
+// a type (mandatory)
+// a user_id (optional)
+// returns an array of [user_id, identity_id]
+func (cb *CassandraBackend) LookupIdentityByType(identityType string, user_id ...string) (identities [][2]string, err error) {
+	if identityType == "" {
+		err = errors.New("identity type is mandatory")
+		return
+	}
+	var rows []map[string]interface{}
+	switch len(user_id) {
+	case 0:
+		rows, err = cb.Session.Query(`SELECT * from identity_type_lookup WHERE type = ?`, identityType).Iter().SliceMap()
+		if err != nil {
+			return
+		}
+	case 1:
+		rows, err = cb.Session.Query(`SELECT * from identity_type_lookup WHERE type = ? AND user_id = ?`, identityType, user_id[0]).Iter().SliceMap()
+		if err != nil {
+			return
+		}
+	default:
+		err = errors.New("too many user_id provided")
+		return
+	}
+	for _, row := range rows {
+		identities = append(identities, [2]string{
+			row["user_id"].(gocql.UUID).String(),
+			row["identity_id"].(gocql.UUID).String(),
+		})
+	}
+	return
 }
