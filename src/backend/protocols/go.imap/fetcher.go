@@ -45,13 +45,13 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 	log.Infof("[Fetcher] will fetch mails for remote %s", order.RemoteId)
 
 	// 1. retrieve infos from db
-	userId, err := f.Store.RetrieveRemoteIdentity(order.UserId, order.RemoteId, true)
+	userId, err := f.Store.RetrieveUserIdentity(order.UserId, order.RemoteId, true)
 	if err != nil {
 		log.WithError(err).Infof("[SyncRemoteWithLocal] failed to retrieve remote identity <%s> : <%s>", order.UserId, order.RemoteId)
 		return err
 	}
 	if order.Password != "" {
-		userId.Credentials["password"] = order.Password
+		(*userId.Credentials)["password"] = order.Password
 	}
 
 	// 1.2 check if a sync process is running
@@ -64,7 +64,7 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 	}
 	// save syncing state in db to prevent concurrent sync
 	(*userId).Infos["syncing"] = time.Now().Format(time.RFC3339)
-	f.Store.UpdateRemoteIdentity(userId, map[string]interface{}{
+	f.Store.UpdateUserIdentity(userId, map[string]interface{}{
 		"Infos": userId.Infos,
 	})
 
@@ -142,7 +142,7 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 			"Infos":     userId.Infos,
 		}
 	}
-	err = f.Store.UpdateRemoteIdentity(userId, fields)
+	err = f.Store.UpdateUserIdentity(userId, fields)
 	if err != nil {
 		log.WithError(err).Warnf("[syncMails] failed to backup sync state")
 		return err
@@ -159,7 +159,7 @@ func (f *Fetcher) FetchRemoteToLocal(order IMAPfetchOrder) error {
 		Infos: map[string]string{
 			"server": order.Server,
 		},
-		Credentials: Credentials{
+		Credentials: &Credentials{
 			"username": order.Login,
 			"password": order.Password,
 		},
@@ -299,7 +299,7 @@ func (f *Fetcher) handleFetchFailure(userId *UserIdentity, err CaliopenError) er
 	delete((*userId).Infos, "syncing")
 
 	// udpate UserIdentity in db
-	return f.Store.UpdateRemoteIdentity(userId, map[string]interface{}{
+	return f.Store.UpdateUserIdentity(userId, map[string]interface{}{
 		"Infos": userId.Infos,
 	})
 
@@ -307,7 +307,7 @@ func (f *Fetcher) handleFetchFailure(userId *UserIdentity, err CaliopenError) er
 
 func (f *Fetcher) disableRemoteIdentity(userId *UserIdentity) {
 	(*userId).Status = "inactive"
-	f.Store.UpdateRemoteIdentity(userId, map[string]interface{}{
+	f.Store.UpdateUserIdentity(userId, map[string]interface{}{
 		"Status": "inactive",
 	})
 	f.emitNotification()
