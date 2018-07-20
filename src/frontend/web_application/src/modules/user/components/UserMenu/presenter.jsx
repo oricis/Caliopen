@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-import UserInfo from '../../../UserInfo';
-import { Link, Button, Icon, Dropdown, withDropdownControl, VerticalMenu, VerticalMenuItem, Separator } from '../../../../../../components/';
+import UserInfo from '../UserInfo';
+import { Link, Button, Icon, Dropdown, withDropdownControl, VerticalMenu, VerticalMenuItem, Separator } from '../../../../components/';
 import './style.scss';
 
 const DropdownControl = withDropdownControl(Button);
@@ -29,12 +29,7 @@ class Presenter extends Component {
 
     return (
       <div className="m-user-menu">
-        <DropdownControl
-          toggleId="co-user-menu"
-          display="expanded"
-          icon="user"
-          className="m-user-menu__dropdown-control"
-        >
+        <DropdownControl toggleId="co-user-menu" icon="user" display="inline-block">
           <span className="show-for-small-only">{user && user.name}</span>&nbsp;
           <Icon type={this.state.isDropdownOpen ? 'caret-up' : 'caret-down'} />
         </DropdownControl>

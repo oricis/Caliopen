@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Brand } from '../../components/';
+import { Brand, Link, Button, Icon } from '../../components/';
 import { BackgroundImage } from '../../modules/pi';
 import { PageActions } from '../../modules/control';
+import { UserMenu } from '../../modules/user';
 import StickyNavBar from '../Page/components/Navigation/components/StickyNavBar';
 import Navigation from './components/Navigation';
 import PageContainer from '../PageContainer';
-import PageHeader from '../PageHeader';
 import './style.scss';
+import './header.scss';
 import './navbar.scss';
 import './footer.scss';
 
@@ -22,7 +23,15 @@ class Page extends Component {
 
     return (
       <BackgroundImage context="secure" className="l-page">
-        <PageHeader />
+        <div className="l-header">
+          <PageContainer>
+            <Link to="/"><Brand className="l-header__brand" /></Link>
+            <div className="l-header__notif-menu"><Button href="#"><Icon type="bell" /></Button></div>
+            <div className="l-header__user-menu">
+              <UserMenu />
+            </div>
+          </PageContainer>
+        </div>
 
         <PageContainer>
           <PageActions className="l-page__main-actions" />
