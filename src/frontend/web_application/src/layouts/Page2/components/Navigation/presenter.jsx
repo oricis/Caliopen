@@ -18,13 +18,13 @@ class Navigation extends Component {
     const isLast = tab => tabs.indexOf(tab) === (tabs.length - 1);
 
     return (
-      <div className="navigation">
+      <div className="l-navigation">
         <HorizontalScroll subscribedState={tabs}>
           {tabs.map(tab => (
             <Tab key={this.getTabIdentifier(tab)} tab={tab} last={isLast(tab)} />
           ))}
-          <NavbarItem className="compose-item">
-            <Button shape="plain" className="compose-btn"><Icon type="pencil" /> <Icon type="plus" /></Button>
+          <NavbarItem className="l-navigation__compose-item">
+            <Button shape="plain" className="l-navigation__compose-btn"><Icon type="pencil" /> <Icon type="plus" /></Button>
           </NavbarItem>
         </HorizontalScroll>
       </div>
