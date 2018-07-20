@@ -106,6 +106,12 @@ func (rest *RESTfacility) CreateUserIdentity(identity *UserIdentity) CaliopenErr
 	// set defaults
 	identity.SetDefaults()
 
+	// ensure identifier+protocol+user_id uniqueness
+	rows, e := rest.store.LookupIdentityByIdentifier(identity.Identifier, identity.Protocol, identity.UserId.String())
+	if e != nil || len(rows) > 0 {
+		return NewCaliopenErrf(ForbiddenCaliopenErr, "[CreateUserIdentity] tuple(%s, %s, %s) breaks uniqueness constraint", identity.Identifier, identity.Protocol, identity.UserId.String())
+	}
+
 	err := rest.store.CreateUserIdentity(identity)
 	if err != nil {
 		return WrapCaliopenErr(err, DbCaliopenErr, "[CreateUserIdentity] CreateUserIdentity failed to create identity in store")
