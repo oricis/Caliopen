@@ -97,8 +97,8 @@ func (rest *RESTfacility) CreateUserIdentity(identity *UserIdentity) CaliopenErr
 	if len(identity.UserId) == 0 || (bytes.Equal(identity.UserId.Bytes(), EmptyUUID.Bytes())) {
 		return NewCaliopenErr(UnprocessableCaliopenErr, "[CreateUserIdentity] empty user id")
 	}
-	if identity.Type == "" {
-		return NewCaliopenErr(UnprocessableCaliopenErr, "[CreateUserIdentity] empty remote identity.type")
+	if identity.Type == "" || identity.Protocol == "" || identity.Identifier == "" {
+		return NewCaliopenErr(UnprocessableCaliopenErr, "[CreateUserIdentity] miss mandatory property")
 	}
 
 	(*identity).Id.UnmarshalBinary(uuid.NewV4().Bytes())

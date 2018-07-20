@@ -10,7 +10,7 @@ import (
 	"errors"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
-	"github.com/Sirupsen/logrus"
+	log "github.com/Sirupsen/logrus"
 	"github.com/gocassa/gocassa"
 	"github.com/gocql/gocql"
 	"gopkg.in/oleiade/reflections.v1"
@@ -41,28 +41,34 @@ func (cb *CassandraBackend) RetrieveLocalsIdentities(userId string) (identities 
 
 func (cb *CassandraBackend) CreateUserIdentity(userIdentity *UserIdentity) CaliopenError {
 
-	ridT := cb.IKeyspace.Table("remote_identity", &UserIdentity{}, gocassa.Keys{
-		PartitionKeys: []string{"user_id", "remote_id"},
-	}).WithOptions(gocassa.Options{TableName: "remote_identity"})
+	userIdentityTable := cb.IKeyspace.Table("user_identity", &UserIdentity{}, gocassa.Keys{
+		PartitionKeys: []string{"user_id", "identity_id"},
+	}).WithOptions(gocassa.Options{TableName: "user_identity"})
 
-	// check if remote already exist
+	// check if user identity already exist
 	var count int
-	err := cb.Session.Query(`SELECT count(*) from remote_identity WHERE user_id = ? AND remote_id = ?`, userIdentity.UserId, userIdentity.Id).Scan(&count)
+	err := cb.Session.Query(`SELECT count(*) from user_identity WHERE user_id = ? AND identity_id = ?`, userIdentity.UserId, userIdentity.Id).Scan(&count)
 	if err != nil {
-		return WrapCaliopenErr(err, DbCaliopenErr, "[CassandraBackend] CreateUserIdentity fails")
+		return WrapCaliopenErrf(err, DbCaliopenErr, "[CassandraBackend] CreateUserIdentity fails : <%s>", err.Error())
 	}
 	if count != 0 {
-		return NewCaliopenErrf(ForbiddenCaliopenErr, "[CassandraBackend] CreateUserIdentity error : remote identity <%s> already exist for user <%s>", userIdentity.Id, userIdentity.UserId.String())
+		return NewCaliopenErrf(ForbiddenCaliopenErr, "[CassandraBackend] CreateUserIdentity error : user identity <%s> already exist for user <%s>", userIdentity.Id, userIdentity.UserId.String())
 	}
 
 	// remove credentials from struct
 	cred := userIdentity.Credentials
 	(*userIdentity).Credentials = nil
 
-	// create remote identity
-	err = ridT.Set(userIdentity).Run()
+	// create user identity
+	err = userIdentityTable.Set(userIdentity).Run()
 	if err != nil {
 		return WrapCaliopenErrf(err, DbCaliopenErr, "[CassandraBackend] CreateUserIdentity fails : %s", err.Error())
+	}
+
+	// update lookup tables
+	err = cb.UpdateLookups(userIdentity, nil, true)
+	if err != nil {
+		log.WithError(err).Warnf("[CassandraBackend] UpdateLookups error for UserIdentity %s (user %s)", userIdentity.Id.String(), userIdentity.UserId.String())
 	}
 
 	// create credentials apart
@@ -74,18 +80,18 @@ func (cb *CassandraBackend) CreateUserIdentity(userIdentity *UserIdentity) Calio
 	return nil
 }
 
-func (cb *CassandraBackend) RetrieveUserIdentity(userId, remoteId string, withCredentials bool) (userIdentity *UserIdentity, err error) {
+func (cb *CassandraBackend) RetrieveUserIdentity(userId, identityId string, withCredentials bool) (userIdentity *UserIdentity, err error) {
 
 	userIdentity = new(UserIdentity)
 	m := map[string]interface{}{}
-	q := cb.Session.Query(`SELECT * FROM remote_identity WHERE user_id = ? AND remote_id = ?`, userId, remoteId)
+	q := cb.Session.Query(`SELECT * FROM user_identity WHERE user_id = ? AND identity_id = ?`, userId, identityId)
 	err = q.MapScan(m)
 	if err != nil {
 		return nil, err
 	}
 	userIdentity.UnmarshalCQLMap(m)
 	if withCredentials {
-		cred, err := cb.RetrieveCredentials(userId, remoteId)
+		cred, err := cb.RetrieveCredentials(userId, identityId)
 		if err != nil {
 			return nil, err
 		}
@@ -105,7 +111,7 @@ func (cb *CassandraBackend) UpdateUserIdentity(userIdentity *UserIdentity, field
 		delete(fields, "Credentials")
 		err = cb.UpdateCredentials(userIdentity.UserId.String(), userIdentity.Id.String(), cred)
 		if err != nil {
-			logrus.WithError(err).Warn("[CassandraBackend] UpdateUserIdentity failed to update credentials")
+			log.WithError(err).Warn("[CassandraBackend] UpdateUserIdentity failed to update credentials")
 		}
 	}
 
@@ -122,12 +128,19 @@ func (cb *CassandraBackend) UpdateUserIdentity(userIdentity *UserIdentity, field
 			}
 		}
 
-		ridT := cb.IKeyspace.Table("remote_identity", &UserIdentity{}, gocassa.Keys{
-			PartitionKeys: []string{"user_id", "remote_id"},
-		}).WithOptions(gocassa.Options{TableName: "remote_identity"})
+		userIdentityTable := cb.IKeyspace.Table("user_identity", &UserIdentity{}, gocassa.Keys{
+			PartitionKeys: []string{"user_id", "identity_id"},
+		}).WithOptions(gocassa.Options{TableName: "user_identity"})
 
-		return ridT.Where(gocassa.Eq("user_id", userIdentity.UserId.String()), gocassa.Eq("remote_id", userIdentity.Id.String())).
+		err = userIdentityTable.Where(gocassa.Eq("user_id", userIdentity.UserId.String()), gocassa.Eq("identity_id", userIdentity.Id.String())).
 			Update(cassaFields).Run()
+		if err != nil {
+			return err
+		}
+
+		// update lookup tables
+		return cb.UpdateLookups(userIdentity, nil, false)
+
 	}
 
 	return err
@@ -149,7 +162,7 @@ func (cb *CassandraBackend) RetrieveRemoteIdentities(userId string, withCredenti
 		if withCredentials {
 			cred, err := cb.RetrieveCredentials(userId, identity.Id.String())
 			if err != nil {
-				// return remote identity even if credentials retrieval failed
+				// return user identity even if credentials retrieval failed
 				cred = Credentials{}
 			}
 			identity.Credentials = &cred
@@ -195,7 +208,7 @@ func (cb *CassandraBackend) RetrieveAllRemotes(withCredentials bool) (<-chan *Us
 			select {
 			case ch <- userIdentity:
 			case <-time.After(cb.Timeout):
-				logrus.Warn("[RetrieveAllRemote] write timeout on chan")
+				log.Warn("[RetrieveAllRemote] write timeout on chan")
 			}
 		}
 
@@ -210,8 +223,15 @@ func (cb *CassandraBackend) DeleteUserIdentity(userIdentity *UserIdentity) error
 	if cb.UseVault {
 		err := cb.Vault.DeleteCredentials(userIdentity.UserId.String(), userIdentity.Id.String())
 		if err != nil {
-			logrus.WithError(err).Warn("[CassandraBackend] DeleteUserIdentity failed to delete credentials in vault")
+			log.WithError(err).Warn("[CassandraBackend] DeleteUserIdentity failed to delete credentials in vault")
 		}
 	}
-	return cb.Session.Query(`DELETE FROM remote_identity WHERE user_id = ? AND remote_id = ?`, userIdentity.UserId, userIdentity.Id).Exec()
+	// delete related rows in relevant lookup tables
+	go func(*CassandraBackend, *UserIdentity) {
+		err := cb.DeleteLookups(userIdentity)
+		if err != nil {
+			log.WithError(err).Error("[CassandraBackend] DeleteUserIdentity: failed to delete lookups")
+		}
+	}(cb, userIdentity)
+	return cb.Session.Query(`DELETE FROM user_identity WHERE user_id = ? AND identity_id = ?`, userIdentity.UserId, userIdentity.Id).Exec()
 }

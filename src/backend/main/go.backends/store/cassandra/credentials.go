@@ -17,45 +17,45 @@ func (cb *CassandraBackend) CreateCredentials(userIdentity *UserIdentity, cred C
 		return cb.Vault.CreateCredentials(userIdentity, cred)
 	}
 
-	//(re)embed credentials into RemoteIdentity that has already been created
+	//(re)embed credentials into UserIdentity that has already been created
 	(*userIdentity).Credentials = &cred
 	return cb.UpdateUserIdentity(userIdentity, map[string]interface{}{
 		"Credentials": cred,
 	})
 }
 
-func (cb *CassandraBackend) RetrieveCredentials(userId, remoteId string) (cred Credentials, err error) {
+func (cb *CassandraBackend) RetrieveCredentials(userId, identityId string) (cred Credentials, err error) {
 
 	if cb.UseVault {
-		return cb.Vault.RetrieveCredentials(userId, remoteId)
+		return cb.Vault.RetrieveCredentials(userId, identityId)
 	}
 
-	err = cb.Session.Query(`SELECT credentials FROM remote_identity WHERE user_id = ? AND remote_id = ?`, userId, remoteId).Scan(&cred)
+	err = cb.Session.Query(`SELECT credentials FROM user_identity WHERE user_id = ? AND identity_id = ?`, userId, identityId).Scan(&cred)
 
 	return
 }
 
-func (cb *CassandraBackend) UpdateCredentials(userId, remoteId string, cred Credentials) error {
+func (cb *CassandraBackend) UpdateCredentials(userId, identityId string, cred Credentials) error {
 
 	if cb.UseVault {
-		return cb.Vault.UpdateCredentials(userId, remoteId, cred)
+		return cb.Vault.UpdateCredentials(userId, identityId, cred)
 	}
 
-	ridT := cb.IKeyspace.Table("remote_identity", &UserIdentity{}, gocassa.Keys{
-		PartitionKeys: []string{"user_id", "remote_id"},
-	}).WithOptions(gocassa.Options{TableName: "remote_identity"})
+	userIdentityTable := cb.IKeyspace.Table("user_identity", &UserIdentity{}, gocassa.Keys{
+		PartitionKeys: []string{"user_id", "identity_id"},
+	}).WithOptions(gocassa.Options{TableName: "user_identity"})
 
-	return ridT.Where(gocassa.Eq("user_id", userId), gocassa.Eq("remote_id", remoteId)).
+	return userIdentityTable.Where(gocassa.Eq("user_id", userId), gocassa.Eq("identity_id", identityId)).
 		Update(map[string]interface{}{
 			"credentials": cred,
 		}).Run()
 }
 
-func (cb *CassandraBackend) DeleteCredentials(userId, remoteId string) error {
+func (cb *CassandraBackend) DeleteCredentials(userId, identityId string) error {
 
 	if cb.UseVault {
-		return cb.Vault.DeleteCredentials(userId, remoteId)
+		return cb.Vault.DeleteCredentials(userId, identityId)
 	}
 
-	return cb.UpdateCredentials(userId, remoteId, Credentials{})
+	return cb.UpdateCredentials(userId, identityId, Credentials{})
 }

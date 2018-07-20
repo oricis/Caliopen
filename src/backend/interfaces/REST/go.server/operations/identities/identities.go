@@ -22,7 +22,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
-	"time"
 )
 
 //GET …/identities/locals/{identity_id}
@@ -145,10 +144,21 @@ func NewRemoteIdentity(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	// add UserId
+	if identity.Protocol == "" {
+		e := swgErr.New(http.StatusUnprocessableEntity, "mandatory property `protocol` is missing")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+	if identity.Identifier == "" {
+		e := swgErr.New(http.StatusUnprocessableEntity, "mandatory property `identifier` is missing")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+	// add UserId and type
 	identity.UserId.UnmarshalBinary(uuid.FromStringOrNil(userID).Bytes())
-	// reset forbidden property
-	identity.LastCheck = time.Time{}
+	identity.Type = "remote"
 
 	// call api
 	apiErr := caliopen.Facilities.RESTfacility.CreateUserIdentity(identity)
