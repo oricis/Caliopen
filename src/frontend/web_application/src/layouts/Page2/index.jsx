@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Brand, Link, Button, Icon } from '../../components/';
+import { Brand, Link } from '../../components/';
 import { BackgroundImage } from '../../modules/pi';
 import { PageActions } from '../../modules/control';
 import { UserMenu } from '../../modules/user';
@@ -32,7 +32,8 @@ class Page extends Component {
         <div className="l-header">
           <PageContainer>
             <Link to="/"><Brand className="l-header__brand" /></Link>
-            <div className="l-header__notif-menu"><Button href="#"><Icon type="bell" /></Button></div>
+            {/* <div className="l-header__notif-menu"><Button href="#"><Icon type="bell"
+            /></Button></div> */}
             <div className="l-header__user-menu">
               <UserMenu />
             </div>
