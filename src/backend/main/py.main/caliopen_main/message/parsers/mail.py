@@ -16,6 +16,8 @@ from mailbox import Message
 from email.header import decode_header
 import datetime
 import pytz
+import hashlib
+
 from email.utils import parsedate_tz, mktime_tz, getaddresses
 
 import zope.interface
@@ -283,6 +285,13 @@ class MailMessage(object):
         return participants
 
     @property
+    def hash_participants(self):
+        """Create an hash from participants addresses for global lookup."""
+        addresses = [x.address for x in self.participants]
+        addresses.sort()
+        return hashlib.sha256(''.join(addresses)).hexdigest()
+
+    @property
     def attachments(self):
         """
         Extract parts which we consider as attachments.
@@ -313,11 +322,7 @@ class MailMessage(object):
         for list_id in self.extra_parameters.get('lists', []):
             seq.append(('list', list_id))
 
-        # participants then
-        # XXX : manage for more than 2 participants
-        for p in self.participants:
-            if p.type.lower() == 'from' and len(self.participants) == 2:
-                seq.append(('recipient', p.address))
+        seq.append(('global', self.hash_participants))
 
         # try to link message to external thread's root message-id
         if len(self.external_references["ancestors_ids"]) > 0:

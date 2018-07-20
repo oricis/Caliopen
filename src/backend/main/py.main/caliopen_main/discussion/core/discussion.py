@@ -6,7 +6,6 @@ import logging
 import uuid
 import datetime
 import pytz
-import hashlib
 
 from caliopen_storage.exception import NotFound
 from caliopen_storage.core import BaseUserCore
@@ -62,14 +61,6 @@ class DiscussionGlobalLookup(BaseUserCore):
 
     _model_class = ModelGlobalLookup
     _pkey_name = 'hashed'
-
-    @classmethod
-    def create(cls, user, participants):
-        """Create a lookup for all participants."""
-        addresses = [x.address for x in participants]
-        addresses.sort()
-        hashed = hashlib.sha256(''.join(addresses)).hexdigest()
-        return super(DiscussionGlobalLookup, cls).create(user, hashed=hashed)
 
 
 def build_discussion(core, index):

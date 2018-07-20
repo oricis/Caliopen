@@ -12,7 +12,8 @@ from caliopen_storage.config import Configuration
 from caliopen_main.contact.core import Contact
 from caliopen_main.discussion.core import (DiscussionThreadLookup,
                                            DiscussionRecipientLookup,
-                                           DiscussionListLookup)
+                                           DiscussionListLookup,
+                                           DiscussionGlobalLookup)
 # XXX use a message formatter registry not directly mail format
 from caliopen_main.message.parsers.mail import MailMessage
 from caliopen_main.discussion.core import Discussion
@@ -36,6 +37,7 @@ class UserMessageQualifier(object):
 
     _lookups = {
         'recipient': DiscussionRecipientLookup,
+        'global': DiscussionGlobalLookup,
         'thread': DiscussionThreadLookup,
         'list': DiscussionListLookup,
     }
