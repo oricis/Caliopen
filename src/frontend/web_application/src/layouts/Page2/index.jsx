@@ -23,6 +23,12 @@ class Page extends Component {
 
     return (
       <BackgroundImage context="secure" className="l-page">
+        {/* <div className="header-device">
+          <PageContainer>
+            Vous consultez actuellement vos messages dans un environement que vous avez classé comme
+            <Link href="#">sûr</Link>, depuis un <Link href="#">appareil de confiance.</Link>
+          </PageContainer>
+        </div> */}
         <div className="l-header">
           <PageContainer>
             <Link to="/"><Brand className="l-header__brand" /></Link>
