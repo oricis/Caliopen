@@ -60,14 +60,12 @@ class Page extends Component {
 
         <PageContainer>
           <div className="l-footer">
-            {/* <Tips /> */}
-            <div className="l-footer__tips">
+            {/* <div className="l-footer__tips">
               <b>Astuce : </b>
               pour améliorer la confidentialitéde vos échanges, saviez-vous que vous pouviez lorem
               ipsum dolor sit amet!
-            </div>
+            </div> */}
 
-            {/* <Footer /> */}
             <div className="l-footer__logo"><Brand className="l-footer__brand" theme="low" /></div>
             <div className="l-footer__release">v0.0.0 Be good.</div>
           </div>
