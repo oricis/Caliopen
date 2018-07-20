@@ -14,6 +14,7 @@ import (
 )
 
 var is backends.IdentityStorage
+var cb *CassandraBackend
 
 func init() {
 	cb, err := InitializeCassandraBackend(CassandraConfig{

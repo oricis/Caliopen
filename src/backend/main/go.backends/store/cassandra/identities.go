@@ -312,3 +312,14 @@ func (cb *CassandraBackend) LookupIdentityByType(identityType string, user_id ..
 	}
 	return
 }
+
+// IsLocalIdentity is helper to make a lookup query in cassandra and check if a UserIdentity is "local"
+// return true only if identity has been found and is local
+func (cb *CassandraBackend) IsLocalIdentity(userId, identityId string) bool {
+	var identityType string
+	err := cb.Session.Query(`SELECT type FROM user_identity WHERE user_id = ? AND identity_id = ?`, userId, identityId).Scan(&identityType)
+	if err != nil || identityType != LocalIdentity {
+		return false
+	}
+	return true
+}

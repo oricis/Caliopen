@@ -5,38 +5,23 @@
 package store
 
 import (
-	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
-	log "github.com/Sirupsen/logrus"
-	"github.com/gocassa/gocassa"
-	"github.com/gocql/gocql"
-	"strings"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/satori/go.uuid"
 )
 
-// part of LDABackend interface implementation
-// return a list of users' ids found in table identity_lookup for the given email addresses list
-func (cb *CassandraBackend) GetUsersForRecipients(rcpts []string) (user_ids []obj.UUID, err error) {
-	userTable := cb.IKeyspace.MapTable("identity_lookup", "identifier", &obj.UserIdentity{})
-	consistency := gocql.Consistency(cb.CassandraConfig.Consistency)
-
-	// need to overwrite default gocassa naming convention that add `_map_name` to the mapTable name
-	userTable = userTable.WithOptions(gocassa.Options{
-		TableName:   "identity_lookup",
-		Consistency: &consistency,
-	})
-
-	result := obj.UserName{}
+// GetUsersForLocalMailRecipients is part of LDABackend interface implementation
+// return a list of local users' ids found for the given email addresses list
+func (cb *CassandraBackend) GetUsersForLocalMailRecipients(rcpts []string) (userIds []UUID, err error) {
 	for _, rcpt := range rcpts {
-		err = userTable.Read(strings.ToLower(rcpt), &result).Run()
-		if err != nil {
-			log.WithError(err).Infoln("error on userTable query")
-			return
+		identities, err := cb.LookupIdentityByIdentifier(rcpt)
+		if err == nil {
+			for _, identity := range identities {
+				if cb.IsLocalIdentity(identity[0], identity[1]) {
+					uid := UUID(uuid.FromStringOrNil(identity[0]))
+					userIds = append(userIds, uid)
+				}
+			}
 		}
-		var uuid obj.UUID
-		err := uuid.UnmarshalBinary(result.User_id)
-		if err != nil {
-			return []obj.UUID{}, err
-		}
-		user_ids = append(user_ids, uuid)
 	}
 	return
 }

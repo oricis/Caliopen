@@ -13,7 +13,7 @@ import (
 type LDAStore interface {
 	Close()
 	RetrieveMessage(user_id, msg_id string) (msg *Message, err error)
-	GetUsersForRecipients([]string) ([]UUID, error) // returns a list of user Ids for each recipients. No deduplicate.
+	GetUsersForLocalMailRecipients([]string) ([]UUID, error) // returns a list of user Ids for each recipients. No deduplicate.
 	GetSettings(user_id string) (settings *Settings, err error)
 	CreateMessage(msg *Message) error
 
