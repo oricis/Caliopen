@@ -9,6 +9,8 @@ properties:
     type: string
   identity_id:
     type: string
+  identifier:
+    type: string
   infos:          # set of key/value strings
     type: object
     additionalProperties:
@@ -18,6 +20,9 @@ properties:
     format: date-time
   protocol:
     type: string
+    enum:
+    - imap
+    - smtp
   status:
     type: string
     enum:
@@ -27,13 +32,9 @@ properties:
   type:
     type: string
     enum:
-    - imap
+    - local
+    - remote
   user_id:
     type: string
-required:
-- infos
-- type
-- identifier
-- protocol
-- identity
+additionalProperties: false
 
