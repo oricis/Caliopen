@@ -35,14 +35,6 @@ class DiscussionThreadLookup(BaseModel):
     discussion_id = columns.UUID()
 
 
-class DiscussionRecipientLookup(BaseModel):
-    """Lookup discussion by a recipient name."""
-
-    user_id = columns.UUID(primary_key=True)
-    recipient_name = columns.Text(primary_key=True)
-    discussion_id = columns.UUID()
-
-
 class DiscussionGlobalLookup(BaseModel):
     """Lookup discussion for many participants."""
 

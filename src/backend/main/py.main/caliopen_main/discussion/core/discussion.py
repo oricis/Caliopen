@@ -12,7 +12,6 @@ from caliopen_storage.core import BaseUserCore
 from caliopen_storage.parameters import ReturnCoreObject
 
 from ..store.discussion import (DiscussionListLookup as ModelListLookup,
-     DiscussionRecipientLookup as ModelRecipientLookup,
      DiscussionThreadLookup as ModelThreadLookup,
      DiscussionGlobalLookup as ModelGlobalLookup,
      Discussion as ModelDiscussion)
@@ -40,13 +39,6 @@ class DiscussionListLookup(BaseUserCore):
 
     _model_class = ModelListLookup
     _pkey_name = 'list_id'
-
-
-class DiscussionRecipientLookup(BaseUserCore):
-    """Lookup discussion for a recipient, only one."""
-
-    _model_class = ModelRecipientLookup
-    _pkey_name = 'recipient_name'
 
 
 class DiscussionThreadLookup(BaseUserCore):
