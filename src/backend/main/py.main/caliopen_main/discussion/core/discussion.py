@@ -6,15 +6,16 @@ import logging
 import uuid
 import datetime
 import pytz
+import hashlib
 
 from caliopen_storage.exception import NotFound
 from caliopen_storage.core import BaseUserCore
 from caliopen_storage.parameters import ReturnCoreObject
 
-from ..store.discussion import \
-    (DiscussionListLookup as ModelListLookup,
+from ..store.discussion import (DiscussionListLookup as ModelListLookup,
      DiscussionRecipientLookup as ModelRecipientLookup,
      DiscussionThreadLookup as ModelThreadLookup,
+     DiscussionGlobalLookup as ModelGlobalLookup,
      Discussion as ModelDiscussion)
 from ..store.discussion_index import DiscussionIndexManager as DIM
 
@@ -54,6 +55,21 @@ class DiscussionThreadLookup(BaseUserCore):
 
     _model_class = ModelThreadLookup
     _pkey_name = 'external_root_msg_id'
+
+
+class DiscussionGlobalLookup(BaseUserCore):
+    """Lookup global discussion."""
+
+    _model_class = ModelGlobalLookup
+    _pkey_name = 'hashed'
+
+    @classmethod
+    def create(cls, user, participants):
+        """Create a lookup for all participants."""
+        addresses = [x.address for x in participants]
+        addresses.sort()
+        hashed = hashlib.sha256(''.join(addresses)).hexdigest()
+        return super(DiscussionGlobalLookup, cls).create(user, hashed=hashed)
 
 
 def build_discussion(core, index):

@@ -41,3 +41,11 @@ class DiscussionRecipientLookup(BaseModel):
     user_id = columns.UUID(primary_key=True)
     recipient_name = columns.Text(primary_key=True)
     discussion_id = columns.UUID()
+
+
+class DiscussionGlobalLookup(BaseModel):
+    """Lookup discussion for many participants."""
+
+    user_id = columns.UUID(primary_key=True)
+    hashed = columns.Text(primary_key=True)
+    discussion_id = columns.UUID()
