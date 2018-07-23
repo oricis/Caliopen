@@ -6,8 +6,11 @@ import logging
 
 from .keybase import KeybaseDiscovery
 from .rfc7929 import DNSDiscovery
+from .hkp import HKPDiscovery
 
 log = logging.getLogger(__name__)
+
+log.setLevel(logging.DEBUG)
 
 
 class PublicKeyDiscoverer(object):
@@ -24,15 +27,24 @@ class PublicKeyDiscoverer(object):
         if params.get('enable'):
             disco = KeybaseDiscovery(params)
             self.discoverers['keybase'] = disco
+        params = conf.get('key_discovery', {}).get('hkp', {})
+        if params.get('enable'):
+            disco = HKPDiscovery(params)
+            self.discoverers['hkp'] = disco
 
-    def search_email(self, email):
-        """Search for an email in all discoveries service configured."""
-        found_keys = []
+    def lookup_identity(self, identity, type_):
+        """Search for public key for an identifier and a protocol type."""
+        results = []
         for disco in self.discoverers:
-            try:
-                key = self.discoverers[disco].find_by_email(email)
-                found_keys.append(key)
-            except Exception as exc:
-                log.error('Exception during key lookup using {0} '
-                          'for email {1}: {2}'.format(disco, email, exc))
-        return found_keys
+            if type_ in self.discoverers[disco]._types:
+                discoverer = self.discoverers[disco]
+                try:
+                    result = discoverer.lookup_identity(identity, type_)
+                    if result.keys:
+                        results.append(result)
+                except Exception as exc:
+                    log.error('Exception during key lookup using {0} '
+                              'for identifier {1}: {2}'.format(disco,
+                                                               identity,
+                                                               exc))
+        return results

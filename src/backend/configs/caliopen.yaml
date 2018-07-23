@@ -70,3 +70,5 @@ key_discovery:
     dns:
         enable: True
         name_server: 8.8.8.8
+    hkp:
+        enable: True

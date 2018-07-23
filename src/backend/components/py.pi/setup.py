@@ -19,6 +19,7 @@ requires = [
     'pgpy',
     'user-agents',
     'geoip2',
+    'caliopen_pgp',
 ]
 
 extras_require = {
