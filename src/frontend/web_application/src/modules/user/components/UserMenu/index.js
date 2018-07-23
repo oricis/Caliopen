@@ -1,12 +1,15 @@
 import { createSelector } from 'reselect';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { compose, bindActionCreators } from 'redux';
 import Presenter from './presenter';
+import { getUser } from '../../actions/getUser';
+import { userSelector } from '../../selectors/userSelector';
 
-const userSelector = state => state.user.user;
 const mapStateToProps = createSelector(
   [userSelector],
   user => ({ user })
 );
 
-export default compose(connect(mapStateToProps))(Presenter);
+const mapDispatchToProps = dispatch => bindActionCreators({ getUser }, dispatch);
+
+export default compose(connect(mapStateToProps, mapDispatchToProps))(Presenter);

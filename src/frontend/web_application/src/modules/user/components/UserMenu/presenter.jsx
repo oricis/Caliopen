@@ -10,6 +10,7 @@ const DropdownControl = withDropdownControl(Button);
 class Presenter extends Component {
   static propTypes = {
     user: PropTypes.shape({}),
+    getUser: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -19,6 +20,10 @@ class Presenter extends Component {
   state = {
     isDropdownOpen: false,
   };
+
+  componentDidMount() {
+    this.props.getUser();
+  }
 
   handleDropdownToggle = (isDropdownOpen) => {
     this.setState({ isDropdownOpen });
