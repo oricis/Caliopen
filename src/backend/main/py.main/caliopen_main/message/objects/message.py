@@ -37,6 +37,26 @@ import logging
 log = logging.getLogger(__name__)
 
 
+def find_or_create_discussion(user, params):
+    """Find a related discussion or create a new one."""
+    addresses = [x.address for x in params.get('participants', [])]
+    addresses.sort()
+    hashed = hashlib.sha256(''.join(addresses)).hexdigest()
+    try:
+        lookup = DiscussionGlobalLookup.get(user=user, hashed=hashed)
+        log.info('Found existing discussion {0}'.
+                 format(lookup.discussion_id))
+        return lookup.discussion_id
+    except NotFound:
+        # Create a new discussion
+        discussion_id = uuid.uuid4()
+        log.info('Creating new discussion {0}'.format(discussion_id))
+        Discussion.create(user=user, discussion_id=discussion_id)
+        DiscussionGlobalLookup.create(user=user, hashed=hashed,
+                                      discussion_id=discussion_id)
+        return discussion_id
+
+
 class Message(ObjectIndexable):
     """Message object class."""
 
@@ -134,7 +154,7 @@ class Message(ObjectIndexable):
         message.type = "email"  # TODO: type handling from participants
         message.date = message.date_sort = message.date_insert = \
             datetime.datetime.now(tz=pytz.utc)
-
+        message.discussion_id = find_or_create_discussion(user, draft_param)
         try:
             message.marshall_db()
             message.save_db()
@@ -148,25 +168,6 @@ class Message(ObjectIndexable):
             log.warn(exc)
             raise exc
         return message
-
-    def find_or_create_discussion(self, user, params):
-        """Find a related discussion or create a new one."""
-        addresses = [x.address for x in params.get('participants', [])]
-        addresses.sort()
-        hashed = hashlib.sha256(''.join(addresses)).hexdigest()
-        try:
-            lookup = DiscussionGlobalLookup.get(user=user, hashed=hashed)
-            log.info('Found existing discussion {0}'.
-                     format(lookup.discussion_id))
-            return lookup.discussion_id
-        except NotFound:
-            # Create a new discussion
-            discussion_id = uuid.uuid4()
-            log.info('Creating new discussion {0}'.format(discussion_id))
-            Discussion.create(user=user, discussion_id=discussion_id)
-            DiscussionGlobalLookup.create(user=user, hashed=hashed,
-                                          discussion_id=discussion_id)
-            return discussion_id
 
     def patch_draft(self, user, patch, **options):
         """Operation specific to draft, before applying generic patch."""
@@ -234,7 +235,7 @@ class Message(ObjectIndexable):
                 draft_param.participants.append(indexed)
         if 'participants' in params and self.participants:
             # Participants change, discussion_id must change
-            discussion_id = self.find_or_create_discussion(params)
+            discussion_id = find_or_create_discussion(params)
             self.discussion_id = discussion_id
 
         if "identities" not in params and self.identities:
