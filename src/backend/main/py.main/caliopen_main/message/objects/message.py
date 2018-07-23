@@ -11,6 +11,7 @@ import datetime
 import pytz
 import json
 import copy
+import hashlib
 
 from caliopen_storage.config import Configuration
 from caliopen_storage.exception import NotFound
@@ -29,6 +30,7 @@ from schematics.types import UUIDType
 from caliopen_main.message.parameters.participant import \
     Participant as IndexedParticipant
 from caliopen_main.common import errors as err
+from caliopen_main.discussion.core import Discussion, DiscussionGlobalLookup
 
 import logging
 
@@ -150,6 +152,26 @@ class Message(ObjectIndexable):
             raise exc
         return message
 
+    def find_or_create_discussion(self, params):
+        """Find a related discussion or create a new one."""
+        addresses = [x.address for x in params.get('participants', [])]
+        addresses.sort()
+        hashed = hashlib.sha256(''.join(addresses)).hexdigest()
+        try:
+            lookup = DiscussionGlobalLookup.get(user=self.user, hashed=hashed)
+            log.info('Found existing discussion {0}'.
+                     format(lookup.discussion_id))
+            return lookup.discussion_id
+        except NotFound:
+            # Create a new discussion
+            discussion_id = uuid.uuid4()
+            log.info('Creating new discussion {0}'.format(discussion_id))
+            Discussion.create(user=self.user, discussion_id=discussion_id)
+            DiscussionGlobalLookup.create(user=self.user,
+                                          hashed=hashed,
+                                          discussion_id=discussion_id)
+            return discussion_id
+
     def patch_draft(self, patch, **options):
         """Operation specific to draft, before applying generic patch."""
         try:
@@ -212,6 +234,10 @@ class Message(ObjectIndexable):
         if "participants" not in params and self.participants:
             for participant in self_dict['participants']:
                 draft_param.participants.append(IndexedParticipant(participant))
+        if 'participants' in params and self.participants:
+            # Participants change, discussion_id must change
+            discussion_id = self.find_or_create_discussion(params)
+            self.discussion_id = discussion_id
 
         if "identities" not in params and self.identities:
             draft_param.identities = self_dict["identities"]
@@ -232,8 +258,8 @@ class Message(ObjectIndexable):
         # remove empty UUIDs from current state if any
         if "parent_id" in current_state and current_state["parent_id"] == "":
             del (current_state["parent_id"])
-        if "discussion_id" in current_state and current_state[
-            "discussion_id"] == "":
+        if "discussion_id" in current_state and \
+           current_state["discussion_id"] == "":
             del (current_state["discussion_id"])
 
         # handle body key mapping to body_plain or body_html
