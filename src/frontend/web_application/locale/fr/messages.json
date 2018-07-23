@@ -75,7 +75,7 @@
   "reply-form.by": "par {draftType}",
   "messages.compose.confirm-send.title": "Envoyer un message",
   "message.compose.confirm-send.content": "Des champs sont vides (sujet et/ou corps du message). Envoyer quand même ?",
-  "message.compose.confirm-send.confirm-button": "Oui c'est partit!",
+  "message.compose.confirm-send.confirm-button": "Oui c'est parti !",
   "messages.compose.action.send": "Envoyer",
   "reply-form.you": "Vous",
   "reply-form.now": "Maintenant",
