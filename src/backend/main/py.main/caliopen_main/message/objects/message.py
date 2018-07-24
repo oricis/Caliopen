@@ -40,10 +40,11 @@ log = logging.getLogger(__name__)
 def find_or_create_discussion(user, params):
     """Find a related discussion or create a new one."""
     addresses = [x.address for x in params.get('participants', [])]
+    addresses = list(set(addresses))
     addresses.sort()
     hashed = hashlib.sha256(''.join(addresses)).hexdigest()
     try:
-        lookup = DiscussionGlobalLookup.get(user=user, hashed=hashed)
+        lookup = DiscussionGlobalLookup.get(user, hashed)
         log.info('Found existing discussion {0}'.
                  format(lookup.discussion_id))
         return lookup.discussion_id

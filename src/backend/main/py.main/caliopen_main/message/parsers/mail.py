@@ -288,6 +288,7 @@ class MailMessage(object):
     def hash_participants(self):
         """Create an hash from participants addresses for global lookup."""
         addresses = [x.address for x in self.participants]
+        addresses = list(set(addresses))
         addresses.sort()
         return hashlib.sha256(''.join(addresses)).hexdigest()
 
