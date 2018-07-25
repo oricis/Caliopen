@@ -104,7 +104,6 @@ func TestEmailToJsonRep(t *testing.T) {
 	if parsed_email.MimeRoot.Parts[0].Parts[0].Charset != "utf-8" {
 		t.Errorf("Expected first sub-part of first part to have charset = utf-8, got %s instead", parsed_email.MimeRoot.Parts[0].Parts[0].Charset)
 	}
-	t.Logf("%+v", parsed_email.MimeRoot.Parts)
 }
 
 const (
