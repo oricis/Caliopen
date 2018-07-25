@@ -199,3 +199,7 @@ func (rest *RESTfacility) DeleteUserIdentity(userId, identityId string) Caliopen
 
 	return nil
 }
+
+func (rest *RESTfacility) IsRemoteIdentity(userId, identityId string) bool {
+	return rest.store.IsRemoteIdentity(userId, identityId)
+}

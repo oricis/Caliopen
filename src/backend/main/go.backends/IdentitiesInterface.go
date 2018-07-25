@@ -21,6 +21,8 @@ type (
 		DeleteUserIdentity(userIdentity *UserIdentity) error
 		RetrieveRemoteIdentities(userId string, withCredentials bool) ([]*UserIdentity, error)
 		RetrieveAllRemotes(withCredentials bool) (<-chan *UserIdentity, error)
+		IsLocalIdentity(userId, identityId string) bool
+		IsRemoteIdentity(userId, identityId string) bool
 		Close()
 	}
 )

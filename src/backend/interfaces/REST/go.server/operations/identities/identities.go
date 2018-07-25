@@ -101,8 +101,8 @@ func GetRemoteIdentity(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	noCredentials := false // by default do not return Credentials
-	identity, e := caliopen.Facilities.RESTfacility.RetrieveUserIdentity(userID, remote_id, noCredentials)
+	withCredentials := false // by default do not return Credentials
+	identity, e := caliopen.Facilities.RESTfacility.RetrieveUserIdentity(userID, remote_id, withCredentials)
 	if e != nil {
 		returnedErr := new(swgErr.CompositeError)
 		if e.Code() == NotFoundCaliopenErr {
@@ -113,6 +113,12 @@ func GetRemoteIdentity(ctx *gin.Context) {
 		http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
 		ctx.Abort()
 	} else {
+		if identity.Type != RemoteIdentity {
+			e := swgErr.New(http.StatusNotFound, "resource not available on this route")
+			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+			ctx.Abort()
+			return
+		}
 		id_json, err := identity.MarshalFrontEnd()
 		if err != nil {
 			e := swgErr.New(http.StatusFailedDependency, err.Error())
@@ -208,8 +214,8 @@ func PatchRemoteIdentity(ctx *gin.Context) {
 		return
 	}
 
-	remote_id := ctx.Param("remote_id")
-	if remote_id == "" {
+	remoteId := ctx.Param("remote_id")
+	if remoteId == "" {
 		e := swgErr.New(http.StatusBadRequest, "empty remote_id")
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
@@ -225,8 +231,15 @@ func PatchRemoteIdentity(ctx *gin.Context) {
 		return
 	}
 
+	if !caliopen.Facilities.RESTfacility.IsRemoteIdentity(userId, remoteId) {
+		e := swgErr.New(http.StatusNotFound, "resource not found on this route")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
 	// call REST facility with payload
-	apiErr := caliopen.Facilities.RESTfacility.PatchUserIdentity(patch, userId, remote_id)
+	apiErr := caliopen.Facilities.RESTfacility.PatchUserIdentity(patch, userId, remoteId)
 	if apiErr != nil {
 		returnedErr := new(swgErr.CompositeError)
 		switch apiErr.Code() {
@@ -266,16 +279,23 @@ func DeleteRemoteIdentity(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	remote_id := ctx.Param("remote_id")
-	if remote_id == "" {
+	remoteId := ctx.Param("remote_id")
+	if remoteId == "" {
 		e := swgErr.New(http.StatusBadRequest, "empty remote_id")
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
 	}
 
+	if !caliopen.Facilities.RESTfacility.IsRemoteIdentity(userId, remoteId) {
+		e := swgErr.New(http.StatusNotFound, "resource not found on this route")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
 	// call api
-	apiErr := caliopen.Facilities.RESTfacility.DeleteUserIdentity(userId, remote_id)
+	apiErr := caliopen.Facilities.RESTfacility.DeleteUserIdentity(userId, remoteId)
 	if apiErr != nil {
 		returnedErr := new(swgErr.CompositeError)
 		switch apiErr.Code() {

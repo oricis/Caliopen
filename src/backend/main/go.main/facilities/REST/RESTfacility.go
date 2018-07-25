@@ -39,7 +39,8 @@ type (
 		RetrieveUserIdentity(userId, RemoteId string, withCredentials bool) (id *UserIdentity, err CaliopenError)
 		UpdateUserIdentity(identity, oldIdentity *UserIdentity, update map[string]interface{}) CaliopenError
 		PatchUserIdentity(patch []byte, userId, RemoteId string) CaliopenError
-		DeleteUserIdentity(userId, RemoteId string) CaliopenError
+		DeleteUserIdentity(userId, remoteId string) CaliopenError
+		IsRemoteIdentity(userId, remoteId string) bool
 		//messages
 		GetMessagesList(filter IndexSearch) (messages []*Message, totalFound int64, err error)
 		GetMessagesRange(filter IndexSearch) (messages []*Message, totalFound int64, err error)
