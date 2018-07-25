@@ -28,6 +28,7 @@ class Tab extends Component {
       case tab.pathname.startsWith('/settings/'):
       case tab.pathname.startsWith('/contacts/'):
       case tab.pathname.startsWith('/user/'):
+      case tab.pathname.startsWith('/compose'):
         return (
           <NavbarItem
             className="tab"
