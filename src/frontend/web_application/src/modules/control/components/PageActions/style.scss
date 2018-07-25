@@ -13,23 +13,4 @@
   &__search-field {
     @include flex-grid-size;
   }
-
-  $search-padding: rem-calc(0.625rem / 2);
-
-  .m-search-field {
-    position: relative;
-
-    &__search-input {
-      width: 100%;
-      border: none;
-    }
-
-    &__search-button {
-      position: absolute;
-      top: $search-padding;
-      right: $search-padding;
-      height: $co-component__height - ($search-padding * 2);
-      line-height: $co-component__height - ($search-padding * 2);
-    }
-  }
 }

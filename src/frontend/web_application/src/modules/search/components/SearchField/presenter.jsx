@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
+import { Trans } from 'lingui-react';
+import { Icon, InputText, Button } from '../../../../components/';
 import './style.scss';
-import { Icon, InputText } from '../../../../../../components/';
-import RawButton from '../../../../../../components/RawButton';
+// import RawButton from '../../../../components/RawButton';
 
 const generateStateFromProps = ({ term }) => ({ term });
 
@@ -11,6 +13,7 @@ const MIN_TERM_LENGTH = 3;
 
 class SearchField extends Component {
   static propTypes = {
+    className: PropTypes.string,
     term: PropTypes.string,
     push: PropTypes.func.isRequired,
     i18n: PropTypes.shape({}).isRequired,
@@ -48,27 +51,26 @@ class SearchField extends Component {
   }
 
   render() {
-    const { i18n } = this.props;
+    const { i18n, className } = this.props;
 
     return (
-      <div className="m-search-field">
+      <div className={classnames('m-search-field', className)}>
         <form action="/search-results" method="get" onSubmit={this.handleSubmit}>
           <InputText
             name="term"
             onChange={this.handleInputChange}
             value={this.state.term}
-            theme="dark"
             placeholder={i18n._('header.menu.search', { defaults: 'Search' })}
-            className="m-search-field__input"
+            className="m-search-field__search-input"
           />
-          <RawButton
-            className="m-search-field__button"
+          <Button
+            className="m-search-field__search-button"
             type="submit"
-            aria-label={i18n._('header.menu.search', { defaults: 'Search' })}
+            shape="plain"
             disabled={this.state.term.length < MIN_TERM_LENGTH}
           >
-            <Icon type="search" />
-          </RawButton>
+            <Trans id="header.actions.search">Lancer la recherche <Icon type="search" /></Trans>
+          </Button>
         </form>
       </div>
     );

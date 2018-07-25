@@ -2,10 +2,10 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Switch, Route } from 'react-router-dom';
-import { Button, Icon, InputText } from '../../../../components';
 import ComposeButton from '../ComposeButton';
 import CreateContactButton from '../CreateContactButton';
 import ImportContactsButton from '../ImportContactsButton';
+import { SearchField } from '../../../search';
 import './style.scss';
 import './action-btns.scss';
 
@@ -39,14 +39,7 @@ class PageActions extends Component {
             <Route render={() => (<ComposeButton className="m-action-btns__btn" />)} />
           </Switch>
         </div>
-        <div className="m-page-actions__search-field">
-          <div className="m-search-field">
-            <InputText className="m-search-field__search-input" />
-            <Button className="m-search-field__search-button" shape="plain">
-              Lancer la recherche <Icon type="search" />
-            </Button>
-          </div>
-        </div>
+        <SearchField className="m-page-actions__search-field" />
       </div>
     );
   }
