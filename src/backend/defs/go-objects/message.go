@@ -449,11 +449,11 @@ func (msg *Message) MarshallNew(args ...interface{}) {
 		msg.Date_sort = time.Now()
 	}
 
-	for i, _ := range msg.Attachments {
+	for i := range msg.Attachments {
 		msg.Attachments[i].MarshallNew()
 	}
 
-	for i, _ := range msg.Participants {
+	for i := range msg.Participants {
 		msg.Participants[i].MarshallNew()
 	}
 

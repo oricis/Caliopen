@@ -19,8 +19,8 @@ type (
 		Credentials *Credentials      `cql:"credentials"        json:"credentials,omitempty"                            patch:"user"`
 		DisplayName string            `cql:"display_name"       json:"display_name"                                     patch:"user"`
 		Id          UUID              `cql:"identity_id"        json:"identity_id"`
-		Identifier  string            `cql:"identifier"         json:"identifier"                                       ` // for example: me@caliopen.org, @mastodon_account
-		Infos       map[string]string `cql:"infos"              json:"infos"                                            patch:"user"`
+		Identifier  string            `cql:"identifier"         json:"identifier"                                                     ` // for example: me@caliopen.org, @mastodon_account
+		Infos       map[string]string `cql:"infos"              json:"infos"                                            patch:"user"  `
 		LastCheck   time.Time         `cql:"last_check"         json:"last_check,omitempty"                 formatter:"RFC3339Milli"`
 		Protocol    string            `cql:"protocol"           json:"protocol"                                                       ` // for example: smtp, imap, mastodon
 		Status      string            `cql:"status"             json:"status"                                           patch:"user"`   // for example : active, inactive, deleted

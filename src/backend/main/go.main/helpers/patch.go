@@ -53,7 +53,7 @@ func UpdateWithPatch(patch []byte, obj ObjectPatchable, actor Initiator) (newObj
 
 	// copy fields that have been validated and modified into the map that will be returned.
 	modifiedFields = map[string]interface{}{}
-	for key, _ := range p.fieldsInPatch {
+	for key := range p.fieldsInPatch {
 		fieldName := p.jsonMap[key]
 		if value, ok := validatedFields[fieldName]; ok {
 			modifiedFields[fieldName] = value
@@ -119,7 +119,7 @@ func validateCurrentState(patch *patch) (err error) {
 	// seek for keys within patch that are not in current_state meaning patch wants to add the key,
 	// consequently the value in db should equals to default zero
 	emptyState := patch.dbState.NewEmpty()
-	for key, _ := range patch.fieldsInPatch {
+	for key := range patch.fieldsInPatch {
 		field := patch.jsonMap[key]
 		if ok, err := reflections.HasField(patch.dbState, field); err != nil || !ok {
 			return NewCaliopenErrf(UnprocessableCaliopenErr, "struct %s has no key %", reflect.TypeOf(patch.dbState).String(), key)

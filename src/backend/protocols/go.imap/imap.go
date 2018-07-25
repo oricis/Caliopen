@@ -66,7 +66,7 @@ func imapLogin(rId *UserIdentity) (tlsConn *tls.Conn, imapClient *client.Client,
 	// identify provider
 	capabilities, _ := imapClient.Capability()
 	provider = Provider{capabilities: capabilities}
-	for capability, _ := range capabilities {
+	for capability := range capabilities {
 		if p, ok := providers[capability]; ok {
 			provider.name = p.name
 			provider.fetchItems = p.fetchItems

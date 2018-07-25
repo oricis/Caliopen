@@ -65,7 +65,7 @@ func (p *Poller) updateCache() (added, removed, updated map[string]bool, err err
 			}
 		}
 	}
-	for key, _ := range p.Cache {
+	for key := range p.Cache {
 		if _, ok := active[key]; !ok {
 			removed[key] = true
 		}
