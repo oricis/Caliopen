@@ -1132,18 +1132,10 @@
                     "excerpt": {
                       "type": "string"
                     },
-                    "identities": {
+                    "user_identities": {
                       "type": "array",
                       "items": {
-                        "type": "object",
-                        "properties": {
-                          "identifier": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          }
-                        }
+                        "type": "string"
                       }
                     },
                     "importance_level": {
@@ -1322,18 +1314,10 @@
                 "excerpt": {
                   "type": "string"
                 },
-                "identities": {
+                "user_identities": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "identifier": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      }
-                    }
+                    "type": "string"
                   }
                 },
                 "importance_level": {
@@ -1704,18 +1688,10 @@
                 "excerpt": {
                   "type": "string"
                 },
-                "identities": {
+                "user_identities": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "identifier": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      }
-                    }
+                    "type": "string"
                   }
                 },
                 "importance_level": {
@@ -9280,18 +9256,10 @@
                       "excerpt": {
                         "type": "string"
                       },
-                      "identities": {
+                      "user_identities": {
                         "type": "array",
                         "items": {
-                          "type": "object",
-                          "properties": {
-                            "identifier": {
-                              "type": "string"
-                            },
-                            "type": {
-                              "type": "string"
-                            }
-                          }
+                          "type": "string"
                         }
                       },
                       "importance_level": {
@@ -9553,18 +9521,10 @@
                     "excerpt": {
                       "type": "string"
                     },
-                    "identities": {
+                    "user_identities": {
                       "type": "array",
                       "items": {
-                        "type": "object",
-                        "properties": {
-                          "identifier": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          }
-                        }
+                        "type": "string"
                       }
                     },
                     "importance_level": {
@@ -9743,18 +9703,10 @@
                 "excerpt": {
                   "type": "string"
                 },
-                "identities": {
+                "user_identities": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "identifier": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      }
-                    }
+                    "type": "string"
                   }
                 },
                 "importance_level": {
@@ -10184,18 +10136,10 @@
                 "excerpt": {
                   "type": "string"
                 },
-                "identities": {
+                "user_identities": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "identifier": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      }
-                    }
+                    "type": "string"
                   }
                 },
                 "importance_level": {
@@ -10689,18 +10633,10 @@
                 "excerpt": {
                   "type": "string"
                 },
-                "identities": {
+                "user_identities": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "identifier": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      }
-                    }
+                    "type": "string"
                   }
                 },
                 "importance_level": {
@@ -10886,18 +10822,10 @@
                 "excerpt": {
                   "type": "string"
                 },
-                "identities": {
+                "user_identities": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "identifier": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      }
-                    }
+                    "type": "string"
                   }
                 },
                 "importance_level": {
