@@ -23,6 +23,7 @@ from email.utils import parsedate_tz, mktime_tz, getaddresses
 import zope.interface
 
 from caliopen_main.common.helpers.normalize import clean_email_address
+from caliopen_main.common.helpers.strings import to_utf8
 from caliopen_main.common.interfaces import (IAttachmentParser, IMessageParser,
                                              IParticipantParser)
 
@@ -142,30 +143,6 @@ class MailMessage(object):
         """Extract body alternatives, if any."""
         body_html = ""
         body_plain = ""
-
-        def to_utf8(input, charset):
-            """Convert input string to utf-8 return input string if it fails.
-
-            :param input: string
-            :param charset: string
-            :return: utf-8 string
-            """
-            if charset is not None:
-                try:
-                    return input.decode(charset, "replace"). \
-                        encode("utf-8", "replace")
-                except Exception as exc:
-                    log.info("decoding <{}> string to utf-8 failed "
-                             "with error : {}".format(input, exc))
-                    return input
-            else:
-                try:
-                    return input.decode("us-ascii", "replace"). \
-                        encode("utf-8", "replace")
-                except Exception as exc:
-                    log.info("decoding <{}> string to utf-8 failed "
-                             "with error : {}".format(input, exc))
-                    return input
 
         if self.mail.get("Content-Type", None):
             if self.mail.is_multipart():
