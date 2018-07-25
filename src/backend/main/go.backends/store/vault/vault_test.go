@@ -20,7 +20,7 @@ func TestInitializeVaultBackend(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	hclient.SetToken("3a995021-7b93-b4bd-f327-28a7bfa4ef50")
+	hclient.SetToken("df278062-b68a-037d-0612-77861fdfec12")
 	hclient.Auth()
 
 	_, err = hclient.Sys().Health()
@@ -42,5 +42,10 @@ func TestInitializeVaultBackend(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Log(secret.Data["data"])
+	if pass, ok := secret.Data["data"].(map[string]interface{})["password"]; !ok || pass.(string) != "pass" {
+		t.Error("failed to retrieve password")
+	}
+	if name, ok := secret.Data["data"].(map[string]interface{})["username"]; !ok || name.(string) != "user" {
+		t.Error("failed to retrieve username")
+	}
 }
