@@ -82,8 +82,6 @@ func BasicAuthFromCache(cache backends.APICache, realm string) gin.HandlerFunc {
 
 		if device_id, ok := c.Request.Header["X-Caliopen-Device-ID"]; ok {
 			cache_key = user_id + "-" + device_id[0]
-		} else {
-			cache_key = user_id
 		}
 
 		// Search user in cache of allowed credentials

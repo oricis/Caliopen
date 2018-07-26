@@ -13,13 +13,14 @@ log = logging.getLogger(__name__)
 
 class ValidationError(HTTPClientError):
     """
-    subclass of :class:`~HTTPClientError`
+    subclass of :class:`~HTTPClientError`.
 
     This indicates that the body or headers failed validity checks,
     preventing the server from being able to continue processing.
 
     code: 400, title: Bad Request
     """
+
     code = 400
     title = 'Bad Request'
     explanation = ('The server could not comply with the request since '
@@ -28,36 +29,66 @@ class ValidationError(HTTPClientError):
 
 class AuthenticationError(HTTPClientError):
     """
-    subclass of :class:`~HTTPClientError`
+    subclass of :class:`~HTTPClientError`.
 
     This indicates that the user authentication failed.
 
     code: 401, title: Unauthorized
     """
+
     code = 401
     title = 'Authentication error'
     explanation = 'Wrong credentials (e.g., bad password or username)'
 
 
 class NotAcceptable(HTTPClientError):
+    """
+    subclass of :class:`~HTTPClientError`.
+
+    This indicates that the body or headers failed validity checks,
+    preventing the server from being able to continue processing.
+
+    code: 406, title: Not acceptable
+    """
+
     code = 406
     title = 'Not acceptable'
     explanation = 'Server cannot fulfill the request with given payload'
 
 
 class ResourceNotFound(HTTPClientError):
+    """
+    subclass of :class:`~HTTPClientError`.
+
+    This indicates that the body or headers failed validity checks,
+    preventing the server from being able to continue processing.
+
+    code: 404, title: Not found
+    """
+
     code = 404
     title = 'Not Found'
     explanation = 'The resource could not be found.'
 
 
 class MethodNotAllowed(HTTPClientError):
+    """
+    subclass of :class:`~HTTPClientError`.
+
+    This indicates that the body or headers failed validity checks,
+    preventing the server from being able to continue processing.
+
+    code: 405, title: Method not allowed
+    """
+
     code = 405
     title = 'Method not allowed'
     explanation = 'The method is not allowed or not yet implemented'
 
 
 class MergePatchError(HTTPClientError):
+    """Merge error during patch method."""
+
     def __init__(self, error=None):
         self.message = error.message
         if isinstance(error, NotFound):
@@ -82,13 +113,29 @@ class MergePatchError(HTTPClientError):
 
 class Unprocessable(HTTPClientError):
     """
-    subclass of :class:`~HTTPClientError`
+    subclass of :class:`~HTTPClientError`.
 
     This indicates that the body or headers failed validity checks,
     preventing the server from being able to continue processing.
 
     code: 422, title: Bad Request
     """
+
     code = 422
     title = 'Unprocessable entity'
     explanation = 'The method is not allowed or not yet implemented'
+
+
+class MethodFailure(HTTPClientError):
+    """
+    subclass of :class:`~HTTPClientError`.
+
+    This indicates that the body or headers failed validity checks,
+    preventing the server from being able to continue processing.
+
+    code: 424, title: Method failure
+    """
+
+    code = 424
+    title = 'Method failure'
+    explanation = 'The method failed for a dependency reason'
