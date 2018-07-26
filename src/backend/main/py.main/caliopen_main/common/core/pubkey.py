@@ -25,10 +25,10 @@ class PublicKey(BaseUserRelatedCore):
     @classmethod
     def create(cls, user, resource_id, resource_type, **kwargs):
         """Create a new public key related to an user and a resource."""
-        key_id = uuid.uuid4()
+        if 'key_id' not in kwargs:
+            kwargs['key_id'] = uuid.uuid4()
         obj = cls._model_class.create(user_id=user.user_id,
                                       resource_id=resource_id,
                                       resource_type=resource_type,
-                                      key_id=key_id,
                                       **kwargs)
         return cls(obj)
