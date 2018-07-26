@@ -62,15 +62,15 @@ def get_ingress_features(headers, internal_domains=None):
             if from_ and by:
                 paths.append((from_, by, groups))
             else:
-                log.warn('Invalid from {} or by {} path in {}'.
-                         format(from_, by, r))
+                log.debug('Invalid from {} or by {} path in {}'.
+                          format(from_, by, r))
         else:
             if r.startswith('by'):
                 # XXX first hop, to consider ?
                 pass
             else:
-                log.warn('Received header, does not match format {}'.
-                         format(r))
+                log.debug('Received header, does not match format {}'.
+                          format(r))
 
     # Second step: qualify path if internal and try to find the ingress one
     ingress = None

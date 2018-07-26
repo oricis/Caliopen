@@ -16,11 +16,14 @@ from mailbox import Message
 from email.header import decode_header
 import datetime
 import pytz
+import hashlib
+
 from email.utils import parsedate_tz, mktime_tz, getaddresses
 
 import zope.interface
 
 from caliopen_main.common.helpers.normalize import clean_email_address
+from caliopen_main.common.helpers.strings import to_utf8
 from caliopen_main.common.interfaces import (IAttachmentParser, IMessageParser,
                                              IParticipantParser)
 
@@ -33,9 +36,7 @@ class MailAttachment(object):
     zope.interface.implements(IAttachmentParser)
 
     def __init__(self, part):
-        """
-        Extract attachment attributes from a mail part
-        """
+        """Extract attachment attributes from a mail part."""
         self.content_type = part.get_content_type()
         self.filename = part.get_filename()
         content_disposition = part.get("Content-Disposition")
@@ -69,8 +70,8 @@ class MailAttachment(object):
 
     @classmethod
     def is_attachment(cls, part):
-        """
-        This method checks if a part conform to Caliopen's attachment definition.
+        """Check if a part conform to Caliopen's attachment definition.
+
         A part is an "attachment" if it verifies ANY of this conditions :
         - it has a Content-Disposition header with param "attachment"
         - the main part of the Content-Type header
@@ -139,43 +140,11 @@ class MailMessage(object):
         self.get_bodies()
 
     def get_bodies(self):
-        """
-        extract body alternatives, if any,
-        and put them in self.body_html and self.body_plain.
-
-        """
+        """Extract body alternatives, if any."""
         body_html = ""
         body_plain = ""
 
-        def to_utf8(input, charset):
-            """
-            try to convert input string to utf-8
-            return untouched string if it fails
-
-            :param input: string
-            :param charset: string
-            :return: utf-8 string
-            """
-            if charset is not None:
-                try:
-                    return input.decode(charset, "replace").encode("utf-8",
-                                                                   "replace")
-                except Exception as exc:
-                    log.info(
-                        "decoding <{}> string to utf-8 failed with error : {}".format(
-                            input, exc))
-                    return input
-            else:
-                try:
-                    return input.decode("us-ascii", "replace").encode("utf-8",
-                                                                      "replace")
-                except Exception as exc:
-                    log.info(
-                        "decoding <{}> string to utf-8 failed with error : {}".format(
-                            input, exc))
-                    return input
-
-        if self.mail.has_key("Content-Type"):
+        if self.mail.get("Content-Type", None):
             if self.mail.is_multipart():
                 for top_level_part in self.mail.get_payload():
                     if top_level_part.get_content_maintype() == "multipart":
@@ -189,7 +158,8 @@ class MailMessage(object):
                                     decode=True)
                                 self.body_plain = to_utf8(body_plain, charset)
                             elif alternative.get_content_type() == "text/html":
-                                body_html = alternative.get_payload(decode=True)
+                                body_html = alternative. \
+                                    get_payload(decode=True)
                                 self.body_html = to_utf8(body_html, charset)
                         break
                     else:
@@ -198,7 +168,8 @@ class MailMessage(object):
                             charset = unicode(charset[2],
                                               charset[0] or "us-ascii")
                         if top_level_part.get_content_type() == "text/plain":
-                            body_plain = top_level_part.get_payload(decode=True)
+                            body_plain = top_level_part. \
+                                get_payload(decode=True)
                             self.body_plain = to_utf8(body_plain, charset)
                         elif top_level_part.get_content_type() == "text/html":
                             body_html = top_level_part.get_payload(decode=True)
@@ -222,7 +193,8 @@ class MailMessage(object):
         s = decode_header(self.mail.get('Subject'))
         charset = s[0][1]
         if charset is not None:
-            return s[0][0].decode(charset, "replace").encode("utf-8", "replace")
+            return s[0][0].decode(charset, "replace"). \
+                encode("utf-8", "replace")
         else:
             return s[0][0]
 
@@ -246,11 +218,11 @@ class MailMessage(object):
         ref = self.mail.get_all("References")
         ref_addr = getaddresses(ref) if ref else None
         ref_ids = [address[1] for address in ref_addr] if ref_addr else []
-
+        mid = clean_email_address(ext_id)[1] if ext_id else None
+        pid = clean_email_address(parent_id)[1] if parent_id else None
         return {
-            'message_id': clean_email_address(ext_id)[1] if ext_id else None,
-            'parent_id': clean_email_address(parent_id)[1] \
-                if parent_id else None,
+            'message_id': mid,
+            'parent_id': pid,
             'ancestors_ids': ref_ids}
 
     @property
@@ -283,11 +255,16 @@ class MailMessage(object):
         return participants
 
     @property
+    def hash_participants(self):
+        """Create an hash from participants addresses for global lookup."""
+        addresses = [x.address for x in self.participants]
+        addresses = list(set(addresses))
+        addresses.sort()
+        return hashlib.sha256(''.join(addresses)).hexdigest()
+
+    @property
     def attachments(self):
-        """
-        Extract parts which we consider as attachments.
-        See is_attachment() func.
-        """
+        """Extract parts which we consider as attachments."""
         if not self.mail.is_multipart():
             return []
         attchs = []
@@ -302,44 +279,40 @@ class MailMessage(object):
         """Mail message extra parameters."""
         lists = self.mail.get_all("List-ID")
         lists_addr = getaddresses(lists) if lists else None
-        lists_ids = [address[1] for address in lists_addr] if lists_addr else []
+        lists_ids = [address[1] for address in lists_addr] \
+            if lists_addr else []
         return {'lists': lists_ids}
 
     def lookup_discussion_sequence(self, *args, **kwargs):
         """Return list of lookup type, value from a mail message."""
         seq = []
 
-        # first from thread logic :
+        # list lookup first
+        for list_id in self.extra_parameters.get('lists', []):
+            seq.append(('list', list_id))
+
+        seq.append(('global', self.hash_participants))
+
         # try to link message to external thread's root message-id
         if len(self.external_references["ancestors_ids"]) > 0:
-            seq.append(("thread", self.external_references["ancestors_ids"][0]))
+            seq.append(("thread",
+                        self.external_references["ancestors_ids"][0]))
         elif self.external_references["parent_id"]:
             seq.append(("thread", self.external_references["parent_id"]))
         elif self.external_references["message_id"]:
             seq.append(("thread", self.external_references["message_id"]))
 
-        # then list lookup
-        for list_id in self.extra_parameters.get('lists', []):
-            seq.append(('list', list_id))
-
-        # TODO:
-        # # last try to lookup by participants
-        # for p in self.participants:
-        #     if p.type == 'from' and len(self.participants) == 2:
-        #         seq.append(('from', p.address))
-
         return seq
 
     # Others parameters specific for mail message
+
     @property
     def headers(self):
-        """
-        Extract all headers into list.
+        """Extract all headers into list.
 
         Duplicate on headers exists, group them by name
         with a related list of values
         """
-
         def keyfunc(item):
             return item[0]
 
@@ -351,11 +324,12 @@ class MailMessage(object):
         return headers
 
 
-def walk_with_boundary(mailMessage, boundary):
-    mailMessage.add_header("Mime-Boundary", boundary)
-    yield mailMessage
-    if mailMessage.is_multipart():
-        subboundary = mailMessage.get_boundary("")
-        for subpart in mailMessage.get_payload():
+def walk_with_boundary(message, boundary):
+    """Recurse in boundaries."""
+    message.add_header("Mime-Boundary", boundary)
+    yield message
+    if message.is_multipart():
+        subboundary = message.get_boundary("")
+        for subpart in message.get_payload():
             for subsubpart in walk_with_boundary(subpart, subboundary):
                 yield subsubpart

@@ -26,6 +26,8 @@ class Discussion(Model):
     total_count = IntType(required=True, default=0)
     unread_count = IntType(required=True, default=0)
     attachment_count = IntType(default=0)
+    subject = StringType()
+    protocol = StringType()
 
     class Options:
         roles = {'default': blacklist('user_id')}

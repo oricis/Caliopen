@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 - prevent invalidation of whole discussion during scroll
+- group discussion by list or all participants
+- API output more informations on discussions
 
 ### Fixed
 
