@@ -1,7 +1,14 @@
-[{
-	"display_name": "Jown d'eau",
-	"identifier": "john@caliopen.local",
-	"status": "de la liberté",
-	"type": "email",
-	"user_id": "u-john-01"
-}]
+[
+  {
+    "credentials": {},
+    "display_name": "Jown d'eau",
+    "identity_id": "b7a715aa-8fff-4083-9dab-0c85b2634c0b",
+    "identifier": "john@caliopen.local",
+    "infos": {},
+    "last_check": "0001-01-01T00:00:00Z",
+    "protocol": "smtp",
+    "status": "active",
+    "type": "local",
+    "user_id": "u-john-01"
+  }
+]
