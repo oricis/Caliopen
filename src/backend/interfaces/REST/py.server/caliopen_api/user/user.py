@@ -13,7 +13,7 @@ from .util import create_token
 
 from ..base import Api
 from ..base.exception import AuthenticationError, NotAcceptable
-from ..base.exception import Unprocessable, ValidationError
+from ..base.exception import Unprocessable, ValidationError, MethodFailure
 
 from caliopen_storage.exception import NotFound
 from caliopen_main.common.core import PublicKey
@@ -123,6 +123,9 @@ class AuthenticationAPI(Api):
                                  'x': key.x,
                                  'y': key.y,
                                  'curve': key.crv})
+        else:
+            raise MethodFailure(detail='No public key found for device')
+
         self.request.cache.set(cache_key, session_data)
 
         return {'user_id': user.user_id,
