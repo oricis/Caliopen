@@ -162,3 +162,7 @@ As shown above, model for _Message_ object (and consequently for draft) has slig
 }
 ```
 
+#### User model
+
+_User_ object has no longer a `local_identities` property embedded. Call to `…/identites/locals`  to fetch relevant data.
+
