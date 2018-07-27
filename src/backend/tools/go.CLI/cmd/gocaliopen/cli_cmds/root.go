@@ -69,7 +69,7 @@ const __version__ = "0.11.0"
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	RootCmd.PersistentFlags().StringVar(&cfgPath, "confPath", "", "Path to seek the two mandatory config files: caliopen-go-api_dev.yaml and caliopen-go-lmtp_dev.yaml")
+	RootCmd.PersistentFlags().StringVar(&cfgPath, "confPath", "", "Path to seek the two mandatory config files: apiv2.yaml and lmtp.yaml")
 	RootCmd.PersistentFlags().StringVar(&apiCfgFile, "apiConf", "", "Caliopen's API config file")
 	RootCmd.PersistentFlags().StringVar(&lmtpCfgFile, "lmtpConf", "", "Caliopen's lmtpd config file")
 }
@@ -102,14 +102,14 @@ func initConfig() {
 		// Use config file name and path from the flag.
 		apiCfg.SetConfigFile(apiCfgFile)
 	} else {
-		apiCfg.SetConfigName("caliopen-go-api_dev")
+		apiCfg.SetConfigName("apiv2")
 	}
 
 	if lmtpCfgFile != "" {
 		// Use config file name and path from the flag.
 		lmtpCfg.SetConfigFile(lmtpCfgFile)
 	} else {
-		lmtpCfg.SetConfigName("caliopen-go-lmtp_dev")
+		lmtpCfg.SetConfigName("lmtp")
 	}
 
 	// read in environment variables that match
