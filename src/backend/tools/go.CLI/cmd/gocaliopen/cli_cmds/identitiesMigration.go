@@ -61,10 +61,14 @@ func identitiesMigration(cmd *cobra.Command, args []string) {
 	if users, err := Store.Session.Query(`SELECT user_id, local_identities FROM user`).Iter().SliceMap(); err != nil {
 		log.WithError(err).Fatal("failed to retrieve user ids")
 	} else {
-		log.Infof("\nFound %d users to work with\n", len(users))
+		users_total := len(users)
+		users_count := 0
+		log.Infof("\nFound %d users to work with\n", users_total)
 		for _, user := range users {
+			users_count++
+			log.Infof("starting migration for user %d/%d", users_count, users_total)
 			var userId UUID
-			userId.UnmarshalBinary([]byte(user["user_id"].(string)))
+			userId.UnmarshalBinary(user["user_id"].(gocql.UUID).Bytes())
 			var localId UUID
 
 			localId, err := createLocal(user, Store, erroneousUsers, userId, Rest)
@@ -72,11 +76,13 @@ func identitiesMigration(cmd *cobra.Command, args []string) {
 				continue
 			}
 
-			if err := createRemote(user, Store, erroneousUsers, userId, Rest); err != nil {
+			err = createRemotes(Store, erroneousUsers, userId, Rest)
+			if err != nil {
 				continue
 			}
 
-			if err := updateSentMessages(Store, Index, userId, Rest, erroneousMessages, localId); err != nil {
+			err = updateSentMessages(Store, Index, userId, Rest, erroneousMessages, localId)
+			if err != nil {
 				continue
 			}
 		}
@@ -91,9 +97,10 @@ func identitiesMigration(cmd *cobra.Command, args []string) {
 }
 
 func createLocal(user map[string]interface{}, Store *store.CassandraBackend, erroneousUsers []string, userId UUID, Rest *REST.RESTfacility) (localId UUID, err error) {
-	var local map[string]interface{}
-	identifier := user["local_identities"].([]interface{})
-	err = Store.Session.Query(`SELECT * FROM local_identity WHERE identifier = ?`, identifier[0].(string)).MapScan(local)
+	log.Info("creating UserIdentity for local")
+	local := map[string]interface{}{}
+	identifier := user["local_identities"].([]string)
+	err = Store.Session.Query(`SELECT * FROM local_identity WHERE identifier = ?`, identifier[0]).MapScan(local)
 	if err != nil {
 		log.WithError(err).Warnf("failed to retrieve local identity '%s' for user %s", identifier[0], userId.String())
 		erroneousUsers = append(erroneousUsers, userId.String())
@@ -119,33 +126,24 @@ func createLocal(user map[string]interface{}, Store *store.CassandraBackend, err
 	if caliopenErr != nil {
 		log.WithError(caliopenErr).Warnf("failed to save local identity %v for user %s", localUser, userId.String())
 		erroneousUsers = append(erroneousUsers, userId.String())
-		return
+		return UUID{}, caliopenErr.Cause()
 	}
 	return *uid, nil
 }
 
-func createRemote(user map[string]interface{}, Store *store.CassandraBackend, erroneousUsers []string, userId UUID, Rest *REST.RESTfacility) (err error) {
+func createRemotes(Store *store.CassandraBackend, erroneousUsers []string, userId UUID, Rest *REST.RESTfacility) (err error) {
+	log.Info("creating UserIdentity for remotes")
 	remotes, err := Store.Session.Query(`SELECT * from remote_identity WHERE user_id = ?`, userId.String()).Iter().SliceMap()
 	if err != nil {
 		log.WithError(err).Warnf("failed to retrieve remote identities for user %s", userId.String())
 		erroneousUsers = append(erroneousUsers, userId.String())
 		return
 	}
+
 	for _, remote := range remotes {
-		uid := new(UUID)
-		err = uid.UnmarshalBinary(uuid.NewV4().Bytes())
-		if err != nil {
-			log.WithError(err).Warnf("failed to create uuid for remote identity for user %s", userId.String())
-			erroneousUsers = append(erroneousUsers, userId.String())
-			continue
-		}
 		remoteID := new(UserIdentity)
 		remoteID.NewEmpty()
-		if credentials, ok := remote["credentials"]; ok && credentials != nil {
-			cred := &Credentials{}
-			cred.UnmarshalCQLMap(credentials.(map[string]string))
-			remoteID.Credentials = cred
-		}
+
 		if dn, ok := remote["display_name"].(string); ok {
 			remoteID.DisplayName = dn
 		}
@@ -166,11 +164,40 @@ func createRemote(user map[string]interface{}, Store *store.CassandraBackend, er
 			remoteID.Status = status
 		}
 		if t, ok := remote["type"].(string); ok {
-			remoteID.Type = t
+			remoteID.Protocol = t
 		}
 		if userid, ok := remote["user_id"].(gocql.UUID); ok {
 			remoteID.UserId.UnmarshalBinary(userid.Bytes())
 		}
+
+		//try to fill-in identifier from username or display name
+		if apiConf.BackendConfig.Settings.UseVault {
+			cred, err := Store.RetrieveCredentials(userId.String(), remoteID.Id.String())
+			if err != nil {
+				remoteID.Identifier = remoteID.DisplayName
+			} else {
+				if username, ok := cred["username"]; ok {
+					remoteID.Identifier = username
+				} else {
+					remoteID.Identifier = remoteID.DisplayName
+				}
+			}
+		} else {
+			if credentials, ok := remote["credentials"]; ok && credentials != nil {
+				cred := &Credentials{}
+				cred.UnmarshalCQLMap(credentials.(map[string]string))
+				remoteID.Credentials = cred
+				if username, ok := credentials.(map[string]string)["username"]; ok {
+					remoteID.Identifier = username
+				} else {
+					remoteID.Identifier = remoteID.DisplayName
+				}
+			} else {
+				remoteID.Identifier = remoteID.DisplayName
+			}
+		}
+
+		remoteID.Type = RemoteIdentity
 		caliopenErr := Rest.CreateUserIdentity(remoteID)
 		if caliopenErr != nil {
 			log.WithError(caliopenErr).Warnf("failed to save remote identity %v for user %s", *remoteID, userId.String())
@@ -182,21 +209,23 @@ func createRemote(user map[string]interface{}, Store *store.CassandraBackend, er
 }
 
 func updateSentMessages(Store *store.CassandraBackend, Index *index.ElasticSearchBackend, userId UUID, Rest *REST.RESTfacility, erroneousMessages []string, localId UUID) error {
+	log.Info("updating messages")
 	/* get all sent messages id for user from index */
-	scroll := Index.Client.Search().Index(userId.String()).Type(MessageIndexType).
+	scroll := Index.Client.Scroll(userId.String()).Type(MessageIndexType).
 		Query(elastic.NewTermsQuery("is_received", false)).
 		FetchSource(false).
 		Size(100)
 	for {
 		results, err := scroll.Do(context.TODO())
 		if err == io.EOF {
-			break // all results retrieved for this user
+			return nil // all results retrieved for this user
 		}
 		if err != nil {
 			// something went wrong
 			log.WithError(err).Warnf("failed to scroll over indexed messages for user %s", userId.String())
 			return err
 		}
+		log.Infof("%d messages to update", results.TotalHits())
 		for _, hit := range results.Hits.Hits {
 			message, err := Rest.GetMessage(userId.String(), hit.Id)
 			if err != nil {
