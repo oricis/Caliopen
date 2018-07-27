@@ -39,7 +39,7 @@ log = logging.getLogger(__name__)
 
 def find_or_create_discussion(user, params):
     """Find a related discussion or create a new one."""
-    addresses = [x.address for x in params.get('participants', [])]
+    addresses = [x['address'] for x in params.get('participants', [])]
     addresses = list(set(addresses))
     addresses.sort()
     hashed = hashlib.sha256(''.join(addresses)).hexdigest()
@@ -236,7 +236,7 @@ class Message(ObjectIndexable):
                 draft_param.participants.append(indexed)
         if 'participants' in params and self.participants:
             # Participants change, discussion_id must change
-            discussion_id = find_or_create_discussion(params)
+            discussion_id = find_or_create_discussion(user, params)
             self.discussion_id = discussion_id
 
         if "identities" not in params and self.identities:
