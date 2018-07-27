@@ -317,13 +317,13 @@ services:
   #     - "transport.publish_host=0.0.0.0"
   #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
   #   when:
-  #     branch: [ "*/backend/go/*" ]
+  #     branch: [ "*/backend/go/*", "*/backend/all/*" ]
   #     event: [ push ]
 
   # vault:
   #   image: vault
   #   when:
-  #     branch: [ "*/backend/go/*" ]
+  #     branch: [ "*/backend/go/*", "*/backend/all/*" ]
   #     event: [ push ]
   #   environment:
   #     - SKIP_SETCAP=true
@@ -334,11 +334,11 @@ services:
   redis:
     image: redis
     when:
-      branch: [ "*/backend/go/*" ]
+      branch: [ "*/backend/go/*", "*/backend/all/*" ]
       event: [ push ]
 
   nats:
     image: nats
     when:
-      branch: [ "*/backend/go/*" ]
+      branch: [ "*/backend/go/*", "*/backend/all/*" ]
       event: [ push ]
