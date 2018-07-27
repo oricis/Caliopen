@@ -281,7 +281,7 @@ pipeline:
   test-go:
     image: public-registry.caliopen.org/caliopen_go
     when:
-      branch: [ "*/backend/go/*" ]
+      branch: [ "*/backend/go/*", "*/backend/all/*" ]
       event: [ push ]
     commands:
       - cp -r /srv/caliopen/src/backend/* /go/src/github.com/CaliOpen/Caliopen/src/backend
@@ -293,7 +293,7 @@ pipeline:
     environment:
       - CALIOPEN_BASEDIR=/srv/caliopen
     when:
-      branch: [ "*/backend/py/*" ]
+      branch: [ "*/backend/py/*", "*/backend/all/*" ]
       event: [ push ]
     commands:
       - cd src/backend
@@ -323,7 +323,7 @@ services:
   # vault:
   #   image: vault
   #   when:
-  #     branch: [ Feature/backend/go/*, Fix/backend/go/*, feature/backend/go/*, fix/backend/go/* ]
+  #     branch: [ "*/backend/go/*" ]
   #     event: [ push ]
   #   environment:
   #     - SKIP_SETCAP=true
