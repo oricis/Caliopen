@@ -1,0 +1,344 @@
+workspace:
+  base: /srv
+  path: caliopen
+
+pipeline:
+
+#########################################################
+##          BUILD AND PUBLISH ON TAG: RELEASE-         ##
+#########################################################
+
+  cli:
+    group: build1
+    image: plugins/docker
+    dockerfile: src/backend/Dockerfile.cli
+    context: /srv/caliopen/src/backend
+    repo: registry.caliopen.org/cli
+    registry: registry.caliopen.org
+    secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
+    when:
+      ref: [ "refs/tags/release-*" ]
+      event: [ tag ]
+    tags:
+      - latest
+      - ${DRONE_TAG##release-}
+
+  api-py:
+    group: build1
+    image: plugins/docker
+    dockerfile: src/backend/Dockerfile.py-api
+    context: /srv/caliopen/src/backend
+    repo: registry.caliopen.org/apiv1
+    registry: registry.caliopen.org
+    secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
+    when:
+      ref: [ "refs/tags/release-*" ]
+      event: [ tag ]
+    tags:
+      - latest
+      - ${DRONE_TAG##release-}
+
+  message-handler:
+    group: build1
+    image: plugins/docker
+    dockerfile: src/backend/Dockerfile.message-handler
+    context: /srv/caliopen/src/backend
+    repo: registry.caliopen.org/message_handler
+    registry: registry.caliopen.org
+    secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
+    when:
+      ref: [ "refs/tags/release-*" ]
+      event: [ tag ]
+    tags:
+      - latest
+      - ${DRONE_TAG##release-}
+
+  api-go:
+    group: build2
+    image: plugins/docker
+    dockerfile: src/backend/Dockerfile.go-api
+    context: /srv/caliopen/src/backend
+    repo: registry.caliopen.org/api
+    registry: registry.caliopen.org
+    secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
+    when:
+      ref: [ "refs/tags/release-*" ]
+      event: [ tag ]
+    tags:
+      - latest
+      - ${DRONE_TAG##release-}
+
+  lmtp:
+    group: build2
+    image: plugins/docker
+    dockerfile: src/backend/Dockerfile.go-lmtp
+    context: /srv/caliopen/src/backend
+    repo: registry.caliopen.org/broker
+    registry: registry.caliopen.org
+    secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
+    when:
+      ref: [ "refs/tags/release-*" ]
+      event: [ tag ]
+    tags:
+      - latest
+      - ${DRONE_TAG##release-}
+
+  identity-poller:
+    group: build2
+    image: plugins/docker
+    dockerfile: src/backend/Dockerfile.identity-poller
+    context: /srv/caliopen/src/backend
+    repo: registry.caliopen.org/identity_poller
+    registry: registry.caliopen.org
+    secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
+    when:
+      ref: [ "refs/tags/release-*" ]
+      event: [ tag ]
+    tags:
+      - latest
+      - ${DRONE_TAG##release-}
+
+  identity-worker:
+    group: build2
+    image: plugins/docker
+    dockerfile: src/backend/Dockerfile.identity-worker
+    context: /srv/caliopen/src/backend
+    repo: registry.caliopen.org/identity_worker
+    registry: registry.caliopen.org
+    secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
+    when:
+      ref: [ "refs/tags/release-*" ]
+      event: [ tag ]
+    tags:
+      - latest
+      - ${DRONE_TAG##release-}
+
+  frontend:
+    group: build3
+    image: plugins/docker
+    dockerfile: src/frontend/web_application/Dockerfile
+    context: /srv/caliopen/src/frontend/web_application
+    repo: registry.caliopen.org/frontend
+    registry: registry.caliopen.org
+    secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
+    when:
+      ref: [ "refs/tags/release-*" ]
+      event: [ tag ]
+    tags:
+      - latest
+      - ${DRONE_TAG##release-}
+
+#########################################################
+##          BUILD AND PUBLISH ON DEVELOP MERGE         ##
+#########################################################
+
+  caliopen-go:
+    group: build0
+    image: plugins/docker
+    dockerfile: src/backend/Dockerfile.caliopen-go
+    context: /srv/caliopen/src/backend
+    repo: registry.caliopen.org/caliopen_go
+    registry: registry.caliopen.org
+    secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
+    when:
+      branch: develop
+      event: [ push ]
+
+  cli:
+    group: build1
+    image: plugins/docker
+    dockerfile: src/backend/Dockerfile.cli
+    context: /srv/caliopen/src/backend
+    repo: registry.caliopen.org/cli
+    registry: registry.caliopen.org
+    secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
+    when:
+      branch: develop
+      event: [ push ]
+    tags:
+      - develop
+      - ${DRONE_COMMIT_SHA}
+
+  api-py:
+    group: build1
+    image: plugins/docker
+    dockerfile: src/backend/Dockerfile.py-api
+    context: /srv/caliopen/src/backend
+    repo: registry.caliopen.org/apiv1
+    registry: registry.caliopen.org
+    secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
+    when:
+      branch: develop
+      event: [ push ]
+    tags:
+      - develop
+      - ${DRONE_COMMIT_SHA}
+
+  message-handler:
+    group: build1
+    image: plugins/docker
+    dockerfile: src/backend/Dockerfile.message-handler
+    context: /srv/caliopen/src/backend
+    repo: registry.caliopen.org/message_handler
+    registry: registry.caliopen.org
+    secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
+    when:
+      branch: develop
+      event: [ push ]
+    tags:
+      - develop
+      - ${DRONE_COMMIT_SHA}
+
+  api-go:
+    group: build2
+    image: plugins/docker
+    dockerfile: src/backend/Dockerfile.go-api
+    context: /srv/caliopen/src/backend
+    repo: registry.caliopen.org/api
+    registry: registry.caliopen.org
+    secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
+    when:
+      branch: develop
+      event: [ push ]
+    tags:
+      - develop
+      - ${DRONE_COMMIT_SHA}
+
+  lmtp:
+    group: build2
+    image: plugins/docker
+    dockerfile: src/backend/Dockerfile.go-lmtp
+    context: /srv/caliopen/src/backend
+    repo: registry.caliopen.org/broker
+    registry: registry.caliopen.org
+    secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
+    when:
+      branch: develop
+      event: [ push ]
+    tags:
+      - develop
+      - ${DRONE_COMMIT_SHA}
+
+  identity-poller:
+    group: build2
+    image: plugins/docker
+    dockerfile: src/backend/Dockerfile.identity-poller
+    context: /srv/caliopen/src/backend
+    repo: registry.caliopen.org/identity_poller
+    registry: registry.caliopen.org
+    secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
+    when:
+      branch: develop
+      event: [ push ]
+    tags:
+      - develop
+      - ${DRONE_COMMIT_SHA}
+
+  identity-worker:
+    group: build2
+    image: plugins/docker
+    dockerfile: src/backend/Dockerfile.identity-worker
+    context: /srv/caliopen/src/backend
+    repo: registry.caliopen.org/identity_worker
+    registry: registry.caliopen.org
+    secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
+    when:
+      branch: develop
+      event: [ push ]
+    tags:
+      - develop
+      - ${DRONE_COMMIT_SHA}
+
+  frontend:
+    group: build3
+    image: plugins/docker
+    dockerfile: src/frontend/web_application/Dockerfile
+    context: /srv/caliopen/src/frontend/web_application
+    repo: registry.caliopen.org/frontend
+    registry: registry.caliopen.org
+    secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
+    when:
+      branch: develop
+      event: [ push ]
+    tags:
+      - develop
+      - ${DRONE_COMMIT_SHA}
+
+#######################################################
+##               TEST ON BRANCH PUSHES               ##
+#######################################################
+
+  test-frontend:
+    image: node:8
+    when:
+      branch: [ "*/frontend/*" ]
+      event: [ pull_request, push ]
+    commands:
+      - cd src/frontend/web_application
+      - yarn
+      - yarn test:unit
+
+  test-go:
+    image: public-registry.caliopen.org/caliopen_go
+    when:
+      branch: [ "*/backend/go/*" ]
+      event: [ push ]
+    commands:
+      - cp -r /srv/caliopen/src/backend/* /go/src/github.com/CaliOpen/Caliopen/src/backend
+      - cd /go/src/github.com/CaliOpen/Caliopen/src/backend/
+      - go test ./...
+
+  test-py:
+    image: public-registry.caliopen.org/caliopen_python
+    environment:
+      - CALIOPEN_BASEDIR=/srv/caliopen
+    when:
+      branch: [ "*/backend/py/*" ]
+      event: [ push ]
+    commands:
+      - cd src/backend
+      - pip install main/py.storage components/py.pi main/py.main interfaces/REST/py.server 
+      - pip install tools/py.doc interfaces/NATS/py.client tools/py.CLI components/py.pgp tools/py.doc
+      - pip install ipdb docker-compose gitpython nose
+      - nosetests -sv main/py.main/caliopen_main/tests
+      - nosetests -sv components/py.pi/caliopen_pi/tests
+  
+#######################################################
+##             SERVICES NEEDED FOR TESTS             ##
+#######################################################
+
+services:
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:5.4.1
+  #   environment:
+  #     - "discovery.type=single-node"
+  #     - "transport.tcp.port=9200"
+  #     - "transport.host=0.0.0.0"
+  #     - "transport.publish_host=0.0.0.0"
+  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #   when:
+  #     branch: [ "*/backend/go/*" ]
+  #     event: [ push ]
+
+  # vault:
+  #   image: vault
+  #   when:
+  #     branch: [ Feature/backend/go/*, Fix/backend/go/*, feature/backend/go/*, fix/backend/go/* ]
+  #     event: [ push ]
+  #   environment:
+  #     - SKIP_SETCAP=true
+  #     - "VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200"
+  #   commands:
+  #     - vault server -dev
+
+  redis:
+    image: redis
+    when:
+      branch: [ "*/backend/go/*" ]
+      event: [ push ]
+
+  nats:
+    image: nats
+    when:
+      branch: [ "*/backend/go/*" ]
+      event: [ push ]
