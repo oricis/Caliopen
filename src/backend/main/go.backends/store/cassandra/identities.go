@@ -72,9 +72,11 @@ func (cb *CassandraBackend) CreateUserIdentity(userIdentity *UserIdentity) Calio
 	}
 
 	// create credentials apart
-	err = cb.CreateCredentials(userIdentity, *cred)
-	if err != nil {
-		return WrapCaliopenErr(err, DbCaliopenErr, "[CassandraBackend) CreateUserIdentity failed to createCredentials")
+	if cred != nil {
+		err = cb.CreateCredentials(userIdentity, *cred)
+		if err != nil {
+			return WrapCaliopenErr(err, DbCaliopenErr, "[CassandraBackend) CreateUserIdentity failed to createCredentials")
+		}
 	}
 
 	return nil
