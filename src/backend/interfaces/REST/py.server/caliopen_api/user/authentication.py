@@ -49,12 +49,12 @@ class AuthenticatedUser(object):
         user_id, token = auth.split(':')
 
         device_id = None
-        if 'X-Caliopen-Device-ID' in self.request.headers:
-            device_id = self.request.headers['X-Caliopen-Device-ID']
+        device_header = self.request.headers.get('X-Caliopen-Device-ID', None)
+        if device_header:
+            device_id = device_header
             cache_key = '{}-{}'.format(user_id, device_id)
         else:
-            log.warn('No Device in API call')
-            cache_key = user_id
+            raise AuthenticationError
 
         infos = self.request.cache.get(cache_key)
 
@@ -63,7 +63,7 @@ class AuthenticatedUser(object):
         if infos.get('access_token') != token:
             raise AuthenticationError
 
-        if 'X-Caliopen-Device-Signature' in self.request.headers:
+        if self.request.headers.get('X-Caliopen-Device-Signature', None):
             valid = self._validate_signature(self.request, device_id, infos)
             log.info('Signature verification result %r' % valid)
 
@@ -101,19 +101,23 @@ class AuthenticatedUser(object):
             log.warn('Invalid curve points')
             return False
 
-        sign_header = request.headers['X-Caliopen-Device-Signature']
-        data = '{}{}{}'.format(request.method, request.path_qs, '')
-        try:
-            ecdsasign = EcdsaSignature.load(base64.decodestring(sign_header))
-            signature = ecdsasign['r'].contents + ecdsasign['s'].contents
-            vk = ecdsa.VerifyingKey.from_public_point(point, crv,
-                                                      hashfunc=hashfunc)
-            return vk.verify(signature, data)
-        except ecdsa.BadSignatureError:
-            pass
-        except Exception as exc:
-            log.error('Exception during signature verification %r' % exc)
-        return False
+        sign_header = request.headers.get('X-Caliopen-Device-Signature', None)
+        if sign_header:
+            data = '{}{}{}'.format(request.method, request.path_qs, '')
+            try:
+                ecdsasign = EcdsaSignature.load(base64.decodestring(sign_header))
+                signature = ecdsasign['r'].contents + ecdsasign['s'].contents
+                vk = ecdsa.VerifyingKey.from_public_point(point, crv,
+                                                          hashfunc=hashfunc)
+                return vk.verify(signature, data)
+            except ecdsa.BadSignatureError:
+                pass
+            except Exception as exc:
+                log.error('Exception during signature verification %r' % exc)
+            return False
+        else:
+            log.warn('no device signature')
+            return False
 
     def _load_user(self):
         if self._user:
