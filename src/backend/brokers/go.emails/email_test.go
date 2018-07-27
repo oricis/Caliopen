@@ -78,7 +78,7 @@ func TestEmailToJsonRep(t *testing.T) {
 		t.Errorf("Expected to have from=%s, got %s instead", From_address, from[0])
 	}
 	if len(to) != To_len {
-		t.Errorf("Expected to have %d to, got %s instead", To_len, len(to))
+		t.Errorf("Expected to have %d to, got %d instead", To_len, len(to))
 	}
 	if to[0] != To_address {
 		t.Errorf("Expected to have to=%s, got %s instead", To_address, to[0])
