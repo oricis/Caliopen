@@ -7,27 +7,9 @@ package helpers
 import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/satori/go.uuid"
-	"testing"
 )
 
-func TestValidatePatchSemantic(t *testing.T) {
-	msg := getAMessage()
-	msg_p, e := ParsePatch([]byte(msg_patch))
-	if e != nil {
-		t.Fatal(e)
-	}
-	e = ValidatePatchSemantic(msg, msg_p)
-	t.Logf("Message patch semantic => error: %v\n", e)
-	user := getAUser()
-	user_p, e := ParsePatch([]byte(user_patch))
-	if e != nil {
-		t.Fatal(e)
-	}
-	e = ValidatePatchSemantic(user, user_p)
-	t.Logf("User patch semantic => error: %v\n", e)
-
-}
-
+/*
 func TestValidatePatchCurrentState(t *testing.T) {
 	msg := getAMessage()
 	p, e := ParsePatch([]byte(msg_patch))
@@ -77,7 +59,7 @@ func getAMessage() *Message {
 	msg.Identities = identities
 	return msg
 }
-
+*/
 // returns a basic User that should have been retrieved from db
 func getAUser() *User {
 	u := new(User)
