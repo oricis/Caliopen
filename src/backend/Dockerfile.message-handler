@@ -12,11 +12,11 @@ COPY . /srv/caliopen/src/backend
 # Install Caliopen base packages
 WORKDIR /srv/caliopen/src/backend/main/py.storage
 RUN pip install -e .
+WORKDIR /srv/caliopen/src/backend/components/py.pgp
+RUN pip install -e .
 WORKDIR /srv/caliopen/src/backend/components/py.pi
 RUN pip install -e .
 WORKDIR /srv/caliopen/src/backend/main/py.main
-RUN pip install -e .
-WORKDIR /srv/caliopen/src/backend/components/py.pgp
 RUN pip install -e .
 
 ## Container specific installation part
