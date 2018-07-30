@@ -1,3 +1,5 @@
+@import '../common';
+
 @mixin o-callout--color($color) {
   border-color: lighten($color, 20%);
   background-color: lighten($color, 35%);

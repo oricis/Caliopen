@@ -59,7 +59,7 @@ describe('modules draftMessage - actions - requestDiscussionDraft', () => {
     const draft = {
       discussion_id: 'unknown',
       body: '',
-      identities: [],
+      user_identities: [],
       parent_id: '',
       subject: '',
       message_id: expect.anything(),
@@ -93,7 +93,7 @@ describe('modules draftMessage - actions - requestDiscussionDraft', () => {
     const draft = {
       discussion_id: '02',
       body: '',
-      identities: [],
+      user_identities: [],
       parent_id: 'last-msg',
       subject: 'Parent msg subject',
       message_id: expect.anything(),
