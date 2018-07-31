@@ -18,7 +18,7 @@ spec:
         app: apiv1
     spec:
       containers:
-      - image: public-registry.caliopen.org/apiv1:develop
+      - image: public-registry.caliopen.org/caliopen_apiv1:develop
         imagePullPolicy: Always
         name: apiv1
         ports:

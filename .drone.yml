@@ -13,7 +13,7 @@ pipeline:
     image: plugins/docker
     dockerfile: src/backend/Dockerfile.cli
     context: /srv/caliopen/src/backend
-    repo: registry.caliopen.org/cli
+    repo: registry.caliopen.org/caliopen_cli
     registry: registry.caliopen.org
     secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
     when:
@@ -28,7 +28,7 @@ pipeline:
     image: plugins/docker
     dockerfile: src/backend/Dockerfile.py-api
     context: /srv/caliopen/src/backend
-    repo: registry.caliopen.org/apiv1
+    repo: registry.caliopen.org/caliopen_apiv1
     registry: registry.caliopen.org
     secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
     when:
@@ -43,7 +43,7 @@ pipeline:
     image: plugins/docker
     dockerfile: src/backend/Dockerfile.message-handler
     context: /srv/caliopen/src/backend
-    repo: registry.caliopen.org/message_handler
+    repo: registry.caliopen.org/caliopen_message_handler
     registry: registry.caliopen.org
     secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
     when:
@@ -58,7 +58,7 @@ pipeline:
     image: plugins/docker
     dockerfile: src/backend/Dockerfile.go-api
     context: /srv/caliopen/src/backend
-    repo: registry.caliopen.org/api
+    repo: registry.caliopen.org/caliopen_api
     registry: registry.caliopen.org
     secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
     when:
@@ -73,7 +73,7 @@ pipeline:
     image: plugins/docker
     dockerfile: src/backend/Dockerfile.go-lmtp
     context: /srv/caliopen/src/backend
-    repo: registry.caliopen.org/broker
+    repo: registry.caliopen.org/caliopen_broker
     registry: registry.caliopen.org
     secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
     when:
@@ -88,7 +88,7 @@ pipeline:
     image: plugins/docker
     dockerfile: src/backend/Dockerfile.identity-poller
     context: /srv/caliopen/src/backend
-    repo: registry.caliopen.org/identity_poller
+    repo: registry.caliopen.org/caliopen_identity_poller
     registry: registry.caliopen.org
     secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
     when:
@@ -103,7 +103,7 @@ pipeline:
     image: plugins/docker
     dockerfile: src/backend/Dockerfile.identity-worker
     context: /srv/caliopen/src/backend
-    repo: registry.caliopen.org/identity_worker
+    repo: registry.caliopen.org/caliopen_identity_worker
     registry: registry.caliopen.org
     secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
     when:
@@ -118,7 +118,7 @@ pipeline:
     image: plugins/docker
     dockerfile: src/frontend/web_application/Dockerfile
     context: /srv/caliopen/src/frontend/web_application
-    repo: registry.caliopen.org/frontend
+    repo: registry.caliopen.org/caliopen_client
     registry: registry.caliopen.org
     secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
     when:
@@ -149,7 +149,7 @@ pipeline:
     image: plugins/docker
     dockerfile: src/backend/Dockerfile.cli
     context: /srv/caliopen/src/backend
-    repo: registry.caliopen.org/cli
+    repo: registry.caliopen.org/caliopen_cli
     registry: registry.caliopen.org
     secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
     when:
@@ -163,7 +163,7 @@ pipeline:
     group: build1
     image: plugins/docker
     dockerfile: src/backend/Dockerfile.py-api
-    context: /srv/caliopen/src/backend
+    context: /srv/caliopen/src/caliopen_backend
     repo: registry.caliopen.org/apiv1
     registry: registry.caliopen.org
     secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
@@ -179,7 +179,7 @@ pipeline:
     image: plugins/docker
     dockerfile: src/backend/Dockerfile.message-handler
     context: /srv/caliopen/src/backend
-    repo: registry.caliopen.org/message_handler
+    repo: registry.caliopen.org/caliopen_message_handler
     registry: registry.caliopen.org
     secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
     when:
@@ -194,7 +194,7 @@ pipeline:
     image: plugins/docker
     dockerfile: src/backend/Dockerfile.go-api
     context: /srv/caliopen/src/backend
-    repo: registry.caliopen.org/api
+    repo: registry.caliopen.org/caliopen_api
     registry: registry.caliopen.org
     secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
     when:
@@ -209,7 +209,7 @@ pipeline:
     image: plugins/docker
     dockerfile: src/backend/Dockerfile.go-lmtp
     context: /srv/caliopen/src/backend
-    repo: registry.caliopen.org/broker
+    repo: registry.caliopen.org/caliopen_broker
     registry: registry.caliopen.org
     secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
     when:
@@ -224,7 +224,7 @@ pipeline:
     image: plugins/docker
     dockerfile: src/backend/Dockerfile.identity-poller
     context: /srv/caliopen/src/backend
-    repo: registry.caliopen.org/identity_poller
+    repo: registry.caliopen.org/caliopen_identity_poller
     registry: registry.caliopen.org
     secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
     when:
@@ -239,7 +239,7 @@ pipeline:
     image: plugins/docker
     dockerfile: src/backend/Dockerfile.identity-worker
     context: /srv/caliopen/src/backend
-    repo: registry.caliopen.org/identity_worker
+    repo: registry.caliopen.org/caliopen_identity_worker
     registry: registry.caliopen.org
     secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
     when:
@@ -254,7 +254,7 @@ pipeline:
     image: plugins/docker
     dockerfile: src/frontend/web_application/Dockerfile
     context: /srv/caliopen/src/frontend/web_application
-    repo: registry.caliopen.org/frontend
+    repo: registry.caliopen.org/caliopen_client
     registry: registry.caliopen.org
     secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
     when:

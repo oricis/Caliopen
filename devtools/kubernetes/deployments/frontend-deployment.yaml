@@ -18,7 +18,7 @@ spec:
         app: frontend
     spec:
       containers:
-      - image: public-registry.caliopen.org/frontend:develop
+      - image: public-registry.caliopen.org/caliopen_frontend:develop
         imagePullPolicy: Always
         name: frontend
         ports:

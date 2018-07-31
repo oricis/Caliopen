@@ -9,7 +9,7 @@ volumes:
 services:
   # Caliopen APIv2
   api:
-    image: public-registry.caliopen.org/api
+    image: public-registry.caliopen.org/caliopen_api
     links:
       - apiv1:apiv1.dev.caliopen.org
       - redis:redis.dev.caliopen.org
@@ -25,7 +25,7 @@ services:
 
   # Caliopen APIv1
   apiv1:
-    image: public-registry.caliopen.org/apiv1
+    image: public-registry.caliopen.org/caliopen_apiv1
     links:
       - redis:redis.dev.caliopen.org
       - cassandra:cassandra.dev.caliopen.org
@@ -77,7 +77,7 @@ services:
 
   # Caliopen cli tool
   cli:
-    image: public-registry.caliopen.org/cli
+    image: public-registry.caliopen.org/caliopen_cli
     links:
       - cassandra:cassandra.dev.caliopen.org
       - elasticsearch:es.dev.caliopen.org
@@ -90,14 +90,14 @@ services:
 
   # Caliopen frontend
   frontend:
-    image: public-registry.caliopen.org/frontend
+    image: public-registry.caliopen.org/caliopen_client
     links:
       - api:api.dev.caliopen.org
     ports:
       - "127.0.0.1:4000:4000"
   # Broker
   broker:
-    image: public-registry.caliopen.org/broker
+    image: public-registry.caliopen.org/caliopen_broker
     links:
       - cassandra:cassandra.dev.caliopen.org
       - elasticsearch:es.dev.caliopen.org
@@ -117,7 +117,7 @@ services:
 
   # NATS Message Handler
   message_handler:
-    image: public-registry.caliopen.org/message_handler
+    image: public-registry.caliopen.org/caliopen_message_handler
     links:
       - cassandra:cassandra.dev.caliopen.org
       - elasticsearch:es.dev.caliopen.org
@@ -138,7 +138,7 @@ services:
 
   # Worker for remote identities
   identity_worker:
-    image: public-registry.caliopen.org/identity_worker
+    image: public-registry.caliopen.org/caliopen_identity_worker
     links:
       - cassandra:cassandra.dev.caliopen.org
       - object_store:minio.dev.caliopen.org
@@ -150,7 +150,7 @@ services:
 
   # Poller for remote identities
   identity_poller:
-    image: public-registry.caliopen.org/identity_poller
+    image: public-registry.caliopen.org/caliopen_identity_poller
     links:
       - identity_worker:identityworker.dev.caliopen.org
       - cassandra:cassandra.dev.caliopen.org
