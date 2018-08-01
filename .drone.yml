@@ -118,7 +118,7 @@ pipeline:
     image: plugins/docker
     dockerfile: src/frontend/web_application/Dockerfile
     context: /srv/caliopen/src/frontend/web_application
-    repo: registry.caliopen.org/caliopen_client
+    repo: registry.caliopen.org/caliopen_frontend
     registry: registry.caliopen.org
     secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
     when:
@@ -254,7 +254,7 @@ pipeline:
     image: plugins/docker
     dockerfile: src/frontend/web_application/Dockerfile
     context: /srv/caliopen/src/frontend/web_application
-    repo: registry.caliopen.org/caliopen_client
+    repo: registry.caliopen.org/caliopen_frontend
     registry: registry.caliopen.org
     secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
     when:

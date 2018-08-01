@@ -90,7 +90,7 @@ services:
 
   # Caliopen frontend
   frontend:
-    image: public-registry.caliopen.org/caliopen_client
+    image: public-registry.caliopen.org/caliopen_frontend
     links:
       - api:api.dev.caliopen.org
     ports:
