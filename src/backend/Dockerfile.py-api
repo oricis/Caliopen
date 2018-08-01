@@ -1,35 +1,13 @@
 # This file creates a container that runs a Caliopen v1 API (python based)
 # Important:
 # Author: Caliopen
-# Date: 2017-05-03
+# Date: 2018-07-20
 
-FROM debian:jessie
+FROM public-registry.caliopen.org/caliopen_python
 MAINTAINER Caliopen
 
-RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y wget git python python-pip python-dev libffi-dev libssl-dev libev-dev libev4
-
-# Debian jessie setuptools is a really old version (5.1.x)
-# Install a really fresh version of setuptools
-WORKDIR /tmp
-RUN wget -q https://bootstrap.pypa.io/ez_setup.py
-RUN python ez_setup.py
-
-# Some package must be installed using pip and upgraded to latest
-RUN pip install --upgrade pip
-RUN pip install --upgrade pyasn1
-# The debian python openssl version is from dinosaur era
-RUN pip uninstall -y pyopenssl
-RUN pip install pyopenssl
-
-# Install some packages using pip to get benefit from docker layer cache
-RUN pip install cassandra-driver==3.4.1
-
-# Install regex using pip as it fail using setup.py mechanisms
-RUN pip install regex
-
 # Add local backend source directory in container filesystem
-ADD . /srv/caliopen/src/backend
+COPY . /srv/caliopen/src/backend
 
 # Install Caliopen base packages
 WORKDIR /srv/caliopen/src/backend/main/py.storage
@@ -40,7 +18,6 @@ WORKDIR /srv/caliopen/src/backend/components/py.pi
 RUN pip install -e .
 WORKDIR /srv/caliopen/src/backend/main/py.main
 RUN pip install -e .
-
 
 ## Container specific installation part
 
