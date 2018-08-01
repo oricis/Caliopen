@@ -1,0 +1,76 @@
+@import '../../../../styles/common';
+
+$s-discussion-item__spacing: 0.5rem;
+
+.s-discussion-item {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  margin: 0.125rem 0;
+  border-left: 0.5rem solid red;
+  background-color: $co-color__fg__back;
+  line-height: 3rem;
+
+  &__message-type {
+    margin: 0 $s-discussion-item__spacing;
+    color: $co-color__contrast__text;
+ }
+
+  &__tags {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: row;
+    margin: 0 $s-discussion-item__spacing;
+  }
+
+  &__tag {
+    margin: 0 0.25rem;
+  }
+
+  &__participants {
+    flex: 0 0 10.1rem;
+    width: 10.1rem;
+    margin-right: $s-discussion-item__spacing;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__message_excerpt {
+    flex: 1 2 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: $co-color__fg__text;
+    font-weight: 400;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  
+  &__message_subject {
+    color: $co-color__fg__text--lower;
+    font-weight: 800;
+  }
+
+  &__message-date {
+    flex: 0 0 10rem;
+  }
+
+  &__select {
+    display: inline-block;
+    flex-grow: 0;
+    flex-shrink: 0;
+    margin: auto $s-discussion-item__spacing auto 1rem;
+  }
+}
+
+.m-participants-icon {
+    flex: 0 0 auto;
+    margin: auto $s-discussion-item__spacing;
+    color: $co-color__contrast__text;
+    line-height: 2rem;
+
+    .fa {
+        color: $co-color__contrast__text--lower;
+    }
+}

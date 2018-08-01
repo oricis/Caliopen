@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
-import Moment from 'react-moment';
-import MessageDate from '../../components/MessageDate';
-import { Badge, Icon, Link, Checkbox } from '../../components';
-import ParticipantsIconLetter from '../../components/ParticipantsIconLetter';
 import getClient from '../../services/api-client';
 import StickyNavBar from '../../layouts/Page/components/Navigation/components/StickyNavBar';
+import { Checkbox, Spinner } from '../../components';
 import withScrollManager from '../../modules/scroll/hoc/scrollManager';
+import DiscussionItem from './components/DiscussionItem';
 
 import './style.scss';
 
@@ -21,82 +19,27 @@ class Home extends Component {
       .then((response) => { this.setState({ discussions: response.data.discussions }); });
   }
 
-  buildParticipantsLabels = ({ participants }) =>
-    participants.map(participant => participant.label);
-
-  selectDiscussionLastAuthor = ({ participants }) => participants.find(participant => participant.type === 'From');
-
-  renderMessageSubject = (discussion) => {
-    const { last_message_subject: lastMessageSubject } = discussion;
-
-    if (lastMessageSubject) {
-      return <strong>{lastMessageSubject}</strong>;
-    }
-
-    return null;
-  }
-
-  renderTags = ({ tags }) => (
-    tags && (
-      <ul className="s-message-item__tags">
-        {tags.map(tag => (
-          <li key={tag.name} className="s-message-item__tag"><Badge>{tag.name}</Badge></li>
-        ))}
-      </ul>
-    )
-  );
-
   renderDiscussions() {
     const { discussions } = this.state;
 
     if (discussions) {
       return (
-        <ul id="discussion-list">
-          { discussions.map((discussion) => {
-            const {
-              excerpt, discussion_id: discussionId, total, date_insert: date,
-              last_message_id: lastMessageId, unread_count: unreadCount,
-            } = discussion;
-
-            const participant = this.selectDiscussionLastAuthor(discussion);
-            const labels = this.buildParticipantsLabels(discussion);
-
-            return (
-              <li
-                id={`discussion-${discussionId}`}
-                key={discussionId}
-                data-nb-messages={total}
-                data-date={date}
-                className={`folded-discussion${unreadCount ? ' unread' : ''}`}
-              >
-                <ParticipantsIconLetter labels={labels} />
-                <a className="participants">{participant.label}</a>
-                <Link to={`/discussions/${discussionId}#${lastMessageId}`} className="excerpt">
-                  {this.renderMessageSubject(discussion)}
-                  {' '}
-                  {excerpt}
-                </Link>
-                {this.renderTags(discussion)}
-                <span className="message-type"><Icon type="envelope" /></span>
-                <Moment element={MessageDate}>{date}</Moment>
-                <div className="discussion-select">
-                  <Checkbox label="" />
-                </div>
-              </li>
-            );
-          })}
+        <ul className="s-discussion-list">
+          {discussions.map(discussion => (
+            <DiscussionItem key="discussion.discussion_id" discussion={discussion} />
+          ))}
         </ul>);
     }
 
-    return (<p>Nobody talked</p>);
+    return (<Spinner isLoading />);
   }
 
   render() {
     return (
       <section id="discussions" className="s-timeline">
         <StickyNavBar className="action-bar" stickyClassName="sticky-action-bar">
-          <header>
-            <div className="select-all">
+          <header className="s-timeline__action-bar">
+            <div className="s-timeline__select-all">
               <Checkbox label="" />
             </div>
           </header>

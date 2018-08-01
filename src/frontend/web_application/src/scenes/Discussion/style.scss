@@ -1,0 +1,32 @@
+@import '../../styles/common';
+
+.s-dicussion__action-bar--sticky {
+  position: fixed;
+  top: 41px;
+  right: 0;
+  left: 0;
+  background-color: white;
+
+  .s-discussion__header {
+    padding: 0 2.625rem;
+  }
+}
+
+.s-discussion__header {
+  max-width: 1280px;
+  height: 2.625rem;
+  margin: 0 auto;
+  padding: 0 40px;
+  background-color: white;
+  font-size: 0.88rem;
+  text-align: right;
+
+  strong {
+    color: $co-color__primary--low;
+  }
+}
+
+.s-dicussion {
+  display: flex;
+  flex-direction: column;
+}

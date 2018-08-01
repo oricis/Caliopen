@@ -21,7 +21,7 @@ import RemoteIdentitySettings from './scenes/RemoteIdentitySettings';
 // import SettingsSignatures from './scenes/SettingsSignatures';
 import ApplicationSettings from './scenes/ApplicationSettings';
 import Tags from './scenes/TagsSettings';
-import MessageList from './scenes/MessageList';
+import Discussion from './scenes/Discussion';
 import ContactBook from './scenes/ContactBook2';
 import PageNotFound from './scenes/PageNotFound';
 import DevicesSettings from './scenes/DevicesSettings';
@@ -53,7 +53,7 @@ export const getRouteConfig = ({ __ }) => [
       },
       {
         path: '/discussions/:discussionId',
-        component: MessageList,
+        component: Discussion,
         app: 'discussion',
       },
       {
