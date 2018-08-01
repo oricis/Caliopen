@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import { usernameNormalizer } from '../../../../modules/user';
-import { Spinner, FieldErrors, TextFieldGroup, Button, FormGrid, FormRow, FormColumn } from '../../../../components/';
+import { Link, Spinner, FieldErrors, TextFieldGroup, Button, FormGrid, FormRow, FormColumn } from '../../../../components/';
 
 import './style.scss';
 
@@ -143,6 +143,16 @@ class SigninForm extends Component {
                 >
                   <Trans id="signin.action.login">Login</Trans>
                 </Button>
+              </FormColumn>
+            </FormRow>
+            <FormRow>
+              <FormColumn rightSpace={false} className="s-signin__link">
+                <Link to="/auth/forgot-password"><Trans id="signin.action.forgot_password">Forgot password?</Trans></Link>
+              </FormColumn>
+              <FormColumn rightSpace={false} className="s-signin__link">
+                <Link to="/auth/signup">
+                  <Trans id="signin.create_an_account">Create an account</Trans>
+                </Link>
               </FormColumn>
             </FormRow>
           </form>
