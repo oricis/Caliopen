@@ -163,8 +163,8 @@ pipeline:
     group: build1
     image: plugins/docker
     dockerfile: src/backend/Dockerfile.py-api
-    context: /srv/caliopen/src/caliopen_backend
-    repo: registry.caliopen.org/apiv1
+    context: /srv/caliopen/src/backend
+    repo: registry.caliopen.org/caliopen_apiv1
     registry: registry.caliopen.org
     secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
     when:
