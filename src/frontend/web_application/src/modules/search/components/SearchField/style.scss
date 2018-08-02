@@ -8,7 +8,12 @@ $search-padding: rem-calc(0.625rem / 2);
 
   &__search-input {
     width: 100%;
+    padding-right: 4rem; // about the size of the simple icon button
     border: none;
+
+    @include breakpoint(medium) {
+      padding-right: 14rem; // about the size of the button
+    }
   }
 
   &__search-button {
@@ -17,5 +22,14 @@ $search-padding: rem-calc(0.625rem / 2);
     right: $search-padding;
     height: $co-component__height - ($search-padding * 2);
     line-height: $co-component__height - ($search-padding * 2);
+  }
+
+  &__button-label {
+    display: none;
+    margin-right: $co-component__spacing;
+
+    @include breakpoint(medium) {
+      display: inline;
+    }
   }
 }
