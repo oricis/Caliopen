@@ -10,9 +10,26 @@ import { calcPiValue } from '../../services/pi';
 
 import './style.scss';
 
+/**
+ * Discussion Component.
+ * Displays messages of a discussion and a reply form.
+ *
+ * @extends {Component}
+ *
+ * @prop {string} discussionId      - ID of discussion to display
+ * @prop {function} scrollToTarget  - function provided by scrollManager
+ * @prop {function} hash            - URL hash (fragment) provided by scrollManager
+ */
 class Discussion extends Component {
   static propTypes = {
     discussionId: PropTypes.string.isRequired,
+    scrollToTarget: PropTypes.function,
+    hash: PropTypes.string,
+  };
+
+  static defaultProps = {
+    scrollToTarget: undefined,
+    hash: undefined,
   };
 
   constructor(props) {
@@ -31,6 +48,10 @@ class Discussion extends Component {
       }));
   }
 
+  /**
+   * Find message immediately preceding a specific message in discussion.
+   * @param {object} - message
+   */
   findMessageBefore(message) {
     const { messages } = this.state;
     const index = messages.indexOf(message) - 1;
@@ -39,7 +60,7 @@ class Discussion extends Component {
   }
 
   render() {
-    const { discussionId } = this.props;
+    const { discussionId, hash, scrollToTarget } = this.props;
     const messageList = [];
 
     return (
@@ -62,7 +83,11 @@ class Discussion extends Component {
               key={`switch-${message.message_id}`}
             />);
           }
-          messageList.push(<Message message={message} key={message.message_id} />);
+          messageList.push(<Message
+            message={message}
+            key={message.message_id}
+            scrollToMe={message.message_id === hash ? scrollToTarget : undefined}
+          />);
 
           return messageList;
         }, messageList)}

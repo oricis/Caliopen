@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { UserSelector } from '../../store/selectors/user';
+import withScrollManager from '../../modules/scroll/hoc/scrollManager';
 import Discussion from './presenter';
 
 const getDiscussionIdFromProps = props => props.match.params.discussionId;
@@ -13,4 +14,4 @@ const mapStateToProps = createSelector(
   (discussionId, userState) => ({ discussionId, user: userState.user })
 );
 
-export default compose(connect(mapStateToProps))(Discussion);
+export default compose(withScrollManager(), connect(mapStateToProps))(Discussion);
