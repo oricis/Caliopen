@@ -106,7 +106,12 @@ class MailMessage extends PureComponent {
               </div>
               <h2>{message.subject}</h2>
             </header>
-            <div className="content" dangerouslySetInnerHTML={{ __html: message.body }} />
+            {!message.body_is_plain ? (
+              <div className="content" dangerouslySetInnerHTML={{ __html: message.body }} />
+            ) : (
+              <pre className="content">{message.body}</pre>
+            )
+            }
           </div>
         </div>
         <footer>
