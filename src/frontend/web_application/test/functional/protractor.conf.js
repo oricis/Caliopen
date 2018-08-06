@@ -16,7 +16,7 @@ const cfg = {
           intl: { accept_languages: 'en-US' },
         },
       },
-    }
+    },
     {
       browserName: 'firefox',
       maxInstances: 1,
