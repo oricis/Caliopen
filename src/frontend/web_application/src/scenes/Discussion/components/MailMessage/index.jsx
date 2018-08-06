@@ -10,6 +10,13 @@ import postalCard from './assets/postal-card.png';
 
 import './style.scss';
 
+/**
+ * MailMessage
+ * Displays an email message
+ *
+ * @extends {PureComponent}
+ * @prop {Object} message   - message data
+ */
 class MailMessage extends PureComponent {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,

@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from 'lingui-react';
 import getClient from '../../services/api-client';
 import StickyNavBar from '../../layouts/Page/components/Navigation/components/StickyNavBar';
-import { Checkbox, Spinner } from '../../components';
+import { Button, Checkbox, InfiniteScroll, Spinner } from '../../components';
 import DiscussionItem from './components/DiscussionItem';
 
 import './style.scss';
@@ -86,17 +87,29 @@ class Timeline extends Component {
   }
 
   render() {
+    const { hasMore, loadMore } = this.props;
+
     return (
-      <section id="discussions" className="s-timeline">
-        <StickyNavBar className="action-bar" stickyClassName="sticky-action-bar">
-          <header className="s-timeline__action-bar">
-            <div className="s-timeline__select-all">
-              <Checkbox label="" />
-            </div>
-          </header>
-        </StickyNavBar>
-        { this.renderDiscussions() }
-      </section>);
+      <Fragment>
+        <section id="discussions" className="s-timeline">
+          <StickyNavBar className="action-bar" stickyClassName="sticky-action-bar">
+            <header className="s-timeline__action-bar">
+              <div className="s-timeline__select-all">
+                <Checkbox label="" />
+              </div>
+            </header>
+          </StickyNavBar>
+          <InfiniteScroll onReachBottom={loadMore}>
+            { this.renderDiscussions() }
+          </InfiniteScroll>
+        </section>
+        {hasMore && (
+          <div className="s-timeline__load-more">
+            <Button shape="hollow" onClick={loadMore}><Trans id="general.action.load_more">Load more</Trans></Button>
+          </div>
+        )}
+      </Fragment>
+    );
   }
 }
 

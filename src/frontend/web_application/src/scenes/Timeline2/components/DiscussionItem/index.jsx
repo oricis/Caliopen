@@ -6,6 +6,13 @@ import ParticipantsIconLetter from '../../../../components/ParticipantsIconLette
 
 import './style.scss';
 
+/**
+ * DiscussionItem
+ * Displays an entry in Timeline
+ *
+ * @extends {PureComponent}
+ * @prop {Object} discussion  - discussion data
+ */
 class DiscussionItem extends PureComponent {
   static propTypes = {
     discussion: PropTypes.shape({
@@ -59,7 +66,7 @@ class DiscussionItem extends PureComponent {
         key={discussionId}
         data-nb-messages={total}
         data-date={date}
-        className={`s-discussion-item${unreadCount ? ' unread' : ''}`}
+        className={`s-discussion-item${unreadCount ? ' is-unread' : ''}`}
       >
         <ParticipantsIconLetter labels={labels} />
         <a className="s-discussion-item__participants">{participant.label}</a>

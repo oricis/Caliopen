@@ -13,6 +13,10 @@ $s-discussion-item__spacing: 0.5rem;
   font-size: 0.875rem;
   line-height: 3rem;
 
+  &.is-unread {
+    background-color: $co-color__fg__back--lower;
+  }
+
   &__message-type {
     margin: 0 $s-discussion-item__spacing;
     color: $co-color__contrast__text;

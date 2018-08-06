@@ -1,37 +1,42 @@
 .sticky-action-bar {
-    position: fixed;
-    top: 41px;
-    right: 0;
-    left: 0;
-    background-color: white;
+  position: fixed;
+  top: 41px;
+  right: 0;
+  left: 0;
+  background-color: white;
 
-    header {
-        max-width: 1380px;
-        margin: 0 auto;
-        padding: 0 40px;
-    }
+  header {
+    max-width: 1380px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
 }
 
 .s-timeline {
+  background-color: white;
+
+  &__action-bar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 3rem;
     background-color: white;
+  }
 
-    &__action-bar {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        height: 3rem;
-        background-color: white;
-    }
+  &__select-all {
+    margin: auto 0.5rem;
+  }
 
-    &__select-all {
-        margin: auto 0.875rem auto 0.875rem;
-    }
+  &__load-more {
+    margin: 1rem auto;
+    text-align: center;
+  }
 
-    .m-checkbox__label {
-        display: none;
-    }
+  .m-checkbox__label {
+    display: none;
+  }
 }
 
 .s-discussion-list {
-    background-color: lightgrey;
+  background-color: lightgrey;
 }
