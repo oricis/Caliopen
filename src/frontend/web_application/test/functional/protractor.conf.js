@@ -77,34 +77,34 @@ if (process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY) {
       'tunnel-identifier': 'caliopen',
       name: `CaliOpen e2e - ${branch}`,
     },
-    {
-      browserName: 'firefox',
-      platform: 'Linux',
-      version: '45.0',
-      'tunnel-identifier': 'caliopen',
-      name: `CaliOpen e2e - ${branch}`,
-    },
-    {
-      browserName: 'chrome',
-      platform: 'Windows 10',
-      version: '68.0',
-      'tunnel-identifier': 'caliopen',
-      name: `CaliOpen e2e - ${branch}`,
-    },
-    {
-      browserName: 'MicrosoftEdge',
-      platform: 'Windows 10',
-      version: '16.16299',
-      'tunnel-identifier': 'caliopen',
-      name: `CaliOpen e2e - ${branch}`,
-    },
-    {
-      browserName: 'safari',
-      platform: 'macOS 10.13',
-      version: '11.1',
-      'tunnel-identifier': 'caliopen',
-      name: `CaliOpen e2e - ${branch}`,
-    }
+    // {
+    //   browserName: 'firefox',
+    //   platform: 'Linux',
+    //   version: '45.0',
+    //   'tunnel-identifier': 'caliopen',
+    //   name: `CaliOpen e2e - ${branch}`,
+    // },
+    // {
+    //   browserName: 'chrome',
+    //   platform: 'Windows 10',
+    //   version: '68.0',
+    //   'tunnel-identifier': 'caliopen',
+    //   name: `CaliOpen e2e - ${branch}`,
+    // },
+    // {
+    //   browserName: 'MicrosoftEdge',
+    //   platform: 'Windows 10',
+    //   version: '16.16299',
+    //   'tunnel-identifier': 'caliopen',
+    //   name: `CaliOpen e2e - ${branch}`,
+    // },
+    // {
+    //   browserName: 'safari',
+    //   platform: 'macOS 10.13',
+    //   version: '11.1',
+    //   'tunnel-identifier': 'caliopen',
+    //   name: `CaliOpen e2e - ${branch}`,
+    // }
   ];
 }
 
