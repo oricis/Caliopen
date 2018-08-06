@@ -18,7 +18,6 @@ class DiscussionItem extends PureComponent {
     discussion: PropTypes.shape({
       excerpt: PropTypes.string.isRequired,
       discussion_id: PropTypes.string.isRequired,
-      total: PropTypes.number.isRequired,
       date_insert: PropTypes.string.isRequired,
       last_message_id: PropTypes.string.isRequired,
       unread_count: PropTypes.string.isRequired,
@@ -63,7 +62,6 @@ class DiscussionItem extends PureComponent {
     return (
       <li
         id={`discussion-${discussionId}`}
-        key={discussionId}
         data-nb-messages={total}
         data-date={date}
         className={`s-discussion-item${unreadCount ? ' is-unread' : ''}`}

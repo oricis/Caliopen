@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import throttle from 'lodash.throttle';
 import { Trans } from 'lingui-react';
 import getClient from '../../services/api-client';
 import StickyNavBar from '../../layouts/Page/components/Navigation/components/StickyNavBar';
@@ -7,6 +8,8 @@ import { Button, Checkbox, InfiniteScroll, Spinner } from '../../components';
 import DiscussionItem from './components/DiscussionItem';
 
 import './style.scss';
+
+const LOAD_MORE_THROTTLE = 1000;
 
 /**
  * Timeline - Caliopen's Home main component
@@ -62,12 +65,26 @@ class Timeline extends Component {
     isDeleting: false,
   }
 
+  componentDidMount() {
+    this.throttledLoadMore = throttle(
+      () => this.props.loadMore(),
+      LOAD_MORE_THROTTLE,
+      { trailing: false }
+    );
+  }
+
   componentWillReceiveProps() {
     const { requestDiscussions, isFetching } = this.props;
 
     if (!(this.state.initialized || isFetching)) {
       this.setState({ initialized: true });
       requestDiscussions();
+    }
+  }
+
+  loadMore = () => {
+    if (this.props.hasMore) {
+      this.throttledLoadMore();
     }
   }
 
@@ -78,7 +95,7 @@ class Timeline extends Component {
       return (
         <ul className="s-discussion-list">
           {discussions.map(discussion => (
-            <DiscussionItem key="discussion.discussion_id" discussion={discussion} />
+            <DiscussionItem key={discussion.discussion_id} discussion={discussion} />
           ))}
         </ul>);
     }
@@ -87,7 +104,7 @@ class Timeline extends Component {
   }
 
   render() {
-    const { hasMore, loadMore } = this.props;
+    const { hasMore } = this.props;
 
     return (
       <Fragment>
@@ -99,13 +116,13 @@ class Timeline extends Component {
               </div>
             </header>
           </StickyNavBar>
-          <InfiniteScroll onReachBottom={loadMore}>
+          <InfiniteScroll onReachBottom={this.loadMore}>
             { this.renderDiscussions() }
           </InfiniteScroll>
         </section>
         {hasMore && (
           <div className="s-timeline__load-more">
-            <Button shape="hollow" onClick={loadMore}><Trans id="general.action.load_more">Load more</Trans></Button>
+            <Button shape="hollow" onClick={this.loadMore}><Trans id="general.action.load_more">Load more</Trans></Button>
           </div>
         )}
       </Fragment>
