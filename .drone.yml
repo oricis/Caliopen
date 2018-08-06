@@ -269,14 +269,19 @@ pipeline:
 #######################################################
 
   test-frontend:
-    image: node:8
+    image: public-registry.caliopen.org/caliopen_node_tests
     when:
       branch: [ "*/frontend/*" ]
-      event: [ pull_request, push ]
+      event: [ push ]
+    secrets: [ SAUCE_USERNAME , SAUCE_ACCESS_KEY, SAUCE_ADDRESS ]
+    environment:
+      - SAUCE_PORT=4445
+      - FRONTEND_ADDRESS=172.17.0.2
     commands:
       - cd src/frontend/web_application
       - yarn
-      - yarn test:unit
+      - yarn test:e2e:init
+      - yarn test
 
   test-go:
     image: public-registry.caliopen.org/caliopen_go
