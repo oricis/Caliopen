@@ -18,6 +18,7 @@ class DiscussionItem extends PureComponent {
     discussion: PropTypes.shape({
       excerpt: PropTypes.string.isRequired,
       discussion_id: PropTypes.string.isRequired,
+      length: PropTypes.number.isRequired,
       date_insert: PropTypes.string.isRequired,
       last_message_id: PropTypes.string.isRequired,
       unread_count: PropTypes.string.isRequired,
@@ -52,7 +53,7 @@ class DiscussionItem extends PureComponent {
 
   render() {
     const {
-      excerpt, discussion_id: discussionId, total, date_insert: date,
+      excerpt, discussion_id: discussionId, length, date_insert: date,
       last_message_id: lastMessageId, unread_count: unreadCount,
     } = this.props.discussion;
 
