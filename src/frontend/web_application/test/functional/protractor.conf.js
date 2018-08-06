@@ -31,7 +31,7 @@ const cfg = {
     // print: () => {},
     defaultTimeoutInterval: 70 * 1000,
   },
-  baseUrl: `http:// + ${front_url} :4000/`,
+  baseUrl: `http://${front_url}:4000/`,
   onPrepare: () => {
     browser.ignoreSynchronization = true;
     browser.manage().window().setSize(1024, 768);
