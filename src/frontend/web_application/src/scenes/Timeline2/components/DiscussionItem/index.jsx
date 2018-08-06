@@ -63,7 +63,7 @@ class DiscussionItem extends PureComponent {
     return (
       <li
         id={`discussion-${discussionId}`}
-        data-nb-messages={total}
+        data-nb-messages={length}
         data-date={date}
         className={`s-discussion-item${unreadCount ? ' is-unread' : ''}`}
       >
