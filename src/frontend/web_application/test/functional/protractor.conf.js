@@ -1,8 +1,6 @@
 const { SpecReporter } = require('jasmine-spec-reporter');
 
-const front_url= (process.env.FRONTEND_ADDRESS.length > 0) ?
-  process.env.FRONTEND_ADDRESS :
-  'localhost';
+const front_url = process.env.FRONTEND_ADDRESS || 'localhost' ;
 
 const cfg = {
   SELENIUM_PROMISE_MANAGER: true,
@@ -17,13 +15,13 @@ const cfg = {
         },
       },
     },
-    {
-      browserName: 'firefox',
-      maxInstances: 1,
-      "moz:firefoxOptions": {
-        args: ['-safe-mode', '-headless']
-      },
-    },
+    // {
+    //   browserName: 'firefox',
+    //   maxInstances: 1,
+    //   "moz:firefoxOptions": {
+    //     args: ['-safe-mode', '-headless']
+    //   },
+    // },
   ],
   specs: ['./features/**/*-spec.js'],
   jasmineNodeOpts: {
@@ -70,20 +68,20 @@ if (process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY) {
   const branch = process.env.DRONE_BRANCH;
 
   cfg.multiCapabilities = [
-    {
-      browserName: 'chrome',
-      platform: 'Linux',
-      version: '48.0',
-      'tunnel-identifier': 'caliopen',
-      name: `CaliOpen e2e - ${branch}`,
-    },
     // {
-    //   browserName: 'firefox',
+    //   browserName: 'chrome',
     //   platform: 'Linux',
-    //   version: '45.0',
+    //   version: '48.0',
     //   'tunnel-identifier': 'caliopen',
     //   name: `CaliOpen e2e - ${branch}`,
     // },
+    {
+      browserName: 'firefox',
+      platform: 'Linux',
+      version: '45.0',
+      'tunnel-identifier': 'caliopen',
+      name: `CaliOpen e2e - ${branch}`,
+    },
     // {
     //   browserName: 'chrome',
     //   platform: 'Windows 10',
