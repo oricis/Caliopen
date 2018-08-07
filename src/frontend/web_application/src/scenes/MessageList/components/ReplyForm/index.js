@@ -11,12 +11,13 @@ import { requestDiscussionDraft, saveDraft, sendDraft } from '../../../../module
 import { uploadDraftAttachments, deleteDraftAttachment } from '../../../../modules/file';
 import { deleteMessage } from '../../../../modules/message';
 import { getLastMessage } from '../../../../services/message';
+import { userSelector } from '../../../../modules/user';
+
 import Presenter from './presenter';
 
 const messageDraftSelector = state => state.draftMessage;
 const discussionIdSelector = (state, ownProps) => ownProps.discussionId;
 const internalIdSelector = (state, ownProps) => ownProps.internalId;
-const userSelector = state => state.user.user;
 const messageCollectionStateSelector = createMessageCollectionStateSelector(() => 'discussion', discussionIdSelector);
 const draftActivitySelector = createSelector(
   [messageDraftSelector, internalIdSelector],

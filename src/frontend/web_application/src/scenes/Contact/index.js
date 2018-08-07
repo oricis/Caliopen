@@ -10,16 +10,16 @@ import { removeTab, updateTab } from '../../store/modules/tab';
 import { updateTagCollection, withTags } from '../../modules/tags';
 import { getNewContact } from '../../services/contact';
 import { withCurrentTab } from '../../hoc/tab';
+import { userSelector } from '../../modules/user';
 import Presenter from './presenter';
 
 const contactIdSelector = (state, ownProps) => ownProps.match.params.contactId;
 const contactSelector = state => state.contact;
-const userSelector = state => state.user;
 
 const mapStateToProps = createSelector(
   [userSelector, contactIdSelector, contactSelector],
-  (userState, contactId, contactState) => ({
-    user: userState.user,
+  (user, contactId, contactState) => ({
+    user,
     contactId,
     contact: contactState.contactsById[contactId],
     form: `contact-${contactId || 'new'}`,

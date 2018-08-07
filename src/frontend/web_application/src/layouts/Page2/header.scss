@@ -1,6 +1,6 @@
 @import '../../styles/util/breakpoint';
 
-.l-page-header {
+.l-header {
   height: 3rem;
   background-color: #e1f5ff;
   line-height: 3rem;
@@ -19,17 +19,13 @@
   &__user-menu {
     display: inline-block;
     float: right;
-    color: #0f98c6;
-    .m-button {
-      color: #0f98c6;
-    }
   }
 
-  &__notif-menu {
-    display: inline-block;
-    float: right;
-    .m-button {
-      color: #115972;
-    }
-  }
+  // &__notif-menu {
+  //   display: inline-block;
+  //   float: right;
+  //   .m-button {
+  //     color: #115972;
+  //   }
+  // }
 }

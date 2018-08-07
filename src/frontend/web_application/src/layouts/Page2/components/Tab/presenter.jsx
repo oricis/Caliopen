@@ -24,24 +24,6 @@ class Tab extends Component {
             last={last}
           />
         );
-      case tab.pathname === '/contacts':
-      case tab.pathname.startsWith('/settings/'):
-      case tab.pathname.startsWith('/contacts/'):
-      case tab.pathname.startsWith('/user/'):
-        return (
-          <NavbarItem
-            className="tab"
-            active={isActive}
-            contentChildren={(
-              <ItemLink to={getTabUrl(tab)} title={tab.label}>
-                <Icon className="m-tab__icon" type={tab.icon || 'dot-circle'} />
-                {tab.label}
-              </ItemLink>
-            )}
-            actionChildren={isActive ? <ItemButton onClick={this.handleRemove} icon="remove" /> : null}
-            last={last}
-          />
-        );
       case tab.pathname.startsWith('/discussions/'):
         return (
           <NavbarItem
@@ -58,7 +40,20 @@ class Tab extends Component {
           />
         );
       default:
-        throw 'unable to render tab';
+        return (
+          <NavbarItem
+            className="tab"
+            active={isActive}
+            contentChildren={(
+              <ItemLink to={getTabUrl(tab)} title={tab.label}>
+                <Icon className="m-tab__icon" type={tab.icon || 'dot-circle'} />
+                {tab.label}
+              </ItemLink>
+            )}
+            actionChildren={isActive ? <ItemButton onClick={this.handleRemove} icon="remove" /> : null}
+            last={last}
+          />
+        );
     };
   }
 }

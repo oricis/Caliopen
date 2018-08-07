@@ -3,7 +3,7 @@ import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { withI18n } from 'lingui-react';
-import { paramsSelector } from '../../../../../../store/selectors/router';
+import { paramsSelector } from '../../../../store/selectors/router';
 import Presenter from './presenter';
 
 const mapStateToProps = createSelector(
