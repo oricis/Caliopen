@@ -2,11 +2,12 @@ import { createRemoteIdentity as createRemoteIdentityBase, requestRemoteIdentity
 import { tryCatchAxiosAction } from '../../../services/api-client';
 
 export const createRemoteIdentity = ({ remoteIdentity }) => async (dispatch) => {
-  const { remote_id: remoteId } = await tryCatchAxiosAction(() =>
+  // FIXME: it should be identity_id
+  const { remote_id: identityId } = await tryCatchAxiosAction(() =>
     dispatch(createRemoteIdentityBase({ remoteIdentity })));
 
   const remoteIdentityUpToDate = await tryCatchAxiosAction(() =>
-    dispatch(requestRemoteIdentity({ remoteId })));
+    dispatch(requestRemoteIdentity({ identityId })));
 
   await dispatch(addToCollection({ remoteIdentity: remoteIdentityUpToDate }));
 

@@ -18,8 +18,9 @@ describe('component RemoteIdentityEmail', () => {
   it('existing remoteIdentity', () => {
     const props = {
       remoteIdentity: {
-        remote_id: 'foo',
+        identity_id: 'foo',
         display_name: 'Foo',
+        infos: {},
       },
       onChange: jest.fn(),
       onDelete: jest.fn(),

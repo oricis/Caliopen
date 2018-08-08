@@ -1,5 +1,6 @@
 export { default as Badge } from './Badge';
 export { default as Button } from './Button';
+export { default as Callout } from './Callout';
 export { default as BlockList } from './BlockList';
 export { default as Brand } from './Brand';
 export { default as Confirm } from './Confirm';
