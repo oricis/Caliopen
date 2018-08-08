@@ -14,7 +14,7 @@ const selectors = {
   last: () => state => [...state.remote_identities].pop(),
   lastLocation: () => createSelector(
     selectors.last(),
-    ({ remote_id }) => ({ location: `/api/v2/remote_identity/${remote_id}`, remote_id })
+    ({ identity_id }) => ({ location: `/api/v2/remote_identity/${identity_id}`, identity_id })
   ),
   byId: ({ message_id }) => createSelector(
     selectors.all(),
@@ -27,15 +27,15 @@ const reducer = {
   [actions.post]: (state, { body }) => ([
     ...state,
     {
-      remote_id: uuidv1(),
+      identity_id: uuidv1(),
       ...body,
     }
   ]),
   [actions.patch]: (state, { params, body }) => {
     const nextState = [...state];
-    const original = state.find(remoteIdentity => remoteIdentity.remote_id === params.remote_id);
+    const original = state.find(remoteIdentity => remoteIdentity.identity_id === params.identity_id);
     if (!original) {
-      throw `remoteIdentity w/ id ${params.remote_id} not found`;
+      throw `remoteIdentity w/ id ${params.identity_id} not found`;
     }
     const index = nextState.indexOf(original);
     const { current_state, ...props } = body;
@@ -47,12 +47,12 @@ const reducer = {
     return nextState;
   },
   [actions.delete]: (state, { params, body }) => {
-    const original = state.find(remoteIdentity => remoteIdentity.remote_id === params.remote_id);
+    const original = state.find(remoteIdentity => remoteIdentity.identity_id === params.identity_id);
     if (!original) {
-      throw `remoteIdentity w/ id ${params.remote_id} not found`;
+      throw `remoteIdentity w/ id ${params.identity_id} not found`;
     }
 
-    return [...state.filter(remoteIdentity => remoteIdentity.remote_id !== params.remote_id)];
+    return [...state.filter(remoteIdentity => remoteIdentity.identity_id !== params.identity_id)];
   },
 };
 
@@ -68,16 +68,16 @@ const routes = {
     selector: selectors.lastLocation,
     status: 200,
   },
-  'GET /:remote_id': {
+  'GET /:identity_id': {
     action: actions.get,
     selector: selectors.byId,
     status: 200,
   },
-  'PATCH /:remote_id': {
+  'PATCH /:identity_id': {
     action: actions.patch,
     status: 204,
   },
-  'DELETE /:remote_id': {
+  'DELETE /:identity_id': {
     action: actions.delete,
     selector: selectors.byId,
     status: 204,

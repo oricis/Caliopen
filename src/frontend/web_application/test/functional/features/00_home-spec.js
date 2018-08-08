@@ -18,7 +18,7 @@ describe('Home', () => {
       browser.get('/');
       await browser.wait(EC.presenceOf(element(by.css('.s-signin__action'))), 1000);
 
-      expect(element(by.css('.s-signin__action .m-button')).getText()).toContain('I\'m in a safe place');
+      expect(element(by.css('.s-signin__action .m-button')).getText()).toContain('Login');
     });
 
     it('Log out', async () => {
@@ -26,7 +26,7 @@ describe('Home', () => {
       await userUtil.signout();
       await browser.wait(EC.presenceOf(element(by.css('.s-signin__action'))), 1000);
 
-      expect(element(by.css('.s-signin__action .m-button')).getText()).toContain('I\'m in a safe place');
+      expect(element(by.css('.s-signin__action .m-button')).getText()).toContain('Login');
     });
   });
 
