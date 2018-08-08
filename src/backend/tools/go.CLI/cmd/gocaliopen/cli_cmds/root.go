@@ -158,7 +158,6 @@ func initConfig() {
 // It returns a handler to make use of store facility
 // For now, only returns a CassandraBackend
 func getStoreFacility() (Store *store.CassandraBackend, err error) {
-	log.Infof("%+v", apiConf)
 	switch apiConf.BackendName {
 	case "cassandra":
 		c := store.CassandraConfig{
