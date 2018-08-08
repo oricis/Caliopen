@@ -2,15 +2,13 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 from .user import User, UserName, ReservedName, FilterRule, UserRecoveryEmail
-from .user import RemoteIdentity, IndexUser, Settings
+from .user import IndexUser, Settings
+from .identity import UserIdentity, IdentityLookup, IdentityTypeLookup
 from .tag import UserTag
-from .local_identity_index import IndexedLocalIdentity
-from .local_identity import LocalIdentity
 
 
 __all__ = [
     'User', 'UserName', 'UserRecoveryEmail', 'UserTag', 'FilterRule',
-    'ReservedName',
-    'RemoteIdentity', 'IndexUser', 'UserTag', 'Settings',
-    'IndexedLocalIdentity', 'LocalIdentity',
+    'ReservedName', 'UserIdentity', 'IdentityLookup', 'IdentityTypeLookup',
+    'IndexUser', 'UserTag', 'Settings',
 ]

@@ -33,13 +33,14 @@ type (
 		DeleteContact(userID, contactID string) error
 		//identities
 		RetrieveContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error)
-		RetrieveLocalsIdentities(user_id string) (identities []LocalIdentity, err error)
-		CreateRemoteIdentity(identity *RemoteIdentity) CaliopenError
-		RetrieveRemoteIdentities(userId string, withCredentials bool) (ids []*RemoteIdentity, err CaliopenError)
-		RetrieveRemoteIdentity(userId, RemoteId string, withCredentials bool) (id *RemoteIdentity, err CaliopenError)
-		UpdateRemoteIdentity(identity, oldIdentity *RemoteIdentity, update map[string]interface{}) CaliopenError
-		PatchRemoteIdentity(patch []byte, userId, RemoteId string) CaliopenError
-		DeleteRemoteIdentity(userId, RemoteId string) CaliopenError
+		RetrieveLocalIdentities(user_id string) (identities []UserIdentity, err error)
+		CreateUserIdentity(identity *UserIdentity) CaliopenError
+		RetrieveRemoteIdentities(userId string, withCredentials bool) (ids []*UserIdentity, err CaliopenError)
+		RetrieveUserIdentity(userId, RemoteId string, withCredentials bool) (id *UserIdentity, err CaliopenError)
+		UpdateUserIdentity(identity, oldIdentity *UserIdentity, update map[string]interface{}) CaliopenError
+		PatchUserIdentity(patch []byte, userId, RemoteId string) CaliopenError
+		DeleteUserIdentity(userId, remoteId string) CaliopenError
+		IsRemoteIdentity(userId, remoteId string) bool
 		//messages
 		GetMessagesList(filter IndexSearch) (messages []*Message, totalFound int64, err error)
 		GetMessagesRange(filter IndexSearch) (messages []*Message, totalFound int64, err error)

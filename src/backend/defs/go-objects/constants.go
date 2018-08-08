@@ -44,6 +44,10 @@ const (
 	//notifications types
 	NotifAdminMail     = "adminMail"
 	NotifPasswordReset = "passwordReset"
+
+	//identity types
+	LocalIdentity  = "local"
+	RemoteIdentity = "remote"
 )
 
 // A Initiator specifies what kind of actor is triggering a PATCH method on any object

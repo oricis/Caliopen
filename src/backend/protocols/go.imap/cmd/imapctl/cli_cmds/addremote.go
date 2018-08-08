@@ -56,7 +56,7 @@ func addRemote(cmd *cobra.Command, args []string) {
 	var is backends.IdentityStorage
 	var us backends.UserNameStorage
 	var cb *store.CassandraBackend
-	var rId RemoteIdentity
+	var rId UserIdentity
 	var err error
 	switch cmdConfig.StoreName {
 	case "cassandra":
@@ -84,22 +84,26 @@ func addRemote(cmd *cobra.Command, args []string) {
 	if id.DisplayName == "" {
 		id.DisplayName = id.Login
 	}
-	rId = RemoteIdentity{
+	rId = UserIdentity{
 		DisplayName: id.DisplayName,
+		Identifier:  id.Login,
 		Status:      "active",
-		Type:        "imap",
+		Type:        RemoteIdentity,
+		Protocol:    "imap",
 		UserId:      id.UserId,
 	}
-	rId.RemoteId.UnmarshalBinary(uuid.NewV4().Bytes())
+	rId.Id.UnmarshalBinary(uuid.NewV4().Bytes())
 	rId.SetDefaults()
 	rId.Infos["server"] = id.Server
-	rId.Credentials["password"] = id.Password
-	rId.Credentials["username"] = id.Login
+	rId.Credentials = &Credentials{
+		"password": id.Password,
+		"username": id.Login,
+	}
 
-	err = is.CreateRemoteIdentity(&rId)
+	err = is.CreateUserIdentity(&rId)
 	if err != nil {
 		log.WithError(err).Warn("[addRemote] storage failed to store remote identity")
 	} else {
-		log.Infof("OK, new remote identity added with id %s ! Bye.", rId.RemoteId.String())
+		log.Infof("OK, new remote identity added with id %s ! Bye.", rId.Id.String())
 	}
 }

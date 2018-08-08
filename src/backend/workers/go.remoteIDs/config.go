@@ -11,10 +11,10 @@ import (
 )
 
 type PollerConfig struct {
-	ScanInterval uint16            `mapstructure:"scan_interval"`
-	RemoteTypes  []string          `mapstructure:"remote_types"`
-	StoreName    string            `mapstructure:"store_name"`
-	StoreConfig  StoreConfig       `mapstructure:"store_settings"`
-	NatsUrl      string            `mapstructure:"nats_url"`
-	NatsTopics   map[string]string `mapstructure:"nats_topics"`
+	ScanInterval    uint16            `mapstructure:"scan_interval"`
+	RemoteProtocols []string          `mapstructure:"remote_protocols"`
+	StoreName       string            `mapstructure:"store_name"`
+	StoreConfig     StoreConfig       `mapstructure:"store_settings"`
+	NatsUrl         string            `mapstructure:"nats_url"`
+	NatsTopics      map[string]string `mapstructure:"nats_topics"`
 }

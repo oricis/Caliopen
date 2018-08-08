@@ -48,7 +48,7 @@ func init() {
 	}
 }
 
-func imapLogin(rId *RemoteIdentity) (tlsConn *tls.Conn, imapClient *client.Client, provider Provider, err error) {
+func imapLogin(rId *UserIdentity) (tlsConn *tls.Conn, imapClient *client.Client, provider Provider, err error) {
 	log.Println("Connecting to server...")
 	// Dial TLS directly to be able to dump tls connection state
 	tlsConn, err = tls.Dial("tcp", rId.Infos["server"], nil)
@@ -66,7 +66,7 @@ func imapLogin(rId *RemoteIdentity) (tlsConn *tls.Conn, imapClient *client.Clien
 	// identify provider
 	capabilities, _ := imapClient.Capability()
 	provider = Provider{capabilities: capabilities}
-	for capability, _ := range capabilities {
+	for capability := range capabilities {
 		if p, ok := providers[capability]; ok {
 			provider.name = p.name
 			provider.fetchItems = p.fetchItems
@@ -74,7 +74,7 @@ func imapLogin(rId *RemoteIdentity) (tlsConn *tls.Conn, imapClient *client.Clien
 	}
 
 	// Login
-	if err = imapClient.Login(rId.Credentials["username"], rId.Credentials["password"]); err != nil {
+	if err = imapClient.Login((*rId.Credentials)["username"], (*rId.Credentials)["password"]); err != nil {
 		log.WithError(err).Error("[fetchMail] imapLogin failed to login IMAP")
 		return
 	}
@@ -171,7 +171,7 @@ func MarshalImap(message *imap.Message, xHeaders ImapFetcherHeaders) (mail *Emai
 
 // buildXheaders builds custom X-Fetched headers
 // with provider specific information
-func buildXheaders(tlsConn *tls.Conn, imapClient *client.Client, rId *RemoteIdentity, box *imapBox, message *imap.Message, provider Provider) (xHeaders ImapFetcherHeaders) {
+func buildXheaders(tlsConn *tls.Conn, imapClient *client.Client, rId *UserIdentity, box *imapBox, message *imap.Message, provider Provider) (xHeaders ImapFetcherHeaders) {
 	connState := tlsConn.ConnectionState()
 
 	var proto string

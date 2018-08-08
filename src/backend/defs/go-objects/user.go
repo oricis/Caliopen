@@ -8,10 +8,10 @@ package objects
 
 import (
 	"encoding/json"
-	"math/big"
-	"time"
 	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
+	"math/big"
+	"time"
 )
 
 type User struct {
@@ -43,8 +43,8 @@ type Auth_cache struct {
 	Expires_in    int       `json:"expires_in"`
 	Expires_at    time.Time `json:"expires_at"`
 	Refresh_token string    `json:"refresh_token"`
-	Curve		  string    `json:"curve"`
-	X             big.Int 	`json:"x"`
+	Curve         string    `json:"curve"`
+	X             big.Int   `json:"x"`
 	Y             big.Int   `json:"y"`
 	Key_id        string    `json:"key_id"`
 }

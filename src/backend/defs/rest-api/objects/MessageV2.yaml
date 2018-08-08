@@ -28,10 +28,10 @@ properties:
     "$ref": ExternalReferences.yaml
   excerpt:
     type: string
-  identities: # to which user's local identities the message is linked to
+  user_identities: # to which user's identities the message is linked to
     type: array
     items:
-      "$ref": Identity.yaml
+      type: string
   importance_level:
     type: integer
     format: int32

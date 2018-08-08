@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 - prevent invalidation of whole discussion during scroll
+- LocalIdentities and RemoteIdentities have been merged into a new UserIdentity object
 - group discussion by list or all participants
 - API output more informations on discussions
 

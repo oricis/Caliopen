@@ -11,7 +11,7 @@ import (
 )
 
 type CredentialsStorage interface {
-	CreateCredentials(rId *RemoteIdentity, cred Credentials) error
+	CreateCredentials(userIdentity *UserIdentity, cred Credentials) error
 	RetrieveCredentials(userId, remoteId string) (Credentials, error)
 	UpdateCredentials(userId, remoteId string, cred Credentials) error
 	DeleteCredentials(userId, remoteId string) error

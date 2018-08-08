@@ -13,11 +13,11 @@ import (
 // AddJobFor parses remote identity data to build appropriate job and adds it to MainCron
 func (p *Poller) AddJobFor(idkey string) (err error) {
 	if entry, ok := p.Cache[idkey]; ok {
-		switch entry.remoteID.Type {
+		switch entry.remoteID.Protocol {
 		case "imap":
 			cronStr := "@every " + entry.pollInterval + "m"
 			entry.cronId, err = p.MainCron.AddJob(cronStr, imapJob{
-				remoteId:  entry.remoteID.RemoteId.String(),
+				remoteId:  entry.remoteID.Id.String(),
 				natsTopic: p.Config.NatsTopics["imap"],
 				poller:    p,
 				userId:    entry.remoteID.UserId.String(),

@@ -415,27 +415,27 @@ func (c *Contact) GetSetNested() <-chan interface{} {
 	go func(*sync.Mutex, chan interface{}) {
 		c.Locker.Lock()
 		// Addresses
-		for i, _ := range c.Addresses {
+		for i := range c.Addresses {
 			getSet <- &(c.Addresses[i])
 		}
 		// Emails
-		for i, _ := range c.Emails {
+		for i := range c.Emails {
 			getSet <- &(c.Emails[i])
 		}
 		// Identities
-		for i, _ := range c.Identities {
+		for i := range c.Identities {
 			getSet <- &(c.Identities[i])
 		}
 		// Ims
-		for i, _ := range c.Ims {
+		for i := range c.Ims {
 			getSet <- &(c.Ims[i])
 		}
 		// Organizations
-		for i, _ := range c.Organizations {
+		for i := range c.Organizations {
 			getSet <- &(c.Organizations[i])
 		}
 		// Phones
-		for i, _ := range c.Phones {
+		for i := range c.Phones {
 			getSet <- &(c.Phones[i])
 		}
 		close(getSet)
@@ -519,27 +519,27 @@ func (c *Contact) MarshallNew(args ...interface{}) {
 
 	c.Deleted = time.Time{}
 
-	for i, _ := range c.Addresses {
+	for i := range c.Addresses {
 		c.Addresses[i].MarshallNew()
 	}
 
-	for i, _ := range c.Emails {
+	for i := range c.Emails {
 		c.Emails[i].MarshallNew()
 	}
 
-	for i, _ := range c.Identities {
+	for i := range c.Identities {
 		c.Identities[i].MarshallNew()
 	}
 
-	for i, _ := range c.Organizations {
+	for i := range c.Organizations {
 		c.Organizations[i].MarshallNew()
 	}
 
-	for i, _ := range c.Phones {
+	for i := range c.Phones {
 		c.Phones[i].MarshallNew()
 	}
 
-	for i, _ := range c.PublicKeys {
+	for i := range c.PublicKeys {
 		c.PublicKeys[i].MarshallNew(c)
 	}
 

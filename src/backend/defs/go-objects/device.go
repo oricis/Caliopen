@@ -204,7 +204,7 @@ func (d *Device) MarshallNew(args ...interface{}) {
 	}
 	d.DateRevoked = time.Time{}
 
-	for i, _ := range d.Locations {
+	for i := range d.Locations {
 		d.Locations[i].MarshallNew()
 	}
 
@@ -238,12 +238,12 @@ func (d *Device) GetSetRelated() <-chan interface{} {
 		d.Locker.Lock()
 
 		// send locations
-		for i, _ := range d.Locations {
+		for i := range d.Locations {
 			getSet <- &(d.Locations[i])
 		}
 
 		// send publicKeys
-		for i, _ := range d.PublicKeys {
+		for i := range d.PublicKeys {
 			getSet <- &(d.PublicKeys[i])
 		}
 

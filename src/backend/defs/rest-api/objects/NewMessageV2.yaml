@@ -9,10 +9,10 @@ properties:
     type: string
   discussion_id:
     type: string
-  identities: # to which user's local identities the message is linked to
+  user_identities: # to which user's local identities the message is linked to
     type: array
     items:
-      "$ref": Identity.yaml
+      type: string
   message_id:
     type: string
   parent_id: # The id of the Message this message is a reply to. This is primarily for drafts, but the server may support this for received messages as well by looking up the [@!RFC5322] Message-Id referenced in the In-Reply-To header and searching for this message in the user’s mail.
@@ -24,5 +24,5 @@ properties:
   subject:
     type: string
 required:
-  - identities
+  - user_identities
 additionalProperties: false
