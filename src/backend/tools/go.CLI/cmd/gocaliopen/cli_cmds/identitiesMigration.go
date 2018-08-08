@@ -32,6 +32,12 @@ func init() {
 }
 
 func identitiesMigration(cmd *cobra.Command, args []string) {
+	// this script needs to read usernames from vault
+	// replace apiv2's credentials with imapworker's credentials
+	apiConf.BackendConfig.Settings.VaultSettings.Username = imapWorkerConf.StoreConfig.VaultConfig.Username
+	apiConf.BackendConfig.Settings.VaultSettings.Password = imapWorkerConf.StoreConfig.VaultConfig.Password
+	apiConf.BackendConfig.Settings.VaultSettings.Url = imapWorkerConf.StoreConfig.VaultConfig.Url
+
 	var err error
 	//check/get connexions to facilities
 	//store
