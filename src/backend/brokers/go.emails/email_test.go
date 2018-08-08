@@ -78,7 +78,7 @@ func TestEmailToJsonRep(t *testing.T) {
 		t.Errorf("Expected to have from=%s, got %s instead", From_address, from[0])
 	}
 	if len(to) != To_len {
-		t.Errorf("Expected to have %d to, got %s instead", To_len, len(to))
+		t.Errorf("Expected to have %d to, got %d instead", To_len, len(to))
 	}
 	if to[0] != To_address {
 		t.Errorf("Expected to have to=%s, got %s instead", To_address, to[0])
@@ -104,7 +104,6 @@ func TestEmailToJsonRep(t *testing.T) {
 	if parsed_email.MimeRoot.Parts[0].Parts[0].Charset != "utf-8" {
 		t.Errorf("Expected first sub-part of first part to have charset = utf-8, got %s instead", parsed_email.MimeRoot.Parts[0].Parts[0].Charset)
 	}
-	t.Logf("%+v", parsed_email.MimeRoot.Parts)
 }
 
 const (

@@ -15,7 +15,7 @@ spec:
         app: identity-poller
     spec:
       containers:
-      - image: public-registry.caliopen.org/identity_poller:develop
+      - image: public-registry.caliopen.org/caliopen_identity_poller:develop
         name: identity-poller
         volumeMounts:
         - name: config-volume

@@ -8657,6 +8657,12 @@
                       "excerpt": {
                         "type": "string"
                       },
+                      "subject": {
+                        "type": "string"
+                      },
+                      "protocol": {
+                        "type": "string"
+                      },
                       "total_count": {
                         "type": "integer",
                         "format": "int32"
@@ -8830,6 +8836,12 @@
                   }
                 },
                 "excerpt": {
+                  "type": "string"
+                },
+                "subject": {
+                  "type": "string"
+                },
+                "protocol": {
                   "type": "string"
                 },
                 "total_count": {

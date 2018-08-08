@@ -133,7 +133,7 @@ services:
   message_handler:
     build:
       context: ../src/backend
-      dockerfile: Dockerfile.message_handler
+      dockerfile: Dockerfile.message-handler
     image: caliopen_message_handler
     links:
       - cassandra:cassandra

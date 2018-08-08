@@ -1,4 +1,4 @@
-# This file creates a container that runs a Caliopen v1 API (python based)
+# This file creates a container that runs a Caliopen message handler
 # Important:
 # Author: Caliopen
 # Date: 2018-07-20
@@ -20,15 +20,12 @@ WORKDIR /srv/caliopen/src/backend/main/py.main
 RUN pip install -e .
 
 ## Container specific installation part
+RUN pip install tornado==4.2
+RUN pip install nats-client
 
-# Install python API packages
-WORKDIR /srv/caliopen/src/backend/interfaces/REST/py.server
+# Install python backend packages in develop mode
+WORKDIR /srv/caliopen/src/backend/interfaces/NATS/py.client
 RUN pip install -e .
 
-# Add documentation in container filesystem
-WORKDIR /srv/caliopen/src/backend/tools/py.doc
-RUN pip install -e .
-
-EXPOSE 6543
-
-CMD ["pserve", "/etc/caliopen/apiv1.ini", "--reload"]
+WORKDIR /srv/caliopen/src/backend/interfaces/NATS/py.client/caliopen_nats
+CMD ["python", "listener.py", "-f", "/etc/caliopen/caliopen.yaml"]

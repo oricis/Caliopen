@@ -9,7 +9,7 @@ var R *RedisBackend
 
 func TestInitializeRedisBackend(t *testing.T) {
 	conf := CacheConfig{
-		Host:     "redis.dev.caliopen.org:6379",
+		Host:     "redis:6379",
 		Password: "",
 		Db:       0,
 	}
@@ -21,27 +21,24 @@ func TestInitializeRedisBackend(t *testing.T) {
 }
 
 func TestRedisBackend_SetResetPasswordSession(t *testing.T) {
-	session, err := R.SetResetPasswordSession("user_id", "token_str")
+	_, err := R.SetResetPasswordSession("user_id", "token_str")
 	if err != nil {
 		t.Error(err)
 	}
-	t.Logf("%+v", session)
 }
 
 func TestRedisBackend_GetResetPasswordSession(t *testing.T) {
-	session, err := R.GetResetPasswordSession("user_id")
+	_, err := R.GetResetPasswordSession("user_id")
 	if err != nil {
 		t.Error(err)
 	}
-	t.Logf("%+v", session)
 }
 
 func TestRedisBackend_GetResetPasswordToken(t *testing.T) {
-	by_token, err := R.GetResetPasswordToken("token_str")
+	_, err := R.GetResetPasswordToken("token_str")
 	if err != nil {
 		t.Error(err)
 	}
-	t.Logf("%+v", by_token)
 }
 
 func TestRedisBackend_DeleteResetPasswordSession(t *testing.T) {

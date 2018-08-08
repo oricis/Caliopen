@@ -9,11 +9,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - Add an email or a social identity to a contact trigger PGP key discovery process
+- A connection is possible per device
 
 ### Changed
 
 - prevent invalidation of whole discussion during scroll
 - LocalIdentities and RemoteIdentities have been merged into a new UserIdentity object
+- group discussion by list or all participants
+- API output more informations on discussions
 
 ### Fixed
 

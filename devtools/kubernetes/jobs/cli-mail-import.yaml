@@ -23,7 +23,7 @@ spec:
           - name: caliopen-repo
             mountPath: /caliopen
       containers:
-      - image: public-registry.caliopen.org/cli
+      - image: public-registry.caliopen.org/caliopen_cli
         name: cli-import
         args: ["import", "-e", "dev@caliopen.local", "-f", "mbox", "-p", "/caliopen/devtools/fixtures/mbox/dev@caliopen.local"]
         env:

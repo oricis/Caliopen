@@ -79,11 +79,8 @@ func BasicAuthFromCache(cache backends.APICache, realm string) gin.HandlerFunc {
 				return
 			}
 		}
-
-		if device_id, ok := c.Request.Header["X-Caliopen-Device-ID"]; ok {
-			cache_key = user_id + "-" + device_id[0]
-		} else {
-			cache_key = user_id
+		if device_id := c.Request.Header.Get("X-Caliopen-Device-ID"); device_id != "" {
+			cache_key = user_id + "-" + device_id
 		}
 
 		// Search user in cache of allowed credentials
@@ -93,9 +90,9 @@ func BasicAuthFromCache(cache backends.APICache, realm string) gin.HandlerFunc {
 			return
 		}
 
-		if device_sign, ok := c.Request.Header["X-Caliopen-Device-Signature"]; ok {
+		if device_sign := c.Request.Header.Get("X-Caliopen-Device-Signature"); device_sign != "" {
 			query := getSignedQuery(c)
-			valid, err := verifySignature(device_sign[0], query, auth.Curve, auth.X, auth.Y)
+			valid, err := verifySignature(device_sign, query, auth.Curve, auth.X, auth.Y)
 			if err != nil {
 				log.Println("Error during signature verification: ", err)
 				// kickUnauthorizedRequest(c, "Authorization error")

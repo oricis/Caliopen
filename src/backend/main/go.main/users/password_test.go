@@ -36,3 +36,12 @@ func (f *fakeStorage) UpdateUserPassword(user *User) error {
 func (f *fakeStorage) UpdateUser(user *User, fields map[string]interface{}) error {
 	return nil
 }
+func (f *fakeStorage) DeleteUser(userId string) error {
+	return nil
+}
+func (f *fakeStorage) UpdateUserPasswordHash(user *User) error {
+	return nil
+}
+func (f *fakeStorage) UserByRecoveryEmail(email string) (user *User, err error) {
+	return nil, nil
+}

@@ -1,13 +1,19 @@
-FROM golang
+# This file creates a container that runs a Caliopen identity poller
+# Important:
+# Author: Caliopen
+# Date: 2018-07-20
 
-RUN go get -u github.com/kardianos/govendor
-RUN go install github.com/kardianos/govendor
+FROM public-registry.caliopen.org/caliopen_go as builder
 
 ADD . /go/src/github.com/CaliOpen/Caliopen/src/backend
 WORKDIR /go/src/github.com/CaliOpen/Caliopen/src/backend
 
-RUN govendor sync -v
-RUN go install github.com/CaliOpen/Caliopen/src/backend/workers/go.remoteIDs/cmd/idpoller
+RUN CGO_ENABLED=0 GOOS=linux go install -a -ldflags '-extldflags "-static"' github.com/CaliOpen/Caliopen/src/backend/workers/go.remoteIDs/cmd/idpoller
 
-WORKDIR /go/src/github.com/CaliOpen/Caliopen/src/backend/configs
-ENTRYPOINT idpoller start -c idpoller --configpath /etc/caliopen
+FROM scratch
+MAINTAINER Caliopen
+
+COPY --from=builder /go/bin/idpoller /usr/local/bin/idpoller
+
+WORKDIR "/etc/caliopen"
+ENTRYPOINT [ "idpoller", "start", "-c", "idpoller", "--configpath", "/etc/caliopen" ]

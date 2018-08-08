@@ -157,3 +157,22 @@ or rebuild node-sass:
 ```
 npm rebuild node-sass
 ```
+
+**docker container can't build or start**
+
+The following error can appear when docker is not run as root:
+
+> Building api
+> ERROR: Couldn't connect to Docker daemon at http+docker://localunixsocket - is it running?
+
+It is mostly due to minio server which updates its config file without asking.
+
+You need to change the owner of the file (please don't commit) until we find a solution.
+
+```bash
+sudo chown $USER: src/backend/configs/minio/config.json
+```
+
+_As described [here][1], the config is automatically migrated and we can't use environment variables yet._
+
+[1]: https://docs.minio.io/docs/minio-server-configuration-guide.html

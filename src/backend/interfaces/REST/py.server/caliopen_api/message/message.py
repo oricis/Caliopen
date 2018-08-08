@@ -36,8 +36,7 @@ class Message(Api):
         data = self.request.json
         # ^ json payload should have been validated by swagger module
         try:
-            message = ObjectMessage().create_draft(user_id=self.user.user_id,
-                                                   **data)
+            message = ObjectMessage().create_draft(user=self.user, **data)
         except Exception as exc:
             log.warn(exc)
             raise MergePatchError(error=exc)
@@ -76,7 +75,7 @@ class Message(Api):
 
         message = ObjectMessage(self.user.user_id, message_id=message_id)
         try:
-            message.patch_draft(patch, db=True, index=True,
+            message.patch_draft(self.user, patch, db=True, index=True,
                                 with_validation=True)
         except Exception as exc:
             raise MergePatchError(exc)
