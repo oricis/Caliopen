@@ -24,7 +24,7 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err e
 		return nil, errors.New("draft not found")
 	}
 	// resolve sender's address protocol for selecting natsTopics accordingly
-	protocol, resolvErr := messages.ResolveSenderProtocol(draft)
+	protocol, resolvErr := rest.ResolveSenderProtocol(draft)
 	if resolvErr != nil {
 		log.WithError(resolvErr).Info("[SendDraft] failed to resolve sender's protocol")
 		return nil, errors.New("unknown protocol for sender")
@@ -66,4 +66,13 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err e
 	messages.SanitizeMessageBodies(msg)
 	(*msg).Body_excerpt = messages.ExcerptMessage(*msg, 200, true, true)
 	return msg, err
+}
+
+// ResolveSenderProtocol returns outbound protocol to use for sending draft by resolving draft's sender identity
+func (rest *RESTfacility) ResolveSenderProtocol(draft *Message) (string, error) {
+	firstIdentity, err := rest.RetrieveUserIdentity(draft.User_id.String(), draft.UserIdentities[0].String(), false) // handle one identity only for now
+	if err != nil {
+		return "", err
+	}
+	return firstIdentity.Protocol, nil
 }

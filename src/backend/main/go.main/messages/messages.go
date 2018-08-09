@@ -5,15 +5,14 @@
 package messages
 
 import (
-	"errors"
-	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+		. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/microcosm-cc/bluemonday"
 	"golang.org/x/net/html"
 	"regexp"
 	"strings"
 	"unicode"
 	"unicode/utf8"
-)
+	)
 
 // scrub message's bodies to make message displayable in frontend interfaces.
 // message is modified in-place.
@@ -111,17 +110,7 @@ func excerptFromHMTL(source string) (excerpt string, err error) {
 	return
 }
 
-// ResolveSenderProtocol returns outbound protocol to use for sending draft by resolving draft's sender identity
-func ResolveSenderProtocol(draft *Message) (string, error) {
-	switch draft.Identities[0].Type { // handle one identity only for now
-	case EmailProtocol:
-		return SmtpProtocol, nil
-	case ImapProtocol:
-		return ImapProtocol, nil
-	default:
-		return "", errors.New("sender not found in participants")
-	}
-}
+
 
 func trimExcerpt(s string, l int, wordWrap, addEllipsis bool) string {
 
