@@ -21,7 +21,7 @@ type Worker struct {
 	Id       uint8
 	Lda      *Lda
 	NatsConn *nats.Conn
-	NatsSub  *nats.Subscription
+	NatsSubs  []*nats.Subscription
 	Store    backends.IdentityStorage
 }
 
@@ -31,6 +31,7 @@ func NewWorker(config WorkerConfig, id uint8) (worker *Worker, err error) {
 	w := Worker{
 		Config: config,
 		Id:     id,
+		NatsSubs: make([]*nats.Subscription, 2),
 	}
 	//copy relevant config to LDAConfig
 	w.Config.LDAConfig.StoreName = w.Config.StoreName
@@ -88,7 +89,11 @@ func NewWorker(config WorkerConfig, id uint8) (worker *Worker, err error) {
 
 func (worker *Worker) Start() error {
 	var err error
-	(*worker).NatsSub, err = worker.NatsConn.QueueSubscribe(worker.Config.NatsTopic, worker.Config.NatsQueue, worker.natsMsgHandler)
+	(*worker).NatsSubs[0], err = worker.NatsConn.QueueSubscribe(worker.Config.NatsTopicFetcher, worker.Config.NatsQueue, worker.natsMsgHandler)
+	if err != nil {
+		return err
+	}
+	(*worker).NatsSubs[1], err = worker.NatsConn.QueueSubscribe(worker.Config.NatsTopicSender, worker.Config.NatsQueue, worker.natsMsgHandler)
 	if err != nil {
 		return err
 	}
@@ -110,7 +115,7 @@ func (worker *Worker) Stop() {
 }
 
 // natsMsgHandler parses message and launches appropriate goroutine to handle requested operations
-func (worker *Worker) natsMsgHandler(msg *nats.Msg) {
+func (worker *Worker) MsgHandler(msg *nats.Msg) {
 	message := IMAPfetchOrder{}
 	err := json.Unmarshal(msg.Data, &message)
 	if err != nil {
@@ -130,6 +135,9 @@ func (worker *Worker) natsMsgHandler(msg *nats.Msg) {
 			Lda:   worker.Lda,
 		}
 		go fetcher.FetchRemoteToLocal(message)
+	case "send": // order sent by api2 to send a draft via an IMAP remote identity
+	sender := Sender{}
+	go sender.SendDraft(IMAPsendOrder{})
 	case "test":
 		log.Info("Order « test » received")
 	}
