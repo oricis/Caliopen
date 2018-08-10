@@ -18,6 +18,10 @@ type IMAPfetchOrder struct {
 	Password string
 }
 
+type IMAPsendOrder struct {
+
+}
+
 // DeliveryAck holds reply from nats when using request/reply system
 type DeliveryAck struct {
 	EmailMessage *EmailMessage `json:"-"`

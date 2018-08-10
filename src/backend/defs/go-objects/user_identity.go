@@ -134,7 +134,8 @@ func (ui *UserIdentity) SetDefaults() {
 		defaults = map[string]string{
 			"lastseenuid":  "",
 			"lastsync":     "",   // RFC3339 date string
-			"server":       "",   // server hostname[|port]
+			"inserver":     "",   // server hostname[|port]
+			"outserver":    "",   // server hostname[|port]
 			"uidvalidity":  "",   // uidvalidity to invalidate data if needed (see RFC4549#section-4.1)
 			"pollinterval": "15", // how often remote account should be polled, in minutes.
 		}

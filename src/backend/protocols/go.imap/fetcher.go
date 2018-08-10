@@ -223,7 +223,7 @@ func (f *Fetcher) syncMails(userId *UserIdentity, box *imapBox, ch chan *Email) 
 
 	// Don't forget to close chan before leaving
 	defer close(ch)
-	tlsConn, imapClient, provider, err := imapLogin(rId)
+	tlsConn, imapClient, provider, err := imapLogin(userId)
 	if err != nil {
 		return f.handleFetchFailure(userId, WrapCaliopenErr(err, WrongCredentialsErr, "imapLogin failure"))
 	} else {
