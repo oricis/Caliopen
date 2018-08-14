@@ -1,0 +1,49 @@
+@import '../../../../styles/common';
+@import '../../../../styles/object/o-navigation';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+.m-horizontal-scroll {
+  display: flex;
+  height: $l-navigation__height;
+
+  &__anchor,
+  &__visible-zone {
+    display: inline-block;
+  }
+
+  &__anchor {
+    flex: 0;
+    background-color: $co-color__bg__back--high;
+  }
+
+  &__visible-zone {
+    position: relative;
+    flex: 1;
+    overflow-y: hidden;
+
+    @include breakpoint(medium) {
+      overflow: hidden;
+    }
+  }
+
+  &__container {
+    display: inline-flex;
+    position: absolute;
+    left: 0;
+    transition: left .5s ease;
+  }
+
+  &__item {
+    flex: shrink;
+  }
+}
+.scroll-anchor--left {
+  padding: 0 3px 0 12px;
+}
+.scroll-anchor--right {
+  padding: 0 12px 0 3px;
+}
+.scroll-anchor-item {
+  margin-right: 0;
+  border-top: 0;
+}

@@ -4,24 +4,16 @@
 $item-active-height: rem-calc($co-component__height + 0.25rem);
 
 .l-navbar {
-  position: relative;
   height: $item-active-height;
 
   &__wrapper {
-    @include o-navigation-wrapper;
-    max-width: initial;
-    height: auto;
-    margin-top: 0;
-    background-color: transparent;
-
-    .compose-item {
-      display: none;
-    }
+    z-index: $l-z-index__navbar;
 
     &--sticky {
+      position: fixed;
       top: 0;
+      width: 100%;
       background-color: #d9f2fe;
-      box-shadow: none;
 
       .m-horizontal-scroll {
         height: $co-component__height;
@@ -39,10 +31,6 @@ $item-active-height: rem-calc($co-component__height + 0.25rem);
         .m-item-link {
           line-height: $co-component__height;
         }
-      }
-
-      .compose-item {
-        display: inline-block;
       }
 
       .m-horizontal-scroll__container {

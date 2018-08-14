@@ -7,6 +7,7 @@ const DEFAULT_DOCUMENT_TITLE = 'Caliopen, be good!';
 class PageTitle extends PureComponent {
   static propTypes = {
     user: PropTypes.shape({}),
+    // FIXME always undefined
     currentTab: PropTypes.shape({}),
     title: PropTypes.string,
   };
@@ -20,7 +21,7 @@ class PageTitle extends PureComponent {
   render() {
     const { user, title, currentTab } = this.props;
     const userName = user ? `${user.name}@alpha.caliopen.org - ` : '';
-    const currentTabLabel = currentTab ? `${currentTab.label} - ` : '';
+    const currentTabLabel = currentTab ? `${currentTab.routeConfig.tab.renderLabel()} - ` : '';
     const pageTitle = title ? `${title} - ` : currentTabLabel;
     const documentTitle = `${pageTitle}${userName}${DEFAULT_DOCUMENT_TITLE}`;
 

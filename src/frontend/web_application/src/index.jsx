@@ -5,7 +5,7 @@ import PiwikReactRouter from 'piwik-react-router';
 import App from './App';
 import configureStore from './store/configure-store';
 import getRouterHistory from './services/router-history';
-import { getUserLocales } from './services/i18n';
+import { getUserLocales } from './modules/i18n';
 import { getDefaultSettings } from './modules/settings';
 import { getConfig } from './services/config';
 

@@ -6,11 +6,10 @@ import { withI18n } from 'lingui-react';
 import { push } from 'react-router-redux';
 import { requestContact, updateContact, createContact, deleteContact, invalidate as invalidateContacts } from '../../store/modules/contact';
 import { withNotification } from '../../modules/userNotify';
-import { removeTab, updateTab } from '../../store/modules/tab';
 import { updateTagCollection, withTags } from '../../modules/tags';
 import { getNewContact } from '../../services/contact';
-import { withCurrentTab } from '../../hoc/tab';
 import { userSelector } from '../../modules/user';
+import { withCloseTab, withCurrentTab } from '../../modules/tab';
 import Presenter from './presenter';
 
 const contactIdSelector = (state, ownProps) => ownProps.match.params.contactId;
@@ -37,8 +36,6 @@ const mapDispatchToProps = dispatch => ({
     createContact,
     deleteContact,
     invalidateContacts,
-    removeTab,
-    updateTab,
     push,
     updateTagCollection,
   }, dispatch),
@@ -53,7 +50,8 @@ export default compose(
   }),
   formValues({ birthday: 'info.birthday' }),
   withI18n(),
-  withCurrentTab(),
   withNotification(),
   withTags(),
+  withCloseTab(),
+  withCurrentTab(),
 )(Presenter);

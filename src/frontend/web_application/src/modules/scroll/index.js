@@ -14,3 +14,5 @@ export const scrollTop = (y, isAnimated = false) => {
 
   window.scroll(0, y);
 };
+
+export { default as ScrollDetector } from './components/ScrollDetector';

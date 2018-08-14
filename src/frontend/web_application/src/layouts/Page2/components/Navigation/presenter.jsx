@@ -1,43 +1,92 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import Tab from '../Tab';
-import HorizontalScroll from '../../../Page/components/Navigation/components/Navbar/components/HorizontalScroll';
-import { NavbarItem } from '../../../Page/components/Navigation/components/Navbar';
+import HorizontalScroll from '../HorizontalScroll';
+import { Tab, NavbarItem, ApplicationTab, DiscussionTab, ContactTab } from '../Navbar/components';
 import { Button, Icon } from '../../../../components/';
-
+import { Tab as TabModel } from '../../../../modules/tab';
+import { findTabbableRouteConfig } from '../../../../modules/routing';
 import './style.scss';
 
 class Navigation extends Component {
   static propTypes = {
     className: PropTypes.string,
+    location: PropTypes.shape({}),
     isSticky: PropTypes.bool,
-    requestTabs: PropTypes.func.isRequired,
-    tabs: PropTypes.arrayOf(PropTypes.shape({})),
+    tabs: PropTypes.arrayOf(PropTypes.instanceOf(TabModel)).isRequired,
+    routes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    removeTab: PropTypes.func.isRequired,
   };
   static defaultProps = {
     className: undefined,
+    location: undefined,
     isSticky: false,
-    tabs: undefined,
   };
 
-  componentDidMount() {
-    this.props.requestTabs();
-  }
   getTabIdentifier = ({ pathname, search, hash }) => `${pathname}${search}${hash}`;
 
+  renderTab({ tab }) {
+    const { removeTab, routes, location } = this.props;
+    const routeConfig = findTabbableRouteConfig({ pathname: tab.location.pathname, routes });
+    const isActive = location && location.pathname === tab.location.pathname;
+
+    switch (routeConfig.tab.type) {
+      case 'application':
+        return (
+          <ApplicationTab
+            key={this.getTabIdentifier(tab.location)}
+            tab={tab}
+            routeConfig={routeConfig}
+            isActive={isActive}
+          />
+        );
+      case 'contact':
+        return (
+          <ContactTab
+            key={this.getTabIdentifier(tab.location)}
+            tab={tab}
+            routeConfig={routeConfig}
+            isActive={isActive}
+            onRemove={removeTab}
+          />
+        );
+      case 'discussion':
+        return (
+          <DiscussionTab
+            key={this.getTabIdentifier(tab.location)}
+            tab={tab}
+            routeConfig={routeConfig}
+            isActive={isActive}
+            onRemove={removeTab}
+          />
+        );
+      default:
+        return (
+          <Tab
+            key={this.getTabIdentifier(tab.location)}
+            tab={tab}
+            routeConfig={routeConfig}
+            isActive={isActive}
+            onRemove={removeTab}
+          />
+        );
+    }
+  }
+
   render() {
-    const { tabs, className, isSticky } = this.props;
-    const isLast = tab => tabs.indexOf(tab) === (tabs.length - 1);
+    const {
+      tabs, className, isSticky,
+    } = this.props;
+    const subscribedState = { tabs, isSticky };
 
     return (
       <div className={classnames('l-navigation', className)}>
-        <HorizontalScroll subscribedState={tabs}>
-          {tabs.map(tab => (
-            <Tab key={this.getTabIdentifier(tab)} tab={tab} last={isLast(tab)} />
-          ))}
-          <NavbarItem className={classnames('l-navigation__compose-item', { 'l-navigation__compose-item--sticky': isSticky })}>
-            <Button shape="plain" className="l-navigation__compose-btn"><Icon type="pencil" /> <Icon type="plus" /></Button>
+        <HorizontalScroll subscribedState={subscribedState}>
+          {tabs.map(tab => this.renderTab({ tab }))}
+          <NavbarItem key="compose-button" className={classnames('l-navigation__compose-item', { 'l-navigation__compose-item--sticky': isSticky })}>
+            <Button shape="plain" display="expanded" className="l-navigation__compose-btn">
+              <Icon type="pencil" /> <Icon type="plus" />
+            </Button>
           </NavbarItem>
         </HorizontalScroll>
       </div>

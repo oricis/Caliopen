@@ -17,7 +17,6 @@ import participantSuggestionsReducer from './modules/participant-suggestions';
 import remoteIdentityReducer from './modules/remote-identity';
 import searchReducer from './modules/search';
 import settingsReducer from './modules/settings';
-import tabReducer from './modules/tab';
 import tagReducer from './modules/tag';
 import userReducer from './modules/user';
 
@@ -38,7 +37,6 @@ const reducer = combineReducers({
   remoteIdentity: remoteIdentityReducer,
   search: searchReducer,
   settings: settingsReducer,
-  tab: tabReducer,
   tag: tagReducer,
   user: userReducer,
   router: routerReducer,
