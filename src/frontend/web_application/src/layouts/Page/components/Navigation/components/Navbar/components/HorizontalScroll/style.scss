@@ -19,7 +19,11 @@
   &__visible-zone {
     position: relative;
     flex: 1;
-    overflow: hidden;
+    overflow-y: hidden;
+
+    @include breakpoint(medium) {
+      overflow: hidden;
+    }
   }
 
   &__container {

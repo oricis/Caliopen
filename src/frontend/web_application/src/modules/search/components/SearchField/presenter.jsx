@@ -69,7 +69,10 @@ class SearchField extends Component {
             shape="plain"
             disabled={this.state.term.length < MIN_TERM_LENGTH}
           >
-            <Trans id="header.actions.search">Lancer la recherche <Icon type="search" /></Trans>
+            <span className="m-search-field__button-label">
+              <Trans id="header.actions.search">Lancer la recherche</Trans>
+            </span>
+            <Icon type="search" />
           </Button>
         </form>
       </div>
