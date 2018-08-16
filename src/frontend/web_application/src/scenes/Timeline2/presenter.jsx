@@ -89,13 +89,13 @@ class Timeline extends Component {
   }
 
   renderDiscussions() {
-    const { discussions } = this.props;
+    const { discussions, user } = this.props;
 
     if (discussions) {
       return (
         <ul className="s-discussion-list">
           {discussions.map(discussion => (
-            <DiscussionItem key={discussion.discussion_id} discussion={discussion} />
+            <DiscussionItem key={discussion.discussion_id} user={user} discussion={discussion} />
           ))}
         </ul>);
     }
@@ -109,8 +109,8 @@ class Timeline extends Component {
     return (
       <Fragment>
         <section id="discussions" className="s-timeline">
-          <StickyNavBar className="action-bar" stickyClassName="sticky-action-bar">
-            <header className="s-timeline__action-bar">
+          <StickyNavBar className="s-timeline__action-bar" stickyClassName="sticky">
+            <header className="s-timeline__actions">
               <div className="s-timeline__select-all">
                 <Checkbox label="" />
               </div>

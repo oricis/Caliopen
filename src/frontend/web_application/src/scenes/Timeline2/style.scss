@@ -1,26 +1,40 @@
+@import '../../styles/common';
+
 .sticky-action-bar {
   position: fixed;
   top: 41px;
   right: 0;
   left: 0;
   background-color: white;
-
-  header {
-    max-width: 1380px;
-    margin: 0 auto;
-    padding: 0 40px;
-  }
 }
 
 .s-timeline {
   background-color: white;
 
   &__action-bar {
+    margin: 0 auto;
+    background-color: white;
+
+    &.sticky {
+      position: fixed;
+      top: 41px;
+      right: 0;
+      left: 0;
+      background-color: white;
+
+      .s-timeline__actions {
+        padding: 0 40px;
+      }
+    }
+  }
+
+  &__actions {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    height: 3rem;
-    background-color: white;
+    max-width: 1200px;
+    height: 2.625rem;
+    margin: 0 auto;
   }
 
   &__select-all {

@@ -3,23 +3,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { AvatarLetter } from '../../modules/avatar';
-import Icon from '../Icon';
 import './style.scss';
 
 const ParticipantsIcon = ({ labels, className }) => {
-  const hasMore = labels.length > 4;
-  const participants = labels.slice(0, hasMore ? 3 : 4);
-  const iconClass = `m-participants-icon__letter--${hasMore ? 4 : participants.length}`;
+  const hasMore = labels.length > 1;
+  const iconClass = 'm-participants-icon__letter--1';
 
   return (
     <div className={classnames(className, 'm-participants-icon')}>
       {
-        participants.map(participant => (
-          <AvatarLetter className={classnames('m-participants-icon__letter', iconClass)} word={participant} />
-        ))
-      }
-      {
-        hasMore && <Icon className={classnames('m-participants-icon__letter', iconClass)} type="plus" />
+        <AvatarLetter className={classnames('m-participants-icon__letter', iconClass)} word={hasMore ? '+' : labels[0]} />
       }
     </div>
   );
