@@ -23,6 +23,7 @@ import './style.scss';
 class Discussion extends Component {
   static propTypes = {
     discussionId: PropTypes.string.isRequired,
+    discussion: PropTypes.shape({}).isRequired,
     scrollToTarget: PropTypes.function,
     hash: PropTypes.string,
   };

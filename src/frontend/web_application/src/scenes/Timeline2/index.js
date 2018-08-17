@@ -19,6 +19,7 @@ const mapStateToProps = createSelector(
     user: userState.user,
   })
 );
+
 const mapDispatchToProps = dispatch => bindActionCreators({
   requestDiscussions,
   loadMore: loadMoreDiscussions,

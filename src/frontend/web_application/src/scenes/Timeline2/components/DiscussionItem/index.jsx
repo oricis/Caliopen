@@ -19,13 +19,13 @@ class DiscussionItem extends PureComponent {
     discussion: PropTypes.shape({
       excerpt: PropTypes.string.isRequired,
       discussion_id: PropTypes.string.isRequired,
-      length: PropTypes.number.isRequired,
+      total_count: PropTypes.number.isRequired,
       date_insert: PropTypes.string.isRequired,
       last_message_id: PropTypes.string.isRequired,
-      unread_count: PropTypes.string.isRequired,
+      unread_count: PropTypes.number.isRequired,
     }).isRequired,
     user: PropTypes.shape({
-      contact: PropTypes.string.isRequired,
+      contact: PropTypes.shape({ contact_id: PropTypes.string.isRequired }).isRequired,
     }).isRequired,
   };
 
@@ -57,7 +57,7 @@ class DiscussionItem extends PureComponent {
 
   render() {
     const {
-      excerpt, discussion_id: discussionId, length, date_insert: date,
+      excerpt, discussion_id: discussionId, total_count: total, date_insert: date,
       last_message_id: lastMessageId, unread_count: unreadCount,
     } = this.props.discussion;
 
@@ -66,7 +66,7 @@ class DiscussionItem extends PureComponent {
     return (
       <li
         id={`discussion-${discussionId}`}
-        data-nb-messages={length}
+        data-nb-messages={total}
         data-date={date}
         className={`s-discussion-item${unreadCount ? ' is-unread' : ''}`}
       >
