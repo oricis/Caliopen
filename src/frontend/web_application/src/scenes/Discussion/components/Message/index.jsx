@@ -15,7 +15,7 @@ class Message extends PureComponent {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
     onMessageRead: PropTypes.func.isRequired,
-    onDeleteMessage: PropTypes.func.isRequired,
+    onMessageDelete: PropTypes.func.isRequired,
   };
 
   isMail = () => {
@@ -25,13 +25,13 @@ class Message extends PureComponent {
   }
 
   render() {
-    const { message, onDeleteMessage, onMessageRead } = this.props;
+    const { message, onMessageDelete, onMessageRead } = this.props;
 
     return (this.isMail() ?
       <MailMessage
         message={message}
         onMessageRead={onMessageRead}
-        onMessageDelete={onDeleteMessage}
+        onMessageDelete={onMessageDelete}
       />
       :
       <InstantMessage message={message} onMessageRead={onMessageRead} />

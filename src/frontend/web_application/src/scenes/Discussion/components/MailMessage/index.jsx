@@ -31,22 +31,6 @@ class MailMessage extends Component {
     this.weakSrc = postalCard;
   }
 
-  onVisibilityChange = (isVisible) => {
-    const { message, onMessageRead } = this.props;
-
-    if (isVisible) {
-      this.setState({ needsScroll: false });
-
-      if (message.is_unread) { onMessageRead({ message }); }
-    }
-  }
-
-  handelDeleteMessage = () => {
-    const { message, onMessageDelete } = this.props;
-
-    onMessageDelete(message);
-  }
-
   getPiImg = ({ pi }) => (calcPiValue({ pi }) <= 50 ? postalCard : sealedEnvelope);
   getPiQualities = ({ pi }) => {
     /* eslint-disable no-nested-ternary */
@@ -62,6 +46,12 @@ class MailMessage extends Component {
     };
   }
 
+  handleMessageDelete = () => {
+    const { message, onMessageDelete } = this.props;
+
+    onMessageDelete({ message });
+  }
+
   strongSrc = '';
   weakSrc = '';
 
@@ -70,7 +60,7 @@ class MailMessage extends Component {
 
 
   render() {
-    const { message, onDeleteMessage, onMessageRead } = this.props;
+    const { message } = this.props;
     const pi = calcPiValue(message);
     const author = getAuthor(message);
     const recipients = this.formatRecipients(message);
@@ -147,7 +137,7 @@ class MailMessage extends Component {
           <Button className="m-message-action-container__action" icon="reply">
             Répondre
           </Button>
-          <Button className="m-message-action-container__action" onClick={this.handleDeleteMessage} icon="trash">
+          <Button className="m-message-action-container__action" onClick={this.handleMessageDelete} icon="trash">
             Supprimer
           </Button>
           <Button className="m-message-action-container__action">

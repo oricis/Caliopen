@@ -7,7 +7,7 @@ import { calcPiValue } from '../../../../services/pi';
 
 class MessageList extends Component {
   static propTypes = {
-    messages: PropTypes.shape([]).isRequired,
+    messages: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     scrollToTarget: PropTypes.func,
     isFetching: PropTypes.bool.isRequired,
     onMessageRead: PropTypes.func.isRequired,
