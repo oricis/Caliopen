@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
+import VisibilitySensor from 'react-visibility-sensor';
 import { calcPiValue } from '../../../../services/pi';
 import { AuthorAvatarLetter } from '../../../../modules/avatar';
 
@@ -9,7 +10,19 @@ import './style.scss';
 class InstantMessage extends PureComponent {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
+    onMessageRead: PropTypes.func.isRequired,
+    onDeleteMessage: PropTypes.func.isRequired,
   };
+
+  onVisibilityChange = (isVisible) => {
+    const { message, onMessageRead } = this.props;
+
+    if (isVisible) {
+      this.setState({ needsScroll: false });
+
+      if (message.is_unread) { onMessageRead({ message }); }
+    }
+  }
 
   getPiClass = pi => (pi <= 50 ? 'weak-pi' : 'strong-pi');
   extractAuthor = ({ participants }) => participants.find(participant => participant.type === 'From');
@@ -53,6 +66,7 @@ class InstantMessage extends PureComponent {
           </div>
         </aside>
         <div className="content">{message.body}</div>
+        <VisibilitySensor onChange={this.onVisibilityChange} scrollCheck scrollThrottle={100} />
       </article>
     );
   }

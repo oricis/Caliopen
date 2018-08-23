@@ -24,14 +24,20 @@ class Discussion extends Component {
     discussionId: PropTypes.string.isRequired,
     discussion: PropTypes.shape({}).isRequired,
     scrollToTarget: PropTypes.function,
+    isFetching: PropTypes.bool.isRequired,
+    hasMore: PropTypes.bool.isRequired,
     hash: PropTypes.string,
     messages: PropTypes.arrayOf(PropTypes.shape({})),
+    setMessageRead: PropTypes.func.isRequired,
+    deleteMessage: PropTypes.func.isRequired,
+    draft: PropTypes.shape({}),
   };
 
   static defaultProps = {
     scrollToTarget: undefined,
     hash: undefined,
     messages: [],
+    draft: {},
   };
 
   componentDidMount() {
@@ -39,8 +45,19 @@ class Discussion extends Component {
     this.props.requestMessages({ discussion_id: discussionId });
   }
 
+  handleDeleteMessage = ({ message }) => {
+    this.props.deleteMessage({ message });
+  }
+
+  handleSetMessageRead = ({ message }) => {
+    this.props.setMessageRead({ message, isRead: true });
+  };
+
   render() {
-    const { discussionId, messages, scrollToTarget } = this.props;
+    const {
+      discussionId, messages, isFetching, hash, scrollToTarget,
+      draft,
+    } = this.props;
 
     return (
       <section id={`discussion-${discussionId}`} className="s-discussion">
@@ -52,8 +69,16 @@ class Discussion extends Component {
             <Button className="m-message-list__action" icon="trash">Supprimer</Button>
           </header>
         </StickyNavBar>
-        <MessageList className="m-message-list" messages={messages} discussionId={discussionId} scrollTotarget={scrollToTarget} />
-        <QuickReplyForm />
+        <MessageList
+          className="m-message-list"
+          messages={messages}
+          isFetching={isFetching}
+          hash={hash}
+          onMessageRead={this.handleSetMessageRead}
+          onMessageDelete={this.handleDeleteMessage}
+          scrollTotarget={scrollToTarget}
+        />
+        <QuickReplyForm draft={draft} />
       </section>
     );
   }

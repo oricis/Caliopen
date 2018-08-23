@@ -1,10 +1,12 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import classnames from 'classnames';
+import VisibilitySensor from 'react-visibility-sensor';
 import { Button } from '../../../../components';
 import { getAuthor, getRecipients } from '../../../../services/message';
 import { calcPiValue, getPiClass } from '../../../../services/pi';
+
 import sealedEnvelope from './assets/sealed-envelope.png';
 import postalCard from './assets/postal-card.png';
 
@@ -17,14 +19,32 @@ import './style.scss';
  * @extends {PureComponent}
  * @prop {Object} message   - message data
  */
-class MailMessage extends PureComponent {
+class MailMessage extends Component {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
+    onMessageRead: PropTypes.func.isRequired,
+    onMessageDelete: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
     this.strongSrc = sealedEnvelope;
     this.weakSrc = postalCard;
+  }
+
+  onVisibilityChange = (isVisible) => {
+    const { message, onMessageRead } = this.props;
+
+    if (isVisible) {
+      this.setState({ needsScroll: false });
+
+      if (message.is_unread) { onMessageRead({ message }); }
+    }
+  }
+
+  handelDeleteMessage = () => {
+    const { message, onMessageDelete } = this.props;
+
+    onMessageDelete(message);
   }
 
   getPiImg = ({ pi }) => (calcPiValue({ pi }) <= 50 ? postalCard : sealedEnvelope);
@@ -48,15 +68,16 @@ class MailMessage extends PureComponent {
   formatRecipients = message => getRecipients(message)
     .map(participant => participant.label).join(', ');
 
+
   render() {
-    const { message } = this.props;
+    const { message, onDeleteMessage, onMessageRead } = this.props;
     const pi = calcPiValue(message);
     const author = getAuthor(message);
     const recipients = this.formatRecipients(message);
     const piQualities = this.getPiQualities(message);
 
     return (
-      <article className={classnames(['s-mail-message', getPiClass(pi)])}>
+      <article id={message.message_id} className={classnames(['s-mail-message', getPiClass(pi)])}>
         <div className="s-mail-message__wrapper">
           <aside className="s-mail-message__info">
             <div className="s-mail-message__pi">
@@ -120,12 +141,13 @@ class MailMessage extends PureComponent {
             )
             }
           </div>
+          <VisibilitySensor onChange={this.onVisibilityChange} scrollCheck scrollThrottle={100} />
         </div>
         <footer>
           <Button className="m-message-action-container__action" icon="reply">
             Répondre
           </Button>
-          <Button className="m-message-action-container__action" icon="trash">
+          <Button className="m-message-action-container__action" onClick={this.handleDeleteMessage} icon="trash">
             Supprimer
           </Button>
           <Button className="m-message-action-container__action">

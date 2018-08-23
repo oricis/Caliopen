@@ -2,6 +2,7 @@ import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { requestMessages, loadMore } from '../../store/modules/message';
+import { setMessageRead, deleteMessage } from '../../modules/message';
 import { createMessageCollectionStateSelector } from '../../store/selectors/message';
 import { UserSelector } from '../../store/selectors/user';
 import { withCurrentTab, withCloseTab } from '../../modules/tab';
@@ -27,7 +28,7 @@ const mapStateToProps = createSelector(
     return {
       discussionId,
       user: userState.user,
-      discussion: discussionState.discussionsById[discussionId],
+      discussion: discussionState.discussionsById[discussionId] || {},
       messages,
       isFetching,
       hasMore,
@@ -38,6 +39,8 @@ const mapStateToProps = createSelector(
 const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
   requestMessages: requestMessages.bind(null, 'discussion', getDiscussionIdFromProps(ownProps)),
   loadMore: loadMore.bind(null, 'discussion', getDiscussionIdFromProps(ownProps)),
+  setMessageRead,
+  deleteMessage,
 }, dispatch);
 
 export default compose(

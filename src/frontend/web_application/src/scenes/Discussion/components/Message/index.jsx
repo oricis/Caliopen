@@ -14,6 +14,8 @@ import MailMessage from '../MailMessage';
 class Message extends PureComponent {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
+    onMessageRead: PropTypes.func.isRequired,
+    onDeleteMessage: PropTypes.func.isRequired,
   };
 
   isMail = () => {
@@ -23,12 +25,16 @@ class Message extends PureComponent {
   }
 
   render() {
-    const { message } = this.props;
+    const { message, onDeleteMessage, onMessageRead } = this.props;
 
     return (this.isMail() ?
-      <MailMessage message={message} />
+      <MailMessage
+        message={message}
+        onMessageRead={onMessageRead}
+        onMessageDelete={onDeleteMessage}
+      />
       :
-      <InstantMessage message={message} />
+      <InstantMessage message={message} onMessageRead={onMessageRead} />
     );
   }
 }
