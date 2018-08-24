@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
+import { Trans } from 'lingui-react';
 import classnames from 'classnames';
 import VisibilitySensor from 'react-visibility-sensor';
+import withScrollTarget from '../../../../modules/scroll/hoc/scrollTarget';
 import { Button } from '../../../../components';
 import { getAuthor, getRecipients } from '../../../../services/message';
 import { calcPiValue, getPiClass } from '../../../../services/pi';
@@ -19,16 +21,33 @@ import './style.scss';
  * @extends {PureComponent}
  * @prop {Object} message   - message data
  */
+@withScrollTarget()
 class MailMessage extends Component {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
     onMessageRead: PropTypes.func.isRequired,
+    onMessageUnread: PropTypes.func.isRequired,
     onMessageDelete: PropTypes.func.isRequired,
+    scrollToMe: PropTypes.func,
+    forwardRef: PropTypes.func,
   };
+
+  static defaultProps = {
+    scrollToMe: undefined,
+    forwardRef: undefined,
+  }
 
   componentDidMount() {
     this.strongSrc = sealedEnvelope;
     this.weakSrc = postalCard;
+  }
+
+  onVisibilityChange = (isVisible) => {
+    const { message, onMessageRead } = this.props;
+
+    if (isVisible) {
+      if (message.is_unread) { onMessageRead({ message }); }
+    }
   }
 
   getPiImg = ({ pi }) => (calcPiValue({ pi }) <= 50 ? postalCard : sealedEnvelope);
@@ -52,6 +71,16 @@ class MailMessage extends Component {
     onMessageDelete({ message });
   }
 
+  handleToggle = () => {
+    const { message, onMessageRead, onMessageUnread } = this.props;
+
+    if (message.is_unread) {
+      onMessageRead({ message });
+    } else {
+      onMessageUnread({ message });
+    }
+  }
+
   strongSrc = '';
   weakSrc = '';
 
@@ -60,14 +89,14 @@ class MailMessage extends Component {
 
 
   render() {
-    const { message } = this.props;
+    const { message, forwardRef } = this.props;
     const pi = calcPiValue(message);
     const author = getAuthor(message);
     const recipients = this.formatRecipients(message);
     const piQualities = this.getPiQualities(message);
 
     return (
-      <article id={message.message_id} className={classnames(['s-mail-message', getPiClass(pi)])}>
+      <article id={`message-${message.message_id}`} ref={forwardRef} className={classnames(['s-mail-message', getPiClass(pi)])}>
         <div className="s-mail-message__wrapper">
           <aside className="s-mail-message__info">
             <div className="s-mail-message__pi">
@@ -106,7 +135,7 @@ class MailMessage extends Component {
               </div>
               <p className="s-mail-message__pi-metaphor">
                 Dans la vraie vie, ce message serait plus ou moins l&apos;équivalent d&apos;
-                une lettre cachetée portée par un messager fiable.
+                une carte postale visible par tous.
               </p>
             </div>
             <div className="from"><span className="direction">De&thinsp;:</span> <a href="">{author.label}</a></div>
@@ -140,8 +169,12 @@ class MailMessage extends Component {
           <Button className="m-message-action-container__action" onClick={this.handleMessageDelete} icon="trash">
             Supprimer
           </Button>
-          <Button className="m-message-action-container__action">
-            Marquer comme non lu
+          <Button className="m-message-action-container__action" onClick={this.handleToggle}>
+            {message.is_unread ? (
+              <Trans id="message-list.message.action.mark_as_read">Mark as read</Trans>
+            ) : (
+              <Trans id="message-list.message.action.mark_as_unread">Mark as unread</Trans>
+            )}
           </Button>
         </footer>
       </article>

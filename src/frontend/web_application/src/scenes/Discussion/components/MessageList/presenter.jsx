@@ -11,6 +11,7 @@ class MessageList extends Component {
     scrollToTarget: PropTypes.func,
     isFetching: PropTypes.bool.isRequired,
     onMessageRead: PropTypes.func.isRequired,
+    onMessageUnread: PropTypes.func.isRequired,
     onMessageDelete: PropTypes.func.isRequired,
     hash: PropTypes.string,
   };
@@ -34,7 +35,7 @@ class MessageList extends Component {
   render() {
     const {
       messages, isFetching, hash, scrollToTarget,
-      onMessageRead, onMessageDelete,
+      onMessageRead, onMessageUnread, onMessageDelete,
     } = this.props;
     const messageList = [];
 
@@ -54,6 +55,7 @@ class MessageList extends Component {
 
           messageList.push(<Message
             onMessageRead={onMessageRead}
+            onMessageUnread={onMessageUnread}
             onMessageDelete={onMessageDelete}
             message={message}
             key={message.message_id}

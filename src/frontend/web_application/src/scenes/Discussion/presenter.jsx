@@ -53,6 +53,10 @@ class Discussion extends Component {
     this.props.setMessageRead({ message, isRead: true });
   };
 
+  handleSetMessageUnread = ({ message }) => {
+    this.props.setMessageRead({ message, isRead: false });
+  }
+
   render() {
     const {
       discussionId, messages, isFetching, hash, scrollToTarget,
@@ -75,6 +79,7 @@ class Discussion extends Component {
           isFetching={isFetching}
           hash={hash}
           onMessageRead={this.handleSetMessageRead}
+          onMessageUnread={this.handleSetMessageUnread}
           onMessageDelete={this.handleDeleteMessage}
           scrollTotarget={scrollToTarget}
         />

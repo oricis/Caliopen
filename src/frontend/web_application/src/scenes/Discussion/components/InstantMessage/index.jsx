@@ -11,15 +11,14 @@ class InstantMessage extends PureComponent {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
     onMessageRead: PropTypes.func.isRequired,
-    onDeleteMessage: PropTypes.func.isRequired,
+    // onMessageUnread: PropTypes.func.isRequired,
+    // onDeleteMessage: PropTypes.func.isRequired,
   };
 
   onVisibilityChange = (isVisible) => {
     const { message, onMessageRead } = this.props;
 
     if (isVisible) {
-      this.setState({ needsScroll: false });
-
       if (message.is_unread) { onMessageRead({ message }); }
     }
   }
