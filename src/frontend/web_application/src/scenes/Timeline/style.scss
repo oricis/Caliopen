@@ -1,7 +1,6 @@
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
 .s-timeline {
-
   &__menu-bar {
     @include flex-grid-row($size: expand);
     align-items: center;

@@ -1,11 +1,27 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import InstantMessage from '../InstantMessage';
 import MailMessage from '../MailMessage';
 
-class Message extends PureComponent {
+/**
+ * Message Component
+ * Renders right Component based on Message type.
+ *
+ * @extends {PureComponent}
+ * @prop {Object} message       - message to render
+ * @prop {function} scrollToMe  - provided by scrollManager via parent Component
+ */
+class Message extends Component {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
+    onMessageRead: PropTypes.func.isRequired,
+    onMessageUnread: PropTypes.func.isRequired,
+    onMessageDelete: PropTypes.func.isRequired,
+    scrollToMe: PropTypes.func,
+  };
+
+  static defaultProps = {
+    scrollToMe: undefined,
   };
 
   isMail = () => {
@@ -15,12 +31,10 @@ class Message extends PureComponent {
   }
 
   render() {
-    const { message } = this.props;
-
     return (this.isMail() ?
-      <MailMessage message={message} />
+      <MailMessage {...this.props} />
       :
-      <InstantMessage message={message} />
+      <InstantMessage {...this.props} />
     );
   }
 }

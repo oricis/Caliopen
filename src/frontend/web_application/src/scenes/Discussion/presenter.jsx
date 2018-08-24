@@ -2,45 +2,66 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '../../components';
 import StickyNavBar from '../../layouts/Page/components/Navigation/components/StickyNavBar';
-import getClient from '../../services/api-client';
-import Message from './components/Message';
+import MessageList from './components/MessageList';
 import QuickReplyForm from './components/QuickReplyForm';
-import ProtocolSwitch from './components/ProtocolSwitch';
-import { calcPiValue } from '../../services/pi';
 
 import './style.scss';
 
+/**
+ * Discussion Component.
+ * Displays messages of a discussion and a reply form.
+ *
+ * @extends {Component}
+ *
+ * @prop {string} discussionId      - ID of discussion to display
+ * @prop {function} scrollToTarget  - function provided by scrollManager
+ * @prop {function} hash            - URL hash (fragment) provided by scrollManager
+ */
 class Discussion extends Component {
   static propTypes = {
+    requestMessages: PropTypes.func.isRequired,
+    loadMore: PropTypes.func.isRequired,
     discussionId: PropTypes.string.isRequired,
+    discussion: PropTypes.shape({}).isRequired,
+    scrollToTarget: PropTypes.function,
+    isFetching: PropTypes.bool.isRequired,
+    hasMore: PropTypes.bool.isRequired,
+    hash: PropTypes.string,
+    messages: PropTypes.arrayOf(PropTypes.shape({})),
+    setMessageRead: PropTypes.func.isRequired,
+    deleteMessage: PropTypes.func.isRequired,
+    draft: PropTypes.shape({}),
   };
 
-  constructor(props) {
-    super(props);
-
-    this.client = getClient();
-  }
-
-  state = {};
+  static defaultProps = {
+    scrollToTarget: undefined,
+    hash: undefined,
+    messages: [],
+    draft: {},
+  };
 
   componentDidMount() {
-    this.client.get(`/api/v2/messages?discussion_id=${this.props.discussionId}`)
-      .then(response => this.setState({
-        messages: response.data.messages.sort((a, b) =>
-          new Date(a.date_sort) - new Date(b.date_sort)),
-      }));
+    const { discussionId } = this.props;
+    this.props.requestMessages({ discussion_id: discussionId });
   }
 
-  findMessageBefore(message) {
-    const { messages } = this.state;
-    const index = messages.indexOf(message) - 1;
+  handleDeleteMessage = ({ message }) => {
+    this.props.deleteMessage({ message });
+  }
 
-    return messages[index];
+  handleSetMessageRead = ({ message }) => {
+    this.props.setMessageRead({ message, isRead: true });
+  };
+
+  handleSetMessageUnread = ({ message }) => {
+    this.props.setMessageRead({ message, isRead: false });
   }
 
   render() {
-    const { discussionId } = this.props;
-    const messageList = [];
+    const {
+      discussionId, messages, isFetching, hash, scrollToTarget,
+      draft,
+    } = this.props;
 
     return (
       <section id={`discussion-${discussionId}`} className="s-discussion">
@@ -52,21 +73,17 @@ class Discussion extends Component {
             <Button className="m-message-list__action" icon="trash">Supprimer</Button>
           </header>
         </StickyNavBar>
-        {this.state.messages && this.state.messages.reduce((acc, message) => {
-          if (message.type !== 'email' && messageList.length > 0
-            && this.findMessageBefore(message).type !== message.type) {
-            messageList.push(<ProtocolSwitch
-              newProtocol={message.type}
-              pi={calcPiValue(message)}
-              date={message.date}
-              key={`switch-${message.message_id}`}
-            />);
-          }
-          messageList.push(<Message message={message} key={message.message_id} />);
-
-          return messageList;
-        }, messageList)}
-        <QuickReplyForm />
+        <MessageList
+          className="m-message-list"
+          messages={messages}
+          isFetching={isFetching}
+          hash={hash}
+          onMessageRead={this.handleSetMessageRead}
+          onMessageUnread={this.handleSetMessageUnread}
+          onMessageDelete={this.handleDeleteMessage}
+          scrollTotarget={scrollToTarget}
+        />
+        <QuickReplyForm draft={draft} />
       </section>
     );
   }
