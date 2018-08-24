@@ -8,8 +8,9 @@ class NewDraft extends Component {
     i18n: PropTypes.shape({}).isRequired,
     draft: PropTypes.shape({}),
     message: PropTypes.shape({}),
-    currentTab: PropTypes.shape({}),
     internalId: PropTypes.string,
+    currentTab: PropTypes.shape({}).isRequired,
+    closeTab: PropTypes.func.isRequired,
     onEditDraft: PropTypes.func.isRequired,
     onSaveDraft: PropTypes.func.isRequired,
     onDeleteMessage: PropTypes.func.isRequired,
@@ -27,7 +28,6 @@ class NewDraft extends Component {
     draft: undefined,
     message: undefined,
     internalId: undefined,
-    currentTab: undefined,
   };
 
   state = {
@@ -100,12 +100,13 @@ class NewDraft extends Component {
 
   handleSend = async ({ draft }) => {
     const {
-      onSendDraft, internalId, message, currentTab, notifyError, i18n,
+      onSendDraft, internalId, message, closeTab, notifyError, i18n, currentTab,
     } = this.props;
     this.setState({ isSending: true });
 
     try {
-      await onSendDraft(currentTab, { draft, message, internalId });
+      await onSendDraft({ draft, message, internalId });
+      closeTab(currentTab);
     } catch (err) {
       notifyError({
         message: i18n._('draft.feedback.send-error', { defaults: 'Unable to send the message' }),

@@ -9,7 +9,12 @@
 
 .l-navigation {
   &__compose-item {
+    display: none;
     border-top: none;
+
+    &--sticky {
+      display: inline-block;
+    }
   }
   &__compose-btn {
     padding: 0 .5rem;

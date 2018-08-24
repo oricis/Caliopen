@@ -6,7 +6,7 @@ import './style.scss';
 
 class BackgroundImage extends PureComponent {
   static propTypes = {
-    children: PropTypes.element.isRequired,
+    children: PropTypes.node.isRequired,
     context: PropTypes.string.isRequired,
     className: PropTypes.string,
   };

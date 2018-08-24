@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { Brand, Link } from '../../components/';
 import { BackgroundImage } from '../../modules/pi';
+import { TabProvider } from '../../modules/tab';
 import { PageActions } from '../../modules/control';
 import { UserMenu } from '../../modules/user';
-import StickyNavBar from '../Page/components/Navigation/components/StickyNavBar';
+import { ScrollDetector } from '../../modules/scroll';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import PageContainer from '../PageContainer';
@@ -22,47 +24,52 @@ class Page extends Component {
     const { children } = this.props;
 
     return (
-      <BackgroundImage context="secure" className="l-page">
-        {/* <div className="header-device">
-          <PageContainer>
-            Vous consultez actuellement vos messages dans un environement que vous avez classé comme
-            <Link href="#">sûr</Link>, depuis un <Link href="#">appareil de confiance.</Link>
-          </PageContainer>
-        </div> */}
-        <div className="l-header">
-          <PageContainer>
-            <Link to="/"><Brand className="l-header__brand" /></Link>
-            {/* <div className="l-header__notif-menu"><Button href="#"><Icon type="bell"
-            /></Button></div> */}
-            <div className="l-header__user-menu">
-              <UserMenu />
-            </div>
-          </PageContainer>
-        </div>
-
-        <PageContainer>
-          <PageActions className="l-page__main-actions" />
-        </PageContainer>
-
-        <div className="l-navbar">
-          <StickyNavBar
-            className="l-navbar__wrapper"
-            stickyClassName="l-navbar__wrapper--sticky"
-          >
+      <TabProvider>
+        <BackgroundImage context="secure" className="l-page">
+          {/* <div className="header-device">
             <PageContainer>
-              <Navigation />
+              Vous consultez actuellement vos messages dans un environement que vous avez classé
+              comme <Link href="#">sûr</Link>, depuis un <Link href="#">appareil de
+              confiance.</Link>
             </PageContainer>
-          </StickyNavBar>
-        </div>
+          </div> */}
+          <div className="l-header">
+            <PageContainer>
+              <Link to="/"><Brand className="l-header__brand" /></Link>
+              {/* <div className="l-header__notif-menu"><Button href="#"><Icon type="bell"
+              /></Button></div> */}
+              <div className="l-header__user-menu">
+                <UserMenu />
+              </div>
+            </PageContainer>
+          </div>
 
-        <PageContainer>
-          {children}
-        </PageContainer>
+          <PageContainer>
+            <PageActions className="l-page__main-actions" />
+          </PageContainer>
 
-        <PageContainer>
-          <Footer />
-        </PageContainer>
-      </BackgroundImage>
+          <ScrollDetector
+            offset={136}
+            render={isSticky => (
+              <div className="l-navbar">
+                <div className={classnames('l-navbar__wrapper', { 'l-navbar__wrapper--sticky': isSticky })}>
+                  <PageContainer>
+                    <Navigation isSticky={isSticky} />
+                  </PageContainer>
+                </div>
+              </div>
+              )}
+          />
+
+          <PageContainer>
+            {children}
+          </PageContainer>
+
+          <PageContainer>
+            <Footer />
+          </PageContainer>
+        </BackgroundImage>
+      </TabProvider>
     );
   }
 }

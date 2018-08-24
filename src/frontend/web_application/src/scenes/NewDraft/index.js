@@ -4,14 +4,12 @@ import { connect } from 'react-redux';
 import { withI18n } from 'lingui-react';
 import { push, replace } from 'react-router-redux';
 import { clearDraft, syncDraft } from '../../store/modules/draft-message';
-import { removeTab, updateTab } from '../../store/modules/tab';
 import { newDraft, saveDraft, sendDraft } from '../../modules/draftMessage';
 import { uploadDraftAttachments, deleteDraftAttachment } from '../../modules/file';
 import { withNotification } from '../../modules/userNotify';
-import { withCurrentTab } from '../../hoc/tab';
+import { withCloseTab, withCurrentTab } from '../../modules/tab';
 import { updateTagCollection } from '../../modules/tags';
 import { deleteMessage } from '../../modules/message';
-import { currentTabSelector } from '../../store/selectors/tab';
 import Presenter from './presenter';
 
 const messageDraftSelector = state => state.draftMessage.draftsByInternalId;
@@ -87,14 +85,13 @@ const onDeleteAttachement = (internalId, i18n, message, { draft, attachment }) =
     }
   };
 
-const onSendDraft = (currentTab, { draft, message, internalId }) => async (dispatch) => {
+const onSendDraft = ({ draft, message, internalId }) => async (dispatch) => {
   try {
     const messageUpToDate = await dispatch(saveDraft({ draft, message, internalId }, {
       withThrottle: false,
     }));
     await dispatch(sendDraft({ draft: messageUpToDate }));
 
-    dispatch(removeTab(currentTab));
     dispatch(clearDraft({ internalId }));
 
     return dispatch(push(`/discussions/${messageUpToDate.discussion_id}`));
@@ -108,11 +105,8 @@ const onDeleteMessage = ({ message, internalId }) => dispatch =>
     .then(() => dispatch(clearDraft({ internalId })))
     .then(() => dispatch(push('/')));
 
-const redirectToNewDraft = ({ internalId }) => (dispatch, getState) => {
-  const currentTab = currentTabSelector(getState());
+const redirectToNewDraft = ({ internalId }) => (dispatch) => {
   const newPathname = `/compose/${internalId}`;
-  const tab = { ...currentTab, pathname: newPathname };
-  dispatch(updateTab({ tab, original: currentTab }));
 
   return dispatch(replace(newPathname));
 };
@@ -134,5 +128,6 @@ export default compose(
   withI18n(),
   withNotification(),
   withCurrentTab(),
+  withCloseTab(),
   connect(mapStateToProps, mapDispatchToProps)
 )(Presenter);

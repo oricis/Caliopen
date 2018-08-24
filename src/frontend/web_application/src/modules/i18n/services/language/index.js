@@ -1,4 +1,5 @@
-import { DEFAULT_LANGUAGE, AVAILABLE_LANGUAGES } from '../../';
+export const DEFAULT_LANGUAGE = 'en';
+export const AVAILABLE_LANGUAGES = ['en', 'fr', 'de'];
 
 export const getLanguage = (locales = []) => {
   const language = locales.reduce((acc, locale) => {

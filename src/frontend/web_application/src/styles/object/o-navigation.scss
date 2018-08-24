@@ -2,43 +2,13 @@
 
 $l-navigation-item__border-width: .25rem;
 $l-navigation__height: $co-component__height + 2 * $l-navigation-item__border-width;
-$l-navigation__margin-top: 6rem;
-$l-navigation__background-color: $co-color__bg__back--high;
-$l-navigation-item__background-color: $co-color__bg__back--higher;
 
 @mixin o-navigation-wrapper {
-  position: absolute;
-  top: 0;
   z-index: $l-z-index__navbar;
-  width: 100%;
-  max-width: $co-site-width;
-  height: $l-navigation__height;
-  margin-top: $l-navigation__margin-top;
-  background-color: $l-navigation__background-color;
 
   &--sticky {
     position: fixed;
-    top: $co-header__height;
-    margin-top: 0;
-    box-shadow: $co-shadow;
-  }
-}
-
-@mixin o-navigation-item {
-  margin-right: $l-navigation-item__border-width;
-  border-top: $l-navigation-item__border-width solid $l-navigation__background-color;
-  border-bottom: $l-navigation-item__border-width solid $l-navigation__background-color;
-  background-color: $l-navigation-item__background-color;
-  color: $co-color__primary--lower;
-
-  &--is-active {
-    border-top-color: $co-color__primary--low;
-    border-bottom-color: $co-color__fg__back;
-    background-color: $co-color__fg__back;
-  }
-
-  &--last,
-  &:last-child {
-    margin-right: 0;
+    top: 0;
+    width: 100%;
   }
 }

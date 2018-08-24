@@ -40,8 +40,8 @@ class Contact extends Component {
     contact: PropTypes.shape({}),
     user: PropTypes.shape({}),
     form: PropTypes.string.isRequired,
-    currentTab: PropTypes.shape({}),
-    removeTab: PropTypes.func.isRequired,
+    closeTab: PropTypes.func.isRequired,
+    currentTab: PropTypes.shape({}).isRequired,
     push: PropTypes.func.isRequired,
     pristine: PropTypes.bool.isRequired,
     submitting: PropTypes.bool.isRequired,
@@ -51,7 +51,6 @@ class Contact extends Component {
 
   static defaultProps = {
     contact: undefined,
-    currentTab: undefined,
     contactId: undefined,
     // birthday: undefined,
     user: undefined,
@@ -86,15 +85,6 @@ class Contact extends Component {
     }
   }
 
-  closeTab = () => {
-    const { currentTab } = this.props;
-    if (currentTab) {
-      return this.props.removeTab(currentTab);
-    }
-
-    return this.props.push('/contacts');
-  }
-
   handleOpenTags = () => {
     this.setState(prevState => ({
       ...prevState,
@@ -121,9 +111,9 @@ class Contact extends Component {
   }
 
   handleCancel = () => {
-    const { contactId } = this.props;
+    const { contactId, closeTab, currentTab } = this.props;
     if (!contactId) {
-      this.closeTab();
+      closeTab(currentTab);
     }
 
     return this.toggleEditMode();
@@ -131,33 +121,25 @@ class Contact extends Component {
 
   handleDelete = () => {
     const {
-      contactId, currentTab, push, removeTab, invalidateContacts,
+      contactId, push, closeTab, invalidateContacts, currentTab,
     } = this.props;
     this.setState({ isFetching: true });
     this.props.deleteContact({ contactId })
       .then(() => invalidateContacts())
       .then(() => this.setState({ isFetching: false }))
       .then(() => push('/contacts'))
-      .then(() => removeTab(currentTab));
+      .then(() => closeTab(currentTab));
   }
 
   createOrUpdateAction = async ({ contact, original }) => {
     const {
-      updateContact, requestContact, settings, createContact, currentTab, updateTab,
-      i18n, push, removeTab,
+      updateContact, requestContact, createContact,
+      push, closeTab, currentTab,
     } = this.props;
     if (contact.contact_id) {
       await updateContact({ contact, original });
 
-      const contactUpToDate = await requestContact(contact.contact_id);
-      const format = settings.contact_display_format;
-      const tab = {
-        ...currentTab,
-        label: formatName({ contact, format }) || i18n._('contact.profile.name_not_set', { defaults: '(N/A)' }),
-      };
-      updateTab({ tab, original: currentTab });
-
-      return contactUpToDate;
+      return requestContact(contact.contact_id);
     }
 
     const resultAction = await createContact({ contact });
@@ -165,7 +147,7 @@ class Contact extends Component {
     const { data: contactCreated } = await fetchLocation(location);
 
     push(`/contacts/${contactCreated.contact_id}`);
-    removeTab(currentTab);
+    closeTab(currentTab);
 
     return contactCreated;
   };

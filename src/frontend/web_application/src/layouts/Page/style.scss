@@ -8,6 +8,7 @@ $co-font-path: '../../fonts';
 @import '../../styles/common';
 @import '../../styles/object/o-navigation';
 
+$l-navigation__margin-top: 6rem;
 $l-body__content--padding-top: $l-navigation__height + $l-navigation__margin-top;
 
 .l-body {
