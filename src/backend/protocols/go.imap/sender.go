@@ -28,7 +28,6 @@ type smtpOrder struct {
 }
 
 func (s *Sender) SendDraft(msg *nats.Msg) error {
-	log.Info("SENDING DRAFT VIA REMOTE ACCOUNT")
 	var order smtpOrder
 	err := json.Unmarshal(msg.Data, &order)
 	if err != nil {
@@ -51,7 +50,6 @@ func (s *Sender) SendDraft(msg *nats.Msg) error {
 	//2. handle LMTP response
 
 	//3. if message sent, update IMAP status accordingly
-
 	s.NatsConn.Publish(msg.Reply, smtpReply.Data)
 	return nil
 }

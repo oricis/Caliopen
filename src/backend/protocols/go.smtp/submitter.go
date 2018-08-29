@@ -7,6 +7,7 @@ package caliopen_smtp
 import (
 	"bytes"
 	"crypto/tls"
+	"fmt"
 	broker "github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
@@ -110,22 +111,24 @@ func (lda *Lda) OutboundWorker() {
 					port,
 					outcoming.RemoteCredentials.User,
 					outcoming.RemoteCredentials.Password,
-					).Dial()
+				).Dial()
 				if dialErr != nil {
-					log.WithError(dialErr).Warn("outbound: unable to connect to remote MTA")
-					return
+					err = fmt.Errorf("outbound: unable to connect to remote MTA with error : %s", dialErr)
+				} else {
+					err = smtp_remote_sender.Send(from, to, &raw)
 				}
-				err = smtp_remote_sender.Send(from, to, &raw)
 			} else {
 				if !open {
 					var dialErr error
 					if smtp_sender, dialErr = d.Dial(); dialErr != nil {
-						log.WithError(dialErr).Warn("outbound: unable to connect to MTA")
-						return
+						err = fmt.Errorf("outbound: unable to connect to MTA with error : %s", dialErr)
+					} else {
+						open = true
 					}
-					open = true
 				}
-				err = smtp_sender.Send(from, to, &raw)
+				if err == nil {
+					err = smtp_sender.Send(from, to, &raw)
+				}
 			}
 
 			var ack DeliveryAck

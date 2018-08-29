@@ -91,7 +91,7 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 		}
 		//checks if identity is local or remote
 		//fetch credentials accordingly
-		firstIdentity, err := b.Store.RetrieveUserIdentity(m.User_id.String(), m.UserIdentities[0].String(), false) // handle one identity only for now
+		firstIdentity, err := b.Store.RetrieveUserIdentity(m.User_id.String(), m.UserIdentities[0].String(), true) // handle one identity only for now
 		if err != nil {
 			b.natsReplyError(msg, fmt.Errorf("broker failed to retrieve sender's identity with error : %s", err))
 			return resp, err
@@ -121,7 +121,7 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 			case resp, ok := <-out.Response:
 				if resp.Err || !ok || resp == nil {
 					log.WithError(err).Warn("outbound: delivery error from MTA")
-					b.natsReplyError(msg, errors.New("outbound: delivery error from MTA"))
+					b.natsReplyError(msg, errors.New("outbound: delivery error from MTA : " + resp.Response ))
 					return
 				} else {
 					err = b.SaveIndexSentEmail(resp)
