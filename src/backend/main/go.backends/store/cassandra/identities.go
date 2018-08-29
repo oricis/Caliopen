@@ -90,7 +90,7 @@ func (cb *CassandraBackend) RetrieveUserIdentity(userId, identityId string, with
 		return nil, err
 	}
 	userIdentity.UnmarshalCQLMap(m)
-	if withCredentials {
+	if withCredentials && userIdentity.Type != LocalIdentity {
 		cred, err := cb.RetrieveCredentials(userId, identityId)
 		if err != nil {
 			return nil, err
