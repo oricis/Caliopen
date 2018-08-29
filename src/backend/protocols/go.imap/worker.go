@@ -89,11 +89,11 @@ func NewWorker(config WorkerConfig, id uint8) (worker *Worker, err error) {
 
 func (worker *Worker) Start() error {
 	var err error
-	(*worker).NatsSubs[0], err = worker.NatsConn.QueueSubscribe(worker.Config.NatsTopicFetcher, worker.Config.NatsQueue, worker.natsMsgHandler)
+	(*worker).NatsSubs[0], err = worker.NatsConn.QueueSubscribe(worker.Config.NatsTopicFetcher, worker.Config.NatsQueue, worker.MsgHandler)
 	if err != nil {
 		return err
 	}
-	(*worker).NatsSubs[1], err = worker.NatsConn.QueueSubscribe(worker.Config.NatsTopicSender, worker.Config.NatsQueue, worker.natsMsgHandler)
+	(*worker).NatsSubs[1], err = worker.NatsConn.QueueSubscribe(worker.Config.NatsTopicSender, worker.Config.NatsQueue, worker.MsgHandler)
 	if err != nil {
 		return err
 	}
@@ -114,7 +114,7 @@ func (worker *Worker) Stop() {
 	log.Infof("worker %d stopped", worker.Id)
 }
 
-// natsMsgHandler parses message and launches appropriate goroutine to handle requested operations
+// MsgHandler parses message and launches appropriate goroutine to handle requested operations
 func (worker *Worker) MsgHandler(msg *nats.Msg) {
 	message := IMAPfetchOrder{}
 	err := json.Unmarshal(msg.Data, &message)
