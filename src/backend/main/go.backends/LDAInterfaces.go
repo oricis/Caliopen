@@ -27,6 +27,8 @@ type LDAStore interface {
 	GetAttachment(uri string) (file io.Reader, err error)
 	DeleteAttachment(uri string) error
 	AttachmentExists(uri string) bool
+
+	RetrieveUserIdentity(userId, identityId string, withCredentials bool) (*UserIdentity, error)
 }
 
 type LDAIndex interface {

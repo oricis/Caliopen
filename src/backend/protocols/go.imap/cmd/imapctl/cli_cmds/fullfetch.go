@@ -72,7 +72,7 @@ func fullFetch(cmd *cobra.Command, args []string) {
 	}
 	defer nc.Close()
 
-	msg, err := json.Marshal(IMAPfetchOrder{
+	msg, err := json.Marshal(IMAPorder{
 		Order:    "fullfetch",
 		UserId:   id.UserId.String(),
 		Server:   id.Server,

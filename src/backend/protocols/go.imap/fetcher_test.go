@@ -20,7 +20,7 @@ func TestSendFetchNatsOrder(t *testing.T) {
 	}
 	defer nc.Close()
 
-	order := IMAPfetchOrder{
+	order := IMAPorder{
 		Order:    "fetch",
 		UserId:   "2b68fc50-f6e2-4c3a-b81c-50c5a3de594e",
 		RemoteId: "user@remote.imap",

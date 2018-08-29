@@ -43,6 +43,11 @@ LDAConfig:
       buckets:
         raw_messages: caliopen-raw-messages                # bucket name to put raw messages to
         temporary_attachments: caliopen-tmp-attachments    # bucket name to store draft attachments
+    use_vault: true
+    vault_settings:
+      url: http://vault:8200
+      username: imapworker                                 # password authentication for now ; later we'll make use of more secure auth methods (TLScert, kubernetes…)
+      password: a_weak_password
   index_name: elasticsearch                              # backend to index messages (inbound & outbound)
   index_settings:
     urls: # many allowed

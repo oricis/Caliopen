@@ -68,7 +68,7 @@ func syncRemote(cmd *cobra.Command, args []string) {
 	}
 	defer nc.Close()
 
-	msg, err := json.Marshal(IMAPfetchOrder{
+	msg, err := json.Marshal(IMAPorder{
 		Login:    id.Login,
 		Mailbox:  id.Mailbox,
 		Order:    "sync",

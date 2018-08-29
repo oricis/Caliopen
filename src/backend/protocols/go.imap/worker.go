@@ -84,16 +84,17 @@ func NewWorker(config WorkerConfig, id uint8) (worker *Worker, err error) {
 		}
 	}
 
+	// init Sender
 	return &w, nil
 }
 
 func (worker *Worker) Start() error {
 	var err error
-	(*worker).NatsSubs[0], err = worker.NatsConn.QueueSubscribe(worker.Config.NatsTopicFetcher, worker.Config.NatsQueue, worker.MsgHandler)
+	(*worker).NatsSubs[0], err = worker.NatsConn.QueueSubscribe(worker.Config.NatsTopicFetcher, worker.Config.NatsQueue, worker.natsMsgHandler)
 	if err != nil {
 		return err
 	}
-	(*worker).NatsSubs[1], err = worker.NatsConn.QueueSubscribe(worker.Config.NatsTopicSender, worker.Config.NatsQueue, worker.MsgHandler)
+	(*worker).NatsSubs[1], err = worker.NatsConn.QueueSubscribe(worker.Config.NatsTopicSender, worker.Config.NatsQueue, worker.natsMsgHandler)
 	if err != nil {
 		return err
 	}
@@ -115,8 +116,8 @@ func (worker *Worker) Stop() {
 }
 
 // MsgHandler parses message and launches appropriate goroutine to handle requested operations
-func (worker *Worker) MsgHandler(msg *nats.Msg) {
-	message := IMAPfetchOrder{}
+func (worker *Worker) natsMsgHandler(msg *nats.Msg) {
+	message := IMAPorder{}
 	err := json.Unmarshal(msg.Data, &message)
 	if err != nil {
 		log.WithError(err).Errorf("Unable to unmarshal message from NATS. Payload was <%s>", string(msg.Data))
@@ -135,9 +136,13 @@ func (worker *Worker) MsgHandler(msg *nats.Msg) {
 			Lda:   worker.Lda,
 		}
 		go fetcher.FetchRemoteToLocal(message)
-	case "send": // order sent by api2 to send a draft via an IMAP remote identity
-	sender := Sender{}
-	go sender.SendDraft(IMAPsendOrder{})
+	case "deliver": // order sent by api2 to send a draft via remote SMTP/IMAP
+	sender := Sender{
+		NatsConn: worker.NatsConn,
+		NatsMessage: msg,
+		OutSMTPtopic: "outboundSMTP", //TODO: get it from config file
+	}
+	go sender.SendDraft(msg)
 	case "test":
 		log.Info("Order « test » received")
 	}

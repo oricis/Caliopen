@@ -40,7 +40,7 @@ const (
 // connects to remote IMAP server to fetch new mails,
 // adds X-Fetched-Imap headers before forwarding mails to lda,
 // updates last sync data for identity in db.
-func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
+func (f *Fetcher) SyncRemoteWithLocal(order IMAPorder) error {
 
 	log.Infof("[Fetcher] will fetch mails for remote %s", order.RemoteId)
 
@@ -153,7 +153,7 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 }
 
 // FetchRemoteToLocal blindly fetches all mails from remote without retrieving/saving any state in UserIdentity
-func (f *Fetcher) FetchRemoteToLocal(order IMAPfetchOrder) error {
+func (f *Fetcher) FetchRemoteToLocal(order IMAPorder) error {
 	userId := UserIdentity{
 		UserId: UUID(uuid.FromStringOrNil(order.UserId)),
 		Infos: map[string]string{
