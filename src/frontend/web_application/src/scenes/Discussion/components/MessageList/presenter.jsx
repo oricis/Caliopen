@@ -5,20 +5,25 @@ import Message from '../../components/Message';
 import ProtocolSwitch from '../../components/ProtocolSwitch';
 import { calcPiValue } from '../../../../services/pi';
 
+import './style.scss';
+
 class MessageList extends Component {
   static propTypes = {
     messages: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    loadMore: PropTypes.node,
     scrollToTarget: PropTypes.func,
     isFetching: PropTypes.bool.isRequired,
-    onMessageRead: PropTypes.func.isRequired,
+    onMessageRead: PropTypes.func.isRequire,
     onMessageUnread: PropTypes.func.isRequired,
     onMessageDelete: PropTypes.func.isRequired,
+    user: PropTypes.shape({}).isRequired,
     hash: PropTypes.string,
   };
 
   static defaultProps = {
     scrollToTarget: undefined,
     hash: undefined,
+    loadMore: null,
   };
 
   /**
@@ -36,12 +41,16 @@ class MessageList extends Component {
     const {
       messages, isFetching, hash, scrollToTarget,
       onMessageRead, onMessageUnread, onMessageDelete,
+      loadMore, user,
     } = this.props;
     const messageList = [];
 
     return (
       <div className="m-message-list">
         <Spinner className="m-message-list__spinner" isLoading={isFetching} />
+        <div className="m-message-list__load-more">
+          {loadMore}
+        </div>
         {(messages.length > 0) && messages.reduce((acc, message) => {
           if (message.type !== 'email' && messageList.length > 0
             && this.findMessageBefore(message).type !== message.type) {
@@ -60,6 +69,7 @@ class MessageList extends Component {
             message={message}
             key={message.message_id}
             scrollToMe={message.message_id === hash ? scrollToTarget : undefined}
+            user={user}
           />);
 
           return messageList;

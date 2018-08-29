@@ -6,7 +6,8 @@ import classnames from 'classnames';
 import VisibilitySensor from 'react-visibility-sensor';
 import withScrollTarget from '../../../../modules/scroll/hoc/scrollTarget';
 import { Button } from '../../../../components';
-import { getAuthor, getRecipients } from '../../../../services/message';
+import MessageAttachments from '../../../MessageList/components/MessageAttachments';
+import { getAuthor, getRecipients, isParticipantUser, isUserRecipient } from '../../../../services/message';
 import { calcPiValue, getPiClass } from '../../../../services/pi';
 
 import sealedEnvelope from './assets/sealed-envelope.png';
@@ -30,6 +31,7 @@ class MailMessage extends Component {
     onMessageDelete: PropTypes.func.isRequired,
     scrollToMe: PropTypes.func,
     forwardRef: PropTypes.func,
+    user: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
@@ -84,15 +86,22 @@ class MailMessage extends Component {
   strongSrc = '';
   weakSrc = '';
 
-  formatRecipients = message => getRecipients(message)
-    .map(participant => participant.label).join(', ');
+  formatRecipients = () => {
+    const { message, user } = this.props;
+    const prefix = (user && isUserRecipient(message, user)) ? 'Vous et ' : '';
 
+    const otherRecipients = getRecipients(message)
+      .filter(participant => !isParticipantUser(participant, user))
+      .map(participant => participant.label).join(', ');
+
+    return `${prefix}${otherRecipients}`;
+  }
 
   render() {
     const { message, forwardRef } = this.props;
     const pi = calcPiValue(message);
     const author = getAuthor(message);
-    const recipients = this.formatRecipients(message);
+    const recipients = this.formatRecipients();
     const piQualities = this.getPiQualities(message);
 
     return (
@@ -159,15 +168,18 @@ class MailMessage extends Component {
               <pre className="content">{message.body}</pre>
             )
             }
+            <div className="m-message__attachments">
+              <MessageAttachments message={message} />
+            </div>
           </div>
           <VisibilitySensor onChange={this.onVisibilityChange} scrollCheck scrollThrottle={100} />
         </div>
         <footer>
           <Button className="m-message-action-container__action" icon="reply">
-            Répondre
+            <Trans id="message-list.message.action.reply">Répondre</Trans>
           </Button>
           <Button className="m-message-action-container__action" onClick={this.handleMessageDelete} icon="trash">
-            Supprimer
+            <Trans id="message-list.message.action.delete">Supprimer</Trans>
           </Button>
           <Button className="m-message-action-container__action" onClick={this.handleToggle}>
             {message.is_unread ? (

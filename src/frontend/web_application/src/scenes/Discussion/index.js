@@ -7,6 +7,7 @@ import { createMessageCollectionStateSelector } from '../../store/selectors/mess
 import { UserSelector } from '../../store/selectors/user';
 import { withCurrentTab, withCloseTab } from '../../modules/tab';
 import { sortMessages } from '../../services/message';
+import { getUser } from '../../modules/user/actions/getUser';
 import withScrollManager from '../../modules/scroll/hoc/scrollManager';
 import Discussion from './presenter';
 
@@ -27,7 +28,7 @@ const mapStateToProps = createSelector(
 
     return {
       discussionId,
-      user: userState.user,
+      user: userState.user || getUser,
       discussion: discussionState.discussionsById[discussionId] || {},
       messages,
       isFetching,

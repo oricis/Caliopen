@@ -18,6 +18,7 @@ class Message extends Component {
     onMessageUnread: PropTypes.func.isRequired,
     onMessageDelete: PropTypes.func.isRequired,
     scrollToMe: PropTypes.func,
+    user: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {

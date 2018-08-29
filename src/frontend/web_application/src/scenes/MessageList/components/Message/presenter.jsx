@@ -31,7 +31,7 @@ class Message extends Component {
 
   static defaultProps = {
     isMessageFromUser: false,
-    user: undefined,
+    user: {},
     scrollToMe: undefined,
     forwardRef: undefined,
   }
