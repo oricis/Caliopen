@@ -171,7 +171,7 @@ func MarshalImap(message *imap.Message, xHeaders ImapFetcherHeaders) (mail *Emai
 
 // buildXheaders builds custom X-Fetched headers
 // with provider specific information
-func buildXheaders(tlsConn *tls.Conn, imapClient *client.Client, rId *UserIdentity, box *imapBox, message *imap.Message, provider Provider) (xHeaders ImapFetcherHeaders) {
+func buildXheaders(tlsConn *tls.Conn, rId *UserIdentity, box *imapBox, message *imap.Message, provider Provider) (xHeaders ImapFetcherHeaders) {
 	connState := tlsConn.ConnectionState()
 
 	var proto string
@@ -240,4 +240,12 @@ func fetch(imapClient *client.Client, provider Provider, from, to uint32, ch cha
 	}
 
 	return imapClient.UidFetch(seqset, items, ch)
+}
+
+// uploadSentMessage uploads a RFC 5322 mail to relevent `sent` mailbox and flags it has seen
+func uploadSentMessage(imapClient *client.Client, mail string, date time.Time) error {
+	//1. list mailboxes to find which one is for `sent` messages
+	sentMbx := "Sent"
+	//2. append mail to mailbox
+	return imapClient.Append(sentMbx, []string{imap.SeenFlag}, date, bytes.NewBufferString(mail))
 }

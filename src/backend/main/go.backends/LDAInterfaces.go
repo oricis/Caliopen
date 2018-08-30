@@ -18,6 +18,7 @@ type LDAStore interface {
 	CreateMessage(msg *Message) error
 
 	StoreRawMessage(msg RawMessage) (err error)
+	GetRawMessage(raw_message_id string) (raw_message RawMessage, err error)
 	SetDeliveredStatus(raw_msg_id string, delivered bool) error
 	UpdateMessage(msg *Message, fields map[string]interface{}) error // 'fields' are the struct fields names that have been modified
 	CreateThreadLookup(user_id, discussion_id UUID, external_msg_id string) error
@@ -29,6 +30,7 @@ type LDAStore interface {
 	AttachmentExists(uri string) bool
 
 	RetrieveUserIdentity(userId, identityId string, withCredentials bool) (*UserIdentity, error)
+	UpdateUserIdentity(userIdentity *UserIdentity, fields map[string]interface{}) error
 }
 
 type LDAIndex interface {

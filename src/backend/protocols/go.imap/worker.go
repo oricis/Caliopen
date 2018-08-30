@@ -22,7 +22,7 @@ type Worker struct {
 	Lda      *Lda
 	NatsConn *nats.Conn
 	NatsSubs  []*nats.Subscription
-	Store    backends.IdentityStorage
+	Store    backends.LDAStore
 }
 
 // NewWorker loads config, checks for errors then returns a worker ready to start.
@@ -141,6 +141,7 @@ func (worker *Worker) natsMsgHandler(msg *nats.Msg) {
 		NatsConn: worker.NatsConn,
 		NatsMessage: msg,
 		OutSMTPtopic: "outboundSMTP", //TODO: get it from config file
+		Store: worker.Store,
 	}
 	go sender.SendDraft(msg)
 	case "test":

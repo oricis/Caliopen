@@ -18,7 +18,7 @@ import (
 )
 
 type Fetcher struct {
-	Store backends.IdentityStorage
+	Store backends.LDAStore
 	Lda   *Lda
 }
 
@@ -206,7 +206,7 @@ func (f *Fetcher) fetchMails(userId *UserIdentity, box *imapBox, ch chan *Email)
 	newMessages := make(chan *imap.Message, 10)
 	go fetchMailbox(box, imapClient, provider, newMessages) //TODO : errors handling
 	for msg := range newMessages {
-		mail, err := MarshalImap(msg, buildXheaders(tlsConn, imapClient, userId, box, msg, provider))
+		mail, err := MarshalImap(msg, buildXheaders(tlsConn, userId, box, msg, provider))
 		if err != nil {
 			//todo
 			continue
@@ -244,7 +244,7 @@ func (f *Fetcher) syncMails(userId *UserIdentity, box *imapBox, ch chan *Email) 
 
 	// read new messages coming from imap chan and write to lda chan
 	for msg := range newMessages {
-		xHeaders := buildXheaders(tlsConn, imapClient, userId, box, msg, provider)
+		xHeaders := buildXheaders(tlsConn, userId, box, msg, provider)
 		mail, err := MarshalImap(msg, xHeaders)
 		if err != nil {
 			//todo

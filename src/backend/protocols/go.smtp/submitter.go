@@ -101,7 +101,7 @@ func (lda *Lda) OutboundWorker() {
 			var raw bytes.Buffer
 			raw.WriteString((&outcoming.EmailMessage.Email.Raw).String())
 
-			// send via local or remote MTA, occardingly
+			// send via local or remote MTA, accordingly
 			if outcoming.RemoteCredentials != nil {
 				server := strings.Split(outcoming.RemoteCredentials.Host, ":")
 				port, _ := strconv.Atoi(server[1])
