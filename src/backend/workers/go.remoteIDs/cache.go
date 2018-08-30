@@ -32,6 +32,7 @@ func (p *Poller) updateCache() (added, removed, updated map[string]bool, err err
 		return
 	}
 
+	p.cacheMux.Lock()
 	for remote := range remotes {
 		if p.statusTypeOK(remote) {
 			idkey := remote.UserId.String() + remote.Id.String()
@@ -70,6 +71,7 @@ func (p *Poller) updateCache() (added, removed, updated map[string]bool, err err
 			removed[key] = true
 		}
 	}
+	p.cacheMux.Unlock()
 	return
 }
 
