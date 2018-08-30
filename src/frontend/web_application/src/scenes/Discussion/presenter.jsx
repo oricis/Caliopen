@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
 import { Trans } from 'lingui-react';
+import classnames from 'classnames';
 import { Button } from '../../components';
 import StickyNavBar from '../../layouts/Page/components/Navigation/components/StickyNavBar';
 import MessageList from './components/MessageList';
 import ReplyForm from '../MessageList/components/ReplyForm';
 import ReplyExcerpt from '../MessageList/components/ReplyExcerpt';
 import { withCloseTab } from '../../modules/tab';
+import { addEventListener } from '../../services/event-manager';
 
 import './style.scss';
 
@@ -32,6 +34,7 @@ class Discussion extends Component {
     draft: PropTypes.shape({}),
     currentTab: PropTypes.shape({}),
     closeTab: PropTypes.func.isRequired,
+    getUser: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -43,9 +46,43 @@ class Discussion extends Component {
     user: undefined,
   };
 
+  state = {
+    isDraftFocus: false,
+  };
+
   componentDidMount() {
-    const { discussionId } = this.props;
-    this.props.requestMessages({ discussion_id: discussionId });
+    const {
+      discussionId, requestMessages, getUser, user,
+    } = this.props;
+
+    if (!user) {
+      getUser();
+    }
+
+    requestMessages({ discussion_id: discussionId });
+
+    this.throttledLoadMore = throttle(
+      () => this.props.loadMore(),
+      LOAD_MORE_THROTTLE,
+      { trailing: false }
+    );
+
+    this.unsubscribeClickEvent = addEventListener('click', (ev) => {
+      const { target } = ev;
+      const testClick = (tg, node) => node === tg || node.contains(tg);
+
+      if (
+        !(this.replyFormRef && testClick(target, this.replyFormRef)) &&
+        !(this.replyExcerptRef && testClick(target, this.replyExcerptRef))
+      ) {
+        if (this.state.isDraftFocus) {
+          ev.preventDefault();
+        }
+        this.setState({
+          isDraftFocus: false,
+        });
+      }
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -55,12 +92,6 @@ class Discussion extends Component {
     if (didInvalidate && !isFetching) {
       this.props.requestMessages({ discussion_id: nextProps.discussionId });
     }
-
-    this.throttledLoadMore = throttle(
-      () => this.props.loadMore(),
-      LOAD_MORE_THROTTLE,
-      { trailing: false }
-    );
 
     if (!didInvalidate && !isFetching && messages.length === 0) {
       this.props.closeTab({ currentTab });
@@ -105,6 +136,7 @@ class Discussion extends Component {
       discussionId, messages, isFetching, hash, scrollToTarget,
       user,
     } = this.props;
+    const { isDraftFocus } = this.state;
 
     return (
       <section id={`discussion-${discussionId}`} className="s-discussion">
@@ -128,19 +160,23 @@ class Discussion extends Component {
           scrollTotarget={scrollToTarget}
           user={user}
         />
-        <ReplyForm
-          scrollToMe={hash === 'reply' ? scrollToTarget : undefined}
-          discussionId={discussionId}
-          internalId={discussionId}
-          onFocus={this.handleFocusDraft}
-          draftFormRef={(node) => { this.replyFormRef = node; }}
-        />
-        <ReplyExcerpt
-          discussionId={discussionId}
-          internalId={discussionId}
-          onFocus={this.handleFocusDraft}
-          draftExcerptRef={(node) => { this.replyExcerptRef = node; }}
-        />
+        <div className={classnames('m-message-list__reply-excerpt', { 'm-message-list__reply-excerpt--close': isDraftFocus })}>
+          <ReplyForm
+            scrollToMe={hash === 'reply' ? scrollToTarget : undefined}
+            discussionId={discussionId}
+            internalId={discussionId}
+            onFocus={this.handleFocusDraft}
+            draftFormRef={(node) => { this.replyFormRef = node; }}
+          />
+        </div>
+        <div className={classnames('m-message-list__reply', { 'm-message-list__reply--open': isDraftFocus })}>
+          <ReplyExcerpt
+            discussionId={discussionId}
+            internalId={discussionId}
+            onFocus={this.handleFocusDraft}
+            draftExcerptRef={(node) => { this.replyExcerptRef = node; }}
+          />
+        </div>
       </section>
     );
   }

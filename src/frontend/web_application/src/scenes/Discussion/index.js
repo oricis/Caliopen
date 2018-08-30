@@ -28,7 +28,7 @@ const mapStateToProps = createSelector(
 
     return {
       discussionId,
-      user: userState.user || getUser,
+      user: userState.user,
       discussion: discussionState.discussionsById[discussionId] || {},
       messages,
       isFetching,
@@ -42,6 +42,7 @@ const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
   loadMore: loadMore.bind(null, 'discussion', getDiscussionIdFromProps(ownProps)),
   setMessageRead,
   deleteMessage,
+  getUser,
 }, dispatch);
 
 export default compose(

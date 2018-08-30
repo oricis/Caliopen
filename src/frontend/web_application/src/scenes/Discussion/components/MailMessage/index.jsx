@@ -31,12 +31,13 @@ class MailMessage extends Component {
     onMessageDelete: PropTypes.func.isRequired,
     scrollToMe: PropTypes.func,
     forwardRef: PropTypes.func,
-    user: PropTypes.shape({}).isRequired,
+    user: PropTypes.shape({}),
   };
 
   static defaultProps = {
     scrollToMe: undefined,
     forwardRef: undefined,
+    user: {},
   }
 
   componentDidMount() {
