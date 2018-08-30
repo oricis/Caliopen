@@ -106,10 +106,10 @@ func (cb *CassandraBackend) RetrieveUserIdentity(userId, identityId string, with
 
 func (cb *CassandraBackend) UpdateUserIdentity(userIdentity *UserIdentity, fields map[string]interface{}) (err error) {
 	//remove Credentials from userIdentity and process this special property apart
-	if cred, ok := fields["Credentials"].(Credentials); ok {
+	if cred, ok := fields["Credentials"].(*Credentials); ok {
 		(*userIdentity).Credentials = nil
 		delete(fields, "Credentials")
-		err = cb.UpdateCredentials(userIdentity.UserId.String(), userIdentity.Id.String(), cred)
+		err = cb.UpdateCredentials(userIdentity.UserId.String(), userIdentity.Id.String(), *cred)
 		if err != nil {
 			log.WithError(err).Warn("[CassandraBackend] UpdateUserIdentity failed to update credentials")
 		}
