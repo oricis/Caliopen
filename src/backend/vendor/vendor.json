@@ -373,194 +373,40 @@
 			"revisionTime": "2017-05-04T19:02:34Z"
 		},
 		{
-			"checksumSHA1": "SMyFe/KdvrRCjOX7E2nmPcN6r5s=",
-			"path": "github.com/hashicorp/vault",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"path": "github.com/hashicorp/vault...",
-			"revision": ""
-		},
-		{
-			"checksumSHA1": "+B4wuJNerIUKNAVzld7CmMaNW5A=",
+			"checksumSHA1": "JSf2CkOiPHlxi6hGFvjlZuac+LY=",
 			"path": "github.com/hashicorp/vault/api",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "HUs03RftXBP+wXauKCDlcJWcAqc=",
-			"path": "github.com/hashicorp/vault/helper/base62",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "8QSMEsql7CSS1rElk9Giv6jNzzU=",
-			"path": "github.com/hashicorp/vault/helper/certutil",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "X2Fo9xbWKrlfs4jgYoaBAM81GCM=",
-			"path": "github.com/hashicorp/vault/helper/cidrutil",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
+			"revision": "85d7ffea83a62f6c9cacfbce37948044bfed2b1d",
+			"revisionTime": "2018-06-14T04:06:19Z"
 		},
 		{
 			"checksumSHA1": "bSdPFOHaTwEvM4PIvn0PZfn75jM=",
 			"path": "github.com/hashicorp/vault/helper/compressutil",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "QNGGvSYtwk6VCkj4laZPjM2301E=",
-			"path": "github.com/hashicorp/vault/helper/consts",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "fuAZjiabZXVJ7ORLb0vjLOT4+iU=",
-			"path": "github.com/hashicorp/vault/helper/errutil",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
+			"revision": "85d7ffea83a62f6c9cacfbce37948044bfed2b1d",
+			"revisionTime": "2018-06-14T04:06:19Z"
 		},
 		{
 			"checksumSHA1": "RlqPBLOexQ0jj6jomhiompWKaUg=",
 			"path": "github.com/hashicorp/vault/helper/hclutil",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
+			"revision": "85d7ffea83a62f6c9cacfbce37948044bfed2b1d",
+			"revisionTime": "2018-06-14T04:06:19Z"
 		},
 		{
 			"checksumSHA1": "POgkM3GrjRFw6H3sw95YNEs552A=",
 			"path": "github.com/hashicorp/vault/helper/jsonutil",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
+			"revision": "85d7ffea83a62f6c9cacfbce37948044bfed2b1d",
+			"revisionTime": "2018-06-14T04:06:19Z"
 		},
 		{
-			"checksumSHA1": "Dm8C/NfkwxHIpq27XJk1GOsRnus=",
-			"path": "github.com/hashicorp/vault/helper/kdf",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "3KQ7sBGjOaklMWf4+Smj3IeLTRM=",
-			"path": "github.com/hashicorp/vault/helper/keysutil",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "T4hMawSy+zdENp7SJABO8RN7v3s=",
-			"path": "github.com/hashicorp/vault/helper/ldaputil",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "kPLxfKd5d4TkHZLdtAs73hMrCfQ=",
-			"path": "github.com/hashicorp/vault/helper/locksutil",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "53QmBPtb7u9ZMyEApCGOISsLqbs=",
-			"path": "github.com/hashicorp/vault/helper/logging",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "0hby54fDnmZc1vWBF2TUCHCnLdc=",
-			"path": "github.com/hashicorp/vault/helper/mlock",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "HA2MV/2XI0HcoThSRxQCaBZR2ps=",
+			"checksumSHA1": "zPHu2orsbQqIuiuQ/8elJIUR2Po=",
 			"path": "github.com/hashicorp/vault/helper/parseutil",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
+			"revision": "bd0b7f1861c90d162d3d461e79a93cf0f331cac4",
+			"revisionTime": "2018-06-15T13:09:27Z"
 		},
 		{
-			"checksumSHA1": "nXywkP5Y21j4W23POAKiQWGT5A0=",
-			"path": "github.com/hashicorp/vault/helper/password",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "lcB1+PpXYpMmK9P+Bf0EuaTVi1c=",
-			"path": "github.com/hashicorp/vault/helper/pathmanager",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "duVuK2lg3M9jypeWCPZJXSwPjbg=",
-			"path": "github.com/hashicorp/vault/helper/pluginutil",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "+SkWW16hxISJg/mgsfCFFUBo+SM=",
-			"path": "github.com/hashicorp/vault/helper/policyutil",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "Jo4HS6vAXhZgkBO+LgozpIUlFfQ=",
-			"path": "github.com/hashicorp/vault/helper/salt",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "HdVuYhZ5TuxeIFqi0jy2GHW7a4o=",
+			"checksumSHA1": "iwXQDzHqTFsjJW2ehYae0oLo2Ts=",
 			"path": "github.com/hashicorp/vault/helper/strutil",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "3j8u5mMkRfs+YG0viUIFPqDWeJc=",
-			"path": "github.com/hashicorp/vault/helper/tlsutil",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "DHmzgHmOi0n4TzjFlJPiVmfngYg=",
-			"path": "github.com/hashicorp/vault/helper/useragent",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "GAi7Opzj6QqWATlYBqrAcchGunw=",
-			"path": "github.com/hashicorp/vault/helper/wrapping",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "+jx3dhLtSQMZ2VLbcBKblBpq820=",
-			"path": "github.com/hashicorp/vault/logical",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "Dingf0o44yPszrajYKiRgtWMbVU=",
-			"path": "github.com/hashicorp/vault/logical/framework",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "oaoUuE7RVAYS0FCmoEQLlfb34jA=",
-			"path": "github.com/hashicorp/vault/physical",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "YXJYn6Z1K4RDJ6cSKPHYtZYHX9c=",
-			"path": "github.com/hashicorp/vault/physical/inmem",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
-		},
-		{
-			"checksumSHA1": "vniHz0PtA+P5FJEZH8Ymj8LkloY=",
-			"path": "github.com/hashicorp/vault/version",
-			"revision": "828124acf2fe69fa2c085b404e60eb54258ab84e",
-			"revisionTime": "2018-08-29T23:51:23Z"
+			"revision": "069ae7b87df7665c620d95ea561b24e6ff346b1f",
+			"revisionTime": "2018-06-20T03:07:56Z"
 		},
 		{
 			"checksumSHA1": "40vJyUB4ezQSn/NSadsKEOrudMc=",
@@ -917,10 +763,10 @@
 			"revisionTime": "2017-09-30T17:45:11Z"
 		},
 		{
-			"checksumSHA1": "ppPg0bIlBAVJy0Pn13BfBnkp9V4=",
+			"checksumSHA1": "ejjxT0+wDWWncfh0Rt3lSH4IbXQ=",
 			"path": "golang.org/x/crypto/blake2b",
-			"revision": "88942b9c40a4c9d203b82b3731787b672d6e809b",
-			"revisionTime": "2018-03-21T23:38:19Z"
+			"revision": "182538f80094b6a8efaade63a8fd8e0d9d5843dd",
+			"revisionTime": "2018-08-30T18:34:03Z"
 		},
 		{
 			"checksumSHA1": "oVPHWesOmZ02vLq2fglGvf+AMgk=",
