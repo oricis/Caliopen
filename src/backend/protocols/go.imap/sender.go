@@ -54,12 +54,12 @@ func (s *Sender) SendDraft(msg *nats.Msg) error {
 	var reply DeliveryAck
 	err = json.Unmarshal(smtpReply.Data, &reply)
 	if err != nil {
-		e := fmt.Errorf("[IMAPworker]SendDraft failed to unmarshal smtpReply : ", err)
+		e := fmt.Errorf("[IMAPworker]SendDraft failed to unmarshal smtpReply : %s", err)
 		s.natsReplyError(msg, e)
 		return e
 	}
 	if reply.Err {
-		e := fmt.Errorf("[IMAPworker]SendDraft smtpReply has error : ", reply.Response)
+		e := fmt.Errorf("[IMAPworker]SendDraft smtpReply has error : %s", reply.Response)
 		s.natsReplyError(msg, errors.New(reply.Response))
 		return e
 	}
@@ -112,6 +112,7 @@ func (s *Sender) UploadSentMessageToRemote(msg *Message) error {
 	if err != nil {
 		return err
 	}
+	defer imapClient.Logout()
 
 	return uploadSentMessage(imapClient, rawMail.Raw_data, msg.Date)
 }
