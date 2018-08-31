@@ -13,7 +13,7 @@ class MessageList extends Component {
     loadMore: PropTypes.node,
     scrollToTarget: PropTypes.func,
     isFetching: PropTypes.bool.isRequired,
-    onMessageRead: PropTypes.func.isRequire,
+    onMessageRead: PropTypes.func.isRequired,
     onMessageUnread: PropTypes.func.isRequired,
     onMessageDelete: PropTypes.func.isRequired,
     user: PropTypes.shape({}).isRequired,

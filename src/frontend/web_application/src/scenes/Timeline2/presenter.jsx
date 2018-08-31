@@ -2,31 +2,15 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
 import { Trans } from 'lingui-react';
-import getClient from '../../services/api-client';
 import StickyNavBar from '../../layouts/Page/components/Navigation/components/StickyNavBar';
-import { Button, Checkbox, InfiniteScroll, Spinner } from '../../components';
+import { Button, InfiniteScroll, Spinner } from '../../components';
 import DiscussionItem from './components/DiscussionItem';
+import DiscussionSelector from './components/DiscussionSelector';
 
 import './style.scss';
 
 const LOAD_MORE_THROTTLE = 1000;
 
-/**
- * Timeline - Caliopen's Home main component
- * Displays a list of discussions.
- *
- * @extends {Component}
- * @prop {Object} user                - logged user object
- * @prop {function} requestDiscussion - fetch discussions action creator
- * @prop {function} deleteDiscussion  - delete discussion action creator
- * @prop {function} loadMore          - loadMore discussions action creator
- * @prop {array} discussions          - array of discussion object
- * @prop {array} tags                 - array of available tags
- * @prop {boolean} isFetching         - is there an unanswered discussion fetch request ?
- * @prop {boolean} didInvalidate      - is discussion list unvalidated ?
- * @prop {boolean} hasMore            - not all discussions are retrieved
- * @prop {Object} i18n                - internationalisation object provided by lingui-react
- */
 class Timeline extends Component {
   static propTypes = {
     user: PropTypes.shape({}),
@@ -46,24 +30,18 @@ class Timeline extends Component {
   static defaultProps = {
     discussions: [],
     tags: [],
-    user: undefined,
+    user: {},
     isFetching: false,
     didInvalidate: false,
     hasMore: false,
   };
 
-  constructor(props) {
-    super(props);
-    this.client = getClient();
-    this.state = {};
-  }
-
   state = {
     initialized: false,
-    selectedMessages: [],
+    selectedDiscussions: [],
     isTagModalOpen: false,
     isDeleting: false,
-  }
+  };
 
   componentDidMount() {
     this.throttledLoadMore = throttle(
@@ -82,20 +60,62 @@ class Timeline extends Component {
     }
   }
 
+  onSelectDiscussion = (type, discussionId) => {
+    if (type === 'add') {
+      this.setState(prevState => ({
+        ...prevState,
+        selectedDiscussions: [...prevState.selectedDiscussions, discussionId],
+      }));
+    }
+
+    if (type === 'remove') {
+      this.setState(prevState => ({
+        ...prevState,
+        selectedDiscussions: [...prevState.selectedDiscussions]
+          .filter(item => item !== discussionId),
+      }));
+    }
+  };
+
+  onSelectAllDiscussions = (type) => {
+    if (type === 'select') {
+      const { discussions } = this.props;
+
+      this.setState(prevState =>
+        ({
+          ...prevState,
+          selectedDiscussions:
+            discussions.map(discussion => discussion.discussion_id),
+        }));
+    }
+
+    if (type === 'unselect') {
+      this.setState(prevState => ({ ...prevState, selectedDiscussions: [] }));
+    }
+  };
+
   loadMore = () => {
     if (this.props.hasMore) {
       this.throttledLoadMore();
     }
-  }
+  };
 
   renderDiscussions() {
     const { discussions, user } = this.props;
+    const { selectedDiscussions } = this.state;
 
     if (discussions) {
       return (
         <ul className="s-discussion-list">
           {discussions.map(discussion => (
-            <DiscussionItem key={discussion.discussion_id} user={user} discussion={discussion} />
+            <DiscussionItem
+              key={discussion.discussion_id}
+              user={user}
+              discussion={discussion}
+              onSelectDiscussion={this.onSelectDiscussion}
+              onSelectAllDiscussions={this.onSelectAllDiscussions}
+              isDiscussionSelected={selectedDiscussions.includes(discussion.discussion_id)}
+            />
           ))}
         </ul>);
     }
@@ -104,17 +124,25 @@ class Timeline extends Component {
   }
 
   render() {
-    const { hasMore } = this.props;
+    const { hasMore, discussions } = this.props;
+    const { selectedDiscussions } = this.state;
 
     return (
       <Fragment>
         <section id="discussions" className="s-timeline">
           <StickyNavBar className="s-timeline__action-bar" stickyClassName="sticky">
-            <header className="s-timeline__actions">
-              <div className="s-timeline__select-all">
-                <Checkbox label="" />
-              </div>
-            </header>
+            <DiscussionSelector
+              count={selectedDiscussions.length}
+              checked={selectedDiscussions.length > 0
+                && selectedDiscussions.length === discussions.length}
+              totalCount={discussions.length}
+              onSelectAllDiscussions={this.onSelectAllDiscussions}
+              onEditTags={this.handleOpenTags}
+              onDeleteDiscussions={this.handleDeleteDiscussions}
+              isDeleting={this.state.isDeleting}
+              indeterminate={selectedDiscussions.length > 0
+                && selectedDiscussions.length < discussions.length}
+            />
           </StickyNavBar>
           <InfiniteScroll onReachBottom={this.loadMore}>
             { this.renderDiscussions() }

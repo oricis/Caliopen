@@ -1,19 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
+import { withI18n } from 'lingui-react';
 import { Badge, Icon, Link, Checkbox } from '../../../../components';
 import ParticipantsIconLetter from '../../../../components/ParticipantsIconLetter';
 
 import './style.scss';
 
-/**
- * DiscussionItem
- * Displays an entry in Timeline
- *
- * @extends {PureComponent}
- * @prop {Object} discussion  - discussion data, connected prop
- * @user {Object} user        - user data, connected prop
- */
+@withI18n()
 class DiscussionItem extends PureComponent {
   static propTypes = {
     discussion: PropTypes.shape({
@@ -24,9 +18,20 @@ class DiscussionItem extends PureComponent {
       last_message_id: PropTypes.string.isRequired,
       unread_count: PropTypes.number.isRequired,
     }).isRequired,
+    i18n: PropTypes.shape({}).isRequired,
+    onSelectDiscussion: PropTypes.func.isRequired,
+    isDiscussionSelected: PropTypes.bool.isRequired,
+    isDeleting: PropTypes.bool.isRequired,
     user: PropTypes.shape({
       contact: PropTypes.shape({ contact_id: PropTypes.string.isRequired }).isRequired,
     }).isRequired,
+  };
+
+  onCheckboxChange = (ev) => {
+    const { discussion, onSelectDiscussion } = this.props;
+    const { checked } = ev.target;
+
+    onSelectDiscussion(checked ? 'add' : 'remove', discussion.discussion_id);
   };
 
   buildParticipantsLabels = ({ participants }) =>
@@ -61,6 +66,8 @@ class DiscussionItem extends PureComponent {
       last_message_id: lastMessageId, unread_count: unreadCount,
     } = this.props.discussion;
 
+    const { isDeleting, isDiscussionSelected, i18n } = this.props;
+
     const labels = this.buildParticipantsLabels(this.props.discussion);
 
     return (
@@ -81,7 +88,14 @@ class DiscussionItem extends PureComponent {
         <span className="s-discussion-item__message-type"><Icon type="envelope" /></span>
         <Moment className="s-discussion-item__message-date" fromNow locale="fr">{date}</Moment>
         <div className="s-discussion-item__select">
-          <Checkbox label="" />
+          <Checkbox
+            label={i18n._('message-list.action.select_single_discussion', { defaults: 'Select/deselect this discussion' })}
+            onChange={this.onCheckboxChange}
+            id={discussionId}
+            checked={isDiscussionSelected}
+            disabled={isDeleting}
+            showLabelforSr
+          />
         </div>
       </li>
     );
