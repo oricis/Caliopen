@@ -33,6 +33,12 @@ import { formatName } from '../../../services/contact';
 export const tabMatchRoute = ({ pathname, routeConfig }) => matchPath(pathname, routeConfig);
 export const tabMatchPathname = ({ pathname, tab }) => pathname === tab.location.pathname;
 
+const tabMatchSettings = ({ pathname }) => matchPath(pathname, {
+  path: '/settings/:type',
+  exact: true,
+  strict: false,
+});
+
 @withI18n()
 class RoutingProvider extends Component {
   static propTypes = {
@@ -230,7 +236,7 @@ class RoutingProvider extends Component {
                     type: 'default',
                     icon: 'cog',
                     renderLabel: () => i18n._('route.settings.label.identities', { defaults: 'Security' }),
-                    tabMatch: tabMatchRoute,
+                    tabMatch: tabMatchSettings,
                   },
                 },
                 {
@@ -240,7 +246,7 @@ class RoutingProvider extends Component {
                     type: 'default',
                     icon: 'cog',
                     renderLabel: () => i18n._('route.settings.label.application', { defaults: 'Devices' }),
-                    tabMatch: tabMatchRoute,
+                    tabMatch: tabMatchSettings,
                   },
                 },
                 {
@@ -250,7 +256,7 @@ class RoutingProvider extends Component {
                     type: 'default',
                     icon: 'cog',
                     renderLabel: () => i18n._('route.settings.label.tags', { defaults: 'Tags' }),
-                    tabMatch: tabMatchRoute,
+                    tabMatch: tabMatchSettings,
                   },
                 },
 
@@ -262,7 +268,7 @@ class RoutingProvider extends Component {
                     type: 'default',
                     icon: 'cog',
                     renderLabel: () => i18n._('route.settings.label.devices', { defaults: 'Devices' }),
-                    tabMatch: tabMatchRoute,
+                    tabMatch: tabMatchSettings,
                   },
                 },
                 {
@@ -272,7 +278,7 @@ class RoutingProvider extends Component {
                     type: 'default',
                     icon: 'cog',
                     renderLabel: () => i18n._('route.settings.label.devices', { defaults: 'Devices' }),
-                    tabMatch: tabMatchRoute,
+                    tabMatch: tabMatchSettings,
                   },
                 },
 
