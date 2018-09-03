@@ -48,9 +48,7 @@ class Tab extends PureComponent {
             {routeConfig.tab.renderLabel()}
           </ItemLink>
         )}
-        actionChildren={
-          isActive ? <ItemButton onClick={this.handleRemove} icon="remove" className="m-tab__action" /> : null
-        }
+        actionChildren={<ItemButton onClick={this.handleRemove} icon="remove" className="m-tab__action" />}
       />
     );
   }
