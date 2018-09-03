@@ -1,21 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n } from 'lingui-react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
-import { matchPath } from 'react-router-dom';
+import { matchPath, withRouter } from 'react-router-dom';
 import { Tab } from '../../model/Tab';
 import { TabContext } from '../../contexts/TabContext';
-import { locationSelector } from '../../../../store/selectors/router';
 import { RoutingConsumer, flattenRouteConfig, findTabbableRouteConfig } from '../../../../modules/routing';
-
-const mapStateToProps = state => ({
-  location: locationSelector(state),
-});
-const mapDispatchToProps = dispatch => bindActionCreators({
-  push,
-}, dispatch);
 
 const withRoutes = () => C => props => (
   <RoutingConsumer
@@ -25,15 +14,18 @@ const withRoutes = () => C => props => (
   />
 );
 
-@connect(mapStateToProps, mapDispatchToProps)
+@withRouter
 @withRoutes()
 @withI18n()
 class TabProvider extends Component {
   static propTypes = {
     children: PropTypes.node,
     location: PropTypes.shape({ pathname: PropTypes.string }),
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired,
+      goBack: PropTypes.func.isRequired,
+    }).isRequired,
     i18n: PropTypes.shape({}).isRequired,
-    push: PropTypes.func.isRequired,
     routes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   };
   static defaultProps = {
@@ -41,26 +33,42 @@ class TabProvider extends Component {
     location: {},
   };
   state = {
-    tabs: [],
-    removeTab: () => {},
-    updateTab: () => {},
+    previousPathname: undefined,
+    providerValue: {
+      tabs: [],
+      removeTab: () => {},
+      updateTab: () => {},
+    },
   };
 
   componentWillMount() {
-    this.setState({
-      removeTab: this.removeTab,
-      updateTab: this.updateTab,
-    });
+    this.setState(prevState => ({
+      providerValue: {
+        ...prevState.providerValue,
+        removeTab: this.removeTab,
+        updateTab: this.updateTab,
+      },
+    }));
     this.initializeApps();
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.location !== this.props.location) {
       this.setState(prevState => ({
-        tabs: this.updateOrAddTab({ location: nextProps.location, tabs: prevState.tabs }),
+        previousPathname: this.props.location && this.props.location.pathname,
+        providerValue: {
+          ...prevState.providerValue,
+          tabs: this.updateOrAddTab({
+            location: nextProps.location,
+            tabs: prevState.providerValue.tabs,
+          }),
+        },
       }));
     }
   }
+
+  getPreviousTab = () => this.state.providerValue.tabs
+    .find(tab => tab.location.pathname === this.state.previousPathname);
 
   initializeApps = () => {
     const tabs = [
@@ -73,28 +81,48 @@ class TabProvider extends Component {
     ];
     const { location } = this.props;
 
-    this.setState({
-      tabs: this.updateOrAddTab({ location, tabs }),
-    });
+    this.setState(prevState => ({
+      providerValue: {
+        ...prevState.providerValue,
+        tabs: this.updateOrAddTab({ location, tabs }),
+      },
+    }));
   }
 
   removeTab = ({ tab }) => {
     this.setState(prevState => ({
-      tabs: prevState.tabs.filter(i => i !== tab),
+      providerValue: {
+        ...prevState.providerValue,
+        tabs: prevState.providerValue.tabs.filter(i => i !== tab),
+      },
     }), () => {
-      this.props.push('/');
+      const { location: { pathname } } = this.props;
+      if (pathname !== tab.location.pathname) {
+        return;
+      }
+      const previousTab = this.getPreviousTab();
+      if (previousTab) {
+        this.props.history.goBack();
+
+        return;
+      }
+
+      this.props.history.push('/');
     });
   }
 
   updateTab = ({ tab, original }) => {
     this.setState((prevState) => {
-      const i = prevState.tabs.indexOf(original);
-      const nextTabs = [...prevState.tabs];
+      const i = prevState.providerValue.tabs.indexOf(original);
+      const nextTabs = [...prevState.providerValue.tabs];
 
       nextTabs[i] = tab;
 
       return {
-        tabs: nextTabs,
+        providerValue: {
+          ...prevState.providerValue,
+          tabs: nextTabs,
+        },
       };
     });
   }
@@ -155,7 +183,7 @@ class TabProvider extends Component {
 
 
   render() {
-    return (<TabContext.Provider value={this.state} {...this.props} />);
+    return (<TabContext.Provider value={this.state.providerValue} {...this.props} />);
   }
 }
 
