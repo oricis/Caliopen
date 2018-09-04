@@ -29,6 +29,7 @@ const mapStateToProps = createSelector(
     return {
       discussionId,
       user: userState.user,
+      isUserFetching: userState.isFetching,
       discussion: discussionState.discussionsById[discussionId] || {},
       messages,
       isFetching,

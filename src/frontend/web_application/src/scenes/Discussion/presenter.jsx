@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
-import { Trans } from 'lingui-react';
 import classnames from 'classnames';
 import { Button } from '../../components';
 import StickyNavBar from '../../layouts/Page/components/Navigation/components/StickyNavBar';
@@ -21,8 +20,8 @@ class Discussion extends Component {
     requestMessages: PropTypes.func.isRequired,
     loadMore: PropTypes.func.isRequired,
     discussionId: PropTypes.string.isRequired,
-    discussion: PropTypes.shape({}).isRequired,
     user: PropTypes.shape({}),
+    isUserFetching: PropTypes.bool.isRequired,
     scrollToTarget: PropTypes.function,
     isFetching: PropTypes.bool.isRequired,
     didInvalidate: PropTypes.bool.isRequired,
@@ -31,7 +30,6 @@ class Discussion extends Component {
     messages: PropTypes.arrayOf(PropTypes.shape({})),
     setMessageRead: PropTypes.func.isRequired,
     deleteMessage: PropTypes.func.isRequired,
-    draft: PropTypes.shape({}),
     currentTab: PropTypes.shape({}),
     closeTab: PropTypes.func.isRequired,
     getUser: PropTypes.func.isRequired,
@@ -42,7 +40,6 @@ class Discussion extends Component {
     scrollToTarget: undefined,
     hash: undefined,
     messages: [],
-    draft: {},
     user: undefined,
   };
 
@@ -52,10 +49,10 @@ class Discussion extends Component {
 
   componentDidMount() {
     const {
-      discussionId, requestMessages, getUser, user,
+      discussionId, requestMessages, getUser, user, isUserFetching,
     } = this.props;
 
-    if (!user) {
+    if (!user && !isUserFetching) {
       getUser();
     }
 
@@ -89,6 +86,7 @@ class Discussion extends Component {
     const {
       didInvalidate, isFetching, messages, currentTab,
     } = nextProps;
+
     if (didInvalidate && !isFetching) {
       this.props.requestMessages({ discussion_id: nextProps.discussionId });
     }
@@ -123,20 +121,11 @@ class Discussion extends Component {
     }
   }
 
-  renderLoadMore() {
-    const { hasMore, isFetching } = this.props;
-
-    return (!isFetching && hasMore) && (
-      <Button shape="hollow" onClick={this.loadMore}><Trans id="general.action.load_more">Load more</Trans></Button>
-    );
-  }
-
   render() {
     const {
       discussionId, messages, isFetching, hash, scrollToTarget,
-      user,
+      hasMore, user, isUserFetching,
     } = this.props;
-    const { isDraftFocus } = this.state;
 
     return (
       <section id={`discussion-${discussionId}`} className="s-discussion">
@@ -151,7 +140,8 @@ class Discussion extends Component {
         <MessageList
           className="m-message-list"
           messages={messages}
-          loadMore={this.renderLoadMore()}
+          loadMore={this.loadMore}
+          hasMore={hasMore}
           isFetching={isFetching}
           hash={hash}
           onMessageRead={this.handleSetMessageRead}
@@ -159,8 +149,9 @@ class Discussion extends Component {
           onMessageDelete={this.handleDeleteMessage}
           scrollTotarget={scrollToTarget}
           user={user}
+          isUserFetching={isUserFetching}
         />
-        <div className={classnames('m-message-list__reply-excerpt', { 'm-message-list__reply-excerpt--close': isDraftFocus })}>
+        <div className={classnames('m-message-list__reply-excerpt', { 'm-message-list__reply-excerpt--close': this.state.isDraftFocus })}>
           <ReplyForm
             scrollToMe={hash === 'reply' ? scrollToTarget : undefined}
             discussionId={discussionId}
@@ -169,7 +160,7 @@ class Discussion extends Component {
             draftFormRef={(node) => { this.replyFormRef = node; }}
           />
         </div>
-        <div className={classnames('m-message-list__reply', { 'm-message-list__reply--open': isDraftFocus })}>
+        <div className={classnames('m-message-list__reply', { 'm-message-list__reply--open': this.state.isDraftFocus })}>
           <ReplyExcerpt
             discussionId={discussionId}
             internalId={discussionId}

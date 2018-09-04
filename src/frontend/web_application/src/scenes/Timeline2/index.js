@@ -2,10 +2,12 @@ import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { withI18n } from 'lingui-react';
-import Presenter from './presenter';
 import withScrollManager from '../../modules/scroll/hoc/scrollManager';
 import { requestDiscussions, hasMore, loadMoreDiscussions } from '../../store/modules/discussion';
 import { UserSelector } from '../../store/selectors/user';
+import { getUser } from '../../modules/user/actions/getUser';
+
+import Presenter from './presenter';
 
 const discussionSelector = state => state.discussion;
 
@@ -16,6 +18,7 @@ const mapStateToProps = createSelector(
     hasMore: discussion && hasMore(discussion),
     isFetching: discussion.isFetching,
     // didInvalidate: timeline && timeline.didInvalidate,
+    isUserFetching: userState.isFetching,
     user: userState.user,
   })
 );
@@ -23,6 +26,7 @@ const mapStateToProps = createSelector(
 const mapDispatchToProps = dispatch => bindActionCreators({
   requestDiscussions,
   loadMore: loadMoreDiscussions,
+  getUser,
   // deleteDiscussion: onDeleteMessage,
   // updateMessagesTags,
 }, dispatch);

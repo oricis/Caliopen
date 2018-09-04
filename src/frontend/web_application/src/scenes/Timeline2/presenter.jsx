@@ -14,6 +14,8 @@ const LOAD_MORE_THROTTLE = 1000;
 class Timeline extends Component {
   static propTypes = {
     user: PropTypes.shape({}),
+    getUser: PropTypes.func.isRequired,
+    isUserFetching: PropTypes.bool.isRequired,
     requestDiscussions: PropTypes.func.isRequired,
     deleteDiscussion: PropTypes.func.isRequired,
     // timelineFilter: PropTypes.string.isRequired,
@@ -44,6 +46,12 @@ class Timeline extends Component {
   };
 
   componentDidMount() {
+    const { user, isUserFetching, getUser } = this.props;
+
+    if (!(user || isUserFetching)) {
+      getUser();
+    }
+
     this.throttledLoadMore = throttle(
       () => this.props.loadMore(),
       LOAD_MORE_THROTTLE,
