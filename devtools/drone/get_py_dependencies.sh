@@ -2,11 +2,11 @@
 set -e
 
 DEPS=""
-REQ_FILES=$(find src/backend -depth -type f -name requirements.deps)
+# Find python requirement file
+REQ_FILE=$(find $PROG -depth -type f -name requirements.deps)
 
-for file in $REQ_FILES;do
-	while read -r line || [[ -n "$line" ]]; do
-		DEP=`find src/backend -depth -type f,d -name $line | cut -d'/' -f 3- | tr '\n' ' '`
-		DEPS="$DEPS $DEP"
-	done < $file
-done
+# For every line in the file we search the dependency
+while read -r line || [[ -n "$line" ]]; do
+	DEP=`find src/backend -depth -type f,d -name $line | cut -d'/' -f 3- | tr '\n' ' '`
+	DEPS="$DEPS $DEP"
+done < $REQ_FILE

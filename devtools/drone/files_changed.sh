@@ -6,13 +6,12 @@ SRC_CHANGED="false"
 CURRENT_BRANCH=""
 TARGET_BRANCH=""
 
-# Base image does not contain git
+# Images based on alpine do not contain git
 if [ -f "/etc/alpine-release" ];
 then
 	apk add --no-cache git >/dev/null 2>&1
 fi
 
-# DRONE_EVENT could also be checked for "pull_request"
 if [ "$DRONE_BUILD_EVENT" = "pull_request" ];
 then
 	CURRENT_BRANCH="FETCH_HEAD"
@@ -23,7 +22,7 @@ then
 	CURRENT_BRANCH="HEAD"
 	TARGET_BRANCH="HEAD^"
 else
-	# Any way to check changes from a direct push?
+	# Any way to check changes from a direct push with multiple possible commits?
 	echo "Not a PR or a Merge, assuming change to every service"
 	SRC_CHANGED="true"
 	return
@@ -31,6 +30,8 @@ fi
 
 ####
 
+# If DEPS is defined it means we are checking for changes in dependencies
+# otherwise we are just checking if it's front or back
 if [ -n "$DEPS" ];
 then
 	cd $BASE_DIR
