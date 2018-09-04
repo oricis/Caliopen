@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n } from 'lingui-react';
-import { matchPath, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { Tab } from '../../model/Tab';
 import { TabContext } from '../../contexts/TabContext';
-import { RoutingConsumer, flattenRouteConfig, findTabbableRouteConfig } from '../../../../modules/routing';
+import { RoutingConsumer, findTabbableRouteConfig } from '../../../../modules/routing';
 
 const withRoutes = () => C => props => (
   <RoutingConsumer
@@ -38,6 +38,8 @@ class TabProvider extends Component {
       tabs: [],
       removeTab: () => {},
       updateTab: () => {},
+      getCurrentTab: () => {},
+      closeTab: () => {},
     },
   };
 
@@ -47,6 +49,8 @@ class TabProvider extends Component {
         ...prevState.providerValue,
         removeTab: this.removeTab,
         updateTab: this.updateTab,
+        getCurrentTab: this.getCurrentTab,
+        closeTab: this.closeTab,
       },
     }));
     this.initializeApps();
@@ -69,6 +73,9 @@ class TabProvider extends Component {
 
   getPreviousTab = () => this.state.providerValue.tabs
     .find(tab => tab.location.pathname === this.state.previousPathname);
+
+  getCurrentTab = () => this.state.providerValue.tabs
+    .find(tab => tab.location.pathname === this.props.location.pathname);
 
   initializeApps = () => {
     const tabs = [
@@ -174,13 +181,6 @@ class TabProvider extends Component {
 
     return tabs;
   }
-
-  findRouteConfig = pathname =>
-    flattenRouteConfig(this.props.routes)
-      .find(({
-        tab, path, exact, strict,
-      }) => !!tab && matchPath(pathname, { path, exact, strict }));
-
 
   render() {
     return (<TabContext.Provider value={this.state.providerValue} {...this.props} />);

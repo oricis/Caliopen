@@ -1,3 +1,4 @@
+// @deprecated - use Discussion
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';

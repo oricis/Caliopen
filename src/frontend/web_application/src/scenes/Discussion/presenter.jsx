@@ -4,6 +4,7 @@ import { Button } from '../../components';
 import StickyNavBar from '../../layouts/Page/components/Navigation/components/StickyNavBar';
 import MessageList from './components/MessageList';
 import QuickReplyForm from './components/QuickReplyForm';
+import { withCloseTab } from '../../modules/tab';
 
 import './style.scss';
 
@@ -17,10 +18,12 @@ import './style.scss';
  * @prop {function} scrollToTarget  - function provided by scrollManager
  * @prop {function} hash            - URL hash (fragment) provided by scrollManager
  */
+@withCloseTab()
 class Discussion extends Component {
   static propTypes = {
     requestMessages: PropTypes.func.isRequired,
     loadMore: PropTypes.func.isRequired,
+    closeTab: PropTypes.func.isRequired,
     discussionId: PropTypes.string.isRequired,
     discussion: PropTypes.shape({}).isRequired,
     scrollToTarget: PropTypes.function,
@@ -46,7 +49,12 @@ class Discussion extends Component {
   }
 
   handleDeleteMessage = ({ message }) => {
-    this.props.deleteMessage({ message });
+    this.props.deleteMessage({ message })
+      .then(() => {
+        if (this.props.messages.length === 0) {
+          this.props.closeTab();
+        }
+      });
   }
 
   handleSetMessageRead = ({ message }) => {
