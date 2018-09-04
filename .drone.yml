@@ -233,19 +233,19 @@ matrix:
       BASE_DIR: src/backend
       LANG: go
 
-    - PROG: caliopen_cli
+    - PROG: tools/py.CLI
       DOCKERFILE: Dockerfile.cli
       REPO: caliopen_cli
       BASE_DIR: src/backend
       LANG: python
 
-    - PROG: caliopen_apiv1
+    - PROG: interfaces/REST/py.server
       DOCKERFILE: Dockerfile.py-api
       REPO: caliopen_apiv1
       BASE_DIR: src/backend
       LANG: python
 
-    - PROG: caliopen_message-handler
+    - PROG: interfaces/NATS/py.client
       DOCKERFILE: Dockerfile.message-handler
       REPO: caliopen_message_handler
       BASE_DIR: src/backend
