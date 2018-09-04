@@ -4,14 +4,15 @@ import classnames from 'classnames';
 import HorizontalScroll from '../HorizontalScroll';
 import { Tab, NavbarItem, ApplicationTab, DiscussionTab, ContactTab } from '../Navbar/components';
 import { Button, Icon } from '../../../../components/';
-import { Tab as TabModel } from '../../../../modules/tab';
+import { Tab as TabModel, withCurrentTab } from '../../../../modules/tab';
 import { findTabbableRouteConfig } from '../../../../modules/routing';
 import './style.scss';
 
+@withCurrentTab()
 class Navigation extends Component {
   static propTypes = {
     className: PropTypes.string,
-    location: PropTypes.shape({}),
+    currentTab: PropTypes.shape({}),
     isSticky: PropTypes.bool,
     tabs: PropTypes.arrayOf(PropTypes.instanceOf(TabModel)).isRequired,
     routes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
@@ -19,16 +20,16 @@ class Navigation extends Component {
   };
   static defaultProps = {
     className: undefined,
-    location: undefined,
+    currentTab: undefined,
     isSticky: false,
   };
 
   getTabIdentifier = ({ pathname, search, hash }) => `${pathname}${search}${hash}`;
 
   renderTab({ tab }) {
-    const { removeTab, routes, location } = this.props;
+    const { removeTab, routes, currentTab } = this.props;
     const routeConfig = findTabbableRouteConfig({ pathname: tab.location.pathname, routes });
-    const isActive = location && location.pathname === tab.location.pathname;
+    const isActive = currentTab === tab;
 
     switch (routeConfig.tab.type) {
       case 'application':
