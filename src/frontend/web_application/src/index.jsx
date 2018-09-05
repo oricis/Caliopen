@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ConnectedRouter } from 'react-router-redux';
+import { Router } from 'react-router-dom';
 import PiwikReactRouter from 'piwik-react-router';
 import App from './App';
 import configureStore from './store/configure-store';
@@ -43,9 +43,9 @@ const store = configureStore({
 const rootEl = document.getElementById('root');
 ReactDOM.hydrate(
   (
-    <ConnectedRouter store={store} history={getHistory()}>
+    <Router history={getHistory()}>
       <App store={store} />
-    </ConnectedRouter>
+    </Router>
   ),
   rootEl
 );

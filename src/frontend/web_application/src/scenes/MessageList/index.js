@@ -3,7 +3,6 @@ import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { withI18n } from 'lingui-react';
-import { push } from 'react-router-redux';
 import { createNotification, NOTIFICATION_TYPE_INFO } from 'react-redux-notify';
 import { createMessageCollectionStateSelector } from '../../store/selectors/message';
 import { requestMessages, loadMore } from '../../store/modules/message';

@@ -2,7 +2,7 @@ import base64 from 'base64-js';
 import SHA from 'jssha';
 import { getKeypair, sign } from '../ecdsa';
 import { getConfig } from '../storage';
-import { buildURL } from '../../../../services/url';
+import { buildURL } from '../../../../modules/routing';
 import { readAsArrayBuffer } from '../../../file/services';
 import UploadFileAsFormField from '../../../file/services/uploadFileAsFormField';
 

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getBaseUrl } from '../config';
 import { importanceLevelHeader } from '../importance-level';
-import { queryStringify } from '../url/QueryStringSerializer';
+import { queryStringify } from '../../modules/routing';
 import { getSignatureHeaders } from '../../modules/device/services/signature';
 import UploadFileAsFormField from '../../modules/file/services/uploadFileAsFormField';
 

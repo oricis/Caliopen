@@ -3,7 +3,6 @@ import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, formValues } from 'redux-form';
 import { withI18n } from 'lingui-react';
-import { push } from 'react-router-redux';
 import { requestContact, updateContact, createContact, deleteContact, invalidate as invalidateContacts } from '../../store/modules/contact';
 import { withNotification } from '../../modules/userNotify';
 import { updateTagCollection, withTags } from '../../modules/tags';
@@ -36,7 +35,6 @@ const mapDispatchToProps = dispatch => ({
     createContact,
     deleteContact,
     invalidateContacts,
-    push,
     updateTagCollection,
   }, dispatch),
   onSubmit: values => Promise.resolve(values),

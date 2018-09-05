@@ -1,37 +1,28 @@
 import React, { PureComponent } from 'react';
-import { createSelector } from 'reselect';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
-import { hashSelector, locationKeySelector } from '../../../store/selectors/router';
+import { withRouter } from 'react-router-dom';
 import { withCurrentTab, withUpdateTab, Tab } from '../../../modules/tab';
 import { addEventListener } from '../../../services/event-manager';
 
 const SCROLL_DEBOUNCE_WAIT = 700;
 
-const mapStateToProps = createSelector(
-  [hashSelector, locationKeySelector],
-  (fullHash, locationKey) => ({
-    hash: fullHash && fullHash.length > 1 ? fullHash.slice(1) : '',
-    locationKey,
-  })
-);
-
 // XXX: may be scrollRestauration will be usefull https://reacttraining.com/react-router/web/guides/scroll-restoration
 const withScrollManager = () => (Component) => {
   @withUpdateTab()
   @withCurrentTab()
-  @connect(mapStateToProps)
+  @withRouter
   class ScrollManager extends PureComponent {
     static propTypes = {
       updateTab: PropTypes.func.isRequired,
-      hash: PropTypes.string,
       currentTab: PropTypes.shape({ scrollY: PropTypes.number }),
-      locationKey: PropTypes.string.isRequired,
+      location: PropTypes.shape({
+        hash: PropTypes.string.isRequired,
+        key: PropTypes.string.isRequired,
+      }).isRequired,
     };
 
     static defaultProps = {
-      hash: undefined,
       currentTab: undefined,
     };
 
@@ -47,11 +38,12 @@ const withScrollManager = () => (Component) => {
 
     componentDidUpdate() {
       if (this.props.currentTab) {
-        const { scrollY } = this.props.currentTab;
-
-        if (this.props.hash === ''
+        const { currentTab: { scrollY }, location } = this.props;
+        const hash = location.hash && location.hash.length > 1 ? location.hash.slice(1) : '';
+        if (
+          hash === ''
           && !Number.isNaN(scrollY)
-          && this.state.alreadyScrolledContext !== this.props.locationKey
+          && this.state.alreadyScrolledContext !== this.props.location.key
         ) {
           window.scrollTo(0, scrollY);
         }
@@ -71,10 +63,10 @@ const withScrollManager = () => (Component) => {
       const tab = new Tab({ ...currentTab, scrollY: newScrollY });
 
       setTabScroll({ tab, original: currentTab });
-      this.setState({ alreadyScrolledContext: this.props.locationKey });
+      this.setState({ alreadyScrolledContext: this.props.location.key });
     }
 
-    shouldScrollToTarget = () => this.props.locationKey;
+    shouldScrollToTarget = () => this.props.location.key;
 
     render() {
       return <Component scrollToTarget={this.shouldScrollToTarget} {...this.props} />;

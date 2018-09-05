@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import { NewDraftForm, DraftMessageActionsContainer, AttachmentManager } from '../../modules/draftMessage';
+import { withPush, withReplace } from '../../modules/routing';
 
+@withPush()
+@withReplace()
 class NewDraft extends Component {
   static propTypes = {
     i18n: PropTypes.shape({}).isRequired,
@@ -20,8 +23,9 @@ class NewDraft extends Component {
     notifyError: PropTypes.func.isRequired,
     onUploadAttachments: PropTypes.func.isRequired,
     onDeleteAttachement: PropTypes.func.isRequired,
-    redirectToNewDraft: PropTypes.func.isRequired,
     requestDraft: PropTypes.func.isRequired,
+    push: PropTypes.func.isRequired,
+    replace: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -51,12 +55,14 @@ class NewDraft extends Component {
     const {
       internalId,
       draft,
-      redirectToNewDraft,
       requestDraft,
+      replace,
     } = props;
 
     if (!internalId) {
-      return redirectToNewDraft({ internalId: uuidv4() });
+      const newPathname = `/compose/${uuidv4()}`;
+
+      return replace(newPathname);
     }
 
     if (!draft) {
@@ -100,12 +106,13 @@ class NewDraft extends Component {
 
   handleSend = async ({ draft }) => {
     const {
-      onSendDraft, internalId, message, closeTab, notifyError, i18n, currentTab,
+      onSendDraft, internalId, message, closeTab, notifyError, i18n, currentTab, push,
     } = this.props;
     this.setState({ isSending: true });
 
     try {
-      await onSendDraft({ draft, message, internalId });
+      const messageUpToDate = await onSendDraft({ draft, message, internalId });
+      push(`/discussions/${messageUpToDate.discussion_id}`);
       closeTab(currentTab);
     } catch (err) {
       notifyError({
@@ -115,9 +122,10 @@ class NewDraft extends Component {
     this.setState({ isSending: false });
   }
 
-  handleDelete = () => {
-    const { message, onDeleteMessage } = this.props;
-    onDeleteMessage({ message });
+  handleDelete = async () => {
+    const { message, onDeleteMessage, closeTab } = this.props;
+    await onDeleteMessage({ message });
+    closeTab();
   };
 
   handleFilesChange = ({ attachments }) => {

@@ -1,8 +1,6 @@
 import { combineReducers } from 'redux';
 import notifyReducer from 'react-redux-notify';
-import { routerReducer } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
-import applicationReducer from './modules/application';
 import contactReducer from './modules/contact';
 import deviceReducer from './modules/device';
 import discussionReducer from './modules/discussion';
@@ -22,7 +20,6 @@ import userReducer from './modules/user';
 
 const reducer = combineReducers({
   notifications: notifyReducer,
-  application: applicationReducer,
   contact: contactReducer,
   device: deviceReducer,
   discussion: discussionReducer,
@@ -39,7 +36,6 @@ const reducer = combineReducers({
   settings: settingsReducer,
   tag: tagReducer,
   user: userReducer,
-  router: routerReducer,
   form: formReducer,
 });
 

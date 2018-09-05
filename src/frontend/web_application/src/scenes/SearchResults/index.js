@@ -1,22 +1,19 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { paramsSelector } from '../../store/selectors/router';
 import { search, loadMore, getKey, hasMore } from '../../store/modules/search';
 import withScrollManager from '../../modules/scroll/hoc/scrollManager';
+import { withSearchParams } from '../../modules/routing';
 import Presenter from './presenter';
 
 const searchSelector = state => state.search;
+const searchParamsSelector = (state, { term, doctype }) => ({ term, doctype });
 
 const mapStateToProps = createSelector(
-  [paramsSelector, searchSelector],
-  (params, searchState) => {
-    if (!params) {
-      return {};
-    }
-
+  [searchParamsSelector, searchSelector],
+  (searchParams, searchState) => {
     const { resultsByKey } = searchState;
-    const { term, doctype } = params;
+    const { term, doctype } = searchParams;
     const hasMoreByDoctype = doctype && { [doctype]: hasMore(term, doctype, searchState) };
 
     return {
@@ -34,6 +31,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 }, dispatch);
 
 export default compose(
+  withSearchParams(),
   connect(mapStateToProps, mapDispatchToProps),
   withScrollManager()
 )(Presenter);
