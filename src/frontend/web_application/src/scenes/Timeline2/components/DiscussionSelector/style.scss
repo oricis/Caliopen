@@ -4,11 +4,11 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  max-width: 1200px;
-  height: 2.625rem;
+  max-width: $co-site-width;
+  height: $co-component__height;
   margin: 0 auto;
 
   &__checkbox {
-    margin: auto 0.5rem;
+    margin: auto $co-component__spacing;
   }
 }

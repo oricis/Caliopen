@@ -13,6 +13,7 @@ class InstantMessage extends PureComponent {
     onMessageRead: PropTypes.func.isRequired,
     // onMessageUnread: PropTypes.func.isRequired,
     // onDeleteMessage: PropTypes.func.isRequired,
+    user: PropTypes.shape({}).isRequired,
   };
 
   onVisibilityChange = (isVisible) => {

@@ -15,13 +15,6 @@ import postalCard from './assets/postal-card.png';
 
 import './style.scss';
 
-/**
- * MailMessage
- * Displays an email message
- *
- * @extends {PureComponent}
- * @prop {Object} message   - message data
- */
 @withScrollTarget()
 class MailMessage extends Component {
   static propTypes = {
@@ -29,15 +22,12 @@ class MailMessage extends Component {
     onMessageRead: PropTypes.func.isRequired,
     onMessageUnread: PropTypes.func.isRequired,
     onMessageDelete: PropTypes.func.isRequired,
-    scrollToMe: PropTypes.func,
     forwardRef: PropTypes.func,
-    user: PropTypes.shape({}),
+    user: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
-    scrollToMe: undefined,
     forwardRef: undefined,
-    user: {},
   }
 
   componentDidMount() {
@@ -177,10 +167,10 @@ class MailMessage extends Component {
         </div>
         <footer>
           <Button className="m-message-action-container__action" icon="reply">
-            <Trans id="message-list.message.action.reply">Répondre</Trans>
+            <Trans id="message-list.message.action.reply">Reply</Trans>
           </Button>
           <Button className="m-message-action-container__action" onClick={this.handleMessageDelete} icon="trash">
-            <Trans id="message-list.message.action.delete">Supprimer</Trans>
+            <Trans id="message-list.message.action.delete">Delete</Trans>
           </Button>
           <Button className="m-message-action-container__action" onClick={this.handleToggle}>
             {message.is_unread ? (
