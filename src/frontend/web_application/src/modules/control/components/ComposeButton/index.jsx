@@ -1,18 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
-// FIXME: looks like a cyclic dependency
-// import { withPush } from '../../../../modules/routing';
-import { withRouter } from 'react-router-dom';
-// ---
+import { withPush } from '../../../../modules/routing';
 import { Button } from '../../../../components/';
 
-@withRouter
+@withPush()
 class ComposeButton extends PureComponent {
   static propTypes = {
-    history: PropTypes.shape({
-      push: PropTypes.func.isRequired,
-    }).isRequired,
+    push: PropTypes.func.isRequired,
     className: PropTypes.string,
   };
   static defaultProps = {
@@ -20,7 +15,7 @@ class ComposeButton extends PureComponent {
   };
 
   handleClick = () => {
-    this.props.history.push('/compose');
+    this.props.push('/compose');
   }
 
   render() {
