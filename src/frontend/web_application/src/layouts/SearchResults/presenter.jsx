@@ -1,20 +1,21 @@
 import React, { PureComponent } from 'react';
 import { Trans } from 'lingui-react';
 import PropTypes from 'prop-types';
-import { matchPath } from 'react-router-dom';
+import { matchPath, withRouter } from 'react-router-dom';
 import MenuBar from '../../components/MenuBar';
 
+@withRouter
 class SearchResults extends PureComponent {
   static propTypes = {
-    pathname: PropTypes.string,
-    search: PropTypes.string,
+    location: PropTypes.shape({
+      pathname: PropTypes.string.isRequired,
+      search: PropTypes.string.isRequired,
+    }).isRequired,
     term: PropTypes.string,
     searchResultsPreview: PropTypes.shape({}),
     children: PropTypes.node,
   };
   static defaultProps = {
-    pathname: undefined,
-    search: undefined,
     term: '',
     searchResultsPreview: {
       contact_hits: {
@@ -31,8 +32,10 @@ class SearchResults extends PureComponent {
   render() {
     const {
       children,
-      pathname,
-      search,
+      location: {
+        pathname,
+        search,
+      },
       term,
       searchResultsPreview: {
         total,

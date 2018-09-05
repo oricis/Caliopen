@@ -1,25 +1,34 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Trans } from 'lingui-react';
+import { Trans, withI18n } from 'lingui-react';
+import { withRouter } from 'react-router-dom';
 import { Icon, InputText, Button } from '../../../../components/';
+import { withSearchParams } from '../../../routing';
 import './style.scss';
-// import RawButton from '../../../../components/RawButton';
 
-const generateStateFromProps = ({ term }) => ({ term });
+// FIXME: bad pattern
+const generateStateFromProps = ({ searchParams: { term = '' } }) => ({ term });
 
 const SEARCH_PATH = '/search-results';
 const MIN_TERM_LENGTH = 3;
 
+@withI18n()
+@withRouter
+@withSearchParams()
 class SearchField extends Component {
   static propTypes = {
     className: PropTypes.string,
-    term: PropTypes.string,
-    push: PropTypes.func.isRequired,
+    history: PropTypes.shape({
+      push: PropTypes.func.isRequired,
+    }).isRequired,
+    searchParams: PropTypes.shape({
+      term: PropTypes.string,
+    }).isRequired,
     i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
-    term: '',
+    className: '',
   };
   state = {
     term: '',
@@ -35,9 +44,8 @@ class SearchField extends Component {
 
   handleSubmit = (ev) => {
     ev.preventDefault();
-    const { push } = this.props;
-    const { term } = this.state;
-    push(`${SEARCH_PATH}?term=${term}`);
+    const { history: { push } } = this.props;
+    push(`${SEARCH_PATH}?term=${this.state.term}`);
   }
 
   handleInputChange = (event) => {
