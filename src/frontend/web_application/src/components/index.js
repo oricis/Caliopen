@@ -15,6 +15,7 @@ export { default as Modal } from './Modal';
 export { default as NavList, NavItem } from './NavList';
 export { default as PageTitle } from './PageTitle';
 export { default as Section } from './Section';
+export { default as SidebarLayout } from './SidebarLayout';
 export { default as Spinner } from './Spinner';
 export { default as Subtitle } from './Subtitle';
 export { default as TextBlock } from './TextBlock';
