@@ -58,6 +58,8 @@ export const typeAssoc = {
   'share-alt': 'fa fa-share-alt',
   shield: 'fa fa-shield',
   smartphone: 'fa fa-mobile',
+  tag: 'fa fa-tag',
+  upload: 'fa fa-upload',
   user: 'fa fa-user',
   users: 'fa fa-users',
   tablet: 'fa fa-tablet',
