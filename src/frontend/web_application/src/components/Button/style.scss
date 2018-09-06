@@ -12,6 +12,11 @@
     @include o-clickable--button;
   }
 
+  &--block {
+    @include o-clickable--button;
+    width: 100%;
+  }
+
   &--inline {
     @include o-clickable--inline;
     @include o-clickable--text;
