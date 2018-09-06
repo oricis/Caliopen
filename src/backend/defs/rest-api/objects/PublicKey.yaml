@@ -2,26 +2,47 @@
 type: object
 properties:
   "$ref": NewPublicKey.yaml#/properties
-  privacy_features:
-    type: object
-    "$ref": PrivacyFeatures.yaml
-  pi:
-    type: object
-    "$ref": PI.yaml
+  alg:
+    type: string
+  crv:
+    type: string
   date_insert:
     type: string
     format: date-time
   date_update:
     type: string
     format: date-time
-  contact_id:
+  expire_date:
+    type: string
+    format: date-time
+  fingerprint:
+    type: string
+  kty:
     type: string
   type:
     type: string
+  ressource_id:
+    type: string
+  resource_type:
+    type: string
+  size:
+    type: integer
+    format: int32
+  use:
+    type: string
   user_id:
     type: string
+  x:
+    type: integer
+    format: int64
+  y:
+    type: integer
+    format: int64
 required:
 - key
-- name
+- label
+- key_id
+- ressource_id
+- user_id
 additionalProperties: false
 

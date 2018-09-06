@@ -132,7 +132,6 @@ func (rest *RESTfacility) PatchContact(patch []byte, userID, contactID string) e
 		// check if title has to be re-computed
 		case "AdditionalName", "FamilyName", "GivenName", "NamePrefix", "NameSuffix":
 			needNewTitle = true
-			break
 		// Check if we can try to discover a public key
 		case "Emails", "Identities":
 			discoverKey = true

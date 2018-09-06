@@ -22,10 +22,9 @@ type PublicKey struct {
 	KeyId           UUID             `cql:"key_id"           json:"key_id"                                                    patch:"system"`
 	KeyType         string           `cql:"kty"              json:"kty,omitempty"                                             patch:"user"`
 	Label           string           `cql:"label"            json:"label,omitempty"                                           patch:"user"`
-	PrivacyFeatures *PrivacyFeatures `cql:"privacy_features" json:"privacy_features,omitempty"                                patch:"system"`
-	PrivacyIndex    *PrivacyIndex    `cql:"pi"               json:"pi,omitempty"                                              patch:"system"`
 	ResourceId      UUID             `cql:"resource_id"      json:"resource_id"                                               patch:"system"`
 	ResourceType    string           `cql:"resource_type"    json:"resource_type,omitempty"                                   patch:"system"`
+	Size            int              `cql:"size"             json:"size"`
 	Use             string           `cql:"use"              json:"use,omitempty"                                             patch:"user"`
 	UserId          UUID             `cql:"user_id"          json:"user_id,omitempty"                                         patch:"system"`
 	X               big.Int          `cql:"x"                json:"x,omitempty"                                               patch:"user"`

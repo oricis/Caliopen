@@ -333,3 +333,175 @@ contacts_{contact_id}_tags:
         description: server failed to execute the request
         schema:
           "$ref": "../objects/Error.yaml"
+contacts_{contact_id}_publickeys:
+    post:
+      description: Add a pgp public key to a contact
+      tags:
+      - pgp
+      - keys
+      security:
+      - basicAuth: []
+      consumes:
+      - application/json
+      parameters:
+      - name: key
+        in: body
+        required: true
+        schema:
+          "$ref": "../objects/NewPublicKey.yaml"
+      produces:
+      - application/json
+      responses:
+      '200':
+        description: Public key added to contact
+        schema:
+          type: object
+          properties:
+            location:
+              type: string
+              description: url to retrieve new key's infos at /publickeys/{publickey_id}
+      '400':
+        description: malform request
+        schema:
+          type: object
+          "$ref": "../objects/Error.yaml"
+      '401':
+        description: Unauthorized access
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '422':
+        description: Unprocessable entity. Parameters were valid but the server was
+          unable to create the key (probably because of a semantically erroneous
+          document)
+        schema:
+          type: object
+          "$ref": "../objects/Error.yaml"
+    get:
+      description: Returns all publickeys linked to user's contacts
+      tags:
+      - pgp
+      - keys
+      security:
+      - basicAuth: []
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: List of public keys
+          schema:
+            type: object
+            properties:
+              total:
+                type: integer
+                format: int32
+                description: number of keys found
+              tags:
+                type: array
+                items:
+                  "$ref": "../objects/PublicKey.yaml"
+contacts_{contact_id}_publickeys_{publickey_id}:
+    get:
+      description: Retrieve publickey
+      tags:
+      - keys
+      - pgp
+      security:
+      - basicAuth: []
+      parameters:
+      - name: publickey_id
+        in: path
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        '200':
+          description: Successful response with json object
+          schema:
+            "$ref": "../objects/PublicKey.yaml"
+        '401':
+          description: Unauthorized access
+          schema:
+            "$ref": "../objects/Error.yaml"
+    patch:
+      description: update a public key
+      tags:
+      - keys
+      - pgp
+      security:
+      - basicAuth: []
+      consumes:
+      - application/json
+      parameters:
+      - name: publickey_id
+        in: path
+        type: string
+        required: true
+      - name: patch
+        in: body
+        required: true
+        description: the patch to apply. Property 'label' is the only one patchable.
+        schema:
+          type: object
+          properties:
+            label:
+              type: string
+            current_state:
+              type: object
+              properties:
+                label:
+                  type: string
+              additionalProperties: false
+          additionalProperties: false
+          required :
+          - current_state
+          - label
+      produces:
+      - application/json
+      responses:
+        '204':
+          description: Update successful. No body is returned.
+        '400':
+          description: json payload malformed
+          schema:
+            "$ref": "../objects/Error.yaml"
+        '401':
+          description: Unauthorized access
+          schema:
+            "$ref": "../objects/Error.yaml"
+        '403':
+          description: Forbidden patch. Server is refusing to apply the given patch's
+            properties to this ressource
+          schema:
+            "$ref": "../objects/Error.yaml"
+        '404':
+          description: public key not found
+          schema:
+            "$ref": "../objects/Error.yaml"
+        '409':
+          description: json is valid but patch conflicts with db's current state
+          schema:
+            "$ref": "../objects/Error.yaml"
+        '422':
+          description: json is valid but patch was semantically malformed or unprocessable
+          schema:
+            "$ref": "../objects/Error.yaml"
+    delete:
+      description: Delete a public key
+      tags:
+      - keys
+      - pgp
+      security:
+      - basicAuth: []
+      parameters:
+      - name: publickey_id
+        in: path
+        required: true
+        type: string
+      responses:
+        '204':
+          description: Successful deletion
+        '401':
+          description: Unauthorized access
+          schema:
+            "$ref": "../objects/Error.yaml"

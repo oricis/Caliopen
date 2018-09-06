@@ -1,20 +1,12 @@
 ---
 type: object
 properties:
-  expire_date:
-    type: string
-    format: date-time
-  fingerprint:
-    type: string
   key:
     type: string
-  name:
+  label:
     type: string
-  size:
-    type: integer
-    format: int32
 required:
 - key
-- name
+- label
 additionalProperties: false
 
