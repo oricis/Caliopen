@@ -133,23 +133,23 @@ class Timeline extends Component {
 
   render() {
     const { hasMore, discussions } = this.props;
-    const { selectedDiscussions } = this.state;
+    const nbSelectedDiscussions = this.state.selectedDiscussions.length;
 
     return (
       <Fragment>
         <section id="discussions" className="s-timeline">
           <StickyNavBar className="s-timeline__action-bar" stickyClassName="sticky">
             <DiscussionSelector
-              count={selectedDiscussions.length}
-              checked={selectedDiscussions.length > 0
-                && selectedDiscussions.length === discussions.length}
+              count={nbSelectedDiscussions}
+              checked={nbSelectedDiscussions > 0
+                && nbSelectedDiscussions === discussions.length}
               totalCount={discussions.length}
               onSelectAllDiscussions={this.onSelectAllDiscussions}
               onEditTags={this.handleOpenTags}
               onDeleteDiscussions={this.handleDeleteDiscussions}
               isDeleting={this.state.isDeleting}
-              indeterminate={selectedDiscussions.length > 0
-                && selectedDiscussions.length < discussions.length}
+              indeterminate={nbSelectedDiscussions > 0
+                && nbSelectedDiscussions < discussions.length}
             />
           </StickyNavBar>
           <InfiniteScroll onReachBottom={this.loadMore}>

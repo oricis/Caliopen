@@ -96,6 +96,12 @@ class Discussion extends Component {
     }
   }
 
+  handleFocusDraft = () => {
+    this.setState({
+      isDraftFocus: true,
+    });
+  };
+
   handleDeleteMessage = ({ message }) => {
     this.props.deleteMessage({ message })
       .then(() => {
@@ -151,7 +157,7 @@ class Discussion extends Component {
           user={user}
           isUserFetching={isUserFetching}
         />
-        <div className={classnames('m-message-list__reply-excerpt', { 'm-message-list__reply-excerpt--close': this.state.isDraftFocus })}>
+        <div className={classnames('s-discussion__reply', { 's-discussion__reply--open': this.state.isDraftFocus })}>
           <ReplyForm
             scrollToMe={hash === 'reply' ? scrollToTarget : undefined}
             discussionId={discussionId}
@@ -160,7 +166,7 @@ class Discussion extends Component {
             draftFormRef={(node) => { this.replyFormRef = node; }}
           />
         </div>
-        <div className={classnames('m-message-list__reply', { 'm-message-list__reply--open': this.state.isDraftFocus })}>
+        <div className={classnames('s-discussion__reply-excerpt', { 's-discussion__reply-excerpt--close': this.state.isDraftFocus })}>
           <ReplyExcerpt
             discussionId={discussionId}
             internalId={discussionId}

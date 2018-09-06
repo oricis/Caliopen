@@ -1,32 +1,77 @@
+@import '../../styles/vendor/bootstrap_foundation-sites';
 @import '../../styles/common';
 
-.s-dicussion__action-bar--sticky {
-  position: fixed;
-  top: 41px;
-  right: 0;
-  left: 0;
-  background-color: white;
+.s-discussion {
+  &__action-bar--sticky {
+    position: fixed;
+    top: 41px;
+    right: 0;
+    left: 0;
+    background-color: white;
 
-  .s-discussion__header {
-    padding: 0 2.625rem;
+    .s-discussion__header {
+      padding: 0 2.625rem;
+    }
   }
-}
 
-.s-discussion__header {
-  max-width: 1280px;
-  height: 2.625rem;
-  margin: 0 auto;
-  padding: 0 40px;
-  background-color: white;
-  font-size: 0.88rem;
-  text-align: right;
+  &__header {
+    max-width: 1280px;
+    height: 2.625rem;
+    margin: 0 auto;
+    padding: 0 40px;
+    background-color: white;
+    font-size: 0.88rem;
+    text-align: right;
 
-  strong {
-    color: $co-color__primary--low;
+    strong {
+      color: $co-color__primary--low;
+    }
   }
-}
 
-.s-dicussion {
   display: flex;
+  position: relative;
   flex-direction: column;
+
+  &__action { margin-right: $co-component__spacing; }
+
+  &__load-more {
+    padding-top: $co-margin;
+    text-align: center;
+  }
+
+  &__reply-excerpt,
+  &__reply {
+    @include breakpoint(small) {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      box-shadow: $co-shadow--higher;
+    }
+  }
+
+  &__reply {
+    @include breakpoint(small) {
+      display: none;
+    }
+    @include breakpoint(medium) {
+      display: block;
+      position: static;
+      box-shadow: none;
+    }
+
+    &--open {
+      display: block;
+    }
+  }
+
+  &__reply-excerpt {
+    @include breakpoint(medium) {
+      display: none;
+    }
+
+    &--close {
+      display: none;
+    }
+  }
 }
