@@ -1,0 +1,25 @@
+@import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+.s-contact-book-menu {
+  @include flex-grid-row;
+  height: $co-component__height;
+  border-bottom: 3px solid $co-color__sidebar__back;
+  line-height: $co-component__height;
+
+  &__loading {
+    @include flex-grid-column(shrink);
+  }
+
+  &__selector {
+    @include flex-grid-size;
+    color: #1a5773;
+    font-weight: bold;
+    text-align: right;
+  }
+
+  &__action-btn {
+    margin-left: 10px;
+    color: #0e97c3;
+  }
+}

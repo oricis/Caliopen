@@ -87,8 +87,11 @@ $co-color__fg__border--higher:        #f9f9f9;
 $co-color__fg__text:                  #444;
 $co-color__fg__text--lower:           darken($co-color__fg__text, 20%);
 $co-color__fg__text--low:             darken($co-color__fg__text, 10%);
-$co-color__fg__text--high:            lighten($co-color__fg__text, 15%);
+$co-color__fg__text--high:            #505050;
 $co-color__fg__text--higher:          lighten($co-color__fg__text, 30%);
+
+// sidebar
+$co-color__sidebar__back:             #e8f5fb;
 
 // background
 $co-color__bg__back:                  #bbe8fd;

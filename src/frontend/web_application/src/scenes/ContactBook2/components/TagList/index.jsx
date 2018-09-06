@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withI18n } from 'lingui-react';
 import classnames from 'classnames';
 import { WithTags, getTagLabel } from '../../../../modules/tags';
-import { Button, NavList, NavItem } from '../../../../components/';
+import { Link, NavList, NavItem } from '../../../../components/';
 
 import './style.scss';
 
@@ -32,12 +32,15 @@ class TagList extends Component {
     const tagClassName = classnames(
       'm-tag-list__tag',
       {
+        // FIXME
         'm-tag-list__tag--active': activeTag === tagName,
       }
     );
 
+    const param = tagName.length > 0 ? `?tag=${tagName}` : '';
+
     return (
-      <Button display="inline" onClick={this.createHandleClickTag(tagName)} className={tagClassName}>{label}</Button>
+      <Link display="inline" noDecoration to={`/contacts${param}`} className={tagClassName}>{label}</Link>
     );
   }
 
@@ -46,14 +49,14 @@ class TagList extends Component {
 
     return (
       <NavList className="m-tag-list" dir="vertical">
-        <NavItem className="m-tag-list__item">
+        <NavItem>
           {this.renderItem({
             tagName: '',
             label: i18n._('tag_list.all_contacts', { defaults: 'All contacts' }),
           })}
         </NavItem>
         <WithTags render={userTags => this.sortTags(i18n, userTags).map(tag => (
-          <NavItem className="m-tag-list__item" key={tag.name}>
+          <NavItem key={tag.name}>
             {this.renderItem({
               tagName: tag.name,
               label: getTagLabel(i18n, tag),

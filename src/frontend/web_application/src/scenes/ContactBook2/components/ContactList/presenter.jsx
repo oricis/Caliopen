@@ -1,11 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { Title, Link } from '../../../../components/';
 import ContactItem from '../ContactItem';
 import { DEFAULT_SORT_DIR } from '../../presenter';
 import { getFirstLetter, formatName, getContactTitle } from '../../../../services/contact';
 
 import './style.scss';
+
+const ALPHA = '#abcdefghijklmnopqrstuvwxyz';
 
 class ContactList extends PureComponent {
   static propTypes = {
@@ -37,7 +40,7 @@ class ContactList extends PureComponent {
           ],
         };
       }, {});
-    const firstLetters = Object.keys(contactsGroupedByLetter).sort((a, b) => {
+    const firstLetters = ALPHA.split('').sort((a, b) => {
       switch (sortDir) {
         default:
         case 'ASC':
@@ -46,22 +49,31 @@ class ContactList extends PureComponent {
           return (b || '').localeCompare(a);
       }
     });
+    const firstLettersWithContacts = Object.keys(contactsGroupedByLetter);
 
     return (
       <div className="m-contact-list">
         <div className="m-contact-list__nav">
           {firstLetters.map(letter => (
-            <Link href={`#letter-${letter}`} className="m-contact-list__alpha-letter">{letter}</Link>
+            <Link
+              href={`#letter-${letter}`}
+              className={classnames('m-contact-list__alpha-letter', { 'm-contact-list__alpha-letter--active': firstLettersWithContacts.includes(letter) })}
+              key={letter}
+            >
+              {letter}
+            </Link>
           ))}
         </div>
         <div className="m-contact-list__list">
           {firstLetters.map(letter => (
-            <div key={letter} className="m-contact-list__group" id={`letter-${letter}`}>
-              <Title className="m-contact-list__alpha-title">{letter}</Title>
-              {contactsGroupedByLetter[letter].map(contact => (
-                <ContactItem className="m-contact-list__contact" contact={contact} key={contact.contact_id} />
-              ))}
-            </div>
+            contactsGroupedByLetter[letter] && (
+              <div key={letter} className="m-contact-list__group">
+                <Title className="m-contact-list__alpha-title" id={`letter-${letter}`}>{letter}</Title>
+                {contactsGroupedByLetter[letter].map(contact => (
+                  <ContactItem className="m-contact-list__contact" contact={contact} key={contact.contact_id} />
+                ))}
+              </div>
+            )
           ))}
         </div>
       </div>

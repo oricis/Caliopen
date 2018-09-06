@@ -1,9 +1,9 @@
 @import '../../styles/util/breakpoint';
 
 .l-header {
-  height: 3rem;
+  height: $co-component__height;
   background-color: #e1f5ff;
-  line-height: 3rem;
+  line-height: $co-component__height;
 
   &__brand {
     display: inline-block;

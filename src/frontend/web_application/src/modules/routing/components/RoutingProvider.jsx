@@ -8,13 +8,13 @@ import Signup from '../../../scenes/Signup';
 import ForgotPassword from '../../../scenes/ForgotPassword';
 import ResetPassword from '../../../scenes/ResetPassword';
 import Contact from '../../../scenes/Contact';
-import AuthPage from '../../../layouts/AuthPage';
-import Page from '../../../layouts/Page2';
-import Settings from '../../../layouts/Settings';
+import AuthPageLayout from '../../../layouts/AuthPage';
+import PageLayout from '../../../layouts/Page2';
+import SettingsLayout from '../../../layouts/Settings';
+import UserLayout from '../../../layouts/User';
 import Timeline from '../../../scenes/Timeline2';
 import NewDraft from '../../../scenes/NewDraft';
 import SearchResults from '../../../scenes/SearchResults';
-import User from '../../../layouts/User';
 import UserProfile from '../../../scenes/UserProfile';
 import UserSecurity from '../../../scenes/UserSecurity';
 import UserPrivacy from '../../../scenes/UserPrivacy';
@@ -64,7 +64,7 @@ class RoutingProvider extends Component {
       routes: [
         {
           path: '/auth',
-          component: AuthPage,
+          component: AuthPageLayout,
           app: 'auth',
           routes: [
             { path: '/auth/', exact: true, redirect: '/auth/signin' },
@@ -77,7 +77,7 @@ class RoutingProvider extends Component {
         },
         {
           path: '/',
-          component: Page,
+          component: PageLayout,
           routes: [
             {
               path: '/',
@@ -183,7 +183,7 @@ class RoutingProvider extends Component {
             {
               path: '/user',
               app: 'user',
-              component: User,
+              component: UserLayout,
               tab: {
                 type: 'default',
                 icon: 'user',
@@ -226,7 +226,7 @@ class RoutingProvider extends Component {
             {
               path: '/settings',
               app: 'settings',
-              component: Settings,
+              component: SettingsLayout,
               renderLabel: () => i18n._('route.settings.label.default', { defaults: 'Settings' }),
               routes: [
                 {
