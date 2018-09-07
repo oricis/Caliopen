@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import ContactList from './components/ContactList';
-import ImportContact from '../ContactBook/components/ImportContact';
-import TagList from '../ContactBook/components/TagList';
-import { PageTitle, Spinner, Button, MenuBar, Modal, Checkbox } from '../../components';
+import { PageTitle, Spinner, Button, MenuBar, Checkbox, SidebarLayout, Modal, NavList, NavItem } from '../../components';
+import { withPush } from '../../modules/routing';
+import TagList from './components/TagList';
+import ImportContact from './components/ImportContact';
 import './style.scss';
+import './contact-book-menu.scss';
 
 export const SORT_VIEW_GIVEN_NAME = 'given_name';
 export const SORT_VIEW_FAMILY_NAME = 'family_name';
@@ -22,9 +24,10 @@ function getFilteredContacts(contactList, activeTag) {
   return contactList.filter(contact => contact.tags && contact.tags.includes(activeTag));
 }
 
-
+@withPush()
 class ContactBook extends Component {
   static propTypes = {
+    push: PropTypes.func.isRequired,
     requestContacts: PropTypes.func.isRequired,
     loadMoreContacts: PropTypes.func.isRequired,
     contacts: PropTypes.arrayOf(PropTypes.shape({})),
@@ -53,17 +56,9 @@ class ContactBook extends Component {
     this.props.loadMoreContacts();
   }
 
-  handleOpenImportModal = () => {
-    this.setState({
-      isImportModalOpen: true,
-    });
-  };
-
-  handleCloseImportModal = () => {
-    this.setState({
-      isImportModalOpen: false,
-    });
-  };
+  handleClickAddContact = () => {
+    this.props.push('/new-contact');
+  }
 
   handleUploadSuccess = () => {
     this.props.requestContacts();
@@ -78,6 +73,18 @@ class ContactBook extends Component {
   handleSortDirChange = (event) => {
     this.setState({
       sortDir: event.target.value,
+    });
+  };
+
+  handleOpenImportModal = () => {
+    this.setState({
+      isImportModalOpen: true,
+    });
+  };
+
+  handleCloseImportModal = () => {
+    this.setState({
+      isImportModalOpen: false,
     });
   };
 
@@ -105,53 +112,81 @@ class ContactBook extends Component {
     } = this.props;
 
     return (
-      <div className="contact-book">
+      <div className="s-contact-book">
         <PageTitle title={i18n._('header.menu.contacts', { defaults: 'Contacts' })} />
-        <MenuBar>
-          <div className="contact-book__col-selector">
-            220 contacts sélectionnés : <Button display="inline" icon="trash">Supprimer</Button> <Button display="inline" icon="share">Commencer une discussion</Button> <Checkbox className="contact-book__select-all" />
+        <MenuBar className="s-contact-book-menu">
+          {isFetching && (
+            <div className="s-contact-book-menu__loading">
+              <Spinner isLoading={isFetching} display="inline" />
+            </div>
+          )}
+          <div className="s-contact-book-menu__selector">
+            220 contacts sélectionnés : <Button className="s-contact-book-menu__action-btn" display="inline" icon="trash" noDecoration>Supprimer</Button> <Button className="s-contact-book-menu__action-btn" display="inline" icon="share" noDecoration>Commencer une discussion</Button> <Checkbox className="s-contact-book__select-all" />
           </div>
         </MenuBar>
-
-        <div className="contact-book__contacts">
-          <div className="contact-book__tags">
-            <h2 className="contact-book__tags-title">Groupes</h2>
-            <TagList
-              activeTag={this.state.activeTag}
-              onTagClick={this.handleTagClick}
-            />
-            <div className="contact-book__import">
-              <div className="contact-book__import-button">
-                <Button
-                  icon="users"
-                  className="contact-book__button"
-                  shape="plain"
-                  display="inline-block"
-                  onClick={this.handleOpenImportModal}
-                >
-                  Nouveau groupe
-                </Button>
+        <SidebarLayout
+          sidebar={(
+            <div className="s-contact-book__sidebar">
+              <div>
+                <h2 className="s-contact-book__tags-title"><Trans id="contact-book.contacts.title">Contacts</Trans></h2>
+                <NavList dir="vertical">
+                  <NavItem>
+                    <Button
+                      className="s-contact-book__action-button"
+                      icon="plus"
+                      shape="plain"
+                      display="block"
+                      onClick={this.handleClickAddContact}
+                    >
+                      <Trans id="contact-book.action.add">Add</Trans>
+                    </Button>
+                  </NavItem>
+                  <NavItem>
+                    <Button
+                      icon="upload"
+                      className="s-contact-book__action-button"
+                      shape="plain"
+                      display="block"
+                      onClick={this.handleOpenImportModal}
+                    >
+                      <Trans id="contact-book.action.import">Import</Trans>
+                    </Button>
+                    {this.renderImportModal()}
+                  </NavItem>
+                </NavList>
+              </div>
+              <div>
+                <h2 className="s-contact-book__tags-title"><Trans id="contact-book.groups.title">Groups</Trans></h2>
+                <TagList />
+                <NavList dir="vertical">
+                  <NavItem>
+                    <Button
+                      className="s-contact-book__action-button"
+                      icon="tag"
+                      shape="plain"
+                      display="block"
+                      onClick={this.handleClickAddTag}
+                    >
+                      <Trans id="contact-book.action.add">New group</Trans>
+                    </Button>
+                  </NavItem>
+                </NavList>
               </div>
             </div>
-          </div>
-
-          <div className="contact-book__contact-list">
-            {isFetching && (
-              <Spinner isLoading={isFetching} />
-            )}
-            <ContactList
-              contacts={getFilteredContacts(contacts, this.state.activeTag)}
-              sortDir={this.state.sortDir}
-            />
-            {hasMore && (
-              <div className="contact-book-list__load-more">
-                <Button shape="hollow" onClick={this.loadMore}>
-                  <Trans id="general.action.load_more">Load more</Trans>
-                </Button>
-              </div>
-            )}
-          </div>
-        </div>
+          )}
+        >
+          <ContactList
+            contacts={getFilteredContacts(contacts, this.state.activeTag)}
+            sortDir={this.state.sortDir}
+          />
+          {hasMore && (
+            <div className="s-contact-book-list__load-more">
+              <Button shape="hollow" onClick={this.loadMore}>
+                <Trans id="general.action.load_more">Load more</Trans>
+              </Button>
+            </div>
+          )}
+        </SidebarLayout>
       </div>
     );
   }

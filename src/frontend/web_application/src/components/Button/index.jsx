@@ -11,7 +11,7 @@ class Button extends PureComponent {
     children: PropTypes.node,
     shape: PropTypes.oneOf(['plain', 'hollow']),
     icon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    display: PropTypes.oneOf(['inline', 'inline-block', 'expanded']),
+    display: PropTypes.oneOf(['inline', 'inline-block', 'block', 'expanded']),
     color: PropTypes.oneOf(['success', 'alert', 'secondary', 'active']),
     responsive: PropTypes.oneOf(['icon-only', 'text-only']),
     accessKey: PropTypes.string,
@@ -62,6 +62,7 @@ class Button extends PureComponent {
           'm-button--expanded': display === 'expanded',
           'm-button--inline': display === 'inline',
           'm-button--inline-block': display === 'inline-block',
+          'm-button--block': display === 'block',
 
           'm-button--plain': shape === 'plain',
           'm-button--hollow': shape === 'hollow',
