@@ -17,7 +17,7 @@ function generateStateFromProps(props, prevState) {
       identifier,
     },
   } = props;
-  const [serverHostname = '', serverPort = ''] = infos && infos.server ? infos.server.split(':') : [];
+  const [inserverHostname = '', inserverPort = ''] = infos && infos.inserver ? infos.inserver.split(':') : [];
   const active = status ? status === REMOTE_IDENTITY_STATUS[0] : prevState.remoteIdentity.active;
 
   return {
@@ -25,9 +25,15 @@ function generateStateFromProps(props, prevState) {
     remoteIdentity: {
       ...prevState.remoteIdentity,
       ...(identifier ? { identifier } : {}),
-      serverHostname,
-      serverPort,
-      ...(credentials ? { username: credentials.username, password: credentials.password } : {}),
+      inserverHostname,
+      inserverPort,
+      ...(
+        credentials ?
+          {
+            inusername: credentials.inusername,
+            inpassword: credentials.inpassword,
+          } : {}
+      ),
       active,
       ...(protocol ? { protocol } : {}),
     },
@@ -37,14 +43,14 @@ function generateStateFromProps(props, prevState) {
 function getRemoteIdentityFromState(state, props) {
   const {
     remoteIdentity: {
-      identifier, serverHostname, serverPort, username, password, active, protocol,
+      identifier, inserverHostname, inserverPort, inusername, inpassword, active, protocol,
     },
   } = state;
   const { remoteIdentity } = props;
-  const credentials = (username || password) ? {
+  const credentials = (inusername || inpassword) ? {
     ...(remoteIdentity.credentials ? remoteIdentity.credentials : {}),
-    username,
-    password,
+    inusername,
+    inpassword,
   } : undefined;
 
   return {
@@ -54,7 +60,7 @@ function getRemoteIdentityFromState(state, props) {
     identifier,
     infos: {
       ...(remoteIdentity.infos ? remoteIdentity.infos : {}),
-      server: `${serverHostname}:${serverPort}`,
+      inserver: `${inserverHostname}:${inserverPort}`,
     },
     protocol,
     status: active ? 'active' : 'inactive',
@@ -78,12 +84,13 @@ class RemoteIdentityEmail extends Component {
   state = {
     phase: 0,
     formErrors: {},
+    advancedForm: false,
     remoteIdentity: {
       identifier: '',
-      serverHostname: '',
-      serverPort: '',
-      username: '',
-      password: '',
+      inserverHostname: '',
+      inserverPort: '',
+      inusername: '',
+      inpassword: '',
       active: true,
       type: 'imap',
     },
@@ -107,8 +114,8 @@ class RemoteIdentityEmail extends Component {
     if (this.validate({ phase: this.state.phase })) {
       this.setState((prevState) => {
         const { remoteIdentity } = prevState;
-        if (!remoteIdentity.entity_id && !remoteIdentity.username.length) {
-          remoteIdentity.username = remoteIdentity.identifier;
+        if (!remoteIdentity.entity_id && !remoteIdentity.inusername.length) {
+          remoteIdentity.inusername = remoteIdentity.identifier;
         }
 
         return {
@@ -209,15 +216,15 @@ class RemoteIdentityEmail extends Component {
 
     if (phase >= 3) {
       phaseValidation([
-        { formProperty: 'username', error: <Trans id="remote_identity.form.username.error">login is required</Trans> },
-        { formProperty: 'password', error: <Trans id="remote_identity.form.password.error">password is required</Trans> },
+        { formProperty: 'inusername', error: <Trans id="remote_identity.form.username.error">login is required</Trans> },
+        { formProperty: 'inpassword', error: <Trans id="remote_identity.form.password.error">password is required</Trans> },
       ]);
     }
 
     if (phase >= 2) {
       phaseValidation([
-        { formProperty: 'serverHostname', error: <Trans id="remote_identity.form.serverHostname.error">mail server is required</Trans> },
-        { formProperty: 'serverPort', error: <Trans id="remote_identity.form.serverPort.error">port is required</Trans> },
+        { formProperty: 'inserverHostname', error: <Trans id="remote_identity.form.serverHostname.error">mail server is required</Trans> },
+        { formProperty: 'inserverPort', error: <Trans id="remote_identity.form.serverPort.error">port is required</Trans> },
         { formProperty: 'protocol', error: <Trans id="remote_identity.form.protocol.error">protocol is required</Trans> },
       ]);
     }
@@ -331,10 +338,10 @@ class RemoteIdentityEmail extends Component {
           <FormColumn bottomSpace>
             <TextFieldGroup
               label={<Trans id="remote_identity.form.incomming_mail_server.label">Incoming mail server:</Trans>}
-              value={this.state.remoteIdentity.serverHostname}
-              errors={this.state.formErrors.serverHostname}
+              value={this.state.remoteIdentity.inserverHostname}
+              errors={this.state.formErrors.inserverHostname}
               onChange={this.handleParamsChange}
-              name="serverHostname"
+              name="inserverHostname"
               autoComplete="on"
               required
             />
@@ -342,10 +349,10 @@ class RemoteIdentityEmail extends Component {
           <FormColumn bottomSpace>
             <TextFieldGroup
               label={<Trans id="remote_identity.form.port.label">Port:</Trans>}
-              value={this.state.remoteIdentity.serverPort}
-              errors={this.state.formErrors.serverPort}
+              value={this.state.remoteIdentity.inserverPort}
+              errors={this.state.formErrors.inserverPort}
               onChange={this.handleParamsChange}
-              name="serverPort"
+              name="inserverPort"
               type="number"
               autoComplete="on"
               required
@@ -363,10 +370,10 @@ class RemoteIdentityEmail extends Component {
           <FormColumn bottomSpace>
             <TextFieldGroup
               label={<Trans id="remote_identity.form.username.label">Login:</Trans>}
-              value={this.state.remoteIdentity.username}
-              errors={this.state.formErrors.username}
+              value={this.state.remoteIdentity.inusername}
+              errors={this.state.formErrors.inusername}
               onChange={this.handleParamsChange}
-              name="username"
+              name="inusername"
               autoComplete="username"
               required
             />
@@ -375,10 +382,10 @@ class RemoteIdentityEmail extends Component {
             <TextFieldGroup
               label={<Trans id="remote_identity.form.password.label">Password:</Trans>}
               type="password"
-              value={this.state.remoteIdentity.password}
-              errors={this.state.formErrors.password}
+              value={this.state.remoteIdentity.inpassword}
+              errors={this.state.formErrors.inpassword}
               onChange={this.handleParamsChange}
-              name="password"
+              name="inpassword"
               autoComplete="new-password"
               required
             />
