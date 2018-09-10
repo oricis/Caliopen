@@ -22,6 +22,9 @@ class MailMessage extends Component {
     onMessageRead: PropTypes.func.isRequired,
     onMessageUnread: PropTypes.func.isRequired,
     onMessageDelete: PropTypes.func.isRequired,
+    onOpenTags: PropTypes.func.isRequired,
+    onCloseTags: PropTypes.func.isRequired,
+    onTagsChange: PropTypes.func.isRequired,
     forwardRef: PropTypes.func,
     user: PropTypes.shape({}).isRequired,
   };
@@ -44,17 +47,20 @@ class MailMessage extends Component {
   }
 
   getPiImg = ({ pi }) => (calcPiValue({ pi }) <= 50 ? postalCard : sealedEnvelope);
+
+  // FIXME: Ugly implenentation.
   getPiQualities = ({ pi }) => {
     /* eslint-disable no-nested-ternary */
     // XXX: temp stuff waiting for actual spec
     const labelFor = aspect => (aspect <= 33 ? 'bad' : aspect <= 66 ? 'warn' : 'ok');
     const iconFor = aspect => (aspect <= 33 ? 'fa-times' : aspect <= 66 ? 'fa-warning' : 'fa-check');
     /* eslint-enable no-nested-ternary */
+    const { technic, context, comportment } = pi || { technic: 0, context: 0, comportment: 0 };
 
     return {
-      technic: { label: labelFor(pi.technic), icon: iconFor(pi.technic) },
-      context: { label: labelFor(pi.context), icon: iconFor(pi.context) },
-      comportment: { label: labelFor(pi.comportment), icon: iconFor(pi.comportment) },
+      technic: { label: labelFor(technic), icon: iconFor(technic) },
+      context: { label: labelFor(context), icon: iconFor(context) },
+      comportment: { label: labelFor(comportment), icon: iconFor(comportment) },
     };
   }
 
@@ -89,7 +95,7 @@ class MailMessage extends Component {
   }
 
   render() {
-    const { message, forwardRef } = this.props;
+    const { message, forwardRef, onOpenTags } = this.props;
     const pi = calcPiValue(message);
     const author = getAuthor(message);
     const recipients = this.formatRecipients();
@@ -168,6 +174,9 @@ class MailMessage extends Component {
         <footer>
           <Button className="m-message-action-container__action" icon="reply">
             <Trans id="message-list.message.action.reply">Reply</Trans>
+          </Button>
+          <Button onClick={onOpenTags} className="m-message-actions-container__action" icon="tags" responsive="icon-only">
+            <Trans id="message-list.message.action.tags">Tags</Trans>
           </Button>
           <Button className="m-message-action-container__action" onClick={this.handleMessageDelete} icon="trash">
             <Trans id="message-list.message.action.delete">Delete</Trans>

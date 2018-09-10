@@ -127,6 +127,12 @@ class Discussion extends Component {
     }
   }
 
+  handleDelete = () => {
+    const { messages, deleteMessage } = this.props;
+    Promise.all(messages.map(message => deleteMessage({ message })));
+  };
+
+
   render() {
     const {
       discussionId, messages, isFetching, hash, scrollToTarget,
@@ -138,9 +144,9 @@ class Discussion extends Component {
         <StickyNavBar className="action-bar" stickyClassName="sticky-action-bar">
           <header className="s-discussion__header">
             <strong>Discussion complète&thinsp;:</strong>
-            <Button className="m-message-list__action" icon="reply">Répondre</Button>
-            <Button className="m-message-list__action" icon="tags">Tagger</Button>
-            <Button className="m-message-list__action" icon="trash">Supprimer</Button>
+            <Button className="m-message-list__action" icon="reply">Reply</Button>
+            <Button className="m-message-list__action" icon="tags">Tag</Button>
+            <Button className="m-message-list__action" icon="trash" onClick={this.handleDelete}>Delete</Button>
           </header>
         </StickyNavBar>
         <MessageList
