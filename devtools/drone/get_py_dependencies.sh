@@ -7,6 +7,6 @@ REQ_FILE=$(find $BASE_DIR/$PROG -depth -type f -name requirements.deps)
 
 # For every line in the file we search the dependency
 while read -r line || [[ -n "$line" ]]; do
-	DEP=`find $BASE_DIR -depth -type f,d -name $line | cut -d'/' -f 3- | tr '\n' ' '`
+	DEP=`find $BASE_DIR -depth \( -type f -o -type d \) -name $line | cut -d'/' -f 3- | tr '\n' ' '`
 	DEPS="$DEPS $DEP"
 done < $REQ_FILE
