@@ -1,21 +1,25 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { matchPath } from 'react-router-dom';
+import { matchPath, withRouter } from 'react-router-dom';
+import { withI18n } from 'lingui-react';
 import MenuBar from '../../components/MenuBar';
 
+@withI18n()
+@withRouter
 class User extends PureComponent {
   static propTypes = {
-    pathname: PropTypes.string,
+    location: PropTypes.shape({
+      pathname: PropTypes.string.isRequired,
+    }).isRequired,
     children: PropTypes.node,
     i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
-    pathname: undefined,
     children: null,
   };
 
   render() {
-    const { i18n, children, pathname } = this.props;
+    const { i18n, children, location: { pathname } } = this.props;
 
     const navLinks = [
       { key: 'user.profile', label: i18n._('user.profile', { defaults: 'Profile' }), to: '/user/profile' },
