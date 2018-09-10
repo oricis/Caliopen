@@ -12,19 +12,72 @@ const ALPHA = '#abcdefghijklmnopqrstuvwxyz';
 
 class ContactList extends PureComponent {
   static propTypes = {
-    contacts: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    contacts: PropTypes.arrayOf(PropTypes.shape({})),
     contactDisplayOrder: PropTypes.string.isRequired,
     contactDisplayFormat: PropTypes.string.isRequired,
     sortDir: PropTypes.string,
   };
   static defaultProps = {
+    contacts: [],
     sortDir: DEFAULT_SORT_DIR,
   };
 
+  getFirstLetter = () => {
+    const { sortDir } = this.props;
+
+    return ALPHA.split('').sort((a, b) => {
+      switch (sortDir) {
+        default:
+        case 'ASC':
+          return (a || '').localeCompare(b);
+        case 'DESC':
+          return (b || '').localeCompare(a);
+      }
+    });
+  }
+
+  renderNav(firstLettersWithContacts = []) {
+    const firstLetters = this.getFirstLetter();
+
+    return (
+      <div className="m-contact-list__nav">
+        {firstLetters.map(letter => (
+          <Link
+            href={`#letter-${letter}`}
+            className={classnames('m-contact-list__alpha-letter', { 'm-contact-list__alpha-letter--active': firstLettersWithContacts.includes(letter) })}
+            key={letter}
+          >
+            {letter}
+          </Link>
+        ))}
+      </div>
+    );
+  }
+
+  renderPlaceholder() {
+    return (
+      <div className="m-contact-list">
+        {this.renderNav()}
+        <div className="m-contact-list__list">
+          <div className="m-contact-list__group">
+            {[1, 2, 3].map(key => (
+              <ContactItem className="m-contact-list__contact" key={key} />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     const {
-      contacts, sortDir, contactDisplayOrder, contactDisplayFormat: format,
+      contacts, contactDisplayOrder, contactDisplayFormat: format,
     } = this.props;
+
+    if (!contacts.length) {
+      return this.renderPlaceholder();
+    }
+
     const contactsGroupedByLetter = contacts
       .sort((a, b) => (a[contactDisplayOrder] || getContactTitle(a))
         .localeCompare(b[contactDisplayOrder] || getContactTitle(b)))
@@ -40,30 +93,13 @@ class ContactList extends PureComponent {
           ],
         };
       }, {});
-    const firstLetters = ALPHA.split('').sort((a, b) => {
-      switch (sortDir) {
-        default:
-        case 'ASC':
-          return (a || '').localeCompare(b);
-        case 'DESC':
-          return (b || '').localeCompare(a);
-      }
-    });
+
     const firstLettersWithContacts = Object.keys(contactsGroupedByLetter);
+    const firstLetters = this.getFirstLetter(firstLettersWithContacts);
 
     return (
       <div className="m-contact-list">
-        <div className="m-contact-list__nav">
-          {firstLetters.map(letter => (
-            <Link
-              href={`#letter-${letter}`}
-              className={classnames('m-contact-list__alpha-letter', { 'm-contact-list__alpha-letter--active': firstLettersWithContacts.includes(letter) })}
-              key={letter}
-            >
-              {letter}
-            </Link>
-          ))}
-        </div>
+        {this.renderNav(firstLettersWithContacts)}
         <div className="m-contact-list__list">
           {firstLetters.map(letter => (
             contactsGroupedByLetter[letter] && (

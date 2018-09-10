@@ -28,6 +28,10 @@
     @include flex-grid-size;
   }
 
+  &__tags {
+    min-height: $co-font__size;
+  }
+
   &__info,
   &__select {
     @include flex-grid-column(shrink);

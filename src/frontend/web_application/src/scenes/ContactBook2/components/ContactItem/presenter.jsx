@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { ContactAvatarLetter, SIZE_MEDIUM } from '../../../../modules/avatar';
-import { Link, TextBlock, Icon, Checkbox } from '../../../../components/';
+import { Link, TextBlock, Icon, Checkbox, Badge, PlaceholderBlock } from '../../../../components/';
 import { formatName } from '../../../../services/contact';
 import './style.scss';
 
@@ -16,8 +16,39 @@ class ContactItem extends PureComponent {
     className: undefined,
   };
 
+  renderPlaceholder() {
+    const { className } = this.props;
+
+    return (
+      <div className={classnames('contact-item', className)}>
+        <div className="contact-item__title">
+          <div className="contact-item__avatar">
+            <PlaceholderBlock shape="avatar" />
+          </div>
+          <div className="contact-item__contact">
+            <div className="contact-item__name">
+              <PlaceholderBlock shape="line" />
+            </div>
+            <div className="contact-item__tags" />
+          </div>
+        </div>
+        <div className="contact-item__info contact-book-info">
+          <PlaceholderBlock />
+        </div>
+        <div className="contact-item__select">
+          &nbsp;
+        </div>
+      </div>
+    );
+  }
+
   render() {
     const { contact, contactDisplayFormat: format, className } = this.props;
+
+    if (!contact) {
+      return this.renderPlaceholder();
+    }
+
     const contactTitle = formatName({ contact, format });
 
     return (

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import ContactList from './components/ContactList';
@@ -106,9 +106,29 @@ class ContactBook extends Component {
     );
   }
 
+  renderContacts() {
+    const { contacts, hasMore } = this.props;
+
+    return (
+      <Fragment>
+        <ContactList
+          contacts={getFilteredContacts(contacts, this.state.activeTag)}
+          sortDir={this.state.sortDir}
+        />
+        {hasMore && (
+          <div className="s-contact-book-list__load-more">
+            <Button shape="hollow" onClick={this.loadMore}>
+              <Trans id="general.action.load_more">Load more</Trans>
+            </Button>
+          </div>
+        )}
+      </Fragment>
+    );
+  }
+
   render() {
     const {
-      contacts, isFetching, hasMore, i18n,
+      isFetching, i18n,
     } = this.props;
 
     return (
@@ -175,17 +195,7 @@ class ContactBook extends Component {
             </div>
           )}
         >
-          <ContactList
-            contacts={getFilteredContacts(contacts, this.state.activeTag)}
-            sortDir={this.state.sortDir}
-          />
-          {hasMore && (
-            <div className="s-contact-book-list__load-more">
-              <Button shape="hollow" onClick={this.loadMore}>
-                <Trans id="general.action.load_more">Load more</Trans>
-              </Button>
-            </div>
-          )}
+          {this.renderContacts()}
         </SidebarLayout>
       </div>
     );
