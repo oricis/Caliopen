@@ -7,7 +7,6 @@ FROM public-registry.caliopen.org/caliopen_python
 MAINTAINER Caliopen
 
 RUN apk add nginx linux-headers supervisor
-RUN pip install --upgrade pip
 RUN pip install uwsgi
 
 # Copy configuration files to run apiv1 behind uwsi and nginx
