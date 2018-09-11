@@ -28,10 +28,13 @@ class Discussion extends Component {
     hasMore: PropTypes.bool.isRequired,
     hash: PropTypes.string,
     messages: PropTypes.arrayOf(PropTypes.shape({})),
+    onMessageReply: PropTypes.func.isRequired,
     setMessageRead: PropTypes.func.isRequired,
     deleteMessage: PropTypes.func.isRequired,
+    deleteDiscussion: PropTypes.func.isRequired,
     currentTab: PropTypes.shape({}),
     closeTab: PropTypes.func.isRequired,
+    push: PropTypes.func.isRequired,
     getUser: PropTypes.func.isRequired,
   };
 
@@ -83,16 +86,10 @@ class Discussion extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {
-      didInvalidate, isFetching, messages, currentTab,
-    } = nextProps;
+    const { didInvalidate, isFetching } = nextProps;
 
     if (didInvalidate && !isFetching) {
       this.props.requestMessages({ discussion_id: nextProps.discussionId });
-    }
-
-    if (!didInvalidate && !isFetching && messages.length === 0) {
-      this.props.closeTab({ currentTab });
     }
   }
 
@@ -119,6 +116,11 @@ class Discussion extends Component {
     this.props.setMessageRead({ message, isRead: false });
   }
 
+  handleMessageReply = ({ message }) => {
+    this.props.onMessageReply({ message });
+    this.props.push('reply');
+  };
+
   loadMore = () => {
     const { hasMore, isFetching } = this.props;
 
@@ -127,9 +129,14 @@ class Discussion extends Component {
     }
   }
 
-  handleDelete = () => {
-    const { messages, deleteMessage } = this.props;
-    Promise.all(messages.map(message => deleteMessage({ message })));
+  handleDeleteAll = async () => {
+    const {
+      messages, deleteDiscussion, discussionId, // closeTab, currentTab,
+    } = this.props;
+
+    // FIXME : only deletes fetched messages.
+    deleteDiscussion({ discussionId, messages });
+    //  .then(() => closeTab({ tab: currentTab }));
   };
 
 
@@ -146,7 +153,7 @@ class Discussion extends Component {
             <strong>Discussion complète&thinsp;:</strong>
             <Button className="m-message-list__action" icon="reply">Reply</Button>
             <Button className="m-message-list__action" icon="tags">Tag</Button>
-            <Button className="m-message-list__action" icon="trash" onClick={this.handleDelete}>Delete</Button>
+            <Button className="m-message-list__action" icon="trash" onClick={this.handleDeleteAll}>Delete</Button>
           </header>
         </StickyNavBar>
         <MessageList

@@ -1,9 +1,7 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-// FIXME: do not use reac-router-redux
-import { push } from 'react-router-redux';
-import { requestMessages, loadMore } from '../../store/modules/message';
+import { requestMessages, loadMore, invalidate, deleteMessage as deleteMessageRaw } from '../../store/modules/message';
 import { setMessageRead, deleteMessage } from '../../modules/message';
 import { reply } from '../../modules/draftMessage';
 import { createMessageCollectionStateSelector } from '../../store/selectors/message';
@@ -12,6 +10,7 @@ import { withCurrentTab, withCloseTab } from '../../modules/tab';
 import { sortMessages } from '../../services/message';
 import { getUser } from '../../modules/user/actions/getUser';
 import withScrollManager from '../../modules/scroll/hoc/scrollManager';
+import { withPush } from '../../modules/routing/hoc/withPush';
 import Discussion from './presenter';
 
 const getDiscussionIdFromProps = props => props.match.params.discussionId;
@@ -41,9 +40,14 @@ const mapStateToProps = createSelector(
   }
 );
 
+const deleteDiscussion = ({ discussionId, messages }) => async (dispatch) => {
+  await Promise.all(messages.map((message => dispatch(deleteMessageRaw({ message })))));
+
+  return dispatch(invalidate({ type: 'discussion', key: discussionId }));
+};
+
 const onMessageReply = ({ message }) => (dispatch) => {
   dispatch(reply({ internalId: message.discussion_id, message }));
-  dispatch(push({ hash: 'reply' }));
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
@@ -51,6 +55,7 @@ const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
   loadMore: loadMore.bind(null, 'discussion', getDiscussionIdFromProps(ownProps)),
   setMessageRead,
   deleteMessage,
+  deleteDiscussion,
   onMessageReply,
   getUser,
 }, dispatch);
@@ -60,4 +65,5 @@ export default compose(
   withScrollManager(),
   withCloseTab(),
   withCurrentTab(),
+  withPush(),
 )(Discussion);
