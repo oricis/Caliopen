@@ -6,6 +6,70 @@ import { Link, TextBlock, Icon, Checkbox, Badge, PlaceholderBlock } from '../../
 import { formatName } from '../../../../services/contact';
 import './style.scss';
 
+const getAddress = ({ attrName, attr }) => {
+  switch (attrName) {
+    case 'emails':
+      return {
+        type: 'email',
+        identifier: attr.address,
+      };
+
+    case 'phones':
+      return {
+        type: 'phone',
+        identifier: attr.number,
+      };
+
+    case 'identities':
+      return {
+        type: attr.type,
+        identifier: attr.identifier,
+      };
+
+    case 'ims':
+      return {
+        type: 'comment',
+        identifier: attr.address,
+      };
+    default:
+      console.warn('Unable to render the main address for:');
+      console.table(attr);
+
+      return undefined;
+  }
+};
+
+const getMainAddresses = ({ contact }) => ['emails', 'phones', 'identities', 'ims'].reduce((acc, attrName) => {
+  if (acc.length === 2) {
+    return acc;
+  }
+
+  if (!contact[attrName]) {
+    return acc;
+  }
+
+  const mainAddress = contact[attrName].reduce((attrAcc, attr) => {
+    if (!attrAcc) {
+      return getAddress({ attrName, attr });
+    }
+
+    if (attr.is_primary) {
+      return getAddress({ attrName, attr });
+    }
+
+    return attrAcc;
+  }, undefined);
+
+  if (!mainAddress) {
+    return acc;
+  }
+
+  return [
+    ...acc,
+    mainAddress,
+  ];
+}, []);
+
 class ContactItem extends PureComponent {
   static propTypes = {
     contact: PropTypes.shape({}).isRequired,
@@ -32,7 +96,7 @@ class ContactItem extends PureComponent {
             <div className="contact-item__tags" />
           </div>
         </div>
-        <div className="contact-item__info contact-book-info">
+        <div className="contact-item__info">
           <PlaceholderBlock />
         </div>
         <div className="contact-item__select">
@@ -50,6 +114,7 @@ class ContactItem extends PureComponent {
     }
 
     const contactTitle = formatName({ contact, format });
+    const mainAddresses = getMainAddresses({ contact });
 
     return (
       <div className={classnames('contact-item', className)}>
@@ -62,21 +127,27 @@ class ContactItem extends PureComponent {
               contactDisplayFormat={format}
             />
           </div>
-          <TextBlock className="contact-item__name">
-            {contact.name_prefix && (<span className="contact-item__contact-prefix">{contact.name_prefix}</span>)}
-            <span className="contact-item__contact-title">{contactTitle}</span>
-            {contact.name_suffix && (<span className="contact-item__contact-suffix">, {contact.name_suffix}</span>)}
-          </TextBlock>
+          <div className="contact-item__contact">
+            <TextBlock className="contact-item__name">
+              {contact.name_prefix && (<span className="contact-item__contact-prefix">{contact.name_prefix}</span>)}
+              <span className="contact-item__contact-title">{contactTitle}</span>
+              {contact.name_suffix && (<span className="contact-item__contact-suffix">, {contact.name_suffix}</span>)}
+            </TextBlock>
+            <div className="contact-item__tags">
+              {contact.tags && contact.tags.map(tag => (
+                <Badge key={tag} rightSpaced>{tag}</Badge>
+              ))}
+            </div>
+          </div>
         </Link>
-        {/*  TODO: add tags */}
         <TextBlock className="contact-item__info">
-          <div className="contact-item__interactions">
-            <span className="contact-item__interactions-icon"><Icon type="exchange" spaced /></span>
-            <span className="contact-item__interactions-nb">123 messages échangés</span>
-          </div>
-          <div className="contact-item__interactions-info">
-            dernier il y a 1h | <Link to="/compose"><Icon type="pencil" /> écrire</Link>
-          </div>
+          {mainAddresses.map(address => (
+            <div key={address.id}>
+              <Icon type={address.type} />
+              {' '}
+              {address.identifier}
+            </div>
+          ))}
         </TextBlock>
         <TextBlock className="contact-item__select">
           <Checkbox />

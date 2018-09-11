@@ -7,7 +7,7 @@
   &__title {
     @include flex-grid-column;
     @include flex-grid-row($size: expanded);
-    align-items: baseline;
+    align-items: center;
     color: #505050;
 
     &:hover {
@@ -24,7 +24,7 @@
   &__avatar {
     @include flex-grid-column(shrink);
   }
-  &__name {
+  &__contact {
     @include flex-grid-size;
   }
 
@@ -35,6 +35,10 @@
   &__info,
   &__select {
     @include flex-grid-column(shrink);
+  }
+
+  &__info {
+    text-align: right;
   }
 
   &__contact-title {
