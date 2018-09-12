@@ -34,7 +34,6 @@ import (
 type CmdConfig struct {
 	rest_api.APIConfig
 	rest_api.IndexConfig
-	rest_api.ProxyConfig
 }
 
 var (
@@ -197,20 +196,6 @@ func getCacheFacility() (Cache *cache.RedisBackend, err error) {
 	Cache, err = cache.InitializeRedisBackend(CacheConfig(apiConf.APIConfig.CacheSettings))
 	if err != nil {
 		return nil, err
-	}
-	return
-}
-
-// getAPIConnection pings API1 and API2 connections and returns URLs from configuration file
-// OK is false if at least one API is not responding
-func getAPIConnection() (API1, API2 string, OK1, OK2 bool) {
-	API1 = apiConf.ProxyConfig.Routes["/"]
-	API2 = apiConf.ProxyConfig.Routes["/api/v2/"]
-	if _, err := http.Head("http://" + API1); err == nil {
-		OK1 = true
-	}
-	if _, err := http.Head("http://" + API2); err == nil {
-		OK2 = true
 	}
 	return
 }
