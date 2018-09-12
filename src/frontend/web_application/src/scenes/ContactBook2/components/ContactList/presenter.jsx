@@ -104,7 +104,7 @@ class ContactList extends PureComponent {
           {firstLetters.map(letter => (
             contactsGroupedByLetter[letter] && (
               <div key={letter} className="m-contact-list__group">
-                <Title className="m-contact-list__alpha-title" id={`letter-${letter}`}>{letter}</Title>
+                <Title caps hr size="large" className="m-contact-list__alpha-title" id={`letter-${letter}`}>{letter}</Title>
                 {contactsGroupedByLetter[letter].map(contact => (
                   <ContactItem className="m-contact-list__contact" contact={contact} key={contact.contact_id} />
                 ))}

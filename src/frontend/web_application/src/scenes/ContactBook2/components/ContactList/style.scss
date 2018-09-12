@@ -28,7 +28,6 @@ $m-contact-list__nav-alpha-color--active: #9a9a9a;
   }
 
   &__list {
-    // margin-top: 30px;
     margin-bottom: 35px;
   }
 
@@ -38,21 +37,6 @@ $m-contact-list__nav-alpha-color--active: #9a9a9a;
     // usefull for anchor position without incidences
     padding-top: rem-calc($co-component__height + .5rem);
     color: $m-contact-list__nav-alpha-color--active;
-    text-transform: capitalize;
-
-    &:before {
-      display: block;
-      content: "";
-      position: relative;
-      top: 10px;
-      margin-left: 40px;
-      border-top: 2px solid #8dceec;
-    }
-
-    .m-title__text {
-      font-size: 20px;
-      line-height: 20px;
-    }
   }
 
   &__contact {
