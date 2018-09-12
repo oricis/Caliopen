@@ -27,7 +27,6 @@ import (
 	"github.com/nats-io/go-nats"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"net/http"
 	"os"
 )
 
