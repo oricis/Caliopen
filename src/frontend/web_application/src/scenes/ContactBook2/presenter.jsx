@@ -60,6 +60,10 @@ class ContactBook extends Component {
     this.props.push('/new-contact');
   }
 
+  handleClickEditGroups = () => {
+    this.props.push('/settings/tags');
+  }
+
   handleUploadSuccess = () => {
     this.props.requestContacts();
   };
@@ -185,9 +189,9 @@ class ContactBook extends Component {
                       icon="tag"
                       shape="plain"
                       display="block"
-                      onClick={this.handleClickAddTag}
+                      onClick={this.handleClickEditGroups}
                     >
-                      <Trans id="contact-book.action.add">New group</Trans>
+                      <Trans id="contact-book.tags.action.edit-groups">Edit groups</Trans>
                     </Button>
                   </NavItem>
                 </NavList>
