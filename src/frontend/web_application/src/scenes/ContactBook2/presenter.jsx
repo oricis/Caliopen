@@ -2,10 +2,10 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import ContactList from './components/ContactList';
-import { PageTitle, Spinner, Button, MenuBar, Checkbox, SidebarLayout, Modal, NavList, NavItem } from '../../components';
+import { PageTitle, Spinner, Button, MenuBar, Checkbox, SidebarLayout, NavList, NavItem } from '../../components';
 import { withPush } from '../../modules/routing';
 import TagList from './components/TagList';
-import ImportContact from './components/ImportContact';
+import ImportContactButton from './components/ImportContactButton';
 import './style.scss';
 import './contact-book-menu.scss';
 
@@ -45,7 +45,6 @@ class ContactBook extends Component {
   state = {
     activeTag: '',
     sortDir: DEFAULT_SORT_DIR,
-    isImportModalOpen: false,
   };
 
   componentDidMount() {
@@ -79,36 +78,6 @@ class ContactBook extends Component {
       sortDir: event.target.value,
     });
   };
-
-  handleOpenImportModal = () => {
-    this.setState({
-      isImportModalOpen: true,
-    });
-  };
-
-  handleCloseImportModal = () => {
-    this.setState({
-      isImportModalOpen: false,
-    });
-  };
-
-  renderImportModal = () => {
-    const { i18n } = this.props;
-
-    return (
-      <Modal
-        isOpen={this.state.isImportModalOpen}
-        contentLabel={i18n._('import-contact.action.import_contacts', { defaults: 'Import contacts' })}
-        title={i18n._('import-contact.action.import_contacts', { defaults: 'Import contacts' })}
-        onClose={this.handleCloseImportModal}
-      >
-        <ImportContact
-          onCancel={this.handleCloseImportModal}
-          onUploadSuccess={this.handleUploadSuccess}
-        />
-      </Modal>
-    );
-  }
 
   renderContacts() {
     const { contacts, hasMore } = this.props;
@@ -166,16 +135,10 @@ class ContactBook extends Component {
                     </Button>
                   </NavItem>
                   <NavItem>
-                    <Button
-                      icon="upload"
+                    <ImportContactButton
                       className="s-contact-book__action-button"
-                      shape="plain"
-                      display="block"
-                      onClick={this.handleOpenImportModal}
-                    >
-                      <Trans id="contact-book.action.import">Import</Trans>
-                    </Button>
-                    {this.renderImportModal()}
+                      onUploadSuccess={this.handleUploadSuccess}
+                    />
                   </NavItem>
                 </NavList>
               </div>
