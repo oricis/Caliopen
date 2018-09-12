@@ -84,22 +84,22 @@ class ContactItem extends PureComponent {
     const { className } = this.props;
 
     return (
-      <div className={classnames('contact-item', className)}>
-        <div className="contact-item__title">
-          <div className="contact-item__avatar">
+      <div className={classnames('m-contact-item', className)}>
+        <div className="m-contact-item__title">
+          <div className="m-contact-item__avatar">
             <PlaceholderBlock shape="avatar" />
           </div>
-          <div className="contact-item__contact">
-            <div className="contact-item__name">
+          <div className="m-contact-item__contact">
+            <div className="m-contact-item__name">
               <PlaceholderBlock shape="line" />
             </div>
-            <div className="contact-item__tags" />
+            <div className="m-contact-item__tags" />
           </div>
         </div>
-        <div className="contact-item__info">
+        <div className="m-contact-item__info">
           <PlaceholderBlock />
         </div>
-        <div className="contact-item__select">
+        <div className="m-contact-item__select">
           &nbsp;
         </div>
       </div>
@@ -117,9 +117,9 @@ class ContactItem extends PureComponent {
     const mainAddresses = getMainAddresses({ contact });
 
     return (
-      <div className={classnames('contact-item', className)}>
-        <Link noDecoration to={`/contacts/${contact.contact_id}`} className="contact-item__title">
-          <div className="contact-item__avatar">
+      <div className={classnames('m-contact-item', className)}>
+        <Link noDecoration to={`/contacts/${contact.contact_id}`} className="m-contact-item__title">
+          <div className="m-contact-item__avatar">
             <ContactAvatarLetter
               isRound
               contact={contact}
@@ -127,29 +127,29 @@ class ContactItem extends PureComponent {
               contactDisplayFormat={format}
             />
           </div>
-          <div className="contact-item__contact">
-            <TextBlock className="contact-item__name">
-              {contact.name_prefix && (<span className="contact-item__contact-prefix">{contact.name_prefix}</span>)}
-              <span className="contact-item__contact-title">{contactTitle}</span>
-              {contact.name_suffix && (<span className="contact-item__contact-suffix">, {contact.name_suffix}</span>)}
+          <div className="m-contact-item__contact">
+            <TextBlock className="m-contact-item__name">
+              {contact.name_prefix && (<span className="m-contact-item__contact-prefix">{contact.name_prefix}</span>)}
+              <span className="m-contact-item__contact-title">{contactTitle}</span>
+              {contact.name_suffix && (<span className="m-contact-item__contact-suffix">, {contact.name_suffix}</span>)}
             </TextBlock>
-            <div className="contact-item__tags">
+            <div className="m-contact-item__tags">
               {contact.tags && contact.tags.map(tag => (
                 <Badge key={tag} rightSpaced>{tag}</Badge>
               ))}
             </div>
           </div>
         </Link>
-        <TextBlock className="contact-item__info">
+        <div className="m-contact-item__info">
           {mainAddresses.map(address => (
-            <div key={address.id}>
+            <TextBlock key={address.id}>
               <Icon type={address.type} />
               {' '}
               {address.identifier}
-            </div>
+            </TextBlock>
           ))}
-        </TextBlock>
-        <TextBlock className="contact-item__select">
+        </div>
+        <TextBlock className="m-contact-item__select">
           <Checkbox />
         </TextBlock>
       </div>

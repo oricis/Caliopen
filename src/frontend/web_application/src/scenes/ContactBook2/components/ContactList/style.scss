@@ -8,9 +8,9 @@ $m-contact-list__nav-alpha-color--active: #9a9a9a;
   &__nav {
     display: flex;
     justify-content: space-between;
-    margin-top: 35px;
-    margin-right: 24px;
-    margin-left: 24px;
+    margin-top: 35px; // fixed height
+    margin-right: map_get($co-margin_, 'xsmall');
+    margin-left: map_get($co-margin_, 'xsmall');
   }
 
   &__alpha-letter {
@@ -28,14 +28,15 @@ $m-contact-list__nav-alpha-color--active: #9a9a9a;
   }
 
   &__list {
-    margin-top: 30px;
+    // margin-top: 30px;
     margin-bottom: 35px;
   }
 
   &__alpha-title {
+    margin-right: map_get($co-margin_, 'xsmall');
+    margin-left: map_get($co-margin_, 'xsmall');
     // usefull for anchor position without incidences
     padding-top: rem-calc($co-component__height + .5rem);
-    padding-left: map_get($co-form__spacing, 'large');
     color: $m-contact-list__nav-alpha-color--active;
     text-transform: capitalize;
 
@@ -44,7 +45,6 @@ $m-contact-list__nav-alpha-color--active: #9a9a9a;
       content: "";
       position: relative;
       top: 10px;
-      margin-right: 16px;
       margin-left: 40px;
       border-top: 2px solid #8dceec;
     }
@@ -56,10 +56,32 @@ $m-contact-list__nav-alpha-color--active: #9a9a9a;
   }
 
   &__contact {
-    margin-bottom: 1px;
-    margin-left: 80px;
     padding-top: $m-contact-list__contact-spacing;
     padding-bottom: $m-contact-list__contact-spacing;
-    padding-left: map_get($co-form__spacing, 'small');
+    border-bottom: 1px solid $co-color__fg__border--higher;
   }
+
+  @include breakpoint(medium) {
+    &__contact {
+      margin-right: map_get($co-margin_, 'large');
+      margin-left: map_get($co-margin_, 'large');
+    }
+
+    &__nav {
+      margin-right: map_get($co-margin_, 'large') / 2;
+      margin-left: map_get($co-margin_, 'large') / 2;
+    }
+
+    &__alpha-title {
+      margin-right: map_get($co-margin_, 'medium');
+      margin-left: map_get($co-margin_, 'medium');
+    }
+  };
+
+  @include breakpoint(large) {
+    &__contact {
+      margin-right: map_get($co-margin_, 'xlarge');
+      margin-left: map_get($co-margin_, 'xlarge');
+    }
+  };
 }
