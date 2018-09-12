@@ -15,7 +15,7 @@ var (
 	RootCmd = &cobra.Command{
 		Use:   "caliopen_rest",
 		Short: "Caliopen REST HTTP API",
-		Long:  `Caliopen REST HTTP API for the frontend applications`,
+		Long:  `HTTP server (& proxy) for the frontend applications`,
 		Run:   nil,
 	}
 )

@@ -17,13 +17,14 @@ import (
 )
 
 var (
+	withProxy      bool
 	configFileName string
 	configPath     string
 	pidFile        string
 	cmdConfig      CmdConfig
 	serveCmd       = &cobra.Command{
 		Use:   "serve",
-		Short: "start the caliopen REST HTTP API server",
+		Short: "start the caliopen REST HTTP API server (& proxy)",
 		Run:   API,
 	}
 
@@ -38,6 +39,7 @@ func init() {
 		"../../../../../configs/", "API config file path.")
 	serveCmd.PersistentFlags().StringVarP(&pidFile, "pid-file", "p",
 		"/var/run/caliopen_rest.pid", "Path to the pid file")
+	serveCmd.PersistentFlags().BoolVarP(&withProxy, "proxy", "", true, "Start HTTP proxy for routing to both GO & Python services")
 	serveCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
 		if verbose {
 			log.SetLevel(log.DebugLevel)
@@ -67,6 +69,10 @@ func sigHandler() {
 		} else if sig == syscall.SIGTERM || sig == syscall.SIGQUIT || sig == syscall.SIGINT {
 			log.Info("Shutdown signal caught")
 
+			if withProxy {
+
+			}
+
 			//app.Shutdown()
 			log.Infof("Shutdown completed, exiting.")
 			os.Exit(0)
@@ -78,6 +84,11 @@ func sigHandler() {
 
 func API(cmd *cobra.Command, args []string) {
 	err := readConfig(false)
+
+	if withProxy {
+		// start HTTP reverse proxy
+		go rest_api.StartProxy(cmdConfig.ProxyConfig)
+	}
 
 	err = rest_api.InitializeServer(cmdConfig.APIConfig)
 	if err != nil {
@@ -116,4 +127,5 @@ func readConfig(readAll bool) error {
 type CmdConfig struct {
 	rest_api.APIConfig
 	rest_api.IndexConfig
+	rest_api.ProxyConfig
 }
