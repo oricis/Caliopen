@@ -10,7 +10,6 @@ import './style.scss';
 @withI18n()
 class TagList extends Component {
   static propTypes = {
-    onTagClick: PropTypes.func.isRequired,
     activeTag: PropTypes.string.isRequired,
     i18n: PropTypes.shape({}).isRequired,
   };
@@ -20,12 +19,6 @@ class TagList extends Component {
 
   sortTags = (i18n, tags) =>
     [...tags].sort((a, b) => getTagLabel(i18n, a).localeCompare(getTagLabel(i18n, b)));
-
-  createHandleClickTag = tagName => () => {
-    const { onTagClick } = this.props;
-
-    onTagClick(tagName);
-  }
 
   renderItem({ tagName, label }) {
     const { activeTag } = this.props;

@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { Trans } from 'lingui-react';
 import { ContactAvatarLetter, SIZE_MEDIUM } from '../../../../modules/avatar';
 import { Link, TextBlock, Icon, Checkbox, Badge, PlaceholderBlock } from '../../../../components/';
 import { formatName } from '../../../../services/contact';
@@ -72,13 +73,23 @@ const getMainAddresses = ({ contact }) => ['emails', 'phones', 'identities', 'im
 
 class ContactItem extends PureComponent {
   static propTypes = {
-    contact: PropTypes.shape({}).isRequired,
+    contact: PropTypes.shape({}),
     contactDisplayFormat: PropTypes.string.isRequired,
     className: PropTypes.string,
+    onSelectEntity: PropTypes.func.isRequired,
+    isContactSelected: PropTypes.bool.isRequired,
   };
   static defaultProps = {
+    contact: undefined,
     className: undefined,
   };
+
+  onCheckboxChange = (ev) => {
+    const { contact, onSelectEntity } = this.props;
+    const { checked } = ev.target;
+
+    onSelectEntity(checked ? 'add' : 'remove', contact.contact_id);
+  }
 
   renderPlaceholder() {
     const { className } = this.props;
@@ -107,7 +118,9 @@ class ContactItem extends PureComponent {
   }
 
   render() {
-    const { contact, contactDisplayFormat: format, className } = this.props;
+    const {
+      contact, contactDisplayFormat: format, className, isContactSelected,
+    } = this.props;
 
     if (!contact) {
       return this.renderPlaceholder();
@@ -142,7 +155,7 @@ class ContactItem extends PureComponent {
         </Link>
         <div className="m-contact-item__info">
           {mainAddresses.map(address => (
-            <TextBlock key={address.id}>
+            <TextBlock key={address.identifier}>
               <Icon type={address.type} />
               {' '}
               {address.identifier}
@@ -150,7 +163,12 @@ class ContactItem extends PureComponent {
           ))}
         </div>
         <TextBlock className="m-contact-item__select">
-          <Checkbox />
+          <Checkbox
+            label={<Trans id="contact-book.action.select">Select the contact</Trans>}
+            showLabelforSr
+            onChange={this.onCheckboxChange}
+            checked={isContactSelected}
+          />
         </TextBlock>
       </div>
     );

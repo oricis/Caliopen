@@ -13,12 +13,15 @@ const ALPHA = '#abcdefghijklmnopqrstuvwxyz';
 class ContactList extends PureComponent {
   static propTypes = {
     contacts: PropTypes.arrayOf(PropTypes.shape({})),
+    selectedContactsIds: PropTypes.arrayOf(PropTypes.string),
     contactDisplayOrder: PropTypes.string.isRequired,
     contactDisplayFormat: PropTypes.string.isRequired,
+    onSelectEntity: PropTypes.func.isRequired,
     sortDir: PropTypes.string,
   };
   static defaultProps = {
     contacts: [],
+    selectedContactsIds: [],
     sortDir: DEFAULT_SORT_DIR,
   };
 
@@ -55,13 +58,20 @@ class ContactList extends PureComponent {
   }
 
   renderPlaceholder() {
+    const noop = () => {};
+
     return (
       <div className="m-contact-list">
         {this.renderNav()}
         <div className="m-contact-list__list">
           <div className="m-contact-list__group">
-            {[1, 2, 3].map(key => (
-              <ContactItem className="m-contact-list__contact" key={key} />
+            {[1, 2, 3, 4, 5].map(key => (
+              <ContactItem
+                key={key}
+                className="m-contact-list__contact"
+                onSelectEntity={noop}
+                isContactSelected={false}
+              />
             ))}
           </div>
         </div>
@@ -71,7 +81,8 @@ class ContactList extends PureComponent {
 
   render() {
     const {
-      contacts, contactDisplayOrder, contactDisplayFormat: format,
+      contacts, contactDisplayOrder, contactDisplayFormat: format, onSelectEntity,
+      selectedContactsIds,
     } = this.props;
 
     if (!contacts.length) {
@@ -106,7 +117,13 @@ class ContactList extends PureComponent {
               <div key={letter} className="m-contact-list__group">
                 <Title caps hr size="large" className="m-contact-list__alpha-title" id={`letter-${letter}`}>{letter}</Title>
                 {contactsGroupedByLetter[letter].map(contact => (
-                  <ContactItem className="m-contact-list__contact" contact={contact} key={contact.contact_id} />
+                  <ContactItem
+                    key={contact.contact_id}
+                    className="m-contact-list__contact"
+                    contact={contact}
+                    onSelectEntity={onSelectEntity}
+                    isContactSelected={selectedContactsIds.includes(contact.contact_id)}
+                  />
                 ))}
               </div>
             )

@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans, Plural } from 'lingui-react';
 import ContactList from './components/ContactList';
-import { PageTitle, Spinner, Button, MenuBar, Checkbox, SidebarLayout, NavList, NavItem } from '../../components';
+import { PageTitle, Spinner, Button, MenuBar, Checkbox, SidebarLayout, NavList, NavItem, Confirm } from '../../components';
 import { withPush } from '../../modules/routing';
 import TagList from './components/TagList';
 import ImportContactButton from './components/ImportContactButton';
@@ -30,8 +30,10 @@ class ContactBook extends Component {
     push: PropTypes.func.isRequired,
     requestContacts: PropTypes.func.isRequired,
     loadMoreContacts: PropTypes.func.isRequired,
+    deleteContacts: PropTypes.func.isRequired,
     contacts: PropTypes.arrayOf(PropTypes.shape({})),
     isFetching: PropTypes.bool,
+    didInvalidate: PropTypes.bool,
     hasMore: PropTypes.bool,
     i18n: PropTypes.shape({}).isRequired,
   };
@@ -39,20 +41,80 @@ class ContactBook extends Component {
   static defaultProps = {
     contacts: [],
     isFetching: false,
+    didInvalidate: false,
     hasMore: false,
   };
 
   state = {
     activeTag: '',
     sortDir: DEFAULT_SORT_DIR,
+    isDeleting: false,
+    selectedEntitiesIds: [],
   };
 
   componentDidMount() {
     this.props.requestContacts();
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.didInvalidate) {
+      this.props.requestContacts();
+    }
+  }
+
+  onSelectEntity = (type, id) => {
+    if (type === 'add') {
+      this.setState(prevState => ({
+        ...prevState,
+        selectedEntitiesIds: [...prevState.selectedEntitiesIds, id],
+      }));
+    }
+
+    if (type === 'remove') {
+      this.setState(prevState => ({
+        ...prevState,
+        selectedEntitiesIds: [...prevState.selectedEntitiesIds].filter(item => item !== id),
+      }));
+    }
+  }
+
+  onSelectAllEntities = (checked) => {
+    const { contacts } = this.props;
+    const contactIds = contacts.map(({ contact_id: contactId }) => contactId);
+
+    this.setState(prevState => ({
+      ...prevState,
+      selectedEntitiesIds: checked ? contactIds : [],
+    }));
+  }
+
   loadMore = () => {
     this.props.loadMoreContacts();
+  }
+
+  handleSelectAllEntitiesChange = (ev) => {
+    const { checked } = ev.target;
+    this.onSelectAllEntities(checked);
+  }
+
+  handleDeleteContacts = async () => {
+    const { contacts, deleteContacts } = this.props;
+    const selectedContactIds = new Set(this.state.selectedEntitiesIds);
+
+    this.setState(prevState => ({
+      ...prevState,
+      isDeleting: true,
+    }));
+
+    await deleteContacts({
+      contacts: contacts.filter(contact => selectedContactIds.has(contact.contact_id)),
+    });
+
+    this.setState(prevState => ({
+      ...prevState,
+      selectedEntitiesIds: [],
+      isDeleting: false,
+    }));
   }
 
   handleClickAddContact = () => {
@@ -73,11 +135,94 @@ class ContactBook extends Component {
     });
   };
 
-  handleSortDirChange = (event) => {
-    this.setState({
-      sortDir: event.target.value,
-    });
-  };
+  renderMenuBar() {
+    const {
+      isFetching, contacts,
+    } = this.props;
+
+    const count = this.state.selectedEntitiesIds.length;
+    const totalCount = contacts.length;
+
+    return (
+      <MenuBar className="s-contact-book-menu">
+        {isFetching && (
+          <div className="s-contact-book-menu__loading">
+            <Spinner isLoading={isFetching} display="inline" />
+          </div>
+        )}
+        <div className="s-contact-book-menu__selector">
+          {count > 0 && (
+            <Fragment>
+              <span className="s-contact-book-menu__label">
+                <Plural
+                  id="contact-book.contacts.selected"
+                  value={count}
+                  one={<Trans>#/{totalCount} selected contact:</Trans>}
+                  other={<Trans>#/{totalCount} selected contacts:</Trans>}
+                />
+              </span>
+              <Confirm
+                onConfirm={this.handleDeleteContacts}
+                title={(
+                  <Plural
+                    id="contact-book.confirm-delete.title"
+                    value={count}
+                    one={<Trans>Delete contact</Trans>}
+                    other={<Trans>Delete contacts</Trans>}
+                  />
+                )}
+                content={(
+                  <Plural
+                    id="contact-book.confirm-delete.content"
+                    value={count}
+                    one={(
+                      <Trans>
+                        The deletion is permanent, are you sure you want to delete this contact ?
+                      </Trans>
+                    )}
+                    other={(
+                      <Trans>
+                        The deletion is permanent, are you sure you want to delete these contacts ?
+                      </Trans>
+                    )}
+                  />
+                )}
+                render={confirm => (
+                  <Button
+                    className="s-contact-book-menu__action-btn"
+                    display="inline"
+                    noDecoration
+                    icon={this.state.isDeleting ? (<Spinner isLoading display="inline" />) : 'trash'}
+                    onClick={confirm}
+                    disabled={this.state.isDeleting}
+                  >
+                    <Trans id="contact-book.action.delete">Delete</Trans>
+                  </Button>
+                )}
+              />
+              <Button
+                className="s-contact-book-menu__action-btn"
+                display="inline"
+                noDecoration
+                icon="share"
+              >
+                <Trans id="contact-book.action.start-discussion">Start discussion FIXME</Trans>
+              </Button>
+            </Fragment>
+          )}
+          <div className="s-contact-book-menu__select-all">
+            <Checkbox
+              checked={count > 0 && count === totalCount}
+              indeterminate={count > 0 && count < totalCount}
+              onChange={this.handleSelectAllEntitiesChange}
+              label={<Trans id="contact-book.action.select-all">Select all contacts</Trans>}
+              showLabelforSr={count > 0}
+            />
+          </div>
+        </div>
+      </MenuBar>
+    );
+  }
 
   renderContacts() {
     const { contacts, hasMore } = this.props;
@@ -87,6 +232,8 @@ class ContactBook extends Component {
         <ContactList
           contacts={getFilteredContacts(contacts, this.state.activeTag)}
           sortDir={this.state.sortDir}
+          onSelectEntity={this.onSelectEntity}
+          selectedContactsIds={this.state.selectedEntitiesIds}
         />
         {hasMore && (
           <div className="s-contact-book-list__load-more">
@@ -100,23 +247,12 @@ class ContactBook extends Component {
   }
 
   render() {
-    const {
-      isFetching, i18n,
-    } = this.props;
+    const { i18n } = this.props;
 
     return (
       <div className="s-contact-book">
         <PageTitle title={i18n._('header.menu.contacts', { defaults: 'Contacts' })} />
-        <MenuBar className="s-contact-book-menu">
-          {isFetching && (
-            <div className="s-contact-book-menu__loading">
-              <Spinner isLoading={isFetching} display="inline" />
-            </div>
-          )}
-          <div className="s-contact-book-menu__selector">
-            220 contacts sélectionnés : <Button className="s-contact-book-menu__action-btn" display="inline" icon="trash" noDecoration>Supprimer</Button> <Button className="s-contact-book-menu__action-btn" display="inline" icon="share" noDecoration>Commencer une discussion</Button> <Checkbox className="s-contact-book__select-all" />
-          </div>
-        </MenuBar>
+        {this.renderMenuBar()}
         <SidebarLayout
           sidebar={(
             <div className="s-contact-book__sidebar">

@@ -19,6 +19,9 @@
 
   &--inline {
     @include o-clickable--inline;
+  }
+
+  &--text {
     @include o-clickable--text;
   }
 
@@ -68,7 +71,6 @@
   }
 
   @include breakpoint(small only) {
-
     &__text {
       max-width: 1.5 * $co-component__height;
       overflow: hidden;
