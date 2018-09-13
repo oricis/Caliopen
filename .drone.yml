@@ -205,6 +205,14 @@ services:
       matrix:
         LANG: go
 
+  cassandra:
+    image: cassandra:2.1
+    when:
+      branch: [ develop ]
+      event: [ pull_request, push ]
+      matrix:
+        LANG: go
+
 matrix:
   include:
     - STEP: pre
