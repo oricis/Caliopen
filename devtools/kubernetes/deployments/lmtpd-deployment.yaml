@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: broker
+  name: lmtpd
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: broker
+      app: lmtpd
   #strategy:
   #  type: Recreate / RollingUpdate
   #    maxUnavailable:
   template:
     metadata:
       labels:
-        type: broker
+        type: lmtp
         tier: backend
-        app: broker
+        app: lmtpd
     spec:
       containers:
-      - image: public-registry.caliopen.org/caliopen_broker:develop
+      - image: public-registry.caliopen.org/caliopen_lmtpd:develop
         imagePullPolicy: Always
-        name: broker
+        name: lmtpd
         ports:
         - containerPort: 2525
         volumeMounts:

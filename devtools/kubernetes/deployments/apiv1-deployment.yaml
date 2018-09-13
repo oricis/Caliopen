@@ -24,8 +24,8 @@ spec:
         ports:
         - containerPort: 6543
         volumeMounts:
-          - name: config-volume
-            mountPath: /etc/caliopen
+        - name: config-volume
+          mountPath: /etc/caliopen
       volumes:
       - name: config-volume
         configMap:

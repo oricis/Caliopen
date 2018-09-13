@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api
+  name: apiv2
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: api
+      app: apiv2
   #strategy:
   #  type: Recreate / RollingUpdate
   #    maxUnavailable:
@@ -15,12 +15,12 @@ spec:
       labels:
         type: api
         tier: backend
-        app: api
+        app: apiv2
     spec:
       containers:
-      - image: public-registry.caliopen.org/caliopen_api:develop
+      - image: public-registry.caliopen.org/caliopen_apiv2:develop
         imagePullPolicy: Always
-        name: api
+        name: apiv2
         ports:
         - containerPort: 31415
         volumeMounts:
