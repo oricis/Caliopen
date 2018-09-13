@@ -17,10 +17,12 @@ with open(os.path.join(*([here] + name.split('.') + ['__init__.py']))) as v_file
 
 requires = [
     'nats-client',
-    'tornado==4.2',
-    'caliopen_storage',
-    'caliopen_main'
-    ]
+    'tornado==4.2',]
+
+if (os.path.isfile('./requirements.deps')):
+    with open('./requirements.deps') as f_deps:
+        requires.extend(f_deps.read().split('\n'))
+
 
 tests_require = []
 if sys.version_info < (3, 3):

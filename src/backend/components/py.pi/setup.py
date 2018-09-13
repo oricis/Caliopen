@@ -19,8 +19,12 @@ requires = [
     'pgpy',
     'user-agents',
     'geoip2',
-    'caliopen_pgp',
 ]
+
+if (os.path.isfile('./requirements.deps')):
+    with open('./requirements.deps') as f_deps:
+        requires.extend(f_deps.read().split('\n'))
+
 
 extras_require = {
     'dev': [],
