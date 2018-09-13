@@ -8,7 +8,7 @@ then
 fi
 
 cd src/backend
-pip install main/py.storage components/py.gpg components/py.pi main/py.main interfaces/REST/py.server 
+pip install main/py.storage components/py.pgp components/py.pi main/py.main interfaces/REST/py.server 
 pip install interfaces/NATS/py.client tools/py.CLI tools/py.doc
 pip install ipdb docker-compose gitpython nose
 nosetests -sv main/py.main/caliopen_main/tests
