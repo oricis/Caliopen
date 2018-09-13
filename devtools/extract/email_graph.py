@@ -18,10 +18,16 @@ DEFAULT_RESULT_WINDOW = 10000
 
 
 def valid_uuid(uuid):
+    """Validate uuid value using regex."""
     regex = re.compile('^[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab]'
                        '[a-f0-9]{3}-?[a-f0-9]{12}\Z', re.I)
     match = regex.match(uuid)
     return bool(match)
+
+
+def anonymise_email(email):
+    """Anonymise email field using an hash function."""
+    return hashlib.sha256(email.encode('utf-8')).hexdigest()
 
 
 class DataManager(object):
@@ -79,7 +85,7 @@ class DataManager(object):
             from_ = from_[0]
         else:
             return
-        to = filter(lambda x: x['type'] == 'To', message.participants)
+        to = filter(lambda x: x['type'] in  ('To', 'Cc'), message.participants)
         type = 'plain'
         if 'privacy_features' in message:
             feat = message['privacy_features']
@@ -90,8 +96,8 @@ class DataManager(object):
         else:
             date = ''
         for dest in to:
-            hash1 = hashlib.sha256(from_['label'].encode('utf-8')).hexdigest()
-            hash2 = hashlib.sha256(dest['label'].encode('utf-8')).hexdigest()
+            hash1 = anonymise_email(from_['label'])
+            hash2 = anonymise_email(dest['label'])
             received = 'true' if message['is_received'] else 'false'
             yield [hash1, hash2, type, date, received]
 
