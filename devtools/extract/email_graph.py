@@ -27,7 +27,10 @@ def valid_uuid(uuid):
 
 def anonymise_email(email):
     """Anonymise email field using an hash function."""
-    return hashlib.sha256(email.encode('utf-8')).hexdigest()
+    local_part, domain = email.split('@')
+    hash_local = hashlib.sha256(local_part.encode('utf-8')).hexdigest()
+    hash_domain = hashlib.sha256(domain.encode('utf-8')).hexdigest()
+    return '{0}@{1}'.format(hash_local, hash_domain)
 
 
 class DataManager(object):
