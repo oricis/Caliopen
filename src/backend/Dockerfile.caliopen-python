@@ -9,6 +9,7 @@ MAINTAINER Caliopen
 RUN apk add --no-cache build-base openssl-dev libffi-dev
 
 # Install cassandra-driver regex
+RUN pip install --upgrade pip
 RUN pip install cassandra-driver==3.4.1
 RUN pip install regex
 
