@@ -26,7 +26,6 @@ services:
     image: caliopen_api
     ## this very bad config for a public machine
     links:
-      - apiv1:apiv1
       - redis:redis
       - cassandra:cassandra
       - elasticsearch:elasticsearch
@@ -115,7 +114,7 @@ services:
     links:
       - proxy-api:proxy-api
     environment:
-      CALIOPEN_API_HOSTNAME: api
+      CALIOPEN_API_HOSTNAME: proxy-api
   # Broker
   broker:
     build:
