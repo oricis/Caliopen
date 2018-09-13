@@ -219,13 +219,13 @@ matrix:
 
     - PROG: interfaces/REST/go.server/cmd/caliopen_rest
       DOCKERFILE: Dockerfile.go-api
-      REPO: caliopen_api
+      REPO: caliopen_apiv2
       BASE_DIR: src/backend
       LANG: go
 
     - PROG: protocols/go.smtp/cmd/caliopen_lmtpd
       DOCKERFILE: Dockerfile.go-lmtp
-      REPO: caliopen_broker
+      REPO: caliopen_lmtpd
       BASE_DIR: src/backend
       LANG: go
 
@@ -236,8 +236,8 @@ matrix:
       LANG: go
 
     - PROG: protocols/go.imap/cmd/imapworker
-      DOCKERFILE: Dockerfile.identity-worker
-      REPO: caliopen_identity_worker
+      DOCKERFILE: Dockerfile.imap-worker
+      REPO: caliopen_imap_worker
       BASE_DIR: src/backend
       LANG: go
 
@@ -254,8 +254,8 @@ matrix:
       LANG: python
 
     - PROG: interfaces/NATS/py.client
-      DOCKERFILE: Dockerfile.message-handler
-      REPO: caliopen_message_handler
+      DOCKERFILE: Dockerfile.mq-worker
+      REPO: caliopen_mq_worker
       BASE_DIR: src/backend
       LANG: python
 
