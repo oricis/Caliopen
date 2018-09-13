@@ -35,6 +35,10 @@ fi
 if [ -n "$DEPS" ];
 then
 	cd $BASE_DIR
+	# Python programs don't have their own directory as a dependency
+	if [ "$LANG" != "js" ]; then
+		DEPS="$DEPS $PROG"
+	fi
 else
 	DEPS=$BASE_DIR
 fi
