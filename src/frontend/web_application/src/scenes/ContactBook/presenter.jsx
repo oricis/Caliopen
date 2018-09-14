@@ -267,20 +267,20 @@ class ContactBook extends Component {
                 className="s-contact-book-menu__action-btn"
                 display="inline"
                 noDecoration
-                icon="share"
-              >
-                <Trans id="contact-book.action.start-discussion">Start discussion FIXME</Trans>
-              </Button>
-              <Button
-                className="s-contact-book-menu__action-btn"
-                display="inline"
-                noDecoration
                 icon="tag"
                 onClick={this.handleOpenTags}
               >
                 <Trans id="contact-book.action.manage-tags">Manage tags</Trans>
               </Button>
               {this.state.isTagModalOpen && this.renderTagsModal()}
+              {/* <Button
+                className="s-contact-book-menu__action-btn"
+                display="inline"
+                noDecoration
+                icon="share"
+                >
+                <Trans id="contact-book.action.start-discussion">Start discussion</Trans>
+              </Button> */}
             </Fragment>
           )}
           <div className="s-contact-book-menu__select-all">
