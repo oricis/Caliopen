@@ -50,9 +50,9 @@ func NewPublicKey(ctx *gin.Context) {
 		return
 	}
 
-	payload := struct{
+	payload := struct {
 		Label string
-		Key string
+		Key   string
 	}{}
 	err = ctx.ShouldBindJSON(&payload)
 	if err != nil {
@@ -71,7 +71,7 @@ func NewPublicKey(ctx *gin.Context) {
 	}
 
 	// call API
-	apiErr := caliopen.Facilities.RESTfacility.CreatePGPPubKey(payload.Label, rawKey, contact)
+	pubkey, apiErr := caliopen.Facilities.RESTfacility.CreatePGPPubKey(payload.Label, rawKey, contact)
 	if apiErr != nil {
 		returnedErr := new(swgErr.CompositeError)
 		switch apiErr.Code() {
@@ -100,8 +100,8 @@ func NewPublicKey(ctx *gin.Context) {
 			Location    string `json:"location"`
 			PublicKeyID string `json:"publickey_id"`
 		}{
-			http_middleware.RoutePrefix + http_middleware.ContactsRoute + contactId + "/publickeys/" + "bullshit",
-			"bullshit",
+			http_middleware.RoutePrefix + http_middleware.ContactsRoute + "/" + contactId + "/publickeys/" + pubkey.KeyId.String(),
+			pubkey.KeyId.String(),
 		})
 	}
 	return

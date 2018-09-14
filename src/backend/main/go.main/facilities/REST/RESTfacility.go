@@ -76,7 +76,7 @@ type (
 		PatchDevice(patch []byte, userId, deviceId string) CaliopenError
 		DeleteDevice(userId, deviceId string) CaliopenError
 		//keys
-		CreatePGPPubKey(label string, pubkey []byte, contact *Contact) CaliopenError
+		CreatePGPPubKey(label string, pubkey []byte, contact *Contact) (*PublicKey, CaliopenError)
 	}
 	RESTfacility struct {
 		store      backends.APIStorage
