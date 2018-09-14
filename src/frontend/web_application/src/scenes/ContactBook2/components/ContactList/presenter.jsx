@@ -25,7 +25,7 @@ class ContactList extends PureComponent {
     sortDir: DEFAULT_SORT_DIR,
   };
 
-  getFirstLetter = () => {
+  getNavLetter = () => {
     const { sortDir } = this.props;
 
     return ALPHA.split('').sort((a, b) => {
@@ -40,19 +40,24 @@ class ContactList extends PureComponent {
   }
 
   renderNav(firstLettersWithContacts = []) {
-    const firstLetters = this.getFirstLetter();
+    const firstLetters = this.getNavLetter();
 
     return (
       <div className="m-contact-list__nav">
-        {firstLetters.map(letter => (
-          <Link
-            href={`#letter-${letter}`}
-            className={classnames('m-contact-list__alpha-letter', { 'm-contact-list__alpha-letter--active': firstLettersWithContacts.includes(letter) })}
-            key={letter}
-          >
-            {letter}
-          </Link>
-        ))}
+        {firstLetters.map((letter) => {
+          const isActive = firstLettersWithContacts.includes(letter);
+
+          return (
+            <Link
+              key={letter}
+              href={`#letter-${letter}`}
+              className={classnames('m-contact-list__alpha-letter', { 'm-contact-list__alpha-letter--active': isActive })}
+              disabled={!isActive}
+            >
+              {letter}
+            </Link>
+          );
+        })}
       </div>
     );
   }
@@ -94,7 +99,7 @@ class ContactList extends PureComponent {
         .localeCompare(b[contactDisplayOrder] || getContactTitle(b)))
       .reduce((acc, contact) => {
         const firstLetter =
-          getFirstLetter(contact[contactDisplayOrder] || formatName({ contact, format }));
+          getFirstLetter(contact[contactDisplayOrder] || formatName({ contact, format }), '#');
 
         return {
           ...acc,
@@ -106,7 +111,7 @@ class ContactList extends PureComponent {
       }, {});
 
     const firstLettersWithContacts = Object.keys(contactsGroupedByLetter);
-    const firstLetters = this.getFirstLetter(firstLettersWithContacts);
+    const firstLetters = this.getNavLetter();
 
     return (
       <div className="m-contact-list">

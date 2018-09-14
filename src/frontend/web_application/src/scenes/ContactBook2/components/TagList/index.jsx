@@ -3,19 +3,20 @@ import PropTypes from 'prop-types';
 import { withI18n } from 'lingui-react';
 import classnames from 'classnames';
 import { WithTags, getTagLabel } from '../../../../modules/tags';
-import { withSearchParams } from '../../../../modules/routing';
+import { withTagSearched } from '../../hoc/withTagSearched';
 import { Link, NavList, NavItem } from '../../../../components/';
 
 import './style.scss';
 
 @withI18n()
-@withSearchParams()
+@withTagSearched()
 class TagList extends Component {
   static propTypes = {
     i18n: PropTypes.shape({}).isRequired,
-    searchParams: PropTypes.shape({}).isRequired,
+    tagSearched: PropTypes.string,
   };
   static defaultProps = {
+    tagSearched: '',
   };
   state = {};
 
@@ -23,11 +24,11 @@ class TagList extends Component {
     [...tags].sort((a, b) => getTagLabel(i18n, a).localeCompare(getTagLabel(i18n, b)));
 
   renderItem({ tagName, label }) {
-    const { searchParams: { tag = '' } } = this.props;
+    const { tagSearched } = this.props;
     const tagClassName = classnames(
       'm-tag-list__tag',
       {
-        'm-tag-list__tag--active': tag === tagName,
+        'm-tag-list__tag--active': tagSearched === tagName,
       }
     );
 

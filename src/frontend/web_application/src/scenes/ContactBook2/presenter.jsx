@@ -6,6 +6,7 @@ import { PageTitle, Spinner, Button, MenuBar, Checkbox, SidebarLayout, NavList, 
 import { withPush } from '../../modules/routing';
 import TagList from './components/TagList';
 import ImportContactButton from './components/ImportContactButton';
+import { withTagSearched } from './hoc/withTagSearched';
 import './style.scss';
 import './contact-book-menu.scss';
 
@@ -16,14 +17,15 @@ export const DEFAULT_SORT_VIEW = SORT_VIEW_GIVEN_NAME;
 
 const DEFAULT_SORT_DIR = 'ASC';
 
-function getFilteredContacts(contactList, activeTag) {
-  if (activeTag === '') {
+function getFilteredContacts(contactList, tag) {
+  if (tag === '') {
     return contactList;
   }
 
-  return contactList.filter(contact => contact.tags && contact.tags.includes(activeTag));
+  return contactList.filter(contact => contact.tags && contact.tags.includes(tag));
 }
 
+@withTagSearched()
 @withPush()
 class ContactBook extends Component {
   static propTypes = {
@@ -32,6 +34,7 @@ class ContactBook extends Component {
     loadMoreContacts: PropTypes.func.isRequired,
     deleteContacts: PropTypes.func.isRequired,
     contacts: PropTypes.arrayOf(PropTypes.shape({})),
+    tagSearched: PropTypes.string,
     isFetching: PropTypes.bool,
     didInvalidate: PropTypes.bool,
     hasMore: PropTypes.bool,
@@ -40,13 +43,13 @@ class ContactBook extends Component {
 
   static defaultProps = {
     contacts: [],
+    tagSearched: '',
     isFetching: false,
     didInvalidate: false,
     hasMore: false,
   };
 
   state = {
-    activeTag: '',
     sortDir: DEFAULT_SORT_DIR,
     isDeleting: false,
     selectedEntitiesIds: [],
@@ -127,12 +130,6 @@ class ContactBook extends Component {
 
   handleUploadSuccess = () => {
     this.props.requestContacts();
-  };
-
-  handleTagClick = (tagName) => {
-    this.setState({
-      activeTag: tagName,
-    });
   };
 
   renderMenuBar() {
@@ -225,12 +222,12 @@ class ContactBook extends Component {
   }
 
   renderContacts() {
-    const { contacts, hasMore } = this.props;
+    const { contacts, hasMore, tagSearched } = this.props;
 
     return (
       <Fragment>
         <ContactList
-          contacts={getFilteredContacts(contacts, this.state.activeTag)}
+          contacts={getFilteredContacts(contacts, tagSearched)}
           sortDir={this.state.sortDir}
           onSelectEntity={this.onSelectEntity}
           selectedContactsIds={this.state.selectedEntitiesIds}
