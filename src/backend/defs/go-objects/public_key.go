@@ -7,14 +7,17 @@ package objects
 import (
 	"bytes"
 	"crypto/ecdsa"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/keybase/go-crypto/openpgp"
+	"github.com/keybase/go-crypto/openpgp/armor"
 	"github.com/keybase/go-crypto/openpgp/packet"
 	"github.com/satori/go.uuid"
 	"math/big"
 	"regexp"
+	"strings"
 	"time"
 	//github.com/SermoDigital/jose
 )
@@ -26,15 +29,15 @@ type PublicKey struct {
 	DateInsert   time.Time `cql:"date_insert"      json:"date_insert,omitempty"         formatter:"RFC3339Milli"    patch:"system"`
 	DateUpdate   time.Time `cql:"date_update"      json:"date_update,omitempty"         formatter:"RFC3339Milli"    patch:"system"`
 	ExpireDate   time.Time `cql:"expire_date"      json:"expire_date,omitempty"         formatter:"RFC3339Milli"    patch:"user"`
-	Fingerprint  []byte    `cql:"fingerprint"      json:"fingerprint,omitempty"                                     patch:"user"`
-	Key          []byte    `cql:"key"              json:"key,omitempty"                                             patch:"user"`
+	Fingerprint  string    `cql:"fingerprint"      json:"fingerprint,omitempty"                                     patch:"user"`
+	Key          string    `cql:"key"              json:"key,omitempty"                                             patch:"user"`
 	KeyId        UUID      `cql:"key_id"           json:"key_id"                                                    patch:"system"`
 	KeyType      string    `cql:"kty"              json:"kty,omitempty"                                             patch:"user"`
 	Label        string    `cql:"label"            json:"label,omitempty"                                           patch:"user"`
 	ResourceId   UUID      `cql:"resource_id"      json:"resource_id"                                               patch:"system"`
 	ResourceType string    `cql:"resource_type"    json:"resource_type,omitempty"                                   patch:"system"`
 	Size         int       `cql:"size"             json:"size"`
-	Use          string    `cql:"use"              json:"use,omitempty"                                             patch:"user"`
+	Use          string    `cql:"\"use\""          json:"use,omitempty"                                             patch:"user"`
 	UserId       UUID      `cql:"user_id"          json:"user_id,omitempty"                                         patch:"system"`
 	X            big.Int   `cql:"x"                json:"x,omitempty"                                               patch:"user"`
 	Y            big.Int   `cql:"y"                json:"y,omitempty"                                               patch:"user"`
@@ -98,12 +101,14 @@ func (pk *PublicKey) UnmarshalMap(input map[string]interface{}) error {
 	if date, ok := input["expire_date"]; ok {
 		pk.ExpireDate, _ = time.Parse(time.RFC3339Nano, date.(string))
 	}
-	if fingerprint, ok := input["fingerprint"].(string); ok {
-		pk.Fingerprint = []byte(fingerprint)
-	}
-	if key, ok := input["key"].(string); ok {
-		pk.Key = []byte(key)
-	}
+	/*
+		if fingerprint, ok := input["fingerprint"].(string); ok {
+			pk.Fingerprint = []byte(fingerprint)
+		}
+		if key, ok := input["key"].(string); ok {
+			pk.Key = []byte(key)
+		}
+	*/
 	if label, ok := input["label"].(string); ok {
 		pk.Label = label
 	}
@@ -175,11 +180,19 @@ func (pk *PublicKey) UnmarshalPGPEntity(label string, entity *openpgp.Entity, co
 
 	pk.MarshallNew(contact)
 
-	// copy data from primary key
+	// embed key in ASCII armor format
 	b := new(bytes.Buffer)
-	entity.Serialize(b)
-	pk.Key = b.Bytes()[:]
-	pk.Fingerprint = entity.PrimaryKey.Fingerprint[:]
+	armourBuffer, err := armor.Encode(b, openpgp.PublicKeyType, map[string]string{})
+	if err != nil {
+		return fmt.Errorf("failed to init ASCII armor : %s", err.Error())
+	}
+	entity.Serialize(armourBuffer)
+	armourBuffer.Close()
+	pk.Key = b.String()
+
+	// encode fingerprint to upper hexastring
+	pk.Fingerprint = strings.ToUpper(hex.EncodeToString(entity.PrimaryKey.Fingerprint[:]))
+
 	pk.Label = label
 	keyLength, _ := entity.PrimaryKey.BitLength()
 	pk.Size = int(keyLength)
