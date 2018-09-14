@@ -44,6 +44,8 @@ paths:
     "$ref": paths/contactsV2.yaml#/contacts_{contact_id}
   "/v2/contacts/{contact_id}/identities":
     "$ref": paths/contactsV2.yaml#/contacts_{contact_id}_identities
+  "/v2/contacts/{contact_id}/publickeys":
+    "$ref": paths/contactsV2.yaml#/contacts_{contact_id}_publickeys
   "/v2/contacts/{contact_id}/tags":
     "$ref": paths/contactsV2.yaml#/contacts_{contact_id}_tags
   "/v1/imports":

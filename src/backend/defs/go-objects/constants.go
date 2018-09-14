@@ -51,6 +51,39 @@ const (
 	//identity types
 	LocalIdentity  = "local"
 	RemoteIdentity = "remote"
+
+	/** JWA strings from RFC7518 **/
+	// "alg" param from RFC7581#3.1
+	RSA256 = "RS256"
+	RSA384 = "RS384"
+	RSA512 = "RS512"
+	ECDSA256 = "ES256"
+	ECDSA384 = "ES384"
+	// supplementary algorithms to handle GPG keys
+	DSA256 = "DSA256"
+	DSA384 = "DSA384"
+	DSA512 = "DSA512"
+	ELGAMAL256 = "ELGAMAL256"
+	ELGAMAL384 = "ELGAMAL384"
+	ELGAMAL512 = "ELGAMAL512"
+	ECDH256 = "ECDH256"
+	ECDH384 = "ECDH384"
+	ECDH512 = "ECDH512"
+	// "crv" param from RFC7518#7.6.2
+	CURVE256 = "P-256"
+	CURVE384 = "P-384"
+	CURVE521 = "P-521"
+	// "kty" param from RFC7518#6.1
+	RSA_KEY_TYPE = "RSA"
+	EC_KEY_TYPE = "EC"
+	OCTET_KEY_TYPE = "oct"  // (yes, lower case !)
+	//supplementary types to handle GPG keys
+	DSA_KEY_TYPE = "DSA"
+	ELGAMAL_KEY_TYPE = "ELGAMAL"
+	// "use" param (from RFC ??)
+	SIGNATURE_KEY = "sig"
+	ENCRYPTION_KEY = "enc"
+	/** end of JWA strings **/
 )
 
 // A Initiator specifies what kind of actor is triggering a PATCH method on any object

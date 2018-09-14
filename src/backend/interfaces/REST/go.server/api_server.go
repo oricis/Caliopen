@@ -231,8 +231,11 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	cts.PATCH("/:contactID", contacts.PatchContact)
 	cts.DELETE("/:contactID", contacts.DeleteContact)
 	cts.GET("/:contactID/identities", contacts.GetIdentities)
+	//publickeys
+	cts.POST("/:contactID/publickeys", contacts.NewPublicKey)
 	//tags
 	cts.PATCH("/:contactID/tags", tags.PatchResourceWithTags)
+
 
 	/** devices API **/
 	dev := api.Group(http_middleware.DevicesRoute, http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))

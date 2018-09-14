@@ -461,27 +461,11 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "privacy_features": {
-                            "type": "object",
-                            "properties": {}
+                          "alg": {
+                            "type": "string"
                           },
-                          "pi": {
-                            "type": "object",
-                            "properties": {
-                              "technic": {
-                                "type": "integer"
-                              },
-                              "context": {
-                                "type": "integer"
-                              },
-                              "comportment": {
-                                "type": "integer"
-                              },
-                              "version": {
-                                "type": "integer"
-                              }
-                            },
-                            "additionalProperties": true
+                          "crv": {
+                            "type": "string"
                           },
                           "date_insert": {
                             "type": "string",
@@ -491,15 +475,6 @@
                             "type": "string",
                             "format": "date-time"
                           },
-                          "contact_id": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          },
-                          "user_id": {
-                            "type": "string"
-                          },
                           "expire_date": {
                             "type": "string",
                             "format": "date-time"
@@ -507,20 +482,49 @@
                           "fingerprint": {
                             "type": "string"
                           },
-                          "key": {
+                          "kty": {
                             "type": "string"
                           },
-                          "name": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "ressource_id": {
+                            "type": "string"
+                          },
+                          "resource_type": {
                             "type": "string"
                           },
                           "size": {
                             "type": "integer",
                             "format": "int32"
+                          },
+                          "use": {
+                            "type": "string"
+                          },
+                          "user_id": {
+                            "type": "string"
+                          },
+                          "x": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "y": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "key": {
+                            "type": "string"
+                          },
+                          "label": {
+                            "type": "string"
                           }
                         },
                         "required": [
                           "key",
-                          "name"
+                          "label",
+                          "key_id",
+                          "ressource_id",
+                          "user_id"
                         ],
                         "additionalProperties": false
                       }
@@ -787,27 +791,11 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "privacy_features": {
-                            "type": "object",
-                            "properties": {}
+                          "alg": {
+                            "type": "string"
                           },
-                          "pi": {
-                            "type": "object",
-                            "properties": {
-                              "technic": {
-                                "type": "integer"
-                              },
-                              "context": {
-                                "type": "integer"
-                              },
-                              "comportment": {
-                                "type": "integer"
-                              },
-                              "version": {
-                                "type": "integer"
-                              }
-                            },
-                            "additionalProperties": true
+                          "crv": {
+                            "type": "string"
                           },
                           "date_insert": {
                             "type": "string",
@@ -817,15 +805,6 @@
                             "type": "string",
                             "format": "date-time"
                           },
-                          "contact_id": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          },
-                          "user_id": {
-                            "type": "string"
-                          },
                           "expire_date": {
                             "type": "string",
                             "format": "date-time"
@@ -833,20 +812,49 @@
                           "fingerprint": {
                             "type": "string"
                           },
-                          "key": {
+                          "kty": {
                             "type": "string"
                           },
-                          "name": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "ressource_id": {
+                            "type": "string"
+                          },
+                          "resource_type": {
                             "type": "string"
                           },
                           "size": {
                             "type": "integer",
                             "format": "int32"
+                          },
+                          "use": {
+                            "type": "string"
+                          },
+                          "user_id": {
+                            "type": "string"
+                          },
+                          "x": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "y": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "key": {
+                            "type": "string"
+                          },
+                          "label": {
+                            "type": "string"
                           }
                         },
                         "required": [
                           "key",
-                          "name"
+                          "label",
+                          "key_id",
+                          "ressource_id",
+                          "user_id"
                         ],
                         "additionalProperties": false
                       }
@@ -3586,27 +3594,11 @@
                         "items": {
                           "type": "object",
                           "properties": {
-                            "privacy_features": {
-                              "type": "object",
-                              "properties": {}
+                            "alg": {
+                              "type": "string"
                             },
-                            "pi": {
-                              "type": "object",
-                              "properties": {
-                                "technic": {
-                                  "type": "integer"
-                                },
-                                "context": {
-                                  "type": "integer"
-                                },
-                                "comportment": {
-                                  "type": "integer"
-                                },
-                                "version": {
-                                  "type": "integer"
-                                }
-                              },
-                              "additionalProperties": true
+                            "crv": {
+                              "type": "string"
                             },
                             "date_insert": {
                               "type": "string",
@@ -3616,15 +3608,6 @@
                               "type": "string",
                               "format": "date-time"
                             },
-                            "contact_id": {
-                              "type": "string"
-                            },
-                            "type": {
-                              "type": "string"
-                            },
-                            "user_id": {
-                              "type": "string"
-                            },
                             "expire_date": {
                               "type": "string",
                               "format": "date-time"
@@ -3632,20 +3615,49 @@
                             "fingerprint": {
                               "type": "string"
                             },
-                            "key": {
+                            "kty": {
                               "type": "string"
                             },
-                            "name": {
+                            "type": {
+                              "type": "string"
+                            },
+                            "ressource_id": {
+                              "type": "string"
+                            },
+                            "resource_type": {
                               "type": "string"
                             },
                             "size": {
                               "type": "integer",
                               "format": "int32"
+                            },
+                            "use": {
+                              "type": "string"
+                            },
+                            "user_id": {
+                              "type": "string"
+                            },
+                            "x": {
+                              "type": "integer",
+                              "format": "int64"
+                            },
+                            "y": {
+                              "type": "integer",
+                              "format": "int64"
+                            },
+                            "key": {
+                              "type": "string"
+                            },
+                            "label": {
+                              "type": "string"
                             }
                           },
                           "required": [
                             "key",
-                            "name"
+                            "label",
+                            "key_id",
+                            "ressource_id",
+                            "user_id"
                           ],
                           "additionalProperties": false
                         }
@@ -3860,27 +3872,11 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "privacy_features": {
-                        "type": "object",
-                        "properties": {}
+                      "alg": {
+                        "type": "string"
                       },
-                      "pi": {
-                        "type": "object",
-                        "properties": {
-                          "technic": {
-                            "type": "integer"
-                          },
-                          "context": {
-                            "type": "integer"
-                          },
-                          "comportment": {
-                            "type": "integer"
-                          },
-                          "version": {
-                            "type": "integer"
-                          }
-                        },
-                        "additionalProperties": true
+                      "crv": {
+                        "type": "string"
                       },
                       "date_insert": {
                         "type": "string",
@@ -3890,15 +3886,6 @@
                         "type": "string",
                         "format": "date-time"
                       },
-                      "contact_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      },
-                      "user_id": {
-                        "type": "string"
-                      },
                       "expire_date": {
                         "type": "string",
                         "format": "date-time"
@@ -3906,20 +3893,49 @@
                       "fingerprint": {
                         "type": "string"
                       },
-                      "key": {
+                      "kty": {
                         "type": "string"
                       },
-                      "name": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "ressource_id": {
+                        "type": "string"
+                      },
+                      "resource_type": {
                         "type": "string"
                       },
                       "size": {
                         "type": "integer",
                         "format": "int32"
+                      },
+                      "use": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "x": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "y": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "key": {
+                        "type": "string"
+                      },
+                      "label": {
+                        "type": "string"
                       }
                     },
                     "required": [
                       "key",
-                      "name"
+                      "label",
+                      "key_id",
+                      "ressource_id",
+                      "user_id"
                     ],
                     "additionalProperties": false
                   }
@@ -4234,27 +4250,11 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "privacy_features": {
-                        "type": "object",
-                        "properties": {}
+                      "alg": {
+                        "type": "string"
                       },
-                      "pi": {
-                        "type": "object",
-                        "properties": {
-                          "technic": {
-                            "type": "integer"
-                          },
-                          "context": {
-                            "type": "integer"
-                          },
-                          "comportment": {
-                            "type": "integer"
-                          },
-                          "version": {
-                            "type": "integer"
-                          }
-                        },
-                        "additionalProperties": true
+                      "crv": {
+                        "type": "string"
                       },
                       "date_insert": {
                         "type": "string",
@@ -4264,15 +4264,6 @@
                         "type": "string",
                         "format": "date-time"
                       },
-                      "contact_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      },
-                      "user_id": {
-                        "type": "string"
-                      },
                       "expire_date": {
                         "type": "string",
                         "format": "date-time"
@@ -4280,20 +4271,49 @@
                       "fingerprint": {
                         "type": "string"
                       },
-                      "key": {
+                      "kty": {
                         "type": "string"
                       },
-                      "name": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "ressource_id": {
+                        "type": "string"
+                      },
+                      "resource_type": {
                         "type": "string"
                       },
                       "size": {
                         "type": "integer",
                         "format": "int32"
+                      },
+                      "use": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "x": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "y": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "key": {
+                        "type": "string"
+                      },
+                      "label": {
+                        "type": "string"
                       }
                     },
                     "required": [
                       "key",
-                      "name"
+                      "label",
+                      "key_id",
+                      "ressource_id",
+                      "user_id"
                     ],
                     "additionalProperties": false
                   }
@@ -4722,27 +4742,11 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "privacy_features": {
-                            "type": "object",
-                            "properties": {}
+                          "alg": {
+                            "type": "string"
                           },
-                          "pi": {
-                            "type": "object",
-                            "properties": {
-                              "technic": {
-                                "type": "integer"
-                              },
-                              "context": {
-                                "type": "integer"
-                              },
-                              "comportment": {
-                                "type": "integer"
-                              },
-                              "version": {
-                                "type": "integer"
-                              }
-                            },
-                            "additionalProperties": true
+                          "crv": {
+                            "type": "string"
                           },
                           "date_insert": {
                             "type": "string",
@@ -4752,15 +4756,6 @@
                             "type": "string",
                             "format": "date-time"
                           },
-                          "contact_id": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          },
-                          "user_id": {
-                            "type": "string"
-                          },
                           "expire_date": {
                             "type": "string",
                             "format": "date-time"
@@ -4768,20 +4763,49 @@
                           "fingerprint": {
                             "type": "string"
                           },
-                          "key": {
+                          "kty": {
                             "type": "string"
                           },
-                          "name": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "ressource_id": {
+                            "type": "string"
+                          },
+                          "resource_type": {
                             "type": "string"
                           },
                           "size": {
                             "type": "integer",
                             "format": "int32"
+                          },
+                          "use": {
+                            "type": "string"
+                          },
+                          "user_id": {
+                            "type": "string"
+                          },
+                          "x": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "y": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "key": {
+                            "type": "string"
+                          },
+                          "label": {
+                            "type": "string"
                           }
                         },
                         "required": [
                           "key",
-                          "name"
+                          "label",
+                          "key_id",
+                          "ressource_id",
+                          "user_id"
                         ],
                         "additionalProperties": false
                       }
@@ -5058,27 +5082,11 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "privacy_features": {
-                        "type": "object",
-                        "properties": {}
+                      "alg": {
+                        "type": "string"
                       },
-                      "pi": {
-                        "type": "object",
-                        "properties": {
-                          "technic": {
-                            "type": "integer"
-                          },
-                          "context": {
-                            "type": "integer"
-                          },
-                          "comportment": {
-                            "type": "integer"
-                          },
-                          "version": {
-                            "type": "integer"
-                          }
-                        },
-                        "additionalProperties": true
+                      "crv": {
+                        "type": "string"
                       },
                       "date_insert": {
                         "type": "string",
@@ -5088,15 +5096,6 @@
                         "type": "string",
                         "format": "date-time"
                       },
-                      "contact_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      },
-                      "user_id": {
-                        "type": "string"
-                      },
                       "expire_date": {
                         "type": "string",
                         "format": "date-time"
@@ -5104,20 +5103,49 @@
                       "fingerprint": {
                         "type": "string"
                       },
-                      "key": {
+                      "kty": {
                         "type": "string"
                       },
-                      "name": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "ressource_id": {
+                        "type": "string"
+                      },
+                      "resource_type": {
                         "type": "string"
                       },
                       "size": {
                         "type": "integer",
                         "format": "int32"
+                      },
+                      "use": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "x": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "y": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "key": {
+                        "type": "string"
+                      },
+                      "label": {
+                        "type": "string"
                       }
                     },
                     "required": [
                       "key",
-                      "name"
+                      "label",
+                      "key_id",
+                      "ressource_id",
+                      "user_id"
                     ],
                     "additionalProperties": false
                   }
@@ -5586,27 +5614,11 @@
                         "items": {
                           "type": "object",
                           "properties": {
-                            "privacy_features": {
-                              "type": "object",
-                              "properties": {}
+                            "alg": {
+                              "type": "string"
                             },
-                            "pi": {
-                              "type": "object",
-                              "properties": {
-                                "technic": {
-                                  "type": "integer"
-                                },
-                                "context": {
-                                  "type": "integer"
-                                },
-                                "comportment": {
-                                  "type": "integer"
-                                },
-                                "version": {
-                                  "type": "integer"
-                                }
-                              },
-                              "additionalProperties": true
+                            "crv": {
+                              "type": "string"
                             },
                             "date_insert": {
                               "type": "string",
@@ -5616,15 +5628,6 @@
                               "type": "string",
                               "format": "date-time"
                             },
-                            "contact_id": {
-                              "type": "string"
-                            },
-                            "type": {
-                              "type": "string"
-                            },
-                            "user_id": {
-                              "type": "string"
-                            },
                             "expire_date": {
                               "type": "string",
                               "format": "date-time"
@@ -5632,20 +5635,49 @@
                             "fingerprint": {
                               "type": "string"
                             },
-                            "key": {
+                            "kty": {
                               "type": "string"
                             },
-                            "name": {
+                            "type": {
+                              "type": "string"
+                            },
+                            "ressource_id": {
+                              "type": "string"
+                            },
+                            "resource_type": {
                               "type": "string"
                             },
                             "size": {
                               "type": "integer",
                               "format": "int32"
+                            },
+                            "use": {
+                              "type": "string"
+                            },
+                            "user_id": {
+                              "type": "string"
+                            },
+                            "x": {
+                              "type": "integer",
+                              "format": "int64"
+                            },
+                            "y": {
+                              "type": "integer",
+                              "format": "int64"
+                            },
+                            "key": {
+                              "type": "string"
+                            },
+                            "label": {
+                              "type": "string"
                             }
                           },
                           "required": [
                             "key",
-                            "name"
+                            "label",
+                            "key_id",
+                            "ressource_id",
+                            "user_id"
                           ],
                           "additionalProperties": false
                         }
@@ -5860,27 +5892,11 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "privacy_features": {
-                        "type": "object",
-                        "properties": {}
+                      "alg": {
+                        "type": "string"
                       },
-                      "pi": {
-                        "type": "object",
-                        "properties": {
-                          "technic": {
-                            "type": "integer"
-                          },
-                          "context": {
-                            "type": "integer"
-                          },
-                          "comportment": {
-                            "type": "integer"
-                          },
-                          "version": {
-                            "type": "integer"
-                          }
-                        },
-                        "additionalProperties": true
+                      "crv": {
+                        "type": "string"
                       },
                       "date_insert": {
                         "type": "string",
@@ -5890,15 +5906,6 @@
                         "type": "string",
                         "format": "date-time"
                       },
-                      "contact_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      },
-                      "user_id": {
-                        "type": "string"
-                      },
                       "expire_date": {
                         "type": "string",
                         "format": "date-time"
@@ -5906,20 +5913,49 @@
                       "fingerprint": {
                         "type": "string"
                       },
-                      "key": {
+                      "kty": {
                         "type": "string"
                       },
-                      "name": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "ressource_id": {
+                        "type": "string"
+                      },
+                      "resource_type": {
                         "type": "string"
                       },
                       "size": {
                         "type": "integer",
                         "format": "int32"
+                      },
+                      "use": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "x": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "y": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "key": {
+                        "type": "string"
+                      },
+                      "label": {
+                        "type": "string"
                       }
                     },
                     "required": [
                       "key",
-                      "name"
+                      "label",
+                      "key_id",
+                      "ressource_id",
+                      "user_id"
                     ],
                     "additionalProperties": false
                   }
@@ -6237,27 +6273,11 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "privacy_features": {
-                        "type": "object",
-                        "properties": {}
+                      "alg": {
+                        "type": "string"
                       },
-                      "pi": {
-                        "type": "object",
-                        "properties": {
-                          "technic": {
-                            "type": "integer"
-                          },
-                          "context": {
-                            "type": "integer"
-                          },
-                          "comportment": {
-                            "type": "integer"
-                          },
-                          "version": {
-                            "type": "integer"
-                          }
-                        },
-                        "additionalProperties": true
+                      "crv": {
+                        "type": "string"
                       },
                       "date_insert": {
                         "type": "string",
@@ -6267,15 +6287,6 @@
                         "type": "string",
                         "format": "date-time"
                       },
-                      "contact_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      },
-                      "user_id": {
-                        "type": "string"
-                      },
                       "expire_date": {
                         "type": "string",
                         "format": "date-time"
@@ -6283,20 +6294,49 @@
                       "fingerprint": {
                         "type": "string"
                       },
-                      "key": {
+                      "kty": {
                         "type": "string"
                       },
-                      "name": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "ressource_id": {
+                        "type": "string"
+                      },
+                      "resource_type": {
                         "type": "string"
                       },
                       "size": {
                         "type": "integer",
                         "format": "int32"
+                      },
+                      "use": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "x": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "y": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "key": {
+                        "type": "string"
+                      },
+                      "label": {
+                        "type": "string"
                       }
                     },
                     "required": [
                       "key",
-                      "name"
+                      "label",
+                      "key_id",
+                      "ressource_id",
+                      "user_id"
                     ],
                     "additionalProperties": false
                   }
@@ -6728,27 +6768,11 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "privacy_features": {
-                            "type": "object",
-                            "properties": {}
+                          "alg": {
+                            "type": "string"
                           },
-                          "pi": {
-                            "type": "object",
-                            "properties": {
-                              "technic": {
-                                "type": "integer"
-                              },
-                              "context": {
-                                "type": "integer"
-                              },
-                              "comportment": {
-                                "type": "integer"
-                              },
-                              "version": {
-                                "type": "integer"
-                              }
-                            },
-                            "additionalProperties": true
+                          "crv": {
+                            "type": "string"
                           },
                           "date_insert": {
                             "type": "string",
@@ -6758,15 +6782,6 @@
                             "type": "string",
                             "format": "date-time"
                           },
-                          "contact_id": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          },
-                          "user_id": {
-                            "type": "string"
-                          },
                           "expire_date": {
                             "type": "string",
                             "format": "date-time"
@@ -6774,20 +6789,49 @@
                           "fingerprint": {
                             "type": "string"
                           },
-                          "key": {
+                          "kty": {
                             "type": "string"
                           },
-                          "name": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "ressource_id": {
+                            "type": "string"
+                          },
+                          "resource_type": {
                             "type": "string"
                           },
                           "size": {
                             "type": "integer",
                             "format": "int32"
+                          },
+                          "use": {
+                            "type": "string"
+                          },
+                          "user_id": {
+                            "type": "string"
+                          },
+                          "x": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "y": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "key": {
+                            "type": "string"
+                          },
+                          "label": {
+                            "type": "string"
                           }
                         },
                         "required": [
                           "key",
-                          "name"
+                          "label",
+                          "key_id",
+                          "ressource_id",
+                          "user_id"
                         ],
                         "additionalProperties": false
                       }
@@ -7064,27 +7108,11 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "privacy_features": {
-                        "type": "object",
-                        "properties": {}
+                      "alg": {
+                        "type": "string"
                       },
-                      "pi": {
-                        "type": "object",
-                        "properties": {
-                          "technic": {
-                            "type": "integer"
-                          },
-                          "context": {
-                            "type": "integer"
-                          },
-                          "comportment": {
-                            "type": "integer"
-                          },
-                          "version": {
-                            "type": "integer"
-                          }
-                        },
-                        "additionalProperties": true
+                      "crv": {
+                        "type": "string"
                       },
                       "date_insert": {
                         "type": "string",
@@ -7094,15 +7122,6 @@
                         "type": "string",
                         "format": "date-time"
                       },
-                      "contact_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      },
-                      "user_id": {
-                        "type": "string"
-                      },
                       "expire_date": {
                         "type": "string",
                         "format": "date-time"
@@ -7110,20 +7129,49 @@
                       "fingerprint": {
                         "type": "string"
                       },
-                      "key": {
+                      "kty": {
                         "type": "string"
                       },
-                      "name": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "ressource_id": {
+                        "type": "string"
+                      },
+                      "resource_type": {
                         "type": "string"
                       },
                       "size": {
                         "type": "integer",
                         "format": "int32"
+                      },
+                      "use": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "x": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "y": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "key": {
+                        "type": "string"
+                      },
+                      "label": {
+                        "type": "string"
                       }
                     },
                     "required": [
                       "key",
-                      "name"
+                      "label",
+                      "key_id",
+                      "ressource_id",
+                      "user_id"
                     ],
                     "additionalProperties": false
                   }
@@ -7679,27 +7727,11 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "privacy_features": {
-                            "type": "object",
-                            "properties": {}
+                          "alg": {
+                            "type": "string"
                           },
-                          "pi": {
-                            "type": "object",
-                            "properties": {
-                              "technic": {
-                                "type": "integer"
-                              },
-                              "context": {
-                                "type": "integer"
-                              },
-                              "comportment": {
-                                "type": "integer"
-                              },
-                              "version": {
-                                "type": "integer"
-                              }
-                            },
-                            "additionalProperties": true
+                          "crv": {
+                            "type": "string"
                           },
                           "date_insert": {
                             "type": "string",
@@ -7709,15 +7741,6 @@
                             "type": "string",
                             "format": "date-time"
                           },
-                          "contact_id": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          },
-                          "user_id": {
-                            "type": "string"
-                          },
                           "expire_date": {
                             "type": "string",
                             "format": "date-time"
@@ -7725,20 +7748,49 @@
                           "fingerprint": {
                             "type": "string"
                           },
-                          "key": {
+                          "kty": {
                             "type": "string"
                           },
-                          "name": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "ressource_id": {
+                            "type": "string"
+                          },
+                          "resource_type": {
                             "type": "string"
                           },
                           "size": {
                             "type": "integer",
                             "format": "int32"
+                          },
+                          "use": {
+                            "type": "string"
+                          },
+                          "user_id": {
+                            "type": "string"
+                          },
+                          "x": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "y": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "key": {
+                            "type": "string"
+                          },
+                          "label": {
+                            "type": "string"
                           }
                         },
                         "required": [
                           "key",
-                          "name"
+                          "label",
+                          "key_id",
+                          "ressource_id",
+                          "user_id"
                         ],
                         "additionalProperties": false
                       }
@@ -8015,27 +8067,11 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "privacy_features": {
-                        "type": "object",
-                        "properties": {}
+                      "alg": {
+                        "type": "string"
                       },
-                      "pi": {
-                        "type": "object",
-                        "properties": {
-                          "technic": {
-                            "type": "integer"
-                          },
-                          "context": {
-                            "type": "integer"
-                          },
-                          "comportment": {
-                            "type": "integer"
-                          },
-                          "version": {
-                            "type": "integer"
-                          }
-                        },
-                        "additionalProperties": true
+                      "crv": {
+                        "type": "string"
                       },
                       "date_insert": {
                         "type": "string",
@@ -8045,15 +8081,6 @@
                         "type": "string",
                         "format": "date-time"
                       },
-                      "contact_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      },
-                      "user_id": {
-                        "type": "string"
-                      },
                       "expire_date": {
                         "type": "string",
                         "format": "date-time"
@@ -8061,20 +8088,49 @@
                       "fingerprint": {
                         "type": "string"
                       },
-                      "key": {
+                      "kty": {
                         "type": "string"
                       },
-                      "name": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "ressource_id": {
+                        "type": "string"
+                      },
+                      "resource_type": {
                         "type": "string"
                       },
                       "size": {
                         "type": "integer",
                         "format": "int32"
+                      },
+                      "use": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "x": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "y": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "key": {
+                        "type": "string"
+                      },
+                      "label": {
+                        "type": "string"
                       }
                     },
                     "required": [
                       "key",
-                      "name"
+                      "label",
+                      "key_id",
+                      "ressource_id",
+                      "user_id"
                     ],
                     "additionalProperties": false
                   }
@@ -8241,6 +8297,252 @@
                     "name": {
                       "type": "string"
                     }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/contacts/{contact_id}/publickeys": {
+      "post": {
+        "description": "Add a pgp public key to a contact",
+        "tags": [
+          "pgp",
+          "keys"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "contact_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "key",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "key",
+                "label"
+              ],
+              "additionalProperties": false
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Public key created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "url to retrieve public key /contacts/{contact_id}/publickeys/{publickey_id}"
+                },
+                "publickey_id": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "malform request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable entity. Parameters were valid but the server was unable to create the key (probably because of a semantically erroneous document)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Returns all publickeys linked to contact",
+        "tags": [
+          "pgp",
+          "keys"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "contact_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of public keys",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "number of keys found"
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "alg": {
+                        "type": "string"
+                      },
+                      "crv": {
+                        "type": "string"
+                      },
+                      "date_insert": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "date_update": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "expire_date": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "fingerprint": {
+                        "type": "string"
+                      },
+                      "kty": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "ressource_id": {
+                        "type": "string"
+                      },
+                      "resource_type": {
+                        "type": "string"
+                      },
+                      "size": {
+                        "type": "integer",
+                        "format": "int32"
+                      },
+                      "use": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "x": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "y": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "key": {
+                        "type": "string"
+                      },
+                      "label": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "key",
+                      "label",
+                      "key_id",
+                      "ressource_id",
+                      "user_id"
+                    ],
+                    "additionalProperties": false
                   }
                 }
               }
@@ -12002,27 +12304,11 @@
                         "items": {
                           "type": "object",
                           "properties": {
-                            "privacy_features": {
-                              "type": "object",
-                              "properties": {}
+                            "alg": {
+                              "type": "string"
                             },
-                            "pi": {
-                              "type": "object",
-                              "properties": {
-                                "technic": {
-                                  "type": "integer"
-                                },
-                                "context": {
-                                  "type": "integer"
-                                },
-                                "comportment": {
-                                  "type": "integer"
-                                },
-                                "version": {
-                                  "type": "integer"
-                                }
-                              },
-                              "additionalProperties": true
+                            "crv": {
+                              "type": "string"
                             },
                             "date_insert": {
                               "type": "string",
@@ -12032,15 +12318,6 @@
                               "type": "string",
                               "format": "date-time"
                             },
-                            "contact_id": {
-                              "type": "string"
-                            },
-                            "type": {
-                              "type": "string"
-                            },
-                            "user_id": {
-                              "type": "string"
-                            },
                             "expire_date": {
                               "type": "string",
                               "format": "date-time"
@@ -12048,20 +12325,49 @@
                             "fingerprint": {
                               "type": "string"
                             },
-                            "key": {
+                            "kty": {
                               "type": "string"
                             },
-                            "name": {
+                            "type": {
+                              "type": "string"
+                            },
+                            "ressource_id": {
+                              "type": "string"
+                            },
+                            "resource_type": {
                               "type": "string"
                             },
                             "size": {
                               "type": "integer",
                               "format": "int32"
+                            },
+                            "use": {
+                              "type": "string"
+                            },
+                            "user_id": {
+                              "type": "string"
+                            },
+                            "x": {
+                              "type": "integer",
+                              "format": "int64"
+                            },
+                            "y": {
+                              "type": "integer",
+                              "format": "int64"
+                            },
+                            "key": {
+                              "type": "string"
+                            },
+                            "label": {
+                              "type": "string"
                             }
                           },
                           "required": [
                             "key",
-                            "name"
+                            "label",
+                            "key_id",
+                            "ressource_id",
+                            "user_id"
                           ],
                           "additionalProperties": false
                         }
@@ -12202,27 +12508,11 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "privacy_features": {
-                        "type": "object",
-                        "properties": {}
+                      "alg": {
+                        "type": "string"
                       },
-                      "pi": {
-                        "type": "object",
-                        "properties": {
-                          "technic": {
-                            "type": "integer"
-                          },
-                          "context": {
-                            "type": "integer"
-                          },
-                          "comportment": {
-                            "type": "integer"
-                          },
-                          "version": {
-                            "type": "integer"
-                          }
-                        },
-                        "additionalProperties": true
+                      "crv": {
+                        "type": "string"
                       },
                       "date_insert": {
                         "type": "string",
@@ -12232,15 +12522,6 @@
                         "type": "string",
                         "format": "date-time"
                       },
-                      "contact_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      },
-                      "user_id": {
-                        "type": "string"
-                      },
                       "expire_date": {
                         "type": "string",
                         "format": "date-time"
@@ -12248,20 +12529,49 @@
                       "fingerprint": {
                         "type": "string"
                       },
-                      "key": {
+                      "kty": {
                         "type": "string"
                       },
-                      "name": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "ressource_id": {
+                        "type": "string"
+                      },
+                      "resource_type": {
                         "type": "string"
                       },
                       "size": {
                         "type": "integer",
                         "format": "int32"
+                      },
+                      "use": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "x": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "y": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "key": {
+                        "type": "string"
+                      },
+                      "label": {
+                        "type": "string"
                       }
                     },
                     "required": [
                       "key",
-                      "name"
+                      "label",
+                      "key_id",
+                      "ressource_id",
+                      "user_id"
                     ],
                     "additionalProperties": false
                   }
@@ -12517,27 +12827,11 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "privacy_features": {
-                            "type": "object",
-                            "properties": {}
+                          "alg": {
+                            "type": "string"
                           },
-                          "pi": {
-                            "type": "object",
-                            "properties": {
-                              "technic": {
-                                "type": "integer"
-                              },
-                              "context": {
-                                "type": "integer"
-                              },
-                              "comportment": {
-                                "type": "integer"
-                              },
-                              "version": {
-                                "type": "integer"
-                              }
-                            },
-                            "additionalProperties": true
+                          "crv": {
+                            "type": "string"
                           },
                           "date_insert": {
                             "type": "string",
@@ -12547,15 +12841,6 @@
                             "type": "string",
                             "format": "date-time"
                           },
-                          "contact_id": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          },
-                          "user_id": {
-                            "type": "string"
-                          },
                           "expire_date": {
                             "type": "string",
                             "format": "date-time"
@@ -12563,20 +12848,49 @@
                           "fingerprint": {
                             "type": "string"
                           },
-                          "key": {
+                          "kty": {
                             "type": "string"
                           },
-                          "name": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "ressource_id": {
+                            "type": "string"
+                          },
+                          "resource_type": {
                             "type": "string"
                           },
                           "size": {
                             "type": "integer",
                             "format": "int32"
+                          },
+                          "use": {
+                            "type": "string"
+                          },
+                          "user_id": {
+                            "type": "string"
+                          },
+                          "x": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "y": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "key": {
+                            "type": "string"
+                          },
+                          "label": {
+                            "type": "string"
                           }
                         },
                         "required": [
                           "key",
-                          "name"
+                          "label",
+                          "key_id",
+                          "ressource_id",
+                          "user_id"
                         ],
                         "additionalProperties": false
                       }
@@ -12673,27 +12987,11 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "privacy_features": {
-                        "type": "object",
-                        "properties": {}
+                      "alg": {
+                        "type": "string"
                       },
-                      "pi": {
-                        "type": "object",
-                        "properties": {
-                          "technic": {
-                            "type": "integer"
-                          },
-                          "context": {
-                            "type": "integer"
-                          },
-                          "comportment": {
-                            "type": "integer"
-                          },
-                          "version": {
-                            "type": "integer"
-                          }
-                        },
-                        "additionalProperties": true
+                      "crv": {
+                        "type": "string"
                       },
                       "date_insert": {
                         "type": "string",
@@ -12703,15 +13001,6 @@
                         "type": "string",
                         "format": "date-time"
                       },
-                      "contact_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      },
-                      "user_id": {
-                        "type": "string"
-                      },
                       "expire_date": {
                         "type": "string",
                         "format": "date-time"
@@ -12719,20 +13008,49 @@
                       "fingerprint": {
                         "type": "string"
                       },
-                      "key": {
+                      "kty": {
                         "type": "string"
                       },
-                      "name": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "ressource_id": {
+                        "type": "string"
+                      },
+                      "resource_type": {
                         "type": "string"
                       },
                       "size": {
                         "type": "integer",
                         "format": "int32"
+                      },
+                      "use": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "x": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "y": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "key": {
+                        "type": "string"
+                      },
+                      "label": {
+                        "type": "string"
                       }
                     },
                     "required": [
                       "key",
-                      "name"
+                      "label",
+                      "key_id",
+                      "ressource_id",
+                      "user_id"
                     ],
                     "additionalProperties": false
                   }

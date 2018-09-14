@@ -344,6 +344,10 @@ contacts_{contact_id}_publickeys:
       consumes:
       - application/json
       parameters:
+      - name: contact_id
+        in: path
+        required: true
+        type: string
       - name: key
         in: body
         required: true
@@ -352,37 +356,44 @@ contacts_{contact_id}_publickeys:
       produces:
       - application/json
       responses:
-      '200':
-        description: Public key added to contact
-        schema:
-          type: object
-          properties:
-            location:
-              type: string
-              description: url to retrieve new key's infos at /publickeys/{publickey_id}
-      '400':
-        description: malform request
-        schema:
-          type: object
-          "$ref": "../objects/Error.yaml"
-      '401':
-        description: Unauthorized access
-        schema:
-          "$ref": "../objects/Error.yaml"
-      '422':
-        description: Unprocessable entity. Parameters were valid but the server was
-          unable to create the key (probably because of a semantically erroneous
-          document)
-        schema:
-          type: object
-          "$ref": "../objects/Error.yaml"
+        '200':
+          description: Public key created
+          schema:
+            type: object
+            properties:
+              location:
+                type: string
+                description: url to retrieve public key /contacts/{contact_id}/publickeys/{publickey_id}
+              publickey_id:
+                type: string
+        '400':
+          description: malform request
+          schema:
+            type: object
+            "$ref": "../objects/Error.yaml"
+        '401':
+          description: Unauthorized access
+          schema:
+            "$ref": "../objects/Error.yaml"
+        '422':
+          description: Unprocessable entity. Parameters were valid but the server was
+            unable to create the key (probably because of a semantically erroneous
+            document)
+          schema:
+            type: object
+            "$ref": "../objects/Error.yaml"
     get:
-      description: Returns all publickeys linked to user's contacts
+      description: Returns all publickeys linked to contact
       tags:
       - pgp
       - keys
       security:
       - basicAuth: []
+      parameters:
+      - name: contact_id
+        in: path
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -408,6 +419,10 @@ contacts_{contact_id}_publickeys_{publickey_id}:
       security:
       - basicAuth: []
       parameters:
+      - name: contact_id
+        in: path
+        required: true
+        type: string
       - name: publickey_id
         in: path
         required: true
@@ -440,7 +455,7 @@ contacts_{contact_id}_publickeys_{publickey_id}:
       - name: patch
         in: body
         required: true
-        description: the patch to apply. Property 'label' is the only one patchable.
+        description: the patch to apply. Property _label_ is the only one patchable.
         schema:
           type: object
           properties:
@@ -494,6 +509,10 @@ contacts_{contact_id}_publickeys_{publickey_id}:
       security:
       - basicAuth: []
       parameters:
+      - name: contact_id
+        in: path
+        required: true
+        type: string
       - name: publickey_id
         in: path
         required: true
