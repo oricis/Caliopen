@@ -82,8 +82,9 @@ class ContactBook extends Component {
   }
 
   onSelectAllEntities = (checked) => {
-    const { contacts } = this.props;
-    const contactIds = contacts.map(({ contact_id: contactId }) => contactId);
+    const { contacts, tagSearched } = this.props;
+    const contactIds = getFilteredContacts(contacts, tagSearched)
+      .map(({ contact_id: contactId }) => contactId);
 
     this.setState(prevState => ({
       ...prevState,
