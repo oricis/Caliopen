@@ -51,3 +51,16 @@ func (cb *CassandraBackend) CreatePGPPubKey(pubkey *PublicKey) CaliopenError {
 	}
 	return nil
 }
+
+func (cb *CassandraBackend) RetrieveContactPubKeys(userId, contactId string) (keys PublicKeys, err CaliopenError) {
+	ks, e := cb.Session.Query(`SELECT * FROM public_key WHERE user_id = ? AND resource_id = ?`, userId, contactId).Iter().SliceMap()
+	if e != nil {
+		return nil, WrapCaliopenErrf(e, DbCaliopenErr, "[CassandraBackend]RetrieveContactPubKeys failed")
+	}
+	for _, k := range ks {
+		pubkey := new(PublicKey)
+		pubkey.UnmarshalCQLMap(k)
+		keys = append(keys, *pubkey)
+	}
+	return
+}

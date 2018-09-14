@@ -15,6 +15,7 @@ type ContactStorage interface {
 	RetrieveContact(user_id, contact_id string) (contact *Contact, err error)
 	UpdateContact(contact, oldContact *Contact, fields map[string]interface{}) error
 	DeleteContact(contact *Contact) error
+	ContactExists(userId, contactId string) bool
 }
 
 type ContactIndex interface {

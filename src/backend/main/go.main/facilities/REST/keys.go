@@ -66,3 +66,13 @@ func (rest *RESTfacility) CreatePGPPubKey(label string, pubkey []byte, contact *
 
 	return pubKey, nil
 }
+
+func (rest *RESTfacility) RetrieveContactPubKeys(userId, contactId string) (pubkeys PublicKeys, err CaliopenError) {
+
+	//check if contact exists to respond with relevant error code if not
+	if !rest.store.ContactExists(userId, contactId) {
+		return nil, WrapCaliopenErr(NewCaliopenErr(NotFoundCaliopenErr, "contact not found"), DbCaliopenErr, "contact not found")
+	}
+
+	return rest.store.RetrieveContactPubKeys(userId, contactId)
+}

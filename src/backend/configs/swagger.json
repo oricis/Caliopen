@@ -513,7 +513,8 @@
                             "format": "int64"
                           },
                           "key": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "DER or PEM key, base64 encoded"
                           },
                           "label": {
                             "type": "string"
@@ -843,7 +844,8 @@
                             "format": "int64"
                           },
                           "key": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "DER or PEM key, base64 encoded"
                           },
                           "label": {
                             "type": "string"
@@ -3646,7 +3648,8 @@
                               "format": "int64"
                             },
                             "key": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "DER or PEM key, base64 encoded"
                             },
                             "label": {
                               "type": "string"
@@ -3924,7 +3927,8 @@
                         "format": "int64"
                       },
                       "key": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "DER or PEM key, base64 encoded"
                       },
                       "label": {
                         "type": "string"
@@ -4302,7 +4306,8 @@
                         "format": "int64"
                       },
                       "key": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "DER or PEM key, base64 encoded"
                       },
                       "label": {
                         "type": "string"
@@ -4794,7 +4799,8 @@
                             "format": "int64"
                           },
                           "key": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "DER or PEM key, base64 encoded"
                           },
                           "label": {
                             "type": "string"
@@ -5134,7 +5140,8 @@
                         "format": "int64"
                       },
                       "key": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "DER or PEM key, base64 encoded"
                       },
                       "label": {
                         "type": "string"
@@ -5666,7 +5673,8 @@
                               "format": "int64"
                             },
                             "key": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "DER or PEM key, base64 encoded"
                             },
                             "label": {
                               "type": "string"
@@ -5944,7 +5952,8 @@
                         "format": "int64"
                       },
                       "key": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "DER or PEM key, base64 encoded"
                       },
                       "label": {
                         "type": "string"
@@ -6325,7 +6334,8 @@
                         "format": "int64"
                       },
                       "key": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "DER or PEM key, base64 encoded"
                       },
                       "label": {
                         "type": "string"
@@ -6820,7 +6830,8 @@
                             "format": "int64"
                           },
                           "key": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "DER or PEM key, base64 encoded"
                           },
                           "label": {
                             "type": "string"
@@ -7160,7 +7171,8 @@
                         "format": "int64"
                       },
                       "key": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "DER or PEM key, base64 encoded"
                       },
                       "label": {
                         "type": "string"
@@ -7779,7 +7791,8 @@
                             "format": "int64"
                           },
                           "key": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "DER or PEM key, base64 encoded"
                           },
                           "label": {
                             "type": "string"
@@ -8119,7 +8132,8 @@
                         "format": "int64"
                       },
                       "key": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "DER or PEM key, base64 encoded"
                       },
                       "label": {
                         "type": "string"
@@ -8335,7 +8349,8 @@
               "type": "object",
               "properties": {
                 "key": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "DER or PEM key, base64 encoded"
                 },
                 "label": {
                   "type": "string"
@@ -8472,7 +8487,7 @@
                   "format": "int32",
                   "description": "number of keys found"
                 },
-                "tags": {
+                "pubkeys": {
                   "type": "array",
                   "items": {
                     "type": "object",
@@ -8529,7 +8544,8 @@
                         "format": "int64"
                       },
                       "key": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "DER or PEM key, base64 encoded"
                       },
                       "label": {
                         "type": "string"
@@ -12356,7 +12372,8 @@
                               "format": "int64"
                             },
                             "key": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "DER or PEM key, base64 encoded"
                             },
                             "label": {
                               "type": "string"
@@ -12560,7 +12577,8 @@
                         "format": "int64"
                       },
                       "key": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "DER or PEM key, base64 encoded"
                       },
                       "label": {
                         "type": "string"
@@ -12879,7 +12897,8 @@
                             "format": "int64"
                           },
                           "key": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "DER or PEM key, base64 encoded"
                           },
                           "label": {
                             "type": "string"
@@ -13039,7 +13058,8 @@
                         "format": "int64"
                       },
                       "key": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "DER or PEM key, base64 encoded"
                       },
                       "label": {
                         "type": "string"

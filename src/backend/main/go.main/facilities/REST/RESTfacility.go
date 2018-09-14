@@ -77,6 +77,7 @@ type (
 		DeleteDevice(userId, deviceId string) CaliopenError
 		//keys
 		CreatePGPPubKey(label string, pubkey []byte, contact *Contact) (*PublicKey, CaliopenError)
+		RetrieveContactPubKeys(userId, contactId string) (pubkeys PublicKeys, err CaliopenError)
 	}
 	RESTfacility struct {
 		store      backends.APIStorage

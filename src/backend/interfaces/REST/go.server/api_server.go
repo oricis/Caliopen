@@ -233,6 +233,7 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	cts.GET("/:contactID/identities", contacts.GetIdentities)
 	//publickeys
 	cts.POST("/:contactID/publickeys", contacts.NewPublicKey)
+	cts.GET("/:contactID/publickeys", contacts.GetPubKeys)
 	//tags
 	cts.PATCH("/:contactID/tags", tags.PatchResourceWithTags)
 

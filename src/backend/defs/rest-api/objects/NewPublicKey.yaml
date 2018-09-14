@@ -3,6 +3,7 @@ type: object
 properties:
   key:
     type: string
+    description : "DER or PEM key, base64 encoded"
   label:
     type: string
 required:
