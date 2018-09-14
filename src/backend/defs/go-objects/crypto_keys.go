@@ -1,4 +1,4 @@
-// Copyleft (ɔ) 2017 The Caliopen contributors.
+// Copyleft (ɔ) 2018 The Caliopen contributors.
 // Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
 // license (AGPL) that can be found in the LICENSE file.
 
@@ -19,7 +19,6 @@ import (
 	"regexp"
 	"strings"
 	"time"
-	//github.com/SermoDigital/jose
 )
 
 type PublicKey struct {
@@ -41,6 +40,23 @@ type PublicKey struct {
 	UserId       UUID      `cql:"user_id"          json:"user_id,omitempty"                                         patch:"system"`
 	X            big.Int   `cql:"x"                json:"x,omitempty"                                               patch:"user"`
 	Y            big.Int   `cql:"y"                json:"y,omitempty"                                               patch:"user"`
+}
+
+// model for nats message triggered after contact create/update
+type DiscoverKeyMessage struct {
+	Order      string           `json:"order"`
+	ContactId  string           `json:"contact_id"`
+	UserId     string           `json:"user_id"`
+	Emails     []EmailContact   `json:"emails,omitempty"`
+	Identities []SocialIdentity `json:"identities,omitempty"`
+}
+
+// model for nats message triggered after a GPG key has been uploaded and linked to a contact
+type PublishKeyMessage struct {
+	Order      string `json:"order"`
+	UserId     string `json:"user_id"`
+	ResourceId string `json:"resource_id"`
+	KeyId      string `json:"key_id"`
 }
 
 // unmarshal a map[string]interface{} that must owns all PublicKey's fields

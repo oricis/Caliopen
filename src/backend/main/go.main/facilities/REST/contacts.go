@@ -171,8 +171,8 @@ func (rest *RESTfacility) launchKeyDiscovery(current_contact *Contact, updatedFi
 		if err != nil {
 			return
 		}
-		log.Infof("Will publish nats topic %s for message %s", rest.natsTopics[Nats_DiscoverKey_topicKey], string(natsMessage))
-		rest.PublishOnNats(string(natsMessage), rest.natsTopics[Nats_DiscoverKey_topicKey])
+		log.Infof("Will publish nats topic %s for message %s", rest.natsTopics[Nats_Keys_topicKey], string(natsMessage))
+		rest.PublishOnNats(string(natsMessage), rest.natsTopics[Nats_Keys_topicKey])
 	}(current_contact)
 	return nil
 }

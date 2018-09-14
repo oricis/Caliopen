@@ -9,6 +9,8 @@ package REST
 import (
 	"bytes"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	log "github.com/Sirupsen/logrus"
+	"github.com/gin-gonic/gin/json"
 	"github.com/keybase/go-crypto/openpgp"
 )
 
@@ -43,7 +45,23 @@ func (rest *RESTfacility) CreatePGPPubKey(label string, pubkey []byte, contact *
 
 	err = rest.store.CreatePGPPubKey(pubKey)
 	if err != nil {
-		return pubKey, WrapCaliopenErr(err, DbCaliopenErr, "[CreatePGPPubKey] store failed to create PGP key")
+		return nil, WrapCaliopenErr(err, DbCaliopenErr, "[CreatePGPPubKey] store failed to create PGP key")
+	}
+
+	natsMsg := PublishKeyMessage{
+		Order:      "publish_key",
+		UserId:     pubKey.UserId.String(),
+		ResourceId: pubKey.ResourceId.String(),
+		KeyId:      pubKey.KeyId.String(),
+	}
+	jsonMsg, err := json.Marshal(natsMsg)
+	if err != nil {
+		log.WithError(err).Warn("[RESTfacility]CreatePGPPubKey failed to marshal nats message")
+	} else {
+		e := rest.nats_conn.Publish(rest.natsTopics[Nats_Keys_topicKey], jsonMsg)
+		if e != nil {
+			log.WithError(err).Warn("[RESTfacility]CreatePGPPubKey failed to publish nats message")
+		}
 	}
 
 	return pubKey, nil
