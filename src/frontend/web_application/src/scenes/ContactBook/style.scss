@@ -1,32 +1,33 @@
 @import '../../styles/common';
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
-.l-contact-book {
-  background: $co-color__bg__back;
-
-  &__contacts {
-    @include flex-grid-row($size: expand);
+.s-contact-book {
+  &__sidebar {
+    padding-right: $co-margin;
+    padding-left: $co-margin;
   }
 
-  &__tags {
-    @include flex-grid-size;
-    margin-top: $co-margin;
+  &__tags-title {
+    margin: 20px 0 12px 0;
+    color: #505050;
+    font-size: 18px;
+    line-height: 14px;
   }
 
   &__import {
     @include flex-grid-row;
-    margin-top: $co-margin;
+    margin-top: 12px;
     margin-bottom: $co-margin;
   }
 
-  &__import-button {
-    @include flex-grid-column;
+  &__action-button {
+    text-transform: uppercase;
   }
 
-  &__button { line-height: $co-component__height; }
-
-  &__contact-list {
-    @include flex-grid-size;
+  &__select-all {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px
   }
 
   &__load-more {
@@ -36,9 +37,8 @@
   }
 
   @include breakpoint(medium) {
-    &__tags {
+    &__sidebar {
       @include flex-grid-column(shrink);
-      padding-right: $co-margin;
     }
   }
 }

@@ -1,0 +1,27 @@
+@import '../../styles/common';
+@import '../../styles/object/o-avatar';
+
+.m-placeholder-block {
+  height: $co-component__height;
+  border-radius: $co-radius;
+  background-color: $co-color__fg__back--lower;
+
+  &--line {
+    height: $co-font__size--xsmall;
+    border-radius: ($co-font__size--xsmall / 2);
+  }
+
+  &--round {
+    width: $co-component__height;
+    border-radius: 50%;
+  }
+
+  &--rect {
+    min-width: 4 * $co-component__height;
+  }
+
+  &--avatar {
+    @include m-avatar--size(medium);
+    border-radius: 50%;
+  }
+}

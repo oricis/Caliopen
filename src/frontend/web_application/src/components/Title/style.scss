@@ -3,8 +3,8 @@
 $m-title__height: $co-component__height !default;
 
 .m-title {
+  $baseName: &;
   display: block;
-
 
   &__text {
     display: inline;
@@ -13,10 +13,25 @@ $m-title__height: $co-component__height !default;
     font-weight: 700;
   }
 
+  &--caps {
+    text-transform: capitalize;
+  }
+
   &--hr {
-    border-width: 1px 0;
-    border-style: solid;
-    border-color: $co-color__fg__border;
-    line-height: $m-title__height;
+    &:before {
+      display: block;
+      content: "";
+      position: relative;
+      top: 10px;
+      margin-left: 40px;
+      border-top: 2px solid #8dceec;
+    }
+  }
+
+  &--large {
+    #{$baseName}__text {
+      font-size: 1.25rem;
+      line-height: 1.25rem;
+    }
   }
 }

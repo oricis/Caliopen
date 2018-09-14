@@ -3,7 +3,6 @@
 
 .s-contact-book-menu {
   @include flex-grid-row;
-  height: $co-component__height;
   border-bottom: 3px solid $co-color__sidebar__back;
   line-height: $co-component__height;
 
@@ -12,14 +11,28 @@
   }
 
   &__selector {
-    @include flex-grid-size;
+    @include flex-grid-column;
+    display: block;
     color: #1a5773;
     font-weight: bold;
-    text-align: right;
   }
 
   &__action-btn {
-    margin-left: 10px;
+    margin-left: map_get($co-margin_, 'xsmall');
     color: #0e97c3;
+  }
+
+  &__select-all {
+    display: inline-block;
+    margin-left: map_get($co-margin_, 'xsmall');
+  }
+
+  @include breakpoint(medium) {
+    &__selector {
+      display: inline;
+      text-align: right;
+    }
+    &__action-btn {
+    }
   }
 }

@@ -3,37 +3,32 @@ import PropTypes from 'prop-types';
 import { withI18n } from 'lingui-react';
 import classnames from 'classnames';
 import { WithTags, getTagLabel } from '../../../../modules/tags';
+import { withTagSearched } from '../../hoc/withTagSearched';
 import { Link, NavList, NavItem } from '../../../../components/';
 
 import './style.scss';
 
 @withI18n()
+@withTagSearched()
 class TagList extends Component {
   static propTypes = {
-    onTagClick: PropTypes.func.isRequired,
-    activeTag: PropTypes.string.isRequired,
     i18n: PropTypes.shape({}).isRequired,
+    tagSearched: PropTypes.string,
   };
   static defaultProps = {
+    tagSearched: '',
   };
   state = {};
 
   sortTags = (i18n, tags) =>
     [...tags].sort((a, b) => getTagLabel(i18n, a).localeCompare(getTagLabel(i18n, b)));
 
-  createHandleClickTag = tagName => () => {
-    const { onTagClick } = this.props;
-
-    onTagClick(tagName);
-  }
-
   renderItem({ tagName, label }) {
-    const { activeTag } = this.props;
+    const { tagSearched } = this.props;
     const tagClassName = classnames(
       'm-tag-list__tag',
       {
-        // FIXME
-        'm-tag-list__tag--active': activeTag === tagName,
+        'm-tag-list__tag--active': tagSearched === tagName,
       }
     );
 

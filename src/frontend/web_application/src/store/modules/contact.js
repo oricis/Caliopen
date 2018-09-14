@@ -17,6 +17,7 @@ export const DELETE_CONTACT = 'co/contact/DELETE_CONTACT';
 export const UPDATE_TAGS = 'co/contact/UPDATE_TAGS';
 export const UPDATE_TAGS_SUCCESS = 'co/contact/UPDATE_TAGS_SUCCESS';
 export const UPDATE_TAGS_FAIL = 'co/contact/UPDATE_TAGS_FAIL';
+export const REMOVE_MULTIPLE_FROM_COLLECTION = 'co/contact/REMOVE_MULTIPLE_FROM_COLLECTION';
 
 export function requestContacts(params = {}) {
   const { offset = 0, limit = 1000 } = params;
@@ -115,6 +116,15 @@ export function updateTags({ contact, tags }) {
   };
 }
 
+export function removeMultipleFromCollection({ contacts }) {
+  return {
+    type: REMOVE_MULTIPLE_FROM_COLLECTION,
+    payload: {
+      contacts,
+    },
+  };
+}
+
 function contactsByIdReducer(state = {}, action = {}) {
   switch (action.type) {
     case REQUEST_CONTACTS_SUCCESS:
@@ -127,25 +137,39 @@ function contactsByIdReducer(state = {}, action = {}) {
         ...state,
         [action.payload.data.contact_id]: action.payload.data,
       };
+    case REMOVE_MULTIPLE_FROM_COLLECTION:
+      return action.payload.contacts.reduce((prevState, contact) => ({
+        ...prevState,
+        [contact.contact_id]: undefined,
+      }), state);
     default:
       return state;
   }
 }
 
+const filterContactIds = ({ contactsIds, contacts }) => {
+  const contactIdsToRemove = contacts.map(contact => contact.contact_id);
+
+  return contactsIds.filter(contactId => !contactIdsToRemove.includes(contactId));
+};
+
 function contactListReducer(state = [], action = {}) {
-  if (action.type !== REQUEST_CONTACTS_SUCCESS) {
-    return state;
+  switch (action.type) {
+    case REQUEST_CONTACTS_SUCCESS:
+      return [...state]
+        .concat(action.payload.data.contacts.map(contact => contact.contact_id))
+        .reduce((prev, curr) => {
+          if (prev.indexOf(curr) === -1) {
+            prev.push(curr);
+          }
+
+          return prev;
+        }, []);
+    case REMOVE_MULTIPLE_FROM_COLLECTION:
+      return filterContactIds({ contactsIds: state, contacts: action.payload.contacts });
+    default:
+      return state;
   }
-
-  return [...state]
-    .concat(action.payload.data.contacts.map(contact => contact.contact_id))
-    .reduce((prev, curr) => {
-      if (prev.indexOf(curr) === -1) {
-        prev.push(curr);
-      }
-
-      return prev;
-    }, []);
 }
 
 export function getNextOffset(state) {
@@ -198,6 +222,13 @@ export default function reducer(state = initialState, action) {
           state.contactsById,
           action
         ),
+      };
+    case REMOVE_MULTIPLE_FROM_COLLECTION:
+      return {
+        ...state,
+        contacts: contactListReducer(state.contacts, action),
+        contactsById: contactsByIdReducer(state.contactsById, action),
+        total: state.total - action.payload.contacts.length,
       };
     default:
       return state;

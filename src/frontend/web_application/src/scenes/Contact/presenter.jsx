@@ -192,7 +192,7 @@ class Contact extends Component {
         title={title}
         onClose={this.handleCloseTags}
       >
-        <ManageEntityTags type="contact" entity={contact} onChange={this.handleTagsChange} />
+        <ManageEntityTags entity={contact} onChange={this.handleTagsChange} />
       </Modal>
     );
   }
