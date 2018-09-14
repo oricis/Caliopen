@@ -11,7 +11,7 @@ from caliopen_storage.config import Configuration
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARN)
 
 mapping = '_v5'
 DEFAULT_RESULT_WINDOW = 10000
@@ -27,6 +27,7 @@ def valid_uuid(uuid):
 
 def anonymise_email(email):
     """Anonymise email field using an hash function."""
+    assert '@' in email, 'Invalid email {0}'.format(email)
     local_part, domain = email.split('@')
     hash_local = hashlib.sha256(local_part.encode('utf-8')).hexdigest()
     hash_domain = hashlib.sha256(domain.encode('utf-8')).hexdigest()
@@ -88,7 +89,7 @@ class DataManager(object):
             from_ = from_[0]
         else:
             return
-        to = filter(lambda x: x['type'] in  ('To', 'Cc'), message.participants)
+        to = filter(lambda x: x['type'] in ('To', 'Cc'), message.participants)
         type = 'plain'
         if 'privacy_features' in message:
             feat = message['privacy_features']
@@ -99,8 +100,12 @@ class DataManager(object):
         else:
             date = ''
         for dest in to:
-            hash1 = anonymise_email(from_['label'])
-            hash2 = anonymise_email(dest['label'])
+            try:
+                hash1 = anonymise_email(from_['label'])
+                hash2 = anonymise_email(dest['label'])
+            except AssertionError as exc:
+                log.error(exc)
+                return
             received = 'true' if message['is_received'] else 'false'
             yield [hash1, hash2, type, date, received]
 
