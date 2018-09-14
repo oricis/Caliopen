@@ -56,7 +56,6 @@ class Message extends Component {
 
   handleDeleteMessage = () => {
     const { onMessageDelete, message } = this.props;
-
     if (onMessageDelete) {
       onMessageDelete({ message });
     }

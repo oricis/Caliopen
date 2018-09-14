@@ -1,12 +1,14 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
+import { requestDiscussions } from '../../store/modules/discussion';
 import { requestMessages, loadMore, invalidate, deleteMessage as deleteMessageRaw } from '../../store/modules/message';
 import { setMessageRead, deleteMessage } from '../../modules/message';
 import { reply } from '../../modules/draftMessage';
 import { createMessageCollectionStateSelector } from '../../store/selectors/message';
 import { UserSelector } from '../../store/selectors/user';
 import { withCurrentTab, withCloseTab } from '../../modules/tab';
+import { withTags, updateTagCollection } from '../../modules/tags';
 import { sortMessages } from '../../services/message';
 import { getUser } from '../../modules/user/actions/getUser';
 import withScrollManager from '../../modules/scroll/hoc/scrollManager';
@@ -32,7 +34,7 @@ const mapStateToProps = createSelector(
       discussionId,
       user: userState.user,
       isUserFetching: userState.isFetching,
-      discussion: discussionState.discussionsById[discussionId] || {},
+      discussion: discussionState.discussionsById[discussionId],
       messages,
       isFetching,
       hasMore,
@@ -41,10 +43,14 @@ const mapStateToProps = createSelector(
 );
 
 const deleteDiscussion = ({ discussionId, messages }) => async (dispatch) => {
-  await Promise.all(messages.map((message => dispatch(deleteMessageRaw({ message })))));
+  await Promise.all(messages.map(message => dispatch(deleteMessageRaw({ message }))));
 
   return dispatch(invalidate({ type: 'discussion', key: discussionId }));
 };
+
+const updateDiscussionTags = ({ i18n, messages, tags }) => async dispatch =>
+  Promise.all(messages.map(message =>
+    dispatch(updateTagCollection(i18n, { type: 'message', entity: message, tags }))));
 
 const onMessageReply = ({ message }) => (dispatch) => {
   dispatch(reply({ internalId: message.discussion_id, message }));
@@ -56,6 +62,8 @@ const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
   setMessageRead,
   deleteMessage,
   deleteDiscussion,
+  requestDiscussions,
+  updateDiscussionTags,
   onMessageReply,
   getUser,
 }, dispatch);
@@ -65,5 +73,7 @@ export default compose(
   withScrollManager(),
   withCloseTab(),
   withCurrentTab(),
+  withCloseTab(),
+  withTags(),
   withPush(),
 )(Discussion);

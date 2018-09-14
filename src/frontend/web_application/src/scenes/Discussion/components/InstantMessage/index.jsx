@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
+import classNames from 'classnames';
 import VisibilitySensor from 'react-visibility-sensor';
+import { isMessageFromUser } from '../../../../services/message';
 import { calcPiValue } from '../../../../services/pi';
 import { AuthorAvatarLetter } from '../../../../modules/avatar';
 
@@ -25,7 +27,15 @@ class InstantMessage extends PureComponent {
   }
 
   getPiClass = pi => (pi <= 50 ? 'weak-pi' : 'strong-pi');
+
+  getClassNames = (pi, message) => classNames(
+    'instant',
+    this.getPiClass(pi),
+    { fromUser: isMessageFromUser(message, this.props.user) }
+  );
+
   extractAuthor = ({ participants }) => participants.find(participant => participant.type === 'From');
+
   protocolIcon = (protocol) => {
     switch (protocol) {
       case 'facebook':

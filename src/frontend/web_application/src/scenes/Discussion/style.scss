@@ -2,6 +2,10 @@
 @import '../../styles/common';
 
 .s-discussion {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+
   &__action-bar--sticky {
     position: fixed;
     top: 41px;
@@ -15,10 +19,12 @@
   }
 
   &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     max-width: 1280px;
     height: 2.625rem;
     margin: 0 auto;
-    padding: 0 40px;
     background-color: white;
     font-size: 0.88rem;
     text-align: right;
@@ -28,9 +34,15 @@
     }
   }
 
-  display: flex;
-  position: relative;
-  flex-direction: column;
+  &__tags {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &__tag {
+    display: block;
+    margin-left: $co-component__spacing;
+  }
 
   &__action { margin-right: $co-component__spacing; }
 

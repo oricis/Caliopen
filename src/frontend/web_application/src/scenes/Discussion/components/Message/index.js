@@ -8,4 +8,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   updateTagCollection,
 }, dispatch);
 
-export default compose(connect(mapDispatchToProps), withTags())(Presenter);
+export default compose(connect(null, mapDispatchToProps), withTags())(Presenter);

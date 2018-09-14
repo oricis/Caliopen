@@ -107,6 +107,15 @@
     }
   }
 
+  &__tags {
+    margin-top: $co-component__spacing;
+  }
+
+  &__tag {
+    display: inline-block;
+    margin-right: $co-component__spacing;
+  }
+
   .direction {
     width: 2rem;
   }

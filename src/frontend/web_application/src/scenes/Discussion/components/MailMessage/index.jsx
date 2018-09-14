@@ -5,7 +5,7 @@ import { Trans } from 'lingui-react';
 import classnames from 'classnames';
 import VisibilitySensor from 'react-visibility-sensor';
 import withScrollTarget from '../../../../modules/scroll/hoc/scrollTarget';
-import { Button } from '../../../../components';
+import { Badge, Button } from '../../../../components';
 import MessageAttachments from '../../../MessageList/components/MessageAttachments';
 import { getAuthor, getRecipients, isParticipantUser, isUserRecipient } from '../../../../services/message';
 import { calcPiValue, getPiClass } from '../../../../services/pi';
@@ -18,7 +18,9 @@ import './style.scss';
 @withScrollTarget()
 class MailMessage extends Component {
   static propTypes = {
-    message: PropTypes.shape({}).isRequired,
+    message: PropTypes.shape({
+      message_id: PropTypes.string,
+    }).isRequired,
     onMessageRead: PropTypes.func.isRequired,
     onMessageUnread: PropTypes.func.isRequired,
     onMessageDelete: PropTypes.func.isRequired,
@@ -94,6 +96,16 @@ class MailMessage extends Component {
     return `${prefix}${otherRecipients}`;
   }
 
+  renderTags = ({ tags }) => (
+    tags && (
+      <ul className="s-mail-message__tags">
+        {tags.map(tag => (
+          <li key={`${this.props.message.message_id}${tag}`} className="s-mail-message__tag"><Badge>{tag}</Badge></li>
+        ))}
+      </ul>
+    )
+  );
+
   render() {
     const { message, forwardRef, onOpenTags } = this.props;
     const pi = calcPiValue(message);
@@ -146,6 +158,7 @@ class MailMessage extends Component {
             </div>
             <div className="from"><span className="direction">De&thinsp;:</span> <a href="">{author.label}</a></div>
             <div className="to"><span className="direction">À&thinsp;:</span> <a href="">{recipients}</a></div>
+            {this.renderTags(message)}
           </aside>
           <div className="container">
             <header>
