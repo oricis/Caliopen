@@ -2,8 +2,9 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Trans, Plural } from 'lingui-react';
 import ContactList from './components/ContactList';
-import { PageTitle, Spinner, Button, MenuBar, Checkbox, SidebarLayout, NavList, NavItem, Confirm } from '../../components';
+import { PageTitle, Spinner, Button, MenuBar, Checkbox, SidebarLayout, NavList, NavItem, Confirm, Modal } from '../../components';
 import { withPush } from '../../modules/routing';
+import { withTags, TagsForm, getCleanedTagCollection, getTagNamesInCommon } from '../../modules/tags';
 import TagList from './components/TagList';
 import ImportContactButton from './components/ImportContactButton';
 import { withTagSearched } from './hoc/withTagSearched';
@@ -25,6 +26,7 @@ function getFilteredContacts(contactList, tag) {
   return contactList.filter(contact => contact.tags && contact.tags.includes(tag));
 }
 
+@withTags()
 @withTagSearched()
 @withPush()
 class ContactBook extends Component {
@@ -33,7 +35,9 @@ class ContactBook extends Component {
     requestContacts: PropTypes.func.isRequired,
     loadMoreContacts: PropTypes.func.isRequired,
     deleteContacts: PropTypes.func.isRequired,
+    updateContactTags: PropTypes.func.isRequired,
     contacts: PropTypes.arrayOf(PropTypes.shape({})),
+    tags: PropTypes.arrayOf(PropTypes.shape({})),
     tagSearched: PropTypes.string,
     isFetching: PropTypes.bool,
     didInvalidate: PropTypes.bool,
@@ -43,6 +47,7 @@ class ContactBook extends Component {
 
   static defaultProps = {
     contacts: [],
+    tags: [],
     tagSearched: '',
     isFetching: false,
     didInvalidate: false,
@@ -53,6 +58,7 @@ class ContactBook extends Component {
     sortDir: DEFAULT_SORT_DIR,
     isDeleting: false,
     selectedEntitiesIds: [],
+    isTagModalOpen: false,
   };
 
   componentDidMount() {
@@ -60,7 +66,7 @@ class ContactBook extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.didInvalidate) {
+    if (nextProps.didInvalidate && !nextProps.isFetching) {
       this.props.requestContacts();
     }
   }
@@ -132,6 +138,65 @@ class ContactBook extends Component {
   handleUploadSuccess = () => {
     this.props.requestContacts();
   };
+
+  handleOpenTags = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      isTagModalOpen: true,
+    }));
+  }
+
+  handleCloseTags = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      isTagModalOpen: false,
+    }));
+  }
+
+  handleTagsChange = ({ tags }) => {
+    const { updateContactTags, i18n } = this.props;
+
+    return updateContactTags(i18n, this.state.selectedEntitiesIds, tags);
+  }
+
+  renderTagsModal = () => {
+    const { contacts, tags: userTags, i18n } = this.props;
+    const selectedEntitiesIds = new Set(this.state.selectedEntitiesIds);
+    const selectedEntities = contacts
+      .filter(contact => selectedEntitiesIds.has(contact.contact_id));
+
+    const tagNamesInCommon = getTagNamesInCommon(selectedEntities);
+    const tagsInCommon = getCleanedTagCollection(userTags, tagNamesInCommon);
+
+    const title = (
+      <Trans
+        id="tags.header.title"
+        defaults={'Tags <0>(Total: {nb})</0>'}
+        values={{ nb: tagsInCommon.length }}
+        components={[
+          (<span className="m-tags-form__count" />),
+        ]}
+      />
+    );
+
+    return (
+      <Modal
+        isOpen={this.state.isTagModalOpen}
+        contentLabel={i18n._('tags.header.label', { defaults: 'Tags' })}
+        title={title}
+        onClose={this.handleCloseTags}
+      >
+        {selectedEntities.length > 1 && (
+          <Trans id="tags.common_tags_applied">Common tags applied to the current selection:</Trans>
+        )}
+        <TagsForm
+          userTags={userTags}
+          tags={tagsInCommon}
+          updateTags={this.handleTagsChange}
+        />
+      </Modal>
+    );
+  }
 
   renderMenuBar() {
     const {
@@ -206,6 +271,16 @@ class ContactBook extends Component {
               >
                 <Trans id="contact-book.action.start-discussion">Start discussion FIXME</Trans>
               </Button>
+              <Button
+                className="s-contact-book-menu__action-btn"
+                display="inline"
+                noDecoration
+                icon="tag"
+                onClick={this.handleOpenTags}
+              >
+                <Trans id="contact-book.action.manage-tags">Manage tags</Trans>
+              </Button>
+              {this.state.isTagModalOpen && this.renderTagsModal()}
             </Fragment>
           )}
           <div className="s-contact-book-menu__select-all">

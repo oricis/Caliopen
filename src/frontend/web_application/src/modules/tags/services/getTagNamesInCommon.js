@@ -1,7 +1,7 @@
 import intersection from 'lodash.intersection';
 
-export const getTagNamesInCommon = (messages, { strict = false } = {}) =>
-  intersection(...(strict ? messages : messages
-    // when not strict, this ignore messages with no tags, E.g I need to delete one tag in common
-    // for a large selection which include messages with no tags
-    .filter(message => message.tags)).map(message => message.tags));
+export const getTagNamesInCommon = (entities, { strict = false } = {}) =>
+  intersection(...(strict ? entities : entities
+    // when not strict, this ignore entities with no tags, E.g I need to delete one tag in common
+    // for a large selection which include entities with no tags
+    .filter(entity => entity.tags)).map(entity => entity.tags));
