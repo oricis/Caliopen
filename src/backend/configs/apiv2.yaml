@@ -30,7 +30,8 @@ ApiConfig:
       - http://elasticsearch:9200
   NatsConfig:
     url: nats://nats:4222
-    outSMTP_topic: outboundSMTP     # topic's name to post "send" draft order
+    outSMTP_topic: outboundSMTP     # topic's name for "send" draft order via SMTP
+    outIMAP_topic: outboundIMAP     # topic's name for "send" draft order via remote SMTP+IMAP
     contacts_topic: contactAction   # topic's name to post messages regarding contacts' events
     keys_topic: discoverKeyAction   # topic-s name to post messages regarding public key discovery
   swaggerSpec: ./swagger.json #absolute path or relative path to go.server bin

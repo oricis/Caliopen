@@ -69,7 +69,7 @@ const __version__ = "0.11.0"
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	RootCmd.PersistentFlags().StringVar(&cfgPath, "confPath", "", "Path to seek the two mandatory config files: caliopen-go-api_dev.yaml and caliopen-go-lmtp_dev.yaml")
+	RootCmd.PersistentFlags().StringVar(&cfgPath, "confPath", "", "Path to seek the two mandatory config files: apiv2.yaml and lmtp.yaml")
 	RootCmd.PersistentFlags().StringVar(&apiCfgFile, "apiConf", "", "Caliopen's API config file")
 	RootCmd.PersistentFlags().StringVar(&lmtpCfgFile, "lmtpConf", "", "Caliopen's lmtpd config file")
 }
@@ -102,14 +102,14 @@ func initConfig() {
 		// Use config file name and path from the flag.
 		apiCfg.SetConfigFile(apiCfgFile)
 	} else {
-		apiCfg.SetConfigName("caliopen-go-api_dev")
+		apiCfg.SetConfigName("apiv2")
 	}
 
 	if lmtpCfgFile != "" {
 		// Use config file name and path from the flag.
 		lmtpCfg.SetConfigFile(lmtpCfgFile)
 	} else {
-		lmtpCfg.SetConfigName("caliopen-go-lmtp_dev")
+		lmtpCfg.SetConfigName("lmtp")
 	}
 
 	// read in environment variables that match
@@ -143,6 +143,7 @@ func getStoreFacility() (Store *store.CassandraBackend, err error) {
 			Keyspace:     apiConf.BackendConfig.Settings.Keyspace,
 			Consistency:  gocql.Consistency(apiConf.BackendConfig.Settings.Consistency),
 			SizeLimit:    apiConf.BackendConfig.Settings.SizeLimit,
+			UseVault:     apiConf.BackendConfig.Settings.UseVault,
 			WithObjStore: true,
 		}
 		c.Endpoint = apiConf.BackendConfig.Settings.ObjStoreSettings.Endpoint
@@ -151,6 +152,13 @@ func getStoreFacility() (Store *store.CassandraBackend, err error) {
 		c.RawMsgBucket = apiConf.BackendConfig.Settings.ObjStoreSettings.Buckets["raw_messages"]
 		c.AttachmentBucket = apiConf.BackendConfig.Settings.ObjStoreSettings.Buckets["temporary_attachments"]
 		c.Location = apiConf.BackendConfig.Settings.ObjStoreSettings.Location
+
+		//TODO: add a conf file for gocli.
+		if c.UseVault {
+			c.Url = apiConf.BackendConfig.Settings.VaultSettings.Url
+			c.Username = "gocli"
+			c.Password = "gocli_weak_password"
+		}
 
 		Store, err = store.InitializeCassandraBackend(c)
 		if err != nil {

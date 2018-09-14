@@ -7,12 +7,15 @@ package caliopen_smtp
 import (
 	"bytes"
 	"crypto/tls"
+	"fmt"
 	broker "github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"gopkg.in/gomail.v2"
 	"io"
 	"net/smtp"
+	"strconv"
+	"strings"
 	"sync"
 	"time"
 )
@@ -68,7 +71,7 @@ func (lda *Lda) runSubmitterAgent() {
 
 }
 
-/*  OutboundWorker dials to MTA and maintains connection open to handle outbound deliveries,
+/*  OutboundWorker dials to static MTA and maintains connection open to handle outbound deliveries,
 then close the connection if no email comes in for 30 sec.
 should be launched in a goroutine
 */
@@ -82,6 +85,7 @@ func (lda *Lda) OutboundWorker() {
 	}()
 
 	var smtp_sender gomail.SendCloser
+	var smtp_remote_sender gomail.SendCloser
 	var err error
 	open := false
 	for {
@@ -91,19 +95,42 @@ func (lda *Lda) OutboundWorker() {
 				//TODO
 				return
 			}
-			if !open {
-				if smtp_sender, err = d.Dial(); err != nil {
-					log.WithError(err).Warn("outbound: unable to connect to MTA")
-					return
-				}
-				open = true
-			}
 
 			from := outcoming.EmailMessage.Email.SmtpMailFrom[0] //TODO: manage multiple senders
 			to := outcoming.EmailMessage.Email.SmtpRcpTo
 			var raw bytes.Buffer
 			raw.WriteString((&outcoming.EmailMessage.Email.Raw).String())
-			err = smtp_sender.Send(from, to, &raw)
+
+			// send via local or remote MTA, accordingly
+			if outcoming.RemoteCredentials != nil {
+				server := strings.Split(outcoming.RemoteCredentials.Host, ":")
+				port, _ := strconv.Atoi(server[1])
+				var dialErr error
+				smtp_remote_sender, dialErr = gomail.NewDialer(
+					server[0],
+					port,
+					outcoming.RemoteCredentials.User,
+					outcoming.RemoteCredentials.Password,
+				).Dial()
+				if dialErr != nil {
+					err = fmt.Errorf("outbound: unable to connect to remote MTA with error : %s", dialErr)
+				} else {
+					err = smtp_remote_sender.Send(from, to, &raw)
+				}
+			} else {
+				if !open {
+					var dialErr error
+					if smtp_sender, dialErr = d.Dial(); dialErr != nil {
+						err = fmt.Errorf("outbound: unable to connect to MTA with error : %s", dialErr)
+					} else {
+						open = true
+					}
+				}
+				if err == nil {
+					err = smtp_sender.Send(from, to, &raw)
+				}
+			}
+
 			var ack DeliveryAck
 			if err != nil {
 				log.WithError(err).Warn("outbound: unable to send to MTA")

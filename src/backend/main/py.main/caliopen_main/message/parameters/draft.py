@@ -98,10 +98,7 @@ class Draft(NewInboundMessage):
             user_identity.get_db()
             user_identity.unmarshall_db()
         except NotFound:
-            raise err.PatchUnprocessable(message="Local identity not found")
-
-        if user_identity.type != 'local':
-            raise err.ForbiddenAction(message="Selected identity is not local")
+            raise err.PatchUnprocessable(message="identity not found")
 
         # add 'from' participant with local identity's identifier
         user = User.get(user_id)

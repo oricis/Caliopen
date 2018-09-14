@@ -17,7 +17,30 @@ import (
 func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err error) {
 	const nats_order = "deliver"
 	natsMessage := fmt.Sprintf(Nats_message_tmpl, nats_order, msg_id, user_id)
-	rep, err := rest.nats_conn.Request(rest.natsTopics[Nats_outSMTP_topicKey], []byte(natsMessage), 30*time.Second)
+
+	draft, draftErr := rest.store.RetrieveMessage(user_id, msg_id)
+	if draftErr != nil {
+		log.WithError(draftErr).Info("[SendDraft] failed to retrieve draft from store")
+		return nil, errors.New("draft not found")
+	}
+	// resolve sender's address protocol for selecting natsTopics accordingly
+	protocol, resolvErr := rest.ResolveSenderProtocol(draft)
+	if resolvErr != nil {
+		log.WithError(resolvErr).Info("[SendDraft] failed to resolve sender's protocol")
+		return nil, errors.New("unknown protocol for sender")
+	}
+
+	var natsTopic string
+	switch protocol {
+	case ImapProtocol:
+		natsTopic = Nats_outIMAP_topicKey
+	case SmtpProtocol:
+		natsTopic = Nats_outSMTP_topicKey
+	default:
+		return nil, fmt.Errorf("no handler for <%s> protocol", protocol)
+	}
+
+	rep, err := rest.nats_conn.Request(rest.natsTopics[natsTopic], []byte(natsMessage), 30*time.Second)
 	if err != nil {
 		log.WithError(err).Warn("[RESTfacility]: SendDraft error")
 		if rest.nats_conn.LastError() != nil {
@@ -43,4 +66,13 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err e
 	messages.SanitizeMessageBodies(msg)
 	(*msg).Body_excerpt = messages.ExcerptMessage(*msg, 200, true, true)
 	return msg, err
+}
+
+// ResolveSenderProtocol returns outbound protocol to use for sending draft by resolving draft's sender identity
+func (rest *RESTfacility) ResolveSenderProtocol(draft *Message) (string, error) {
+	firstIdentity, err := rest.RetrieveUserIdentity(draft.User_id.String(), draft.UserIdentities[0].String(), false) // handle one identity only for now
+	if err != nil {
+		return "", err
+	}
+	return firstIdentity.Protocol, nil
 }

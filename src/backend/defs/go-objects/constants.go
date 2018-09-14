@@ -9,6 +9,8 @@ package objects
 const (
 	// protocols' strings
 	EmailProtocol     = "email"
+	ImapProtocol      = "imap"
+	SmtpProtocol      = "smtp"
 	IrcProtocol       = "irc"
 	SmsProtocol       = "sms"
 	XmppProtocol      = "xmpp"
@@ -26,11 +28,12 @@ const (
 	ContactIndexType = "indexed_contact"
 
 	//nats related constants
-	Nats_message_tmpl         = "{\"order\":\"%s\", \"message_id\":\"%s\", \"user_id\":\"%s\"}"
-	Nats_contact_tmpl         = "{\"order\":\"%s\", \"contact_id\":\"%s\", \"user_id\":\"%s\"}"
-	Nats_outSMTP_topicKey     = "outSMTP_topic"
-	Nats_inSMTP_topicKey      = "inSMTP_topic"
-	Nats_Contacts_topicKey    = "contacts_topic"
+	Nats_message_tmpl      = "{\"order\":\"%s\", \"message_id\":\"%s\", \"user_id\":\"%s\"}"
+	Nats_contact_tmpl      = "{\"order\":\"%s\", \"contact_id\":\"%s\", \"user_id\":\"%s\"}"
+	Nats_outSMTP_topicKey  = "outSMTP_topic"
+	Nats_inSMTP_topicKey   = "inSMTP_topic"
+	Nats_Contacts_topicKey = "contacts_topic"
+	Nats_outIMAP_topicKey  = "outIMAP_topic"
 	Nats_DiscoverKey_topicKey = "keys_topic"
 
 	//participant types
