@@ -9,8 +9,10 @@ import (
 	"crypto/ecdsa"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	log "github.com/Sirupsen/logrus"
+	"github.com/gocql/gocql"
 	"github.com/keybase/go-crypto/openpgp"
 	"github.com/keybase/go-crypto/openpgp/armor"
 	"github.com/keybase/go-crypto/openpgp/packet"
@@ -35,7 +37,7 @@ type PublicKey struct {
 	Label        string    `cql:"label"            json:"label,omitempty"                                           patch:"user"`
 	ResourceId   UUID      `cql:"resource_id"      json:"resource_id"                                               patch:"system"`
 	ResourceType string    `cql:"resource_type"    json:"resource_type,omitempty"                                   patch:"system"`
-	Size         int       `cql:"size"             json:"size"`
+	Size         int       `cql:"size"             json:"size"                                                      patch:"system"`
 	Use          string    `cql:"\"use\""          json:"use,omitempty"                                             patch:"user"`
 	UserId       UUID      `cql:"user_id"          json:"user_id,omitempty"                                         patch:"system"`
 	X            big.Int   `cql:"x"                json:"x,omitempty"                                               patch:"user"`
@@ -62,81 +64,62 @@ type PublishKeyMessage struct {
 // unmarshal a map[string]interface{} that must owns all PublicKey's fields
 // typical usage is for unmarshaling response from Cassandra backend
 func (pk *PublicKey) UnmarshalCQLMap(input map[string]interface{}) {
-	/*
-		if contactId, ok := input["contact_id"].(gocql.UUID); ok {
-			pk.ContactId.UnmarshalBinary(contactId.Bytes())
-		}
-		if dateInsert, ok := input["date_insert"].(time.Time); ok {
-			pk.DateInsert = dateInsert
-		}
-		if dateUpdate, ok := input["date_update"].(time.Time); ok {
-			pk.DateUpdate = dateUpdate
-		}
-		if expireDate, ok := input["expire_date"].(time.Time); ok {
-			pk.ExpireDate = expireDate
-		}
-		if fingerprint, ok := input["fingerprint"].(string); ok {
-			pk.Fingerprint = fingerprint
-		}
-		if key, ok := input["key"].(string); ok {
-			pk.Key = key
-		}
-		if name, ok := input["name"].(string); ok {
-			pk.Name = name
-		}
-		if i_pf, ok := input["privacy_features"].(map[string]string); ok && i_pf != nil {
-			pf := PrivacyFeatures{}
-			for k, v := range i_pf {
-				pf[k] = v
-			}
-			pk.PrivacyFeatures = &pf
-		} else {
-			pk.PrivacyFeatures = nil
-		}
-		if size, ok := input["size"].(int); ok {
-			pk.Size = size
-		}
-		if userid, ok := input["user_id"].(gocql.UUID); ok {
-			pk.UserId.UnmarshalBinary(userid.Bytes())
-		}
-	*/
-}
-
-func (pk *PublicKey) UnmarshalMap(input map[string]interface{}) error {
-	if contact_id, ok := input["resource_id"].(string); ok {
-		if id, err := uuid.FromString(contact_id); err == nil {
-			pk.ResourceId.UnmarshalBinary(id.Bytes())
-		}
+	if alg, ok := input["alg"].(string); ok {
+		pk.Algorithm = alg
 	}
-	if date, ok := input["date_insert"]; ok {
-		pk.DateInsert, _ = time.Parse(time.RFC3339Nano, date.(string))
+	if crv, ok := input["crv"].(string); ok {
+		pk.Curve = crv
 	}
-	if date, ok := input["date_update"]; ok {
-		pk.DateUpdate, _ = time.Parse(time.RFC3339Nano, date.(string))
+	if dateInsert, ok := input["date_insert"].(time.Time); ok {
+		pk.DateInsert = dateInsert
 	}
-	if date, ok := input["expire_date"]; ok {
-		pk.ExpireDate, _ = time.Parse(time.RFC3339Nano, date.(string))
+	if dateUpdate, ok := input["date_update"].(time.Time); ok {
+		pk.DateUpdate = dateUpdate
 	}
-	/*
-		if fingerprint, ok := input["fingerprint"].(string); ok {
-			pk.Fingerprint = []byte(fingerprint)
-		}
-		if key, ok := input["key"].(string); ok {
-			pk.Key = []byte(key)
-		}
-	*/
+	if expireDate, ok := input["expire_date"].(time.Time); ok {
+		pk.ExpireDate = expireDate
+	}
+	if fingerprint, ok := input["fingerprint"].(string); ok {
+		pk.Fingerprint = fingerprint
+	}
+	if key, ok := input["key"].(string); ok {
+		pk.Key = key
+	}
+	if keyid, ok := input["key_id"].(gocql.UUID); ok {
+		pk.KeyId.UnmarshalBinary(keyid.Bytes())
+	}
+	if kty, ok := input["kty"].(string); ok {
+		pk.KeyType = kty
+	}
 	if label, ok := input["label"].(string); ok {
 		pk.Label = label
 	}
-	if size, ok := input["size"].(float64); ok {
-		pk.Size = int(size)
+	if resourceId, ok := input["resource_id"].(gocql.UUID); ok {
+		pk.ResourceId.UnmarshalBinary(resourceId.Bytes())
 	}
-	if u_id, ok := input["user_id"].(string); ok {
-		if id, err := uuid.FromString(u_id); err == nil {
-			pk.UserId.UnmarshalBinary(id.Bytes())
-		}
+	if resourceType, ok := input["resource_type"].(string); ok {
+		pk.ResourceType = resourceType
 	}
-	return nil //TODO : errors handling
+	if size, ok := input["size"].(*big.Int); ok {
+		pk.Size = int(size.Int64())
+	}
+	if use, ok := input["use"].(string); ok {
+		pk.Use = use
+	}
+	if userid, ok := input["user_id"].(gocql.UUID); ok {
+		pk.UserId.UnmarshalBinary(userid.Bytes())
+	}
+	if x, ok := input["x"].(*big.Int); ok {
+		pk.X = *x
+	}
+	if y, ok := input["y"].(*big.Int); ok {
+		pk.Y = *y
+	}
+}
+
+func (pk *PublicKey) UnmarshalMap(input map[string]interface{}) error {
+	//TODO
+	return errors.New("not implemented")
 }
 
 func (pk *PublicKey) UnmarshalJSON(b []byte) error {
