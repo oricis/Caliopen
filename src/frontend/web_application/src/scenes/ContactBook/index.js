@@ -3,6 +3,8 @@ import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { withI18n } from 'lingui-react';
 import { deleteContacts } from '../../modules/contact';
+import { updateContactTags } from '../../modules/tags';
+
 import { requestContacts, loadMoreContacts, hasMore } from '../../store/modules/contact';
 import withScrollManager from '../../modules/scroll/hoc/scrollManager';
 import Presenter from './presenter';
@@ -21,6 +23,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   requestContacts,
   loadMoreContacts,
   deleteContacts,
+  updateContactTags,
 }, dispatch);
 
 export default compose(

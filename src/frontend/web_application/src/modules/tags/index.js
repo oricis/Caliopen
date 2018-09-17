@@ -9,6 +9,7 @@ export { requestTags } from './actions/requestTags';
 export { updateTag } from './actions/updateTag';
 export * from './actions/updateTagCollection';
 export * from './actions/updateMessagesTags';
+export * from './actions/updateContactTags';
 export * from './services/getTagLabel';
 export * from './services/getTagNamesInCommon';
 export * from './services/searchTags';
