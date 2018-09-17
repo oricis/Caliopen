@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Trans, Plural } from 'lingui-react';
 import ContactList from './components/ContactList';
-import { PageTitle, Spinner, Button, MenuBar, Checkbox, SidebarLayout, NavList, NavItem, Confirm, Modal } from '../../components';
+import { PageTitle, Spinner, Button, ActionBar, Checkbox, SidebarLayout, NavList, NavItem, Confirm, Modal } from '../../components';
 import { withPush } from '../../modules/routing';
 import { withTags, TagsForm, getCleanedTagCollection, getTagNamesInCommon } from '../../modules/tags';
 import TagList from './components/TagList';
@@ -198,7 +198,7 @@ class ContactBook extends Component {
     );
   }
 
-  renderMenuBar() {
+  renderActionBar() {
     const {
       isFetching, contacts,
     } = this.props;
@@ -207,93 +207,93 @@ class ContactBook extends Component {
     const totalCount = contacts.length;
 
     return (
-      <MenuBar className="s-contact-book-menu">
-        {isFetching && (
-          <div className="s-contact-book-menu__loading">
-            <Spinner isLoading={isFetching} display="inline" />
-          </div>
-        )}
-        <div className="s-contact-book-menu__selector">
-          {count > 0 && (
-            <Fragment>
-              <span className="s-contact-book-menu__label">
-                <Plural
-                  id="contact-book.contacts.selected"
-                  value={count}
-                  one={<Trans>#/{totalCount} selected contact:</Trans>}
-                  other={<Trans>#/{totalCount} selected contacts:</Trans>}
+      <ActionBar
+        className="s-contact-book-menu"
+        isFetching={isFetching}
+        actionsNode={(
+          <Fragment>
+            {count > 0 && (
+              <Fragment>
+                <span className="s-contact-book-menu__label">
+                  <Plural
+                    id="contact-book.contacts.selected"
+                    value={count}
+                    one={<Trans>#/{totalCount} selected contact:</Trans>}
+                    other={<Trans>#/{totalCount} selected contacts:</Trans>}
+                  />
+                </span>
+                <Confirm
+                  onConfirm={this.handleDeleteContacts}
+                  title={(
+                    <Plural
+                      id="contact-book.confirm-delete.title"
+                      value={count}
+                      one={<Trans>Delete contact</Trans>}
+                      other={<Trans>Delete contacts</Trans>}
+                    />
+                  )}
+                  content={(
+                    <Plural
+                      id="contact-book.confirm-delete.content"
+                      value={count}
+                      one={(
+                        <Trans>
+                          The deletion is permanent, are you sure you want to delete this contact ?
+                        </Trans>
+                      )}
+                      other={(
+                        <Trans>
+                          The deletion is permanent, are you sure you want to delete these
+                          contacts ?
+                        </Trans>
+                      )}
+                    />
+                  )}
+                  render={confirm => (
+                    <Button
+                      className="s-contact-book-menu__action-btn"
+                      display="inline"
+                      noDecoration
+                      icon={this.state.isDeleting ? (<Spinner isLoading display="inline" />) : 'trash'}
+                      onClick={confirm}
+                      disabled={this.state.isDeleting}
+                    >
+                      <Trans id="contact-book.action.delete">Delete</Trans>
+                    </Button>
+                  )}
                 />
-              </span>
-              <Confirm
-                onConfirm={this.handleDeleteContacts}
-                title={(
-                  <Plural
-                    id="contact-book.confirm-delete.title"
-                    value={count}
-                    one={<Trans>Delete contact</Trans>}
-                    other={<Trans>Delete contacts</Trans>}
-                  />
-                )}
-                content={(
-                  <Plural
-                    id="contact-book.confirm-delete.content"
-                    value={count}
-                    one={(
-                      <Trans>
-                        The deletion is permanent, are you sure you want to delete this contact ?
-                      </Trans>
-                    )}
-                    other={(
-                      <Trans>
-                        The deletion is permanent, are you sure you want to delete these contacts ?
-                      </Trans>
-                    )}
-                  />
-                )}
-                render={confirm => (
-                  <Button
-                    className="s-contact-book-menu__action-btn"
-                    display="inline"
-                    noDecoration
-                    icon={this.state.isDeleting ? (<Spinner isLoading display="inline" />) : 'trash'}
-                    onClick={confirm}
-                    disabled={this.state.isDeleting}
-                  >
-                    <Trans id="contact-book.action.delete">Delete</Trans>
-                  </Button>
-                )}
-              />
-              <Button
-                className="s-contact-book-menu__action-btn"
-                display="inline"
-                noDecoration
-                icon="tag"
-                onClick={this.handleOpenTags}
-              >
-                <Trans id="contact-book.action.manage-tags">Manage tags</Trans>
-              </Button>
-              {this.state.isTagModalOpen && this.renderTagsModal()}
-              {/* <Button
-                className="s-contact-book-menu__action-btn"
-                display="inline"
-                noDecoration
-                icon="share"
+                <Button
+                  className="s-contact-book-menu__action-btn"
+                  display="inline"
+                  noDecoration
+                  icon="tag"
+                  onClick={this.handleOpenTags}
                 >
-                <Trans id="contact-book.action.start-discussion">Start discussion</Trans>
-              </Button> */}
-            </Fragment>
-          )}
-          <div className="s-contact-book-menu__select-all">
-            <Checkbox
-              checked={count > 0 && count === totalCount}
-              indeterminate={count > 0 && count < totalCount}
-              onChange={this.handleSelectAllEntitiesChange}
-              label={<Trans id="contact-book.action.select-all">Select all contacts</Trans>}
-              showLabelforSr={count > 0}
-            />
-          </div>
-        </div>
-      </MenuBar>
+                  <Trans id="contact-book.action.manage-tags">Manage tags</Trans>
+                </Button>
+                {this.state.isTagModalOpen && this.renderTagsModal()}
+                {/* <Button
+                  className="s-contact-book-menu__action-btn"
+                  display="inline"
+                  noDecoration
+                  icon="share"
+                  >
+                  <Trans id="contact-book.action.start-discussion">Start discussion</Trans>
+                </Button> */}
+              </Fragment>
+            )}
+            <div className="s-contact-book-menu__select-all">
+              <Checkbox
+                checked={count > 0 && count === totalCount}
+                indeterminate={count > 0 && count < totalCount}
+                onChange={this.handleSelectAllEntitiesChange}
+                label={<Trans id="contact-book.action.select-all">Select all contacts</Trans>}
+                showLabelforSr={count > 0}
+              />
+            </div>
+          </Fragment>
+        )}
+      />
     );
   }
 
@@ -325,7 +325,7 @@ class ContactBook extends Component {
     return (
       <div className="s-contact-book">
         <PageTitle title={i18n._('header.menu.contacts', { defaults: 'Contacts' })} />
-        {this.renderMenuBar()}
+        {this.renderActionBar()}
         <SidebarLayout
           sidebar={(
             <div className="s-contact-book__sidebar">
