@@ -26,7 +26,7 @@ const mapStateToProps = createSelector(
   [messageByIdSelector, discussionSelector,
     discussionIdSelector, UserSelector, messageCollectionStateSelector],
   (messagesById, discussionState, discussionId, userState, {
-    messageIds, hasMore, isFetching,
+    didInvalidate, messageIds, hasMore, isFetching,
   }) => {
     const messages = sortMessages(messageIds.map(messageId => messagesById[messageId]), false);
 
@@ -37,6 +37,7 @@ const mapStateToProps = createSelector(
       discussion: discussionState.discussionsById[discussionId],
       messages,
       isFetching,
+      didInvalidate,
       hasMore,
     };
   }
@@ -48,12 +49,15 @@ const deleteDiscussion = ({ discussionId, messages }) => async (dispatch) => {
   return dispatch(invalidate({ type: 'discussion', key: discussionId }));
 };
 
+const onMessageSent = ({ message }) => (dispatch) => {
+  dispatch(invalidate({ type: 'discussion', key: message.discussion_id }));
+};
 const updateDiscussionTags = ({ i18n, messages, tags }) => async dispatch =>
   Promise.all(messages.map(message =>
     dispatch(updateTagCollection(i18n, { type: 'message', entity: message, tags }))));
 
-const onMessageReply = ({ message }) => (dispatch) => {
-  dispatch(reply({ internalId: message.discussion_id, message }));
+const onMessageReply = ({ message, discussionId }) => async (dispatch) => {
+  dispatch(reply({ internalId: discussionId, message }));
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
@@ -65,6 +69,7 @@ const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
   requestDiscussions,
   updateDiscussionTags,
   onMessageReply,
+  onMessageSent,
   getUser,
 }, dispatch);
 

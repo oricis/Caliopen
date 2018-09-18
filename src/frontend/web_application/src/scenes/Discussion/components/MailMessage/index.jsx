@@ -29,6 +29,7 @@ class MailMessage extends Component {
     onTagsChange: PropTypes.func.isRequired,
     forwardRef: PropTypes.func,
     user: PropTypes.shape({}).isRequired,
+    push: PropTypes.func.isRequired,
   };
 
   static defaultProps = {

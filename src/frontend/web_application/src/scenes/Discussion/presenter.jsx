@@ -27,13 +27,14 @@ class Discussion extends Component {
     requestDiscussions: PropTypes.func.isRequired,
     user: PropTypes.shape({}),
     isUserFetching: PropTypes.bool.isRequired,
-    scrollToTarget: PropTypes.function,
+    scrollToTarget: PropTypes.func,
     isFetching: PropTypes.bool.isRequired,
     didInvalidate: PropTypes.bool.isRequired,
     hasMore: PropTypes.bool.isRequired,
     hash: PropTypes.string,
     messages: PropTypes.arrayOf(PropTypes.shape({})),
     onMessageReply: PropTypes.func.isRequired,
+    onMessageSent: PropTypes.func.isRequired,
     setMessageRead: PropTypes.func.isRequired,
     deleteMessage: PropTypes.func.isRequired,
     deleteDiscussion: PropTypes.func.isRequired,
@@ -43,7 +44,7 @@ class Discussion extends Component {
     push: PropTypes.func.isRequired,
     getUser: PropTypes.func.isRequired,
     i18n: PropTypes.shape({}).isRequired,
-    tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+    tags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   };
 
   static defaultProps = {
@@ -62,8 +63,7 @@ class Discussion extends Component {
 
   componentDidMount() {
     const {
-      discussionId, requestMessages, getUser, user, isUserFetching,
-      discussion, requestDiscussions,
+      getUser, user, isUserFetching, discussion, requestDiscussions,
     } = this.props;
 
     if (!user && !isUserFetching) {
@@ -73,7 +73,6 @@ class Discussion extends Component {
     if (!discussion) {
       requestDiscussions();
     }
-    requestMessages({ discussion_id: discussionId });
 
     this.throttledLoadMore = throttle(
       () => this.props.loadMore(),
@@ -100,9 +99,9 @@ class Discussion extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { didInvalidate, isFetching } = nextProps;
+    const { didInvalidate, isFetching, messages } = nextProps;
 
-    if (didInvalidate && !isFetching) {
+    if ((messages.length === 0 || didInvalidate) && !isFetching) {
       this.props.requestMessages({ discussion_id: nextProps.discussionId });
     }
   }
@@ -138,7 +137,7 @@ class Discussion extends Component {
           closeTab({ tab: currentTab });
         }
       });
-  }
+  };
 
   handleSetMessageRead = ({ message }) => {
     this.props.setMessageRead({ message, isRead: true });
@@ -146,18 +145,23 @@ class Discussion extends Component {
 
   handleSetMessageUnread = ({ message }) => {
     this.props.setMessageRead({ message, isRead: false });
-  }
+  };
 
-  handleMessageReply = ({ message }) => {
-    this.props.onMessageReply({ message });
-    this.props.push('reply');
+  handleMessageReply = () => {
+    const { messages, onMessageReply, push } = this.props;
+    const message = messages[messages.length - 1];
+
+    onMessageReply({ message });
+    push({ hash: 'reply' });
   };
 
   handleTagsChange = async ({ tags }) => {
     const { i18n, messages, updateDiscussionTags } = this.props;
 
     return updateDiscussionTags({ i18n, messages, tags });
-  }
+  };
+
+  handleMessageSent = message => this.props.onMessageSent({ message });
 
   loadMore = () => {
     const { hasMore, isFetching } = this.props;
@@ -165,7 +169,7 @@ class Discussion extends Component {
     if (!isFetching && hasMore) {
       this.throttledLoadMore();
     }
-  }
+  };
 
   handleDeleteAll = async () => {
     const {
@@ -226,7 +230,7 @@ class Discussion extends Component {
             {discussion ? this.renderTags(discussion) : null}
             <div className="s-discussions__actions">
               <strong>Discussion complète&thinsp;:</strong>
-              <Button className="m-message-list__action" icon="reply">Reply</Button>
+              <Button className="m-message-list__action" icon="reply" onClick={this.handleMessageReply}>Reply</Button>
               <Button className="m-message-list__action" icon="tags" onClick={this.handleOpenTags}>Tag</Button>
               <Button className="m-message-list__action" icon="trash" onClick={this.handleDeleteAll}>Delete</Button>
             </div>
@@ -253,6 +257,7 @@ class Discussion extends Component {
             discussionId={discussionId}
             internalId={discussionId}
             onFocus={this.handleFocusDraft}
+            onSent={this.handleMessageSent}
             draftFormRef={(node) => { this.replyFormRef = node; }}
           />
         </div>
