@@ -15,6 +15,7 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
 	"github.com/gin-gonic/gin"
 	swgErr "github.com/go-openapi/errors"
+	"github.com/satori/go.uuid"
 	"net/http"
 	"strconv"
 )
@@ -180,5 +181,64 @@ func GetPubKeys(ctx *gin.Context) {
 		respBuf.WriteString("]}")
 
 		ctx.Data(http.StatusOK, "application/json; charset=utf-8", respBuf.Bytes())
+	}
+}
+
+// DeletePubKey handles DELETE …/contacts/:contactID/publickeys/:pubkeyID
+func DeletePubKey(ctx *gin.Context) {
+	// check payload
+	userId := ctx.MustGet("user_id").(string)
+	userId, err1 := operations.NormalizeUUIDstring(userId)
+	contactId := ctx.Param("contactID")
+	contactId, err2 := operations.NormalizeUUIDstring(contactId)
+	pubkeyId := ctx.Param("pubkeyID")
+	pubkeyId, err3 := operations.NormalizeUUIDstring(pubkeyId)
+	if err1 != nil || err2 != nil || err3 != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, "invalid uuid")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
+	// check if contact exist to return relevant error
+	if !caliopen.Facilities.RESTfacility.ContactExists(userId, contactId) {
+		e := swgErr.New(http.StatusNotFound, "contact not found")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
+	// call API
+	pubkey := &PublicKey{
+		KeyId:      UUID(uuid.FromStringOrNil(pubkeyId)),
+		ResourceId: UUID(uuid.FromStringOrNil(contactId)),
+		UserId:     UUID(uuid.FromStringOrNil(userId)),
+	}
+	err := caliopen.Facilities.RESTfacility.DeletePubKey(pubkey)
+	if err != nil {
+		returnedErr := new(swgErr.CompositeError)
+		switch err.Code() {
+		case UnprocessableCaliopenErr:
+			returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusUnprocessableEntity, "api returned unprocessable error"), err, err.Cause())
+		case DbCaliopenErr:
+			if prevErr, ok := err.Cause().(CaliopenError); ok {
+				switch prevErr.Code() {
+				case ForbiddenCaliopenErr:
+					returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusForbidden, "api returned forbidden error"), err, err.Cause())
+				case NotFoundCaliopenErr:
+					returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusNotFound, "api failed to retrieve in store"), err, err.Cause())
+				default:
+					returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusFailedDependency, "api failed to call store"), err, err.Cause())
+				}
+			} else {
+				returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusFailedDependency, "api failed to call store"), err, err.Cause())
+			}
+		default:
+			returnedErr = swgErr.CompositeValidationError(err, err.Cause())
+		}
+		http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
+		ctx.Abort()
+	} else {
+		ctx.Status(http.StatusNoContent)
 	}
 }

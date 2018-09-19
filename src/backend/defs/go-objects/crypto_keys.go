@@ -213,9 +213,9 @@ func (pk *PublicKey) UnmarshalPGPEntity(label string, entity *openpgp.Entity, co
 
 	hashSize := identity.SelfSignature.Hash.Size() * 8 // size in in bytes, convert it to bits
 	pk.ExpireDate = GetExpiryDate(identity.SelfSignature)
+	pk.KeyType = PGP_KEY_TYPE
 	switch entity.PrimaryKey.PubKeyAlgo {
 	case packet.PubKeyAlgoRSA, packet.PubKeyAlgoRSAEncryptOnly, packet.PubKeyAlgoRSASignOnly:
-		pk.KeyType = RSA_KEY_TYPE
 		switch hashSize {
 		case 256:
 			pk.Algorithm = RSA256
@@ -227,7 +227,6 @@ func (pk *PublicKey) UnmarshalPGPEntity(label string, entity *openpgp.Entity, co
 			log.Warn("unsupported hash size")
 		}
 	case packet.PubKeyAlgoECDSA:
-		pk.KeyType = EC_KEY_TYPE
 		key := entity.PrimaryKey.PublicKey.(*ecdsa.PublicKey)
 		pk.Curve = key.Params().Name
 		pk.X = *key.X
@@ -241,7 +240,6 @@ func (pk *PublicKey) UnmarshalPGPEntity(label string, entity *openpgp.Entity, co
 			log.Warn("unsupported hash size")
 		}
 	case packet.PubKeyAlgoDSA:
-		pk.KeyType = DSA_KEY_TYPE
 		switch hashSize {
 		case 256:
 			pk.Algorithm = DSA256
@@ -253,7 +251,6 @@ func (pk *PublicKey) UnmarshalPGPEntity(label string, entity *openpgp.Entity, co
 			log.Warn("unsupported hash size")
 		}
 	case packet.PubKeyAlgoElGamal:
-		pk.KeyType = ELGAMAL_KEY_TYPE
 		switch hashSize {
 		case 256:
 			pk.Algorithm = ELGAMAL256
@@ -265,7 +262,6 @@ func (pk *PublicKey) UnmarshalPGPEntity(label string, entity *openpgp.Entity, co
 			log.Warn("unsupported hash size")
 		}
 	case packet.PubKeyAlgoECDH:
-		pk.KeyType = EC_KEY_TYPE
 		switch hashSize {
 		case 256:
 			pk.Algorithm = ECDH256

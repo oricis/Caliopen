@@ -248,3 +248,7 @@ func (rest *RESTfacility) DeleteContact(userID, contactID string) error {
 	}
 	return nil
 }
+
+func (rest *RESTfacility) ContactExists(userID, contactID string) bool {
+	return rest.store.ContactExists(userID, contactID)
+}

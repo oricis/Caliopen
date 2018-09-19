@@ -19,9 +19,11 @@ properties:
     type: string
   kty:
     type: string
+  key_id:
+    type: string
   type:
     type: string
-  ressource_id:
+  resource_id:
     type: string
   resource_type:
     type: string
@@ -42,7 +44,7 @@ required:
 - key
 - label
 - key_id
-- ressource_id
+- resource_id
 - user_id
 additionalProperties: false
 

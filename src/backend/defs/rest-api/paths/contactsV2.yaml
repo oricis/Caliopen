@@ -410,7 +410,7 @@ contacts_{contact_id}_publickeys:
               type: array
               items:
                 "$ref": "../objects/PublicKey.yaml"
-contacts_{contact_id}_publickeys_{publickey_id}:
+contacts_{contact_id}_publickeys_{pubkey_id}:
   get:
     description: Retrieve publickey
     tags:
@@ -423,7 +423,7 @@ contacts_{contact_id}_publickeys_{publickey_id}:
       in: path
       required: true
       type: string
-    - name: publickey_id
+    - name: pubkey_id
       in: path
       required: true
       type: string
@@ -448,7 +448,11 @@ contacts_{contact_id}_publickeys_{publickey_id}:
     consumes:
     - application/json
     parameters:
-    - name: publickey_id
+    - name: contact_id
+      in: path
+      required: true
+      type: string
+    - name: pubkey_id
       in: path
       type: string
       required: true
@@ -513,7 +517,7 @@ contacts_{contact_id}_publickeys_{publickey_id}:
       in: path
       required: true
       type: string
-    - name: publickey_id
+    - name: pubkey_id
       in: path
       required: true
       type: string

@@ -31,6 +31,7 @@ type (
 		UpdateContact(contact, oldContact *Contact, update map[string]interface{}) error
 		PatchContact(patch []byte, userID, contactID string) error
 		DeleteContact(userID, contactID string) error
+		ContactExists(userID, contactID string) bool
 		//identities
 		RetrieveContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error)
 		RetrieveLocalIdentities(user_id string) (identities []UserIdentity, err error)
@@ -78,6 +79,7 @@ type (
 		//keys
 		CreatePGPPubKey(label string, pubkey []byte, contact *Contact) (*PublicKey, CaliopenError)
 		RetrieveContactPubKeys(userId, contactId string) (pubkeys PublicKeys, err CaliopenError)
+		DeletePubKey(pubkey *PublicKey) CaliopenError
 	}
 	RESTfacility struct {
 		store      backends.APIStorage

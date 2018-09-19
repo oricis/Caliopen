@@ -64,3 +64,11 @@ func (cb *CassandraBackend) RetrieveContactPubKeys(userId, contactId string) (ke
 	}
 	return
 }
+
+func (cb *CassandraBackend) DeletePubKey(pubkey *PublicKey) CaliopenError {
+	e := cb.Session.Query(`DELETE FROM public_key WHERE user_id = ? AND resource_id = ? AND key_id = ?`, pubkey.UserId, pubkey.ResourceId, pubkey.KeyId).Exec()
+	if e != nil {
+		return NewCaliopenErrf(DbCaliopenErr, "[CassandraBackend]DeletePubKey returned err from cassandra : %s", e.Error())
+	}
+	return nil
+}

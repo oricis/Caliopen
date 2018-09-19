@@ -78,6 +78,7 @@ const (
 	EC_KEY_TYPE    = "EC"
 	OCTET_KEY_TYPE = "oct" // (yes, lower case !)
 	//supplementary types to handle GPG keys
+	PGP_KEY_TYPE     = "PGP"
 	DSA_KEY_TYPE     = "DSA"
 	ELGAMAL_KEY_TYPE = "ELGAMAL"
 	// "use" param (from RFC ??)
