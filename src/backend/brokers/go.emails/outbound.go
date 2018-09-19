@@ -89,6 +89,30 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 			EmailMessage: em,
 			Response:     make(chan *DeliveryAck),
 		}
+		//checks if identity is local or remote
+		//fetch credentials accordingly
+		firstIdentity, err := b.Store.RetrieveUserIdentity(m.User_id.String(), m.UserIdentities[0].String(), true) // handle one identity only for now
+		if err != nil {
+			b.natsReplyError(msg, fmt.Errorf("broker failed to retrieve sender's identity with error : %s", err))
+			return resp, err
+		}
+		switch firstIdentity.Protocol {
+		case SmtpProtocol:
+			out.RemoteCredentials = nil
+		case ImapProtocol:
+			if firstIdentity.Credentials != nil {
+				out.RemoteCredentials = &MTAparams{
+					firstIdentity.Infos["outserver"],
+					(*firstIdentity.Credentials)["outusername"],
+					(*firstIdentity.Credentials)["outpassword"],
+				}
+			} else {
+				out.RemoteCredentials = nil
+			}
+		default:
+			b.natsReplyError(msg, fmt.Errorf("broker can't handle sender's protocol %s", firstIdentity.Protocol))
+			return resp, err
+		}
 
 		b.Connectors.Egress <- &out
 		// non-blocking wait for delivery ack
@@ -97,7 +121,7 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 			case resp, ok := <-out.Response:
 				if resp.Err || !ok || resp == nil {
 					log.WithError(err).Warn("outbound: delivery error from MTA")
-					b.natsReplyError(msg, errors.New("outbound: delivery error from MTA"))
+					b.natsReplyError(msg, errors.New("outbound: delivery error from MTA : " + resp.Response ))
 					return
 				} else {
 					err = b.SaveIndexSentEmail(resp)

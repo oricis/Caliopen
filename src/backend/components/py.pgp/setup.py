@@ -14,6 +14,10 @@ with open(os.path.join(*([here] + name.split('.') + ['__init__.py']))) as v_file
 
 requires = ['dnsknife', 'PGpy']
 
+if (os.path.isfile('./requirements.deps')):
+    with open('./requirements.deps') as f_deps:
+        requires.extend(f_deps.read().split('\n'))
+
 setup(name=name,
       namespace_packages=[name],
       version=version,

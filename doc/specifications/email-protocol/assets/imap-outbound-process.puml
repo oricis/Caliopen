@@ -1,0 +1,23 @@
+@startuml
+hide footbox
+title IMAP outbound : sending email through remote user identity account
+box "main API"
+participant "go.main"
+endbox
+box "Imap Worker"
+participant "go.imap"
+endbox
+box "lmtpd"
+participant "go.smtp"
+participant "go.emails"
+endbox
+box "storage"
+database "cassandra/vault" as store
+endbox
+boundary "remote IMAP" as imap
+boundary "remote MTA" as mta
+[-> go.main : POST `send draft`
+activate go.main
+autonumber
+
+@enduml

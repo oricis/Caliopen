@@ -7,7 +7,7 @@
 package objects
 
 // IMAPfetchOrder is model for message sent on topic 'IMAPfetcher' in NATS's queue 'IMAPworkers'
-type IMAPfetchOrder struct {
+type IMAPorder struct {
 	Order    string
 	UserId   string
 	RemoteId string

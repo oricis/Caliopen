@@ -165,6 +165,7 @@ func getStoreFacility() (Store *store.CassandraBackend, err error) {
 			Keyspace:     apiConf.BackendConfig.Settings.Keyspace,
 			Consistency:  gocql.Consistency(apiConf.BackendConfig.Settings.Consistency),
 			SizeLimit:    apiConf.BackendConfig.Settings.SizeLimit,
+			UseVault:     apiConf.BackendConfig.Settings.UseVault,
 			WithObjStore: true,
 			UseVault:     apiConf.BackendConfig.Settings.UseVault,
 			HVaultConfig: vault.HVaultConfig{
@@ -179,6 +180,13 @@ func getStoreFacility() (Store *store.CassandraBackend, err error) {
 		c.RawMsgBucket = apiConf.BackendConfig.Settings.ObjStoreSettings.Buckets["raw_messages"]
 		c.AttachmentBucket = apiConf.BackendConfig.Settings.ObjStoreSettings.Buckets["temporary_attachments"]
 		c.Location = apiConf.BackendConfig.Settings.ObjStoreSettings.Location
+
+		//TODO: add a conf file for gocli.
+		if c.UseVault {
+			c.Url = apiConf.BackendConfig.Settings.VaultSettings.Url
+			c.Username = "gocli"
+			c.Password = "gocli_weak_password"
+		}
 
 		Store, err = store.InitializeCassandraBackend(c)
 		if err != nil {

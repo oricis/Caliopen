@@ -72,7 +72,7 @@ func fullFetch(cmd *cobra.Command, args []string) {
 	}
 	defer nc.Close()
 
-	msg, err := json.Marshal(IMAPfetchOrder{
+	msg, err := json.Marshal(IMAPorder{
 		Order:    "fullfetch",
 		UserId:   id.UserId.String(),
 		Server:   id.Server,
@@ -84,7 +84,7 @@ func fullFetch(cmd *cobra.Command, args []string) {
 		logrus.WithError(err).Fatal("unable to marshal natsOrder")
 	}
 
-	nc.Publish(cmdConfig.NatsTopic, msg)
+	nc.Publish(cmdConfig.NatsTopicFetcher, msg)
 	nc.Flush()
 
 	if err := nc.LastError(); err != nil {

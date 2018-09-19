@@ -51,7 +51,7 @@ func init() {
 func imapLogin(rId *UserIdentity) (tlsConn *tls.Conn, imapClient *client.Client, provider Provider, err error) {
 	log.Println("Connecting to server...")
 	// Dial TLS directly to be able to dump tls connection state
-	tlsConn, err = tls.Dial("tcp", rId.Infos["server"], nil)
+	tlsConn, err = tls.Dial("tcp", rId.Infos["inserver"], nil)
 	if err != nil {
 		log.WithError(err).Error("[fetchMail] imapLogin failed to dial tls")
 		return
@@ -74,7 +74,7 @@ func imapLogin(rId *UserIdentity) (tlsConn *tls.Conn, imapClient *client.Client,
 	}
 
 	// Login
-	if err = imapClient.Login((*rId.Credentials)["username"], (*rId.Credentials)["password"]); err != nil {
+	if err = imapClient.Login((*rId.Credentials)["inusername"], (*rId.Credentials)["inpassword"]); err != nil {
 		log.WithError(err).Error("[fetchMail] imapLogin failed to login IMAP")
 		return
 	}
@@ -171,7 +171,7 @@ func MarshalImap(message *imap.Message, xHeaders ImapFetcherHeaders) (mail *Emai
 
 // buildXheaders builds custom X-Fetched headers
 // with provider specific information
-func buildXheaders(tlsConn *tls.Conn, imapClient *client.Client, rId *UserIdentity, box *imapBox, message *imap.Message, provider Provider) (xHeaders ImapFetcherHeaders) {
+func buildXheaders(tlsConn *tls.Conn, rId *UserIdentity, box *imapBox, message *imap.Message, provider Provider) (xHeaders ImapFetcherHeaders) {
 	connState := tlsConn.ConnectionState()
 
 	var proto string
@@ -183,7 +183,7 @@ func buildXheaders(tlsConn *tls.Conn, imapClient *client.Client, rId *UserIdenti
         (using %s with cipher %s)
         by imap-fetcher (Caliopen) %s;
         %s`,
-		rId.Infos["server"],
+		rId.Infos["inserver"],
 		tlsConn.RemoteAddr().String(),
 		TlsVersions[connState.Version],
 		TlsSuites[connState.CipherSuite],
@@ -240,4 +240,47 @@ func fetch(imapClient *client.Client, provider Provider, from, to uint32, ch cha
 	}
 
 	return imapClient.UidFetch(seqset, items, ch)
+}
+
+// uploadSentMessage uploads a RFC 5322 mail to relevent `sent` mailbox and flags it has seen
+func uploadSentMessage(imapClient *client.Client, mail string, date time.Time) error {
+
+	//1. list mailboxes to find which one is for `sent` messages
+	var sentMbx string
+	boxes := make(chan *imap.MailboxInfo)
+	go func() {
+		err := imapClient.List("", "*", boxes)
+
+		if err != nil {
+			// ensure channel is closed
+			if _, ok := <-boxes; ok {
+				close(boxes)
+			}
+		}
+	}()
+	var found bool
+	for box := range boxes {
+		if !found {
+			for _, attr := range box.Attributes {
+				if strings.Contains(attr, "Sent") {
+					sentMbx = box.Name
+					found = true
+					break
+				}
+			}
+			if sentMbx == "" {
+				if strings.Contains(box.Name, "Sent") {
+					sentMbx = box.Name
+					found = true
+				}
+			}
+		}
+	}
+	//name still missing, use standard rfc6154#2
+	if sentMbx == "" {
+		sentMbx = `\Sent`
+	}
+
+	//2. append mail to mailbox
+	return imapClient.Append(sentMbx, []string{imap.SeenFlag}, date, bytes.NewBufferString(mail))
 }

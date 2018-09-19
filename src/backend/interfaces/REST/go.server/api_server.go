@@ -78,6 +78,7 @@ type (
 	NatsConfig struct {
 		Url            string `mapstructure:"url"`
 		OutSMTP_topic  string `mapstructure:"outSMTP_topic"`
+		OutIMAP_topic  string `mapstructure:"outIMAP_topic"`
 		Contacts_topic string `mapstructure:"contacts_topic"`
 		Keys_topic     string `mapstructure:"keys_topic"`
 	}
@@ -122,6 +123,7 @@ func (server *REST_API) initialize(config APIConfig) error {
 		NatsConfig: obj.NatsConfig{
 			Url:            config.NatsConfig.Url,
 			OutSMTP_topic:  config.NatsConfig.OutSMTP_topic,
+			OutIMAP_topic:  config.NatsConfig.OutIMAP_topic,
 			Contacts_topic: config.NatsConfig.Contacts_topic,
 			Keys_topic:     config.NatsConfig.Keys_topic,
 		},

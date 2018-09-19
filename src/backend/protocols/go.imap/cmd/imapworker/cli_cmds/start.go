@@ -85,10 +85,10 @@ func start(cmd *cobra.Command, args []string) {
 			if _, err := f.WriteString(fmt.Sprintf("%d", os.Getpid())); err == nil {
 				f.Sync()
 			} else {
-				log.WithError(err).Fatalf("Error while writing pidFile (%s)", pidFile)
+				log.WithError(err).Warnf("Error while writing pidFile (%s)", pidFile)
 			}
 		} else {
-			log.WithError(err).Fatalf("Error while creating pidFile (%s)", pidFile)
+			log.WithError(err).Warnf("Error while creating pidFile (%s)", pidFile)
 		}
 	}
 

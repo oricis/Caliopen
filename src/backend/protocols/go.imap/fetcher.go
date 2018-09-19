@@ -18,7 +18,7 @@ import (
 )
 
 type Fetcher struct {
-	Store backends.IdentityStorage
+	Store backends.LDAStore
 	Lda   *Lda
 }
 
@@ -40,7 +40,7 @@ const (
 // connects to remote IMAP server to fetch new mails,
 // adds X-Fetched-Imap headers before forwarding mails to lda,
 // updates last sync data for identity in db.
-func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
+func (f *Fetcher) SyncRemoteWithLocal(order IMAPorder) error {
 
 	log.Infof("[Fetcher] will fetch mails for remote %s", order.RemoteId)
 
@@ -51,7 +51,7 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 		return err
 	}
 	if order.Password != "" {
-		(*userId.Credentials)["password"] = order.Password
+		(*userId.Credentials)["inpassword"] = order.Password
 	}
 
 	// 1.2 check if a sync process is running
@@ -153,15 +153,15 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 }
 
 // FetchRemoteToLocal blindly fetches all mails from remote without retrieving/saving any state in UserIdentity
-func (f *Fetcher) FetchRemoteToLocal(order IMAPfetchOrder) error {
+func (f *Fetcher) FetchRemoteToLocal(order IMAPorder) error {
 	userId := UserIdentity{
 		UserId: UUID(uuid.FromStringOrNil(order.UserId)),
 		Infos: map[string]string{
-			"server": order.Server,
+			"inserver": order.Server,
 		},
 		Credentials: &Credentials{
-			"username": order.Login,
-			"password": order.Password,
+			"inusername": order.Login,
+			"inpassword": order.Password,
 		},
 	}
 
@@ -206,7 +206,7 @@ func (f *Fetcher) fetchMails(userId *UserIdentity, box *imapBox, ch chan *Email)
 	newMessages := make(chan *imap.Message, 10)
 	go fetchMailbox(box, imapClient, provider, newMessages) //TODO : errors handling
 	for msg := range newMessages {
-		mail, err := MarshalImap(msg, buildXheaders(tlsConn, imapClient, userId, box, msg, provider))
+		mail, err := MarshalImap(msg, buildXheaders(tlsConn, userId, box, msg, provider))
 		if err != nil {
 			//todo
 			continue
@@ -221,6 +221,8 @@ func (f *Fetcher) fetchMails(userId *UserIdentity, box *imapBox, ch chan *Email)
 // fetches new messages accordingly, and returns well-formed Emails for lda.
 func (f *Fetcher) syncMails(userId *UserIdentity, box *imapBox, ch chan *Email) (err error) {
 
+	// Don't forget to close chan before leaving
+	defer close(ch)
 	tlsConn, imapClient, provider, err := imapLogin(userId)
 	if err != nil {
 		return f.handleFetchFailure(userId, WrapCaliopenErr(err, WrongCredentialsErr, "imapLogin failure"))
@@ -230,10 +232,9 @@ func (f *Fetcher) syncMails(userId *UserIdentity, box *imapBox, ch chan *Email) 
 		delete((*userId).Infos, dateFirstErrorKey)
 		delete((*userId).Infos, dateLastErrorKey)
 	}
-	// Don't forget to logout and close chan
+	// Don't forget to logout
 	defer func() {
 		imapClient.Logout()
-		close(ch)
 		log.Println("Logged out")
 	}()
 
@@ -243,7 +244,7 @@ func (f *Fetcher) syncMails(userId *UserIdentity, box *imapBox, ch chan *Email) 
 
 	// read new messages coming from imap chan and write to lda chan
 	for msg := range newMessages {
-		xHeaders := buildXheaders(tlsConn, imapClient, userId, box, msg, provider)
+		xHeaders := buildXheaders(tlsConn, userId, box, msg, provider)
 		mail, err := MarshalImap(msg, xHeaders)
 		if err != nil {
 			//todo

@@ -90,6 +90,7 @@ func NewRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility
 	rest_facility.nats_conn = nats_conn
 	rest_facility.natsTopics = map[string]string{
 		Nats_outSMTP_topicKey:     config.NatsConfig.OutSMTP_topic,
+		Nats_outIMAP_topicKey:     config.NatsConfig.OutIMAP_topic,
 		Nats_Contacts_topicKey:    config.NatsConfig.Contacts_topic,
 		Nats_DiscoverKey_topicKey: config.NatsConfig.Keys_topic,
 	}

@@ -14,9 +14,11 @@ import (
 	"github.com/nats-io/go-nats"
 	"gopkg.in/robfig/cron.v2"
 	"strconv"
+	"sync"
 )
 
 type Poller struct {
+	cacheMux sync.Mutex
 	Cache    map[string]cacheEntry
 	Config   PollerConfig
 	MainCron *cron.Cron
@@ -26,8 +28,8 @@ type Poller struct {
 
 func NewPoller(config PollerConfig) (poller *Poller, err error) {
 	p := Poller{
-		Config:   config,
 		Cache:    make(map[string]cacheEntry),
+		Config:   config,
 		MainCron: cron.New(),
 	}
 
@@ -98,6 +100,7 @@ func (p *Poller) poll() {
 	for idkey := range added {
 		p.AddJobFor(idkey)
 	}
+	p.cacheMux.Lock()
 	for idkey := range removed {
 		err := p.RemoveJobFor(idkey)
 		// removes identity from our cache
@@ -105,6 +108,7 @@ func (p *Poller) poll() {
 			delete(p.Cache, idkey)
 		}
 	}
+	p.cacheMux.Unlock()
 	for idkey := range updated {
 		p.UpdateJobFor(idkey)
 	}

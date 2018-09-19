@@ -8,6 +8,16 @@ volumes:
     driver: local
 
 services:
+  # Proxy API
+  proxy-api:
+    image: nginx
+    links:
+      - api:api
+      - apiv1:apiv1
+    ports:
+      - "31415:31415"
+    volumes:
+      - ./conf/proxy-api.conf:/etc/nginx/nginx.conf
   # Caliopen APIv2
   api:
     build:
@@ -16,14 +26,13 @@ services:
     image: caliopen_api
     ## this very bad config for a public machine
     links:
-      - apiv1:apiv1
       - redis:redis
       - cassandra:cassandra
       - elasticsearch:elasticsearch
       - nats:nats
       - object_store:minio
     ports:
-      - "31415:31415"
+      - "6544:6544"
     volumes:
       - ../src/backend/configs:/etc/caliopen
   # Caliopen APIv1
@@ -103,9 +112,9 @@ services:
     ports:
       - "4000:4000"
     links:
-      - api:api
+      - proxy-api:proxy-api
     environment:
-      CALIOPEN_API_HOSTNAME: api
+      CALIOPEN_API_HOSTNAME: proxy-api
   # Broker
   broker:
     build:

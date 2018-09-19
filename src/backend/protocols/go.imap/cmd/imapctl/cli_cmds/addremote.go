@@ -94,10 +94,10 @@ func addRemote(cmd *cobra.Command, args []string) {
 	}
 	rId.Id.UnmarshalBinary(uuid.NewV4().Bytes())
 	rId.SetDefaults()
-	rId.Infos["server"] = id.Server
+	rId.Infos["inserver"] = id.Server
 	rId.Credentials = &Credentials{
-		"password": id.Password,
-		"username": id.Login,
+		"inpassword": id.Password,
+		"inusername": id.Login,
 	}
 
 	err = is.CreateUserIdentity(&rId)
