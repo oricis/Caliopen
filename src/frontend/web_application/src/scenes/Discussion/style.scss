@@ -28,10 +28,13 @@
     background-color: white;
     font-size: 0.88rem;
     text-align: right;
+  }
 
-    strong {
-      color: $co-color__primary--low;
+  &__action-label {
+    @include breakpoint(small) {
+      display: none;
     }
+    color: $co-color__primary--low;
   }
 
   &__tags {

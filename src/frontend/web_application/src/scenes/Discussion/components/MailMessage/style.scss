@@ -1,6 +1,7 @@
 @import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
 
-.instant+.s-mail-message {
+.instant +.s-mail-message {
   margin-top: 2rem;
 }
 
@@ -9,18 +10,23 @@
 
   &__wrapper {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    flex-wrap: wrap;
     justify-content: stretch;
     background-color: white;
   }
 
   &__info {
-    flex-grow: 0;
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
     flex-shrink: 0;
-    width: 13rem;
-    padding: 3rem 1.5rem;
+    flex-wrap: wrap;
+    order: 0;
+    width: 100%;
+    padding: 1rem;
 
-    .from, .to {
+    &-from, &-to {
       font-size: 0.625rem;
 
       a, a:visited {
@@ -30,82 +36,6 @@
     }
   }
 
-  &__pi-progress {
-    height: 0.25rem;
-    margin-bottom: 0;
-
-    &--weak-pi {
-      background-color: #edccd4;
-    }
-
-    &--strong-pi {
-      background-color: #cbe8e3;
-    }
-  }
-
-  &__pi-progress-meter {
-    height: 0.25rem;
-
-    &--weak-pi {
-      background-color: #ec0f48;
-    }
-
-    &--strong-pi  {
-      background-color: #07b798;
-    }
-  }
-
-  a.from, .to {
-    color: #515151;
-    text-decoration: none;
-  }
-
-  &__pi-numeric {
-    display: flex;
-    align-items: center;
-
-    .legend {
-      font-size: 0.625rem;
-    }
-
-    .value {
-      flex-grow: 1;
-      font-size: 1.5rem;
-      font-weight: 500;
-      text-align: right;
-    } 
-  }
-
-  &__pi-illustration {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 0.825rem;
-
-    img, i {
-      margin-right: 0.25rem;
-      font-size: 0.825rem;
-    }
-  }
-
-  &__pi-types {
-    li {
-      font-size: 0.625rem;
-      font-weight: 600;
-      line-height: 1rem;
-
-      &.ok {
-        color: #07b798;
-      }
-
-      &.bad {
-        color: #ec0f48;
-      }
-
-      &.warn {
-        color: #ebc064;
-      }
-    }
-  }
 
   &__tags {
     margin-top: $co-component__spacing;
@@ -116,30 +46,15 @@
     margin-right: $co-component__spacing;
   }
 
+  &__participants, &__tags {
+    display: none;
+  }
+
   .direction {
     width: 2rem;
   }
 
-  &__pi-metaphor {
-    padding: 0.825rem 0;
-    border-top: 2px solid #999999;
-    border-bottom: 2px solid #999999;
-    color: #999999;
-    font-size: 0.625rem;
-    font-style: italic;
-  }
-
-  &.weak-pi {
-    .s-mail-message__pi-metaphor { border-color: #edccd4; }
-    .value { color: #ec0f48; }
-  }
-
-  &.strong-pi {
-    .s-mail-message__pi-metaphor { border-color: #cbe8e3; }
-    .value { color: #07b798; }
-  }
-
-  .details {
+  &__details {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -148,43 +63,96 @@
     border-bottom: 1px solid #f9f9f9;
     color: grey;
 
-    .what-who-when {
+    &--what-who-when {
       display: inline;
       font-size: 0.825rem;
     }
 
-    .to {
+    &-to {
       flex-grow: 1;
       font-size: 0.825rem;
       text-align: right;
     }
 
-    a.from, .to {
+    &-from, &-to {
       color: #515151;
       text-decoration: none;
     }
   }
 
-  .container {
+  &__container {
     flex-grow: 1;
   }
 
-  .content, h2 {
-    margin-right: 6rem;
-    margin-left: 6rem;
+  &__content, &__subject {
+    padding: $co-component__spacing;
     border-bottom: 1px solid #f9f9f9;
     color: #515151;
   }
 
-  .content {
+  &__content {
     padding-bottom: 3rem;
   }
 
-
-  &>footer {
-    padding: 0 6rem;
+  &__actions {
     background-color: #ecf9ff;
     font-size: 0.88rem;
     text-align: right;
+  }
+
+  @include breakpoint(medium) {
+    &__wrapper {
+      display: grid;
+      grid-template-columns: 13rem 1fr;
+      grid-template-rows: $co-component__height 1fr;
+    }
+
+    &__info {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      float: left;
+      flex-direction: column;
+      order: -1;
+      width: 13rem;
+      height: 100%;
+      padding: 3rem 1.5rem;
+    }
+
+    &__details {
+      grid-column: 2;
+      grid-row: 1/1;
+      max-width: 62rem;
+      height: $co-component__height;
+    }
+
+    &__container {
+      grid-column: 2;
+      grid-row: 2;
+    }
+
+    &__participants, &__tags {
+      display: block;
+    }
+
+    &__content, &__subject {
+      margin-right: 6rem;
+      margin-left: 6rem;
+    }
+
+    &__actions {
+      padding: 0 6rem;
+    }
+  }
+}
+
+.strong-pi {
+  .s-mail-message__info {
+    background-color: #edfffc;
+  }
+}
+
+.weak-pi {
+  .s-mail-message__info {
+    background-color: #fff4f7;
   }
 }

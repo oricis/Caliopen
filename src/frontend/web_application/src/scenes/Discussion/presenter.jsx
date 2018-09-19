@@ -37,8 +37,9 @@ class Discussion extends Component {
     onMessageSent: PropTypes.func.isRequired,
     setMessageRead: PropTypes.func.isRequired,
     deleteMessage: PropTypes.func.isRequired,
-    deleteDiscussion: PropTypes.func.isRequired,
-    updateDiscussionTags: PropTypes.func.isRequired,
+    // XXX: waiting for API
+    // deleteDiscussion: PropTypes.func.isRequired,
+    // updateDiscussionTags: PropTypes.func.isRequired,
     currentTab: PropTypes.shape({}),
     closeTab: PropTypes.func.isRequired,
     push: PropTypes.func.isRequired,
@@ -228,11 +229,27 @@ class Discussion extends Component {
         <StickyNavBar className="action-bar" stickyClassName="sticky-action-bar">
           <header className="s-discussion__header">
             {discussion ? this.renderTags(discussion) : null}
-            <div className="s-discussions__actions">
-              <strong>Discussion complète&thinsp;:</strong>
-              <Button className="m-message-list__action" icon="reply" onClick={this.handleMessageReply}>Reply</Button>
-              <Button className="m-message-list__action" icon="tags" onClick={this.handleOpenTags}>Tag</Button>
-              <Button className="m-message-list__action" icon="trash" onClick={this.handleDeleteAll}>Delete</Button>
+            <div className="s-discussion__actions">
+              <strong className="s-discussion__action-label">Discussion complète&thinsp;:</strong>
+              <Button className="m-message-list__action" icon="reply" onClick={this.handleMessageReply} responsive="icon-only">Reply</Button>
+              {/*
+                <Button
+                  className="m-message-list__action"
+                  icon="tags"
+                  onClick={this.handleOpenTags}
+                  responsive="icon-only"
+                >
+                  Tag
+                </Button>
+                <Button
+                  className="m-message-list__action"
+                  icon="trash"
+                  onClick={this.handleDeleteAll}
+                  responsive="icon-only"
+                >
+                  Delete
+                </Button>
+                */}
             </div>
           </header>
         </StickyNavBar>

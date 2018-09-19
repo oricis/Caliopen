@@ -88,7 +88,8 @@ class DiscussionSelector extends Component {
             />
           </span>
         )}
-        {(checked || indeterminate) && // show buttons only when one or more is selected
+        {/*
+          (checked || indeterminate) && // show buttons only when one or more is selected
           <span className="m-discussion-selector__actions">
             <Button
               icon="tags"
@@ -98,7 +99,7 @@ class DiscussionSelector extends Component {
             />
             {this.renderDeleteButton()}
           </span>
-        }
+          */}
         <span className="m-discussion-selector__checkbox">
           <Checkbox
             label={i18n._('message-list.action.select_all_discussions', { defaults: 'Select/deselect all discussions' })}
