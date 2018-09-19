@@ -65,6 +65,22 @@ func (cb *CassandraBackend) RetrieveContactPubKeys(userId, contactId string) (ke
 	return
 }
 
+func (cb *CassandraBackend) RetrievePubKey(userId, resourceId, keyId string) (pubkey *PublicKey, err CaliopenError) {
+	result := map[string]interface{}{}
+	e := cb.Session.Query(`SELECT * FROM public_key WHERE user_id = ? AND resource_id = ? AND key_id = ?`, userId, resourceId, keyId).MapScan(result)
+	if e != nil {
+		if e.Error() == "not found" {
+			err = WrapCaliopenErr(NewCaliopenErr(NotFoundCaliopenErr, "not found"), DbCaliopenErr, "[CassandraBackend]RetrievePubKey not found in db")
+		} else {
+			err = NewCaliopenErrf(DbCaliopenErr, "[CassandraBackend]RetrievePubKey returned error from cassandra : %s", e.Error())
+		}
+		return
+	}
+	pubkey = new(PublicKey)
+	pubkey.UnmarshalCQLMap(result)
+	return
+}
+
 func (cb *CassandraBackend) DeletePubKey(pubkey *PublicKey) CaliopenError {
 	e := cb.Session.Query(`DELETE FROM public_key WHERE user_id = ? AND resource_id = ? AND key_id = ?`, pubkey.UserId, pubkey.ResourceId, pubkey.KeyId).Exec()
 	if e != nil {

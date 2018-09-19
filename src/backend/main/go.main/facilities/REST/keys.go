@@ -77,6 +77,10 @@ func (rest *RESTfacility) RetrieveContactPubKeys(userId, contactId string) (pubk
 	return rest.store.RetrieveContactPubKeys(userId, contactId)
 }
 
+func (rest *RESTfacility) RetrievePubKey(userId, resourceId, keyId string) (pubkey *PublicKey, err CaliopenError) {
+	return rest.store.RetrievePubKey(userId, resourceId, keyId)
+}
+
 func (rest *RESTfacility) DeletePubKey(pubkey *PublicKey) CaliopenError {
 	return rest.store.DeletePubKey(pubkey)
 }

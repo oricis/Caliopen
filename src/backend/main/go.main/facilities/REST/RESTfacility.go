@@ -79,6 +79,7 @@ type (
 		//keys
 		CreatePGPPubKey(label string, pubkey []byte, contact *Contact) (*PublicKey, CaliopenError)
 		RetrieveContactPubKeys(userId, contactId string) (pubkeys PublicKeys, err CaliopenError)
+		RetrievePubKey(userId, resourceId, keyId string) (pubkey *PublicKey, err CaliopenError)
 		DeletePubKey(pubkey *PublicKey) CaliopenError
 	}
 	RESTfacility struct {

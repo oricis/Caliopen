@@ -13,5 +13,6 @@ import (
 type KeysStorage interface {
 	CreatePGPPubKey(pubkey *PublicKey) CaliopenError
 	RetrieveContactPubKeys(userId, contactId string) (PublicKeys, CaliopenError)
+	RetrievePubKey(userId, resourceId, keyId string) (*PublicKey, CaliopenError)
 	DeletePubKey(pubkey *PublicKey) CaliopenError
 }
