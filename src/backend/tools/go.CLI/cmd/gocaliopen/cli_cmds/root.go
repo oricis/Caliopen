@@ -165,7 +165,6 @@ func getStoreFacility() (Store *store.CassandraBackend, err error) {
 			Keyspace:     apiConf.BackendConfig.Settings.Keyspace,
 			Consistency:  gocql.Consistency(apiConf.BackendConfig.Settings.Consistency),
 			SizeLimit:    apiConf.BackendConfig.Settings.SizeLimit,
-			UseVault:     apiConf.BackendConfig.Settings.UseVault,
 			WithObjStore: true,
 			UseVault:     apiConf.BackendConfig.Settings.UseVault,
 			HVaultConfig: vault.HVaultConfig{
