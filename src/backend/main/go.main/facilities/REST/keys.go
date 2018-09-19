@@ -81,6 +81,25 @@ func (rest *RESTfacility) RetrievePubKey(userId, resourceId, keyId string) (pubk
 	return rest.store.RetrievePubKey(userId, resourceId, keyId)
 }
 
-func (rest *RESTfacility) DeletePubKey(pubkey *PublicKey) CaliopenError {
-	return rest.store.DeletePubKey(pubkey)
+func (rest *RESTfacility) DeletePubKey(pubKey *PublicKey) CaliopenError {
+	err := rest.store.DeletePubKey(pubKey)
+	if err != nil {
+		return err
+	}
+	natsMsg := PublishKeyMessage{
+		Order:      "delete_key",
+		UserId:     pubKey.UserId.String(),
+		ResourceId: pubKey.ResourceId.String(),
+		KeyId:      pubKey.KeyId.String(),
+	}
+	jsonMsg, e := json.Marshal(natsMsg)
+	if e != nil {
+		log.WithError(e).Warn("[RESTfacility]CreatePGPPubKey failed to marshal nats message")
+	} else {
+		e := rest.nats_conn.Publish(rest.natsTopics[Nats_Keys_topicKey], jsonMsg)
+		if e != nil {
+			log.WithError(err).Warn("[RESTfacility]CreatePGPPubKey failed to publish nats message")
+		}
+	}
+	return nil
 }
