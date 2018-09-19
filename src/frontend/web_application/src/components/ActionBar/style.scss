@@ -1,0 +1,30 @@
+@import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+.m-action-bar {
+  @include flex-grid-row;
+  background: $co-color__fg__back;
+  line-height: $co-component__height;
+
+  &--hr {
+    border-bottom: 3px solid $co-color__sidebar__back;
+  }
+
+  &__loading {
+    @include flex-grid-column(shrink);
+  }
+
+  &__actions {
+    @include flex-grid-column;
+    display: block;
+    color: #1a5773;
+    font-weight: bold;
+  }
+
+  @include breakpoint(medium) {
+    &__actions {
+      display: inline;
+      text-align: right;
+    }
+  }
+}
