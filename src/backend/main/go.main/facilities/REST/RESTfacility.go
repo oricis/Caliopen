@@ -81,6 +81,7 @@ type (
 		RetrieveContactPubKeys(userId, contactId string) (pubkeys PublicKeys, err CaliopenError)
 		RetrievePubKey(userId, resourceId, keyId string) (pubkey *PublicKey, err CaliopenError)
 		DeletePubKey(pubkey *PublicKey) CaliopenError
+		PatchPubKey(patch []byte, userId, resourceId, keyId string) CaliopenError
 	}
 	RESTfacility struct {
 		store      backends.APIStorage

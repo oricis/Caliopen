@@ -16,6 +16,7 @@ import (
 	"github.com/gin-gonic/gin"
 	swgErr "github.com/go-openapi/errors"
 	"github.com/satori/go.uuid"
+	"io/ioutil"
 	"net/http"
 	"strconv"
 )
@@ -137,6 +138,14 @@ func GetPubKeys(ctx *gin.Context) {
 		return
 	}
 
+	// check if contact exist to return relevant error
+	if !caliopen.Facilities.RESTfacility.ContactExists(userId, contactId) {
+		e := swgErr.New(http.StatusNotFound, "contact not found")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
 	// call API
 	keys, apiErr := caliopen.Facilities.RESTfacility.RetrieveContactPubKeys(userId, contactId)
 	if apiErr != nil {
@@ -184,7 +193,7 @@ func GetPubKeys(ctx *gin.Context) {
 	}
 }
 
-// GetPubKey handles GET …/contats/:contactID/publickeys/:pubkeyID
+// GetPubKey handles GET …/contacts/:contactID/publickeys/:pubkeyID
 func GetPubKey(ctx *gin.Context) {
 	// check payload
 	userId := ctx.MustGet("user_id").(string)
@@ -243,6 +252,68 @@ func GetPubKey(ctx *gin.Context) {
 		ctx.Abort()
 	} else {
 		ctx.Data(http.StatusOK, "application/json; charset=utf-8", key_json)
+	}
+}
+
+// PatchPubKey handles PATCH …/contacts/:contactID/publickeys/:pubkeyID
+func PatchPubKey(ctx *gin.Context) {
+	// check payload
+	userId := ctx.MustGet("user_id").(string)
+	userId, err1 := operations.NormalizeUUIDstring(userId)
+	contactId := ctx.Param("contactID")
+	contactId, err2 := operations.NormalizeUUIDstring(contactId)
+	pubkeyId := ctx.Param("pubkeyID")
+	pubkeyId, err3 := operations.NormalizeUUIDstring(pubkeyId)
+	if err1 != nil || err2 != nil || err3 != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, "invalid uuid")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+	var patch []byte
+	patch, err := ioutil.ReadAll(ctx.Request.Body)
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
+	// check if contact exist to return relevant error
+	if !caliopen.Facilities.RESTfacility.ContactExists(userId, contactId) {
+		e := swgErr.New(http.StatusNotFound, "contact not found")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
+	caliopenErr := caliopen.Facilities.RESTfacility.PatchPubKey(patch, userId, contactId, pubkeyId)
+	if caliopenErr != nil {
+		returnedErr := new(swgErr.CompositeError)
+		switch caliopenErr.Code() {
+		case UnprocessableCaliopenErr:
+			returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusUnprocessableEntity, "api returned unprocessable error"), caliopenErr, caliopenErr.Cause())
+		case DbCaliopenErr:
+			if prevErr, ok := caliopenErr.Cause().(CaliopenError); ok {
+				switch prevErr.Code() {
+				case ForbiddenCaliopenErr:
+					returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusForbidden, "api returned forbidden error"), caliopenErr, caliopenErr.Cause())
+				case NotFoundCaliopenErr:
+					returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusNotFound, "api failed to retrieve in store"), caliopenErr, caliopenErr.Cause())
+				default:
+					returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusFailedDependency, "api failed to call store"), caliopenErr, caliopenErr.Cause())
+				}
+			} else {
+				returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusFailedDependency, "api failed to call store"), caliopenErr, caliopenErr.Cause())
+			}
+		default:
+			returnedErr = swgErr.CompositeValidationError(caliopenErr, caliopenErr.Cause())
+		}
+		http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
+		ctx.Abort()
+		return
+	} else {
+		ctx.Status(http.StatusNoContent)
 	}
 }
 

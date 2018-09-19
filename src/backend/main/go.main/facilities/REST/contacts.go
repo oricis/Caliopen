@@ -90,7 +90,7 @@ func (rest *RESTfacility) RetrieveContact(userID, contactID string) (contact *Co
 
 // PatchContact is a shortcut for REST api to :
 // - retrieve the contact from db
-// - UpdateWithPatch()
+// - UpdateWithPatch() with UserActor role
 // - then UpdateContact() to save updated contact to stores & index if everything went good.
 func (rest *RESTfacility) PatchContact(patch []byte, userID, contactID string) error {
 

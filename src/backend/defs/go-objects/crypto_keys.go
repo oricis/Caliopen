@@ -9,7 +9,6 @@ import (
 	"crypto/ecdsa"
 	"encoding/hex"
 	"encoding/json"
-	"errors"
 	"fmt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
@@ -25,23 +24,23 @@ import (
 
 type PublicKey struct {
 	// PRIMARY KEYS (UserId, ResourceId, KeyId)
-	Algorithm    string    `cql:"alg"              json:"alg,omitempty"                                             patch:"user"`
-	Curve        string    `cql:"crv"              json:"crv,omitempty"                                             patch:"user"`
+	Algorithm    string    `cql:"alg"              json:"alg,omitempty"                                             patch:"system"`
+	Curve        string    `cql:"crv"              json:"crv,omitempty"                                             patch:"system"`
 	DateInsert   time.Time `cql:"date_insert"      json:"date_insert,omitempty"         formatter:"RFC3339Milli"    patch:"system"`
 	DateUpdate   time.Time `cql:"date_update"      json:"date_update,omitempty"         formatter:"RFC3339Milli"    patch:"system"`
-	ExpireDate   time.Time `cql:"expire_date"      json:"expire_date,omitempty"         formatter:"RFC3339Milli"    patch:"user"`
-	Fingerprint  string    `cql:"fingerprint"      json:"fingerprint,omitempty"                                     patch:"user"`
-	Key          string    `cql:"key"              json:"key,omitempty"                                             patch:"user"`
+	ExpireDate   time.Time `cql:"expire_date"      json:"expire_date,omitempty"         formatter:"RFC3339Milli"    patch:"system"`
+	Fingerprint  string    `cql:"fingerprint"      json:"fingerprint,omitempty"                                     patch:"system"`
+	Key          string    `cql:"key"              json:"key,omitempty"                                             patch:"system"`
 	KeyId        UUID      `cql:"key_id"           json:"key_id"                                                    patch:"system"`
-	KeyType      string    `cql:"kty"              json:"kty,omitempty"                                             patch:"user"`
+	KeyType      string    `cql:"kty"              json:"kty,omitempty"                                             patch:"system"`
 	Label        string    `cql:"label"            json:"label,omitempty"                                           patch:"user"`
 	ResourceId   UUID      `cql:"resource_id"      json:"resource_id"                                               patch:"system"`
 	ResourceType string    `cql:"resource_type"    json:"resource_type,omitempty"                                   patch:"system"`
 	Size         int       `cql:"size"             json:"size"                                                      patch:"system"`
-	Use          string    `cql:"\"use\""          json:"use,omitempty"                                             patch:"user"`
+	Use          string    `cql:"\"use\""          json:"use,omitempty"                                             patch:"system"`
 	UserId       UUID      `cql:"user_id"          json:"user_id,omitempty"                                         patch:"system"`
-	X            big.Int   `cql:"x"                json:"x,omitempty"                                               patch:"user"`
-	Y            big.Int   `cql:"y"                json:"y,omitempty"                                               patch:"user"`
+	X            big.Int   `cql:"x"                json:"x,omitempty"                                               patch:"system"`
+	Y            big.Int   `cql:"y"                json:"y,omitempty"                                               patch:"system"`
 }
 
 // model for nats message triggered after contact create/update
@@ -118,8 +117,64 @@ func (pk *PublicKey) UnmarshalCQLMap(input map[string]interface{}) {
 }
 
 func (pk *PublicKey) UnmarshalMap(input map[string]interface{}) error {
-	//TODO
-	return errors.New("not implemented")
+	if alg, ok := input["alg"].(string); ok {
+		pk.Algorithm = alg
+	}
+	if crv, ok := input["crv"].(string); ok {
+		pk.Curve = crv
+	}
+	if dateInsert, ok := input["date_insert"]; ok {
+		pk.DateInsert, _ = time.Parse(time.RFC3339Nano, dateInsert.(string))
+	}
+	if dateUpdate, ok := input["date_update"]; ok {
+		pk.DateUpdate, _ = time.Parse(time.RFC3339Nano, dateUpdate.(string))
+	}
+	if expireDate, ok := input["expire_date"]; ok {
+		pk.ExpireDate, _ = time.Parse(time.RFC3339Nano, expireDate.(string))
+	}
+	if fingerprint, ok := input["fingerprint"].(string); ok {
+		pk.Fingerprint = fingerprint
+	}
+	if key, ok := input["key"].(string); ok {
+		pk.Key = key
+	}
+	if keyid, ok := input["key_id"].(string); ok {
+		if id, err := uuid.FromString(keyid); err == nil {
+			pk.KeyId.UnmarshalBinary(id.Bytes())
+		}
+	}
+	if kty, ok := input["kty"].(string); ok {
+		pk.KeyType = kty
+	}
+	if label, ok := input["label"].(string); ok {
+		pk.Label = label
+	}
+	if resourceId, ok := input["resource_id"].(string); ok {
+		if id, err := uuid.FromString(resourceId); err == nil {
+			pk.ResourceId.UnmarshalBinary(id.Bytes())
+		}
+	}
+	if resourceType, ok := input["resource_type"].(string); ok {
+		pk.ResourceType = resourceType
+	}
+	if size, ok := input["size"].(*big.Int); ok {
+		pk.Size = int(size.Int64())
+	}
+	if use, ok := input["use"].(string); ok {
+		pk.Use = use
+	}
+	if userid, ok := input["user_id"].(string); ok {
+		if id, err := uuid.FromString(userid); err == nil {
+			pk.UserId.UnmarshalBinary(id.Bytes())
+		}
+	}
+	if x, ok := input["x"].(*big.Int); ok {
+		pk.X = *x
+	}
+	if y, ok := input["y"].(*big.Int); ok {
+		pk.Y = *y
+	}
+	return nil
 }
 
 func (pk *PublicKey) UnmarshalJSON(b []byte) error {

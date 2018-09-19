@@ -8,6 +8,8 @@ package store
 
 import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/gocassa/gocassa"
+	"gopkg.in/oleiade/reflections.v1"
 )
 
 func (cb *CassandraBackend) CreatePGPPubKey(pubkey *PublicKey) CaliopenError {
@@ -79,6 +81,36 @@ func (cb *CassandraBackend) RetrievePubKey(userId, resourceId, keyId string) (pu
 	pubkey = new(PublicKey)
 	pubkey.UnmarshalCQLMap(result)
 	return
+}
+
+func (cb *CassandraBackend) UpdatePubKey(newPubKey, oldPubKey *PublicKey, fields map[string]interface{}) CaliopenError {
+
+	//get cassandra's field name for each field to modify
+	cassaFields := map[string]interface{}{}
+	for field, value := range fields {
+		cassaField, err := reflections.GetFieldTag(newPubKey, field, "cql")
+		if err != nil {
+			return NewCaliopenErrf(FailDependencyCaliopenErr, "[CassandraBackend]UpdatePubKey failed to find a cql field for object field %s", field)
+		}
+		if cassaField != "-" {
+			cassaFields[cassaField] = value
+		}
+	}
+
+	keyT := cb.IKeyspace.Table("public_key", &PublicKey{}, gocassa.Keys{
+		PartitionKeys: []string{"user_id", "resource_id", "key_id"},
+	}).WithOptions(gocassa.Options{TableName: "public_key"}) // need to overwrite default gocassa table naming convention
+
+	err := keyT.
+		Where(gocassa.Eq("user_id", newPubKey.UserId.String()),
+			gocassa.Eq("resource_id", newPubKey.ResourceId.String()),
+			gocassa.Eq("key_id", newPubKey.KeyId.String())).
+		Update(cassaFields).
+		Run()
+	if err != nil {
+		return NewCaliopenErrf(DbCaliopenErr, "[CassandraBackend]UpdatePubKey failed to call store with cassandra error : %s", err.Error())
+	}
+	return nil
 }
 
 func (cb *CassandraBackend) DeletePubKey(pubkey *PublicKey) CaliopenError {
