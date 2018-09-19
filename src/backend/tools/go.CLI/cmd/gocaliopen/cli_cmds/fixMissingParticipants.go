@@ -58,6 +58,7 @@ func fixMissingParticipants(cmd *cobra.Command, args []string) {
 	//check/get connexions to facilities
 	//store
 	var Store *store.CassandraBackend
+
 	Store, err = getStoreFacility()
 	if err != nil {
 		log.WithError(err).Fatalf("initialization of %s backend failed", apiConf.BackendName)
