@@ -12,7 +12,7 @@ delivery_agent:
 
 elasticsearch:
     url: http://elasticsearch:9200
-    mappings_version: v5
+    mappings_version: v6
 
 cassandra:
     keyspace: caliopen

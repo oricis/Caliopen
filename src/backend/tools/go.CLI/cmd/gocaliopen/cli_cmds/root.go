@@ -20,7 +20,9 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/cache/redis"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/index/elasticsearch"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/store/cassandra"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/store/vault"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/facilities/REST"
+	"github.com/CaliOpen/Caliopen/src/backend/protocols/go.imap"
 	"github.com/CaliOpen/Caliopen/src/backend/protocols/go.smtp"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
@@ -38,11 +40,13 @@ type CmdConfig struct {
 }
 
 var (
-	cfgPath     string
-	apiCfgFile  string
-	lmtpCfgFile string
-	apiConf     CmdConfig
-	lmtpConf    caliopen_smtp.SMTPConfig
+	cfgPath           string
+	apiCfgFile        string
+	lmtpCfgFile       string
+	imapWorkerCfgFile string
+	apiConf           CmdConfig
+	lmtpConf          caliopen_smtp.SMTPConfig
+	imapWorkerConf    imap_worker.WorkerConfig
 
 	// RootCmd represents the base command when called without any subcommands
 	RootCmd = &cobra.Command{
@@ -72,6 +76,7 @@ func init() {
 	RootCmd.PersistentFlags().StringVar(&cfgPath, "confPath", "", "Path to seek the two mandatory config files: apiv2.yaml and lmtp.yaml")
 	RootCmd.PersistentFlags().StringVar(&apiCfgFile, "apiConf", "", "Caliopen's API config file")
 	RootCmd.PersistentFlags().StringVar(&lmtpCfgFile, "lmtpConf", "", "Caliopen's lmtpd config file")
+	RootCmd.PersistentFlags().StringVar(&imapWorkerCfgFile, "imapWorkerConf", "", "Imap worker config file")
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -87,15 +92,18 @@ func Execute() {
 func initConfig() {
 	apiCfg := viper.New()
 	lmtpCfg := viper.New()
+	imapWorkerCfg := viper.New()
 
 	if cfgPath != "" {
 		// Use path from the flag
 		apiCfg.AddConfigPath(cfgPath)
 		lmtpCfg.AddConfigPath(cfgPath)
+		imapWorkerCfg.AddConfigPath(cfgPath)
 	} else {
 		// set defaults to current dir
 		apiCfg.AddConfigPath(".")
 		lmtpCfg.AddConfigPath(".")
+		imapWorkerCfg.AddConfigPath(".")
 	}
 
 	if apiCfgFile != "" {
@@ -112,9 +120,17 @@ func initConfig() {
 		lmtpCfg.SetConfigName("lmtp")
 	}
 
+	if imapWorkerCfgFile != "" {
+		// Use config file name and path from the flag.
+		imapWorkerCfg.SetConfigFile(imapWorkerCfgFile)
+	} else {
+		imapWorkerCfg.SetConfigName("imapworker")
+	}
+
 	// read in environment variables that match
 	apiCfg.AutomaticEnv()
 	lmtpCfg.AutomaticEnv()
+	imapWorkerCfg.AutomaticEnv()
 
 	if err := apiCfg.ReadInConfig(); err != nil {
 		log.WithError(err).Fatalf("can't load api config file %s", apiCfgFile)
@@ -130,6 +146,12 @@ func initConfig() {
 		log.WithError(err).Fatalf("can't parse lmtp config file %s", lmtpCfgFile)
 	}
 
+	if err := imapWorkerCfg.ReadInConfig(); err != nil {
+		log.WithError(err).Warn("can't load imapworker config file %s", imapWorkerCfgFile)
+	}
+	if err := imapWorkerCfg.Unmarshal(&imapWorkerConf); err != nil {
+		log.WithError(err).Warn("can't parse imapworker config file %s", imapWorkerCfgFile)
+	}
 }
 
 // getStoreFacility reads configuration and tries to connect to a store
@@ -143,8 +165,13 @@ func getStoreFacility() (Store *store.CassandraBackend, err error) {
 			Keyspace:     apiConf.BackendConfig.Settings.Keyspace,
 			Consistency:  gocql.Consistency(apiConf.BackendConfig.Settings.Consistency),
 			SizeLimit:    apiConf.BackendConfig.Settings.SizeLimit,
-			UseVault:     apiConf.BackendConfig.Settings.UseVault,
 			WithObjStore: true,
+			UseVault:     apiConf.BackendConfig.Settings.UseVault,
+			HVaultConfig: vault.HVaultConfig{
+				apiConf.BackendConfig.Settings.VaultSettings.Url,
+				apiConf.BackendConfig.Settings.VaultSettings.Username,
+				apiConf.BackendConfig.Settings.VaultSettings.Password,
+			},
 		}
 		c.Endpoint = apiConf.BackendConfig.Settings.ObjStoreSettings.Endpoint
 		c.AccessKey = apiConf.BackendConfig.Settings.ObjStoreSettings.AccessKey
