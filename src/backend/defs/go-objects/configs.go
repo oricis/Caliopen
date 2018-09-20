@@ -42,7 +42,9 @@ type (
 	NatsConfig struct {
 		Url            string `mapstructure:"url"`
 		OutSMTP_topic  string `mapstructure:"outSMTP_topic"`
+		OutIMAP_topic  string `mapstructure:"outIMAP_topic"`
 		Contacts_topic string `mapstructure:"contacts_topic"`
+		Keys_topic     string `mapstructure:"keys_topic"`
 	}
 	// Cassandra
 	StoreConfig struct {

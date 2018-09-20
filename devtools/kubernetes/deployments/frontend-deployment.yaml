@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  #strategy:
+  #  type: Recreate / RollingUpdate
+  #    maxUnavailable:
+  template:
+    metadata:
+      labels:
+        type: frontend
+        tier: frontend
+        app: frontend
+    spec:
+      containers:
+      - image: public-registry.caliopen.org/caliopen_frontend:develop
+        imagePullPolicy: Always
+        name: frontend
+        ports:
+        - containerPort: 4000
+        env:
+        - name: CALIOPEN_API_HOSTNAME
+          value: "api"
+        - name: CALIOPEN_API_PROTOCOL
+          value: "http"
+        - name: CALIOPEN_API_PORT
+          value: "31415"

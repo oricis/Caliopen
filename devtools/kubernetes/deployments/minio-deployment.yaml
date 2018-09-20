@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minio
+  template:
+    metadata:
+      labels:
+        type: storage
+        tier: backend
+        app: minio
+    spec:
+      containers:
+      - image: minio/minio
+        name: minio
+        env:
+        - name: MINIO_ACCESS_KEY
+          value: "CALIOPEN_ACCESS_KEY_"
+        - name: MINIO_SECRET_KEY
+          value: "CALIOPEN_SECRET_KEY_BE_GOOD_AND_LIVE_OLD"
+        args:
+          - server
+          - --address
+          - :9090
+          - -C
+          - /configs/minio
+          - /export
+        ports:
+        - containerPort: 9090
+        volumeMounts:
+        - mountPath: /export
+          name: dev-store
+      volumes:
+      - name: dev-store
+        persistentVolumeClaim:
+          claimName: dev-store
+      - name: config-volume
+        configMap:
+          name: minio-config
+          items:
+          - key: config.json
+            path: config.json

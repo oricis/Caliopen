@@ -11,10 +11,9 @@ from caliopen_storage.exception import NotFound
 from caliopen_storage.core import BaseUserCore
 from caliopen_storage.parameters import ReturnCoreObject
 
-from ..store.discussion import \
-    (DiscussionListLookup as ModelListLookup,
-     DiscussionRecipientLookup as ModelRecipientLookup,
+from ..store.discussion import (DiscussionListLookup as ModelListLookup,
      DiscussionThreadLookup as ModelThreadLookup,
+     DiscussionGlobalLookup as ModelGlobalLookup,
      Discussion as ModelDiscussion)
 from ..store.discussion_index import DiscussionIndexManager as DIM
 
@@ -42,18 +41,18 @@ class DiscussionListLookup(BaseUserCore):
     _pkey_name = 'list_id'
 
 
-class DiscussionRecipientLookup(BaseUserCore):
-    """Lookup discussion for a recipient, only one."""
-
-    _model_class = ModelRecipientLookup
-    _pkey_name = 'recipient_name'
-
-
 class DiscussionThreadLookup(BaseUserCore):
     """Lookup discussion by external thread's root message_id."""
 
     _model_class = ModelThreadLookup
     _pkey_name = 'external_root_msg_id'
+
+
+class DiscussionGlobalLookup(BaseUserCore):
+    """Lookup global discussion."""
+
+    _model_class = ModelGlobalLookup
+    _pkey_name = 'hashed'
 
 
 def build_discussion(core, index):
@@ -68,6 +67,8 @@ def build_discussion(core, index):
     discuss.excerpt = unicode_truncate(index.last_message.body_plain,
                                        maxsize) if index.last_message.body_plain else u''
     discuss.total_count = index.total_count
+    discuss.subject = index.last_message.subject
+    discuss.protocol = index.last_message.type
 
     # TODO
     # discussion.privacy_index = index_message.privacy_index
@@ -81,8 +82,8 @@ def build_discussion(core, index):
         except:
             participant.label = part['address']
         participant.type = part['type']
-        if 'contact_id' in part:
-            participant.contact_id = part['contact_id']
+        if 'contact_ids' in part:
+            participant.contact_ids = part['contact_ids']
         participant.protocol = part['protocol']
         discuss.participants.append(participant)
 

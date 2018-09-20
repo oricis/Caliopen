@@ -10,6 +10,8 @@ from caliopen_main.contact.objects import Contact
 
 from caliopen_nats.delivery import UserMessageDelivery
 from caliopen_pi.qualifiers import ContactMessageQualifier
+from caliopen_pgp.keys import ContactPublicKeyManager
+from caliopen_main.common.core import PublicKey
 
 log = logging.getLogger(__name__)
 
@@ -81,3 +83,62 @@ class ContactAction(BaseHandler):
             self.process_update(msg, payload)
         else:
             log.warn('Unhandled payload type {}'.format(payload['order']))
+
+
+class DiscoverKeyAction(BaseHandler):
+    """Handler for public key discovery message."""
+
+    def _process_key(self, user, contact, key):
+        if not key.is_expired:
+            if key.userids:
+                label = key.userids[0].name
+            else:
+                label = '{0} {1}'.format(key.algorithm, key.size)
+            pub = PublicKey.create(user, contact.contact_id, 'contact',
+                                   fingerprint=key.fingerprint,
+                                   key=key.armored_key,
+                                   expire_date=key.expire_date,
+                                   label=label)
+            log.info('Created public key {0}'.format(pub.key_id))
+
+    def _process_results(self, user, contact, results):
+        fingerprints = []
+        for result in results:
+            for key in result.keys:
+                log.debug('Processing key %r' % key)
+                if key.fingerprint not in fingerprints:
+                    self._process_key(user, contact, key)
+                    fingerprints.append(key.fingerprint)
+
+    def process_key_discovery(self, msg, payload):
+        """Discover public keys related to a new contact identifier."""
+        if 'user_id' not in payload or 'contact_id' not in payload:
+            raise Exception('Invalid contact_update structure')
+        user = User.get(payload['user_id'])
+        contact = Contact(user.user_id, contact_id=payload['contact_id'])
+        contact.get_db()
+        contact.unmarshall_db()
+        manager = ContactPublicKeyManager()
+        founds = []
+        for ident in payload.get('emails', []):
+            log.info('Process email identity {0}'.format(ident['address']))
+            discovery = manager.process_identity(user, contact,
+                                                 ident['address'], 'email')
+            if discovery:
+                founds.append(discovery)
+        for ident in payload.get('identities', []):
+            log.info('Process identity {0}:{1}'.
+                     format(ident['type'], ident['name']))
+            discovery = manager.process_identity(user, contact,
+                                                 ident['name'], ident['type'])
+            if discovery:
+                founds.append(discovery)
+        if founds:
+            log.info('Found %d results' % len(founds))
+            self._process_results(user, contact, founds)
+
+    def handler(self, msg):
+        """Handle a discover_key nats messages."""
+        payload = json.loads(msg.data)
+        self.process_key_discovery(msg, payload)
+        return

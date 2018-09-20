@@ -21,7 +21,7 @@ fi
 # Force installation of regex using pip
 pip install regex
 
-COMPONENTS="main/py.storage components/py.pi main/py.main interfaces/REST/py.server tools/py.doc interfaces/NATS/py.client tools/py.CLI components/py.pgp tools/py.doc"
+COMPONENTS="main/py.storage components/py.pgp components/py.pi main/py.main interfaces/REST/py.server tools/py.doc interfaces/NATS/py.client tools/py.CLI tools/py.doc"
 
 for comp in ${COMPONENTS}:
 do

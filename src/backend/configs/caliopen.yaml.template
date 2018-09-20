@@ -68,6 +68,9 @@ key_discovery:
     dns:
         enable: True
         name_server: ns.example.com
+    hkp:
+        enable: True
+        url: https://pgp.mit.edu/pks/lookup
 
 qualifiers:
     geoip:

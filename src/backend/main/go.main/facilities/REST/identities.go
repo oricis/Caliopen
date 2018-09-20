@@ -15,7 +15,7 @@ import (
 	"github.com/satori/go.uuid"
 )
 
-func (rest *RESTfacility) RetrieveLocalsIdentities(user_id string) ([]LocalIdentity, error) {
+func (rest *RESTfacility) RetrieveLocalIdentities(user_id string) ([]UserIdentity, error) {
 	return rest.store.RetrieveLocalsIdentities(user_id)
 }
 
@@ -79,11 +79,11 @@ func (rest *RESTfacility) RetrieveContactIdentities(user_id, contact_id string) 
 	return
 }
 
-func (rest *RESTfacility) RetrieveRemoteIdentities(userId string, withCredentials bool) (ids []*RemoteIdentity, err CaliopenError) {
+func (rest *RESTfacility) RetrieveRemoteIdentities(userId string, withCredentials bool) (ids []*UserIdentity, err CaliopenError) {
 	var e error
 	ids, e = rest.store.RetrieveRemoteIdentities(userId, withCredentials)
 	if e != nil {
-		if e.Error() == "remote ids not found" {
+		if e.Error() == "not found" {
 			err = WrapCaliopenErr(e, NotFoundCaliopenErr, "store did not found remote ids")
 		} else {
 			err = WrapCaliopenErr(e, DbCaliopenErr, "store failed to retrieve remote ids")
@@ -92,31 +92,37 @@ func (rest *RESTfacility) RetrieveRemoteIdentities(userId string, withCredential
 	return
 }
 
-func (rest *RESTfacility) CreateRemoteIdentity(identity *RemoteIdentity) CaliopenError {
+func (rest *RESTfacility) CreateUserIdentity(identity *UserIdentity) CaliopenError {
 	// check if mandatory properties are ok
 	if len(identity.UserId) == 0 || (bytes.Equal(identity.UserId.Bytes(), EmptyUUID.Bytes())) {
-		return NewCaliopenErr(UnprocessableCaliopenErr, "[CreateRemoteIdentity] empty user id")
+		return NewCaliopenErr(UnprocessableCaliopenErr, "[CreateUserIdentity] empty user id")
 	}
-	if identity.Type == "" {
-		return NewCaliopenErr(UnprocessableCaliopenErr, "[CreateRemoteIdentity] empty remote identity.type")
+	if identity.Type == "" || identity.Protocol == "" || identity.Identifier == "" {
+		return NewCaliopenErr(UnprocessableCaliopenErr, "[CreateUserIdentity] miss mandatory property")
 	}
 
-	(*identity).RemoteId.UnmarshalBinary(uuid.NewV4().Bytes())
+	(*identity).Id.UnmarshalBinary(uuid.NewV4().Bytes())
 
 	// set defaults
 	identity.SetDefaults()
 
-	err := rest.store.CreateRemoteIdentity(identity)
+	// ensure identifier+protocol+user_id uniqueness
+	rows, e := rest.store.LookupIdentityByIdentifier(identity.Identifier, identity.Protocol, identity.UserId.String())
+	if e != nil || len(rows) > 0 {
+		return NewCaliopenErrf(ForbiddenCaliopenErr, "[CreateUserIdentity] tuple(%s, %s, %s) breaks uniqueness constraint", identity.Identifier, identity.Protocol, identity.UserId.String())
+	}
+
+	err := rest.store.CreateUserIdentity(identity)
 	if err != nil {
-		return WrapCaliopenErr(err, DbCaliopenErr, "[CreateRemoteIdentity] CreateRemoteIdentity failed to create identity in store")
+		return WrapCaliopenErr(err, DbCaliopenErr, "[CreateUserIdentity] CreateUserIdentity failed to create identity in store")
 	}
 
 	return nil
 }
 
-func (rest *RESTfacility) RetrieveRemoteIdentity(userId, remoteId string, withCredentials bool) (id *RemoteIdentity, err CaliopenError) {
+func (rest *RESTfacility) RetrieveUserIdentity(userId, identityId string, withCredentials bool) (id *UserIdentity, err CaliopenError) {
 	var e error
-	id, e = rest.store.RetrieveRemoteIdentity(userId, remoteId, withCredentials)
+	id, e = rest.store.RetrieveUserIdentity(userId, identityId, withCredentials)
 	if e != nil {
 		if e.Error() == "not found" {
 			err = WrapCaliopenErr(e, NotFoundCaliopenErr, "remote identity not found")
@@ -127,16 +133,16 @@ func (rest *RESTfacility) RetrieveRemoteIdentity(userId, remoteId string, withCr
 	return
 }
 
-func (rest *RESTfacility) UpdateRemoteIdentity(identity, oldIdentity *RemoteIdentity, update map[string]interface{}) CaliopenError {
-	err := rest.store.UpdateRemoteIdentity(identity, update)
+func (rest *RESTfacility) UpdateUserIdentity(identity, oldIdentity *UserIdentity, update map[string]interface{}) CaliopenError {
+	err := rest.store.UpdateUserIdentity(identity, update)
 	if err != nil {
-		return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] UpdateRemoteIdentity fails to call store")
+		return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] UpdateUserIdentity fails to call store")
 	}
 	return nil
 }
 
-func (rest *RESTfacility) PatchRemoteIdentity(patch []byte, userId, remoteId string) CaliopenError {
-	currentRemoteID, err1 := rest.RetrieveRemoteIdentity(userId, remoteId, false)
+func (rest *RESTfacility) PatchUserIdentity(patch []byte, userId, identityId string) CaliopenError {
+	currentRemoteID, err1 := rest.RetrieveUserIdentity(userId, identityId, false)
 	if err1 != nil {
 		if err1.Error() == "not found" {
 			return WrapCaliopenErr(err1, NotFoundCaliopenErr, "remote identity not found")
@@ -147,11 +153,11 @@ func (rest *RESTfacility) PatchRemoteIdentity(patch []byte, userId, remoteId str
 	// read into the patch to make basic controls before processing it with generic helper
 	patchReader, err2 := simplejson.NewJson(patch)
 	if err2 != nil {
-		return WrapCaliopenErrf(err2, FailDependencyCaliopenErr, "[RESTfacility] PatchRemoteIdentity failed with simplejson error : %s", err2)
+		return WrapCaliopenErrf(err2, FailDependencyCaliopenErr, "[RESTfacility] PatchUserIdentity failed with simplejson error : %s", err2)
 	}
 	// checks "current_state" property is present
 	if _, hasCurrentState := patchReader.CheckGet("current_state"); !hasCurrentState {
-		return NewCaliopenErr(ForbiddenCaliopenErr, "[RESTfacility] PatchRemoteIdentity : current_state property must be in patch")
+		return NewCaliopenErr(ForbiddenCaliopenErr, "[RESTfacility] PatchUserIdentity : current_state property must be in patch")
 	}
 
 	// special case : updating credentials. Credentials' current state should not be provided by caller.
@@ -164,20 +170,20 @@ func (rest *RESTfacility) PatchRemoteIdentity(patch []byte, userId, remoteId str
 	// patch seams OK, apply it to the resource
 	newRemoteID, modifiedFields, err3 := helpers.UpdateWithPatch(patch, currentRemoteID, UserActor)
 	if err3 != nil {
-		return WrapCaliopenErrf(err3, FailDependencyCaliopenErr, "[RESTfacility] PatchRemoteIdentity : call to generic UpdateWithPatch failed : %s", err3)
+		return WrapCaliopenErrf(err3, FailDependencyCaliopenErr, "[RESTfacility] PatchUserIdentity : call to generic UpdateWithPatch failed : %s", err3)
 	}
 
 	// save updated resource
-	err4 := rest.UpdateRemoteIdentity(newRemoteID.(*RemoteIdentity), currentRemoteID, modifiedFields)
+	err4 := rest.UpdateUserIdentity(newRemoteID.(*UserIdentity), currentRemoteID, modifiedFields)
 	if err4 != nil {
-		return WrapCaliopenErrf(err4, FailDependencyCaliopenErr, "[RESTfacility] PatchRemoteIdentity failed with UpdateRemoteIdentity error : %s", err4)
+		return WrapCaliopenErrf(err4, FailDependencyCaliopenErr, "[RESTfacility] PatchUserIdentity failed with UpdateUserIdentity error : %s", err4)
 	}
 
 	return nil
 }
 
-func (rest *RESTfacility) DeleteRemoteIdentity(userId, remoteId string) CaliopenError {
-	remoteID, err1 := rest.RetrieveRemoteIdentity(userId, remoteId, false)
+func (rest *RESTfacility) DeleteUserIdentity(userId, identityId string) CaliopenError {
+	remoteID, err1 := rest.RetrieveUserIdentity(userId, identityId, false)
 	if err1 != nil {
 		if err1.Error() == "not found" {
 			return WrapCaliopenErr(err1, NotFoundCaliopenErr, "remote identity not found")
@@ -186,10 +192,14 @@ func (rest *RESTfacility) DeleteRemoteIdentity(userId, remoteId string) Caliopen
 		}
 	}
 
-	err2 := rest.store.DeleteRemoteIdentity(remoteID)
+	err2 := rest.store.DeleteUserIdentity(remoteID)
 	if err2 != nil {
-		return WrapCaliopenErrf(err2, DbCaliopenErr, "[RESTfacility DeleteRemoteIdentity failed to delete in store")
+		return WrapCaliopenErrf(err2, DbCaliopenErr, "[RESTfacility DeleteUserIdentity failed to delete in store")
 	}
 
 	return nil
+}
+
+func (rest *RESTfacility) IsRemoteIdentity(userId, identityId string) bool {
+	return rest.store.IsRemoteIdentity(userId, identityId)
 }

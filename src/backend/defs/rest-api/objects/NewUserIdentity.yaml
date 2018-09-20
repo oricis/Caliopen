@@ -1,0 +1,38 @@
+---
+type: object
+properties:
+  credentials:    # set of key/value strings
+    type: object
+    additionalProperties:
+      type: string
+  display_name:
+    type: string
+  identifier:
+    type: string
+  infos:          # set of key/value strings
+    type: object
+    additionalProperties:
+      type: string
+  protocol:
+    type: string
+    enum:
+    - imap
+    - smtp
+  status:
+    type: string
+    enum:
+    - active
+    - inactive
+    - deleted
+  type:
+    type: string
+    enum:
+    - local
+    - remote
+  user_id:
+    type: string
+required:
+- identifier
+- protocol
+additionalProperties: false
+

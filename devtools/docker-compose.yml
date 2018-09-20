@@ -8,34 +8,47 @@ volumes:
     driver: local
 
 services:
+  # Proxy API
+  proxy-api:
+    image: nginx
+    links:
+      - api:api
+      - apiv1:apiv1
+    ports:
+      - "31415:31415"
+    volumes:
+      - ./conf/proxy-api.conf:/etc/nginx/nginx.conf
   # Caliopen APIv2
   api:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.go-api
+    image: caliopen_api
     ## this very bad config for a public machine
-    network_mode: "host"
-    extra_hosts:
-      - "apiv1.dev.caliopen.org:127.0.0.1"
-      - "redis.dev.caliopen.org:127.0.0.1"
-      - "cassandra.dev.caliopen.org:127.0.0.1"
-      - "nats.dev.caliopen.org:127.0.0.1"
-      - "es.dev.caliopen.org:127.0.0.1"
-      - "minio.dev.caliopen.org:127.0.0.1"
+    links:
+      - redis:redis
+      - cassandra:cassandra
+      - elasticsearch:elasticsearch
+      - nats:nats
+      - object_store:minio
     ports:
-      - "31415:31415"
-
+      - "6544:6544"
+    volumes:
+      - ../src/backend/configs:/etc/caliopen
   # Caliopen APIv1
   apiv1:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.py-api
+    image: caliopen_apiv1
     links:
-      - redis:redis.dev.caliopen.org
-      - cassandra:cassandra.dev.caliopen.org
-      - elasticsearch:es.dev.caliopen.org
+      - redis:redis
+      - cassandra:cassandra
+      - elasticsearch:elasticsearch
     ports:
       - "6543:6543"
+    volumes:
+      - ../src/backend/configs:/etc/caliopen
 
   # ### Redis Database
   #
@@ -80,39 +93,45 @@ services:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.cli
+    image: caliopen_cli
     links:
-      - cassandra:cassandra.dev.caliopen.org
-      - elasticsearch:es.dev.caliopen.org
-      - broker:broker.dev.caliopen.org
+      - cassandra:cassandra
+      - elasticsearch:elasticsearch
+      - broker:broker
     environment:
       CQLENG_ALLOW_SCHEMA_MANAGEMENT: 1
     volumes:
       - .:/srv/caliopen/src/backend/devtools
+      - ../src/backend/configs:/etc/caliopen
 
   # Caliopen frontend
   frontend:
     build:
       context: ../src/frontend/web_application
-    network_mode: "host"
+    image: caliopen_frontend
     ports:
       - "4000:4000"
-    extra_hosts:
-      - "api.dev.caliopen.org:127.0.0.1"
-
+    links:
+      - proxy-api:proxy-api
+    environment:
+      CALIOPEN_API_HOSTNAME: proxy-api
   # Broker
   broker:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.go-lmtp
+    image: caliopen_broker
     links:
-      - cassandra:cassandra.dev.caliopen.org
-      - elasticsearch:es.dev.caliopen.org
-      - object_store:minio.dev.caliopen.org
-      - nats:nats.dev.caliopen.org
-      - message_handler:mc.dev.caliopen.org
-      - inbucket:smtp.dev.caliopen.org
+      - cassandra:cassandra
+      - elasticsearch:elasticsearch
+      - object_store:minio
+      - nats:nats
+      - inbucket:inbucket
     ports:
       - "2525:2525"
+    volumes:
+      - ../src/backend/configs:/etc/caliopen
+
   # NATS
   nats:
     image: nats:0.9.6
@@ -123,11 +142,14 @@ services:
   message_handler:
     build:
       context: ../src/backend
-      dockerfile: Dockerfile.message_handler
+      dockerfile: Dockerfile.message-handler
+    image: caliopen_message_handler
     links:
-      - cassandra:cassandra.dev.caliopen.org
-      - elasticsearch:es.dev.caliopen.org
-      - nats:nats.dev.caliopen.org
+      - cassandra:cassandra
+      - elasticsearch:elasticsearch
+      - nats:nats
+    volumes:
+      - ../src/backend/configs:/etc/caliopen
 
   # object storage
   object_store:
@@ -135,31 +157,37 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ../src/backend/configs:/configs
+      - ../src/backend/configs/minio:/etc/caliopen/minio
       - store:/export
     command:
-      server --address :9090 -C /configs/minio /export
+      server --address :9090 -C /etc/caliopen/minio /export
 
   # Worker for remote identities
   identity_worker:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.identity-worker
+    image: caliopen_imapworker
     links:
-      - cassandra:cassandra.dev.caliopen.org
-      - object_store:minio.dev.caliopen.org
-      - elasticsearch:es.dev.caliopen.org
-      - nats:nats.dev.caliopen.org
+      - cassandra:cassandra
+      - object_store:minio
+      - elasticsearch:elasticsearch
+      - nats:nats
+    volumes:
+      - ../src/backend/configs:/etc/caliopen
 
   # Poller for remote identities
   identity_poller:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.identity-poller
+    image: caliopen_idpoller
     links:
-      - identity_worker:identityworker.dev.caliopen.org
-      - cassandra:cassandra.dev.caliopen.org
-      - nats:nats.dev.caliopen.org
+      - identity_worker:imapworker
+      - message_handler:message_handler
+      - nats:nats
+    volumes:
+      - ../src/backend/configs:/etc/caliopen
 
   # Inbucket : a small smtp server to catch all outgoing emails for testing purpose
   # point your browser at localhost:8888

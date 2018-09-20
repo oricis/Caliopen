@@ -12,7 +12,7 @@ import logging
 
 import requests
 
-from .base import BaseDiscovery
+from .base import BaseDiscovery, DiscoveryResult
 
 log = logging.getLogger(__name__)
 
@@ -52,14 +52,18 @@ def parse_search_result(lines):
 
 class HKPDiscovery(BaseDiscovery):
 
-    DEFAULT_HKP_URL = 'http://pgp.mit.edu/pks/lookup'
+    DEFAULT_HKP_URL = 'https://pgp.mit.edu/pks/lookup'
+    DEFAULT_TIMEOUT = 10
+
+    _types = ['email']
 
     def __init__(self, conf):
         self.url = conf.get('url', self.DEFAULT_HKP_URL)
+        self.timeout = conf.get('timeout', self.DEFAULT_TIMEOUT)
 
-    def find_by_mail(self, email):
+    def lookup_identity(self, identity, type_):
         """Find pgp keys by user email."""
-        pub_keys = self._search_keys(email)
+        pub_keys = self._search_keys(identity)
         result_keys = []
         for key in pub_keys:
             asc_key = self._search_key(key)
@@ -68,12 +72,12 @@ class HKPDiscovery(BaseDiscovery):
             else:
                 txt_key = asc_key.encode('utf-8').rstrip()
                 result_keys.extend(self._parse_key(txt_key))
-        return result_keys
+        return DiscoveryResult(result_keys)
 
     def _search_keys(self, email):
         encoded = urllib.quote(email)
         url = '{}?search={}&op=index&options=mr'.format(self.url, encoded)
-        res = requests.get(url)
+        res = requests.get(url, timeout=self.timeout)
         if res.status_code != 200:
             log.error('HKP discover status {} for {}'.
                       format(res.status_code, email))
@@ -91,7 +95,7 @@ class HKPDiscovery(BaseDiscovery):
 
     def _search_key(self, keyid):
         url = '{}?search=0x{}&op=get&options=mr'.format(self.url, keyid)
-        res = requests.get(url)
+        res = requests.get(url, timeout=self.timeout)
         if res.status_code != 200:
             log.error('HKP discover status {} for {}'.
                       format(res.status_code, keyid))

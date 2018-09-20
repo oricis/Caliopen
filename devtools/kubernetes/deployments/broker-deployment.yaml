@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: broker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: broker
+  #strategy:
+  #  type: Recreate / RollingUpdate
+  #    maxUnavailable:
+  template:
+    metadata:
+      labels:
+        type: broker
+        tier: backend
+        app: broker
+    spec:
+      containers:
+      - image: public-registry.caliopen.org/caliopen_broker:develop
+        imagePullPolicy: Always
+        name: broker
+        ports:
+        - containerPort: 2525
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/caliopen
+      volumes:
+      - name: config-volume
+        configMap:
+          name: caliopen-config
+          items:
+          - key: lmtp.yaml
+            path: lmtp.yaml

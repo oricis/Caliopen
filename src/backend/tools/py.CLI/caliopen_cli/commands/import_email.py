@@ -62,7 +62,7 @@ def import_email(email, import_path, format, contact_probability,
             mode = 'mbox'
             emails = mbox(import_path)
 
-    user = User.by_local_identity(dest_email)
+    user = User.by_local_identifier(dest_email, 'smtp')
 
     log.info("Processing mode %s" % mode)
 

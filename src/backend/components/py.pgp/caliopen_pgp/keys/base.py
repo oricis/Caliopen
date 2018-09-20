@@ -11,19 +11,17 @@ log = logging.getLogger(__name__)
 
 
 class PGPUserId(object):
-
     """PGP UserId related to a key."""
 
     def __init__(self, name, email, is_primary, comment=None, signers=None):
         self.name = name
         self.email = email
-        self.is_primay = is_primary
+        self.is_primary = is_primary
         self.comment = comment
         self.signers = signers if signers else set()
 
 
 class PGPPublicKey(object):
-
     """PGP public key representation."""
 
     _map_algos = {
@@ -44,7 +42,7 @@ class PGPPublicKey(object):
         self._pgpkey = public_key
         self.version = public_key._key.header.version
         self.created = public_key.created
-        # self.expire_at = public_key.expire_at
+        self.expire_date = public_key.expires_at
         self.is_expired = public_key.is_expired
         self.keyid = public_key.fingerprint.keyid
         self.fingerprint = public_key.fingerprint.replace(' ', '')
@@ -69,10 +67,41 @@ class PGPPublicKey(object):
         return [PGPUserId(u.name, u.email, u.is_primary, u.comment, u.signers)
                 for u in ids]
 
+    @property
+    def armored_key(self):
+        """Return the armored key."""
+        return str(self._pgpkey)
+
+
+class DiscoveryResult(object):
+    """Class to produce discovered public keys and extra informations."""
+
+    def __init__(self, keys, extra_identities=None):
+        self.keys = keys
+        self.identities = extra_identities if extra_identities else []
+
+    @property
+    def emails(self):
+        """Return distinct list of emails found in keys."""
+        found_emails = []
+        for key in self.keys:
+            for userid in key.userids:
+                if userid.email not in found_emails and userid.is_uid:
+                    found_emails.append(userid.email)
+                    yield userid
+
 
 class BaseDiscovery(object):
-
     """Base class for discovery and public key parsing logic."""
+
+    @property
+    def empty_result(self):
+        """No result found."""
+        return DiscoveryResult([])
+
+    def lookup_identity(self, identity, type_):
+        """Method to be implemented by sub class for discovery."""
+        raise NotImplementedError
 
     def _parse_key(self, armored):
         pgpkey = pgpy.PGPKey()

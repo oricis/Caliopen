@@ -25,8 +25,8 @@ type (
 	}
 
 	Notifier struct {
-		admin        *User          // Admin user on whose behalf actions could be done
-		adminLocalID *LocalIdentity // Admin's local identity used to send emails
+		admin        *User         // Admin user on whose behalf actions could be done
+		adminLocalID *UserIdentity // Admin's local identity used to send emails
 		config       *NotifierConfig
 		index        backends.NotificationsIndex
 		natsQueue    *nats.Conn

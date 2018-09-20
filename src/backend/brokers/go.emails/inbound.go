@@ -104,7 +104,7 @@ func (b *EmailBroker) processInboundSMTP(in *SmtpEmail, raw_only bool) {
 		log.Infof("inbound: processing envelope From: %s -> To: %v", in.EmailMessage.Email.SmtpMailFrom, in.EmailMessage.Email.SmtpRcpTo)
 	}
 
-	rcptsIds, err := b.Store.GetUsersForRecipients(in.EmailMessage.Email.SmtpRcpTo)
+	rcptsIds, err := b.Store.GetUsersForLocalMailRecipients(in.EmailMessage.Email.SmtpRcpTo)
 
 	if err != nil {
 		log.WithError(err).Warn("inbound: recipients lookup failed")

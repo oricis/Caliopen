@@ -1,0 +1,15 @@
+#polling config
+scan_interval: 15                               # in minutes. How often storage is scanned to retrieve and cache remote identities data
+remote_protocols:                               # which kind of remote protocols poller must handle
+  - imap
+#storage facility
+store_name: cassandra                           # backend for remote identities data
+store_settings:
+  hosts: # many allowed
+  - cassandra
+  keyspace: caliopen
+  consistency_level: 1
+#messaging system
+nats_url: nats://nats:4222
+nats_topics:                                    # NATS topics for each kind of remote identities
+  imap: IMAPfetcher

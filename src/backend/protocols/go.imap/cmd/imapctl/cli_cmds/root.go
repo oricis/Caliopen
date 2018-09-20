@@ -38,7 +38,7 @@ func init() {
 	RootCmd.PersistentFlags().BoolVarP(&version, "version", "V", false,
 		"print out the version of this program")
 	RootCmd.PersistentFlags().StringVarP(&configFile, "config", "c",
-		"caliopen-imap-worker_dev", "Name of the configuration file, without extension. (YAML, TOML, JSON… allowed)")
+		"imapworker", "Name of the configuration file, without extension. (YAML, TOML, JSON… allowed)")
 	RootCmd.PersistentFlags().StringVarP(&configPath, "configpath", "",
 		"../../../../configs/", "Main config file path.")
 	RootCmd.Run = func(cmd *cobra.Command, args []string) {

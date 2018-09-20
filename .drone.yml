@@ -1,0 +1,266 @@
+workspace:
+  base: /srv
+  path: caliopen
+
+clone:
+  git:
+    image: public-registry.caliopen.org/git
+
+pipeline:
+
+##################################
+##          BASE IMAGES         ##
+##################################
+
+  build-caliopen-go:
+    group: build0
+    image: plugins/docker
+    dockerfile: src/backend/Dockerfile.caliopen-go
+    context: /srv/caliopen/src/backend
+    repo: registry.caliopen.org/caliopen_go
+    registry: registry.caliopen.org
+    secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
+    when:
+      branch: develop
+      event: [ push ]
+      matrix:
+        STEP: pre
+
+#######################################################
+##               TEST ON BRANCH PUSHES               ##
+#######################################################
+
+  test-go:
+    group: test
+    image: public-registry.caliopen.org/caliopen_go
+    environment:
+      - PROG=${PROG}
+    when:
+      branch: [ develop ]
+      event: [ pull_request, push ]
+      matrix:
+        LANG: go
+    commands:
+      - . devtools/drone/files_changed.sh
+      - . devtools/drone/test_go.sh
+
+  test-py:
+    group: test
+    image: public-registry.caliopen.org/caliopen_python
+    environment:
+      - CALIOPEN_BASEDIR=/srv/caliopen
+    when:
+      branch: [ develop ]
+      event: [ pull_request, push ]
+      matrix:
+        LANG: python
+    commands:
+      - . devtools/drone/files_changed.sh
+      - . devtools/drone/test_py.sh
+
+  test-frontend:
+    group: test
+    image: node:8
+    when:
+      branch: [ develop ]
+      event: [ pull_request, push ]
+      matrix:
+        LANG: js
+    secrets: [ SAUCE_USERNAME , SAUCE_ACCESS_KEY, SAUCE_ADDRESS ]
+    environment:
+      - SAUCE_PORT=4445
+      - FRONTEND_ADDRESS=172.17.0.2
+    commands:
+      - . devtools/drone/files_changed.sh
+      - . devtools/drone/test_front.sh
+
+#########################################################
+##          BUILD AND PUBLISH ON DEVELOP PUSH          ##
+#########################################################
+
+  # Python develop images
+  build-py-develop:
+    group: build1
+    image: public-registry.caliopen.org/caliopen_drone_docker
+    privileged: true
+    secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD, DOCKER_REGISTRY]
+    environment:
+      - PROG=${PROG}
+      - PLUGIN_DOCKERFILE=${BASE_DIR}/${DOCKERFILE}
+      - PLUGIN_CONTEXT=/srv/caliopen/${BASE_DIR}
+      - PLUGIN_REPO=registry.caliopen.org/${REPO}
+    when:
+      branch: [ develop ]
+      event: [ push ]
+      matrix:
+        LANG: python
+    commands:
+      - export PLUGIN_TAGS=develop,${DRONE_COMMIT_SHA}
+      - . devtools/drone/get_py_dependencies.sh # Get the list of dependencies
+      - . devtools/drone/files_changed.sh # Check if any file has been modified
+      - . devtools/drone/build_images.sh # Build docker image
+
+  # GO develop images
+  build-go-develop:
+    group: build2
+    image: public-registry.caliopen.org/caliopen_drone_docker
+    privileged: true
+    secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD, DOCKER_REGISTRY]
+    environment:
+      - PROG=${PROG}
+      - PLUGIN_DOCKERFILE=${BASE_DIR}/${DOCKERFILE}
+      - PLUGIN_CONTEXT=/srv/caliopen/${BASE_DIR}
+      - PLUGIN_REPO=registry.caliopen.org/${REPO}
+    when:
+      branch: [ develop ]
+      event: [ push ]
+      matrix:
+        LANG: go
+    commands:
+      - export PLUGIN_TAGS=develop,${DRONE_COMMIT_SHA}
+      - . devtools/drone/get_go_dependencies.sh
+      - . devtools/drone/files_changed.sh
+      - . devtools/drone/build_images.sh
+
+  # Frontend develop image
+  build-frontend-develop:
+    group: build3
+    image: public-registry.caliopen.org/caliopen_drone_docker
+    privileged: true
+    secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD, DOCKER_REGISTRY ]
+    environment:
+      - PLUGIN_DOCKERFILE=${BASE_DIR}/${DOCKERFILE}
+      - PLUGIN_CONTEXT=/srv/caliopen/${BASE_DIR}
+      - PLUGIN_REPO=registry.caliopen.org/${REPO}
+    when:
+      branch: [ develop ]
+      event: [ push ]
+      matrix:
+        LANG: js
+    commands:
+      - export PLUGIN_TAGS=develop,${DRONE_COMMIT_SHA}
+      - . devtools/drone/files_changed.sh
+      - . devtools/drone/build_images.sh
+
+#########################################################
+##          BUILD AND PUBLISH ON TAG: RELEASE-         ##
+#########################################################
+
+# Build all backend images
+  build-all-release:
+    group: build1
+    image: plugins/docker
+    dockerfile: ${BASE_DIR}/${DOCKERFILE}
+    context: /srv/caliopen/${BASE_DIR}
+    repo: registry.caliopen.org/${REPO}
+    secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD, DOCKER_REGISTRY ]
+    when:
+      ref: [ "refs/tags/release-*" ]
+      event: [ tag ]
+      matrix:
+        exclude:
+          STEP: pre
+    tags:
+      - latest
+      - ${DRONE_TAG##release-}
+
+#######################################################
+##           UPDATE K8S STAGE DEPLOYMENTS            ##
+#######################################################
+
+# Strategy update + non modified tag = force image pull, does not need tag
+# Strategy modify + set new tag = new image pulled
+  # deploy-staging:
+  #   group: deploy
+  #   image: public-registry.caliopen.org/drone_kubernetes
+  #   pull: true
+  #   deployment: frontend
+  #   container: frontend
+  #   namespace: stage
+  #   repo: public-registry.caliopen.org/frontend:develop
+  #   strategy: update
+  #   secrets: [ KUBERNETES_CLIENT_CRT , KUBERNETES_CLIENT_KEY, KUBERNETES_CERT, KUBERNETES_SERVER ]
+  #   tag: develop
+  #   when:
+  #     branch: develop
+  #     event: [ push ]
+  
+#######################################################
+##             SERVICES NEEDED FOR TESTS             ##
+#######################################################
+
+services:
+  redis:
+    image: redis
+    when:
+      branch: [ develop ]
+      event: [ pull_request, push ]
+      matrix:
+        LANG: go
+  nats:
+    image: nats
+    when:
+      branch: [ develop ]
+      event: [ pull_request, push ]
+      matrix:
+        LANG: go
+
+  cassandra:
+    image: cassandra:2.1
+    when:
+      branch: [ develop ]
+      event: [ pull_request, push ]
+      matrix:
+        LANG: go
+
+matrix:
+  include:
+    - STEP: pre
+
+    - PROG: interfaces/REST/go.server/cmd/caliopen_rest
+      DOCKERFILE: Dockerfile.go-api
+      REPO: caliopen_api
+      BASE_DIR: src/backend
+      LANG: go
+
+    - PROG: protocols/go.smtp/cmd/caliopen_lmtpd
+      DOCKERFILE: Dockerfile.go-lmtp
+      REPO: caliopen_broker
+      BASE_DIR: src/backend
+      LANG: go
+
+    - PROG: workers/go.remoteIDs/cmd/idpoller
+      DOCKERFILE: Dockerfile.identity-poller
+      REPO: caliopen_identity_poller
+      BASE_DIR: src/backend
+      LANG: go
+
+    - PROG: protocols/go.imap/cmd/imapworker
+      DOCKERFILE: Dockerfile.identity-worker
+      REPO: caliopen_identity_worker
+      BASE_DIR: src/backend
+      LANG: go
+
+    - PROG: tools/py.CLI
+      DOCKERFILE: Dockerfile.cli
+      REPO: caliopen_cli
+      BASE_DIR: src/backend
+      LANG: python
+
+    - PROG: interfaces/REST/py.server
+      DOCKERFILE: Dockerfile.py-api
+      REPO: caliopen_apiv1
+      BASE_DIR: src/backend
+      LANG: python
+
+    - PROG: interfaces/NATS/py.client
+      DOCKERFILE: Dockerfile.message-handler
+      REPO: caliopen_message_handler
+      BASE_DIR: src/backend
+      LANG: python
+
+    - PROG: caliopen_frontend
+      DOCKERFILE: Dockerfile
+      REPO: caliopen_frontend
+      BASE_DIR: src/frontend/web_application
+      LANG: js

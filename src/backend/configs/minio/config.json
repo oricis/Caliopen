@@ -1,11 +1,12 @@
 {
-	"version": "23",
+	"version": "26",
 	"credential": {
 		"accessKey": "CALIOPEN_ACCESS_KEY_",
 		"secretKey": "CALIOPEN_SECRET_KEY_BE_GOOD_AND_LIVE_OLD"
 	},
 	"region": "eu-fr-localhost",
 	"browser": "off",
+	"worm": "off",
 	"domain": "",
 	"storageclass": {
 		"standard": "",
@@ -14,6 +15,7 @@
 	"cache": {
 		"drives": [],
 		"expiry": 90,
+		"maxuse": 80,
 		"exclude": []
 	},
 	"notify": {

@@ -42,7 +42,7 @@ class RemoteIdentitySettings extends Component {
     const { onRemoteIdentityChange, onRemoteIdentityDelete } = this.props;
 
     return (
-      <div className="s-settings-identities__identity" key={remoteIdentity.remote_id}>
+      <div className="s-settings-identities__identity" key={remoteIdentity.entity_id}>
         <IdentityForm
           remoteIdentity={remoteIdentity}
           onRemoteIdentityChange={onRemoteIdentityChange}

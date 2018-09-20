@@ -9,6 +9,8 @@ package objects
 const (
 	// protocols' strings
 	EmailProtocol     = "email"
+	ImapProtocol      = "imap"
+	SmtpProtocol      = "smtp"
 	IrcProtocol       = "irc"
 	SmsProtocol       = "sms"
 	XmppProtocol      = "xmpp"
@@ -31,6 +33,8 @@ const (
 	Nats_outSMTP_topicKey  = "outSMTP_topic"
 	Nats_inSMTP_topicKey   = "inSMTP_topic"
 	Nats_Contacts_topicKey = "contacts_topic"
+	Nats_outIMAP_topicKey  = "outIMAP_topic"
+	Nats_DiscoverKey_topicKey = "keys_topic"
 
 	//participant types
 	ParticipantBcc     = "Bcc"
@@ -43,6 +47,10 @@ const (
 	//notifications types
 	NotifAdminMail     = "adminMail"
 	NotifPasswordReset = "passwordReset"
+
+	//identity types
+	LocalIdentity  = "local"
+	RemoteIdentity = "remote"
 )
 
 // A Initiator specifies what kind of actor is triggering a PATCH method on any object

@@ -8,10 +8,10 @@ package objects
 
 import (
 	"encoding/json"
-	"math/big"
-	"time"
 	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
+	"math/big"
+	"time"
 )
 
 type User struct {
@@ -43,8 +43,8 @@ type Auth_cache struct {
 	Expires_in    int       `json:"expires_in"`
 	Expires_at    time.Time `json:"expires_at"`
 	Refresh_token string    `json:"refresh_token"`
-	Curve		  string    `json:"curve"`
-	X             big.Int 	`json:"x"`
+	Curve         string    `json:"curve"`
+	X             big.Int   `json:"x"`
 	Y             big.Int   `json:"y"`
 	Key_id        string    `json:"key_id"`
 }
@@ -197,6 +197,10 @@ func (ac *Auth_cache) UnmarshalJSON(b []byte) error {
 		Expires_in    int    `json:"expires_in"`
 		Expires_at    string `json:"expires_at"`
 		Refresh_token string `json:"refresh_token"`
+		Curve		  string    `json:"curve"`
+		X             big.Int 	`json:"x"`
+		Y             big.Int   `json:"y"`
+		Key_id        string    `json:"key_id"`
 	}
 	if err := json.Unmarshal(b, &temp); err != nil {
 		return err
@@ -209,5 +213,9 @@ func (ac *Auth_cache) UnmarshalJSON(b []byte) error {
 	}
 	ac.Expires_at = expire
 	ac.Refresh_token = temp.Refresh_token
+	ac.Key_id = temp.Key_id
+	ac.X = temp.X
+	ac.Y = temp.Y
+	ac.Curve = temp.Curve
 	return nil
 }

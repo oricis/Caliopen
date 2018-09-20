@@ -28,7 +28,7 @@ var (
 
 func init() {
 	serveCmd.PersistentFlags().StringVarP(&configFile, "config", "c",
-		"caliopen-go-lmtp_dev", "Name of the configuration file, without extension. (YAML, TOML, JSON… allowed)")
+		"lmtp", "Name of the configuration file, without extension. (YAML, TOML, JSON… allowed)")
 	serveCmd.PersistentFlags().StringVarP(&configPath, "configpath", "",
 		"../../../../configs/", "Main config file path.")
 	serveCmd.PersistentFlags().StringVarP(&pidFile, "pid-file", "p",
@@ -77,10 +77,10 @@ func serve(cmd *cobra.Command, args []string) {
 			if _, err := f.WriteString(fmt.Sprintf("%d", os.Getpid())); err == nil {
 				f.Sync()
 			} else {
-				log.WithError(err).Fatalf("Error while writing pidFile (%s)", pidFile)
+				log.WithError(err).Warnf("Error while writing pidFile (%s)", pidFile)
 			}
 		} else {
-			log.WithError(err).Fatalf("Error while creating pidFile (%s)", pidFile)
+			log.WithError(err).Warnf("Error while creating pidFile (%s)", pidFile)
 		}
 	}
 

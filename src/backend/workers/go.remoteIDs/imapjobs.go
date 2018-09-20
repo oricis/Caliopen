@@ -20,7 +20,7 @@ type imapJob struct {
 }
 
 func (j imapJob) Run() {
-	msg, err := json.Marshal(IMAPfetchOrder{
+	msg, err := json.Marshal(IMAPorder{
 		Order:    "sync",
 		UserId:   j.userId,
 		RemoteId: j.remoteId,

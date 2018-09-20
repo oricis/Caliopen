@@ -12,24 +12,18 @@ from ..base.context import DefaultContext
 from .util import create_token
 
 from ..base import Api
-from ..base.exception import AuthenticationError, NotAcceptable, Unprocessable
+from ..base.exception import AuthenticationError, NotAcceptable
+from ..base.exception import Unprocessable, ValidationError, MethodFailure
 
 from caliopen_storage.exception import NotFound
 from caliopen_main.common.core import PublicKey
 from caliopen_main.user.core import User
-from caliopen_main.user.parameters import NewUser, NewRemoteIdentity, Settings
-from caliopen_main.user.returns.user import ReturnUser, ReturnRemoteIdentity
+from caliopen_main.user.parameters import NewUser, Settings
+from caliopen_main.user.returns.user import ReturnUser
 from caliopen_main.contact.parameters import NewContact, NewEmail
 from caliopen_main.device.core import Device
 
 log = logging.getLogger(__name__)
-
-
-class FakeDevice(object):
-    """Fake device needed until we do not enforce device parameter."""
-
-    device_id = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
-    status = 'fake'
 
 
 def get_device_sig_key(user, device):
@@ -108,7 +102,7 @@ class AuthenticationAPI(Api):
                               % device.device_id)
 
         else:
-            device = FakeDevice()
+            raise ValidationError(detail='No device informations')
 
         access_token = create_token()
         refresh_token = create_token(80)
@@ -129,10 +123,10 @@ class AuthenticationAPI(Api):
                                  'x': key.x,
                                  'y': key.y,
                                  'curve': key.crv})
-        self.request.cache.set(cache_key, session_data)
+        else:
+            raise MethodFailure(detail='No public key found for device')
 
-        # XXX to remove when all authenticated API will use X-Device-ID
-        self.request.cache.set(user.user_id, tokens)
+        self.request.cache.set(cache_key, session_data)
 
         return {'user_id': user.user_id,
                 'username': user.name,
@@ -223,4 +217,3 @@ class MeUserAPI(Api):
         user_id = self.request.authenticated_userid.user_id
         user = User.get(user_id)
         return ReturnUser.build(user).serialize()
-

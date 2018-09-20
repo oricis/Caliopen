@@ -89,7 +89,9 @@ class DiscussionIndexManager(object):
                                         max_il)
         discussions = []
         for discus in list:
-            message = self.get_last_message(discus['key'], min_il, max_il, True)
+            message = self.get_last_message(discus['key'],
+                                            min_il, max_il,
+                                            True)
             discussion = DiscussionIndex(discus['key'])
             discussion.total_count = discus['doc_count']
             discussion.last_message = message

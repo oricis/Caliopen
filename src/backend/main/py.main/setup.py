@@ -14,8 +14,6 @@ with open(os.path.join(*([here] + name.split('.') + ['__init__.py']))) as v_file
 
 requires = [
     'phonenumbers',
-    'caliopen_storage',
-    'caliopen_pi',
     'pytz',
     'zxcvbn_python',
     'validate_email',
@@ -25,6 +23,10 @@ requires = [
     'vobject',
     'minio',
 ]
+
+if (os.path.isfile('./requirements.deps')):
+    with open('./requirements.deps') as f_deps:
+        requires.extend(f_deps.read().split('\n'))
 
 extras_require = {
     'dev': [],

@@ -21,6 +21,11 @@ requires = [
     'geoip2',
 ]
 
+if (os.path.isfile('./requirements.deps')):
+    with open('./requirements.deps') as f_deps:
+        requires.extend(f_deps.read().split('\n'))
+
+
 extras_require = {
     'dev': [],
     'test': [

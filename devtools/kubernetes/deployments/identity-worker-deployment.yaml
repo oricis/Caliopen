@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identity-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: identity-worker
+  template:
+    metadata:
+      labels:
+        type: identity-worker
+        tier: remote-identities
+        app: identity-worker
+    spec:
+      containers:
+      - image: public-registry.caliopen.org/caliopen_identity_worker:develop
+        name: identity-worker
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/caliopen
+      volumes:
+      - name: config-volume
+        configMap:
+          name: caliopen-config
+          items:
+          - key: imapworker.yaml
+            path: imapworker.yaml

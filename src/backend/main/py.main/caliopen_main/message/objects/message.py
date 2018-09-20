@@ -11,6 +11,7 @@ import datetime
 import pytz
 import json
 import copy
+import hashlib
 
 from caliopen_storage.config import Configuration
 from caliopen_storage.exception import NotFound
@@ -23,16 +24,37 @@ from ..parameters.draft import Draft
 from ..core import RawMessage
 from .attachment import MessageAttachment
 from .external_references import ExternalReferences
-from caliopen_main.user.objects.identities import Identity
 from .participant import Participant
 from schematics.types import UUIDType
 from caliopen_main.message.parameters.participant import \
     Participant as IndexedParticipant
 from caliopen_main.common import errors as err
+from caliopen_main.discussion.core import Discussion, DiscussionGlobalLookup
 
 import logging
 
 log = logging.getLogger(__name__)
+
+
+def find_or_create_discussion(user, params):
+    """Find a related discussion or create a new one."""
+    addresses = [x['address'] for x in params.get('participants', [])]
+    addresses = list(set(addresses))
+    addresses.sort()
+    hashed = hashlib.sha256(''.join(addresses)).hexdigest()
+    try:
+        lookup = DiscussionGlobalLookup.get(user, hashed)
+        log.info('Found existing discussion {0}'.
+                 format(lookup.discussion_id))
+        return lookup.discussion_id
+    except NotFound:
+        # Create a new discussion
+        discussion_id = uuid.uuid4()
+        log.info('Creating new discussion {0}'.format(discussion_id))
+        Discussion.create(user=user, discussion_id=discussion_id)
+        DiscussionGlobalLookup.create(user=user, hashed=hashed,
+                                      discussion_id=discussion_id)
+        return discussion_id
 
 
 class Message(ObjectIndexable):
@@ -49,7 +71,6 @@ class Message(ObjectIndexable):
         'date_sort': datetime.datetime,
         'discussion_id': UUID,
         'external_references': ExternalReferences,
-        'identities': [Identity],
         'importance_level': types.IntType,
         'is_answered': types.BooleanType,
         'is_draft': types.BooleanType,
@@ -65,6 +86,7 @@ class Message(ObjectIndexable):
         'tags': [types.StringType],
         'type': types.StringType,
         'user_id': UUID,
+        'user_identities': [UUID],
     }
 
     _json_model = ParamMessage
@@ -91,7 +113,7 @@ class Message(ObjectIndexable):
         return json.loads(msg.json_rep)
 
     @classmethod
-    def create_draft(cls, user_id=None, **params):
+    def create_draft(cls, user, **params):
         """
         Create and save a new message (draft) for an user.
 
@@ -102,26 +124,23 @@ class Message(ObjectIndexable):
         if not strict_patch:
             allowed_properties = [
                 "body",
-                "identities",
                 "message_id",
                 "parent_id",
                 "participants",
                 "subject",
+                "user_identities",
             ]
             for key, value in params.items():
                 if key not in allowed_properties:
                     del (params[key])
 
-        if user_id is None or user_id is "":
-            raise ValueError
-
         try:
             draft_param = Draft(params, strict=strict_patch)
             if draft_param.message_id:
-                draft_param.validate_uuid(user_id)
+                draft_param.validate_uuid(user.user_id)
             else:
                 draft_param.message_id = uuid.uuid4()
-            draft_param.validate_consistency(user_id, True)
+            draft_param.validate_consistency(user.user_id, True)
         except Exception as exc:
             log.warn("draft_param error")
             log.warn(exc)
@@ -129,13 +148,13 @@ class Message(ObjectIndexable):
 
         message = Message()
         message.unmarshall_json_dict(draft_param.to_primitive())
-        message.user_id = UUID(user_id)
+        message.user_id = UUID(user.user_id)
         message.is_draft = True
         message.is_received = False
-        message.type = "email"  # TODO: type handling inferred from participants
+        message.type = "email"  # TODO: type handling from participants
         message.date = message.date_sort = message.date_insert = \
             datetime.datetime.now(tz=pytz.utc)
-
+        message.discussion_id = find_or_create_discussion(user, draft_param)
         try:
             message.marshall_db()
             message.save_db()
@@ -150,7 +169,7 @@ class Message(ObjectIndexable):
             raise exc
         return message
 
-    def patch_draft(self, patch, **options):
+    def patch_draft(self, user, patch, **options):
         """Operation specific to draft, before applying generic patch."""
         try:
             params = dict(patch)
@@ -164,7 +183,7 @@ class Message(ObjectIndexable):
             allowed_properties = [
                 "body",
                 "current_state",
-                "identities",
+                "user_identities",
                 "message_id",
                 "parent_id",
                 "participants",
@@ -201,7 +220,8 @@ class Message(ObjectIndexable):
             draft_param.message_id = UUIDType().to_native(self.message_id)
 
         if "discussion_id" not in params and self.discussion_id:
-            draft_param.discussion_id = UUIDType().to_native(self.discussion_id)
+            discussion_id = UUIDType().to_native(self.discussion_id)
+            draft_param.discussion_id = discussion_id
 
         if "parent_id" not in params and self.parent_id:
             draft_param.parent_id = UUIDType().to_native(self.parent_id)
@@ -211,10 +231,15 @@ class Message(ObjectIndexable):
 
         if "participants" not in params and self.participants:
             for participant in self_dict['participants']:
-                draft_param.participants.append(IndexedParticipant(participant))
+                indexed = IndexedParticipant(participant)
+                draft_param.participants.append(indexed)
+        if 'participants' in params and self.participants:
+            # Participants change, discussion_id must change
+            discussion_id = find_or_create_discussion(user, params)
+            self.discussion_id = discussion_id
 
-        if "identities" not in params and self.identities:
-            draft_param.identities = self_dict["identities"]
+        if "user_identities" not in params and self.user_identities:
+            draft_param.user_identities = self_dict["user_identities"]
 
         try:
             draft_param.validate_consistency(str(self.user_id), False)
@@ -232,8 +257,8 @@ class Message(ObjectIndexable):
         # remove empty UUIDs from current state if any
         if "parent_id" in current_state and current_state["parent_id"] == "":
             del (current_state["parent_id"])
-        if "discussion_id" in current_state and current_state[
-            "discussion_id"] == "":
+        if "discussion_id" in current_state and \
+           current_state["discussion_id"] == "":
             del (current_state["discussion_id"])
 
         # handle body key mapping to body_plain or body_html

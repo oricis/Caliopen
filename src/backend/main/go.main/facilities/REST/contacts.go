@@ -7,9 +7,11 @@
 package REST
 
 import (
+	"encoding/json"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
+	log "github.com/Sirupsen/logrus"
 	"github.com/bitly/go-simplejson"
 	"github.com/pkg/errors"
 	"github.com/satori/go.uuid"
@@ -119,16 +121,21 @@ func (rest *RESTfacility) PatchContact(patch []byte, userID, contactID string) e
 	var modifiedFields map[string]interface{}
 	newContact, modifiedFields, err := helpers.UpdateWithPatch(patch, current_contact, UserActor)
 	if err != nil {
-		return err
+		log.WithError(err).Warn("[discoverKey] failed to publish discover key message")
 	}
 
-	// check if title has to be re-computed
 	needNewTitle := false
-	for key, _ := range modifiedFields {
+	discoverKey := false
+
+	for key := range modifiedFields {
 		switch key {
+		// check if title has to be re-computed
 		case "AdditionalName", "FamilyName", "GivenName", "NamePrefix", "NameSuffix":
 			needNewTitle = true
 			break
+		// Check if we can try to discover a public key
+		case "Emails", "Identities":
+			discoverKey = true
 		}
 	}
 	if needNewTitle {
@@ -141,9 +148,34 @@ func (rest *RESTfacility) PatchContact(patch []byte, userID, contactID string) e
 	if err != nil {
 		return WrapCaliopenErrf(err, FailDependencyCaliopenErr, "[RESTfacility] PatchContact failed with UpdateContact error : %s", err)
 	}
+	if discoverKey {
+		err = rest.launchKeyDiscovery(current_contact, modifiedFields)
+	}
 
 	return nil
 
+}
+
+func (rest *RESTfacility) launchKeyDiscovery(current_contact *Contact, updatedFields map[string]interface{}) error {
+	go func(contact *Contact) {
+		const discover_order = "discover_key"
+		message := DiscoverKeyMessage{Order: discover_order,
+			ContactId: current_contact.ContactId.String(),
+			UserId:    current_contact.UserId.String()}
+		if value, ok := updatedFields["Emails"]; ok {
+			message.Emails = value.([]EmailContact)
+		}
+		if value, ok := updatedFields["Identities"]; ok {
+			message.Identities = value.([]SocialIdentity)
+		}
+		natsMessage, err := json.Marshal(message)
+		if err != nil {
+			return
+		}
+		log.Infof("Will publish nats topic %s for message %s", rest.natsTopics[Nats_DiscoverKey_topicKey], string(natsMessage))
+		rest.PublishOnNats(string(natsMessage), rest.natsTopics[Nats_DiscoverKey_topicKey])
+	}(current_contact)
+	return nil
 }
 
 // UpdateContact updates a contact in store & index with payload

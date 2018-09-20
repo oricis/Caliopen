@@ -34,7 +34,7 @@ var (
 
 func init() {
 	startCmd.PersistentFlags().StringVarP(&configFile, "config", "c",
-		"caliopen-imap-worker_dev", "Name of the configuration file, without extension. (YAML, TOML, JSON… allowed)")
+		"imapworker", "Name of the configuration file, without extension. (YAML, TOML, JSON… allowed)")
 	startCmd.PersistentFlags().StringVarP(&configPath, "configpath", "",
 		"../../../../configs/", "Main config file path.")
 	startCmd.PersistentFlags().StringVarP(&pidFile, "pid-file", "p",
@@ -85,10 +85,10 @@ func start(cmd *cobra.Command, args []string) {
 			if _, err := f.WriteString(fmt.Sprintf("%d", os.Getpid())); err == nil {
 				f.Sync()
 			} else {
-				log.WithError(err).Fatalf("Error while writing pidFile (%s)", pidFile)
+				log.WithError(err).Warnf("Error while writing pidFile (%s)", pidFile)
 			}
 		} else {
-			log.WithError(err).Fatalf("Error while creating pidFile (%s)", pidFile)
+			log.WithError(err).Warnf("Error while creating pidFile (%s)", pidFile)
 		}
 	}
 

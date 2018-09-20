@@ -23,12 +23,12 @@ export function requestRemoteIdentities() {
   };
 }
 
-export function requestRemoteIdentity({ remoteId }) {
+export function requestRemoteIdentity({ identityId }) {
   return {
     type: REQUEST_REMOTE_IDENTITY,
     payload: {
       request: {
-        url: `/api/v2/identities/remotes/${remoteId}`,
+        url: `/api/v2/identities/remotes/${identityId}`,
       },
     },
   };
@@ -56,7 +56,7 @@ export function updateRemoteIdentity({ remoteIdentity, original }) {
     type: UPDATE_REMOTE_IDENTITY,
     payload: {
       request: {
-        url: `/api/v2/identities/remotes/${remoteIdentity.remote_id}`,
+        url: `/api/v2/identities/remotes/${remoteIdentity.identity_id}`,
         method: 'patch',
         data,
       },
@@ -69,7 +69,7 @@ export function deleteRemoteIdentity({ remoteIdentity }) {
     type: DELETE_REMOTE_IDENTITY,
     payload: {
       request: {
-        url: `/api/v2/identities/remotes/${remoteIdentity.remote_id}`,
+        url: `/api/v2/identities/remotes/${remoteIdentity.identity_id}`,
         method: 'delete',
       },
     },
@@ -110,11 +110,11 @@ export default function reducer(state = initialState, action) {
         remoteIdentitiesById: action.payload.data.remote_identities
           .reduce((acc, remoteIdentity) => ({
             ...acc,
-            [remoteIdentity.remote_id]: remoteIdentity,
+            [remoteIdentity.identity_id]: remoteIdentity,
           }), state.remoteIdentitiesById),
         remoteIdentities: state.didInvalidate === true ?
           [] :
-          action.payload.data.remote_identities.map(remoteIdentity => remoteIdentity.remote_id),
+          action.payload.data.remote_identities.map(remoteIdentity => remoteIdentity.identity_id),
         total: action.payload.data.total,
       };
     case REQUEST_REMOTE_IDENTITY_SUCCESS:
@@ -122,20 +122,20 @@ export default function reducer(state = initialState, action) {
         ...state,
         remoteIdentitiesById: {
           ...state.remoteIdentitiesById,
-          [action.payload.data.remote_id]: action.payload.data,
+          [action.payload.data.identity_id]: action.payload.data,
         },
       };
     case ADD_TO_COLLECTION:
       return {
         ...state,
-        remoteIdentities: [...state.remoteIdentities, action.payload.remoteIdentity.remote_id],
+        remoteIdentities: [...state.remoteIdentities, action.payload.remoteIdentity.identity_id],
         total: state.total + 1,
       };
     case REMOVE_FROM_COLLECTION:
       return {
         ...state,
         remoteIdentities: state.remoteIdentities
-          .filter(remoteId => remoteId !== action.payload.remoteIdentity.remote_id),
+          .filter(identityId => identityId !== action.payload.remoteIdentity.identity_id),
         total: state.total - 1,
       };
     case INVALIDATE:

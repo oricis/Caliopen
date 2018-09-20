@@ -12,7 +12,7 @@ import logging
 
 from dnsknife import resolver
 
-from .base import BaseDiscovery
+from .base import BaseDiscovery, DiscoveryResult
 
 from caliopen_main.common.helpers.normalize import clean_email_address
 
@@ -30,19 +30,21 @@ def compute_qname(username, domain):
 class DNSDiscovery(BaseDiscovery):
     """Class to discover OPENPGPKEY using Dns."""
 
+    _types = ['email']
+
     def __init__(self, conf):
         self.default_name_server = conf.get('name_server')
         self.resolve_timeout = conf.get('timeout', 5)
 
-    def find_by_email(self, email):
+    def lookup_identity(self, identity, type_):
         """Find for a given email an openpgp key in its DNS zone."""
-        clean = clean_email_address(email)
+        clean = clean_email_address(identity)
         local_part, domain = clean[0].split('@', 2)
         qname = compute_qname(local_part, domain)
         ns = resolver.ns_for(domain)
         if not ns:
             log.warn('No nameservers found for domain {}'.format(domain))
-            return []
+            return self.empty_result
 
         # XXX use a random one
         use_ns = ns[0]
@@ -52,14 +54,15 @@ class DNSDiscovery(BaseDiscovery):
         response = query.get()
         if not response:
             log.warn('No response for OPENPGPKEY dns query')
-            return []
+            return self.empty_result
         rrsets = response.rrset
         if not rrsets:
             log.warn('No rrsets for OPENPGPKEY dns query')
-            return []
+            return self.empty_result
         # XXX many rrset, key and signature, must be considered
         key = self._extract_key(rrsets[0])
-        return self._parse_key(key)
+        keys = self._parse_key(key)
+        return DiscoveryResult(keys)
 
     def _extract_key(self, record):
         """Extract an armored representation of key from dns record."""

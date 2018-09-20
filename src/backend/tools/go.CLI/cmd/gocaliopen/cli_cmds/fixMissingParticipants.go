@@ -24,6 +24,7 @@ import (
 	"github.com/gocql/gocql"
 	"github.com/nats-io/go-nats"
 	"github.com/spf13/cobra"
+	"os"
 	"strings"
 	"time"
 )
@@ -57,6 +58,7 @@ func fixMissingParticipants(cmd *cobra.Command, args []string) {
 	//check/get connexions to facilities
 	//store
 	var Store *store.CassandraBackend
+
 	Store, err = getStoreFacility()
 	if err != nil {
 		log.WithError(err).Fatalf("initialization of %s backend failed", apiConf.BackendName)
@@ -150,8 +152,9 @@ func fixMissingParticipants(cmd *cobra.Command, args []string) {
 	}
 
 	//get an iterator on table message and iterate over all messages
+	Store.Session.SetTrace(gocql.NewTraceWriter(Store.Session, os.Stdout))
 	Store.Session.Query(`SELECT count(*) FROM message`).Scan(&total)
-	msgIterator := Store.Session.Query(`SELECT message_id, user_id, raw_msg_id, participants FROM message`).Iter()
+	msgIterator := Store.Session.Query(`SELECT message_id, user_id, raw_msg_id, participants FROM message`).PageSize(500).NoSkipMetadata().Iter()
 	if msgIterator == nil {
 		log.Fatal("fail to get iterator on table message")
 	}
@@ -161,6 +164,9 @@ func fixMissingParticipants(cmd *cobra.Command, args []string) {
 	var participants []map[string]interface{}
 	for msgIterator.Scan(&msgId, &usrId, &rawMsgId, &participants) {
 		count++
+		if len(msgIterator.Warnings()) > 0 {
+			log.Info(msgIterator.Warnings())
+		}
 		if len(participants) == 0 {
 			handleInvalidMessage(msgId, usrId, rawMsgId)
 		}

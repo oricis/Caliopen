@@ -13,13 +13,14 @@ import (
 
 type (
 	WorkerConfig struct {
-		Workers     uint8       `mapstructure:"workers"`
-		NatsQueue   string      `mapstructure:"nats_queue"`
-		NatsTopic   string      `mapstructure:"nats_topic"`
-		NatsUrl     string      `mapstructure:"nats_url"`
-		StoreName   string      `mapstructure:"store_name"`
-		StoreConfig StoreConfig `mapstructure:"store_settings"`
-		LDAConfig   broker.LDAConfig
+		Workers          uint8       `mapstructure:"workers"`
+		NatsQueue        string      `mapstructure:"nats_queue"`
+		NatsTopicFetcher string      `mapstructure:"nats_topic_fetcher"`
+		NatsTopicSender  string      `mapstructure:"nats_topic_sender"`
+		NatsUrl          string      `mapstructure:"nats_url"`
+		StoreName        string      `mapstructure:"store_name"`
+		StoreConfig      StoreConfig `mapstructure:"store_settings"`
+		LDAConfig        broker.LDAConfig
 	}
 
 	IndexConfig struct {

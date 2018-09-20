@@ -68,7 +68,7 @@ func syncRemote(cmd *cobra.Command, args []string) {
 	}
 	defer nc.Close()
 
-	msg, err := json.Marshal(IMAPfetchOrder{
+	msg, err := json.Marshal(IMAPorder{
 		Login:    id.Login,
 		Mailbox:  id.Mailbox,
 		Order:    "sync",
@@ -81,7 +81,7 @@ func syncRemote(cmd *cobra.Command, args []string) {
 		logrus.WithError(err).Fatal("unable to marshal natsOrder")
 	}
 
-	nc.Publish(cmdConfig.NatsTopic, msg)
+	nc.Publish(cmdConfig.NatsTopicFetcher, msg)
 	nc.Flush()
 
 	if err := nc.LastError(); err != nil {

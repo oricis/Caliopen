@@ -1,0 +1,47 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cli-import
+spec:
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: "OnFailure"
+      initContainers:
+        - name: git-clone
+          image: alpine/git
+          args:
+            - clone
+            - --single-branch
+            - https://github.com/CaliOpen/Caliopen.git
+            - /caliopen
+          securityContext:
+            runAsUser: 1
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+          volumeMounts:
+          - name: caliopen-repo
+            mountPath: /caliopen
+      containers:
+      - image: public-registry.caliopen.org/caliopen_cli
+        name: cli-import
+        args: ["import", "-e", "dev@caliopen.local", "-f", "mbox", "-p", "/caliopen/devtools/fixtures/mbox/dev@caliopen.local"]
+        env:
+        - name: CQLENG_ALLOW_SCHEMA_MANAGEMENT
+          value: "1"
+        volumeMounts:
+        - name: caliopen-repo
+          mountPath: /caliopen
+        - name: config-volume
+          mountPath: /etc/caliopen
+      imagePullSecrets:
+        - name: registrypullsecret
+      volumes:
+      - name: config-volume
+        configMap:
+          name: caliopen-config
+          items:
+          - key: caliopen.yaml
+            path: caliopen.yaml
+      - name: caliopen-repo
+        emptyDir: {}

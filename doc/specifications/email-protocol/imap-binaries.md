@@ -8,7 +8,7 @@ Must be launched with the rest of Caliopen's stack.
 ## imapworker
 
 A daemon to launch before requesting any IMAP operations.  
-It needs a config file. A default one is at `src/backend/configs/caliopen-imap-worker_dev.yaml`
+It needs a config file. A default one is at `src/backend/configs/imapworker.yaml`
 
 ### dependencies
 
@@ -104,7 +104,7 @@ Invoke _imapctl_ without any command or flags to print help message.
 ## idpoller
 
 A daemon that loads remote identities from cassandra and schedule jobs accordingly.
-It needs a config file. A default one is at `src/backend/configs/caliopen-IDs-poller_dev.yaml`
+It needs a config file. A default one is at `src/backend/configs/idpoller.yaml`
 
 ### how it works :
 

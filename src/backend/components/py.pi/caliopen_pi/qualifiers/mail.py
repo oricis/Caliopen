@@ -11,7 +11,8 @@ from caliopen_storage.exception import NotFound
 from caliopen_storage.config import Configuration
 from caliopen_main.contact.core import Contact
 from caliopen_main.discussion.core import (DiscussionThreadLookup,
-                                           DiscussionListLookup)
+                                           DiscussionListLookup,
+                                           DiscussionGlobalLookup)
 # XXX use a message formatter registry not directly mail format
 from caliopen_main.message.parsers.mail import MailMessage
 from caliopen_main.discussion.core import Discussion
@@ -34,9 +35,9 @@ class UserMessageQualifier(object):
     """
 
     _lookups = {
+        'global': DiscussionGlobalLookup,
         'thread': DiscussionThreadLookup,
         'list': DiscussionListLookup,
-        # 'recipient': DiscussionRecipientLookup,
     }
 
     def __init__(self, user):
@@ -77,7 +78,7 @@ class UserMessageQualifier(object):
                 'discussion_id': message.discussion_id
             }
             lookup = kls.create(self.user, **params)
-            log.debug('Create lookup %r' % lookup)
+            log.info('Create lookup %r' % lookup)
 
     def get_participant(self, message, participant):
         """Try to find a related contact and return a Participant instance."""
