@@ -17,7 +17,8 @@ fi
 function do_backend_tests {
     # Test build of go containers
     cd ${PROJECT_DIRECTORY}/devtools
-    docker-compose build api broker
+    docker build -f ${PROJECT_DIRECTORY}/src/backend/Dockerfile.caliopen-go -t public-registry.caliopen.org/caliopen_go ../src/backend --no-cache
+    docker-compose build apiv2 lmtpd identity-poller imap-worker
     # Python unittests
     ./setup-virtualenv.sh
 
