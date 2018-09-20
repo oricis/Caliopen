@@ -18,7 +18,7 @@ function do_backend_tests {
     # Test build of backend Docker containers
     cd ${PROJECT_DIRECTORY}/devtools
     docker build -f ${PROJECT_DIRECTORY}/src/backend/Dockerfile.caliopen-go -t public-registry.caliopen.org/caliopen_go ../src/backend --no-cache
-    docker build -f ${PROJECT_DIRECTORY}/src/backend/Dockerfile.caliopen-py -t public-registry.caliopen.org/caliopen_py ../src/backend --no-cache
+    docker build -f ${PROJECT_DIRECTORY}/src/backend/Dockerfile.caliopen-python -t public-registry.caliopen.org/caliopen_py ../src/backend --no-cache
     docker-compose build apiv2 lmtpd identity-poller imap-worker apiv1 cli mq-worker
 }
 
