@@ -64,11 +64,11 @@ def discovey_key_handler(config):
     yield client.connect(**opts)
 
     # create and register subscriber(s)
-    key_subscriber = subscribers.DiscoverKeyAction(client)
-    future = client.subscribe("discoverKeyAction",
-                              "discoverKeyQueue",
+    key_subscriber = subscribers.KeyAction(client)
+    future = client.subscribe("keyAction",
+                              "keyQueue",
                               key_subscriber.handler)
-    log.info("nats subscription started for discoverKeyAction")
+    log.info("nats subscription started for keyAction")
     future.result()
 
 
