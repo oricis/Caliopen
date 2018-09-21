@@ -56,9 +56,10 @@ class InboundEmail(BaseHandler):
             self.process_raw(msg, payload)
         else:
             log.warn(
-                'Unhandled payload type {} \
+                'Unhandled payload order "{}" \
                 (queue: SMTPqueue, subject : inboundSMTP)'.format(
                     payload['order']))
+            raise NotImplementedError
 
 
 class ContactAction(BaseHandler):
@@ -76,6 +77,7 @@ class ContactAction(BaseHandler):
         qualifier = ContactMessageQualifier(user)
         log.info('Will process update for contact {0} of user {1}'.
                  format(contact.contact_id, user.user_id))
+        # TODO: (re)discover GPG keys
         qualifier.process(contact)
 
     def handler(self, msg):
@@ -86,9 +88,11 @@ class ContactAction(BaseHandler):
             self.process_update(msg, payload)
         else:
             log.warn(
-                'Unhandled payload order {} \
+                'Unhandled payload order "{}" \
                 (queue: contactQueue, subject : contactAction)'.format(
                     payload['order']))
+            raise NotImplementedError
+
 
 
 class KeyAction(BaseHandler):
@@ -150,7 +154,7 @@ class KeyAction(BaseHandler):
             self.process_key_discovery(msg, payload)
         else:
             log.warn(
-                'Unhandled payload order {} \
+                'Unhandled payload order "{}" \
                 (queue : keyQueue, subject : keyAction)'.format(
                     payload['order']))
-        return
+            raise NotImplementedError
