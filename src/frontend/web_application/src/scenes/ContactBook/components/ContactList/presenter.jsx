@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Title, Link } from '../../../../components/';
+import { withTags } from '../../../../modules/tags';
 import ContactItem from '../ContactItem';
 import { DEFAULT_SORT_DIR } from '../../presenter';
 import { getFirstLetter, formatName, getContactTitle } from '../../../../services/contact';
@@ -10,10 +11,12 @@ import './style.scss';
 
 const ALPHA = '#abcdefghijklmnopqrstuvwxyz';
 
+@withTags()
 class ContactList extends PureComponent {
   static propTypes = {
     contacts: PropTypes.arrayOf(PropTypes.shape({})),
     selectedContactsIds: PropTypes.arrayOf(PropTypes.string),
+    tags: PropTypes.arrayOf(PropTypes.string),
     contactDisplayOrder: PropTypes.string.isRequired,
     contactDisplayFormat: PropTypes.string.isRequired,
     onSelectEntity: PropTypes.func.isRequired,
@@ -21,6 +24,7 @@ class ContactList extends PureComponent {
   };
   static defaultProps = {
     contacts: [],
+    tags: [],
     selectedContactsIds: [],
     sortDir: DEFAULT_SORT_DIR,
   };
@@ -87,7 +91,7 @@ class ContactList extends PureComponent {
   render() {
     const {
       contacts, contactDisplayOrder, contactDisplayFormat: format, onSelectEntity,
-      selectedContactsIds,
+      selectedContactsIds, tags,
     } = this.props;
 
     if (!contacts.length) {
@@ -128,6 +132,7 @@ class ContactList extends PureComponent {
                     contact={contact}
                     onSelectEntity={onSelectEntity}
                     isContactSelected={selectedContactsIds.includes(contact.contact_id)}
+                    tags={tags}
                   />
                 ))}
               </div>

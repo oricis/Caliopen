@@ -8,20 +8,26 @@ class SidebarLayout extends PureComponent {
     sidebar: PropTypes.node,
     children: PropTypes.node,
     className: PropTypes.string,
+    sidebarClassName: PropTypes.string,
+    panelClassName: PropTypes.string,
   };
   static defaultProps = {
     sidebar: null,
     children: null,
     className: undefined,
+    sidebarClassName: undefined,
+    panelClassName: undefined,
   };
 
   render() {
-    const { className, sidebar, children } = this.props;
+    const {
+      className, sidebarClassName, panelClassName, sidebar, children,
+    } = this.props;
 
     return (
       <div className={classnames(className, 'm-sidebar-layout')}>
-        <div className="m-sidebar-layout__left">{sidebar}</div>
-        <div className="m-sidebar-layout__panel">{children}</div>
+        <div className={classnames(sidebarClassName, 'm-sidebar-layout__left')}>{sidebar}</div>
+        <div className={classnames(panelClassName, 'm-sidebar-layout__panel')}>{children}</div>
       </div>
     );
   }

@@ -1,15 +1,15 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import TextFieldGroup from '../../../../components/TextFieldGroup';
+import classnames from 'classnames';
 import { formatName } from '../../../../services/contact';
-
+import './style.scss';
 
 class ContactTitleField extends PureComponent {
   static propTypes = {
-    i18n: PropTypes.shape({}).isRequired,
     contact: PropTypes.shape({}).isRequired,
     contactDisplayFormat: PropTypes.string.isRequired,
     className: PropTypes.string,
+    onClick: PropTypes.func.isRequired,
   };
   static defaultProps = {
     className: undefined,
@@ -17,18 +17,16 @@ class ContactTitleField extends PureComponent {
 
   render() {
     const {
-      i18n, contact, contactDisplayFormat: format, className,
+      contact, contactDisplayFormat: format, className, onClick,
     } = this.props;
 
     return (
-      <TextFieldGroup
-        className={className}
-        label={i18n._('contact_profile.form.title.label', { defaults: 'Title' })}
-        placeholder={i18n._('contact_profile.form.title.label', { defaults: 'Title' })}
-        defaultValue={formatName({ contact, format })}
-        disabled
-        showLabelforSr
-      />
+      <button
+        className={classnames(className, 's-contact-title-field')}
+        onClick={onClick}
+      >
+        {formatName({ contact, format })}
+      </button>
     );
   }
 }
