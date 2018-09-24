@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Presenter from './presenter';
+// import Presenter from './presenter';
 
-describe('component NavigationAlt', () => {
+xdescribe('component NavigationAlt', () => {
   const applications = [];
   const translate = str => str;
 
