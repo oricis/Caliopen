@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Trans } from 'lingui-react';
+import { Trans, withI18n } from 'lingui-react';
 import { ContactAvatarLetter, SIZE_MEDIUM } from '../../../../modules/avatar';
+import { getCleanedTagCollection, getTagLabel } from '../../../../modules/tags';
 import { Link, TextBlock, Icon, Checkbox, Badge, PlaceholderBlock } from '../../../../components/';
 import { formatName } from '../../../../services/contact';
 import './style.scss';
@@ -71,6 +72,7 @@ const getMainAddresses = ({ contact }) => ['emails', 'phones', 'identities', 'im
   ];
 }, []);
 
+@withI18n()
 class ContactItem extends PureComponent {
   static propTypes = {
     contact: PropTypes.shape({}),
@@ -78,6 +80,8 @@ class ContactItem extends PureComponent {
     className: PropTypes.string,
     onSelectEntity: PropTypes.func.isRequired,
     isContactSelected: PropTypes.bool.isRequired,
+    i18n: PropTypes.func.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   };
   static defaultProps = {
     contact: undefined,
@@ -117,6 +121,14 @@ class ContactItem extends PureComponent {
     );
   }
 
+  renderTags() {
+    const { tags, contact, i18n } = this.props;
+
+    return contact.tags && getCleanedTagCollection(tags, contact.tags).map(tag => (
+      <Badge key={tag.name} rightSpaced>{getTagLabel(i18n, tag)}</Badge>
+    ));
+  }
+
   render() {
     const {
       contact, contactDisplayFormat: format, className, isContactSelected,
@@ -147,9 +159,7 @@ class ContactItem extends PureComponent {
               {contact.name_suffix && (<span className="m-contact-item__contact-suffix">, {contact.name_suffix}</span>)}
             </TextBlock>
             <div className="m-contact-item__tags">
-              {contact.tags && contact.tags.map(tag => (
-                <Badge key={tag} rightSpaced>{tag}</Badge>
-              ))}
+              {this.renderTags()}
             </div>
           </div>
         </Link>

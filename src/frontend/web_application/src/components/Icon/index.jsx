@@ -40,6 +40,7 @@ export const typeAssoc = {
   'info-circle': 'fa fa-info-circle',
   key: 'fa fa-key',
   laptop: 'fa fa-laptop',
+  'list-ul': 'fa fa-list-ul',
   lock: 'fa fa-lock',
   'map-marker': 'fa fa-map-marker',
   paperclip: 'fa fa-paperclip',

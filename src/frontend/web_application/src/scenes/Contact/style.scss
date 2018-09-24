@@ -2,56 +2,57 @@
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
 .s-contact {
-  @include flex-grid-row($size: expand);
-  padding: $co-margin ($co-margin / 2);
+  padding-bottom: map_get($co-margin_, 'xlarge');
   background: $co-color__fg__back;
 
-  &__menu-bar {
-    @include flex-grid-size(12);
+  &__tags {
+    margin-top: map_get($co-margin_, 'small');
+    margin-right: map_get($co-margin_, 'xsmall');
+    margin-bottom: map_get($co-margin_, 'small');
+    margin-left: map_get($co-margin_, 'xsmall');
   }
 
-  &__action-bar,
-  &__edit-bar {
-    @include flex-grid-row($size: expand);
-    align-items: center;
-    justify-content: space-between;
+  &__main-title,
+  &__contact-details,
+  &__keys,
+  &__form {
+    margin-right: map_get($co-margin_, 'xsmall');
+    margin-left: map_get($co-margin_, 'xsmall');
   }
 
-  &__action,
-  &__bar-title,
-  &__actions-switcher {
-    @include flex-grid-column(shrink);
+  &__details-group:not:first-of-type {
+    border-bottom: 2px solid rgba(141, 206, 236, 0.2);
   }
 
-  &__action-delete,
-  &__action {
-    line-height: $co-component__height;
-  }
-  &__action-delete {
-    @include flex-grid-size(shrink);
-    // force expanded like other action buttons
-    display: block;
-  }
-
-  &__bar-title {
-    font-weight: 600;
-  }
-
-  &__col-datas-irl {
-    @include flex-grid-column(12);
-  }
-
-  &__col-datas-online {
-    @include flex-grid-column(12);
+  &__detail {
+    margin-left: 1.5rem;
   }
 
   @include breakpoint(medium) {
-    &__col-datas-irl { @include flex-grid-column(4); }
-    &__col-datas-online { @include flex-grid-column(8); }
+    &__main-title,
+    &__contact-details,
+    &__keys,
+    &__last-messages,
+    &__tags,
+    &__form {
+      margin-right: map_get($co-margin_, 'large');
+      margin-left: map_get($co-margin_, 'large');
+    }
+
+    &__tags {
+      text-align: right;
+    }
   }
 
   @include breakpoint(large) {
-    &__col-datas-irl { @include flex-grid-column(3); }
-    &__col-datas-online { @include flex-grid-column(9); }
+    &__main-title,
+    &__contact-details,
+    &__keys,
+    &__last-messages,
+    &__tags,
+    &__form {
+      margin-right: map_get($co-margin_, 'xlarge');
+      margin-left: map_get($co-margin_, 'xlarge');
+    }
   }
 }

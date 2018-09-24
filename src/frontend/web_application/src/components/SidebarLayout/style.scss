@@ -16,7 +16,7 @@
 
   @include breakpoint(medium) {
     &__left {
-      @include flex-grid-size(2);
+      @include flex-grid-size(shrink);
     }
 
     &__panel {

@@ -1,14 +1,13 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Trans } from 'lingui-react';
 import PropTypes from 'prop-types';
-import { Icon } from '../../../../components';
 
-class OrgaDetails extends Component {
+class OrgaDetails extends PureComponent {
   static propTypes = {
     organization: PropTypes.shape({}).isRequired,
   };
 
-  renderJobTitle() {
+  render() {
     const { organization } = this.props;
     const department = organization.department ? ` (${organization.department})` : '';
     let organizationDescription = `${(organization.job_description || organization.name)} ${department}`;
@@ -31,16 +30,6 @@ class OrgaDetails extends Component {
     }
 
     return <span title={organization.label}>{organizationDescription}</span>;
-  }
-
-  render() {
-    return (
-      <span className="m-orga-details">
-        <Icon type="briefcase" rightSpaced />
-        {this.renderJobTitle()}
-        {' '}
-      </span>
-    );
   }
 }
 
