@@ -9,6 +9,7 @@ import { UserMenu } from '../../modules/user';
 import { ScrollDetector } from '../../modules/scroll';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
+import NotificationCenter from './components/NotificationCenter';
 import PageContainer from '../PageContainer';
 import './style.scss';
 import './header.scss';
@@ -69,6 +70,7 @@ class Page extends Component {
             <Footer />
           </PageContainer>
         </BackgroundImage>
+        <NotificationCenter />
       </TabProvider>
     );
   }
