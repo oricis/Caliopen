@@ -14,10 +14,10 @@ module.exports = {
   },
   signout: () => { browser.get('/auth/signout'); },
   showAccount: () => {
-    const userMenu = element(by.css('.l-header__user'));
-    userMenu.element(by.css('.m-user-menu__dropdown-control')).click();
+    const userMenu = element(by.css('.l-header__user-menu'));
+    userMenu.element(by.css('.m-dropdown__trigger')).click();
     userMenu.element(by.cssContainingText('.m-link', 'Account')).click();
-    userMenu.element(by.css('.m-user-menu__dropdown-control')).click();
+    userMenu.element(by.css('.m-dropdown__trigger')).click();
 
     return browser.wait(EC.urlContains('user/profile'), 5 * 1000);
   },
