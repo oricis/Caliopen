@@ -7,7 +7,7 @@ import { withSearchParams } from '../../modules/routing';
 import Presenter from './presenter';
 
 const searchSelector = state => state.search;
-const searchParamsSelector = (state, { term, doctype }) => ({ term, doctype });
+const searchParamsSelector = (state, { searchParams: { term, doctype } }) => ({ term, doctype });
 
 const mapStateToProps = createSelector(
   [searchParamsSelector, searchSelector],

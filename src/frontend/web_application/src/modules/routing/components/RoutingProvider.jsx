@@ -174,9 +174,9 @@ class RoutingProvider extends Component {
               component: SearchResults,
               app: 'discussion',
               tab: {
-                type: 'default',
+                type: 'search',
                 icon: 'search',
-                renderLabel: () => i18n._('route.search-results.label', { defaults: 'New contact' }),
+                renderLabel: ({ term }) => i18n._('route.search-results.label', { defaults: 'Results for: {term}', values: { term } }),
                 tabMatch: tabMatchRoute,
               },
             },
