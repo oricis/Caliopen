@@ -41,20 +41,6 @@ def generate_user_shard_id(user_id):
     return user_id.hex
 
 
-class LocalIdentity(BaseCore):
-    """User local identity core class."""
-
-    _model_class = ModelLocalIdentity
-    _pkey_name = 'identifier'
-
-
-class RemoteIdentity(BaseUserCore):
-    """User remote identity core class."""
-
-    _model_class = ModelRemoteIdentity
-    _pkey_name = 'identifier'
-
-
 class Tag(BaseUserCore):
     """Tag core object."""
 
