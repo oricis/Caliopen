@@ -91,7 +91,7 @@
     "react-moment": "^0.7.0",
     "react-redux": "^5.0.7",
     "react-redux-notify": "^4.0.0",
-    "react-router-dom": "^4.2.2",
+    "react-router-dom": "^4.3.1",
     "react-swipeable": "^4.2.1",
     "react-tappable": "^1.0.4",
     "react-visibility-sensor": "^3.11.0",
