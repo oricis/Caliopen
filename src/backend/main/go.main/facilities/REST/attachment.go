@@ -15,7 +15,7 @@ import (
 	"strconv"
 )
 
-func (rest *RESTfacility) AddAttachment(user *UserInfo, message_id, filename, content_type string, file io.Reader) (attachmentPath string, err error) {
+func (rest *RESTfacility) AddAttachment(user *UserInfo, message_id, filename, content_type string, file io.Reader) (tempId string, err error) {
 	//check if message_id belongs to user and is a draft
 	msg, err := rest.store.RetrieveMessage(user.User_id, message_id)
 	if err != nil {
@@ -67,7 +67,7 @@ func (rest *RESTfacility) AddAttachment(user *UserInfo, message_id, filename, co
 	return
 }
 
-func (rest *RESTfacility) DeleteAttachment(user *UserInfo, message_id string, attchmtIndex int) error {
+func (rest *RESTfacility) DeleteAttachment(user *UserInfo, message_id string, attchmt_id string) CaliopenError {
 	//check if message_id belongs to user and is a draft and index is consistent
 	msg, err := rest.store.RetrieveMessage(user.User_id, message_id)
 	if err != nil {

@@ -28,8 +28,8 @@ type (
 		CreateContact(contact *Contact) error
 		RetrieveContacts(filter IndexSearch) (contacts []*Contact, totalFound int64, err error)
 		RetrieveContact(userID, contactID string) (*Contact, error)
-		UpdateContact(contact, oldContact *Contact, update map[string]interface{}) error
-		PatchContact(patch []byte, userID, contactID string) error
+		UpdateContact(user *UserInfo, contact, oldContact *Contact, update map[string]interface{}) error
+		PatchContact(user *UserInfo, patch []byte, userID, contactID string) error
 		DeleteContact(userID, contactID string) error
 		//identities
 		RetrieveContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error)
@@ -50,8 +50,8 @@ type (
 		GetRawMessage(raw_message_id string) (message []byte, err error)
 		//attachments
 		AddAttachment(user *UserInfo, message_id, filename, content_type string, file io.Reader) (attachmentURL string, err error)
-		DeleteAttachment(user *UserInfo, message_id string, attchmtIndex int) error
-		OpenAttachment(user_id, message_id string, attchmtIndex int) (contentType string, size int, content io.Reader, err error)
+		DeleteAttachment(user *UserInfo, message_id string, attchmt_id string) CaliopenError
+		OpenAttachment(user_id, message_id string, attchmtIndex string) (meta map[string]string, content io.Reader, err error)
 		//tags
 		RetrieveUserTags(user_id string) (tags []Tag, err CaliopenError)
 		CreateTag(tag *Tag) CaliopenError

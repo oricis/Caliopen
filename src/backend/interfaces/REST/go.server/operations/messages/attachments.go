@@ -54,7 +54,7 @@ func UploadAttachment(ctx *gin.Context) {
 	}
 	resp := struct {
 		TempId string `json:"temp_id"`
-	}{tempId}
+	}{attchmtUrl}
 	ctx.JSON(http.StatusOK, resp)
 }
 
