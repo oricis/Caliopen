@@ -12,5 +12,5 @@ export const getAngles = () => {
 export const getAveragePI = (pi) => {
   const piProps = PI_PROPERTIES;
 
-  return (piProps.reduce((acc, name) => acc + pi[name], 0)) / piProps.length;
+  return Math.round((piProps.reduce((acc, name) => acc + pi[name], 0)) / piProps.length);
 };
