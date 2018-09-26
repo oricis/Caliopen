@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import './style.scss';
 
-class Fielset extends PureComponent {
+export class Legend extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
   };
@@ -15,10 +14,9 @@ class Fielset extends PureComponent {
     const { className, ...props } = this.props;
 
     return (
-      <fieldset className={classnames('m-fieldset', className)} {...props} />
+      <legend className={classnames('m-fieldset__legend', className)} {...props} />
     );
   }
 }
 
-export { default as Legend } from './components/Legend';
-export default Fielset;
+export default Legend;

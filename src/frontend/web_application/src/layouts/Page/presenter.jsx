@@ -1,12 +1,7 @@
+/* eslint-disable */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import OffCanvas from './components/OffCanvas';
-import Header from './components/Header';
-import Navigation from './components/Navigation';
-import NavigationAlt from './components/NavigationAlt';
-import NotificationCenter from './components/NotificationCenter';
-import CallToAction from './components/CallToAction';
-import BackgroundImage from './components/BackgroundImage';
 
 import './style.scss';
 

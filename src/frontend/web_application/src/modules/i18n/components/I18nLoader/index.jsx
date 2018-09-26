@@ -9,6 +9,7 @@ const linguiDev = process.env.NODE_ENV !== 'production' ? require('lingui-i18n/d
 
 class I18nLoader extends Component {
   static propTypes = {
+    // eslint-disable-next-line react/no-unused-prop-types
     locale: PropTypes.string.isRequired,
     children: PropTypes.node,
   };

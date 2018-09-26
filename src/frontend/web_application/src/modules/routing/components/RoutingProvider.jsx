@@ -45,7 +45,7 @@ class RoutingProvider extends Component {
     i18n: PropTypes.shape({
       _: PropTypes.func.isRequired,
     }).isRequired,
-    settings: PropTypes.shape({}),
+    settings: PropTypes.shape({}).isRequired,
   };
   state = {
     routes: [],
