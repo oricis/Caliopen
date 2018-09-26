@@ -112,7 +112,7 @@ func (es *ElasticSearchBackend) GetMessagesRange(filter objects.IndexSearch) (me
 
 	// retrieve message with msg_id because search_after will not return it
 	// XXX chamal: need Userinfo filtering
-	esMsg, esErr := es.Client.Get().Index(filter.User_id.String()).Type(objects.MessageIndexType).Id(msgId).Do(context.TODO())
+	esMsg, esErr := es.Client.Get().Index(filter.Shard_id).Type(objects.MessageIndexType).Id(msgId).Do(context.TODO())
 	if esErr != nil {
 		return nil, 0, esErr
 	}
@@ -135,7 +135,7 @@ func (es *ElasticSearchBackend) GetMessagesRange(filter objects.IndexSearch) (me
 
 	// make search_after query for `after` param
 	if wantAfter {
-		searchAfter := es.Client.Search().Index(filter.User_id.String()).Type(objects.MessageIndexType)
+		searchAfter := es.Client.Search().Index(filter.Shard_id).Type(objects.MessageIndexType)
 		if filter.Offset > 0 {
 			searchAfter = searchAfter.From(filter.Offset)
 		}
@@ -154,7 +154,7 @@ func (es *ElasticSearchBackend) GetMessagesRange(filter objects.IndexSearch) (me
 
 	// make search_after query for `before` param
 	if wantBefore {
-		searchBefore := es.Client.Search().Index(filter.User_id.String()).Type(objects.MessageIndexType)
+		searchBefore := es.Client.Search().Index(filter.Shard_id).Type(objects.MessageIndexType)
 		if filter.Offset > 0 {
 			searchBefore = searchBefore.From(filter.Offset)
 		}

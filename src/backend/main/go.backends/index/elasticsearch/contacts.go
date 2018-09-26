@@ -70,7 +70,7 @@ func (es *ElasticSearchBackend) SetContactUnread(user_id, Contact_id string, sta
 }
 
 func (es *ElasticSearchBackend) FilterContacts(filter IndexSearch) (contacts []*Contact, totalFound int64, err error) {
-	search := es.Client.Search().Index(filter.User_id.String()).Type(ContactIndexType)
+	search := es.Client.Search().Index(filter.Shard_id).Type(ContactIndexType)
 	search = filter.FilterQuery(search, false).Sort("title.raw", true)
 
 	if filter.Offset > 0 {
