@@ -7,15 +7,17 @@ properties:
       type: string
   display_name:
     type: string
+  identifier:
+    type: string
   infos:          # set of key/value strings
     type: object
     additionalProperties:
       type: string
-  last_check:
+  protocol:
     type: string
-    format: date-time
-  remote_id:
-    type: string
+    enum:
+    - imap
+    - smtp
   status:
     type: string
     enum:
@@ -25,8 +27,12 @@ properties:
   type:
     type: string
     enum:
-    - imap
+    - local
+    - remote
+  user_id:
+    type: string
 required:
-- infos
-- type
+- identifier
+- protocol
+additionalProperties: false
 

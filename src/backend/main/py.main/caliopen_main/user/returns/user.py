@@ -4,9 +4,9 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 from caliopen_storage.parameters import ReturnCoreObject
-from ..core import User, RemoteIdentity
+from ..core import User, UserIdentity
 from ..parameters import User as UserParam
-from ..parameters import RemoteIdentity as RemoteIdentityParam
+from ..parameters import UserIdentity as UserIdentityParam
 
 
 class ReturnUser(ReturnCoreObject):
@@ -16,8 +16,8 @@ class ReturnUser(ReturnCoreObject):
     _return_class = UserParam
 
 
-class ReturnRemoteIdentity(ReturnCoreObject):
-    """Return object for ``RemoteIdentity`` core."""
+class ReturnUserIdentity(ReturnCoreObject):
+    """Return object for ``UserIdentity`` core."""
 
-    _core_class = RemoteIdentity
-    _return_class = RemoteIdentityParam
+    _core_class = UserIdentity
+    _return_class = UserIdentityParam

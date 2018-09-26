@@ -22,7 +22,7 @@ identities_locals:
             local_identities:
               type: array
               items:
-                "$ref": "../objects/LocalIdentity.yaml"
+                "$ref": "../objects/UserIdentity.yaml"
       '401':
         description: Unauthorized access
         schema:
@@ -51,7 +51,7 @@ identities_remotes:
             remote_identities:
               type: array
               items:
-                "$ref": "../objects/RemoteIdentity.yaml"
+                "$ref": "../objects/UserIdentity.yaml"
       '401':
         description: Unauthorized access
         schema:
@@ -69,7 +69,7 @@ identities_remotes:
       in: body
       required: true
       schema:
-        "$ref": "../objects/RemoteIdentity.yaml"
+        "$ref": "../objects/NewUserIdentity.yaml"
     produces:
     - application/json
     responses:
@@ -102,7 +102,7 @@ identities_remotes_{identifier}:
       '200':
         description: Remote identity returned
         schema:
-          "$ref": "../objects/RemoteIdentity.yaml"
+          "$ref": "../objects/UserIdentity.yaml"
       '401':
         description: Unauthorized access
         schema:
@@ -153,11 +153,11 @@ identities_remotes_{identifier}:
       schema:
         type: object
         properties:
-          "$ref": "../objects/RemoteIdentity.yaml#/properties"
+          "$ref": "../objects/UserIdentity.yaml#/properties"
           current_state:
             type: object
             properties:
-              "$ref": "../objects/RemoteIdentity.yaml#/properties"
+              "$ref": "../objects/UserIdentity.yaml#/properties"
         required:
         - current_state
     produces:

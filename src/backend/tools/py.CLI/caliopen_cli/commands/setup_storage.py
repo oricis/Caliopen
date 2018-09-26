@@ -11,6 +11,9 @@ def setup_storage(settings=None):
     from caliopen_storage.core import core_registry
     # Make discovery happen
     from caliopen_main.user.core import User
+    from caliopen_main.user.core import (UserIdentity,
+                                         IdentityLookup,
+                                         IdentityTypeLookup)
     from caliopen_main.contact.objects.contact import Contact
     from caliopen_main.message.objects.message import Message
     from caliopen_main.common.objects.tag import ResourceTag

@@ -18,7 +18,7 @@ import (
 )
 
 type Fetcher struct {
-	Store backends.IdentityStorage
+	Store backends.LDAStore
 	Lda   *Lda
 }
 
@@ -40,51 +40,51 @@ const (
 // connects to remote IMAP server to fetch new mails,
 // adds X-Fetched-Imap headers before forwarding mails to lda,
 // updates last sync data for identity in db.
-func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
+func (f *Fetcher) SyncRemoteWithLocal(order IMAPorder) error {
 
 	log.Infof("[Fetcher] will fetch mails for remote %s", order.RemoteId)
 
 	// 1. retrieve infos from db
-	rId, err := f.Store.RetrieveRemoteIdentity(order.UserId, order.RemoteId, true)
+	userId, err := f.Store.RetrieveUserIdentity(order.UserId, order.RemoteId, true)
 	if err != nil {
 		log.WithError(err).Infof("[SyncRemoteWithLocal] failed to retrieve remote identity <%s> : <%s>", order.UserId, order.RemoteId)
 		return err
 	}
 	if order.Password != "" {
-		rId.Credentials["password"] = order.Password
+		(*userId.Credentials)["inpassword"] = order.Password
 	}
 
 	// 1.2 check if a sync process is running
-	if syncing, ok := rId.Infos["syncing"]; ok {
+	if syncing, ok := userId.Infos["syncing"]; ok {
 		startDate, _ := time.Parse(time.RFC3339, syncing)
 		if time.Since(startDate)/time.Hour < failuresThreshold {
-			log.Infof("[SyncRemoteWithLocal] avoiding concurrent sync for <%s>. Syncing in progress since %s", order.RemoteId, rId.Infos["syncing"])
+			log.Infof("[SyncRemoteWithLocal] avoiding concurrent sync for <%s>. Syncing in progress since %s", order.RemoteId, userId.Infos["syncing"])
 			return nil
 		}
 	}
 	// save syncing state in db to prevent concurrent sync
-	(*rId).Infos["syncing"] = time.Now().Format(time.RFC3339)
-	f.Store.UpdateRemoteIdentity(rId, map[string]interface{}{
-		"Infos": rId.Infos,
+	(*userId).Infos["syncing"] = time.Now().Format(time.RFC3339)
+	f.Store.UpdateUserIdentity(userId, map[string]interface{}{
+		"Infos": userId.Infos,
 	})
 
 	// 2. sync/fetch with remote IMAP
 	mails := make(chan *Email)
 	lastsync := time.Time{}
-	if rId.Infos["lastsync"] != "" {
-		lastsync, err = time.Parse(time.RFC3339, rId.Infos["lastsync"])
+	if userId.Infos["lastsync"] != "" {
+		lastsync, err = time.Parse(time.RFC3339, userId.Infos["lastsync"])
 		if err != nil {
-			log.WithError(err).Warnf("[syncMails] failed to parse lastsync string <%s>", rId.Infos["lastsync"])
+			log.WithError(err).Warnf("[syncMails] failed to parse lastsync string <%s>", userId.Infos["lastsync"])
 			lastsync = time.Time{}
 		}
 	}
 	// Sync INBOX (only INBOX for now)
-	// TODO : sync other mailbox(es) from rId.Infos params or from order
-	lastseenuid, err := strconv.Atoi(rId.Infos["lastseenuid"])
+	// TODO : sync other mailbox(es) from userId.Infos params or from order
+	lastseenuid, err := strconv.Atoi(userId.Infos["lastseenuid"])
 	if err != nil {
 		log.WithError(err).Warn("[SyncRemoteWithLocal] failed to get lastseenuid")
 	}
-	uidvalidity, err := strconv.Atoi(rId.Infos["uidvalidity"])
+	uidvalidity, err := strconv.Atoi(userId.Infos["uidvalidity"])
 	if err != nil {
 		log.WithError(err).Warn("[SyncRemoteWithLocal] failed to get uidvalidity")
 	}
@@ -94,7 +94,7 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 		name:        "INBOX",
 		uidValidity: uint32(uidvalidity),
 	}
-	go f.syncMails(rId, &box, mails)
+	go f.syncMails(userId, &box, mails)
 
 	// 3. forward mails to lda as they come on mails chan
 	errs := []error{}
@@ -125,24 +125,24 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 
 	// 4. backup sync state in db
 	var fields map[string]interface{}
-	delete((*rId).Infos, "syncing")
-	if _, ok := rId.Infos[errorsCountKey]; ok {
+	delete((*userId).Infos, "syncing")
+	if _, ok := userId.Infos[errorsCountKey]; ok {
 		// if this key is in Infos then imap connection failed
 		// do not update LastCheck time
 		fields = map[string]interface{}{
-			"Infos": rId.Infos,
+			"Infos": userId.Infos,
 		}
 	} else {
-		rId.LastCheck = time.Now()
-		rId.Infos["uidvalidity"] = strconv.Itoa(int(box.uidValidity))
-		rId.Infos["lastsync"] = rId.LastCheck.Format(time.RFC3339)
-		rId.Infos["lastseenuid"] = strconv.Itoa(int(box.lastSeenUid))
+		userId.LastCheck = time.Now()
+		userId.Infos["uidvalidity"] = strconv.Itoa(int(box.uidValidity))
+		userId.Infos["lastsync"] = userId.LastCheck.Format(time.RFC3339)
+		userId.Infos["lastseenuid"] = strconv.Itoa(int(box.lastSeenUid))
 		fields = map[string]interface{}{
-			"LastCheck": rId.LastCheck,
-			"Infos":     rId.Infos,
+			"LastCheck": userId.LastCheck,
+			"Infos":     userId.Infos,
 		}
 	}
-	err = f.Store.UpdateRemoteIdentity(rId, fields)
+	err = f.Store.UpdateUserIdentity(userId, fields)
 	if err != nil {
 		log.WithError(err).Warnf("[syncMails] failed to backup sync state")
 		return err
@@ -152,16 +152,16 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPfetchOrder) error {
 	return nil
 }
 
-// FetchRemoteToLocal blindly fetches all mails from remote without retrieving/saving any state in RemoteIdentity
-func (f *Fetcher) FetchRemoteToLocal(order IMAPfetchOrder) error {
-	rId := RemoteIdentity{
+// FetchRemoteToLocal blindly fetches all mails from remote without retrieving/saving any state in UserIdentity
+func (f *Fetcher) FetchRemoteToLocal(order IMAPorder) error {
+	userId := UserIdentity{
 		UserId: UUID(uuid.FromStringOrNil(order.UserId)),
 		Infos: map[string]string{
-			"server": order.Server,
+			"inserver": order.Server,
 		},
-		Credentials: Credentials{
-			"username": order.Login,
-			"password": order.Password,
+		Credentials: &Credentials{
+			"inusername": order.Login,
+			"inpassword": order.Password,
 		},
 	}
 
@@ -172,7 +172,7 @@ func (f *Fetcher) FetchRemoteToLocal(order IMAPfetchOrder) error {
 
 	// 2. fetch remote messages
 	mails := make(chan *Email, 10)
-	go f.fetchMails(&rId, &box, mails)
+	go f.fetchMails(&userId, &box, mails)
 	//TODO errors handling
 
 	// 3. forward mails to lda
@@ -186,8 +186,8 @@ func (f *Fetcher) FetchRemoteToLocal(order IMAPfetchOrder) error {
 }
 
 // fetchMails fetches all messages from remote mailbox and returns well-formed Emails for lda.
-func (f *Fetcher) fetchMails(rId *RemoteIdentity, box *imapBox, ch chan *Email) (err error) {
-	tlsConn, imapClient, provider, err := imapLogin(rId)
+func (f *Fetcher) fetchMails(userId *UserIdentity, box *imapBox, ch chan *Email) (err error) {
+	tlsConn, imapClient, provider, err := imapLogin(userId)
 	// Don't forget to logout and close chan
 	defer func() {
 		imapClient.Logout()
@@ -195,18 +195,18 @@ func (f *Fetcher) fetchMails(rId *RemoteIdentity, box *imapBox, ch chan *Email) 
 		close(ch)
 	}()
 	if err != nil {
-		return f.handleFetchFailure(rId, WrapCaliopenErr(err, WrongCredentialsErr, "imapLogin failure"))
+		return f.handleFetchFailure(userId, WrapCaliopenErr(err, WrongCredentialsErr, "imapLogin failure"))
 	} else {
-		delete((*rId).Infos, lastErrorKey)
-		delete((*rId).Infos, errorsCountKey)
-		delete((*rId).Infos, dateFirstErrorKey)
-		delete((*rId).Infos, dateLastErrorKey)
+		delete((*userId).Infos, lastErrorKey)
+		delete((*userId).Infos, errorsCountKey)
+		delete((*userId).Infos, dateFirstErrorKey)
+		delete((*userId).Infos, dateLastErrorKey)
 	}
 
 	newMessages := make(chan *imap.Message, 10)
 	go fetchMailbox(box, imapClient, provider, newMessages) //TODO : errors handling
 	for msg := range newMessages {
-		mail, err := MarshalImap(msg, buildXheaders(tlsConn, imapClient, rId, box, msg, provider))
+		mail, err := MarshalImap(msg, buildXheaders(tlsConn, userId, box, msg, provider))
 		if err != nil {
 			//todo
 			continue
@@ -219,21 +219,22 @@ func (f *Fetcher) fetchMails(rId *RemoteIdentity, box *imapBox, ch chan *Email) 
 
 // fetchSyncMails reads last sync state for remote identity,
 // fetches new messages accordingly, and returns well-formed Emails for lda.
-func (f *Fetcher) syncMails(rId *RemoteIdentity, box *imapBox, ch chan *Email) (err error) {
+func (f *Fetcher) syncMails(userId *UserIdentity, box *imapBox, ch chan *Email) (err error) {
 
-	tlsConn, imapClient, provider, err := imapLogin(rId)
+	// Don't forget to close chan before leaving
+	defer close(ch)
+	tlsConn, imapClient, provider, err := imapLogin(userId)
 	if err != nil {
-		return f.handleFetchFailure(rId, WrapCaliopenErr(err, WrongCredentialsErr, "imapLogin failure"))
+		return f.handleFetchFailure(userId, WrapCaliopenErr(err, WrongCredentialsErr, "imapLogin failure"))
 	} else {
-		delete((*rId).Infos, lastErrorKey)
-		delete((*rId).Infos, errorsCountKey)
-		delete((*rId).Infos, dateFirstErrorKey)
-		delete((*rId).Infos, dateLastErrorKey)
+		delete((*userId).Infos, lastErrorKey)
+		delete((*userId).Infos, errorsCountKey)
+		delete((*userId).Infos, dateFirstErrorKey)
+		delete((*userId).Infos, dateLastErrorKey)
 	}
-	// Don't forget to logout and close chan
+	// Don't forget to logout
 	defer func() {
 		imapClient.Logout()
-		close(ch)
 		log.Println("Logged out")
 	}()
 
@@ -243,7 +244,7 @@ func (f *Fetcher) syncMails(rId *RemoteIdentity, box *imapBox, ch chan *Email) (
 
 	// read new messages coming from imap chan and write to lda chan
 	for msg := range newMessages {
-		xHeaders := buildXheaders(tlsConn, imapClient, rId, box, msg, provider)
+		xHeaders := buildXheaders(tlsConn, userId, box, msg, provider)
 		mail, err := MarshalImap(msg, xHeaders)
 		if err != nil {
 			//todo
@@ -257,57 +258,57 @@ func (f *Fetcher) syncMails(rId *RemoteIdentity, box *imapBox, ch chan *Email) (
 
 // handleFetchFailure logs a warn and save failure log in db.
 // If failures reach failuresThreshold, remote id is disabled and a new notification is emitted.
-func (f *Fetcher) handleFetchFailure(rId *RemoteIdentity, err CaliopenError) error {
+func (f *Fetcher) handleFetchFailure(userId *UserIdentity, err CaliopenError) error {
 
 	// ensure errors data fields are present
-	if _, ok := rId.Infos[lastErrorKey]; !ok {
-		(*rId).Infos[lastErrorKey] = ""
+	if _, ok := userId.Infos[lastErrorKey]; !ok {
+		(*userId).Infos[lastErrorKey] = ""
 	}
-	if _, ok := rId.Infos[dateFirstErrorKey]; !ok {
-		(*rId).Infos[dateFirstErrorKey] = ""
+	if _, ok := userId.Infos[dateFirstErrorKey]; !ok {
+		(*userId).Infos[dateFirstErrorKey] = ""
 	}
-	if _, ok := rId.Infos[dateLastErrorKey]; !ok {
-		(*rId).Infos[dateLastErrorKey] = ""
+	if _, ok := userId.Infos[dateLastErrorKey]; !ok {
+		(*userId).Infos[dateLastErrorKey] = ""
 	}
-	if _, ok := rId.Infos[errorsCountKey]; !ok {
-		(*rId).Infos[errorsCountKey] = "0"
+	if _, ok := userId.Infos[errorsCountKey]; !ok {
+		(*userId).Infos[errorsCountKey] = "0"
 	}
 
 	// log last error
-	(*rId).Infos[lastErrorKey] = "imap connection failed : " + err.Cause().Error()
+	(*userId).Infos[lastErrorKey] = "imap connection failed : " + err.Cause().Error()
 	// increment counter
-	count, _ := strconv.Atoi(rId.Infos[errorsCountKey])
+	count, _ := strconv.Atoi(userId.Infos[errorsCountKey])
 	count++
-	(*rId).Infos[errorsCountKey] = strconv.Itoa(count)
+	(*userId).Infos[errorsCountKey] = strconv.Itoa(count)
 
 	// update dates
 	lastDate := time.Now()
 	var firstDate time.Time
-	firstDate, _ = time.Parse(time.RFC3339, rId.Infos[dateFirstErrorKey])
+	firstDate, _ = time.Parse(time.RFC3339, userId.Infos[dateFirstErrorKey])
 	if firstDate.IsZero() {
 		firstDate = lastDate
 	}
-	(*rId).Infos[dateFirstErrorKey] = firstDate.Format(time.RFC3339)
-	(*rId).Infos[dateLastErrorKey] = lastDate.Format(time.RFC3339)
+	(*userId).Infos[dateFirstErrorKey] = firstDate.Format(time.RFC3339)
+	(*userId).Infos[dateLastErrorKey] = lastDate.Format(time.RFC3339)
 
 	// check failuresThreshold
 	if lastDate.Sub(firstDate)/time.Hour > failuresThreshold {
-		f.disableRemoteIdentity(rId)
+		f.disableRemoteIdentity(userId)
 	}
 
 	// unlock sync state
-	delete((*rId).Infos, "syncing")
+	delete((*userId).Infos, "syncing")
 
-	// udpate RemoteIdentity in db
-	return f.Store.UpdateRemoteIdentity(rId, map[string]interface{}{
-		"Infos": rId.Infos,
+	// udpate UserIdentity in db
+	return f.Store.UpdateUserIdentity(userId, map[string]interface{}{
+		"Infos": userId.Infos,
 	})
 
 }
 
-func (f *Fetcher) disableRemoteIdentity(rId *RemoteIdentity) {
-	(*rId).Status = "inactive"
-	f.Store.UpdateRemoteIdentity(rId, map[string]interface{}{
+func (f *Fetcher) disableRemoteIdentity(userId *UserIdentity) {
+	(*userId).Status = "inactive"
+	f.Store.UpdateUserIdentity(userId, map[string]interface{}{
 		"Status": "inactive",
 	})
 	f.emitNotification()

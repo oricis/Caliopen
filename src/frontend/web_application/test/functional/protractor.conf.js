@@ -1,5 +1,7 @@
 const { SpecReporter } = require('jasmine-spec-reporter');
 
+const front_url = process.env.FRONTEND_ADDRESS || 'localhost' ;
+
 const cfg = {
   SELENIUM_PROMISE_MANAGER: true,
   multiCapabilities: [
@@ -7,7 +9,7 @@ const cfg = {
       browserName: 'chrome',
       maxInstances: 1,
       chromeOptions: {
-        args: ['lang=en-US'],
+        args: ['--no-sandbox', '--disable-dev-shm-usage', '--headless', '--disable-gpu', '--disable-extensions', 'lang=en-US'],
         prefs: {
           intl: { accept_languages: 'en-US' },
         },
@@ -16,13 +18,8 @@ const cfg = {
     // {
     //   browserName: 'firefox',
     //   maxInstances: 1,
-    //   marionette: false,
-    //   'moz:firefoxOptions': {
-    //     // can't get this working :(
-    //     args: ['--UILocale en', '--safe-mode'],
-    //     prefs: {
-    //       intl: { accept_languages: 'en-US' },
-    //     },
+    //   "moz:firefoxOptions": {
+    //     args: ['-safe-mode', '-headless']
     //   },
     // },
   ],
@@ -32,7 +29,7 @@ const cfg = {
     // print: () => {},
     defaultTimeoutInterval: 70 * 1000,
   },
-  baseUrl: 'http://localhost:4000/',
+  baseUrl: `http://${front_url}:4000/`,
   onPrepare: () => {
     browser.ignoreSynchronization = true;
     browser.manage().window().setSize(1024, 768);
@@ -58,52 +55,54 @@ const cfg = {
     { package: 'protractor-console-plugin', failOnWarning: false, logWarnings: false, exclude: [/Warning:/] },
   ],
   logLevel: 'INFO',
-  debug: true,
+  debug: false,
 };
 
 if (process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY) {
   // platform config: https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/
-  const branch = (process.env.TRAVIS_PULL_REQUEST_BRANCH.length > 0) ?
-    process.env.TRAVIS_PULL_REQUEST_BRANCH :
-    process.env.TRAVIS_BRANCH;
 
   cfg.sauceUser = process.env.SAUCE_USERNAME;
   cfg.sauceKey = process.env.SAUCE_ACCESS_KEY;
+  cfg.sauceSeleniumAddress = process.env.SAUCE_ADDRESS + ':' + process.env.SAUCE_PORT + '/wd/hub';
+  cfg.sauceSeleniumUseHttp = true;
+  const branch = process.env.DRONE_BRANCH;
+
   cfg.multiCapabilities = [
+    // {
+    //   browserName: 'chrome',
+    //   platform: 'Linux',
+    //   version: '48.0',
+    //   'tunnel-identifier': 'caliopen',
+    //   name: `CaliOpen e2e - ${branch}`,
+    // },
     {
       browserName: 'firefox',
       platform: 'Linux',
-      // version is 45 max for linux, it requires to not use marionette
-      // cf. https://github.com/angular/protractor/blob/master/CHANGELOG.md#breaking-changes-1
-      marionette: false,
-      version: 'latest',
-      'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-      build: process.env.TRAVIS_JOB_NUMBER,
+      version: '45.0',
+      'tunnel-identifier': 'caliopen',
       name: `CaliOpen e2e - ${branch}`,
     },
     // {
     //   browserName: 'chrome',
-    //   platform: 'Linux',
-    //   'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-    //   build: process.env.TRAVIS_JOB_NUMBER,
+    //   platform: 'Windows 10',
+    //   version: '68.0',
+    //   'tunnel-identifier': 'caliopen',
     //   name: `CaliOpen e2e - ${branch}`,
     // },
     // {
-    //   browserName: 'Internet Explorer',
-    //   plateform: 'Windows 10',
-    //   version: 'latest',
-    //   'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-    //   build: process.env.TRAVIS_JOB_NUMBER,
+    //   browserName: 'MicrosoftEdge',
+    //   platform: 'Windows 10',
+    //   version: '16.16299',
+    //   'tunnel-identifier': 'caliopen',
     //   name: `CaliOpen e2e - ${branch}`,
     // },
     // {
-    //   browserName: 'Safari',
-    //   plateform: 'OS X 10.11',
-    //   version: 'latest ',
-    //   'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-    //   build: process.env.TRAVIS_JOB_NUMBER,
+    //   browserName: 'safari',
+    //   platform: 'macOS 10.13',
+    //   version: '11.1',
+    //   'tunnel-identifier': 'caliopen',
     //   name: `CaliOpen e2e - ${branch}`,
-    // },
+    // }
   ];
 }
 

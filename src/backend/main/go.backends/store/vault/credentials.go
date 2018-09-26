@@ -13,14 +13,14 @@ import (
 )
 
 type VaultCredentials interface {
-	CreateCredentials(rId *RemoteIdentity, cred Credentials) error
+	CreateCredentials(userIdentity *UserIdentity, cred Credentials) error
 	RetrieveCredentials(userId, remoteId string) (Credentials, error)
 	UpdateCredentials(userId, remoteId string, cred Credentials) error
 	DeleteCredentials(userId, remoteId string) error
 }
 
-func (vault *HVaultClient) CreateCredentials(rId *RemoteIdentity, cred Credentials) error {
-	return vault.UpdateCredentials(rId.UserId.String(), rId.RemoteId.String(), cred)
+func (vault *HVaultClient) CreateCredentials(userIdentity *UserIdentity, cred Credentials) error {
+	return vault.UpdateCredentials(userIdentity.UserId.String(), userIdentity.Id.String(), cred)
 }
 
 // RetrieveCrendentials gets credentials from vault, if application has read rights on vault

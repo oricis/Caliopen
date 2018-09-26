@@ -1,46 +1,31 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans, withI18n } from 'lingui-react';
-import { RadioFieldGroup, Button, Section, FormGrid, FormRow, FormColumn } from '../../../../components';
+import { Trans } from 'lingui-react';
+import { RadioFieldGroup, Button, Section, FormGrid, FormRow, FormColumn, Link, Callout } from '../../../../components';
 import RemoteIdentityEmail from '../RemoteIdentityEmail';
 
-function generateStateFromProps({ remoteIdentity }) {
-  return { remoteIdentity };
-}
-
-@withI18n()
 class IdentityForm extends Component {
   static propTypes = {
-    // eslint-disable-next-line react/no-unused-prop-types
     remoteIdentity: PropTypes.shape({}),
     onRemoteIdentityChange: PropTypes.func.isRequired,
     onRemoteIdentityDelete: PropTypes.func.isRequired,
-    i18n: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
     remoteIdentity: undefined,
   };
 
   state = {
-    type: 'imap',
-    remoteIdentity: undefined,
+    protocol: 'imap',
+    newRemoteIdentity: undefined,
   };
-
-  componentWillMount() {
-    this.setState(generateStateFromProps(this.props));
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState(generateStateFromProps(nextProps));
-  }
 
   handleCreateChange = (event) => {
     const {
       target: {
-        name, type, checked, value: inputValue,
+        name, protocol, checked, value: inputValue,
       },
     } = event;
-    const value = type === 'checkbox' ? checked : inputValue;
+    const value = protocol === 'checkbox' ? checked : inputValue;
 
     this.setState({
       [name]: value,
@@ -49,29 +34,42 @@ class IdentityForm extends Component {
 
   handleCreate = () => {
     this.setState(prevState => ({
-      remoteIdentity: {
-        type: prevState.type,
+      newRemoteIdentity: {
+        protocol: prevState.protocol,
       },
     }));
   }
 
+  handleChange = async (...params) => {
+    const { onRemoteIdentityChange } = this.props;
+    await onRemoteIdentityChange(...params);
+
+    if (this.state.newRemoteIdentity) {
+      this.setState({
+        newRemoteIdentity: undefined,
+      });
+    }
+  }
+
   handleCancel = () => {
-    this.setState(generateStateFromProps(this.props));
+    this.setState({
+      newRemoteIdentity: undefined,
+    });
   }
 
   renderType(remoteIdentity) {
     const {
-      onRemoteIdentityChange,
       onRemoteIdentityDelete,
     } = this.props;
 
-    switch (remoteIdentity.type) {
+    switch (remoteIdentity.protocol) {
       default:
       case 'imap':
         return (
           <RemoteIdentityEmail
+            key={remoteIdentity.identity_id || 'new'}
             remoteIdentity={remoteIdentity}
-            onChange={onRemoteIdentityChange}
+            onChange={this.handleChange}
             onDelete={onRemoteIdentityDelete}
             onCancel={this.handleCancel}
           />
@@ -80,16 +78,32 @@ class IdentityForm extends Component {
   }
 
   renderCreate() {
-    const { i18n } = this.props;
     const options = [
-      { value: 'imap', label: (<Trans id="remote_identity.type.mail">Mail</Trans>) },
+      { value: 'imap', label: (<Trans id="remote_identity.protocol.mail">Mail</Trans>) },
     ];
 
     return (
       <Section
         title={(<Trans id="remote_identity.add_account">Add an external account</Trans>)}
       >
-        <p className="callout warning" dangerouslySetInnerHTML={{ __html: i18n._('remote_identity.gmail_warning', { defaults: 'If you aim to add a Gmail account, please ensure that IMAP protocol is activated in your Gmail settings at <a target="_blank" rel="noopener noreferrer" href="https://mail.google.com/mail/u/0/#settings/fwdandpop"> “Forward and POP/IMAP”, </a> and that <a target="_blank" rel="noopener noreferrer" href="https://myaccount.google.com/lesssecureapps">Less secure application access</a> is activated for your Google account.' }) }} />
+        <Callout color="info">
+          <Trans id="remote_identity.how_to">
+            <p>
+              External accounts are fetched every 15 minutes.<br />
+              Currently there is no indicator to inform that the account is correctly configured
+              until first try is done.
+            </p>
+          </Trans>
+        </Callout>
+        <Callout color="warning">
+          <Trans id="remote_identity.gmail_warning">
+            <p>
+              If you aim to add a Gmail account, please ensure that IMAP protocol is activated in
+              your Gmail settings at <Link target="_blank" rel="noopener noreferrer" href="https://mail.google.com/mail/u/0/#settings/fwdandpop">“Forward and POP/IMAP”</Link>,
+              and that <Link target="_blank" rel="noopener noreferrer" href="https://myaccount.google.com/lesssecureapps">Less secure application access</Link> is activated for your Google account.
+            </p>
+          </Trans>
+        </Callout>
         <FormGrid>
           <FormRow>
             <FormColumn bottomSpace>
@@ -97,9 +111,9 @@ class IdentityForm extends Component {
                 <li>
                   <RadioFieldGroup
                     onChange={this.handleCreateChange}
-                    value={this.state.type}
+                    value={this.state.protocol}
                     options={options}
-                    name="type"
+                    name="protocol"
                   />
                 </li>
               </ul>
@@ -116,15 +130,16 @@ class IdentityForm extends Component {
   }
 
   render() {
-    if (this.state.remoteIdentity) {
-      const context = this.state.remoteIdentity.status === 'active' ? 'safe' : 'disabled';
+    const remoteIdentity = this.props.remoteIdentity || this.state.newRemoteIdentity;
+    if (remoteIdentity) {
+      const context = remoteIdentity.status === 'active' ? 'safe' : 'disabled';
 
       return (
         <Section
-          title={this.state.remoteIdentity.display_name}
+          title={remoteIdentity.display_name}
           borderContext={context}
         >
-          {this.renderType(this.state.remoteIdentity)}
+          {this.renderType(remoteIdentity)}
         </Section>
       );
     }

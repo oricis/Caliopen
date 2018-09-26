@@ -18,7 +18,7 @@ spec:
         app: broker
     spec:
       containers:
-      - image: public-registry.caliopen.org/broker:develop
+      - image: public-registry.caliopen.org/caliopen_broker:develop
         imagePullPolicy: Always
         name: broker
         ports:

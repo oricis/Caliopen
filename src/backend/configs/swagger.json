@@ -1132,18 +1132,10 @@
                     "excerpt": {
                       "type": "string"
                     },
-                    "identities": {
+                    "user_identities": {
                       "type": "array",
                       "items": {
-                        "type": "object",
-                        "properties": {
-                          "identifier": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          }
-                        }
+                        "type": "string"
                       }
                     },
                     "importance_level": {
@@ -1322,18 +1314,10 @@
                 "excerpt": {
                   "type": "string"
                 },
-                "identities": {
+                "user_identities": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "identifier": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      }
-                    }
+                    "type": "string"
                   }
                 },
                 "importance_level": {
@@ -1704,18 +1688,10 @@
                 "excerpt": {
                   "type": "string"
                 },
-                "identities": {
+                "user_identities": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "identifier": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      }
-                    }
+                    "type": "string"
                   }
                 },
                 "importance_level": {
@@ -2264,22 +2240,58 @@
                   "items": {
                     "type": "object",
                     "properties": {
+                      "credentials": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "string"
+                        }
+                      },
                       "display_name": {
+                        "type": "string"
+                      },
+                      "identity_id": {
                         "type": "string"
                       },
                       "identifier": {
                         "type": "string"
                       },
+                      "infos": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "string"
+                        }
+                      },
+                      "last_check": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "protocol": {
+                        "type": "string",
+                        "enum": [
+                          "imap",
+                          "smtp"
+                        ]
+                      },
                       "status": {
-                        "type": "string"
+                        "type": "string",
+                        "enum": [
+                          "active",
+                          "inactive",
+                          "deleted"
+                        ]
                       },
                       "type": {
-                        "type": "string"
+                        "type": "string",
+                        "enum": [
+                          "local",
+                          "remote"
+                        ]
                       },
                       "user_id": {
                         "type": "string"
                       }
-                    }
+                    },
+                    "additionalProperties": false
                   }
                 }
               }
@@ -2351,6 +2363,12 @@
                       "display_name": {
                         "type": "string"
                       },
+                      "identity_id": {
+                        "type": "string"
+                      },
+                      "identifier": {
+                        "type": "string"
+                      },
                       "infos": {
                         "type": "object",
                         "additionalProperties": {
@@ -2361,8 +2379,12 @@
                         "type": "string",
                         "format": "date-time"
                       },
-                      "remote_id": {
-                        "type": "string"
+                      "protocol": {
+                        "type": "string",
+                        "enum": [
+                          "imap",
+                          "smtp"
+                        ]
                       },
                       "status": {
                         "type": "string",
@@ -2375,14 +2397,15 @@
                       "type": {
                         "type": "string",
                         "enum": [
-                          "imap"
+                          "local",
+                          "remote"
                         ]
+                      },
+                      "user_id": {
+                        "type": "string"
                       }
                     },
-                    "required": [
-                      "infos",
-                      "type"
-                    ]
+                    "additionalProperties": false
                   }
                 }
               }
@@ -2443,18 +2466,21 @@
                 "display_name": {
                   "type": "string"
                 },
+                "identifier": {
+                  "type": "string"
+                },
                 "infos": {
                   "type": "object",
                   "additionalProperties": {
                     "type": "string"
                   }
                 },
-                "last_check": {
+                "protocol": {
                   "type": "string",
-                  "format": "date-time"
-                },
-                "remote_id": {
-                  "type": "string"
+                  "enum": [
+                    "imap",
+                    "smtp"
+                  ]
                 },
                 "status": {
                   "type": "string",
@@ -2467,14 +2493,19 @@
                 "type": {
                   "type": "string",
                   "enum": [
-                    "imap"
+                    "local",
+                    "remote"
                   ]
+                },
+                "user_id": {
+                  "type": "string"
                 }
               },
               "required": [
-                "infos",
-                "type"
-              ]
+                "identifier",
+                "protocol"
+              ],
+              "additionalProperties": false
             }
           }
         ],
@@ -2537,6 +2568,12 @@
                 "display_name": {
                   "type": "string"
                 },
+                "identity_id": {
+                  "type": "string"
+                },
+                "identifier": {
+                  "type": "string"
+                },
                 "infos": {
                   "type": "object",
                   "additionalProperties": {
@@ -2547,8 +2584,12 @@
                   "type": "string",
                   "format": "date-time"
                 },
-                "remote_id": {
-                  "type": "string"
+                "protocol": {
+                  "type": "string",
+                  "enum": [
+                    "imap",
+                    "smtp"
+                  ]
                 },
                 "status": {
                   "type": "string",
@@ -2561,14 +2602,15 @@
                 "type": {
                   "type": "string",
                   "enum": [
-                    "imap"
+                    "local",
+                    "remote"
                   ]
+                },
+                "user_id": {
+                  "type": "string"
                 }
               },
-              "required": [
-                "infos",
-                "type"
-              ]
+              "additionalProperties": false
             }
           },
           "401": {
@@ -2729,6 +2771,12 @@
                     "display_name": {
                       "type": "string"
                     },
+                    "identity_id": {
+                      "type": "string"
+                    },
+                    "identifier": {
+                      "type": "string"
+                    },
                     "infos": {
                       "type": "object",
                       "additionalProperties": {
@@ -2739,8 +2787,12 @@
                       "type": "string",
                       "format": "date-time"
                     },
-                    "remote_id": {
-                      "type": "string"
+                    "protocol": {
+                      "type": "string",
+                      "enum": [
+                        "imap",
+                        "smtp"
+                      ]
                     },
                     "status": {
                       "type": "string",
@@ -2753,8 +2805,12 @@
                     "type": {
                       "type": "string",
                       "enum": [
-                        "imap"
+                        "local",
+                        "remote"
                       ]
+                    },
+                    "user_id": {
+                      "type": "string"
                     }
                   }
                 },
@@ -2767,6 +2823,12 @@
                 "display_name": {
                   "type": "string"
                 },
+                "identity_id": {
+                  "type": "string"
+                },
+                "identifier": {
+                  "type": "string"
+                },
                 "infos": {
                   "type": "object",
                   "additionalProperties": {
@@ -2777,8 +2839,12 @@
                   "type": "string",
                   "format": "date-time"
                 },
-                "remote_id": {
-                  "type": "string"
+                "protocol": {
+                  "type": "string",
+                  "enum": [
+                    "imap",
+                    "smtp"
+                  ]
                 },
                 "status": {
                   "type": "string",
@@ -2791,8 +2857,12 @@
                 "type": {
                   "type": "string",
                   "enum": [
-                    "imap"
+                    "local",
+                    "remote"
                   ]
+                },
+                "user_id": {
+                  "type": "string"
                 }
               },
               "required": [
@@ -8892,18 +8962,10 @@
                 "discussion_id": {
                   "type": "string"
                 },
-                "identities": {
+                "user_identities": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "identifier": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      }
-                    }
+                    "type": "string"
                   }
                 },
                 "message_id": {
@@ -8957,7 +9019,7 @@
                 }
               },
               "required": [
-                "identities"
+                "user_identities"
               ],
               "additionalProperties": false
             }
@@ -9206,18 +9268,10 @@
                       "excerpt": {
                         "type": "string"
                       },
-                      "identities": {
+                      "user_identities": {
                         "type": "array",
                         "items": {
-                          "type": "object",
-                          "properties": {
-                            "identifier": {
-                              "type": "string"
-                            },
-                            "type": {
-                              "type": "string"
-                            }
-                          }
+                          "type": "string"
                         }
                       },
                       "importance_level": {
@@ -9479,18 +9533,10 @@
                     "excerpt": {
                       "type": "string"
                     },
-                    "identities": {
+                    "user_identities": {
                       "type": "array",
                       "items": {
-                        "type": "object",
-                        "properties": {
-                          "identifier": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          }
-                        }
+                        "type": "string"
                       }
                     },
                     "importance_level": {
@@ -9669,18 +9715,10 @@
                 "excerpt": {
                   "type": "string"
                 },
-                "identities": {
+                "user_identities": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "identifier": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      }
-                    }
+                    "type": "string"
                   }
                 },
                 "importance_level": {
@@ -10110,18 +10148,10 @@
                 "excerpt": {
                   "type": "string"
                 },
-                "identities": {
+                "user_identities": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "identifier": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      }
-                    }
+                    "type": "string"
                   }
                 },
                 "importance_level": {
@@ -10615,18 +10645,10 @@
                 "excerpt": {
                   "type": "string"
                 },
-                "identities": {
+                "user_identities": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "identifier": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      }
-                    }
+                    "type": "string"
                   }
                 },
                 "importance_level": {
@@ -10812,18 +10834,10 @@
                 "excerpt": {
                   "type": "string"
                 },
-                "identities": {
+                "user_identities": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "identifier": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      }
-                    }
+                    "type": "string"
                   }
                 },
                 "importance_level": {

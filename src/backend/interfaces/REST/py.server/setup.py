@@ -18,8 +18,6 @@ with open(os.path.join(*([here] + name.split('.') + ['__init__.py']))) as v_file
 requires = [
     'pyramid',
     'pyramid_jinja2',
-    'caliopen_storage',
-    'caliopen_main',
     'pyramid_kvs',
     'waitress',
     'cornice==1.2.1',
@@ -29,6 +27,11 @@ requires = [
     'webcolors',
     'strict-rfc3339',
     'ecdsa']
+
+if (os.path.isfile('./requirements.deps')):
+    with open('./requirements.deps') as f_deps:
+        requires.extend(f_deps.read().split('\n'))
+
 
 tests_require = ['nose', 'coverage']
 if sys.version_info < (3, 3):

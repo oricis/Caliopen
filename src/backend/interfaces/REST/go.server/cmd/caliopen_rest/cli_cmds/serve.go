@@ -39,7 +39,7 @@ func init() {
 		"../../../../../configs/", "API config file path.")
 	serveCmd.PersistentFlags().StringVarP(&pidFile, "pid-file", "p",
 		"/var/run/caliopen_rest.pid", "Path to the pid file")
-	serveCmd.PersistentFlags().BoolVarP(&withProxy, "proxy", "", true, "Start HTTP proxy for routing to both GO & Python services")
+	serveCmd.PersistentFlags().BoolVarP(&withProxy, "proxy", "", false, "Start HTTP proxy for routing to both GO & Python services")
 	serveCmd.PersistentPreRun = func(cmd *cobra.Command, args []string) {
 		if verbose {
 			log.SetLevel(log.DebugLevel)

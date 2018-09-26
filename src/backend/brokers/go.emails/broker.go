@@ -34,8 +34,9 @@ type (
 	}
 
 	SmtpEmail struct {
-		EmailMessage *EmailMessage
-		Response     chan *DeliveryAck
+		EmailMessage      *EmailMessage
+		Response          chan *DeliveryAck
+		RemoteCredentials *MTAparams
 	}
 
 	natsOrder struct {
@@ -47,6 +48,13 @@ type (
 	natsAck struct {
 		Error   string `json:"error,omitempty"`
 		Message string `json:"message"`
+	}
+
+	//MTAparams is for embedding credentials to deliver email via a remote SMTP server
+	MTAparams struct {
+		Host     string
+		User     string
+		Password string
 	}
 )
 
@@ -65,6 +73,7 @@ func Initialize(conf LDAConfig) (broker *EmailBroker, connectors EmailBrokerConn
 			Keyspace:    conf.StoreConfig.Keyspace,
 			Consistency: gocql.Consistency(conf.StoreConfig.Consistency),
 			SizeLimit:   conf.StoreConfig.SizeLimit,
+			UseVault: conf.StoreConfig.UseVault,
 		}
 		if conf.StoreConfig.ObjectStore == "s3" {
 			c.WithObjStore = true
@@ -74,6 +83,11 @@ func Initialize(conf LDAConfig) (broker *EmailBroker, connectors EmailBrokerConn
 			c.RawMsgBucket = conf.StoreConfig.OSSConfig.Buckets["raw_messages"]
 			c.AttachmentBucket = conf.StoreConfig.OSSConfig.Buckets["temporary_attachments"]
 			c.Location = conf.StoreConfig.OSSConfig.Location
+		}
+		if conf.StoreConfig.UseVault {
+			c.HVaultConfig.Url = conf.StoreConfig.VaultConfig.Url
+			c.HVaultConfig.Username = conf.StoreConfig.VaultConfig.Username
+			c.HVaultConfig.Password = conf.StoreConfig.VaultConfig.Password
 		}
 		b, e := store.InitializeCassandraBackend(c)
 		if e != nil {

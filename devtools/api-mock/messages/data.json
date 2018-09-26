@@ -6,10 +6,7 @@
 	"date_insert": "2017-03-21T12:55:00.153000+00:00",
 	"date_sort": "2017-03-21T12:55:00.153000+00:00",
 	"discussion_id": "cd53e13a-267d-4d9c-97ee-d0fc59c64200",
-	"identities": [{
-		"display_name": "Jaune",
-		"identifier": "john@caliopen.local"
-	}],
+	"user_identities": ["aaaa-bbbb-cccc-ddd1"],
 	"importance_level": 0,
 	"is_answered": false,
 	"is_draft": false,
@@ -49,10 +46,7 @@
 	"date_insert": "2017-03-21T10:55:00.153000+00:00",
 	"date_sort": "2017-03-21T10:55:00.153000+00:00",
 	"discussion_id": "cd53e13a-267d-4d9c-97ee-d0fc59c64200",
-	"identities": [{
-		"display_name": "Jaune",
-		"identifier": "john@caliopen.local"
-	}],
+	"user_identities": ["aaaa-bbbb-cccc-ddd1"],
 	"importance_level": 0,
 	"is_answered": false,
 	"is_draft": false,
@@ -93,10 +87,7 @@
 	"date_insert": "2017-03-21T10:55:00.153000+00:00",
 	"date_sort": "2017-03-21T10:55:00.153000+00:00",
 	"discussion_id": "46d30c27-6cd8-407b-8536-fda4196c20ca",
-	"identities": [{
-		"display_name": "jaune",
-		"identifier": "john@caliopen.local"
-	}],
+	"user_identities": ["aaaa-bbbb-cccc-ddd1"],
 	"importance_level": 0,
 	"is_answered": false,
 	"is_draft": false,
@@ -136,10 +127,7 @@
 	"date_insert": "2017-03-21T10:55:00.153000+00:00",
 	"date_sort": "2017-03-20T10:55:00.153000+00:00",
 	"discussion_id": "3330c27-6cd8-407b-8536-fda4196c20ca",
-	"identities": [{
-		"display_name": "jaune",
-		"identifier": "john@caliopen.local"
-	}],
+	"user_identities": ["aaaa-bbbb-cccc-ddd1"],
 	"importance_level": 0,
 	"is_answered": false,
 	"is_draft": false,
@@ -172,10 +160,7 @@
 	"date_insert": "2017-03-21T10:55:00.153000+00:00",
 	"date_sort": "2017-03-20T10:55:00.153000+00:00",
 	"discussion_id": "3330c27-6cd8-407b-8536-fda4196c20ca",
-	"identities": [{
-		"display_name": "jaune",
-		"identifier": "john@caliopen.local"
-	}],
+	"user_identities": ["aaaa-bbbb-cccc-ddd1"],
 	"importance_level": 0,
 	"is_answered": false,
 	"is_draft": false,
@@ -208,10 +193,7 @@
 	"date_insert": "2017-03-21T10:55:00.153000+00:00",
 	"date_sort": "2017-03-20T10:55:00.153000+00:00",
 	"discussion_id": "44440c27-6cd8-407b-8536-fda4196c20ca",
-	"identities": [{
-		"display_name": "jaune",
-		"identifier": "john@caliopen.local"
-	}],
+	"user_identities": ["aaaa-bbbb-cccc-ddd1"],
 	"importance_level": 0,
 	"is_answered": false,
 	"is_draft": false,
@@ -244,10 +226,7 @@
 	"date_insert": "2017-03-21T10:55:00.153000+00:00",
 	"date_sort": "2017-03-20T10:55:00.153000+00:00",
 	"discussion_id": "44440c27-6cd8-407b-8536-fda4196c20ca",
-	"identities": [{
-		"display_name": "jaune",
-		"identifier": "john@caliopen.local"
-	}],
+	"user_identities": ["aaaa-bbbb-cccc-ddd1"],
 	"importance_level": 0,
 	"is_answered": false,
 	"is_draft": false,
@@ -319,10 +298,7 @@
             "type": "To"
         }
     ],
-    "identities": {
-        "display_name": "Panoramix",
-        "identifier": "panoramix@caliopen.local"
-    },
+    "user_identities": ["aaaa-bbbb-cccc-ddd1"],
     "body": "Les champignons gardent toute leur saveur quand ils sont sautés.\n",
     "excerpt": "Les champignons gardent toute leur saveur quand ils",
     "date": "0042-09-08T14:55:00+00:00",
@@ -376,10 +352,7 @@
             "type": "To"
         }
     ],
-    "identities": {
-        "display_name": "Panoramix",
-        "identifier": "panoramix@caliopen.local"
-    },
+    "user_identities": ["aaaa-bbbb-cccc-ddd1"],
     "body": "Il faut les faire sauter !\n",
     "excerpt": "Il faut les faire sauter !\n",
     "date": "0042-09-08T14:49:00+00:00",
@@ -433,10 +406,7 @@
             "type": "To"
         }
     ],
-    "identities": {
-        "display_name": "Astérix",
-        "identifier": "asterix@caliopen.local"
-    },
+    "user_identities": ["aaaa-bbbb-cccc-ddd1"],
     "body": "Alors qu'allons-nous faire, ô Druide ?\n",
     "excerpt": "Alors qu'allons-nous faire, ô Druide ?\n",
     "date": "0042-09-08T14:40:00+00:00",
@@ -490,10 +460,7 @@
             "type": "To"
         }
     ],
-    "identities": {
-        "display_name": "Panoramix",
-        "identifier": "panoramix@caliopen.local"
-    },
+    "user_identities": ["aaaa-bbbb-cccc-ddd1"],
     "body": "Parfois, j'ai l'impression que nos amis ne sont pas très sérieux… La bonne humeur des romains est peut-être mauvais signe pour nous.\n",
     "excerpt": "Parfois, j'ai l'impression que nos amis ne sont pas",
     "date": "0042-09-08T14:33:00+00:00",
@@ -574,10 +541,7 @@
             "type": "To"
         }
     ],
-    "identities": {
-        "display_name": "Agecanonix",
-        "identifier": "agecanonix@caliopen.local"
-    },
+    "user_identities": ["aaaa-bbbb-cccc-ddd1"],
     "body": "Moi, je verrais plutôt les champignons en salade…\n",
     "excerpt": "Moi, je verrais plutôt les champignons en salade…\n",
     "date": "0042-09-08T14:27:00+00:00",
@@ -658,10 +622,7 @@
             "type": "To"
         }
     ],
-    "identities": {
-        "display_name": "Abraracourcix",
-        "identifier": "abraracourcix@caliopen.local"
-    },
+    "user_identities": ["aaaa-bbbb-cccc-ddd1"],
     "body": "Rien du tout ! Je suis le chef, justement ! Nous ferons une omelette !\n",
     "excerpt": "Rien du tout ! Je suis le chef, justement ! Nous fe",
     "date": "0042-09-08T14:19:00+00:00",
@@ -742,10 +703,7 @@
             "type": "To"
         }
     ],
-    "identities": {
-        "display_name": "Obélix",
-        "identifier": "obelix@caliopen.local"
-    },
+    "user_identities": ["aaaa-bbbb-cccc-ddd1"],
     "body": "Mais Abraracourcix notre chef…\n",
     "excerpt": "Mais Abraracourcix notre chef…\n",
     "date": "0042-09-08T14:12:00+00:00",
@@ -826,10 +784,7 @@
             "type": "To"
         }
     ],
-    "identities": {
-        "display_name": "Abraracourcix",
-        "identifier": "abraracourcix@caliopen.local"
-    },
+    "user_identities": ["aaaa-bbbb-cccc-ddd1"],
     "body": "C'est une omelette qu'il faut faire avec les champignons. Un vrai gourmet les mange en omelette !\n",
     "excerpt": "C'est une omelette qu'il faut faire avec les champi",
     "date": "0042-09-08T14:05:00+00:00",
@@ -910,12 +865,9 @@
             "type": "To"
         }
     ],
-    "identities": {
-        "display_name": "Abraracourcix",
-        "identifier": "abraracourcix@caliopen.local"
-    },
-    "body": "DE LA SOUPE ?!… C'EST TOUT CE QUE TU TROUVES À DIRE OBÉLIX ?!…\n",
-    "excerpt": "DE LA SOUPE ?!… C'EST TOUT CE QUE TU TROUVES À DIRE",
+    "user_identities": ["aaaa-bbbb-cccc-ddd1"],
+    "body": "DE LA SOUPE ?!… C'EST TOUT CE QUE TU TROUVE À DIRE OBÉLIX ?!…\n",
+    "excerpt": "DE LA SOUPE ?!… C'EST TOUT CE QUE TU TROUVE À DIRE ",
     "date": "0042-09-08T13:58:00+00:00",
     "date_insert": "0042-09-08T14:02:00+00:00",
     "date_sort": "0042-09-08T14:02:00+00:00"
@@ -994,10 +946,7 @@
             "type": "To"
         }
     ],
-    "identities": {
-        "display_name": "Obélix",
-        "identifier": "obelix@caliopen.local"
-    },
+    "user_identities": ["aaaa-bbbb-cccc-ddd1"],
     "body": "De la soupe. Avec les champignons, il faut faire de la soupe, c'est bon.\n",
     "excerpt": "De la soupe. Avec les champignons, il faut faire de",
     "date": "0042-09-08T13:54:00+00:00",
@@ -1078,10 +1027,7 @@
             "type": "To"
         }
     ],
-    "identities": {
-        "display_name": "Abraracourcix",
-        "identifier": "abraracourcix@caliopen.local"
-    },
+    "user_identities": ["aaaa-bbbb-cccc-ddd1"],
     "body": "Hmm… C'est étrange, ça, Agecanonix… Qu'allons-nous faire ?\n",
     "excerpt": "Hmm… C'est étrange, ça, Agecanonix, qu'allons-nous ",
     "date": "0042-09-08T13:47:00+00:00",
@@ -1162,10 +1108,7 @@
             "type": "To"
         }
     ],
-    "identities": {
-        "display_name": "Agecanonix",
-        "identifier": "agecanonix@caliopen.local"
-    },
+    "user_identities": ["aaaa-bbbb-cccc-ddd1"],
     "body": "J'étais en train de cueillir des champignons du côté d'Aquarium, —ils sont bons, là-bas— quand j'ai entendu des cris de joie… Les romains ont l'air de très bonne humeur !\n",
     "excerpt": "J'étais en train de cueillir des champignons du côt",
     "date": "0042-09-08T13:37:00+00:00",

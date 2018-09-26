@@ -16,7 +16,7 @@ type cacheEntry struct {
 	iDkey        string
 	cronId       cron.EntryID
 	pollInterval string
-	remoteID     RemoteIdentity
+	remoteID     UserIdentity
 }
 
 func (p *Poller) updateCache() (added, removed, updated map[string]bool, err error) {
@@ -32,9 +32,10 @@ func (p *Poller) updateCache() (added, removed, updated map[string]bool, err err
 		return
 	}
 
+	p.cacheMux.Lock()
 	for remote := range remotes {
 		if p.statusTypeOK(remote) {
-			idkey := remote.UserId.String() + remote.RemoteId.String()
+			idkey := remote.UserId.String() + remote.Id.String()
 			active[idkey] = true
 			if entry, ok := p.Cache[idkey]; ok {
 				//check if pollinterval has changed
@@ -65,21 +66,22 @@ func (p *Poller) updateCache() (added, removed, updated map[string]bool, err err
 			}
 		}
 	}
-	for key, _ := range p.Cache {
+	for key := range p.Cache {
 		if _, ok := active[key]; !ok {
 			removed[key] = true
 		}
 	}
+	p.cacheMux.Unlock()
 	return
 }
 
 // statusTypeOK checks if remote identity is 'active' and its type is within poller's scope
-func (p *Poller) statusTypeOK(remote *RemoteIdentity) bool {
+func (p *Poller) statusTypeOK(remote *UserIdentity) bool {
 	if remote.Status != "active" {
 		return false
 	}
-	for _, t := range p.Config.RemoteTypes {
-		if t == remote.Type {
+	for _, t := range p.Config.RemoteProtocols {
+		if t == remote.Protocol {
 			return true
 		}
 	}

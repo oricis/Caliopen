@@ -50,7 +50,7 @@ func (notif *Notifier) SendEmailAdminToUser(user *User, email *Message) error {
 
 	sender := Participant{
 		Address:  (*notif.adminLocalID).Identifier,
-		Label:    (*notif.adminLocalID).Display_name,
+		Label:    (*notif.adminLocalID).DisplayName,
 		Protocol: EmailProtocol,
 		Type:     ParticipantFrom,
 	}

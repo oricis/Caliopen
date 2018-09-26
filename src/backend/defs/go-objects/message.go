@@ -25,7 +25,7 @@ type Message struct {
 	Date_sort           time.Time          `cql:"date_sort"                json:"date_sort"                                                 formatter:"RFC3339Milli"`
 	Discussion_id       UUID               `cql:"discussion_id"            json:"discussion_id,omitempty"                                   formatter:"rfc4122"`
 	External_references ExternalReferences `cql:"external_references"      json:"external_references,omitempty"`
-	Identities          []Identity         `cql:"identities"               json:"identities,omitempty"       `
+	UserIdentities      []UUID             `cql:"user_identities"          json:"user_identities,omitempty"       `
 	Importance_level    int32              `cql:"importance_level"         json:"importance_level" `
 	Is_answered         bool               `cql:"is_answered"              json:"is_answered"      `
 	Is_draft            bool               `cql:"is_draft"                 json:"is_draft"         `
@@ -186,12 +186,14 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 		}
 		msg.External_references.UnmarshalMap(ex_ref.(map[string]interface{}))
 	}
-	if identities, ok := input["identities"]; ok && identities != nil {
-		msg.Identities = []Identity{}
+	if identities, ok := input["user_identities"]; ok && identities != nil {
+		msg.UserIdentities = []UUID{}
 		for _, identity := range identities.([]interface{}) {
-			I := new(Identity)
-			if err := I.UnmarshalMap(identity.(map[string]interface{})); err == nil {
-				msg.Identities = append(msg.Identities, *I)
+			uid := UUID{}
+			if id, err := uuid.FromString(identity.(string)); err == nil {
+				if e := uid.UnmarshalBinary(id.Bytes()); e == nil {
+					msg.UserIdentities = append(msg.UserIdentities, uid)
+				}
 			}
 		}
 	}
@@ -319,14 +321,13 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 		msg.External_references.Message_id, _ = ex_ref["message_id"].(string)
 		msg.External_references.Parent_id, _ = ex_ref["parent_id"].(string)
 	}
-	if identities, ok := input["identities"]; ok && identities != nil {
-		msg.Identities = []Identity{}
-		for _, identity := range identities.([]map[string]interface{}) {
-			i := Identity{}
-			i.Identifier, _ = identity["identifier"].(string)
-			i.Type, _ = identity["type"].(string)
-
-			msg.Identities = append(msg.Identities, i)
+	if identities, ok := input["user_identities"]; ok && identities != nil {
+		msg.UserIdentities = []UUID{}
+		for _, identity := range identities.([]gocql.UUID) {
+			var uid UUID
+			if err := uid.UnmarshalBinary(identity.Bytes()); err == nil {
+				msg.UserIdentities = append(msg.UserIdentities, uid)
+			}
 		}
 	}
 	if importance_level, ok := input["importance_level"].(int); ok {
@@ -421,7 +422,7 @@ func (msg *Message) NewEmpty() interface{} {
 	m := new(Message)
 	m.Attachments = []Attachment{}
 	m.External_references = ExternalReferences{}
-	m.Identities = []Identity{}
+	m.UserIdentities = []UUID{}
 	m.Participants = []Participant{}
 	m.Tags = []string{}
 	return m
@@ -448,15 +449,11 @@ func (msg *Message) MarshallNew(args ...interface{}) {
 		msg.Date_sort = time.Now()
 	}
 
-	for i, _ := range msg.Attachments {
+	for i := range msg.Attachments {
 		msg.Attachments[i].MarshallNew()
 	}
 
-	for i, _ := range msg.Identities {
-		msg.Identities[i].MarshallNew()
-	}
-
-	for i, _ := range msg.Participants {
+	for i := range msg.Participants {
 		msg.Participants[i].MarshallNew()
 	}
 
@@ -469,7 +466,7 @@ func (msg *Message) JsonTags() (tags map[string]string) {
 
 func (msg *Message) SortSlices() {
 	sort.Sort(ByFileName(msg.Attachments))
-	sort.Sort(ByIdentifier(msg.Identities))
+	sort.Sort(ByUUID(msg.UserIdentities))
 	sort.Sort(ByAddress(msg.Participants))
 	sort.Strings(msg.Tags)
 }

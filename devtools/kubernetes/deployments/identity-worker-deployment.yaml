@@ -15,7 +15,7 @@ spec:
         app: identity-worker
     spec:
       containers:
-      - image: public-registry.caliopen.org/identity_worker:develop
+      - image: public-registry.caliopen.org/caliopen_identity_worker:develop
         name: identity-worker
         volumeMounts:
         - name: config-volume

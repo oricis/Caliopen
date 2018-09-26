@@ -12,12 +12,14 @@ import (
 
 // AddJobFor parses remote identity data to build appropriate job and adds it to MainCron
 func (p *Poller) AddJobFor(idkey string) (err error) {
+	p.cacheMux.Lock()
+	defer p.cacheMux.Unlock()
 	if entry, ok := p.Cache[idkey]; ok {
-		switch entry.remoteID.Type {
+		switch entry.remoteID.Protocol {
 		case "imap":
 			cronStr := "@every " + entry.pollInterval + "m"
 			entry.cronId, err = p.MainCron.AddJob(cronStr, imapJob{
-				remoteId:  entry.remoteID.RemoteId.String(),
+				remoteId:  entry.remoteID.Id.String(),
 				natsTopic: p.Config.NatsTopics["imap"],
 				poller:    p,
 				userId:    entry.remoteID.UserId.String(),
@@ -40,6 +42,8 @@ func (p *Poller) AddJobFor(idkey string) (err error) {
 
 // RemoveJobFor removes remote identity's job from being run in the future
 func (p *Poller) RemoveJobFor(idkey string) (err error) {
+	p.cacheMux.Lock()
+	defer p.cacheMux.Unlock()
 	if entry, ok := p.Cache[idkey]; ok {
 		p.MainCron.Remove(entry.cronId)
 		return
