@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import HorizontalScroll from '../HorizontalScroll';
-import { Tab, NavbarItem, ApplicationTab, DiscussionTab, ContactTab } from '../Navbar/components';
+import { Tab, NavbarItem, ApplicationTab, DiscussionTab, ContactTab, SearchTab } from '../Navbar/components';
 import { Button, Icon } from '../../../../components/';
 import { Tab as TabModel, withCurrentTab } from '../../../../modules/tab';
 import { findTabbableRouteConfig } from '../../../../modules/routing';
@@ -54,6 +54,16 @@ class Navigation extends Component {
       case 'discussion':
         return (
           <DiscussionTab
+            key={this.getTabIdentifier(tab.location)}
+            tab={tab}
+            routeConfig={routeConfig}
+            isActive={isActive}
+            onRemove={removeTab}
+          />
+        );
+      case 'search':
+        return (
+          <SearchTab
             key={this.getTabIdentifier(tab.location)}
             tab={tab}
             routeConfig={routeConfig}

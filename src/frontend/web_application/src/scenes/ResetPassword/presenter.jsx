@@ -9,7 +9,7 @@ const STATUS_TOKEN_UNPROCESSABLE = 424;
 class ResetPassword extends Component {
   static propTypes = {
     i18n: PropTypes.shape({}).isRequired,
-    match: PropTypes.shape({ params: PropTypes.shape({ key: PropTypes.string }) }),
+    match: PropTypes.shape({ params: PropTypes.shape({ key: PropTypes.string }) }).isRequired,
   };
 
   state = {

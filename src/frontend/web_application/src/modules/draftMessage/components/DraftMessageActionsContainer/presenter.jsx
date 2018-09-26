@@ -23,10 +23,6 @@ class DraftMessageActionsContainer extends Component {
     className: null,
   };
 
-  state = {
-    isRead: false,
-  }
-
   makeHandle = action => () => {
     const { message, internalId } = this.props;
     action({ message, internalId });

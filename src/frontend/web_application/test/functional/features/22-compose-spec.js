@@ -15,15 +15,14 @@ describe('Compose new message', () => {
 
   describe('Navigation between drafts', () => {
     it('Creates a new draft', async () => {
+      debugger;
       const text1 = 'Compose creates a new draft';
-      const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn', 'Compose');
+      const writeButtonSelector = by.cssContainingText('.m-action-btns__btn', 'Compose');
 
-      // XXX: click .btn--principal to force :hover callback actions
-      await element(by.css('.m-call-to-action__btn--principal')).click();
       await element(writeButtonSelector).click();
       await browser.wait(EC.presenceOf($('.m-new-draft')), 1000);
       const items = await element.all(by.css('.m-navbar-item .m-item-link'))
-        .filter(item => item.getText().then(text => text === 'COMPOSE'));
+        .filter(item => item.getText().then(text => text === 'Compose'));
       expect(items.length).toEqual(1);
       console.log('write msg');
       const draftBodyElement1 = element(by.css('.m-discussion-textarea__body'));
@@ -32,7 +31,7 @@ describe('Compose new message', () => {
       await browser.wait(EC.presenceOf($('.m-new-draft')), 1000);
       await expect(element(by.css('.m-discussion-textarea__body')).getText()).not.toEqual(text1);
       const items2 = await element.all(by.css('.m-navbar-item .m-item-link'))
-        .filter(item => item.getText().then(text => text === 'COMPOSE'));
+        .filter(item => item.getText().then(text => text === 'Compose'));
       expect(items2.length).toEqual(2);
       await items2[0].click();
       await browser.wait(EC.presenceOf($('.m-new-draft')), 1000);
@@ -44,35 +43,31 @@ describe('Compose new message', () => {
     it('Composes a new message with no recipients', async () => {
       const text1 = 'new message with no rcpts ';
 
-      const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn', 'Compose');
+      const writeButtonSelector = by.cssContainingText('.m-action-btns__btn', 'Compose');
 
-      // XXX: click .btn--principal to force :hover callback actions
-      await element(by.css('.m-call-to-action__btn--principal')).click();
       await element(writeButtonSelector).click();
       await browser.wait(EC.presenceOf($('.m-new-draft')), 1000);
       expect(element(by.cssContainingText('.m-navbar-item', 'Compose')).isPresent()).toEqual(true);
       console.log('write msg');
       const draftBodyElement1 = element(by.css('.m-discussion-textarea__body'));
-      draftBodyElement1.sendKeys(text1);
+      await draftBodyElement1.sendKeys(text1);
       await element(by.cssContainingText('button', 'Save')).click();
       await browser.wait(EC.presenceOf($('.m-discussion-textarea__body')), 3 * 1000);
       expect(element.all(by.css('.m-discussion-textarea__body .m-recipient-list__recipient')).count())
         .toEqual(0);
       const draftBodyElement2 = element(by.css('.m-discussion-textarea__body'));
       expect(draftBodyElement2.getText()).toEqual(text1);
-      await element(by.cssContainingText('.m-navbar-item__content', 'Messages')).click();
-      await filter('All');
-      await browser.wait(EC.presenceOf($('.s-timeline .s-message-item')), 3 * 1000);
-      expect(element.all(by.cssContainingText('.s-message-item__excerpt', text1)).count())
+      await home();
+      // await filter('All');
+      await browser.wait(EC.presenceOf($('.s-timeline .s-discussion-item')), 3 * 1000);
+      expect(element.all(by.cssContainingText('.s-discussion-item__message_excerpt', text1)).count())
         .toEqual(1);
     });
 
     it('Composes a new message with a known recipient', async () => {
       const text1 = 'new message for a known recipient';
-      const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn', 'Compose');
+      const writeButtonSelector = by.cssContainingText('.m-action-btns__btn', 'Compose');
 
-      // XXX: click .btn--principal to force :hover callback actions
-      await element(by.css('.m-call-to-action__btn--principal')).click();
       await element(writeButtonSelector).click();
       await browser.wait(EC.presenceOf($('.m-new-draft')), 1000);
       console.info('search recipient');
@@ -94,10 +89,8 @@ describe('Compose new message', () => {
 
   describe('Recipient search results manipulation', () => {
     it('Has no suggestions for an already selected recipient', async () => {
-      const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn', 'Compose');
+      const writeButtonSelector = by.cssContainingText('.m-action-btns__btn', 'Compose');
 
-      // XXX: click .btn--principal to force :hover callback actions
-      await element(by.css('.m-call-to-action__btn--principal')).click();
       await element(writeButtonSelector).click();
       await browser.wait(EC.presenceOf($('.m-new-draft')), 1000);
       console.info('search recipient');
@@ -118,12 +111,10 @@ describe('Compose new message', () => {
     });
 
     it('Adds a recipient when clicking outside', async () => {
-      const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn', 'Compose');
+      const writeButtonSelector = by.cssContainingText('.m-action-btns__btn', 'Compose');
       const dropdownSelector = by.css('.m-recipient-list__search .m-dropdown');
       const searchTerm = 'ben';
 
-      // XXX: click .btn--principal to force :hover callback actions
-      await element(by.css('.m-call-to-action__btn--principal')).click();
       await element(writeButtonSelector).click();
       await browser.wait(EC.presenceOf($('.m-new-draft')), 1000);
       console.log('search recipient');
@@ -133,17 +124,15 @@ describe('Compose new message', () => {
       expect(element(dropdownSelector).isDisplayed()).toEqual(true);
       await element(by.css('.m-recipient-list__search-input')).click();
       expect(element(dropdownSelector).isDisplayed()).toEqual(true);
-      await element(by.cssContainingText('.l-navigation__tab-list .m-navbar-item__content', 'Compose')).click();
+      await element(by.cssContainingText('.m-new-draft__author', 'You')).click();
       expect(element(dropdownSelector).isDisplayed()).toEqual(false);
       expect(element(by.cssContainingText('.m-recipient-list__recipient', searchTerm)).isDisplayed()).toEqual(true);
     });
 
     it('Can use keyboard arrows to select search result', async () => {
-      const writeButtonSelector = by.cssContainingText('.m-call-to-action__btn', 'Compose');
+      const writeButtonSelector = by.cssContainingText('.m-action-btns__btn', 'Compose');
       const searchResultItemsSelector = by.css('.m-recipient-list__search-result');
 
-      // XXX: click .btn--principal to force :hover callback actions
-      await element(by.css('.m-call-to-action__btn--principal')).click();
       await element(writeButtonSelector).click();
       await browser.wait(EC.presenceOf($('.m-new-draft')), 1000);
       console.log('search recipient');

@@ -93,7 +93,7 @@
   "route.contact-book.label": "Contacts",
   "contact.profile.name_not_set": "(N.C.)",
   "route.new-contact.label": "Nouveau contact",
-  "route.search-results.label": "Resultats pour : %(term)s",
+  "route.search-results.label": "Resultats pour : {term}",
   "route.user.label.default": "Compte",
   "route.user.label.profile": "Profil",
   "route.user.label.privacy": "Confidentialité",

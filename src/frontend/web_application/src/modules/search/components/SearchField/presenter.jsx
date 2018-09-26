@@ -7,9 +7,6 @@ import { Icon, InputText, Button } from '../../../../components/';
 import { withSearchParams } from '../../../routing';
 import './style.scss';
 
-// FIXME: bad pattern
-const generateStateFromProps = ({ searchParams: { term = '' } }) => ({ term });
-
 const SEARCH_PATH = '/search-results';
 const MIN_TERM_LENGTH = 3;
 
@@ -35,11 +32,11 @@ class SearchField extends Component {
   };
 
   componentWillMount() {
-    this.setState(generateStateFromProps(this.props));
-  }
+    const { searchParams: { term = '' } } = this.props;
 
-  componentWillReceiveProps(nextProps) {
-    this.setState(generateStateFromProps(nextProps));
+    this.setState({
+      term,
+    });
   }
 
   handleSubmit = (ev) => {
