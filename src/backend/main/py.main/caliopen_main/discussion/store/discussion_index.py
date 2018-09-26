@@ -32,14 +32,16 @@ class DiscussionIndex(object):
 class DiscussionIndexManager(object):
     """Manager for building discussions from index storage layer."""
 
-    def __init__(self, user_id):
-        self.index = user_id
+    def __init__(self, user):
+        self.index = user.shard_id
+        self.user_id = user.user_id
         self.proxy = BaseIndexDocument.client()
 
     def _prepare_search(self):
         """Prepare a dsl.Search object on current index."""
         search = IndexedMessage.search(using=self.proxy,
                                        index=self.index)
+        search = search.filter('term', user_id=self.user_id)
         return search
 
     def __search_ids(self, limit, offset, min_pi, max_pi, min_il, max_il):

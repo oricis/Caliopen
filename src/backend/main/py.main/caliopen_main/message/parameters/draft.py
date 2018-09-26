@@ -139,7 +139,7 @@ class Draft(NewInboundMessage):
                 self.discussion_id = discussion.discussion_id
                 new_discussion = True
         if not new_discussion:
-            dim = DIM(user.user_id)
+            dim = DIM(user)
             d_id = self.discussion_id
             last_message = dim.get_last_message(d_id, -10, 10, True)
             if last_message == {}:
@@ -195,7 +195,7 @@ class Draft(NewInboundMessage):
         - provided identity is used to fill the new 'From' participant
         - new sender is removed from former recipients
         """
-        dim = DIM(user.user_id)
+        dim = DIM(user)
         d_id = self.discussion_id
         last_message = dim.get_last_message(d_id, -10, 10, False)
         for i, participant in enumerate(last_message["participants"]):
@@ -207,7 +207,7 @@ class Draft(NewInboundMessage):
 
         # add sender
         # and remove it from previous recipients
-        sender = self._add_from_participant(user_id)
+        sender = self._add_from_participant(user)
         for i, participant in enumerate(self.participants):
             if participant['address'] == sender.address:
                 if re.match("to", participant['type'], re.IGNORECASE) or \
