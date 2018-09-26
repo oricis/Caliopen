@@ -1,13 +1,18 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { requestMessages, loadMore } from '../../store/modules/message';
+import { requestDiscussions } from '../../store/modules/discussion';
+import { requestMessages, loadMore, invalidate, deleteMessage as deleteMessageRaw } from '../../store/modules/message';
 import { setMessageRead, deleteMessage } from '../../modules/message';
+import { reply } from '../../modules/draftMessage';
 import { createMessageCollectionStateSelector } from '../../store/selectors/message';
 import { UserSelector } from '../../store/selectors/user';
 import { withCurrentTab, withCloseTab } from '../../modules/tab';
+import { withTags, updateTagCollection } from '../../modules/tags';
 import { sortMessages } from '../../services/message';
+import { getUser } from '../../modules/user/actions/getUser';
 import withScrollManager from '../../modules/scroll/hoc/scrollManager';
+import { withPush } from '../../modules/routing/hoc/withPush';
 import Discussion from './presenter';
 
 const getDiscussionIdFromProps = props => props.match.params.discussionId;
@@ -21,26 +26,51 @@ const mapStateToProps = createSelector(
   [messageByIdSelector, discussionSelector,
     discussionIdSelector, UserSelector, messageCollectionStateSelector],
   (messagesById, discussionState, discussionId, userState, {
-    messageIds, hasMore, isFetching,
+    didInvalidate, messageIds, hasMore, isFetching,
   }) => {
     const messages = sortMessages(messageIds.map(messageId => messagesById[messageId]), false);
 
     return {
       discussionId,
       user: userState.user,
-      discussion: discussionState.discussionsById[discussionId] || {},
+      isUserFetching: userState.isFetching,
+      discussion: discussionState.discussionsById[discussionId],
       messages,
       isFetching,
+      didInvalidate,
       hasMore,
     };
   }
 );
+
+const deleteDiscussion = ({ discussionId, messages }) => async (dispatch) => {
+  await Promise.all(messages.map(message => dispatch(deleteMessageRaw({ message }))));
+
+  return dispatch(invalidate({ type: 'discussion', key: discussionId }));
+};
+
+const onMessageSent = ({ message }) => (dispatch) => {
+  dispatch(invalidate({ type: 'discussion', key: message.discussion_id }));
+};
+const updateDiscussionTags = ({ i18n, messages, tags }) => async dispatch =>
+  Promise.all(messages.map(message =>
+    dispatch(updateTagCollection(i18n, { type: 'message', entity: message, tags }))));
+
+const onMessageReply = ({ message, discussionId }) => async (dispatch) => {
+  dispatch(reply({ internalId: discussionId, message }));
+};
 
 const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
   requestMessages: requestMessages.bind(null, 'discussion', getDiscussionIdFromProps(ownProps)),
   loadMore: loadMore.bind(null, 'discussion', getDiscussionIdFromProps(ownProps)),
   setMessageRead,
   deleteMessage,
+  deleteDiscussion,
+  requestDiscussions,
+  updateDiscussionTags,
+  onMessageReply,
+  onMessageSent,
+  getUser,
 }, dispatch);
 
 export default compose(
@@ -48,4 +78,7 @@ export default compose(
   withScrollManager(),
   withCloseTab(),
   withCurrentTab(),
+  withCloseTab(),
+  withTags(),
+  withPush(),
 )(Discussion);

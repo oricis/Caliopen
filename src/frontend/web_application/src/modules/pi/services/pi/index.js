@@ -1,5 +1,5 @@
 export const PI_PROPERTIES = ['comportment', 'technic', 'context'];
-
+export const getPiClass = pi => (pi <= 50 ? 'weak-pi' : 'strong-pi');
 export const getAngles = () => {
   const piLength = PI_PROPERTIES.length;
   if (piLength === 0) {

@@ -28,26 +28,9 @@
     }
   }
 
-  &__actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    max-width: 1200px;
-    height: 2.625rem;
-    margin: 0 auto;
-  }
-
-  &__select-all {
-    margin: auto 0.5rem;
-  }
-
   &__load-more {
     margin: 1rem auto;
     text-align: center;
-  }
-
-  .m-checkbox__label {
-    display: none;
   }
 }
 

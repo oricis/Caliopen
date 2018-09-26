@@ -5,41 +5,37 @@ import { Trans } from 'lingui-react';
 import classnames from 'classnames';
 import VisibilitySensor from 'react-visibility-sensor';
 import withScrollTarget from '../../../../modules/scroll/hoc/scrollTarget';
-import { Button } from '../../../../components';
-import { getAuthor, getRecipients } from '../../../../services/message';
-import { calcPiValue, getPiClass } from '../../../../services/pi';
-
-import sealedEnvelope from './assets/sealed-envelope.png';
-import postalCard from './assets/postal-card.png';
+import { withPush } from '../../../../modules/routing/hoc/withPush';
+import { withTags, getTagLabelFromName } from '../../../../modules/tags';
+import { Badge, Button } from '../../../../components';
+import MessageAttachments from '../../../MessageList/components/MessageAttachments';
+import MessagePi from '../MessagePi';
+import { getAuthor, getRecipients, isParticipantUser, isUserRecipient } from '../../../../services/message';
+import { getAveragePI, getPiClass } from '../../../../modules/pi/services/pi';
 
 import './style.scss';
 
-/**
- * MailMessage
- * Displays an email message
- *
- * @extends {PureComponent}
- * @prop {Object} message   - message data
- */
 @withScrollTarget()
+@withPush()
+@withTags()
 class MailMessage extends Component {
   static propTypes = {
-    message: PropTypes.shape({}).isRequired,
+    message: PropTypes.shape({
+      message_id: PropTypes.string,
+    }).isRequired,
     onMessageRead: PropTypes.func.isRequired,
     onMessageUnread: PropTypes.func.isRequired,
     onMessageDelete: PropTypes.func.isRequired,
-    scrollToMe: PropTypes.func,
+    onOpenTags: PropTypes.func.isRequired,
     forwardRef: PropTypes.func,
+    user: PropTypes.shape({}).isRequired,
+    push: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
+    tags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   };
 
   static defaultProps = {
-    scrollToMe: undefined,
     forwardRef: undefined,
-  }
-
-  componentDidMount() {
-    this.strongSrc = sealedEnvelope;
-    this.weakSrc = postalCard;
   }
 
   onVisibilityChange = (isVisible) => {
@@ -48,21 +44,6 @@ class MailMessage extends Component {
     if (isVisible) {
       if (message.is_unread) { onMessageRead({ message }); }
     }
-  }
-
-  getPiImg = ({ pi }) => (calcPiValue({ pi }) <= 50 ? postalCard : sealedEnvelope);
-  getPiQualities = ({ pi }) => {
-    /* eslint-disable no-nested-ternary */
-    // XXX: temp stuff waiting for actual spec
-    const labelFor = aspect => (aspect <= 33 ? 'bad' : aspect <= 66 ? 'warn' : 'ok');
-    const iconFor = aspect => (aspect <= 33 ? 'fa-times' : aspect <= 66 ? 'fa-warning' : 'fa-check');
-    /* eslint-enable no-nested-ternary */
-
-    return {
-      technic: { label: labelFor(pi.technic), icon: iconFor(pi.technic) },
-      context: { label: labelFor(pi.context), icon: iconFor(pi.context) },
-      comportment: { label: labelFor(pi.comportment), icon: iconFor(pi.comportment) },
-    };
   }
 
   handleMessageDelete = () => {
@@ -81,95 +62,83 @@ class MailMessage extends Component {
     }
   }
 
-  strongSrc = '';
-  weakSrc = '';
+  formatRecipients = () => {
+    const { message, user } = this.props;
+    const prefix = (user && isUserRecipient(message, user)) ? 'Vous et ' : '';
 
-  formatRecipients = message => getRecipients(message)
-    .map(participant => participant.label).join(', ');
+    const otherRecipients = getRecipients(message)
+      .filter(participant => !isParticipantUser(participant, user))
+      .map(participant => participant.label).join(', ');
 
+    return `${prefix}${otherRecipients}`;
+  }
+
+  renderTags = ({ tags }) => {
+    const { i18n, tags: allTags } = this.props;
+
+    return (
+      tags && (
+        <ul className="s-mail-message__tags">
+          {tags.map(tag => (
+            <li key={`${this.props.message.message_id}${tag}`} className="s-mail-message__tag">
+              <Badge>{getTagLabelFromName(i18n, allTags, tag)}</Badge>
+            </li>
+          ))}
+        </ul>
+      )
+    );
+  };
 
   render() {
-    const { message, forwardRef } = this.props;
-    const pi = calcPiValue(message);
+    const { message, forwardRef, onOpenTags } = this.props;
+    const pi = getAveragePI(message.pi);
     const author = getAuthor(message);
-    const recipients = this.formatRecipients(message);
-    const piQualities = this.getPiQualities(message);
+    const recipients = this.formatRecipients();
 
     return (
       <article id={`message-${message.message_id}`} ref={forwardRef} className={classnames(['s-mail-message', getPiClass(pi)])}>
         <div className="s-mail-message__wrapper">
-          <aside className="s-mail-message__info">
-            <div className="s-mail-message__pi">
-              <div className="s-mail-message__pi-illustration">
-                <img src={this.getPiImg(message)} alt="" />
-                <ul className="s-mail-message__pi-types">
-                  <li className={piQualities.comportment.label}>
-                    <i className={`fa ${piQualities.comportment.icon}`} />
-                    <span>Expéditeur</span>
-                  </li>
-                  <li className={piQualities.context.label}>
-                    <i className={`fa ${piQualities.context.icon}`} />
-                    <span>Départ</span>
-                  </li>
-                  <li className={piQualities.technic.label}>
-                    <i className={`fa ${piQualities.technic.icon}`} />
-                    <span>Trajet</span>
-                  </li>
-                </ul>
-              </div>
-              <div
-                className={classnames(['s-mail-message__pi-progress', `s-mail-message__pi-progress--${getPiClass(pi)}`])}
-                role="progressbar"
-                aria-valuenow={pi}
-                aria-valuemax="100"
-                tabIndex="0"
-              >
-                <div
-                  className={classnames('s-mail-message__pi-progress-meter', `s-mail-message__pi-progress-meter--${getPiClass(pi)}`)}
-                  style={{ width: `${pi}%` }}
-                />
-              </div>
-              <div className="s-mail-message__pi-numeric">
-                <span className="legend">Privacy index&thinsp;:</span>
-                <span className="value">{Math.round(pi)}</span>
-              </div>
-              <p className="s-mail-message__pi-metaphor">
-                Dans la vraie vie, ce message serait plus ou moins l&apos;équivalent d&apos;
-                une carte postale visible par tous.
-              </p>
+          <div className="s-mail-message__details">
+            <div className="s-mail-message__details--what-who-when">
+              <i className="fa fa-envelope" />&nbsp;
+              <a className="s-mail-message__details-from" href="#">{author.label}</a>&nbsp;
+              <Moment fromNow locale="fr">{message.date}</Moment>
             </div>
-            <div className="from"><span className="direction">De&thinsp;:</span> <a href="">{author.label}</a></div>
-            <div className="to"><span className="direction">À&thinsp;:</span> <a href="">{recipients}</a></div>
+            <div className="s-mail-message__details-to">À: <strong>{recipients}</strong></div>
+          </div>
+          <aside className="s-mail-message__info">
+            <MessagePi pi={message.pi} illustrate describe />
+            <div className="s-mail-message__participants">
+              <div className="s-mail-message__participants-from"><span className="direction">De&thinsp;:</span> <a href="">{author.label}</a></div>
+              <div className="s-mail-message__participants-to"><span className="direction">À&thinsp;:</span> <a href="">{recipients}</a></div>
+            </div>
+            {this.renderTags(message)}
           </aside>
-          <div className="container">
-            <header>
-              <div className="details">
-                <div className="what-who-when">
-                  <i className="fa fa-envelope" />&nbsp;
-                  <a className="from" href="#">{author.label}</a>&nbsp;
-                  <Moment fromNow locale="fr">{message.date}</Moment>
-                </div>
-                <div className="to">À: <strong>{recipients}</strong></div>
-              </div>
-              <h2>{message.subject}</h2>
-            </header>
+          <div className="s-mail-message__container">
+            <h2 className="s-mail-message__subject">{message.subject}</h2>
             {!message.body_is_plain ? (
-              <div className="content" dangerouslySetInnerHTML={{ __html: message.body }} />
+              <div className="s-mail-message__content" dangerouslySetInnerHTML={{ __html: message.body }} />
             ) : (
-              <pre className="content">{message.body}</pre>
+              <pre className="s-mail-message__content">{message.body}</pre>
             )
             }
+            <div className="m-message__attachments">
+              <MessageAttachments message={message} />
+            </div>
           </div>
           <VisibilitySensor onChange={this.onVisibilityChange} scrollCheck scrollThrottle={100} />
         </div>
-        <footer>
-          <Button className="m-message-action-container__action" icon="reply">
-            Répondre
+        <footer className="s-mail-message__actions">
+          <Button className="m-message-action-container__action" icon="reply" responsive="icon-only">
+            <Trans id="message-list.message.action.reply">Reply</Trans>
           </Button>
-          <Button className="m-message-action-container__action" onClick={this.handleMessageDelete} icon="trash">
-            Supprimer
+          <Button onClick={onOpenTags} className="m-message-actions-container__action" icon="tags" responsive="icon-only">
+            <Trans id="message-list.message.action.tags">Tags</Trans>
           </Button>
-          <Button className="m-message-action-container__action" onClick={this.handleToggle}>
+          <Button className="m-message-action-container__action" onClick={this.handleMessageDelete} icon="trash" responsive="icon-only">
+            <Trans id="message-list.message.action.delete">Delete</Trans>
+          </Button>
+          <Button className="m-message-action-container__action" onClick={this.handleToggle} responsive="icon-only">
             {message.is_unread ? (
               <Trans id="message-list.message.action.mark_as_read">Mark as read</Trans>
             ) : (

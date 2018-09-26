@@ -16,6 +16,7 @@ class ReplyForm extends Component {
     onEditDraft: PropTypes.func.isRequired,
     onSaveDraft: PropTypes.func.isRequired,
     onSendDraft: PropTypes.func.isRequired,
+    onSent: PropTypes.func,
     onDeleteMessage: PropTypes.func.isRequired,
     user: PropTypes.shape({}),
     onUpdateEntityTags: PropTypes.func.isRequired,
@@ -31,6 +32,7 @@ class ReplyForm extends Component {
     message: undefined,
     parentMessage: undefined,
     draft: undefined,
+    onSent: undefined,
     isRequestingDraft: false,
     isDeletingDraft: false,
     user: undefined,
@@ -88,12 +90,17 @@ class ReplyForm extends Component {
   handleSend = async () => {
     const {
       onSendDraft, discussionId, message, draft, notifyError, i18n,
+      onSent,
     } = this.props;
 
     this.setState({ isSending: true });
 
     try {
       await onSendDraft({ draft, message, internalId: discussionId });
+
+      if (onSent) {
+        onSent({ message: draft });
+      }
     } catch (err) {
       notifyError({
         message: i18n._('draft.feedback.send-error', { defaults: 'Unable to send the message' }),

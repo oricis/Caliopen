@@ -1,0 +1,14 @@
+.m-message-list {
+  &__spinner {
+    display: block;
+    text-align: center;
+  }
+
+  &__load-more {
+    text-align: center;
+
+    & .m-button {
+      margin: 4px 0 3px 0;
+    }
+  }
+}

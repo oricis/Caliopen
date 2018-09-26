@@ -1,18 +1,30 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
+import classNames from 'classnames';
 import VisibilitySensor from 'react-visibility-sensor';
-import { calcPiValue } from '../../../../services/pi';
+import { isMessageFromUser } from '../../../../services/message';
+import { getAveragePI, getPiClass } from '../../../../modules/pi';
 import { AuthorAvatarLetter } from '../../../../modules/avatar';
 
 import './style.scss';
+
+const PROTOCOL_ICONS = {
+  facebook: 'facebook-square',
+  twitter: 'twitter',
+  sms: 'phone',
+  email: 'envelope',
+  default: 'comment',
+};
 
 class InstantMessage extends PureComponent {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
     onMessageRead: PropTypes.func.isRequired,
+    // XXX: No UI for that
     // onMessageUnread: PropTypes.func.isRequired,
     // onDeleteMessage: PropTypes.func.isRequired,
+    user: PropTypes.shape({}).isRequired,
   };
 
   onVisibilityChange = (isVisible) => {
@@ -23,33 +35,26 @@ class InstantMessage extends PureComponent {
     }
   }
 
-  getPiClass = pi => (pi <= 50 ? 'weak-pi' : 'strong-pi');
+  getClassNames = (pi, message) => classNames(
+    'instant',
+    this.getPiClass(pi),
+    { fromUser: isMessageFromUser(message, this.props.user) }
+  );
+
+  getProtocolIconType = protocol => PROTOCOL_ICONS[protocol] || 'comment';
+
   extractAuthor = ({ participants }) => participants.find(participant => participant.type === 'From');
-  protocolIcon = (protocol) => {
-    switch (protocol) {
-      case 'facebook':
-        return 'facebook-square';
-      case 'twitter':
-        return 'twitter';
-      case 'sms':
-        return 'phone';
-      case 'email':
-        return 'envelope';
-      default:
-        return 'comment';
-    }
-  }
 
   render() {
     const { message } = this.props;
     const author = this.extractAuthor(message);
-    const pi = calcPiValue(message);
+    const pi = getAveragePI(message.pi);
 
     return (
-      <article className={`instant ${this.getPiClass(pi)}`}>
+      <article className={`instant ${getPiClass(pi)}`}>
         <header className="from">
           <AuthorAvatarLetter message={message} />
-          <i className={`fa fa-${this.protocolIcon(message.type)}`} />
+          <i className={`fa fa-${this.getProtocolIconType(message.type)}`} />
           <Moment format="HH:mm">{message.date}</Moment>
         </header>
         <aside className="info">
