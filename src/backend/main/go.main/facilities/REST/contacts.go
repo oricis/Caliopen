@@ -92,9 +92,9 @@ func (rest *RESTfacility) RetrieveContact(userID, contactID string) (contact *Co
 // - retrieve the contact from db
 // - UpdateWithPatch()
 // - then UpdateContact() to save updated contact to stores & index if everything went good.
-func (rest *RESTfacility) PatchContact(user *UserInfo, patch []byte, userID, contactID string) error {
+func (rest *RESTfacility) PatchContact(user *UserInfo, patch []byte, contactID string) error {
 
-	current_contact, err := rest.RetrieveContact(userID, contactID)
+	current_contact, err := rest.RetrieveContact(user.User_id, contactID)
 	if err != nil {
 		if err.Error() == "not found" {
 			return NewCaliopenErr(NotFoundCaliopenErr, "[RESTfacility] contact not found")

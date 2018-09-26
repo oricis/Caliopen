@@ -29,7 +29,7 @@ type (
 		RetrieveContacts(filter IndexSearch) (contacts []*Contact, totalFound int64, err error)
 		RetrieveContact(userID, contactID string) (*Contact, error)
 		UpdateContact(user *UserInfo, contact, oldContact *Contact, update map[string]interface{}) error
-		PatchContact(user *UserInfo, patch []byte, userID, contactID string) error
+		PatchContact(user *UserInfo, patch []byte, contactID string) error
 		DeleteContact(userID, contactID string) error
 		//identities
 		RetrieveContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error)

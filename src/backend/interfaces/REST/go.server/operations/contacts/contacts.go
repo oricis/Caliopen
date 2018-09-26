@@ -167,7 +167,7 @@ func PatchContact(ctx *gin.Context) {
 	}
 
 	// call REST facility with payload
-	err = caliopen.Facilities.RESTfacility.PatchContact(user_info, patch, userId, contactId)
+	err = caliopen.Facilities.RESTfacility.PatchContact(user_info, patch, contactId)
 	if err != nil {
 		if Cerr, ok := err.(CaliopenError); ok {
 			returnedErr := new(swgErr.CompositeError)
