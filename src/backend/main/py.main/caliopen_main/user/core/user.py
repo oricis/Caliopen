@@ -36,9 +36,13 @@ from .setups import (setup_index, setup_system_tags,
 log = logging.getLogger(__name__)
 
 
-def generate_user_shard_id(user_id):
-    """Generate an uniform shard_id for an user."""
-    return user_id.hex
+def allocate_user_shard(user_id):
+    """Find allocation to a shard for an user."""
+    shards = Configuration('global').get('elasticsearch.shards')
+    if not shards:
+        raise Exception('No shards configured for index')
+    shard_idx = int(user_id.hex, 16) % len(shards)
+    return shards[shard_idx]
 
 
 class Tag(BaseUserCore):
@@ -254,7 +258,7 @@ class User(BaseCore):
             pi.comportment = 0
             pi.context = 0
             pi.version = 0
-            shard_id = generate_user_shard_id(user_id)
+            shard_id = allocate_user_shard(user_id)
 
             core = super(User, cls).create(user_id=user_id,
                                            name=new_user.name,
