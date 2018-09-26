@@ -5,7 +5,6 @@ import re
 import uuid
 from schematics.types import StringType
 from .message import NewInboundMessage
-from caliopen_main.user.core import User
 from caliopen_main.user.objects.identity import UserIdentity
 from caliopen_main.message.parameters.participant import Participant
 from caliopen_main.message.parameters.external_references import \
@@ -36,15 +35,15 @@ class Draft(NewInboundMessage):
         except NotFound:
             pass
 
-    def validate_consistency(self, user_id, is_new):
+    def validate_consistency(self, user, is_new):
         """
         Function used by create_draft and patch_draft
         to unsure provided params are consistent with draft's context
-        
-        :param user_id as a string
+
+        :param user : the user object
         :param is_new : if true indicates that we want to validate a new draft,
                                     otherwise it is an update of existing one
-                            
+
         If needed, draft is modified to conform.
         """
         try:
@@ -59,7 +58,7 @@ class Draft(NewInboundMessage):
         else:
             self.body = self.body_plain = ""
         # check discussion consistency and get last message from discussion
-        last_message = self._check_discussion_consistency(user_id)
+        last_message = self._check_discussion_consistency(user)
         if last_message is not None:
             # check subject consistency
             # (https://www.wikiwand.com/en/List_of_email_subject_abbreviations)
@@ -82,9 +81,9 @@ class Draft(NewInboundMessage):
         else:
             # fill <from> field consistently
             # based on current user's selected identity
-            self._add_from_participant(user_id)
+            self._add_from_participant(user)
 
-    def _add_from_participant(self, user_id):
+    def _add_from_participant(self, user):
 
         if 'user_identities' not in self:
             raise err.PatchUnprocessable
@@ -92,7 +91,7 @@ class Draft(NewInboundMessage):
         if len(self['user_identities']) != 1:
             raise err.PatchUnprocessable
 
-        user_identity = UserIdentity(user_id,
+        user_identity = UserIdentity(user,
                                      identity_id=str(self['user_identities'][0]))
         try:
             user_identity.get_db()
@@ -101,7 +100,6 @@ class Draft(NewInboundMessage):
             raise err.PatchUnprocessable(message="identity not found")
 
         # add 'from' participant with local identity's identifier
-        user = User.get(user_id)
         if not hasattr(self, 'participants'):
             self.participants = []
         else:
@@ -119,7 +117,7 @@ class Draft(NewInboundMessage):
         self.participants.append(from_participant)
         return from_participant
 
-    def _check_discussion_consistency(self, user_id):
+    def _check_discussion_consistency(self, user):
         from caliopen_main.message.objects.message import Message
         new_discussion = False
         if not hasattr(self, 'discussion_id') or self.discussion_id == "" \
@@ -129,7 +127,7 @@ class Draft(NewInboundMessage):
             if hasattr(self, 'parent_id') \
                     and self.parent_id is not None \
                     and self.parent_id != "":
-                parent_msg = Message(user_id, message_id=self.parent_id)
+                parent_msg = Message(user, message_id=self.parent_id)
                 try:
                     parent_msg.get_db()
                     parent_msg.unmarshall_db()
@@ -137,12 +135,11 @@ class Draft(NewInboundMessage):
                     raise err.PatchError(message="parent message not found")
                 self.discussion_id = parent_msg.discussion_id
             else:
-                user = User.get(user_id)
                 discussion = Discussion.create_from_message(user, self)
                 self.discussion_id = discussion.discussion_id
                 new_discussion = True
         if not new_discussion:
-            dim = DIM(user_id)
+            dim = DIM(user.user_id)
             d_id = self.discussion_id
             last_message = dim.get_last_message(d_id, -10, 10, True)
             if last_message == {}:
@@ -168,7 +165,7 @@ class Draft(NewInboundMessage):
                                 message="list of participants "
                                         "is not consistent for this discussion")
                 else:
-                    self.build_participants_for_reply(user_id)
+                    self.build_participants_for_reply(user)
 
                 # check parent_id consistency
                 if 'parent_id' in self and self.parent_id != "" \
@@ -182,7 +179,7 @@ class Draft(NewInboundMessage):
                 else:
                     self.parent_id = last_message.parent_id
 
-                self.update_external_references(user_id)
+                self.update_external_references(user)
 
             else:
                 last_message = None
@@ -191,14 +188,14 @@ class Draft(NewInboundMessage):
 
         return last_message
 
-    def build_participants_for_reply(self, user_id):
+    def build_participants_for_reply(self, user):
         """
         build participants list from last message in discussion.
         - former 'From' recipients are replaced by 'To' recipients
         - provided identity is used to fill the new 'From' participant
         - new sender is removed from former recipients
         """
-        dim = DIM(user_id)
+        dim = DIM(user.user_id)
         d_id = self.discussion_id
         last_message = dim.get_last_message(d_id, -10, 10, False)
         for i, participant in enumerate(last_message["participants"]):
@@ -218,14 +215,14 @@ class Draft(NewInboundMessage):
                         re.match("bcc", participant['type'], re.IGNORECASE):
                     self.participants.pop(i)
 
-    def update_external_references(self, user_id):
+    def update_external_references(self, user):
         """
         copy externals references from current draft's ancestor
         and change parent_id to reflect new message's hierarchy
         :return:
         """
         from caliopen_main.message.objects.message import Message
-        parent_msg = Message(user_id, message_id=self.parent_id)
+        parent_msg = Message(user, message_id=self.parent_id)
         parent_msg.get_db()
         parent_msg.unmarshall_db()
         if parent_msg:

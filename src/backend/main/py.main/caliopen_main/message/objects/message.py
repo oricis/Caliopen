@@ -133,14 +133,13 @@ class Message(ObjectIndexable):
             for key, value in params.items():
                 if key not in allowed_properties:
                     del (params[key])
-
         try:
             draft_param = Draft(params, strict=strict_patch)
             if draft_param.message_id:
                 draft_param.validate_uuid(user.user_id)
             else:
                 draft_param.message_id = uuid.uuid4()
-            draft_param.validate_consistency(user.user_id, True)
+            draft_param.validate_consistency(user, True)
         except Exception as exc:
             log.warn("draft_param error")
             log.warn(exc)
