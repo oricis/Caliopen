@@ -145,7 +145,7 @@ class Message(ObjectIndexable):
             log.warn(exc)
             raise exc
 
-        message = Message()
+        message = Message(user)
         message.unmarshall_json_dict(draft_param.to_primitive())
         message.user_id = UUID(user.user_id)
         message.is_draft = True
