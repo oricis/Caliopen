@@ -22,8 +22,8 @@ def resync_user(user):
     from caliopen_main.message.store import Message
     from caliopen_main.message.objects import Message as MessageObject
 
-    name = user.name.encode('utf8')
-    log.info('Sync user {0} into shard {1}'.format(name, user.shard_id))
+    log.info('Sync user {0} into shard {1}'.format(user.user_id,
+             user.shard_id))
     contacts = Contact.filter(user_id=user.user_id).timeout(None)
     for contact in contacts:
         log.debug('Reindex contact %r' % contact.contact_id)
