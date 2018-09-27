@@ -5,18 +5,14 @@
 package cmd
 
 import (
-	"context"
 	"errors"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
-	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/index/elasticsearch"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/store/cassandra"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/facilities/REST"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
 	"github.com/spf13/cobra"
-	"gopkg.in/olivere/elastic.v5"
-	"io"
 	"time"
 )
 
@@ -48,13 +44,6 @@ func identitiesMigration(cmd *cobra.Command, args []string) {
 		log.WithError(err).Fatalf("initialization of %s backend failed", apiConf.BackendName)
 	}
 	defer Store.Close()
-	//index
-	var Index *index.ElasticSearchBackend
-	Index, err = getIndexFacility()
-	if err != nil {
-		log.WithError(err).Fatalf("initialization of %s index failed", apiConf.IndexConfig.IndexName)
-	}
-	defer Index.Close()
 
 	var Rest *REST.RESTfacility
 	Rest, err = getRESTFacility()
@@ -65,7 +54,7 @@ func identitiesMigration(cmd *cobra.Command, args []string) {
 	/* get all users id */
 	erroneousUsers := []string{}
 	erroneousMessages := []string{}
-	if users, err := Store.Session.Query(`SELECT user_id, local_identities FROM user`).Iter().SliceMap(); err != nil {
+	if users, err := Store.Session.Query(`SELECT user_id, shard_id, local_identities FROM user`).Iter().SliceMap(); err != nil {
 		log.WithError(err).Fatal("failed to retrieve user ids")
 	} else {
 		users_total := len(users)
@@ -76,6 +65,7 @@ func identitiesMigration(cmd *cobra.Command, args []string) {
 			log.Infof("starting migration for user %d/%d", users_count, users_total)
 			var userId UUID
 			userId.UnmarshalBinary(user["user_id"].(gocql.UUID).Bytes())
+			shardId := user["shard_id"].(string)
 			var localId *UUID
 			var err error
 
@@ -96,7 +86,7 @@ func identitiesMigration(cmd *cobra.Command, args []string) {
 			}
 
 			if localId != nil {
-				err = updateSentMessages(Store, Index, userId, Rest, erroneousMessages, *localId)
+				err = updateSentMessages(Store, userId, shardId, Rest, erroneousMessages, *localId)
 				if err != nil {
 					log.WithError(err).Warnf("updateSentMessages returned error for user %s", userId.String())
 				}
@@ -227,41 +217,27 @@ func createRemotes(Store *store.CassandraBackend, erroneousUsers []string, userI
 	return nil
 }
 
-func updateSentMessages(Store *store.CassandraBackend, Index *index.ElasticSearchBackend, userId UUID, Rest *REST.RESTfacility, erroneousMessages []string, localId UUID) error {
-	log.Info("updating messages")
-	/* get all sent messages id for user from index */
-	scroll := Index.Client.Scroll(userId.String()).Type(MessageIndexType).
-		Query(elastic.NewTermsQuery("is_received", false)).
-		FetchSource(false).
-		Size(100)
-	for {
-		results, err := scroll.Do(context.TODO())
-		if err == io.EOF {
-			return nil // all results retrieved for this user
-		}
-		if err != nil {
-			// something went wrong
-			log.WithError(err).Warnf("failed to scroll over indexed messages for user %s", userId.String())
-			return err
-		}
-		log.Infof("%d messages to update", results.TotalHits())
-		for _, hit := range results.Hits.Hits {
-			message, err := Rest.GetMessage(userId.String(), hit.Id)
-			if err != nil {
-				continue
-			}
-			userIdentities := []UUID{localId}
-			updatedFields := map[string]interface{}{"UserIdentities": userIdentities}
-			message.UserIdentities = userIdentities
-			err = Store.UpdateMessage(message, updatedFields)
-			if err != nil {
-				log.WithError(err).Warnf("failed to update message %s in db", hit.Id)
-				erroneousMessages = append(erroneousMessages, userId.String())
-			}
-			err = Index.UpdateMessage(message, updatedFields)
-			if err != nil {
-				log.WithError(err).Warnf("failed to update message %s in index", hit.Id)
-				erroneousMessages = append(erroneousMessages, userId.String())
+func updateSentMessages(Store *store.CassandraBackend, userId UUID, shardId string, Rest *REST.RESTfacility, erroneousMessages []string, localId UUID) error {
+	/* get all user's messages id from store */
+	if messages, err := Store.Session.Query(`SELECT message_id, is_received FROM message WHERE user_id = ? ALLOW FILTERING`, userId.String()).Iter().SliceMap(); err != nil {
+		log.WithError(err).Errorf("failed to retrieve messages for user %s", userId.String())
+		return err
+	} else {
+		log.Infof("iterating over %d messages for user %s", len(messages), userId)
+		for _, msg := range messages {
+			if !msg["is_received"].(bool) {
+				message, err := Rest.GetMessage(&UserInfo{userId.String(), shardId}, msg["message_id"].(gocql.UUID).String())
+				if err != nil {
+					continue
+				}
+				userIdentities := []UUID{localId}
+				updatedFields := map[string]interface{}{"UserIdentities": userIdentities}
+				message.UserIdentities = userIdentities
+				err = Store.UpdateMessage(message, updatedFields)
+				if err != nil {
+					log.WithError(err).Warnf("failed to update message %s in db", message.Message_id.String())
+					erroneousMessages = append(erroneousMessages, userId.String())
+				}
 			}
 		}
 	}
