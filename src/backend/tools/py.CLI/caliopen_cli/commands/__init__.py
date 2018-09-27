@@ -10,4 +10,4 @@ from .migrate_index import migrate_index
 from .compute import basic_compute
 from .reserved_names import import_reserved_names
 from .resync_index import resync_index
-from .resync_shard_index import resync_shard
+from .resync_shard_index import resync_shard_index
