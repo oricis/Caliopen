@@ -1,0 +1,35 @@
+# DM Twitter
+
+The following sequence as mostly been made using [this twitter signin guide](https://developer.twitter.com/en/docs/twitter-for-websites/log-in-with-twitter/guides/implementing-sign-in-with-twitter).
+
+**FIXME:** _generate img using puml_
+```puml
+//@startuml
+title Add Twitter as remote identity
+actor "Authenticated user" as user
+participant "Client" as client
+participant "Backend" as backend
+participant "Twitter API" as twitter
+
+user -> client: click add twitter
+client -> backend: GET /api/vx/twitter/request_token
+backend -> twitter: POST /oauth/request_token
+note right: Authorization:\nOAuth\n\t oauth_callback="http(s)://#{caliopen instance hostname}/api/vx/twitter/loggedin"
+
+twitter -> backend: oauth_token=xxx\noauth_token_secret=xxx\noauth_callback_confirmed=true
+
+backend -> client: oauth_token=xxx
+
+client -> twitter: (popup) GET /oauth/authenticate?oauth_token=xxx
+
+twitter -> twitter: authorize
+
+twitter -> user: 302 to <oauth_callback>
+user -> backend: GET <oauth_callback>?oauth_token=xxx&oauth_verifier=xxx
+backend -> twitter: POST /oauth/access_token
+twitter -> backend: oauth_token=xxx\noauth_token_secret=xxx
+backend -> user: 200
+user -> user: close popup
+
+backend -> client: notify success
+```
