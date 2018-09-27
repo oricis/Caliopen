@@ -94,6 +94,67 @@ def setup_index(user):
                 idx_kls.create_mapping(index_name)
 
 
+def setup_shard_index(shard):
+    """Setup a shard index."""
+    url = Configuration('global').get('elasticsearch.url')
+    client = Elasticsearch(url)
+
+    if client.indices.exists(shard):
+        log.debug("Index for shard {0} already exists".format(shard))
+        return
+    try:
+        log.info('Creating index {0}'.format(shard))
+        client.indices.create(
+            index=shard,
+            body={
+                "settings": {
+                    "analysis": {
+                        "analyzer": {
+                            "text_analyzer": {
+                                "type": "custom",
+                                "tokenizer": "lowercase",
+                                "filter": [
+                                    "ascii_folding"
+                                ]
+                            },
+                            "email_analyzer": {
+                                "type": "custom",
+                                "tokenizer": "email_tokenizer",
+                                "filter": [
+                                    "ascii_folding"
+                                ]
+                            }
+                        },
+                        "filter": {
+                            "ascii_folding": {
+                                "type": "asciifolding",
+                                "preserve_original": True
+                            }
+                        },
+                        "tokenizer": {
+                            "email_tokenizer": {
+                                "type": "ngram",
+                                "min_gram": 3,
+                                "max_gram": 25
+                            }
+                        }
+                    }
+                }
+            })
+    except Exception as exc:
+        log.warn("failed to create index {} : {}".format(shard, exc))
+        return
+
+    # PUT mappings for each type, if any
+    for name, kls in core_registry.items():
+        if hasattr(kls, "_index_class") and \
+                hasattr(kls._model_class, 'user_id'):
+            idx_kls = kls._index_class()
+            if hasattr(idx_kls, "build_mapping"):
+                log.debug('Init index mapping for {}'.format(idx_kls))
+                idx_kls.create_mapping(shard)
+
+
 def setup_system_tags(user):
     """Create system tags."""
     # TODO: translate tags'name to user's preferred language
