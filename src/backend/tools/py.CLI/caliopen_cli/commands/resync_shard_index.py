@@ -24,13 +24,14 @@ def resync_user(user):
 
     name = user.name.encode('utf8')
     log.info('Sync user {0} into shard {1}'.format(name, user.shard_id))
-    contacts = Contact.filter(user_id=user.user_id)
+    contacts = Contact.filter(user_id=user.user_id).timeout(None)
     for contact in contacts:
         log.debug('Reindex contact %r' % contact.contact_id)
         obj = ContactObject(user, contact_id=contact.contact_id)
         obj.create_index()
 
-    messages = Message.filter(user_id=user.user_id).allow_filtering()
+    messages = Message.filter(user_id=user.user_id). \
+        allow_filtering().timeout(None)
     for message in messages:
         log.debug('Reindex message %r' % message.message_id)
         obj = MessageObject(user, message_id=message.message_id)
