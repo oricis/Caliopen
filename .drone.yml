@@ -222,7 +222,6 @@ matrix:
       BASE_DIR: src/backend
       DOCKERFILE: Dockerfile.caliopen-go
       REPO: caliopen_go
-      LANG: go
 
     - PROG: interfaces/REST/go.server/cmd/caliopen_rest
       DOCKERFILE: Dockerfile.go-api
