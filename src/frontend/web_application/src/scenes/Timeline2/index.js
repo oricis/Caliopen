@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { withI18n } from 'lingui-react';
 import withScrollManager from '../../modules/scroll/hoc/scrollManager';
 import { requestDiscussions, hasMore, loadMoreDiscussions } from '../../store/modules/discussion';
 import { UserSelector } from '../../store/selectors/user';
@@ -33,7 +32,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withI18n(),
   //  withTags(),
   withScrollManager(),
 )(Presenter);

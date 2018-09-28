@@ -15,7 +15,7 @@ describe('Discussions', () => {
 
   it('List', async () => {
     await browser.wait(EC.presenceOf($('.s-timeline .s-discussion-item')), 5 * 1000);
-    expect(element.all(by.css('.s-timeline .s-discussion-item .s-discussion-item__title .s-discussion-item__message_excerpt')).first().getText())
+    expect(element.all(by.css('.s-discussion-item__message_excerpt')).first().getText())
       .toContain('Fry! Stay back! He\'s too powerful!');
     expect(element.all(by.css('.s-discussion-item')).count()).toEqual(6);
     expect(element(by.cssContainingText('.s-timeline__load-more', 'Load more')).isPresent())
@@ -27,7 +27,7 @@ describe('Discussions', () => {
       // await filter('All');
       await browser.wait(EC.presenceOf($('.s-timeline .s-discussion-item')), 5 * 1000);
       element(by.cssContainingText(
-        '.s-discussion-item .s-discussion-item__message_excerpt',
+        '.s-discussion-item__message_excerpt',
         'Fry! Stay back! He\'s too powerful!'
       )).click();
 
