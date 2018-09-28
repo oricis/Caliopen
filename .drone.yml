@@ -191,28 +191,28 @@ pipeline:
 #######################################################
 
 services:
-  redis:
-    image: redis
-    when:
-      branch: [ develop, maste ]
-      event: [ pull_request, push ]
-      matrix:
-        LANG: go
-  nats:
-    image: nats
-    when:
-      branch: [ develop, master ]
-      event: [ pull_request, push ]
-      matrix:
-        LANG: go
+  # redis:
+  #   image: redis
+  #   when:
+  #     branch: [ develop, master ]
+  #     event: [ pull_request, push ]
+  #     matrix:
+  #       LANG: go
+  # nats:
+  #   image: nats
+  #   when:
+  #     branch: [ develop, master ]
+  #     event: [ pull_request, push ]
+  #     matrix:
+  #       LANG: go
 
-  cassandra:
-    image: cassandra:2.1
-    when:
-      branch: [ develop, master ]
-      event: [ pull_request, push ]
-      matrix:
-        LANG: go
+  # cassandra:
+  #   image: cassandra:2.1
+  #   when:
+  #     branch: [ develop, master ]
+  #     event: [ pull_request, push ]
+  #     matrix:
+  #       LANG: go
 
 
 # Caliopen service definition
