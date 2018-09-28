@@ -13,6 +13,7 @@ class Message extends Component {
     onMessageRead: PropTypes.func.isRequired,
     onMessageUnread: PropTypes.func.isRequired,
     onMessageDelete: PropTypes.func,
+    onReply: PropTypes.func.isRequired,
     scrollToMe: PropTypes.func,
     user: PropTypes.shape({}).isRequired,
     updateTagCollection: PropTypes.func.isRequired,
