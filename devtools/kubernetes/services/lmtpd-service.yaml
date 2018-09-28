@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: broker
+  name: lmtpd
 spec:
   type: NodePort
   selector:
-    app: broker
+    app: lmtpd
   ports:
-  - name: "broker"
+  - name: "lmtpd"
     port: 2525
     targetPort: 2525
     nodePort: 2525

@@ -14,29 +14,32 @@ pipeline:
 
   build-caliopen-go:
     group: build0
-    image: plugins/docker
-    dockerfile: src/backend/Dockerfile.caliopen-go
-    context: /srv/caliopen/src/backend
-    repo: registry.caliopen.org/caliopen_go
-    registry: registry.caliopen.org
-    secrets: [ DOCKER_USERNAME , DOCKER_PASSWORD ]
+    image: public-registry.caliopen.org/caliopen_drone_docker
+    privileged: true
+    secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD, DOCKER_REGISTRY]
+    environment:
+      - DEPS=vendor
+      - PLUGIN_DOCKERFILE=${BASE_DIR}/${DOCKERFILE}
+      - PLUGIN_CONTEXT=/srv/caliopen/${BASE_DIR}
+      - PLUGIN_REPO=registry.caliopen.org/${REPO}
     when:
-      branch: develop
+      branch: [ develop, master ]
       event: [ push ]
       matrix:
         STEP: pre
+    commands:
+      - . devtools/drone/files_changed.sh
+      - . devtools/drone/build_images.sh
 
 #######################################################
-##               TEST ON BRANCH PUSHES               ##
+##      TEST ON MASTER OR DEVELOP PR AND PUSH        ##
 #######################################################
 
   test-go:
     group: test
     image: public-registry.caliopen.org/caliopen_go
-    environment:
-      - PROG=${PROG}
     when:
-      branch: [ develop ]
+      branch: [ develop, master ]
       event: [ pull_request, push ]
       matrix:
         LANG: go
@@ -50,7 +53,7 @@ pipeline:
     environment:
       - CALIOPEN_BASEDIR=/srv/caliopen
     when:
-      branch: [ develop ]
+      branch: [ develop, master ]
       event: [ pull_request, push ]
       matrix:
         LANG: python
@@ -62,7 +65,7 @@ pipeline:
     group: test
     image: node:8
     when:
-      branch: [ develop ]
+      branch: [ develop, master ]
       event: [ pull_request, push ]
       matrix:
         LANG: js
@@ -85,7 +88,6 @@ pipeline:
     privileged: true
     secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD, DOCKER_REGISTRY]
     environment:
-      - PROG=${PROG}
       - PLUGIN_DOCKERFILE=${BASE_DIR}/${DOCKERFILE}
       - PLUGIN_CONTEXT=/srv/caliopen/${BASE_DIR}
       - PLUGIN_REPO=registry.caliopen.org/${REPO}
@@ -107,7 +109,6 @@ pipeline:
     privileged: true
     secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD, DOCKER_REGISTRY]
     environment:
-      - PROG=${PROG}
       - PLUGIN_DOCKERFILE=${BASE_DIR}/${DOCKERFILE}
       - PLUGIN_CONTEXT=/srv/caliopen/${BASE_DIR}
       - PLUGIN_REPO=registry.caliopen.org/${REPO}
@@ -146,7 +147,7 @@ pipeline:
 ##          BUILD AND PUBLISH ON TAG: RELEASE-         ##
 #########################################################
 
-# Build all backend images
+# Build all images
   build-all-release:
     group: build1
     image: plugins/docker
@@ -190,42 +191,47 @@ pipeline:
 #######################################################
 
 services:
-  redis:
-    image: redis
-    when:
-      branch: [ develop ]
-      event: [ pull_request, push ]
-      matrix:
-        LANG: go
-  nats:
-    image: nats
-    when:
-      branch: [ develop ]
-      event: [ pull_request, push ]
-      matrix:
-        LANG: go
+  # redis:
+  #   image: redis
+  #   when:
+  #     branch: [ develop, master ]
+  #     event: [ pull_request, push ]
+  #     matrix:
+  #       LANG: go
+  # nats:
+  #   image: nats
+  #   when:
+  #     branch: [ develop, master ]
+  #     event: [ pull_request, push ]
+  #     matrix:
+  #       LANG: go
 
-  cassandra:
-    image: cassandra:2.1
-    when:
-      branch: [ develop ]
-      event: [ pull_request, push ]
-      matrix:
-        LANG: go
+  # cassandra:
+  #   image: cassandra:2.1
+  #   when:
+  #     branch: [ develop, master ]
+  #     event: [ pull_request, push ]
+  #     matrix:
+  #       LANG: go
 
+
+# Caliopen service definition
 matrix:
   include:
     - STEP: pre
+      BASE_DIR: src/backend
+      DOCKERFILE: Dockerfile.caliopen-go
+      REPO: caliopen_go
 
     - PROG: interfaces/REST/go.server/cmd/caliopen_rest
       DOCKERFILE: Dockerfile.go-api
-      REPO: caliopen_api
+      REPO: caliopen_apiv2
       BASE_DIR: src/backend
       LANG: go
 
     - PROG: protocols/go.smtp/cmd/caliopen_lmtpd
       DOCKERFILE: Dockerfile.go-lmtp
-      REPO: caliopen_broker
+      REPO: caliopen_lmtpd
       BASE_DIR: src/backend
       LANG: go
 
@@ -236,8 +242,8 @@ matrix:
       LANG: go
 
     - PROG: protocols/go.imap/cmd/imapworker
-      DOCKERFILE: Dockerfile.identity-worker
-      REPO: caliopen_identity_worker
+      DOCKERFILE: Dockerfile.imap-worker
+      REPO: caliopen_imap_worker
       BASE_DIR: src/backend
       LANG: go
 
@@ -254,8 +260,8 @@ matrix:
       LANG: python
 
     - PROG: interfaces/NATS/py.client
-      DOCKERFILE: Dockerfile.message-handler
-      REPO: caliopen_message_handler
+      DOCKERFILE: Dockerfile.mq-worker
+      REPO: caliopen_mq_worker
       BASE_DIR: src/backend
       LANG: python
 
