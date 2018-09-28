@@ -26,14 +26,6 @@
     width: 100%;
     padding: 1rem;
 
-    &-from, &-to {
-      font-size: 0.625rem;
-
-      a, a:visited {
-        color: #515151;
-        font-weight: 600;
-      }
-    }
   }
 
 
@@ -48,10 +40,6 @@
 
   &__participants, &__tags {
     display: none;
-  }
-
-  .direction {
-    width: 2rem;
   }
 
   &__details {
@@ -132,6 +120,17 @@
 
     &__participants, &__tags {
       display: block;
+    }
+
+    &__participants-from, &__participants-to {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: $co-font__size--small;
+
+      a, a:visited {
+        color: #515151;
+        font-weight: 600;
+      }
     }
 
     &__content, &__subject {

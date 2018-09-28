@@ -11,12 +11,13 @@ import './style.scss';
 
 class MessagePi extends PureComponent {
   static propTypes = {
-    pi: PropTypes.shape({}).isRequired,
+    pi: PropTypes.shape({}),
     illustrate: PropTypes.bool,
     describe: PropTypes.bool,
   };
 
   static defaultProps = {
+    pi: undefined,
     illustrate: false,
     describe: false,
   };
