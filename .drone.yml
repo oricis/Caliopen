@@ -33,10 +33,8 @@ pipeline:
   test-go:
     group: test
     image: public-registry.caliopen.org/caliopen_go
-    environment:
-      - PROG=${PROG}
     when:
-      branch: [ develop ]
+      branch: [ develop, master ]
       event: [ pull_request, push ]
       matrix:
         LANG: go
@@ -50,7 +48,7 @@ pipeline:
     environment:
       - CALIOPEN_BASEDIR=/srv/caliopen
     when:
-      branch: [ develop ]
+      branch: [ develop, master ]
       event: [ pull_request, push ]
       matrix:
         LANG: python
@@ -62,7 +60,7 @@ pipeline:
     group: test
     image: node:8
     when:
-      branch: [ develop ]
+      branch: [ develop, master ]
       event: [ pull_request, push ]
       matrix:
         LANG: js
@@ -85,7 +83,6 @@ pipeline:
     privileged: true
     secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD, DOCKER_REGISTRY]
     environment:
-      - PROG=${PROG}
       - PLUGIN_DOCKERFILE=${BASE_DIR}/${DOCKERFILE}
       - PLUGIN_CONTEXT=/srv/caliopen/${BASE_DIR}
       - PLUGIN_REPO=registry.caliopen.org/${REPO}
@@ -107,7 +104,6 @@ pipeline:
     privileged: true
     secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD, DOCKER_REGISTRY]
     environment:
-      - PROG=${PROG}
       - PLUGIN_DOCKERFILE=${BASE_DIR}/${DOCKERFILE}
       - PLUGIN_CONTEXT=/srv/caliopen/${BASE_DIR}
       - PLUGIN_REPO=registry.caliopen.org/${REPO}
@@ -193,14 +189,14 @@ services:
   redis:
     image: redis
     when:
-      branch: [ develop ]
+      branch: [ develop, maste ]
       event: [ pull_request, push ]
       matrix:
         LANG: go
   nats:
     image: nats
     when:
-      branch: [ develop ]
+      branch: [ develop, master ]
       event: [ pull_request, push ]
       matrix:
         LANG: go
@@ -208,7 +204,7 @@ services:
   cassandra:
     image: cassandra:2.1
     when:
-      branch: [ develop ]
+      branch: [ develop, master ]
       event: [ pull_request, push ]
       matrix:
         LANG: go
