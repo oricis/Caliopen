@@ -541,5 +541,7 @@
   "signup.form.tos.label": "J'accepte les Conditions Générales d'Utilisation (CGU)",
   "user.privacy": "Confidentialité",
   "user.security.section_pgpkeys.title": "Clés privées PGP",
-  "user.security.section_tfa.title": "Authentification à deux facteurs"
+  "user.security.section_tfa.title": "Authentification à deux facteurs",
+  "discussion.action.reply": "Répondre",
+  "discussion.action.label": "Discussion complète ",
 }

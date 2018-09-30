@@ -18,8 +18,8 @@ class Timeline extends Component {
     getUser: PropTypes.func.isRequired,
     isUserFetching: PropTypes.bool.isRequired,
     requestDiscussions: PropTypes.func.isRequired,
-    deleteDiscussion: PropTypes.func.isRequired,
-    // timelineFilter: PropTypes.string.isRequired,
+    // XXX no API for now
+    // deleteDiscussion: PropTypes.func.isRequired,
     loadMore: PropTypes.func.isRequired,
     discussions: PropTypes.arrayOf(PropTypes.shape({})),
     tags: PropTypes.arrayOf(PropTypes.shape({})),
@@ -42,8 +42,9 @@ class Timeline extends Component {
   state = {
     initialized: false,
     selectedDiscussions: [],
+    // XXX no API for now
     isTagModalOpen: false,
-    isDeleting: false,
+    // isDeleting: false,
   };
 
   componentDidMount() {
@@ -133,13 +134,16 @@ class Timeline extends Component {
   }
 
   render() {
-    const { hasMore } = this.props;
+    const { discussions, hasMore } = this.props;
     // const nbSelectedDiscussions = this.state.selectedDiscussions.length;
 
     return (
       <Fragment>
         <section id="discussions" className="s-timeline">
           <StickyNavBar className="s-timeline__action-bar" stickyClassName="sticky">
+            <div className="s-timeline__actions--placeholder">
+              {discussions ? null : <Spinner isLoading /> }
+            </div>
             {/*  <DiscussionSelector
               count={nbSelectedDiscussions}
               checked={nbSelectedDiscussions > 0

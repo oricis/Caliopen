@@ -14,19 +14,19 @@
     background-color: white;
 
     .s-discussion__header {
-      padding: 0 2.625rem;
+      padding: 0 40px;
     }
   }
 
   &__header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    max-width: 1280px;
-    height: 2.625rem;
+    justify-content: flex-end;
+    max-width: $co-site-width;
+    height: $co-component__height;
     margin: 0 auto;
     background-color: white;
-    font-size: 0.88rem;
+    font-size: $co-font__size--small;
     text-align: right;
   }
 
@@ -34,6 +34,7 @@
     @include breakpoint(small) {
       display: none;
     }
+    display: block;
     color: $co-color__primary--low;
   }
 

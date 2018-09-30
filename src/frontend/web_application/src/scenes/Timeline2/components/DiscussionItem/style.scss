@@ -71,6 +71,7 @@ $s-discussion-item__spacing: 0.5rem;
 
   &__message-date {
     flex: 0 0 10rem;
+    margin: auto $s-discussion-item__spacing;
     text-align: right;
 
     @include breakpoint(small) {
