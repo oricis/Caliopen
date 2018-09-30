@@ -20,14 +20,23 @@
 
   &__header {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     max-width: $co-site-width;
     height: $co-component__height;
     margin: 0 auto;
     background-color: white;
     font-size: $co-font__size--small;
     text-align: right;
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: flex-end;
   }
 
   &__action-label {
