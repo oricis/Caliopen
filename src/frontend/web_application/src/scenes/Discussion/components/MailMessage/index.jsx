@@ -6,8 +6,8 @@ import classnames from 'classnames';
 import VisibilitySensor from 'react-visibility-sensor';
 import withScrollTarget from '../../../../modules/scroll/hoc/scrollTarget';
 import { withPush } from '../../../../modules/routing/hoc/withPush';
-import { withTags, getTagLabelFromName } from '../../../../modules/tags';
-import { Badge, Button } from '../../../../components';
+import { getTagLabelFromName } from '../../../../modules/tags';
+import { Badge, Button, Confirm } from '../../../../components';
 import MessageAttachments from '../../../MessageList/components/MessageAttachments';
 import MessagePi from '../MessagePi';
 import { getAuthor, getRecipients, isParticipantUser, isUserRecipient } from '../../../../services/message';
@@ -17,7 +17,6 @@ import './style.scss';
 
 @withScrollTarget()
 @withPush()
-@withTags()
 class MailMessage extends Component {
   static propTypes = {
     message: PropTypes.shape({
@@ -27,6 +26,7 @@ class MailMessage extends Component {
     onMessageUnread: PropTypes.func.isRequired,
     onMessageDelete: PropTypes.func.isRequired,
     onOpenTags: PropTypes.func.isRequired,
+    onReply: PropTypes.func.isRequired,
     forwardRef: PropTypes.func,
     user: PropTypes.shape({}).isRequired,
     push: PropTypes.func.isRequired,
@@ -60,6 +60,11 @@ class MailMessage extends Component {
     } else {
       onMessageUnread({ message });
     }
+  }
+
+  handleReply = () => {
+    const { onReply, message, push } = this.props;
+    onReply({ message, push });
   }
 
   formatRecipients = () => {
@@ -129,15 +134,28 @@ class MailMessage extends Component {
           <VisibilitySensor onChange={this.onVisibilityChange} scrollCheck scrollThrottle={100} />
         </div>
         <footer className="s-mail-message__actions">
-          <Button className="m-message-action-container__action" icon="reply" responsive="icon-only">
+          <Button className="m-message-action-container__action" onClick={this.handleReply} icon="reply" responsive="icon-only">
             <Trans id="message-list.message.action.reply">Reply</Trans>
           </Button>
           <Button onClick={onOpenTags} className="m-message-actions-container__action" icon="tags" responsive="icon-only">
             <Trans id="message-list.message.action.tags">Tags</Trans>
           </Button>
-          <Button className="m-message-action-container__action" onClick={this.handleMessageDelete} icon="trash" responsive="icon-only">
-            <Trans id="message-list.message.action.delete">Delete</Trans>
-          </Button>
+          <Confirm
+            className="s-mail-message-__action-confirm"
+            onConfirm={this.handleMessageDelete}
+            title={(<Trans id="message-list.message.confirm-delete.title">Delete a message</Trans>)}
+            content={(<Trans id="message-list.message.confirm-delete.content">The deletion is permanent, are you sure you want to delete this message ?</Trans>)}
+            render={confirm => (
+              <Button
+                className="m-message-action-container__action"
+                onClick={confirm}
+                icon="trash"
+                responsive="icon-only"
+              >
+                <Trans id="message-list.message.action.delete">Delete</Trans>
+              </Button>
+            )}
+          />
           <Button className="m-message-action-container__action" onClick={this.handleToggle} responsive="icon-only">
             {message.is_unread ? (
               <Trans id="message-list.message.action.mark_as_read">Mark as read</Trans>

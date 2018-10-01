@@ -22,7 +22,7 @@
       left: 0;
       background-color: white;
 
-      .s-timeline__actions {
+      .s-timeline__actions, .s-timeline__actions--placeholder {
         padding: 0 40px;
       }
     }
@@ -32,6 +32,12 @@
     margin: 1rem auto;
     text-align: center;
   }
+}
+
+.s-timeline__actions--placeholder {
+  max-width: $co-site-width;
+  height: $co-component__height;
+  margin: 0 auto;
 }
 
 .s-discussion-list {

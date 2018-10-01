@@ -226,12 +226,17 @@ class Discussion extends Component {
 
     return (
       <section id={`discussion-${discussionId}`} className="s-discussion">
-        <StickyNavBar className="action-bar" stickyClassName="sticky-action-bar">
+        <StickyNavBar className="s-discussion__action-bar" stickyClassName="s-discussion__action-bar--sticky">
           <header className="s-discussion__header">
             {discussion ? this.renderTags(discussion) : null}
             <div className="s-discussion__actions">
-              <strong className="s-discussion__action-label">Discussion complète&thinsp;:</strong>
-              <Button className="m-message-list__action" icon="reply" onClick={this.handleMessageReply} responsive="icon-only">Reply</Button>
+              <strong className="s-discussion__action-label">
+                <Trans id="discussion.action.label">Whole discussion</Trans>
+                :
+              </strong>
+              <Button className="m-message-list__action" icon="reply" onClick={this.handleMessageReply} responsive="icon-only">
+                <Trans id="discussion.action.reply">Reply</Trans>
+              </Button>
               {/*
                 <Button
                   className="m-message-list__action"

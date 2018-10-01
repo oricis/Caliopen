@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import { withI18n } from 'lingui-react';
-import { Badge, Icon, Link, Checkbox } from '../../../../components';
+import { Badge, Icon, Link } from '../../../../components';
 import ParticipantsIconLetter from '../../../../components/ParticipantsIconLetter';
 
 import './style.scss';
@@ -21,7 +21,7 @@ class DiscussionItem extends PureComponent {
     i18n: PropTypes.shape({}).isRequired,
     onSelectDiscussion: PropTypes.func.isRequired,
     isDiscussionSelected: PropTypes.bool.isRequired,
-    isDeleting: PropTypes.bool.isRequired,
+    // isDeleting: PropTypes.bool.isRequired,
     user: PropTypes.shape({
       contact: PropTypes.shape({ contact_id: PropTypes.string.isRequired }).isRequired,
     }).isRequired,
@@ -66,7 +66,7 @@ class DiscussionItem extends PureComponent {
       last_message_id: lastMessageId, unread_count: unreadCount,
     } = this.props.discussion;
 
-    const { isDeleting, isDiscussionSelected, i18n } = this.props;
+    // const { isDeleting, isDiscussionSelected, i18n } = this.props;
 
     const labels = this.buildParticipantsLabels(this.props.discussion);
 
@@ -87,9 +87,11 @@ class DiscussionItem extends PureComponent {
         {this.renderTags(this.props.discussion)}
         <span className="s-discussion-item__message-type"><Icon type="envelope" /></span>
         <Moment className="s-discussion-item__message-date" fromNow locale="fr">{date}</Moment>
+        {/*
         <div className="s-discussion-item__select">
           <Checkbox
-            label={i18n._('message-list.action.select_single_discussion', { defaults: 'Select/deselect this discussion' })}
+            label={i18n._('message-list.action.select_single_discussion',
+              { defaults: 'Select/deselect this discussion' })}
             onChange={this.onCheckboxChange}
             id={discussionId}
             checked={isDiscussionSelected}
@@ -97,6 +99,7 @@ class DiscussionItem extends PureComponent {
             showLabelforSr
           />
         </div>
+        */}
       </li>
     );
   }

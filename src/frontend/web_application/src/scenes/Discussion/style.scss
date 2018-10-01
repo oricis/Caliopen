@@ -14,26 +14,36 @@
     background-color: white;
 
     .s-discussion__header {
-      padding: 0 2.625rem;
+      padding: 0 40px;
     }
   }
 
   &__header {
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    max-width: 1280px;
-    height: 2.625rem;
+    max-width: $co-site-width;
+    height: $co-component__height;
     margin: 0 auto;
     background-color: white;
-    font-size: 0.88rem;
+    font-size: $co-font__size--small;
     text-align: right;
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: flex-end;
   }
 
   &__action-label {
     @include breakpoint(small) {
       display: none;
     }
+    display: block;
     color: $co-color__primary--low;
   }
 

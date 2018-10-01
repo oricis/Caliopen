@@ -23,6 +23,10 @@ class DraftMessageActionsContainer extends Component {
     className: null,
   };
 
+  state = {
+    isTagModalOpen: false,
+  }
+
   makeHandle = action => () => {
     const { message, internalId } = this.props;
     action({ message, internalId });
