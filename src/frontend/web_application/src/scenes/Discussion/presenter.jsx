@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
 import classnames from 'classnames';
+import { withRouter } from 'react-router-dom';
 import { Trans, withI18n } from 'lingui-react';
 import { Badge, Button, Modal } from '../../components';
 import StickyNavBar from '../../layouts/Page/components/Navigation/components/StickyNavBar';
@@ -18,6 +19,7 @@ const LOAD_MORE_THROTTLE = 1000;
 
 @withCloseTab()
 @withI18n()
+@withRouter
 class Discussion extends Component {
   static propTypes = {
     requestMessages: PropTypes.func.isRequired,
@@ -27,11 +29,11 @@ class Discussion extends Component {
     requestDiscussions: PropTypes.func.isRequired,
     user: PropTypes.shape({}),
     isUserFetching: PropTypes.bool.isRequired,
-    scrollToTarget: PropTypes.func,
+    scrollToTarget: PropTypes.func.isRequired,
     isFetching: PropTypes.bool.isRequired,
     didInvalidate: PropTypes.bool.isRequired,
     hasMore: PropTypes.bool.isRequired,
-    hash: PropTypes.string,
+    location: PropTypes.shape({}).isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})),
     onMessageReply: PropTypes.func.isRequired,
     onMessageSent: PropTypes.func.isRequired,
@@ -51,8 +53,6 @@ class Discussion extends Component {
   static defaultProps = {
     discussion: undefined,
     currentTab: {},
-    scrollToTarget: undefined,
-    hash: undefined,
     messages: [],
     user: undefined,
   };
@@ -220,9 +220,10 @@ class Discussion extends Component {
 
   render() {
     const {
-      discussionId, messages, isFetching, hash, scrollToTarget,
+      discussionId, messages, isFetching, location, scrollToTarget,
       hasMore, user, isUserFetching, discussion,
     } = this.props;
+    const hash = location.hash ? location.hash.slice(1) : null;
 
     return (
       <section id={`discussion-${discussionId}`} className="s-discussion">
@@ -269,7 +270,7 @@ class Discussion extends Component {
           onMessageRead={this.handleSetMessageRead}
           onMessageUnread={this.handleSetMessageUnread}
           onMessageDelete={this.handleDeleteMessage}
-          scrollTotarget={scrollToTarget}
+          scrollToTarget={scrollToTarget}
           user={user}
           isUserFetching={isUserFetching}
         />
