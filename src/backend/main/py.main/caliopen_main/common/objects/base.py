@@ -271,7 +271,10 @@ class ObjectUser(ObjectStorable):
 
     def __init__(self, user=None, **params):
         self.user = user
-        self.user_id = user.user_id
+        if user:
+            self.user_id = user.user_id
+        else:
+            self.user_id = None
         super(ObjectUser, self).__init__(**params)
 
     def marshall_dict(self, **options):
