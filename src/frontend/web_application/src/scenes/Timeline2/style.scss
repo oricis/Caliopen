@@ -32,6 +32,11 @@
     margin: 1rem auto;
     text-align: center;
   }
+
+  &__new-msg {
+    background-color: $co-color__fg__back;
+    text-align: center;
+  }
 }
 
 .s-timeline__actions--placeholder {
