@@ -110,7 +110,7 @@ class MessagePi extends PureComponent {
             <span className="m-message-pi__numeric-value">{Math.round(piAggregate)}</span>
           </div>
         </div>
-        {describe ? this.renderDescription() : null}
+        {describe ? this.renderDescription(piAggregate) : null}
       </div>
     );
   }
