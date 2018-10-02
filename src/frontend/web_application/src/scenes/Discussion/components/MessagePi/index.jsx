@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import classnames from 'classnames';
-import { getAveragePI, getPiClass } from '../../../../modules/pi/services/pi';
+import { getAveragePI, getPiClass } from '../../../../modules/pi';
 
 import sealedEnvelope from './assets/sealed-envelope.png';
 import postalCard from './assets/postal-card.png';
@@ -73,14 +73,17 @@ class MessagePi extends PureComponent {
     );
   }
 
-  renderDescription = () => (
-    <p className="m-message-pi__metaphor">
-      <Trans>
-        Dans la vraie vie, ce message serait plus ou moins l&apos;équivalent d&apos;
-        une carte postale visible par tous.
-      </Trans>
-    </p>
-  );
+  renderDescription = (piAggregate) => {
+    const piQuality = getPiClass(piAggregate);
+
+    return (
+      <p className="m-message-pi__metaphor">
+        <Trans id={`message.pi.description.metaphor.${piQuality}`}>
+          Unknown message type.
+        </Trans>
+      </p>
+    );
+  };
 
   render() {
     const { illustrate, describe, pi } = this.props;

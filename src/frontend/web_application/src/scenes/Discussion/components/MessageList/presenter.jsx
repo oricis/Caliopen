@@ -4,7 +4,7 @@ import { Trans } from 'lingui-react';
 import { Button, Spinner } from '../../../../components';
 import Message from '../../components/Message';
 import ProtocolSwitch from '../../components/ProtocolSwitch';
-import { calcPiValue } from '../../../../services/pi';
+import { calcPiValue } from '../../../../modules/pi';
 
 import './style.scss';
 

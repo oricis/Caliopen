@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
-import { getPiClass } from '../../../../services/pi';
+import { getPiClass } from '../../../../modules/pi';
 
 import './style.scss';
 

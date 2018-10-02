@@ -11,11 +11,11 @@
     height: map_get($co-pi-height, 'progressbar');
     margin-bottom: 0;
 
-    &--weak-pi {
+    &--ugly {
       background-color: map_get($privacy-palette-high, 'ugly');
     }
 
-    &--strong-pi {
+    &--super {
       background-color: map_get($privacy-palette-high, 'super');
     }
   }
@@ -29,11 +29,11 @@
   &__progress-meter {
     height: map_get($co-pi-height, 'progressbar');
 
-    &--weak-pi {
+    &--ugly {
       background-color: map_get($privacy-palette, 'ugly');
     }
 
-    &--strong-pi  {
+    &--super  {
       background-color: map_get($privacy-palette, 'super');
     }
   }
@@ -105,12 +105,12 @@
   }
 }
 
-.weak-pi {
+.ugly {
   .m-message-pi__metaphor, .m-message-pi__meter { border-color: map_get($privacy-palette-high, 'ugly'); }
   .m-message-pi__numeric-value { color: map_get($privacy-palette, 'ugly'); }
 }
 
-.strong-pi {
+.super {
   .m-message-pi__metaphor, .m-message-pi__meter { border-color: map_get($privacy-palette-high, 'super'); }
   .m-message-pi__numeric-value { color: map_get($privacy-palette, 'super'); }
 }
