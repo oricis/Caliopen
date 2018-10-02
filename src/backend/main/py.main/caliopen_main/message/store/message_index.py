@@ -3,7 +3,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 from elasticsearch_dsl import Mapping, Nested, Text, Keyword, Date, Boolean, \
-    Integer
+    Integer, Object
 from caliopen_storage.store.model import BaseIndexDocument
 
 from .attachment_index import IndexedMessageAttachment
@@ -36,8 +36,8 @@ class IndexedMessage(BaseIndexDocument):
     is_received = Boolean()
     parent_id = Keyword()
     participants = Nested(doc_class=IndexedParticipant)
-    privacy_features = Nested()
-    pi = Nested(doc_class=PIIndexModel)
+    privacy_features = Object()
+    pi = Object(doc_class=PIIndexModel)
     raw_msg_id = Keyword()
     subject = Text()
     tags = Keyword(multi=True)
@@ -111,7 +111,7 @@ class IndexedMessage(BaseIndexDocument):
         participants.field("type", Keyword())
         m.field('participants', participants)
         # PI
-        pi = Nested(doc_class=PIIndexModel, include_in_all=True,
+        pi = Object(doc_class=PIIndexModel, include_in_all=True,
                     properties={
                         "technic": "integer",
                         "comportment": "integer",
@@ -120,7 +120,7 @@ class IndexedMessage(BaseIndexDocument):
                         "date_update": "date"
                     })
         m.field("pi", pi)
-        m.field('privacy_features', Nested(include_in_all=True))
+        m.field('privacy_features', Object(include_in_all=True))
         m.field('raw_msg_id', "keyword")
         m.field('subject', 'text', fields={
             "normalized": {"type": "text", "analyzer": "text_analyzer"}

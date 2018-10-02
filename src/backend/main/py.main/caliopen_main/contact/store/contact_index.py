@@ -5,7 +5,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 
 from elasticsearch_dsl import Mapping, Nested, Text, Keyword, Date, Boolean, \
-    InnerObjectWrapper
+    InnerObjectWrapper, Object
 from caliopen_storage.store.model import BaseIndexDocument
 from caliopen_main.pi.objects import PIIndexModel
 
@@ -95,8 +95,8 @@ class IndexedContact(BaseIndexDocument):
     name_suffix = Keyword()
     organizations = Nested(doc_class=IndexedOrganization)
     phones = Nested(doc_class=IndexedPhone)
-    pi = Nested(doc_class=PIIndexModel)
-    privacy_features = Nested()
+    pi = Object(doc_class=PIIndexModel)
+    privacy_features = Object()
     public_key = Nested()
     social_identities = Nested(doc_class=IndexedSocialIdentity)
     tags = Keyword(multi=True)
@@ -201,7 +201,7 @@ class IndexedContact(BaseIndexDocument):
 
         m.field("phones", phones)
         # pi
-        pi = Nested(doc_class=PIIndexModel, include_in_all=True,
+        pi = Object(doc_class=PIIndexModel, include_in_all=True,
                     properties={
                         "comportment": "integer",
                         "context": "integer",
@@ -210,7 +210,7 @@ class IndexedContact(BaseIndexDocument):
                         "version": "integer"
                     })
         m.field("pi", pi)
-        m.field("privacy_features", Nested(include_in_all=True))
+        m.field("privacy_features", Object(include_in_all=True))
         m.field("public_key", Nested())
         m.field("social_identities", social_ids)
         m.field("tags", Keyword(multi=True))
