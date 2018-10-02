@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import classNames from 'classnames';
 import VisibilitySensor from 'react-visibility-sensor';
+import withScrollTarget from '../../../../modules/scroll/hoc/scrollTarget';
 import { isMessageFromUser } from '../../../../services/message';
 import { getAveragePI, getPiClass } from '../../../../modules/pi';
 import { AuthorAvatarLetter } from '../../../../modules/avatar';
@@ -17,10 +18,12 @@ const PROTOCOL_ICONS = {
   default: 'comment',
 };
 
+@withScrollTarget()
 class InstantMessage extends PureComponent {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
     onMessageRead: PropTypes.func.isRequired,
+    forwardRef: PropTypes.func.isRequired,
     // XXX: No UI for that
     // onMessageUnread: PropTypes.func.isRequired,
     // onDeleteMessage: PropTypes.func.isRequired,
@@ -46,12 +49,12 @@ class InstantMessage extends PureComponent {
   extractAuthor = ({ participants }) => participants.find(participant => participant.type === 'From');
 
   render() {
-    const { message } = this.props;
+    const { message, forwardRef } = this.props;
     const author = this.extractAuthor(message);
     const pi = getAveragePI(message.pi);
 
     return (
-      <article className={`instant ${getPiClass(pi)}`}>
+      <article className={`instant ${getPiClass(pi)}`} ref={forwardRef}>
         <header className="from">
           <AuthorAvatarLetter message={message} />
           <i className={`fa fa-${this.getProtocolIconType(message.type)}`} />
