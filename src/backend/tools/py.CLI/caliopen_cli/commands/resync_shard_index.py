@@ -10,6 +10,7 @@ import logging
 import sys
 
 from caliopen_storage.config import Configuration
+from elasticsearch import Elasticsearch
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
@@ -24,10 +25,19 @@ def resync_user(user):
 
     log.info('Sync user {0} into shard {1}'.format(user.user_id,
              user.shard_id))
+
+    client = Elasticsearch(Configuration('global').get('elasticsearch.url'))
+    body = {'filter': {'term': {'user_id': user.user_id}}}
+    # if not client.indices.exists_alias(user.user_id):
+    #     log.info('Creating alias {} for index {}'.format(user.user_id, user.shard_id))
+    client.indices.put_alias(user.shard_id, user.user_id, body=body)
+
     contacts = Contact.filter(user_id=user.user_id).timeout(None)
     for contact in contacts:
         log.debug('Reindex contact %r' % contact.contact_id)
         obj = ContactObject(user, contact_id=contact.contact_id)
+        obj.get_db()
+        obj.unmarshall_db()
         obj.create_index()
 
     messages = Message.filter(user_id=user.user_id). \
@@ -35,6 +45,8 @@ def resync_user(user):
     for message in messages:
         log.debug('Reindex message %r' % message.message_id)
         obj = MessageObject(user, message_id=message.message_id)
+        obj.get_db()
+        obj.unmarshall_db()
         obj.create_index()
 
 
