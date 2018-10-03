@@ -65,15 +65,15 @@ class MessagePi extends PureComponent {
         <ul className="m-message-pi__types">
           <li className={piQualities.comportment.label}>
             <i className={`fa ${piQualities.comportment.icon}`} />
-            <span>Expéditeur</span>
+            <Trans id="message.pi.comportment">Sender</Trans>
           </li>
           <li className={piQualities.context.label}>
             <i className={`fa ${piQualities.context.icon}`} />
-            <span>Départ</span>
+            <Trans id="message.pi.context">Departure</Trans>
           </li>
           <li className={piQualities.technic.label}>
             <i className={`fa ${piQualities.technic.icon}`} />
-            <span>Trajet</span>
+            <Trans id="message.pi.technic">Travel</Trans>
           </li>
         </ul>
       </div>
