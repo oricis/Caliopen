@@ -323,9 +323,7 @@ function messagesByIdReducer(state = {}, action = {}) {
   }
 }
 
-const addMessageToCollection = (type, messageId, collection) => {
-  // sort messages according to UX + API
-  // XXX: cf. above in sortTypeCollection
+const addMessageToCollection = (messageId, collection) => {
   if (!messageId) {
     return collection;
   }

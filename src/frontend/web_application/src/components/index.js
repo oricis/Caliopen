@@ -1,3 +1,4 @@
+export { default as ActionBar } from './ActionBar';
 export { default as Badge } from './Badge';
 export { default as Button } from './Button';
 export { default as Callout } from './Callout';
@@ -15,7 +16,9 @@ export { default as MenuBar } from './MenuBar';
 export { default as Modal } from './Modal';
 export { default as NavList, NavItem } from './NavList';
 export { default as PageTitle } from './PageTitle';
+export { default as PlaceholderBlock } from './PlaceholderBlock';
 export { default as Section } from './Section';
+export { default as SidebarLayout } from './SidebarLayout';
 export { default as Spinner } from './Spinner';
 export { default as Subtitle } from './Subtitle';
 export { default as TextBlock } from './TextBlock';

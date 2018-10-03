@@ -45,7 +45,11 @@ class ContactProfileForm extends Component {
     return (
       <div className="m-contact-profile-form">
         <div className="m-contact-profile-form__header">
-          <ContactTitleField className="m-contact-profile-form__title" form={form} />
+          <ContactTitleField
+            className="m-contact-profile-form__title"
+            form={form}
+            onClick={this.toggleExpandForm}
+          />
           {this.state.isExpanded ?
             <Button
               icon="caret-up"

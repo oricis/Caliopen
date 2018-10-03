@@ -1,0 +1,9 @@
+@import '../../../../../../styles/common';
+
+.m-item-link {
+  display: inline-block;
+  color: inherit;
+
+  &:hover   { color: $co-color__primary; }
+  &:active  { color: $co-color__primary--lower; }
+}

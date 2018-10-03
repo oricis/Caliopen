@@ -11,10 +11,11 @@ class Button extends PureComponent {
     children: PropTypes.node,
     shape: PropTypes.oneOf(['plain', 'hollow']),
     icon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-    display: PropTypes.oneOf(['inline', 'inline-block', 'expanded']),
+    display: PropTypes.oneOf(['inline', 'inline-block', 'block', 'expanded']),
     color: PropTypes.oneOf(['success', 'alert', 'secondary', 'active']),
     responsive: PropTypes.oneOf(['icon-only', 'text-only']),
     accessKey: PropTypes.string,
+    noDecoration: PropTypes.bool,
     disabled: PropTypes.bool,
   };
   static defaultProps = {
@@ -26,6 +27,7 @@ class Button extends PureComponent {
     color: null,
     responsive: null,
     accessKey: null,
+    noDecoration: false,
     disabled: false,
   };
 
@@ -45,7 +47,7 @@ class Button extends PureComponent {
 
   render() {
     const {
-      children, className, icon, display, color, shape, responsive, ...props
+      children, className, icon, display, color, shape, responsive, noDecoration, ...props
     } = this.props;
 
     const buttonProps = {
@@ -61,7 +63,9 @@ class Button extends PureComponent {
 
           'm-button--expanded': display === 'expanded',
           'm-button--inline': display === 'inline',
+          'm-button--text': display === 'inline' && !noDecoration,
           'm-button--inline-block': display === 'inline-block',
+          'm-button--block': display === 'block',
 
           'm-button--plain': shape === 'plain',
           'm-button--hollow': shape === 'hollow',

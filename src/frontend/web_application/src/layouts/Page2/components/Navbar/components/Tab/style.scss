@@ -1,0 +1,14 @@
+@import '../../../../../../styles/common';
+@import '../../../../../../styles/object/o-navigation';
+
+.m-tab {
+  &__icon {
+    margin-right: .5rem;
+  }
+
+  @each $name, $color in $privacy-palette {
+    &--#{$name} {
+      border-top: 2px solid $color;
+    }
+  }
+}

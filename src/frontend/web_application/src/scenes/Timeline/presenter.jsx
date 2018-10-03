@@ -7,7 +7,6 @@ import MessageSelector from './components/MessageSelector';
 import MessageItem from './components/MessageItem';
 import { isMessageFromUser } from '../../services/message';
 import { WithTags, TagsForm, getCleanedTagCollection, getTagNamesInCommon } from '../../modules/tags';
-import { MessageNotifications } from '../../modules/notification';
 
 import './style.scss';
 
@@ -150,31 +149,6 @@ class Timeline extends Component {
 
     return updateMessagesTags(i18n, this.state.selectedMessages, tags);
   }
-
-  makeHandleClickClearNotifications = cb => () => {
-    const { requestMessages, timelineFilter } = this.props;
-    requestMessages(timelineFilter);
-    cb();
-  }
-
-  renderNotifications = () => (
-    <MessageNotifications
-      key="1"
-      render={({ notifications, clearNotifications }) => {
-        if (!notifications.length) {
-          return null;
-        }
-
-        return (
-          <div className="s-timeline__new-msg">
-            <Button display="inline" onClick={this.makeHandleClickClearNotifications(clearNotifications)}>
-              <Trans id="timeline.new_messages">You have {notifications.length} new messages</Trans>
-            </Button>
-          </div>
-        );
-      }}
-    />
-  )
 
   renderList = ({ userTags }) => {
     const { user, messages } = this.props;

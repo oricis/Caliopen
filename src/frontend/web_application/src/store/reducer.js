@@ -1,8 +1,6 @@
 import { combineReducers } from 'redux';
 import notifyReducer from 'react-redux-notify';
-import { routerReducer } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
-import applicationReducer from './modules/application';
 import contactReducer from './modules/contact';
 import deviceReducer from './modules/device';
 import discussionReducer from './modules/discussion';
@@ -17,13 +15,11 @@ import participantSuggestionsReducer from './modules/participant-suggestions';
 import remoteIdentityReducer from './modules/remote-identity';
 import searchReducer from './modules/search';
 import settingsReducer from './modules/settings';
-import tabReducer from './modules/tab';
 import tagReducer from './modules/tag';
 import userReducer from './modules/user';
 
 const reducer = combineReducers({
   notifications: notifyReducer,
-  application: applicationReducer,
   contact: contactReducer,
   device: deviceReducer,
   discussion: discussionReducer,
@@ -38,10 +34,8 @@ const reducer = combineReducers({
   remoteIdentity: remoteIdentityReducer,
   search: searchReducer,
   settings: settingsReducer,
-  tab: tabReducer,
   tag: tagReducer,
   user: userReducer,
-  router: routerReducer,
   form: formReducer,
 });
 

@@ -1,0 +1,32 @@
+@import '../../styles/common';
+
+$m-participants-icon__size: 25px;
+$m-participants-icon__padding: 0;
+
+.m-participants-icon {
+  display: inline-block;
+  vertical-align: baseline;
+
+  width: $m-participants-icon__size;
+  height: $m-participants-icon__size;
+
+  border-radius: 50%;
+  overflow: hidden;
+
+  &__letter {
+    &::before {
+      display: block;
+      float: left;
+
+      text-align: center;
+    }
+  }
+
+  &__letter--1 {
+    &::before {
+      width: $m-participants-icon__size;
+      height: $m-participants-icon__size;
+      line-height: $m-participants-icon__size;
+    }
+  }
+}

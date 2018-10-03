@@ -15,7 +15,7 @@ import './style.scss';
 class Message extends Component {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
-    user: PropTypes.shape({}),
+    user: PropTypes.shape({}).isRequired,
     onMessageRead: PropTypes.func.isRequired,
     onMessageUnread: PropTypes.func.isRequired,
     updateTagCollection: PropTypes.func.isRequired,
@@ -31,7 +31,6 @@ class Message extends Component {
 
   static defaultProps = {
     isMessageFromUser: false,
-    user: undefined,
     scrollToMe: undefined,
     forwardRef: undefined,
   }

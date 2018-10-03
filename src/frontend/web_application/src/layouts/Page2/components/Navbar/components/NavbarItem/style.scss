@@ -1,0 +1,58 @@
+@import '../../../../../../styles/object/o-navigation';
+
+$m-navbar-item__content--max-width: 12rem !default;
+$m-navbar-item-height: 2.563rem;
+$m-navbar-item-height--active: 2.875rem;
+
+.m-navbar-item {
+  $baseClassName: &;
+  display: flex;
+  height: $m-navbar-item-height;
+  margin-top: 5px;
+  margin-left: 2px;
+  background-color: #e1f5ff;
+  line-height: $m-navbar-item-height;
+
+  &:first-of-type {
+    margin-left: 0;
+  }
+
+  &--secondary {
+    background-color: #f4f4f4;
+  }
+
+  &--contrasted {
+    background-color: #8dceec;
+    color: white;
+    &#{$baseClassName}--is-active {
+      color: #115972;
+    }
+  }
+
+  &--is-active {
+    height: $m-navbar-item-height--active;
+    margin-top: 0;
+    margin-left: 0;
+    background-color: white;
+    line-height: $m-navbar-item-height--active;
+
+    & + #{$baseClassName} {
+      margin-left: 0;
+    }
+  }
+
+  &__content {
+    flex: 1 0;
+    max-width: $m-navbar-item__content--max-width;
+    padding-right: $co-margin / 4;
+    padding-left: $co-margin / 2;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__action {
+    flex: 0 1;
+  }
+}

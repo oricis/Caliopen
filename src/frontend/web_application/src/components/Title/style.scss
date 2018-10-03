@@ -1,22 +1,46 @@
 @import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
 
 $m-title__height: $co-component__height !default;
 
 .m-title {
+  $baseName: &;
   display: block;
 
-
   &__text {
-    display: inline;
+    display: inline-block;
     color: $co-color__primary--lower;
     font-size: 1rem;
     font-weight: 700;
+    line-height: 1rem;
+  }
+
+  &--caps {
+    text-transform: capitalize;
   }
 
   &--hr {
-    border-width: 1px 0;
-    border-style: solid;
-    border-color: $co-color__fg__border;
-    line-height: $m-title__height;
+    @include flex-grid-row;
+    align-items: center;
+    margin-left: 0;
+
+    #{$baseName}__text {
+      @include flex-grid-size(shrink);
+      margin-right: map_get($co-margin_, 'small');
+    }
+
+    &:after {
+      @include flex-grid-size;
+      display: block;
+      content: "";
+      border-top: 2px solid #8dceec;
+    }
+  }
+
+  &--large {
+    #{$baseName}__text {
+      font-size: 1.25rem;
+      line-height: 1.25rem;
+    }
   }
 }

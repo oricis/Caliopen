@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { signup } from '../../modules/user';
+import { withPush } from '../../modules/routing';
 import SignupForm from './components/SignupForm';
 import formValidator, { getLocalizedErrors, ERR_UNABLE_TO_SIGNUP } from './form-validator';
 
+@withPush()
 class Signup extends Component {
   static propTypes = {
-    onSignupSuccess: PropTypes.func.isRequired,
+    push: PropTypes.func.isRequired,
     settings: PropTypes.shape({}).isRequired,
     i18n: PropTypes.shape({}).isRequired,
     clientDevice: PropTypes.shape({}),
@@ -106,9 +108,9 @@ class Signup extends Component {
         device: clientDevice,
         settings,
       });
-      const { onSignupSuccess } = this.props;
+      const { push } = this.props;
 
-      return onSignupSuccess('/');
+      return push('/');
     } catch (err) {
       const isExpectedError = err.response &&
         err.response.status >= 400 &&

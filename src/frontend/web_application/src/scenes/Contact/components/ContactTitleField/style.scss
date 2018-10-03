@@ -1,0 +1,7 @@
+@import '../../../../styles/common';
+@import '../../../../styles/object/o-form-element';
+
+.s-contact-title-field {
+  @include o-form-element;
+  @include o-form-element--light;
+}

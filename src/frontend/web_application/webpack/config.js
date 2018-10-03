@@ -120,7 +120,6 @@ const configureVendorSplit = () => ({
       'react-redux',
       'react-redux-notify',
       'react-router-dom',
-      'react-router-redux',
       'react-tappable',
       'redux',
       'redux-axios-middleware',

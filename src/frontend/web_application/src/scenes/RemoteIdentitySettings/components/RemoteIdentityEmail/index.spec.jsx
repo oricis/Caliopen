@@ -2,6 +2,11 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import RemoteIdentityEmail from './';
 
+jest.mock('../../../../modules/settings', () => ({
+  WithSettings: ({ render }) => render({}, false),
+  withSettings: () => C => props => <C {...props} />,
+}));
+
 describe('component RemoteIdentityEmail', () => {
   it('init form', () => {
     const props = {

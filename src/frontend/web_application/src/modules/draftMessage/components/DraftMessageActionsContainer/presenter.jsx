@@ -24,7 +24,7 @@ class DraftMessageActionsContainer extends Component {
   };
 
   state = {
-    isRead: false,
+    isTagModalOpen: false,
   }
 
   makeHandle = action => () => {

@@ -10,9 +10,6 @@ export const UPDATE_DISCUSSION = 'co/discussion/UPDATE_DISCUSSION';
 export const REMOVE_DISCUSSION = 'co/discussion/REMOVE_DISCUSSION';
 
 export function requestDiscussions(params = {}) {
-  const deprecated = new Error('requestDiscussions is deprecated');
-  console.warn(deprecated);
-
   const { offset = 0, limit = 20 } = params;
 
   return {
@@ -34,9 +31,6 @@ export function loadMoreDiscussions() {
 }
 
 export function requestDiscussion({ discussionId }) {
-  const deprecated = new Error('requestDiscussion is deprecated');
-  console.warn(deprecated);
-
   return {
     type: REQUEST_DISCUSSION,
     payload: {

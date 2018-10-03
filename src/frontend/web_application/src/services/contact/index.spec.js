@@ -6,8 +6,8 @@ describe('contact services', () => {
       expect(contactService.getFirstLetter('foobar', '+')).toEqual('f');
     });
 
-    it('get a ? for special character', () => {
-      expect(contactService.getFirstLetter('^azdjhk')).toEqual('?');
+    it('default letter is mandatory', () => {
+      expect(contactService.getFirstLetter('^azdjhk')).toEqual(undefined);
     });
 
     it('get the default letter for a special character', () => {

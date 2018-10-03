@@ -1,0 +1,16 @@
+@import '../../../../styles/common';
+@import '../../../../styles/util/flex-grid';
+
+
+.m-page-actions{
+  @include flex-grid-row;
+
+  &__action-btns {
+    @include flex-grid-size(shrink);
+    margin-right: $co-margin;
+  }
+
+  &__search-field {
+    @include flex-grid-size;
+  }
+}
