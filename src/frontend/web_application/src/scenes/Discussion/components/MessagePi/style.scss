@@ -15,6 +15,14 @@
       background-color: map_get($privacy-palette-high, 'ugly');
     }
 
+    &--bad {
+      background-color: map_get($privacy-palette-high, 'bad');
+    }
+
+    &--good {
+      background-color: map_get($privacy-palette-high, 'good');
+    }
+
     &--super {
       background-color: map_get($privacy-palette-high, 'super');
     }

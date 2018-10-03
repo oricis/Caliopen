@@ -27,9 +27,14 @@ class MessagePi extends PureComponent {
     /* eslint-disable no-nested-ternary */
     // XXX: temp stuff waiting for actual spec
     const labelFor = aspect => getPiClass(aspect);
-    const iconFor = aspect => (aspect <= 33 ? 'fa-times' : aspect <= 66 ? 'fa-warning' : 'fa-check');
+    const iconFor = (aspect) => {
+      if (Number.isNaN(aspect)) return 'fa-question';
+
+      return aspect <= 33 ? 'fa-times' : aspect <= 66 ? 'fa-warning' : 'fa-check';
+    };
     /* eslint-enable no-nested-ternary */
-    const { technic, context, comportment } = pi || { technic: 0, context: 0, comportment: 0 };
+    const { technic, context, comportment } = pi ||
+      { technic: NaN, context: NaN, comportment: NaN };
 
     return {
       technic: { label: labelFor(technic), icon: iconFor(technic) },
@@ -38,7 +43,14 @@ class MessagePi extends PureComponent {
     };
   }
 
-  getPiImg = ({ pi }) => (getAveragePI(pi) <= 50 ? postalCard : sealedEnvelope);
+  getPiImg = ({ pi }) => {
+    const piAggregate = getAveragePI(pi);
+
+    // FIXME : add real disabled image.
+    if (Number.isNaN(piAggregate)) return 'disabled';
+
+    return piAggregate <= 50 ? postalCard : sealedEnvelope;
+  };
 
   strongSrc = '';
   weakSrc = '';

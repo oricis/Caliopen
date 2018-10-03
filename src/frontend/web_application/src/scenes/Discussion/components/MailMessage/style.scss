@@ -25,6 +25,7 @@
     order: 0;
     width: 100%;
     padding: 1rem;
+    background-color: #eeeeee;
 
   }
 
@@ -145,6 +146,18 @@
 }
 
 .super {
+  .s-mail-message__info {
+    background-color: #edfffc;
+  }
+}
+
+.good {
+  .s-mail-message__info {
+    background-color: #edfffc;
+  }
+}
+
+.bad {
   .s-mail-message__info {
     background-color: #edfffc;
   }
