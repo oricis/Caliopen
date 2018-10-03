@@ -22,16 +22,11 @@ class MessagePi extends PureComponent {
     describe: false,
   };
 
-  componentDidMount() {
-    this.strongSrc = sealedEnvelope;
-    this.weakSrc = postalCard;
-  }
-
   // FIXME: Ugly implenentation.
   getPiQualities = ({ pi }) => {
     /* eslint-disable no-nested-ternary */
     // XXX: temp stuff waiting for actual spec
-    const labelFor = aspect => (aspect <= 33 ? 'bad' : aspect <= 66 ? 'warn' : 'ok');
+    const labelFor = aspect => getPiClass(aspect);
     const iconFor = aspect => (aspect <= 33 ? 'fa-times' : aspect <= 66 ? 'fa-warning' : 'fa-check');
     /* eslint-enable no-nested-ternary */
     const { technic, context, comportment } = pi || { technic: 0, context: 0, comportment: 0 };
