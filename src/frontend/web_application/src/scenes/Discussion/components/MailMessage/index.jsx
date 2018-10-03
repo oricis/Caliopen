@@ -27,16 +27,12 @@ class MailMessage extends Component {
     onMessageDelete: PropTypes.func.isRequired,
     onOpenTags: PropTypes.func.isRequired,
     onReply: PropTypes.func.isRequired,
-    forwardRef: PropTypes.func,
+    forwardRef: PropTypes.func.isRequired,
     user: PropTypes.shape({}).isRequired,
     push: PropTypes.func.isRequired,
     i18n: PropTypes.shape({}).isRequired,
     tags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   };
-
-  static defaultProps = {
-    forwardRef: undefined,
-  }
 
   onVisibilityChange = (isVisible) => {
     const { message, onMessageRead } = this.props;

@@ -25,7 +25,7 @@ describe('Tag', () => {
     await element(by.css('.m-modal__close')).click();
   });
 
-  it('Manage tags on timeline', async () => {
+  xit('Manage tags on timeline', async () => {
     const tagName = 'Mon tag';
 
     // await filter('All');
@@ -52,7 +52,7 @@ describe('Tag', () => {
     await element(by.css('.m-modal__close')).click();
   });
 
-  it('Manage tags for multiple messages on timeline', async () => {
+  xit('Manage tags for multiple messages on timeline', async () => {
     const tagName = 'Mon tag';
     // await filter('All');
     await browser.wait(EC.presenceOf($('.s-timeline .s-discussion-item')), 5 * 1000);

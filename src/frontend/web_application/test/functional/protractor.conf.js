@@ -9,7 +9,7 @@ const cfg = {
       browserName: 'chrome',
       maxInstances: 1,
       chromeOptions: {
-        args: ['--no-sandbox', '--disable-dev-shm-usage', '--headless', '--disable-gpu', '--disable-extensions', 'lang=en-US'],
+        args: ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--disable-extensions', 'lang=en-US'],
         prefs: {
           intl: { accept_languages: 'en-US' },
         },

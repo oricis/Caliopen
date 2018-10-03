@@ -22,11 +22,10 @@ const LOAD_MORE_THROTTLE = 1000;
 @withRouter
 class Discussion extends Component {
   static propTypes = {
-    requestMessages: PropTypes.func.isRequired,
     loadMore: PropTypes.func.isRequired,
     discussionId: PropTypes.string.isRequired,
     discussion: PropTypes.shape({}),
-    requestDiscussions: PropTypes.func.isRequired,
+    requestDiscussion: PropTypes.func.isRequired,
     user: PropTypes.shape({}),
     isUserFetching: PropTypes.bool.isRequired,
     scrollToTarget: PropTypes.func.isRequired,
@@ -42,7 +41,6 @@ class Discussion extends Component {
     // XXX: waiting for API
     // deleteDiscussion: PropTypes.func.isRequired,
     // updateDiscussionTags: PropTypes.func.isRequired,
-    currentTab: PropTypes.shape({}),
     closeTab: PropTypes.func.isRequired,
     push: PropTypes.func.isRequired,
     getUser: PropTypes.func.isRequired,
@@ -52,7 +50,6 @@ class Discussion extends Component {
 
   static defaultProps = {
     discussion: undefined,
-    currentTab: {},
     messages: [],
     user: undefined,
   };
@@ -60,19 +57,26 @@ class Discussion extends Component {
   state = {
     isDraftFocus: false,
     isTagModalOpen: false,
+    initialized: false,
   };
 
   componentDidMount() {
     const {
-      getUser, user, isUserFetching, discussion, requestDiscussions,
+      getUser, user, isUserFetching, requestDiscussion, isFetching,
     } = this.props;
 
     if (!user && !isUserFetching) {
       getUser();
     }
 
-    if (!discussion) {
-      requestDiscussions();
+    if (!this.state.initialized && !isFetching) {
+      requestDiscussion().then(() => {
+        this.setState({
+          initialized: true,
+        }, () => {
+          this.eventuallyCloseTab();
+        });
+      });
     }
 
     this.throttledLoadMore = throttle(
@@ -100,10 +104,25 @@ class Discussion extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { didInvalidate, isFetching, messages } = nextProps;
+    const {
+      didInvalidate, isFetching,
+    } = nextProps;
 
-    if ((messages.length === 0 || didInvalidate) && !isFetching) {
-      this.props.requestMessages({ discussion_id: nextProps.discussionId });
+    if (didInvalidate && !isFetching) {
+      this.props.requestDiscussion()
+        .then(() => this.eventuallyCloseTab());
+    }
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeClickEvent();
+  }
+
+  eventuallyCloseTab = () => {
+    const { isFetching, messages, closeTab } = this.props;
+
+    if (this.state.initialized && !isFetching && messages.length === 0) {
+      closeTab();
     }
   }
 
@@ -127,17 +146,11 @@ class Discussion extends Component {
     });
   };
 
-  handleDeleteMessage = ({ message }) => {
-    const {
-      deleteMessage, messages, closeTab, currentTab,
-    } = this.props;
+  handleDeleteMessage = async ({ message }) => {
+    const { deleteMessage } = this.props;
 
-    deleteMessage({ message })
-      .then(() => {
-        if (messages.length === 0) {
-          closeTab({ tab: currentTab });
-        }
-      });
+    await deleteMessage({ message });
+    this.eventuallyCloseTab();
   };
 
   handleSetMessageRead = ({ message }) => {
@@ -174,12 +187,12 @@ class Discussion extends Component {
 
   handleDeleteAll = async () => {
     const {
-      messages, deleteDiscussion, discussionId, // closeTab, currentTab,
+      messages, deleteDiscussion, discussionId, closeTab,
     } = this.props;
 
     // FIXME : only deletes fetched messages.
     deleteDiscussion({ discussionId, messages });
-    //  .then(() => closeTab({ tab: currentTab }));
+    closeTab();
   };
 
   renderTags = ({ tags }) => (
@@ -220,7 +233,7 @@ class Discussion extends Component {
 
   render() {
     const {
-      discussionId, messages, isFetching, location, scrollToTarget,
+      discussionId, messages, scrollToTarget, isFetching, location,
       hasMore, user, isUserFetching, discussion,
     } = this.props;
     const hash = location.hash ? location.hash.slice(1) : null;

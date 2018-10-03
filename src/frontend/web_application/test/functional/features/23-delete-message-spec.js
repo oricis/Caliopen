@@ -16,31 +16,32 @@ describe('Delete message', () => {
   const clickBtnInModal = btnText => element(by.cssContainingText('.m-modal button', btnText)).click();
 
   it('Delete message one by one', async () => {
+    debugger;
     const discussion1Selector = by.cssContainingText(
-      '.s-discussion-item__message_excerpt',
-      'last message to remove individually'
+      '.s-discussion-item__message_subject',
+      'remove message one by one'
     );
     const message1ToDel = 'first message to remove individually';
     const message2ToDel = 'last message to remove individually';
     const deleteAMessage = async (messageText) => {
-      const messageElem = element(by.cssContainingText('.m-message', messageText));
-      await messageElem.element(by.cssContainingText('.m-message-actions-container__action button', 'Delete')).click();
+      const messageElem = element(by.cssContainingText('article', messageText));
+      await messageElem.element(by.cssContainingText('.m-message-action-container__action', 'Delete')).click();
 
       return clickBtnInModal('Yes I\'m sure');
     };
 
     // await filter('All');
-    await browser.wait(EC.presenceOf($('.s-timeline .s-discussion-item')), 5 * 1000);
+    await browser.wait(EC.presenceOf($('.s-discussion-list')), 5 * 1000);
     await element(discussion1Selector).click();
-    await browser.wait(EC.presenceOf($('.m-message')), 5 * 1000);
+    await browser.wait(EC.presenceOf($('article')), 5 * 1000);
     await deleteAMessage(message1ToDel);
-    await browser.wait(EC.presenceOf($('.m-message')), 5 * 1000);
-    expect(element(by.cssContainingText('.m-message', message1ToDel)).isPresent()).toBe(false);
+    await browser.wait(EC.presenceOf($('article')), 5 * 1000);
+    expect(element(by.cssContainingText('article', message1ToDel)).isPresent()).toBe(false);
     await deleteAMessage(message2ToDel);
-    await browser.wait(EC.presenceOf($('.s-timeline')), 5 * 1000);
+    await browser.wait(EC.presenceOf($('.s-discussion-list')), 5 * 1000);
   });
 
-  it('Delete all messages of a collection', async () => {
+  xit('Delete all messages of a collection', async () => {
     const discussionSelector = by.cssContainingText(
       '.s-discussion-item__message_excerpt',
       'a message of a collection to remove'

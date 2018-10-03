@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
 import { Trans } from 'lingui-react';
 import StickyNavBar from '../../layouts/Page/components/Navigation/components/StickyNavBar';
+import { MessageNotifications } from '../../modules/notification';
 import { Button, InfiniteScroll, Spinner } from '../../components';
 import DiscussionItem from './components/DiscussionItem';
 // XXX waiting for API
@@ -22,20 +23,19 @@ class Timeline extends Component {
     // deleteDiscussion: PropTypes.func.isRequired,
     loadMore: PropTypes.func.isRequired,
     discussions: PropTypes.arrayOf(PropTypes.shape({})),
-    tags: PropTypes.arrayOf(PropTypes.shape({})),
+    // tags: PropTypes.arrayOf(PropTypes.shape({})),
     isFetching: PropTypes.bool,
-    didInvalidate: PropTypes.bool,
+    // didInvalidate: PropTypes.bool,
     hasMore: PropTypes.bool,
-    i18n: PropTypes.shape({}).isRequired,
     // updateDiscussionTags: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     discussions: [],
-    tags: [],
+    // tags: [],
     user: {},
     isFetching: false,
-    didInvalidate: false,
+    // didInvalidate: false,
     hasMore: false,
   };
 
@@ -54,6 +54,8 @@ class Timeline extends Component {
       getUser();
     }
 
+    this.loadDiscussions(this.props);
+
     this.throttledLoadMore = throttle(
       () => this.props.loadMore(),
       LOAD_MORE_THROTTLE,
@@ -61,13 +63,8 @@ class Timeline extends Component {
     );
   }
 
-  componentWillReceiveProps() {
-    const { requestDiscussions, isFetching } = this.props;
-
-    if (!(this.state.initialized || isFetching)) {
-      this.setState({ initialized: true });
-      requestDiscussions();
-    }
+  componentWillReceiveProps(nextProps) {
+    this.loadDiscussions(nextProps);
   }
 
   onSelectDiscussion = (type, discussionId) => {
@@ -104,11 +101,51 @@ class Timeline extends Component {
     }
   };
 
+  loadDiscussions = async (props, force = false) => {
+    const {
+      requestDiscussions, isFetching,
+    } = props;
+    if ((!this.state.initialized || force) && !isFetching) {
+      // "initialized" is not well named,
+      // we consider it "initialized" as soon as we start fetching messages to prevent multiple
+      // fetchs because setState would be applied at the very end after multiple
+      // componentWillReceiveProps
+      this.setState({ initialized: true });
+      requestDiscussions();
+    }
+
+    return Promise.resolve();
+  }
+
   loadMore = () => {
     if (this.props.hasMore) {
       this.throttledLoadMore();
     }
   };
+
+  makeHandleClickClearNotifications = cb => () => {
+    this.loadDiscussions(this.props, true);
+    cb();
+  }
+
+  renderNotifications = () => (
+    <MessageNotifications
+      key="1"
+      render={({ notifications, clearNotifications }) => {
+        if (!notifications.length) {
+          return null;
+        }
+
+        return (
+          <div className="s-timeline__new-msg">
+            <Button display="inline" onClick={this.makeHandleClickClearNotifications(clearNotifications)}>
+              <Trans id="timeline.new_messages">You have {notifications.length} new messages</Trans>
+            </Button>
+          </div>
+        );
+      }}
+    />
+  )
 
   renderDiscussions() {
     const { discussions, user } = this.props;
@@ -160,7 +197,10 @@ class Timeline extends Component {
             }
           </StickyNavBar>
           <InfiniteScroll onReachBottom={this.loadMore}>
-            { this.renderDiscussions() }
+            <Fragment>
+              {this.renderNotifications()}
+              {this.renderDiscussions()}
+            </Fragment>
           </InfiniteScroll>
         </section>
         {hasMore && (
