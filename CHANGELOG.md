@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.12.1] 2018-10-04
+
+### Fixed
+
+- Share an index for many users, scalibility of elasticsearch does not work using old scheme
+
+
 ### Added
 
 - Add an email or a social identity to a contact trigger PGP key discovery process
