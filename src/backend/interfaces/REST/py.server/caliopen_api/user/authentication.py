@@ -68,6 +68,7 @@ class AuthenticatedUser(object):
             log.info('Signature verification result %r' % valid)
 
         self.user_id = user_id
+        self.shard_id = infos['shard_id']
         self.access_token = token
         self._user = None
 
@@ -133,6 +134,11 @@ class AuthenticatedUser(object):
     def username(self):
         self._load_user()
         return self._user.name
+
+    @property
+    def contact(self):
+        self._load_user()
+        return self._user.contact
 
 
 class AuthenticationPolicy(object):

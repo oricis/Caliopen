@@ -146,6 +146,8 @@ func PatchContact(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
+	shard_id := ctx.MustGet("shard_id").(string)
+	user_info := &UserInfo{User_id: userId, Shard_id: shard_id}
 
 	contactId, err := operations.NormalizeUUIDstring(ctx.Param("contactID"))
 	if err != nil {
@@ -165,7 +167,7 @@ func PatchContact(ctx *gin.Context) {
 	}
 
 	// call REST facility with payload
-	err = caliopen.Facilities.RESTfacility.PatchContact(patch, userId, contactId)
+	err = caliopen.Facilities.RESTfacility.PatchContact(user_info, patch, contactId)
 	if err != nil {
 		if Cerr, ok := err.(CaliopenError); ok {
 			returnedErr := new(swgErr.CompositeError)

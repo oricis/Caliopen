@@ -28,8 +28,8 @@ type (
 		CreateContact(contact *Contact) error
 		RetrieveContacts(filter IndexSearch) (contacts []*Contact, totalFound int64, err error)
 		RetrieveContact(userID, contactID string) (*Contact, error)
-		UpdateContact(contact, oldContact *Contact, update map[string]interface{}) error
-		PatchContact(patch []byte, userID, contactID string) error
+		UpdateContact(user *UserInfo, contact, oldContact *Contact, update map[string]interface{}) error
+		PatchContact(user *UserInfo, patch []byte, contactID string) error
 		DeleteContact(userID, contactID string) error
 		//identities
 		RetrieveContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error)
@@ -44,14 +44,14 @@ type (
 		//messages
 		GetMessagesList(filter IndexSearch) (messages []*Message, totalFound int64, err error)
 		GetMessagesRange(filter IndexSearch) (messages []*Message, totalFound int64, err error)
-		GetMessage(user_id, message_id string) (message *Message, err error)
+		GetMessage(user *UserInfo, message_id string) (message *Message, err error)
 		SendDraft(user_id, msg_id string) (msg *Message, err error)
-		SetMessageUnread(user_id, message_id string, status bool) error
+		SetMessageUnread(user *UserInfo, message_id string, status bool) error
 		GetRawMessage(raw_message_id string) (message []byte, err error)
 		//attachments
-		AddAttachment(user_id, message_id, filename, content_type string, file io.Reader) (tempId string, err error)
-		DeleteAttachment(user_id, message_id, attchmt_id string) CaliopenError
-		OpenAttachment(user_id, message_id, attchmtIndex string) (meta map[string]string, content io.Reader, err error)
+		AddAttachment(user *UserInfo, message_id, filename, content_type string, file io.Reader) (attachmentURL string, err error)
+		DeleteAttachment(user *UserInfo, message_id string, attchmt_id string) CaliopenError
+		OpenAttachment(user_id, message_id string, attchmtIndex string) (meta map[string]string, content io.Reader, err error)
 		//tags
 		RetrieveUserTags(user_id string) (tags []Tag, err CaliopenError)
 		CreateTag(tag *Tag) CaliopenError
@@ -59,7 +59,7 @@ type (
 		UpdateTag(tag *Tag) CaliopenError
 		PatchTag(patch []byte, user_id, tag_name string) CaliopenError
 		DeleteTag(user_id, tag_name string) CaliopenError
-		UpdateResourceTags(userID, resourceID, resourceType string, patch []byte) CaliopenError
+		UpdateResourceTags(user *UserInfo, resourceID, resourceType string, patch []byte) CaliopenError
 		//search
 		Search(IndexSearch) (result *IndexResult, err error)
 		//users

@@ -111,7 +111,7 @@ class MainView(object):
     def get(self, user, min_il, max_il, limit, offset):
         """Build the main view results."""
         # XXX use of correct pagination and correct datasource (index)
-        dim = DIM(user.user_id)
+        dim = DIM(user)
         discussions, total = dim.list_discussions(limit=limit, offset=offset,
                                                   min_il=min_il, max_il=max_il)
         responses = self.build_responses(user, discussions)

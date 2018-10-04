@@ -133,20 +133,19 @@ class Message(ObjectIndexable):
             for key, value in params.items():
                 if key not in allowed_properties:
                     del (params[key])
-
         try:
             draft_param = Draft(params, strict=strict_patch)
             if draft_param.message_id:
                 draft_param.validate_uuid(user.user_id)
             else:
                 draft_param.message_id = uuid.uuid4()
-            draft_param.validate_consistency(user.user_id, True)
+            draft_param.validate_consistency(user, True)
         except Exception as exc:
             log.warn("draft_param error")
             log.warn(exc)
             raise exc
 
-        message = Message()
+        message = Message(user)
         message.unmarshall_json_dict(draft_param.to_primitive())
         message.user_id = UUID(user.user_id)
         message.is_draft = True
@@ -296,7 +295,7 @@ class Message(ObjectIndexable):
         if res.hits:
             for x in res.hits:
                 try:
-                    obj = cls(user.user_id, message_id=x.meta.id)
+                    obj = cls(user, message_id=x.meta.id)
                     obj.get_db()
                     obj.unmarshall_db()
                     messages.append(obj)

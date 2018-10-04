@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - message sort on "Load More" in discussion view
+- revert mis-deleted signup and recovery mail links
 
 ## [0.11.2] 2018-07-16
 

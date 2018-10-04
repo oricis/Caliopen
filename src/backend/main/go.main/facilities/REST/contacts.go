@@ -92,9 +92,9 @@ func (rest *RESTfacility) RetrieveContact(userID, contactID string) (contact *Co
 // - retrieve the contact from db
 // - UpdateWithPatch()
 // - then UpdateContact() to save updated contact to stores & index if everything went good.
-func (rest *RESTfacility) PatchContact(patch []byte, userID, contactID string) error {
+func (rest *RESTfacility) PatchContact(user *UserInfo, patch []byte, contactID string) error {
 
-	current_contact, err := rest.RetrieveContact(userID, contactID)
+	current_contact, err := rest.RetrieveContact(user.User_id, contactID)
 	if err != nil {
 		if err.Error() == "not found" {
 			return NewCaliopenErr(NotFoundCaliopenErr, "[RESTfacility] contact not found")
@@ -144,7 +144,7 @@ func (rest *RESTfacility) PatchContact(patch []byte, userID, contactID string) e
 	}
 
 	// save updated resource
-	err = rest.UpdateContact(newContact.(*Contact), current_contact, modifiedFields)
+	err = rest.UpdateContact(user, newContact.(*Contact), current_contact, modifiedFields)
 	if err != nil {
 		return WrapCaliopenErrf(err, FailDependencyCaliopenErr, "[RESTfacility] PatchContact failed with UpdateContact error : %s", err)
 	}
@@ -179,14 +179,14 @@ func (rest *RESTfacility) launchKeyDiscovery(current_contact *Contact, updatedFi
 }
 
 // UpdateContact updates a contact in store & index with payload
-func (rest *RESTfacility) UpdateContact(contact, oldContact *Contact, modifiedFields map[string]interface{}) error {
+func (rest *RESTfacility) UpdateContact(user *UserInfo, contact, oldContact *Contact, modifiedFields map[string]interface{}) error {
 
 	err := rest.store.UpdateContact(contact, oldContact, modifiedFields)
 	if err != nil {
 		return err
 	}
 
-	err = rest.index.UpdateContact(contact, modifiedFields)
+	err = rest.index.UpdateContact(user, contact, modifiedFields)
 	if err != nil {
 		return err
 	}

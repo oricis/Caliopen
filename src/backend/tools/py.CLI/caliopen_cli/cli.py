@@ -14,7 +14,8 @@ from caliopen_storage.helpers.connection import connect_storage
 from caliopen_cli.commands import (shell, import_email, setup, create_user,
                                    import_vcard, dump_model, dump_indexes,
                                    inject_email, basic_compute, migrate_index,
-                                   import_reserved_names, resync_index)
+                                   import_reserved_names, resync_index,
+                                   resync_shard_index)
 
 logging.basicConfig(level=logging.INFO)
 
@@ -94,6 +95,10 @@ def main(args=sys.argv):
     sp_resync.add_argument('-i', dest='user_id', help='User uuid')
     sp_resync.add_argument('--version', dest='version', help='Index version')
 
+    sp_resync = subparsers.add_parser('resync_shard',
+                                      help='Resync shard index')
+    sp_resync.set_defaults(func=resync_shard_index)
+    sp_resync.add_argument('-s', dest='shard_id', help='Shard id')
     kwargs = parser.parse_args(args[1:])
     kwargs = vars(kwargs)
 
