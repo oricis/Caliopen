@@ -21,6 +21,8 @@ import (
 // POST …/:message_id/attachments
 func UploadAttachment(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
+	shard_id := ctx.MustGet("shard_id").(string)
+	user := &UserInfo{User_id: user_id, Shard_id: shard_id}
 	msg_id, err := operations.NormalizeUUIDstring(ctx.Param("message_id"))
 	if err != nil {
 		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
@@ -38,7 +40,7 @@ func UploadAttachment(ctx *gin.Context) {
 
 	filename := header.Filename
 	content_type := header.Header["Content-Type"][0]
-	tempId, err := caliopen.Facilities.RESTfacility.AddAttachment(user_id, msg_id, filename, content_type, file)
+	attchmtUrl, err := caliopen.Facilities.RESTfacility.AddAttachment(user, msg_id, filename, content_type, file)
 	if err != nil {
 		var e error
 		if err.Error() == "not found" {
@@ -52,13 +54,15 @@ func UploadAttachment(ctx *gin.Context) {
 	}
 	resp := struct {
 		TempId string `json:"temp_id"`
-	}{tempId}
+	}{attchmtUrl}
 	ctx.JSON(http.StatusOK, resp)
 }
 
 // DELETE …/:message_id/attachments/:attachment_id
 func DeleteAttachment(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
+	shard_id := ctx.MustGet("shard_id").(string)
+	user := &UserInfo{User_id: user_id, Shard_id: shard_id}
 	msg_id, err := operations.NormalizeUUIDstring(ctx.Param("message_id"))
 	if err != nil {
 		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
@@ -73,7 +77,7 @@ func DeleteAttachment(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	caliopenErr := caliopen.Facilities.RESTfacility.DeleteAttachment(user_id, msg_id, attch_id)
+	caliopenErr := caliopen.Facilities.RESTfacility.DeleteAttachment(user, msg_id, attch_id)
 	if caliopenErr != nil {
 		returnedErr := new(swgErr.CompositeError)
 		if caliopenErr.Error() == "message not found" ||
@@ -84,8 +88,6 @@ func DeleteAttachment(ctx *gin.Context) {
 			returnedErr = swgErr.CompositeValidationError(caliopenErr, caliopenErr.Cause())
 		}
 		http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
-		ctx.Abort()
-		return
 	}
 	ctx.Status(http.StatusOK)
 }

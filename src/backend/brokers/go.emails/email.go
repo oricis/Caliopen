@@ -206,6 +206,13 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 			}
 		}
 	}
+	// Retrieve user informations
+	user, err := b.Store.RetrieveUser(ack.EmailMessage.Message.User_id.String())
+	if err != nil {
+		return err
+	}
+	user_info := &UserInfo{User_id: user.UserId.String(), Shard_id: user.ShardId}
+
 	// update caliopen message status
 	fields := make(map[string]interface{})
 
@@ -219,7 +226,7 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
 	if err != nil {
 		log.WithError(err).Warn("[Email Broker] Store.UpdateMessage operation failed")
 	}
-	err = b.Index.UpdateMessage(ack.EmailMessage.Message, fields)
+	err = b.Index.UpdateMessage(user_info, ack.EmailMessage.Message, fields)
 	if err != nil {
 		log.WithError(err).Warn("[Email Broker] Index.UpdateMessage operation failed")
 	}

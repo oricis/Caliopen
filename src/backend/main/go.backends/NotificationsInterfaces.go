@@ -19,5 +19,5 @@ type NotificationsStore interface {
 }
 
 type NotificationsIndex interface {
-	CreateMessage(msg *Message) error
+	CreateMessage(user *UserInfo, msg *Message) error
 }
