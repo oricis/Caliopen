@@ -19,7 +19,7 @@ services:
       - ./conf/proxy-api.conf:/etc/nginx/nginx.conf
   # Caliopen APIv2
   apiv2:
-    image: public-registry.caliopen.org/caliopen_apiv2
+    image: public-registry.caliopen.org/caliopen_apiv2:develop
     links:
       - redis:redis.dev.caliopen.org
       - cassandra:cassandra.dev.caliopen.org
@@ -34,7 +34,7 @@ services:
 
   # Caliopen APIv1
   apiv1:
-    image: public-registry.caliopen.org/caliopen_apiv1
+    image: public-registry.caliopen.org/caliopen_apiv1:develop
     links:
       - redis:redis.dev.caliopen.org
       - cassandra:cassandra.dev.caliopen.org
@@ -86,7 +86,7 @@ services:
 
   # Caliopen cli tool
   cli:
-    image: public-registry.caliopen.org/caliopen_cli
+    image: public-registry.caliopen.org/caliopen_cli:develop
     links:
       - cassandra:cassandra.dev.caliopen.org
       - elasticsearch:es.dev.caliopen.org
@@ -99,7 +99,7 @@ services:
 
   # Caliopen frontend
   frontend:
-    image: public-registry.caliopen.org/caliopen_frontend
+    image: public-registry.caliopen.org/caliopen_frontend:develop
     links:
       - proxy-api:api.dev.caliopen.org
     ports:
@@ -107,7 +107,7 @@ services:
 
   # Broker
   lmtpd:
-    image: public-registry.caliopen.org/caliopen_lmtpd
+    image: public-registry.caliopen.org/caliopen_lmtpd:develop
     links:
       - cassandra:cassandra.dev.caliopen.org
       - elasticsearch:es.dev.caliopen.org
@@ -127,7 +127,7 @@ services:
 
   # NATS Message Handler
   mq-worker:
-    image: public-registry.caliopen.org/caliopen_mq_worker
+    image: public-registry.caliopen.org/caliopen_mq_worker:develop
     links:
       - cassandra:cassandra.dev.caliopen.org
       - elasticsearch:es.dev.caliopen.org
@@ -148,7 +148,7 @@ services:
 
   # Worker for remote identities
   imap-worker:
-    image: public-registry.caliopen.org/caliopen_imap_worker
+    image: public-registry.caliopen.org/caliopen_imap_worker:develop
     links:
       - cassandra:cassandra.dev.caliopen.org
       - object-store:minio.dev.caliopen.org
@@ -160,7 +160,7 @@ services:
 
   # Poller for remote identities
   identity-poller:
-    image: public-registry.caliopen.org/caliopen_identity_poller
+    image: public-registry.caliopen.org/caliopen_identity_poller:develop
     links:
       - imap-worker:imap-worker.dev.caliopen.org
       - cassandra:cassandra.dev.caliopen.org
