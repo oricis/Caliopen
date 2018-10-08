@@ -241,7 +241,7 @@ class Message(ObjectIndexable):
             draft_param.user_identities = self_dict["user_identities"]
 
         try:
-            draft_param.validate_consistency(str(self.user_id), False)
+            draft_param.validate_consistency(self.user, False)
         except Exception as exc:
             log.info("consistency validation failed with err : {}".format(exc))
             raise err.PatchError(message=exc.message)
