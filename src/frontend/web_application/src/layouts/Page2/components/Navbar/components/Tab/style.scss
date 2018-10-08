@@ -3,7 +3,16 @@
 
 .m-tab {
   &__icon {
-    margin-right: .5rem;
+    margin-right: $co-component__spacing;
+
+    &::before {
+      display: inline-block;
+      vertical-align: baseline;
+      width: $co-component__height/1.5;
+      border-radius: $co-component__height / 3;
+      line-height: $co-component__height / 1.5;
+      text-align: center;
+    }
   }
 
   @each $name, $color in $privacy-palette {
