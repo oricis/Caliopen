@@ -20,6 +20,10 @@ func (es *ElasticSearchBackend) Search(search IndexSearch) (result *IndexResult,
 		agg_key     = "by_type"
 	)
 	q := elastic.NewBoolQuery()
+
+	// Strictly filter on user_id
+	q = q.Filter(elastic.NewTermQuery("user_id", search.User_id))
+
 	for field, value := range search.Terms {
 		q = q.Should(elastic.NewCommonTermsQuery(field, value).CutoffFrequency(0.01)) //words that have a document frequency greater than 1% will be treated as common terms.
 		// always add the common fields below to improve results
@@ -49,16 +53,16 @@ func (es *ElasticSearchBackend) Search(search IndexSearch) (result *IndexResult,
 		/*iq := elastic.NewIndicesQuery(elastic.NewRangeQuery("importance_level").Gte(search.ILrange[0]).Lte(search.ILrange[1]), MessageIndexType)
 		msg_hits := elastic.NewFilterAggregation().Filter(iq)
 		*/
-		s = es.Client.Search().Index(search.User_id.String()).Query(q).FetchSource(false).Aggregation(agg_key, by_type).Highlight(h)
+		s = es.Client.Search().Index(search.Shard_id).Query(q).FetchSource(false).Aggregation(agg_key, by_type).Highlight(h)
 	case MessageIndexType:
 		// The search focuses on message document type, no aggregation needed, but importance level apply
 		h := elastic.NewHighlight().Fields(elastic.NewHighlighterField("*").RequireFieldMatch(false))
 		rq := elastic.NewRangeQuery("importance_level").Gte(search.ILrange[0]).Lte(search.ILrange[1])
-		s = es.Client.Search().Index(search.User_id.String()).Query(q).FetchSource(true).Highlight(h).PostFilter(rq)
+		s = es.Client.Search().Index(search.Shard_id).Query(q).FetchSource(true).Highlight(h).PostFilter(rq)
 	case ContactIndexType:
 		// The search focuses on contact document type, no aggregation needed and importance level not taken into account
 		h := elastic.NewHighlight().Fields(elastic.NewHighlighterField("*").RequireFieldMatch(false))
-		s = es.Client.Search().Index(search.User_id.String()).Query(q).FetchSource(true).Highlight(h)
+		s = es.Client.Search().Index(search.Shard_id).Query(q).FetchSource(true).Highlight(h)
 	}
 
 	//prepare search
