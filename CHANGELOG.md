@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- /suggest apiv2 route use user.shard_id index not user.user_id
+- message python object use user not user_id
+
 ## [0.12.1] 2018-10-04
 
 ### Fixed
