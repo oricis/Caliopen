@@ -1,10 +1,8 @@
 @import '../../styles/common';
 
 .m-brand {
-  svg {
-    width: 100%;
-    max-width: $co-brand-width;
-  }
+  width: 100%;
+  max-width: $co-brand-width;
 
   path {
     fill: $co-color__primary;

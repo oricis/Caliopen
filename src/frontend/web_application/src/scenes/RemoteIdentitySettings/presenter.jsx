@@ -1,73 +1,79 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import IdentityForm from './components/IdentityForm';
+import NewIdentity from './components/NewIdentity';
+import RemoteIdentity from './components/RemoteIdentity';
 import { PageTitle } from '../../components/';
 
 import './style.scss';
 
-function generateStateFromProps({ remoteIdentities }) {
-  return {
-    remoteIdentities,
-  };
-}
-
 class RemoteIdentitySettings extends Component {
   static propTypes = {
     requestRemoteIdentities: PropTypes.func.isRequired,
-    onRemoteIdentityChange: PropTypes.func.isRequired,
-    onRemoteIdentityDelete: PropTypes.func.isRequired,
-    remoteIdentities: PropTypes.arrayOf(PropTypes.shape({})),
+    onIdentityChange: PropTypes.func.isRequired,
+    onIdentityDelete: PropTypes.func.isRequired,
+    identities: PropTypes.arrayOf(PropTypes.shape({})),
   };
   static defaultProps = {
-    remoteIdentities: undefined,
+    identities: undefined,
   };
-
-  state = {
-    remoteIdentities: [],
-  }
-
-  componentWillMount() {
-    this.setState(generateStateFromProps(this.props));
-  }
 
   componentDidMount() {
     this.props.requestRemoteIdentities();
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState(generateStateFromProps(nextProps));
+  handleChange = async (...params) => {
+    const { onIdentityChange } = this.props;
+
+    return onIdentityChange(...params);
   }
 
-  renderRemoteIdentity(remoteIdentity) {
-    const { onRemoteIdentityChange, onRemoteIdentityDelete } = this.props;
+  handleDelete = async (...params) => {
+    const { onIdentityDelete } = this.props;
 
+    return onIdentityDelete(...params);
+  }
+
+  handleClear = () => {
+    this.props.requestRemoteIdentities();
+  }
+
+  handleCreate = async (...params) => {
+    await this.handleChange(...params);
+    this.handleClear();
+  }
+
+  renderIdentity(identity) {
     return (
-      <div className="s-settings-identities__identity" key={remoteIdentity.entity_id}>
-        <IdentityForm
-          remoteIdentity={remoteIdentity}
-          onRemoteIdentityChange={onRemoteIdentityChange}
-          onRemoteIdentityDelete={onRemoteIdentityDelete}
+      <div className="s-settings-identities__identity" key={identity.identity_id}>
+        <RemoteIdentity
+          remoteIdentity={identity}
+          onRemoteIdentityChange={this.handleChange}
+          onRemoteIdentityDelete={this.handleDelete}
+          onClear={this.handleClear}
         />
       </div>
     );
   }
 
   render() {
-    const { onRemoteIdentityChange, onRemoteIdentityDelete } = this.props;
+    const { onIdentityDelete, identities } = this.props;
 
     return (
       <div className="s-settings-identities">
         <PageTitle />
         <div className="s-settings-identities__create">
-          <IdentityForm
-            onRemoteIdentityChange={onRemoteIdentityChange}
-            onRemoteIdentityDelete={onRemoteIdentityDelete}
+          <NewIdentity
+            onRemoteIdentityChange={this.handleCreate}
+            onRemoteIdentityDelete={onIdentityDelete}
+            onClear={this.handleClear}
           />
         </div>
-        {
-          this.state.remoteIdentities
-            .map(remoteIdentity => this.renderRemoteIdentity(remoteIdentity))
-        }
+        <Fragment>
+          {
+            identities
+              .map(identity => this.renderIdentity(identity))
+          }
+        </Fragment>
       </div>
     );
   }

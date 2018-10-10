@@ -40,7 +40,7 @@ const base = {
   module: {
     rules: [
       {
-        test: /\.(s?css|jpe?g|png|gif)$/,
+        test: /\.(s?css|jpe?g|png|gif|svg)$/,
         loader: 'null-loader',
       },
       {

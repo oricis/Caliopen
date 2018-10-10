@@ -1,0 +1,13 @@
+@import '../../../../styles/common';
+
+.m-new-identity {
+  &__main-help {
+    color: $co-color__fg__text--higher;
+  }
+
+  &__email-form {
+    margin-top: map_get($co-margin_, 'xsmall');
+    padding: map_get($co-margin_, 'xsmall');
+    background-color: $co-color__bg__back--higher;
+  }
+}
