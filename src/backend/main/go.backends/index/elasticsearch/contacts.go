@@ -29,7 +29,7 @@ func (es *ElasticSearchBackend) CreateContact(contact *Contact) error {
 		log.WithError(err).Warnf("[ElasticSearchBackend] CreateContact failed for user %s and contact %s", contact.UserId.String(), contact.ContactId.String())
 		return err
 	}
-	log.Infof("New msg indexed with id %s", resp.Id)
+	log.Infof("New contact indexed with id %s", resp.Id)
 	return nil
 }
 

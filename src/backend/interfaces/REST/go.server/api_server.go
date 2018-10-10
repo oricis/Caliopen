@@ -231,6 +231,12 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	cts.PATCH("/:contactID", contacts.PatchContact)
 	cts.DELETE("/:contactID", contacts.DeleteContact)
 	cts.GET("/:contactID/identities", contacts.GetIdentities)
+	//publickeys
+	cts.POST("/:contactID/publickeys", contacts.NewPublicKey)
+	cts.GET("/:contactID/publickeys", contacts.GetPubKeys)
+	cts.GET("/:contactID/publickeys/:pubkeyID", contacts.GetPubKey)
+	cts.PATCH("/:contactID/publickeys/:pubkeyID", contacts.PatchPubKey)
+	cts.DELETE("/:contactID/publickeys/:pubkeyID", contacts.DeletePubKey)
 	//tags
 	cts.PATCH("/:contactID/tags", tags.PatchResourceWithTags)
 

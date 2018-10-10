@@ -25,6 +25,7 @@ class PublicKey(BaseModel):
 
     key = columns.Text()
     fingerprint = columns.Text()
+    size = columns.VarInt()
 
     # JWT parameters
     kty = columns.Text()    # rsa / ec

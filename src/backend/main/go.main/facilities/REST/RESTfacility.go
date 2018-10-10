@@ -31,6 +31,7 @@ type (
 		UpdateContact(user *UserInfo, contact, oldContact *Contact, update map[string]interface{}) error
 		PatchContact(user *UserInfo, patch []byte, contactID string) error
 		DeleteContact(userID, contactID string) error
+		ContactExists(userID, contactID string) bool
 		//identities
 		RetrieveContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error)
 		RetrieveLocalIdentities(user_id string) (identities []UserIdentity, err error)
@@ -75,6 +76,12 @@ type (
 		UpdateDevice(device, oldDevice *Device, update map[string]interface{}) CaliopenError
 		PatchDevice(patch []byte, userId, deviceId string) CaliopenError
 		DeleteDevice(userId, deviceId string) CaliopenError
+		//keys
+		CreatePGPPubKey(label string, pubkey []byte, contact *Contact) (*PublicKey, CaliopenError)
+		RetrieveContactPubKeys(userId, contactId string) (pubkeys PublicKeys, err CaliopenError)
+		RetrievePubKey(userId, resourceId, keyId string) (pubkey *PublicKey, err CaliopenError)
+		DeletePubKey(pubkey *PublicKey) CaliopenError
+		PatchPubKey(patch []byte, userId, resourceId, keyId string) CaliopenError
 	}
 	RESTfacility struct {
 		store      backends.APIStorage
@@ -89,10 +96,10 @@ func NewRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility
 	rest_facility = new(RESTfacility)
 	rest_facility.nats_conn = nats_conn
 	rest_facility.natsTopics = map[string]string{
-		Nats_outSMTP_topicKey:     config.NatsConfig.OutSMTP_topic,
-		Nats_outIMAP_topicKey:     config.NatsConfig.OutIMAP_topic,
-		Nats_Contacts_topicKey:    config.NatsConfig.Contacts_topic,
-		Nats_DiscoverKey_topicKey: config.NatsConfig.Keys_topic,
+		Nats_outSMTP_topicKey:  config.NatsConfig.OutSMTP_topic,
+		Nats_outIMAP_topicKey:  config.NatsConfig.OutIMAP_topic,
+		Nats_Contacts_topicKey: config.NatsConfig.Contacts_topic,
+		Nats_Keys_topicKey:     config.NatsConfig.Keys_topic,
 	}
 	switch config.RESTstoreConfig.BackendName {
 	case "cassandra":
