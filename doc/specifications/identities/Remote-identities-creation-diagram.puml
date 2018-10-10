@@ -26,14 +26,17 @@ create boundary provider
 backend -> provider: request auth parameters
 provider -> backend: auth params
 end
+group Oauth2 only (Gmail for ex.)
+backend --> backend: retrieve application secret params\nfrom backend
+end
 backend -> client: ""202 Accepted""\nwith Oauth parameters in payload
 hnote left client: UI : « you must authorize Caliopen »
 client -> user: UI for Oauth redirect
 user --> provider: user logging & authorizing
 provider --> provider: authorize
-provider -> backend: responds authorization code\non redirect_uri
-backend -> provider: ""GET"" auth token & secret
-provider -> backend: token + secret
+provider -> backend: responds authorization code\non provided redirect_uri
+backend -> provider: ""GET"" with authorization secrets
+provider -> backend: token + secret for user
 backend --> backend: save credentials
 backend -> client: ""204 No Content""
 client -> user: notify user :\n« backend is trying to\nconnect to remote service »
@@ -42,6 +45,7 @@ group login/password mechanism
 backend -> client: ""202 Accepted"" (no payload)
 client -> user: notify user :\n« backend is trying to\nconnect to remote service »
 end
+hnote left client: UI : « your remote account\nis created.\nTrying to connect… »
 == backend has credentials and account settings ==
 ... async  ...
 group account validation
@@ -50,5 +54,5 @@ provider -> backend: ""OK""
 backend -> provider: ""bye""
 backend -> client: notify success
 end
-hnote left client: UI : « remote account\nis connected ! »
+hnote left client: UI : « your remote account\nis connected ! »
 @enduml
