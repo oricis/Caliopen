@@ -1,9 +1,13 @@
 export const PI_PROPERTIES = ['comportment', 'technic', 'context'];
-export const getPiClass = (pi) => {
-  if (Number.isNaN(pi)) return 'disabled-pi';
+export const getPiClass = (piAggregate) => {
+  if (Number.isNaN(piAggregate)) return 'disabled-pi';
 
-  return pi <= 50 ? 'weak-pi' : 'strong-pi';
+  if (piAggregate < 25) return 'ugly';
+  if (piAggregate < 50) return 'bad';
+
+  return piAggregate < 75 ? 'good' : 'super';
 };
+
 export const getAngles = () => {
   const piLength = PI_PROPERTIES.length;
   if (piLength === 0) {
