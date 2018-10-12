@@ -42,6 +42,10 @@ type (
 		PatchUserIdentity(patch []byte, userId, RemoteId string) CaliopenError
 		DeleteUserIdentity(userId, remoteId string) CaliopenError
 		IsRemoteIdentity(userId, remoteId string) bool
+		//providers
+		RetrieveProvidersList() (providers []Provider, err error)
+		RetrieveProvider(name string) (Provider, error)
+		ProviderCallback() error
 		//messages
 		GetMessagesList(filter IndexSearch) (messages []*Message, totalFound int64, err error)
 		GetMessagesRange(filter IndexSearch) (messages []*Message, totalFound int64, err error)
