@@ -1,23 +1,35 @@
 # -*- coding: utf-8 -*-
 
-# resync index. This command will delete the current index for an user
-# And rebuild it entirely using cassandra data
+# Resync data index for an user
 #
 
 from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 import sys
+import uuid
 from elasticsearch import Elasticsearch
 from caliopen_storage.config import Configuration
 
 log = logging.getLogger(__name__)
-log.setLevel(logging.DEBUG)
+log.setLevel(logging.INFO)
+
+
+def clean_index_user(client, user):
+    """Delete old data belong to an user from index."""
+    query = {'query': {'term': {'user_id': user.user_id}}}
+    r1 = client.delete_by_query(index=user.shard_id,
+                                doc_type='indexed_message',
+                                body=query)
+    r2 = client.delete_by_query(index=user.shard_id,
+                                doc_type='indexed_contact',
+                                body=query)
+    return r1['deleted'], r2['deleted']
 
 
 def resync_index(**kwargs):
     """Resync an index for an user."""
-    from caliopen_main.user.core import User
+    from caliopen_main.user.core import User, allocate_user_shard
     from caliopen_main.user.core.setups import setup_index
     from caliopen_main.contact.store import Contact
     from caliopen_main.contact.objects import Contact as ContactObject
@@ -32,39 +44,44 @@ def resync_index(**kwargs):
         print('Need user_name or user_id parameter')
         sys.exit(1)
 
-    mapping_key = 'elasticsearch.mappings_version'
-    current_version = Configuration('global').get(mapping_key)
-    new_index = '{}_{}'.format(user.user_id, current_version)
-
-    if 'version' in kwargs and kwargs['version']:
-        old_version = kwargs['version']
-        old_index = '{}_{}'.format(user.user_id, old_version)
-    else:
-        old_index = new_index
-
     es_url = Configuration('global').get('elasticsearch.url')
     es_client = Elasticsearch(es_url)
 
-    # Delete current index
-    if not es_client.indices.exists([old_index]):
-        log.warn('Index %r not found for user %s' % (old_index, user.name))
-        sys.exit(1)
-    es_client.indices.delete([old_index])
-    log.info('Index %r deleted for user %s' % (old_index, user.name))
+    if 'delete' in kwargs and kwargs['delete']:
+        del_msg, del_con = clean_index_user(es_client, user)
+        log.info('Delete of {0} old contacts and {1} old messages'.
+                 format(del_con, del_msg))
 
-    # Recreate index and mappings
+    user_id = uuid.UUID(user.user_id)
+    shard_id = allocate_user_shard(user_id)
+    if user.shard_id != shard_id:
+        log.warn('Reallocate user index shard from {} to {}'.
+                 format(user.shard_id, shard_id))
+        user.shard_id = shard_id
+        user.save()
+
     setup_index(user)
 
+    cpt_contact = 0
     contacts = Contact.filter(user_id=user.user_id)
     for contact in contacts:
         log.debug('Reindex contact %r' % contact.contact_id)
-        obj = ContactObject(user.user_id, contact_id=contact.contact_id)
+        obj = ContactObject(user, contact_id=contact.contact_id)
         obj.create_index()
+        cpt_contact += 1
 
+    cpt_message = 0
     messages = Message.filter(user_id=user.user_id).allow_filtering()
     for message in messages:
         log.debug('Reindex message %r' % message.message_id)
-        obj = MessageObject(user.user_id, message_id=message.message_id)
+        obj = MessageObject(user, message_id=message.message_id)
         obj.create_index()
+        cpt_message += 1
+    log.info('Sync of {0} contacts, {1} messages'.
+             format(cpt_contact, cpt_message))
     log.info('Create index alias %r' % user.user_id)
-    es_client.indices.put_alias(index=new_index, name=user.user_id)
+    try:
+        es_client.indices.put_alias(index=shard_id, name=user.user_id)
+    except Exception as exc:
+        log.exception('Error during alias creation : {}'.format(exc))
+        raise exc
