@@ -16,6 +16,7 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/participants"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/tags"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/users"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/providers"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
@@ -265,4 +266,10 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	notif := api.Group("/notifications", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
 	notif.GET("", notifications.GetPendingNotif)
 	notif.DELETE("", notifications.DeleteNotifications)
+
+	/** providers **/
+	prov := api.Group("/providers")
+	prov.GET("", providers.GetProvidersList, http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
+	prov.GET("/:provider_name", providers.GetProvider, http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
+	prov.GET("/:provider_name/callback", providers.CallbackHandler)
 }
