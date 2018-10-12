@@ -1,58 +1,77 @@
 @startuml
-actor "Authenticated user" as user
-participant "Client" as client
+actor "Browser window" as user
+participant "webapp" as client
 database "Backend" as backend
-user -->o client: click\n« add remote account »
+user --> client: click\n« add remote account »
 client -> backend: ""GET /providers""
-backend -> client: providers list\nwith additional data\nto pre-fill form
-hnote left client: UI : « choose a provider »
-note over user
-User
-1. select a provider
-2. fill remote address, name, etc.
-3. fill connection settings (if required)
-         (for gmail and twitter,
-         server settings are pre-filled)
-4. if applicable :
-        select auth method : password or Oauth
-5. if applicable : fill credentials
-        (for ex. password auth)
-end note
-user -->o client: save form
-client -> backend: ""POST /identities/remotes""
-group Oauth mechanisms
-group Oauth1 only (Twitter for ex.)
-create boundary provider
-backend -> provider: request auth parameters
-provider -> backend: auth params
+backend -> client: providers list with additional infos\n(url, data to pre-fill form, etc.)
+hnote right user: UI : « choose a provider »
+group Gmail
+user --> client: click « signin with Gmail »
+client -> backend: ""GET /api/v2/providers/gmail""
+backend -> client: ""200 OK"" with Oauth params in payload
+client -> user: [popup] redirect to gmail auth page\nwith provided auth params
+create boundary Gmail
+activate user
+user -> Gmail: (gmail domain) login & authorize Caliopen
+Gmail --> Gmail: authorize
+Gmail -> user: Gmail redirect to our redirect_uri with authorization code
+user -> backend: ""GET /api/v2/providers/gmail/callback""
+activate backend
+backend -> Gmail: validate token info
+Gmail -> backend: OK with authorization code
+backend -> user: ""200 OK"" Thanks for authorizing Caliopen !\nYour request is being processed.\nYou can safely close this popup.
+deactivate user
+client o-> backend: popup end detection :\n""GET api/v2/identities/remotes?pending=true""
+backend -> Gmail: ""GET"" with authorization secrets
+Gmail -> backend: token + secret for user
+deactivate backend
+backend --> backend: create remote identity with token credentials
+backend -> client: ""201 location: /identities/remote/<remote_id>""
+client -> backend: ""GET /identities/remote/<remote_id>""
+backend -> client: remote id
+hnote right user: UI : « Success ! »
+client --> user: display identity created
 end
-group Oauth2 only (Gmail for ex.)
-backend --> backend: retrieve application secret params\nfrom backend
+group Twitter
+user --> client: click « signin with Twitter »
+client -> backend: ""GET /api/v2/providers/twitter""
+create boundary Twitter
+backend -> Twitter: request auth parameters
+Twitter -> backend: auth params
+backend -> client: ""200 OK"" with Oauth params in payload
+client -> user: [popup] redirect to Twitter auth page\nwith provided auth params
+activate user
+user -> Twitter: (Twitter domain) login & authorize Caliopen
+Twitter --> Twitter: authorize
+Twitter -> user: Twitter redirect to our redirect_uri with authorization code
+user -> backend: ""GET /api/v2/providers/twitter/callback""
+activate backend
+backend -> Twitter: validate token info
+Twitter -> backend: OK with authorization code
+backend -> user: ""200 OK"" Thanks for authorizing Caliopen !\nYour request is being processed.\nYou can safely close this popup.
+deactivate user
+client o-> backend: popup end detection :\n""GET api/v2/identities/remotes?pending=true""
+backend -> Twitter: ""GET"" with authorization secrets
+Twitter -> backend: token + secret for user
+deactivate backend
+backend --> backend: create remote identity with token credentials
+backend -> client: ""201 location: /identities/remote/<remote_id>""
+client -> backend: ""GET /identities/remote/<remote_id>""
+backend -> client: remote id
+hnote right user: UI : « Success ! »
+client --> user: display identity created
 end
-backend -> client: ""202 Accepted""\nwith Oauth parameters in payload
-hnote left client: UI : « you must authorize Caliopen »
-client -> user: UI for Oauth redirect
-user --> provider: user logging & authorizing
-provider --> provider: authorize
-provider -> backend: responds authorization code\non provided redirect_uri
-backend -> provider: ""GET"" with authorization secrets
-provider -> backend: token + secret for user
-backend --> backend: save credentials
-backend -> client: ""204 No Content""
-client -> user: notify user :\n« backend is trying to\nconnect to remote service »
-end
-group login/password mechanism
-backend -> client: ""202 Accepted"" (no payload)
-client -> user: notify user :\n« backend is trying to\nconnect to remote service »
-end
-hnote left client: UI : « your remote account\nis created.\nTrying to connect… »
+
 == backend has credentials and account settings ==
+hnote left client: UI : « your remote account\nis created.\nTrying to connect… »
+create participant provider
 ... async  ...
-group account validation
+group account connexion testing
 backend -> provider: impersonate user to endpoint API
 provider -> backend: ""OK""
 backend -> provider: ""bye""
-backend -> client: notify success
+backend o-->o client: notify success
 end
 hnote left client: UI : « your remote account\nis connected ! »
 @enduml
