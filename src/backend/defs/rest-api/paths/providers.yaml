@@ -50,7 +50,7 @@ providers_{provider_name}:
           properties:
             name:
               type: string
-            oauth_auth_url:
+            oauth_request_url:
               type: string
             protocol:
               type: string

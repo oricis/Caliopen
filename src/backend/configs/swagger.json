@@ -3366,7 +3366,7 @@
                 "name": {
                   "type": "string"
                 },
-                "oauth_auth_url": {
+                "oauth_request_url": {
                   "type": "string"
                 },
                 "protocol": {
