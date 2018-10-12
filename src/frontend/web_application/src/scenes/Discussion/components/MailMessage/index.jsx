@@ -9,8 +9,9 @@ import { withPush } from '../../../../modules/routing/hoc/withPush';
 import { getTagLabelFromName } from '../../../../modules/tags';
 import { Badge, Button, Confirm } from '../../../../components';
 import MessageAttachments from '../../../MessageList/components/MessageAttachments';
+import MessageRecipients from '../MessageRecipients';
 import MessagePi from '../MessagePi';
-import { getAuthor, getRecipients, isParticipantUser, isUserRecipient } from '../../../../services/message';
+import { getAuthor } from '../../../../services/message';
 import { getAveragePI, getPiClass } from '../../../../modules/pi/services/pi';
 
 import './style.scss';
@@ -63,17 +64,6 @@ class MailMessage extends Component {
     onReply({ message, push });
   }
 
-  formatRecipients = () => {
-    const { message, user } = this.props;
-    const prefix = (user && isUserRecipient(message, user)) ? 'Vous et ' : '';
-
-    const otherRecipients = getRecipients(message)
-      .filter(participant => !isParticipantUser(participant, user))
-      .map(participant => participant.label).join(', ');
-
-    return `${prefix}${otherRecipients}`;
-  }
-
   renderTags = ({ tags }) => {
     const { i18n, tags: allTags } = this.props;
 
@@ -91,10 +81,11 @@ class MailMessage extends Component {
   };
 
   render() {
-    const { message, forwardRef, onOpenTags } = this.props;
+    const {
+      message, forwardRef, onOpenTags, user,
+    } = this.props;
     const pi = getAveragePI(message.pi);
     const author = getAuthor(message);
-    const recipients = this.formatRecipients();
 
     return (
       <article id={`message-${message.message_id}`} ref={forwardRef} className={classnames(['s-mail-message', getPiClass(pi)])}>
@@ -105,13 +96,18 @@ class MailMessage extends Component {
               <a className="s-mail-message__details-from" href="#">{author.label}</a>&nbsp;
               <Moment fromNow locale="fr">{message.date}</Moment>
             </div>
-            <div className="s-mail-message__details-to">À: <strong>{recipients}</strong></div>
+            <div className="s-mail-message__details-to">
+              À:&nbsp;
+              <strong>
+                <MessageRecipients message={message} user={user} shorten />
+              </strong>
+            </div>
           </div>
           <aside className="s-mail-message__info">
             <MessagePi pi={message.pi} illustrate describe />
             <div className="s-mail-message__participants">
               <div className="s-mail-message__participants-from"><span className="direction">De&thinsp;:</span> <a href="">{author.label}</a></div>
-              <div className="s-mail-message__participants-to"><span className="direction">À&thinsp;:</span> <a href="">{recipients}</a></div>
+              <div className="s-mail-message__participants-to"><span className="direction">À&thinsp;:</span> <a href=""><MessageRecipients message={message} user={user} /></a></div>
             </div>
             {this.renderTags(message)}
           </aside>
