@@ -1,6 +1,6 @@
 {
   "take-a-tour.step.importance-slider.content": "",
-  "messages.participants.and_x_others": "{first} and {number} others",
+  "messages.participants.and_x_others": "{first} and {number, plural, one {# other} other {# others}}",
   "collection-field-group.action.add": "Add",
   "confirm.action.confirm": "Yes I'm sure",
   "confirm.action.cancel": "Cancel",
