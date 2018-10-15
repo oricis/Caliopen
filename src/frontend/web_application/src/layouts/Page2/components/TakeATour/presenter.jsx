@@ -66,7 +66,7 @@ class TakeATour extends Component {
         content: (
           <div>
             <h2><Trans id="take-a-tour.step.call-to-action.title">Create quickly</Trans></h2>
-            <div dangerouslySetInnerHTML={{ __html: i18n._('take-a-tour.step.call-to-action.content', { defaults: '<p>Create on the fly a new message or a new contact.</p><p>All you need to begin is here.</p>' }) }} />
+            <div dangerouslySetInnerHTML={{ __html: i18n._('take-a-tour.step.call-to-action.content', { defaults: '<p>Create on the fly a new message.</p>' }) }} />
           </div>
         ),
       },
