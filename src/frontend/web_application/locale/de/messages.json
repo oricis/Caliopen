@@ -1,5 +1,4 @@
 {
-  "message.participants.me": "",
   "messages.participants.and_x_others": "",
   "collection-field-group.action.add": "Hinzufügen",
   "confirm.action.confirm": "",
@@ -274,6 +273,7 @@
   "message.pi.comportment": "",
   "message.pi.context": "",
   "message.pi.technic": "",
+  "message.participants.me": "",
   "discussion.action.label": "Whole discussion",
   "discussion.action.reply": "Reply",
   "password.forgot-form.title": "Kennwort vergessen",

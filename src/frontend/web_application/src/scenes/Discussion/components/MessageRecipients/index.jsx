@@ -24,7 +24,7 @@ class MessageRecipients extends PureComponent {
     if (numberRecipients === 0) return i18n._('message.participants.me', { defaults: 'Me' });
     if (!shorten || numberRecipients === 1) return recipients.join(', ');
 
-    return `${recipients[0]} and ${numberRecipients - 1} others`;
+    return i18n._('messages.participants.and_x_others', { values: { first: recipients[0], number: numberRecipients - 1 }, defaults: '{first} and {number} others' });
   };
 
   getRecipientsLabels = (recipients) => {
