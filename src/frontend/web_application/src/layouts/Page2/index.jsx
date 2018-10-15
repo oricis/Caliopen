@@ -10,6 +10,7 @@ import { ScrollDetector } from '../../modules/scroll';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import NotificationCenter from './components/NotificationCenter';
+import TakeATour from './components/TakeATour';
 import PageContainer from '../PageContainer';
 import './style.scss';
 import './header.scss';
@@ -39,6 +40,9 @@ class Page extends Component {
               <Link to="/"><Brand className="l-header__brand" /></Link>
               {/* <div className="l-header__notif-menu"><Button href="#"><Icon type="bell"
               /></Button></div> */}
+              <div className="l-header__take-a-tour">
+                <TakeATour />
+              </div>
               <div className="l-header__user-menu">
                 <UserMenu />
               </div>

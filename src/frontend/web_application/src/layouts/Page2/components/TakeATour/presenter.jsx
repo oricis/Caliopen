@@ -43,7 +43,7 @@ class TakeATour extends Component {
         position: 'center',
       },
       {
-        selector: '.l-header__m-search-field',
+        selector: '.m-page-actions__search-field',
         content: (
           <div>
             <h2><Trans id="take-a-tour.step.search.title">Intuitive search</Trans></h2>
@@ -52,7 +52,7 @@ class TakeATour extends Component {
         ),
       },
       {
-        selector: '.l-header__user',
+        selector: '.m-user-menu',
         content: (
           <div>
             <h2><Trans id="take-a-tour.step.user-menu.title">Account menu</Trans></h2>
@@ -62,20 +62,11 @@ class TakeATour extends Component {
         position: 'bottom',
       },
       {
-        selector: '.l-call-to-action',
+        selector: '.m-page-actions__action-btns',
         content: (
           <div>
             <h2><Trans id="take-a-tour.step.call-to-action.title">Create quickly</Trans></h2>
             <div dangerouslySetInnerHTML={{ __html: i18n._('take-a-tour.step.call-to-action.content', { defaults: '<p>Create on the fly a new message or a new contact.</p><p>All you need to begin is here.</p>' }) }} />
-          </div>
-        ),
-      },
-      {
-        selector: '#toggle-IL_navigation_slider_dropdown',
-        content: (
-          <div>
-            <h2><Trans id="take-a-tour.step.importance-slider.title">Importance level</Trans></h2>
-            <div dangerouslySetInnerHTML={{ __html: i18n._('take-a-tour.step.importance-slider.content', { defaults: '<p>This slider will help you to hide or show some messages depending on their importance level.</p><p>Lower the top slider to show only spams or upper the bottom one to show direct messages.</p>' }) }} />
           </div>
         ),
       },
