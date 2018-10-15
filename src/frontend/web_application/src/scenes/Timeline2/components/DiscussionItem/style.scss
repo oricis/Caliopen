@@ -30,7 +30,7 @@ $s-discussion-item__spacing: 0.5rem;
     border-left: 0.5rem solid map_get($privacy-palette, 'super');
   }
 
-  &.is-unread {
+  &--is-unread {
     background-color: $co-color__fg__back--lower;
   }
 

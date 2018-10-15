@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import { withI18n } from 'lingui-react';
+import classnames from 'classnames';
 import { Badge, Icon, Link } from '../../../../components';
 import ParticipantsIconLetter from '../../../../components/ParticipantsIconLetter';
 import { getAveragePI, getPiClass } from '../../../../modules/pi';
@@ -78,7 +79,7 @@ class DiscussionItem extends PureComponent {
         id={`discussion-${discussionId}`}
         data-nb-messages={total}
         data-date={date}
-        className={`s-discussion-item${unreadCount ? ' is-unread' : ''} s-discussion-item--${getPiClass(piAggregate)}`}
+        className={classnames('s-discussion-item', { 's-discussion-item--is-unread': unreadCount }, `s-discussion-item--${getPiClass(piAggregate)}`)}
       >
         <ParticipantsIconLetter labels={labels} />
         <a className="s-discussion-item__participants">{labels.join(', ')}</a>

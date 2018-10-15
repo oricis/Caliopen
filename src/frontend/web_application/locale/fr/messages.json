@@ -1,5 +1,7 @@
 {
-  "messages.participants.and_x_others": "{first} et {number, plural, one {# autre} other {# autres}}",
+  "take-a-tour.step.importance-slider.content": "",
+  "message.to": "To:",
+  "message.from": "From:",
   "collection-field-group.action.add": "Ajouter",
   "confirm.action.confirm": "Oui je suis sûr",
   "confirm.action.cancel": "Annuler",
@@ -273,6 +275,7 @@
   "message.pi.context": "Départ",
   "message.pi.technic": "Trajet",
   "message.participants.me": "Moi",
+  "messages.participants.and_x_others": "{first} et {number, plural, one {# autre} other {# autres}}",
   "discussion.action.label": "Discussion complète ",
   "discussion.action.reply": "Répondre",
   "password.forgot-form.title": "Mot de passe oublié",

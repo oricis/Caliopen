@@ -97,7 +97,7 @@ class MailMessage extends Component {
               <Moment fromNow locale="fr">{message.date}</Moment>
             </div>
             <div className="s-mail-message__details-to">
-              À:&nbsp;
+              <Trans id="message.to">To:</Trans>
               <strong>
                 <MessageRecipients message={message} user={user} shorten />
               </strong>
@@ -106,8 +106,12 @@ class MailMessage extends Component {
           <aside className="s-mail-message__info">
             <MessagePi pi={message.pi} illustrate describe />
             <div className="s-mail-message__participants">
-              <div className="s-mail-message__participants-from"><span className="direction">De&thinsp;:</span> <a href="">{author.label}</a></div>
-              <div className="s-mail-message__participants-to"><span className="direction">À&thinsp;:</span> <a href=""><MessageRecipients message={message} user={user} /></a></div>
+              <div className="s-mail-message__participants-from">
+                <span className="direction"><Trans id="message.from">From:</Trans>:</span> <a href="">{author.label}</a>
+              </div>
+              <div className="s-mail-message__participants-to">
+                <span className="direction"><Trans id="message.to">To:</Trans></span> <a href=""><MessageRecipients message={message} user={user} /></a>
+              </div>
             </div>
             {this.renderTags(message)}
           </aside>
