@@ -88,11 +88,13 @@ type (
 		PatchPubKey(patch []byte, userId, resourceId, keyId string) CaliopenError
 	}
 	RESTfacility struct {
-		store      backends.APIStorage
-		index      backends.APIIndex
 		Cache      backends.APICache
-		nats_conn  *nats.Conn
+		index      backends.APIIndex
 		natsTopics map[string]string
+		nats_conn  *nats.Conn
+		providers  map[string]Provider
+		store      backends.APIStorage
+		hostname   string
 	}
 )
 
@@ -159,5 +161,13 @@ func NewRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility
 
 	rest_facility.Cache = backends.APICache(cach) // type conversion
 
+	rest_facility.providers = map[string]Provider{}
+	for _, provider := range config.Providers {
+		if provider.Name != "" {
+			rest_facility.providers[provider.Name] = provider
+		}
+	}
+
+	rest_facility.hostname = config.Hostname
 	return rest_facility
 }
