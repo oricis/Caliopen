@@ -50,3 +50,4 @@ func CallbackHandler(ctx *gin.Context) {
 	ctx.Abort()
 	return
 }
+

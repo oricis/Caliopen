@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
-	"github.com/Sirupsen/logrus"
 	"github.com/dghubble/oauth1"
 	twitterOAuth1 "github.com/dghubble/oauth1/twitter"
 )
@@ -42,7 +41,6 @@ func (rest *RESTfacility) ProviderCallback() error {
 
 func setTwitterAuthRequestUrl(provider *Provider, hostname string) error {
 
-	logrus.Infof("%+v", *provider)
 	provider.OauthCallbackUri = fmt.Sprintf(CALLBACK_BASE_URI, "twitter")
 
 	//IMPORTANT TODO: make use of vault to store consumer key and secret
@@ -52,7 +50,6 @@ func setTwitterAuthRequestUrl(provider *Provider, hostname string) error {
 		CallbackURL:    "http://"+ hostname + provider.OauthCallbackUri,
 		Endpoint:       twitterOAuth1.AuthorizeEndpoint,
 	}
-	logrus.Infof("%+v", *conf)
 	requestToken, _, err := conf.RequestToken()
 	if err != nil {
 		//TODO

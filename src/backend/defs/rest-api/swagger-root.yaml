@@ -39,6 +39,8 @@ paths:
     "$ref": paths/providers.yaml#/providers_{provider_name}
   "/v2/providers/{provider_name}/callback":
     "$ref": paths/providers.yaml#/providers_{provider_name}_callback
+  "/v2/test/providers/{provider_name}":
+    "$ref": paths/providers.yaml#/providers_test_{provider_name}
 ## contacts ##
   "/v1/contacts":
     "$ref": paths/contacts.yaml#/contacts
