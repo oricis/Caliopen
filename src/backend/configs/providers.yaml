@@ -1,8 +1,0 @@
-# temporary supported providers list for remote identities before moving this data into store facility
----
-- name: gmail
-  oauth_request_url:
-  protocol: email
-- name: twitter
-  oauth_request_url:
-  protocol: twitter
