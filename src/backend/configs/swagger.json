@@ -3454,6 +3454,31 @@
         }
       }
     },
+    "/v2/test/providers/{provider_name}": {
+      "get": {
+        "description": "serves an index to test twitter Oauth process",
+        "tags": [
+          "providers"
+        ],
+        "security": [],
+        "parameters": [
+          {
+            "name": "provider_name",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "produces": [
+          "text/html"
+        ],
+        "responses": {
+          "200": {
+            "description": "index to trigger oauth popup"
+          }
+        }
+      }
+    },
     "/v1/contacts": {
       "get": {
         "description": "Returns contacts belonging to current user according to given parameters",
