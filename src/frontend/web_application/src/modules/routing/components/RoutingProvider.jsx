@@ -29,15 +29,15 @@ import DevicesSettings from '../../../scenes/DevicesSettings';
 import NewDeviceInfo from '../../../scenes/NewDeviceInfo';
 import { renderParticipant } from '../../../services/message';
 import { formatName } from '../../../services/contact';
-
-export const tabMatchRoute = ({ pathname, routeConfig }) => matchPath(pathname, routeConfig);
-export const tabMatchPathname = ({ pathname, tab }) => pathname === tab.location.pathname;
+import AuthenticatedLayout from './AuthenticatedLayout';
 
 const tabMatchSettings = ({ pathname }) => matchPath(pathname, {
   path: '/settings/:type',
   exact: true,
   strict: false,
 });
+const tabMatchRoute = ({ pathname, routeConfig }) => matchPath(pathname, routeConfig);
+const tabMatchPathname = ({ pathname, tab }) => pathname === tab.location.pathname;
 
 @withI18n()
 class RoutingProvider extends Component {
@@ -57,6 +57,8 @@ class RoutingProvider extends Component {
 
   // TODO: refactor
   //  route initialization can be done by scene via root App component
+  // it is not easy, a route injection method here cannot be used because it will re-render and so
+  // the component it self which injects the routes
   initializeRoutes = () => {
     const { i18n } = this.props;
     this.setState({
@@ -77,227 +79,233 @@ class RoutingProvider extends Component {
         },
         {
           path: '/',
-          component: PageLayout,
+          component: AuthenticatedLayout,
           routes: [
             {
               path: '/',
-              exact: true,
-              component: Timeline,
-              app: 'discussion',
-              tab: {
-                type: 'application',
-                icon: 'home',
-                renderLabel: () => i18n._('route.timeline.label', { defaults: 'Timeline' }),
-                tabMatch: tabMatchRoute,
-              },
-            },
-            {
-              path: '/discussions/:discussionId',
-              component: Discussion,
-              app: 'discussion',
-              tab: {
-                type: 'discussion',
-                renderLabel: ({ discussion }) => {
-                  if (discussion) {
-                    return discussion.participants.map(renderParticipant).join(' ');
-                  }
-
-                  return i18n._('route.discussion.label', { defaults: 'Discussion ...' });
-                },
-                tabMatch: tabMatchPathname,
-              },
-            },
-            {
-              path: '/compose',
-              component: NewDraft,
-              app: 'discussion',
-              exact: true,
-              strict: true,
-              // tab: {
-              //   type: 'compose',
-              //   renderLabel: () => i18n._('compose.route.label'),
-              //   icon: 'pencil',
-              //   tabMatch: tabMatchRoute,
-              // },
-            },
-            {
-              path: '/compose/:internalId',
-              component: NewDraft,
-              app: 'discussion',
-              tab: {
-                type: 'compose',
-                icon: 'pencil',
-                renderLabel: () => i18n._('route.compose.label', { defaults: 'Compose' }),
-                tabMatch: tabMatchPathname,
-              },
-            },
-            {
-              path: '/contacts',
-              exact: true,
-              component: ContactBook,
-              app: 'contact',
-              tab: {
-                type: 'application',
-                icon: 'address-book',
-                renderLabel: () => i18n._('route.contact-book.label', { defaults: 'Contacts' }),
-                tabMatch: tabMatchRoute,
-              },
-            },
-            {
-              path: '/contacts/:contactId',
-              component: Contact,
-              app: 'contact',
-              tab: {
-                type: 'contact',
-                icon: 'address-book',
-                renderLabel: ({ contact }) => {
-                  const { settings: { contact_display_format: format } } = this.props;
-
-                  return (contact && formatName({ contact, format })) || i18n._('contact.profile.name_not_set', { defaults: '(N/A)' });
-                },
-                tabMatch: tabMatchPathname,
-              },
-            },
-            {
-              path: '/new-contact',
-              component: Contact,
-              app: 'contact',
-              tab: {
-                type: 'default',
-                icon: 'address-book',
-                renderLabel: () => i18n._('route.new-contact.label', { defaults: 'New contact' }),
-                tabMatch: tabMatchRoute,
-              },
-            },
-            {
-              path: '/search-results',
-              component: SearchResults,
-              app: 'discussion',
-              tab: {
-                type: 'search',
-                icon: 'search',
-                renderLabel: ({ term }) => i18n._('route.search-results.label', { defaults: 'Results for: {term}', values: { term } }),
-                tabMatch: tabMatchRoute,
-              },
-            },
-            {
-              path: '/user',
-              app: 'user',
-              component: UserLayout,
-              tab: {
-                type: 'default',
-                icon: 'user',
-                renderLabel: () => i18n._('route.user.label.default', { defaults: 'Account' }),
-                tabMatch: tabMatchRoute,
-              },
+              component: PageLayout,
               routes: [
                 {
-                  path: '/user/profile',
-                  component: UserProfile,
+                  path: '/',
+                  exact: true,
+                  component: Timeline,
+                  app: 'discussion',
                   tab: {
-                    type: 'default',
-                    icon: 'user',
-                    renderLabel: () => i18n._('route.user.label.profile', { defaults: 'Profile' }),
+                    type: 'application',
+                    icon: 'home',
+                    renderLabel: () => i18n._('route.timeline.label', { defaults: 'Timeline' }),
                     tabMatch: tabMatchRoute,
                   },
                 },
                 {
-                  path: '/user/privacy',
-                  component: UserPrivacy,
+                  path: '/discussions/:discussionId',
+                  component: Discussion,
+                  app: 'discussion',
                   tab: {
-                    type: 'default',
-                    icon: 'user',
-                    renderLabel: () => i18n._('route.user.label.privacy', { defaults: 'Privacy' }),
+                    type: 'discussion',
+                    renderLabel: ({ discussion }) => {
+                      if (discussion) {
+                        return discussion.participants.map(renderParticipant).join(' ');
+                      }
+
+                      return i18n._('route.discussion.label', { defaults: 'Discussion ...' });
+                    },
+                    tabMatch: tabMatchPathname,
+                  },
+                },
+                {
+                  path: '/compose',
+                  component: NewDraft,
+                  app: 'discussion',
+                  exact: true,
+                  strict: true,
+                  // tab: {
+                  //   type: 'compose',
+                  //   renderLabel: () => i18n._('compose.route.label'),
+                  //   icon: 'pencil',
+                  //   tabMatch: tabMatchRoute,
+                  // },
+                },
+                {
+                  path: '/compose/:internalId',
+                  component: NewDraft,
+                  app: 'discussion',
+                  tab: {
+                    type: 'compose',
+                    icon: 'pencil',
+                    renderLabel: () => i18n._('route.compose.label', { defaults: 'Compose' }),
+                    tabMatch: tabMatchPathname,
+                  },
+                },
+                {
+                  path: '/contacts',
+                  exact: true,
+                  component: ContactBook,
+                  app: 'contact',
+                  tab: {
+                    type: 'application',
+                    icon: 'address-book',
+                    renderLabel: () => i18n._('route.contact-book.label', { defaults: 'Contacts' }),
                     tabMatch: tabMatchRoute,
                   },
                 },
                 {
-                  path: '/user/security',
-                  component: UserSecurity,
+                  path: '/contacts/:contactId',
+                  component: Contact,
+                  app: 'contact',
+                  tab: {
+                    type: 'contact',
+                    icon: 'address-book',
+                    renderLabel: ({ contact }) => {
+                      const { settings: { contact_display_format: format } } = this.props;
+
+                      return (contact && formatName({ contact, format })) || i18n._('contact.profile.name_not_set', { defaults: '(N/A)' });
+                    },
+                    tabMatch: tabMatchPathname,
+                  },
+                },
+                {
+                  path: '/new-contact',
+                  component: Contact,
+                  app: 'contact',
+                  tab: {
+                    type: 'default',
+                    icon: 'address-book',
+                    renderLabel: () => i18n._('route.new-contact.label', { defaults: 'New contact' }),
+                    tabMatch: tabMatchRoute,
+                  },
+                },
+                {
+                  path: '/search-results',
+                  component: SearchResults,
+                  app: 'discussion',
+                  tab: {
+                    type: 'search',
+                    icon: 'search',
+                    renderLabel: ({ term }) => i18n._('route.search-results.label', { defaults: 'Results for: {term}', values: { term } }),
+                    tabMatch: tabMatchRoute,
+                  },
+                },
+                {
+                  path: '/user',
+                  app: 'user',
+                  component: UserLayout,
                   tab: {
                     type: 'default',
                     icon: 'user',
-                    renderLabel: () => i18n._('route.user.label.security', { defaults: 'Security' }),
+                    renderLabel: () => i18n._('route.user.label.default', { defaults: 'Account' }),
                     tabMatch: tabMatchRoute,
                   },
+                  routes: [
+                    {
+                      path: '/user/profile',
+                      component: UserProfile,
+                      tab: {
+                        type: 'default',
+                        icon: 'user',
+                        renderLabel: () => i18n._('route.user.label.profile', { defaults: 'Profile' }),
+                        tabMatch: tabMatchRoute,
+                      },
+                    },
+                    {
+                      path: '/user/privacy',
+                      component: UserPrivacy,
+                      tab: {
+                        type: 'default',
+                        icon: 'user',
+                        renderLabel: () => i18n._('route.user.label.privacy', { defaults: 'Privacy' }),
+                        tabMatch: tabMatchRoute,
+                      },
+                    },
+                    {
+                      path: '/user/security',
+                      component: UserSecurity,
+                      tab: {
+                        type: 'default',
+                        icon: 'user',
+                        renderLabel: () => i18n._('route.user.label.security', { defaults: 'Security' }),
+                        tabMatch: tabMatchRoute,
+                      },
+                    },
+                  ],
+                },
+                {
+                  path: '/settings',
+                  app: 'settings',
+                  component: SettingsLayout,
+                  renderLabel: () => i18n._('route.settings.label.default', { defaults: 'Settings' }),
+                  routes: [
+                    {
+                      path: '/settings/identities',
+                      component: RemoteIdentitySettings,
+                      tab: {
+                        type: 'default',
+                        icon: 'cog',
+                        renderLabel: () => i18n._('route.settings.label.identities', { defaults: 'Security' }),
+                        tabMatch: tabMatchSettings,
+                      },
+                    },
+                    {
+                      path: '/settings/application',
+                      component: ApplicationSettings,
+                      tab: {
+                        type: 'default',
+                        icon: 'cog',
+                        renderLabel: () => i18n._('route.settings.label.application', { defaults: 'Devices' }),
+                        tabMatch: tabMatchSettings,
+                      },
+                    },
+                    {
+                      path: '/settings/tags',
+                      component: Tags,
+                      tab: {
+                        type: 'default',
+                        icon: 'cog',
+                        renderLabel: () => i18n._('route.settings.label.tags', { defaults: 'Tags' }),
+                        tabMatch: tabMatchSettings,
+                      },
+                    },
+
+                    // TODO: enable devices when API ready: https://tree.taiga.io/project/caliopen-caliopen/us/314?no-milestone=1
+                    {
+                      path: '/settings/devices',
+                      component: DevicesSettings,
+                      tab: {
+                        type: 'default',
+                        icon: 'cog',
+                        renderLabel: () => i18n._('route.settings.label.devices', { defaults: 'Devices' }),
+                        tabMatch: tabMatchSettings,
+                      },
+                    },
+                    {
+                      path: '/settings/new-device',
+                      component: NewDeviceInfo,
+                      tab: {
+                        type: 'default',
+                        icon: 'cog',
+                        renderLabel: () => i18n._('route.settings.label.devices', { defaults: 'Devices' }),
+                        tabMatch: tabMatchSettings,
+                      },
+                    },
+
+                    // TODO: enable signatures
+                    // {
+                    //  path: '/settings/signatures',
+                    //  component: SettingsSignatures,
+                    // tab: {
+                    //   type: 'default',
+                    //   icon: 'cog',
+                    //   renderLabel: () => i18n._('route.settings.label.signatures',
+                    // { defaults: 'Signatures' }),
+                    //   tabMatch: tabMatchRoute,
+                    // },
+                    // },
+                  ],
+                },
+                {
+                  component: PageNotFound,
                 },
               ],
-            },
-            {
-              path: '/settings',
-              app: 'settings',
-              component: SettingsLayout,
-              renderLabel: () => i18n._('route.settings.label.default', { defaults: 'Settings' }),
-              routes: [
-                {
-                  path: '/settings/identities',
-                  component: RemoteIdentitySettings,
-                  tab: {
-                    type: 'default',
-                    icon: 'cog',
-                    renderLabel: () => i18n._('route.settings.label.identities', { defaults: 'Security' }),
-                    tabMatch: tabMatchSettings,
-                  },
-                },
-                {
-                  path: '/settings/application',
-                  component: ApplicationSettings,
-                  tab: {
-                    type: 'default',
-                    icon: 'cog',
-                    renderLabel: () => i18n._('route.settings.label.application', { defaults: 'Devices' }),
-                    tabMatch: tabMatchSettings,
-                  },
-                },
-                {
-                  path: '/settings/tags',
-                  component: Tags,
-                  tab: {
-                    type: 'default',
-                    icon: 'cog',
-                    renderLabel: () => i18n._('route.settings.label.tags', { defaults: 'Tags' }),
-                    tabMatch: tabMatchSettings,
-                  },
-                },
-
-                // TODO: enable devices when API ready: https://tree.taiga.io/project/caliopen-caliopen/us/314?no-milestone=1
-                {
-                  path: '/settings/devices',
-                  component: DevicesSettings,
-                  tab: {
-                    type: 'default',
-                    icon: 'cog',
-                    renderLabel: () => i18n._('route.settings.label.devices', { defaults: 'Devices' }),
-                    tabMatch: tabMatchSettings,
-                  },
-                },
-                {
-                  path: '/settings/new-device',
-                  component: NewDeviceInfo,
-                  tab: {
-                    type: 'default',
-                    icon: 'cog',
-                    renderLabel: () => i18n._('route.settings.label.devices', { defaults: 'Devices' }),
-                    tabMatch: tabMatchSettings,
-                  },
-                },
-
-                // TODO: enable signatures
-                // {
-                //  path: '/settings/signatures',
-                //  component: SettingsSignatures,
-                // tab: {
-                //   type: 'default',
-                //   icon: 'cog',
-                //   renderLabel: () => i18n._('route.settings.label.signatures',
-                // { defaults: 'Signatures' }),
-                //   tabMatch: tabMatchRoute,
-                // },
-                // },
-              ],
-            },
-            {
-              component: PageNotFound,
             },
           ],
         },
