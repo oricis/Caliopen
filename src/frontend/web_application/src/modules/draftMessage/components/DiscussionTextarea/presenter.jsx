@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { v1 as uuidv1 } from 'uuid';
 import './style.scss';
 
@@ -15,7 +15,7 @@ const DiscussionTextarea = ({ body, onChange, i18n }) => {
         name="body"
         className="m-discussion-textarea__body"
         onChange={onChange}
-        placeholder={i18n._('messages.compose.form.body.placeholder', { defaults: 'Type your message here...' })}
+        placeholder={i18n._('messages.compose.form.body.placeholder', null, { defaults: 'Type your message here...' })}
         value={body}
       />
     </div>

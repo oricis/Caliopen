@@ -96,10 +96,10 @@ class NewDraft extends Component {
     try {
       await onSaveDraft({ internalId, draft, message });
 
-      return notifySuccess({ message: i18n._('draft.feedback.saved', { defaults: 'Draft saved' }) });
+      return notifySuccess({ message: i18n._('draft.feedback.saved', null, { defaults: 'Draft saved' }) });
     } catch (err) {
       return notifyError({
-        message: i18n._('draft.feedback.save-error', { defaults: 'Unable to save the draft' }),
+        message: i18n._('draft.feedback.save-error', null, { defaults: 'Unable to save the draft' }),
       });
     }
   }
@@ -116,7 +116,7 @@ class NewDraft extends Component {
       closeTab(currentTab);
     } catch (err) {
       notifyError({
-        message: i18n._('draft.feedback.send-error', { defaults: 'Unable to send the message' }),
+        message: i18n._('draft.feedback.send-error', null, { defaults: 'Unable to send the message' }),
       });
     }
     this.setState({ isSending: false });

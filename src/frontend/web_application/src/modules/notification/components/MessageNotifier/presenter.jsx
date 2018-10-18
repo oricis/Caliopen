@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import isequal from 'lodash.isequal';
 import { matchPath } from 'react-router-dom';
 import { notify as browserNotify } from '../../../../services/browser-notification';
@@ -51,7 +51,7 @@ class MessageNotifier extends Component {
       const { i18n } = this.props;
 
       browserNotify({
-        message: i18n._('desktop.notification.new_messages', {
+        message: i18n._('desktop.notification.new_messages', null, {
           values: { 0: notifications.length },
           defaults: 'You received {0} new messages',
         }),

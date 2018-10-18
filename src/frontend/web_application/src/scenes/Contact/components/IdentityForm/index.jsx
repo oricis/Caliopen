@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Trans, withI18n } from 'lingui-react';
+import { Trans, withI18n } from '@lingui/react';
 import { Field } from 'redux-form';
 import renderReduxField from '../../../../services/renderReduxField';
 import { Button, Icon, FieldErrors, SelectFieldGroup as SelectFieldGroupBase, TextFieldGroup as TextFieldGroupBase, Fieldset, Legend, FormGrid, FormRow, FormColumn } from '../../../../components';
@@ -44,7 +44,7 @@ class IdentityForm extends PureComponent {
               <Field
                 component={SelectFieldGroup}
                 name="type"
-                label={i18n._('contact.identity_form.service.label', { defaults: 'Service' })}
+                label={i18n._('contact.identity_form.service.label', null, { defaults: 'Service' })}
                 options={identityTypeOptions}
                 showLabelforSr
                 required
@@ -54,9 +54,9 @@ class IdentityForm extends PureComponent {
               <Field
                 component={TextFieldGroup}
                 name="name"
-                label={i18n._('contact.identity_form.identity.label', { defaults: 'Identity' })}
+                label={i18n._('contact.identity_form.identity.label', null, { defaults: 'Identity' })}
                 showLabelforSr
-                placeholder={i18n._('contact.identity_form.identity.placeholder', { defaults: '@username, account\'s URL...' })}
+                placeholder={i18n._('contact.identity_form.identity.placeholder', null, { defaults: '@username, account\'s URL...' })}
                 required
               />
             </FormColumn>

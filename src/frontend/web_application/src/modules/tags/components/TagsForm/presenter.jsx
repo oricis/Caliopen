@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import isequal from 'lodash.isequal';
 import { Button, Icon, DropdownMenu, VerticalMenu, VerticalMenuItem } from '../../../../components';
 import { getTagLabel } from '../../';

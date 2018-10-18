@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Trans, withI18n } from 'lingui-react';
+import { Trans, withI18n } from '@lingui/react';
 import { ContactAvatarLetter, SIZE_MEDIUM } from '../../../../modules/avatar';
 import { getCleanedTagCollection, getTagLabel } from '../../../../modules/tags';
 import { Link, TextBlock, Icon, Checkbox, Badge, PlaceholderBlock } from '../../../../components/';

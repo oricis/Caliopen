@@ -29,8 +29,8 @@ class NotificationForm extends Component {
   initTranslations() {
     const { i18n } = this.props;
     this.i18n = {
-      off: i18n._('settings.notification.message_preview.options.off', { defaults: 'Off' }),
-      always: i18n._('settings.notification.message_preview.options.always', { defaults: 'Always' }),
+      off: i18n._('settings.notification.message_preview.options.off', null, { defaults: 'Off' }),
+      always: i18n._('settings.notification.message_preview.options.always', null, { defaults: 'Always' }),
     };
   }
 
@@ -40,7 +40,7 @@ class NotificationForm extends Component {
     const messagePreviewOptions = this.getOptionsFromArray(MESSAGE_PREVIEW);
     const delayDisappearOptions = DELAY_DISAPPEAR.map(delay => ({
       value: delay,
-      label: i18n._('settings.notification.delay_disappear.options.second', { values: { 0: delay }, defaults: '{0} Seconds' }),
+      label: i18n._('settings.notification.delay_disappear.options.second', null, { values: { 0: delay }, defaults: '{0} Seconds' }),
     }));
 
     return (
@@ -51,7 +51,7 @@ class NotificationForm extends Component {
               component={CheckboxFieldGroup}
               type="checkbox"
               name="notification_enabled"
-              label={i18n._('settings.notification.enabled.label', { defaults: 'Enabled' })}
+              label={i18n._('settings.notification.enabled.label', null, { defaults: 'Enabled' })}
             />
           </FormColumn>
           <FormColumn rightSpace={false} bottomSpace >
@@ -59,14 +59,14 @@ class NotificationForm extends Component {
               component={CheckboxFieldGroup}
               type="checkbox"
               name="notification_sound_enabled"
-              label={i18n._('settings.notification.sound_enabled.label', { defaults: 'Sound enabled' })}
+              label={i18n._('settings.notification.sound_enabled.label', null, { defaults: 'Sound enabled' })}
             />
           </FormColumn>
           <FormColumn rightSpace={false} bottomSpace >
             <Field
               component={SelectFieldGroup}
               name="notification_message_preview"
-              label={i18n._('settings.notification.message_preview.label', { defaults: 'Message preview' })}
+              label={i18n._('settings.notification.message_preview.label', null, { defaults: 'Message preview' })}
               options={messagePreviewOptions}
               expanded
             />
@@ -75,7 +75,7 @@ class NotificationForm extends Component {
             <Field
               component={SelectFieldGroup}
               name="notification_delay_disappear"
-              label={i18n._('settings.notification.delay_disappear.label', { defaults: 'Display delay' })}
+              label={i18n._('settings.notification.delay_disappear.label', null, { defaults: 'Display delay' })}
               options={delayDisappearOptions}
               expanded
             />

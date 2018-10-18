@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { withSettings } from '../../modules/settings';
 import { ManageEntityTags, getTagLabel, getCleanedTagCollection } from '../../modules/tags';
 import { ContactAvatarLetter } from '../../modules/avatar';
@@ -166,7 +166,7 @@ class Contact extends Component {
     handleSubmit(ev)
       .then(contact => this.createOrUpdateAction({ contact, original }))
       .then(() => contactId && this.toggleEditMode(), () => {
-        notifyError({ message: i18n._('contact.feedback.unable_to_save', { defaults: 'Unable to save the contact' }) });
+        notifyError({ message: i18n._('contact.feedback.unable_to_save', null, { defaults: 'Unable to save the contact' }) });
       })
       .then(() => this.setState({ isSaving: false }));
   }
@@ -194,7 +194,7 @@ class Contact extends Component {
     return (
       <Modal
         isOpen={this.state.isTagModalOpen}
-        contentLabel={i18n._('tags.header.label', { defaults: 'Tags' })}
+        contentLabel={i18n._('tags.header.label', null, { defaults: 'Tags' })}
         title={title}
         onClose={this.handleCloseTags}
       >

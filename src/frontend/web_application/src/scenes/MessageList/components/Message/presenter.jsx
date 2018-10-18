@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import VisibilitySensor from 'react-visibility-sensor';
 import Moment from 'react-moment';
-import { Trans, Plural } from 'lingui-react';
+import { Trans, Plural } from '@lingui/react';
 import { MultidimensionalPi } from '../../../../modules/pi';
 import { Icon, TextBlock } from '../../../../components';
 import MessageActionsContainer from '../MessageActionsContainer';
@@ -136,7 +136,7 @@ class Message extends Component {
     } = this.props;
     const author = getAuthor(message);
     const typeTranslations = {
-      email: i18n._('message-list.message.protocol.email', { defaults: 'email' }),
+      email: i18n._('message-list.message.protocol.email', null, { defaults: 'email' }),
     };
 
     const messageType = typeTranslations[message.type];

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { Link, FileSize, TextBlock, Button, Modal, InputFileGroup, Spinner, Icon } from '../../../../components';
 import { getMaxSize } from '../../../../services/config';
 import './style.scss';
@@ -108,14 +108,14 @@ class AttachmentManager extends Component {
     return (
       <Modal
         isOpen={this.state.isImportModalOpen}
-        contentLabel={i18n._('draft.action.import_attachement', { defaults: 'Import attachement' })}
-        title={i18n._('draft.action.import_attachement', { defaults: 'Import attachement' })}
+        contentLabel={i18n._('draft.action.import_attachement', null, { defaults: 'Import attachement' })}
+        title={i18n._('draft.action.import_attachement', null, { defaults: 'Import attachement' })}
         onClose={this.handleCloseImportModal}
       >
         <InputFileGroup
           onInputChange={this.handleInputFileChange}
           errors={errors}
-          descr={i18n._('draft.attachement.form.descr', { defaults: 'Attach a file.' })}
+          descr={i18n._('draft.attachement.form.descr', null, { defaults: 'Attach a file.' })}
           maxSize={getMaxSize()}
           multiple={false} // disable multiple due to issue in api cf. #840
         />
@@ -142,7 +142,7 @@ class AttachmentManager extends Component {
                   className="m-attachement-manager__file-delete"
                   onClick={this.createHandleDeleteAttachement(attachement.temp_id)}
                   icon={this.state.isFetching[attachement.temp_id] ? <Spinner isLoading display="inline" /> : <Icon type="remove" />}
-                  aria-label={i18n._('message.compose.action.delete_attachement', { defaults: 'Delete the attachment' })}
+                  aria-label={i18n._('message.compose.action.delete_attachement', null, { defaults: 'Delete the attachment' })}
                 />
               </li>
             ))}

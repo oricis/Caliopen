@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, formValues } from 'redux-form';
-import { withI18n } from 'lingui-react';
+import { withI18n } from '@lingui/react';
 import { requestContact, updateContact, createContact, deleteContact, invalidate as invalidateContacts } from '../../store/modules/contact';
 import { withNotification } from '../../modules/userNotify';
 import { updateTagCollection, withTags } from '../../modules/tags';

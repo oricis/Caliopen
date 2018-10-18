@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withI18n } from 'lingui-react';
+import { withI18n } from '@lingui/react';
 import { Icon } from '../../../../components';
 
 @withI18n()
@@ -18,9 +18,9 @@ class PhoneDetails extends Component {
   initTranslations() {
     const { i18n } = this.props;
     this.typeTranslations = {
-      work: i18n._('contact.phone_type.work', { defaults: 'Professional' }),
-      home: i18n._('contact.phone_type.home', { defaults: 'Personal' }),
-      other: i18n._('contact.phone_type.other', { defaults: 'Other' }),
+      work: i18n._('contact.phone_type.work', null, { defaults: 'Professional' }),
+      home: i18n._('contact.phone_type.home', null, { defaults: 'Personal' }),
+      other: i18n._('contact.phone_type.other', null, { defaults: 'Other' }),
     };
   }
 

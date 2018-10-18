@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { PasswordStrength, Button, TextBlock } from '../../../../components/';
 import PasswordForm from '../PasswordForm';
 import './style.scss';

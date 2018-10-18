@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { Button, Modal, Confirm } from '../../../../components';
 import { ManageEntityTags } from '../../../../modules/tags';
 
@@ -63,7 +63,7 @@ class DraftMessageActionsContainer extends Component {
     return (
       <Modal
         isOpen={this.state.isTagModalOpen}
-        contentLabel={i18n._('tags.header.label', { defaults: 'Tags' })}
+        contentLabel={i18n._('tags.header.label', null, { defaults: 'Tags' })}
         title={title}
         onClose={this.handleCloseTags}
       >

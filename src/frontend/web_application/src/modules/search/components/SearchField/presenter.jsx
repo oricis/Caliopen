@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Trans, withI18n } from 'lingui-react';
+import { Trans, withI18n } from '@lingui/react';
 import { withRouter } from 'react-router-dom';
 import { Icon, InputText, Button } from '../../../../components/';
 import { withSearchParams } from '../../../routing';
@@ -65,7 +65,7 @@ class SearchField extends Component {
             name="term"
             onChange={this.handleInputChange}
             value={this.state.term}
-            placeholder={i18n._('header.menu.search', { defaults: 'Search' })}
+            placeholder={i18n._('header.menu.search', null, { defaults: 'Search' })}
             className="m-search-field__search-input"
           />
           <Button

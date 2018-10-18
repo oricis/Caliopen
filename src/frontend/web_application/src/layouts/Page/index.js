@@ -1,7 +1,7 @@
 // @deprecated - use Page2
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { withI18n } from 'lingui-react';
+import { withI18n } from '@lingui/react';
 import { requestUser } from '../../store/modules/user';
 import Presenter from './presenter';
 

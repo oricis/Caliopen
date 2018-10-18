@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withI18n } from 'lingui-react';
+import { withI18n } from '@lingui/react';
 import { Link, TextBlock, FileSize, Icon } from '../../../../components';
 import './style.scss';
 
