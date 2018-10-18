@@ -43,8 +43,8 @@ type (
 		IsRemoteIdentity(userId, remoteId string) bool
 		//providers
 		RetrieveProvidersList() (providers []Provider, err error)
-		RetrieveProvider(name string) (Provider, error)
-		ProviderCallback() error
+		RetrieveProvider(userID, name string) (Provider, error)
+		CreateTwitterIdentity(requestToken, verifier string) (remoteId string, err error)
 		//messages
 		GetMessagesList(filter IndexSearch) (messages []*Message, totalFound int64, err error)
 		GetMessagesRange(filter IndexSearch) (messages []*Message, totalFound int64, err error)

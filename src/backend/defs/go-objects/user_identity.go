@@ -130,7 +130,7 @@ func (ui *UserIdentity) SetDefaults() {
 	defaults := map[string]string{}
 
 	switch ui.Protocol {
-	case "imap":
+	case ImapProtocol:
 		defaults = map[string]string{
 			"lastseenuid":  "",
 			"lastsync":     "",   // RFC3339 date string
@@ -138,6 +138,12 @@ func (ui *UserIdentity) SetDefaults() {
 			"outserver":    "",   // server hostname[|port]
 			"uidvalidity":  "",   // uidvalidity to invalidate data if needed (see RFC4549#section-4.1)
 			"pollinterval": "15", // how often remote account should be polled, in minutes.
+		}
+	case TwitterProtocol:
+		defaults = map[string]string{
+			"lastseendm":  "",
+			"lastsync":     "",   // RFC3339 date string
+			"pollinterval": "2", // how often remote account should be polled, in minutes.
 		}
 	}
 
@@ -162,7 +168,7 @@ func (ui *UserIdentity) SetDefaults() {
 	// try to set DisplayName and Identifier if it is missing
 	if ui.Identifier == "" {
 		switch ui.Protocol {
-		case "imap":
+		case ImapProtocol:
 			(*ui).Identifier, _ = (*ui.Credentials)["username"]
 		}
 	}
