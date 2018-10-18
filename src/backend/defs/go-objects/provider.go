@@ -8,3 +8,9 @@ type Provider struct {
 	OauthRequestUrl  string `json:"oauth_request_url,omitempty"      mapstructure:"oauth_request_url"`
 	Protocol         string `json:"protocol"                         mapstructure:"protocol"`
 }
+
+type OauthSession struct {
+	RequestSecret string
+	RequestToken  string
+	UserId        string
+}
