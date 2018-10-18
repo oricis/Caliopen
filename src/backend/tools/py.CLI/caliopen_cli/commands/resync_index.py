@@ -57,7 +57,8 @@ def resync_index(**kwargs):
     if user.shard_id != shard_id:
         log.warn('Reallocate user index shard from {} to {}'.
                  format(user.shard_id, shard_id))
-        user.shard_id = shard_id
+        # XXX fixme. attribute should be set without using model
+        user.model.shard_id = shard_id
         user.save()
 
     setup_index(user)
@@ -67,14 +68,19 @@ def resync_index(**kwargs):
     for contact in contacts:
         log.debug('Reindex contact %r' % contact.contact_id)
         obj = ContactObject(user, contact_id=contact.contact_id)
+        obj.get_db()
+        obj.unmarshall_db()
         obj.create_index()
         cpt_contact += 1
 
     cpt_message = 0
-    messages = Message.filter(user_id=user.user_id).allow_filtering()
+    messages = Message.filter(user_id=user.user_id).timeout(None). \
+        allow_filtering()
     for message in messages:
         log.debug('Reindex message %r' % message.message_id)
         obj = MessageObject(user, message_id=message.message_id)
+        obj.get_db()
+        obj.unmarshall_db()
         obj.create_index()
         cpt_message += 1
     log.info('Sync of {0} contacts, {1} messages'.
