@@ -98,7 +98,6 @@ const configureAssets = (outputPath = 'assets/') => ({
 const configureVendorSplit = () => ({
   entry: {
     vendor: [
-      '@gandi/react-translate',
       'async-validator',
       'axios',
       'bn.js',
