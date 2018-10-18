@@ -23,8 +23,37 @@
             if (!pop || pop.closed) {
                 pop = window.open('', 'foo', 'resizable,scrollbars,status');
             }
+            /*
+                        var data = null;
 
-            fetch('http://localhost:6544/api/v2/providers/twitter').then((response) => {
+                        var xhr = new XMLHttpRequest();
+                        xhr.withCredentials = true;
+
+                        xhr.addEventListener("readystatechange", function () {
+                            if (this.readyState === this.DONE) {
+                                console.log(this.responseText);
+                            }
+                        });
+
+                        xhr.open("GET", "http://0.0.0.0:6544/api/v2/providers/twitter");
+                        xhr.setRequestHeader("x-caliopen-device-id", "6894dd9f-e40b-42f3-affd-134a2e86d6b1");
+                        xhr.setRequestHeader("x-caliopen-device-signatue", "xxxxxx");
+                        xhr.setRequestHeader("authorization", "Basic MTk5ZDJlN2QtNzEwNC00ZjA2LTk3NGQtZTllYjk2MzJlMjczOjk3YTIwODRjMjQ0MDAxMjEwM2UzZGFjOTQ5YjZiYmE5NzEzYTlhNWM=");
+
+                        xhr.send(data).then();*/
+            /*
+                        let headers = new Headers();
+                        headers.append("x-caliopen-device-id", "6894dd9f-e40b-42f3-affd-134a2e86d6b1");
+                        headers.append("x-caliopen-device-signatue", "xxxxxx");
+                        headers.append("authorization", "Basic MTk5ZDJlN2QtNzEwNC00ZjA2LTk3NGQtZTllYjk2MzJlMjczOjIxNDI0MDJmMTgyNGFlNTExYzE0ODlkMWViMmFjYWNiY2E5YzkwYzQ=");
+            */
+            fetch('http://localhost:6544/api/v2/providers/twitter', {
+                headers: {
+                    "x-caliopen-device-id": "6894dd9f-e40b-42f3-affd-134a2e86d6b1",
+                    "x-caliopen-device-signatue": "xxxxxx",
+                    "authorization": "Basic MTk5ZDJlN2QtNzEwNC00ZjA2LTk3NGQtZTllYjk2MzJlMjczOjMxNGM3YmUyOTg2N2NlYzZiM2EzN2VhNmI1NWVhMTU0OGNiZGZhNWY="
+                }
+            }).then((response) => {
                 // mock response:
                 // response.json = () => Promise.resolve({ twitter_url: 'http://twitter.com' });
 
