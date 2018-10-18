@@ -436,7 +436,7 @@ class Contact extends Component {
           <Title hr><Trans id="contact.edit_contact.title">Edit the contact</Trans></Title>
           <ContactProfileForm form={form} isNew={!contact} />
           <div>
-            <Title hr><Trans>Contact details</Trans></Title>
+            <Title hr><Trans id="contact.contact-details.title">Contact details</Trans></Title>
             <FormCollection component={(<EmailForm />)} propertyName="emails" showAdd={false} />
             <FormCollection component={(<PhoneForm />)} propertyName="phones" showAdd={false} />
             <FormCollection component={(<ImForm />)} propertyName="ims" showAdd={false} />
@@ -444,14 +444,14 @@ class Contact extends Component {
             {/* {hasBirthday && (<BirthdayForm form={form} />)} */}
             <AddFormFieldForm form={form} />
           </div>
-          <Title hr><Trans>Organization</Trans></Title>
+          <Title hr><Trans id="contact.organization">Organization</Trans></Title>
           <FormCollection
             component={(<OrgaForm />)}
             propertyName="organizations"
             addButtonLabel={<Trans id="contact.action.add-organization">Add an organization</Trans>}
           />
 
-          <Title hr><Trans>Identities</Trans></Title>
+          <Title hr><Trans id="contact.identities">Identities</Trans></Title>
           <FormCollection
             component={(<IdentityForm />)}
             propertyName="identities"

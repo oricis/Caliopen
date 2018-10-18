@@ -51,7 +51,7 @@ class AppLoader extends Component {
     return this.renderContent((
       <Fragment>
         <p><Trans id="app-loader.feedback.failure">Something went wrong. Are you offline ?</Trans></p>
-        <p><Link href="/"><Trans id="app-loader.actin.retry">Please click here to retry</Trans></Link></p>
+        <p><Link href="/"><Trans id="app-loader.action.retry">Please click here to retry</Trans></Link></p>
       </Fragment>
     ));
   }
