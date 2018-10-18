@@ -1,8 +1,10 @@
 package providers
 
 import (
+	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
 	"github.com/gin-gonic/gin"
 	swgErr "github.com/go-openapi/errors"
@@ -27,7 +29,14 @@ func GetProvidersList(ctx *gin.Context) {
 
 // GetProvider handles get …/providers/:provider_name
 func GetProvider(ctx *gin.Context) {
-	provider, err := caliopen.Facilities.RESTfacility.RetrieveProvider(ctx.Param("provider_name"))
+	userID, err := operations.NormalizeUUIDstring(ctx.GetString("user_id"))
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+	provider, err := caliopen.Facilities.RESTfacility.RetrieveProvider(userID, ctx.Param("provider_name"))
 	if err != nil {
 		var e error
 		switch err.Error() {
@@ -45,9 +54,24 @@ func GetProvider(ctx *gin.Context) {
 
 // CallbackHandler handles get …/providers/:provider_name/callback
 func CallbackHandler(ctx *gin.Context) {
-	e := swgErr.New(http.StatusNotImplemented, "not implemented")
-	http_middleware.ServeError(ctx.Writer, ctx.Request, e)
-	ctx.Abort()
-	return
-}
+	switch ctx.Param("provider_name") {
+	case "twitter":
+		token := ctx.Query("oauth_token")
+		verifier := ctx.Query("oauth_verifier")
+		remoteId, err := caliopen.Facilities.RESTfacility.CreateTwitterIdentity(token, verifier)
+		if err != nil {
+			e := swgErr.New(http.StatusInternalServerError, err.Error())
+			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+			ctx.Abort()
+			return
+		}
+		response := fmt.Sprintf(`{"identity_id":"%s"}`, remoteId)
+		ctx.Data(http.StatusOK, "application/json", []byte(response))
+	default:
+		e := swgErr.New(http.StatusNotImplemented, "not implemented")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
 
+}
