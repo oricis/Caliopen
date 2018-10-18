@@ -513,74 +513,74 @@
 		{
 			"checksumSHA1": "VJk3rOWfxEV9Ilig5lgzH1qg8Ss=",
 			"path": "github.com/keybase/go-crypto/brainpool",
-			"revision": "91acd11cb745e8e703d0306727b65cf550c0fde5",
-			"revisionTime": "2018-09-13T15:42:33Z"
+			"revision": "e696c8039bba3970bbf4f9c1cf745ee96a705656",
+			"revisionTime": "2018-10-17T16:52:31Z"
 		},
 		{
 			"checksumSHA1": "XYywPER9kpyLEjaLzDFS43CKGEM=",
 			"path": "github.com/keybase/go-crypto/cast5",
-			"revision": "91acd11cb745e8e703d0306727b65cf550c0fde5",
-			"revisionTime": "2018-09-13T15:42:33Z"
+			"revision": "e696c8039bba3970bbf4f9c1cf745ee96a705656",
+			"revisionTime": "2018-10-17T16:52:31Z"
 		},
 		{
 			"checksumSHA1": "6ZY7OPH1dlleun/jMHixi1M3SaY=",
 			"path": "github.com/keybase/go-crypto/curve25519",
-			"revision": "91acd11cb745e8e703d0306727b65cf550c0fde5",
-			"revisionTime": "2018-09-13T15:42:33Z"
+			"revision": "e696c8039bba3970bbf4f9c1cf745ee96a705656",
+			"revisionTime": "2018-10-17T16:52:31Z"
 		},
 		{
 			"checksumSHA1": "idJx0ckgd1LwSffToTmxF+bvCk8=",
 			"path": "github.com/keybase/go-crypto/ed25519",
-			"revision": "91acd11cb745e8e703d0306727b65cf550c0fde5",
-			"revisionTime": "2018-09-13T15:42:33Z"
+			"revision": "e696c8039bba3970bbf4f9c1cf745ee96a705656",
+			"revisionTime": "2018-10-17T16:52:31Z"
 		},
 		{
 			"checksumSHA1": "oFj+c+T9/0PTmvpz1Vlx1L6aI98=",
 			"path": "github.com/keybase/go-crypto/ed25519/internal/edwards25519",
-			"revision": "91acd11cb745e8e703d0306727b65cf550c0fde5",
-			"revisionTime": "2018-09-13T15:42:33Z"
+			"revision": "e696c8039bba3970bbf4f9c1cf745ee96a705656",
+			"revisionTime": "2018-10-17T16:52:31Z"
 		},
 		{
-			"checksumSHA1": "8p8GdKmPanouU+0BRDAcyR6LlgU=",
+			"checksumSHA1": "w4dpSM8ao0QPsKcOBTZpTTlJ01c=",
 			"path": "github.com/keybase/go-crypto/openpgp",
-			"revision": "91acd11cb745e8e703d0306727b65cf550c0fde5",
-			"revisionTime": "2018-09-13T15:42:33Z"
+			"revision": "e696c8039bba3970bbf4f9c1cf745ee96a705656",
+			"revisionTime": "2018-10-17T16:52:31Z"
 		},
 		{
 			"checksumSHA1": "tin/wcIHur1IM0n5f5u8nlZ/J6U=",
 			"path": "github.com/keybase/go-crypto/openpgp/armor",
-			"revision": "91acd11cb745e8e703d0306727b65cf550c0fde5",
-			"revisionTime": "2018-09-13T15:42:33Z"
+			"revision": "e696c8039bba3970bbf4f9c1cf745ee96a705656",
+			"revisionTime": "2018-10-17T16:52:31Z"
 		},
 		{
 			"checksumSHA1": "LhCQJCoB7yqxN6hSaPP7qXW2y5s=",
 			"path": "github.com/keybase/go-crypto/openpgp/ecdh",
-			"revision": "91acd11cb745e8e703d0306727b65cf550c0fde5",
-			"revisionTime": "2018-09-13T15:42:33Z"
+			"revision": "e696c8039bba3970bbf4f9c1cf745ee96a705656",
+			"revisionTime": "2018-10-17T16:52:31Z"
 		},
 		{
 			"checksumSHA1": "uxXG9IC/XF8jwwvZUbW65+x8/+M=",
 			"path": "github.com/keybase/go-crypto/openpgp/elgamal",
-			"revision": "91acd11cb745e8e703d0306727b65cf550c0fde5",
-			"revisionTime": "2018-09-13T15:42:33Z"
+			"revision": "e696c8039bba3970bbf4f9c1cf745ee96a705656",
+			"revisionTime": "2018-10-17T16:52:31Z"
 		},
 		{
 			"checksumSHA1": "ofZhU2758YZAAGSEJ8UjFMQLc+k=",
 			"path": "github.com/keybase/go-crypto/openpgp/errors",
-			"revision": "91acd11cb745e8e703d0306727b65cf550c0fde5",
-			"revisionTime": "2018-09-13T15:42:33Z"
+			"revision": "e696c8039bba3970bbf4f9c1cf745ee96a705656",
+			"revisionTime": "2018-10-17T16:52:31Z"
 		},
 		{
-			"checksumSHA1": "5VzZLQh8/NSwftBDstKDTaw8/+o=",
+			"checksumSHA1": "IG0C9zMpY0fXO6kJP0Whpe7ZJvc=",
 			"path": "github.com/keybase/go-crypto/openpgp/packet",
-			"revision": "91acd11cb745e8e703d0306727b65cf550c0fde5",
-			"revisionTime": "2018-09-13T15:42:33Z"
+			"revision": "e696c8039bba3970bbf4f9c1cf745ee96a705656",
+			"revisionTime": "2018-10-17T16:52:31Z"
 		},
 		{
 			"checksumSHA1": "BGDxg1Xtsz0DSPzdQGJLLQqfYc8=",
 			"path": "github.com/keybase/go-crypto/openpgp/s2k",
-			"revision": "91acd11cb745e8e703d0306727b65cf550c0fde5",
-			"revisionTime": "2018-09-13T15:42:33Z"
+			"revision": "e696c8039bba3970bbf4f9c1cf745ee96a705656",
+			"revisionTime": "2018-10-17T16:52:31Z"
 		},
 		{
 			"checksumSHA1": "UvboqgDDSAbGORdtr5tBpkwYR0A=",
