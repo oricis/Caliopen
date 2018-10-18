@@ -21,77 +21,25 @@ def setup_index(user):
     client = Elasticsearch(url)
 
     shard_id = user.shard_id
+    # does shard exist ?
+    if not client.indices.exists(shard_id):
+        setup_shard_index(shard_id)
+
     # Creates a versioned index with our custom analyzers, tokenizers, etc.
     m_version = Configuration('global').get('elasticsearch.mappings_version')
     if m_version == "":
         raise Exception('Invalid mapping version for shard {0}'.
                         format(shard_id))
 
-    alias_name = shard_id
-    index_name = "{0}_{1}".format(shard_id, m_version)
-
-    if client.indices.exists(index_name):
-        log.debug("Index for shard {0} already exists".format(shard_id))
-        return
-    try:
-        log.info('Creating index {0} for shard {1}'.
-                 format(index_name, shard_id))
-        client.indices.create(
-            index=index_name,
-            body={
-                "settings": {
-                    "analysis": {
-                        "analyzer": {
-                            "text_analyzer": {
-                                "type": "custom",
-                                "tokenizer": "lowercase",
-                                "filter": [
-                                    "ascii_folding"
-                                ]
-                            },
-                            "email_analyzer": {
-                                "type": "custom",
-                                "tokenizer": "email_tokenizer",
-                                "filter": [
-                                    "ascii_folding"
-                                ]
-                            }
-                        },
-                        "filter": {
-                            "ascii_folding": {
-                                "type": "asciifolding",
-                                "preserve_original": True
-                            }
-                        },
-                        "tokenizer": {
-                            "email_tokenizer": {
-                                "type": "ngram",
-                                "min_gram": 3,
-                                "max_gram": 25
-                            }
-                        }
-                    }
-                }
-            })
-    except Exception as exc:
-        log.warn("failed to create index {} : {}".format(index_name, exc))
-        return
+    index_name = shard_id
+    alias_name = user.user_id
 
     # Points an alias to the underlying user's index
     try:
         client.indices.put_alias(index=index_name, name=alias_name)
     except Exception as exc:
-        raise Exception("failed to create alias {0} : {1}".
-                        format(alias_name, exc))
-
-    # PUT mappings for each type, if any
-    for name, kls in core_registry.items():
-        if hasattr(kls, "_index_class") and \
-                hasattr(kls._model_class, 'user_id'):
-            idx_kls = kls._index_class()
-            if hasattr(idx_kls, "build_mapping"):
-                log.debug('Init index mapping for {}'.format(idx_kls))
-                idx_kls.create_mapping(index_name)
+        log.exception("failed to create alias : {0}".format(exc))
+        raise exc
 
 
 def setup_shard_index(shard):
@@ -99,9 +47,6 @@ def setup_shard_index(shard):
     url = Configuration('global').get('elasticsearch.url')
     client = Elasticsearch(url)
 
-    if client.indices.exists(shard):
-        log.debug("Index for shard {0} already exists".format(shard))
-        return
     try:
         log.info('Creating index {0}'.format(shard))
         client.indices.create(

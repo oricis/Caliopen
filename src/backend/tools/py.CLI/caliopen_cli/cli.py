@@ -93,7 +93,7 @@ def main(args=sys.argv):
     sp_resync.set_defaults(func=resync_index)
     sp_resync.add_argument('-u', dest='user_name', help='User name')
     sp_resync.add_argument('-i', dest='user_id', help='User uuid')
-    sp_resync.add_argument('--version', dest='version', help='Index version')
+    sp_resync.add_argument('--delete', dest='delete', action='store_true')
 
     sp_resync = subparsers.add_parser('resync_shard',
                                       help='Resync shard index')
