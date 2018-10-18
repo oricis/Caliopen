@@ -81,6 +81,12 @@
 			"revisionTime": "2018-07-29T20:19:44Z"
 		},
 		{
+			"checksumSHA1": "zSAENn9MzTCRqsEb4QXDZglhIbE=",
+			"path": "github.com/dghubble/oauth1",
+			"revision": "64b54f3b6f0b30d0ae18ca9f33c419203999aa9c",
+			"revisionTime": "2018-10-13T18:28:54Z"
+		},
+		{
 			"checksumSHA1": "3mj2/UJNPtEiVVw5TN+sTFi088c=",
 			"path": "github.com/dghubble/oauth1/twitter",
 			"revision": "c0a405baf29f5ed2616bc1ef6b778532c960aa5b",
