@@ -1,6 +1,5 @@
 {
-  "message.to": "",
-  "message.from": "",
+  "message.mail.details.to": "",
   "collection-field-group.action.add": "Hinzufügen",
   "confirm.action.confirm": "",
   "confirm.action.cancel": "",
@@ -268,6 +267,8 @@
   "device.action.delete": "Verwerfen",
   "devices.feedback.unverified_device": "",
   "devices.feedback.unverified_device_more": "",
+  "message.from": "",
+  "message.to": "",
   "message-list.message.action.reply": "Antworten",
   "message-list.message.action.mark_as_read": "Als gelesen markieren",
   "message-list.message.action.mark_as_unread": "Als ungelesen markieren",

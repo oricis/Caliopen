@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import VisibilitySensor from 'react-visibility-sensor';
 import withScrollTarget from '../../../../modules/scroll/hoc/scrollTarget';
 import { withPush } from '../../../../modules/routing/hoc/withPush';
+import { withSettings } from '../../../../modules/settings';
 import { getTagLabelFromName } from '../../../../modules/tags';
 import { Badge, Button, Confirm } from '../../../../components';
 import MessageAttachments from '../../../MessageList/components/MessageAttachments';
@@ -18,6 +19,7 @@ import './style.scss';
 
 @withScrollTarget()
 @withPush()
+@withSettings()
 class MailMessage extends Component {
   static propTypes = {
     message: PropTypes.shape({
@@ -33,6 +35,7 @@ class MailMessage extends Component {
     push: PropTypes.func.isRequired,
     i18n: PropTypes.shape({}).isRequired,
     tags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    settings: PropTypes.shape({}).isRequired,
   };
 
   onVisibilityChange = (isVisible) => {
@@ -80,9 +83,10 @@ class MailMessage extends Component {
     );
   };
 
+  renderRecipients = shorten => (<MessageRecipients message={message} user={user} shorten />);
   render() {
     const {
-      message, forwardRef, onOpenTags, user,
+      message, forwardRef, onOpenTags, user, settings: { default_locale: locale },
     } = this.props;
     const pi = getAveragePI(message.pi);
     const author = getAuthor(message);
@@ -94,23 +98,29 @@ class MailMessage extends Component {
             <div className="s-mail-message__details--what-who-when">
               <i className="fa fa-envelope" />&nbsp;
               <a className="s-mail-message__details-from" href="#">{author.label}</a>&nbsp;
-              <Moment fromNow locale="fr">{message.date}</Moment>
+              <Moment fromNow locale={locale}>{message.date}</Moment>
             </div>
             <div className="s-mail-message__details-to">
-              <Trans id="message.to">To:</Trans>
-              <strong>
-                <MessageRecipients message={message} user={user} shorten />
-              </strong>
+              <Trans id="message.mail.details.to">To:
+                <strong>
+                </strong>
+              </Trans>
             </div>
           </div>
           <aside className="s-mail-message__info">
             <MessagePi pi={message.pi} illustrate describe />
             <div className="s-mail-message__participants">
               <div className="s-mail-message__participants-from">
-                <span className="direction"><Trans id="message.from">From:</Trans>:</span> <a href="">{author.label}</a>
+                <Trans id="message.from">
+                  <span className="direction">From:</span> <a href="">{author.label}</a>
+                </Trans>
               </div>
               <div className="s-mail-message__participants-to">
-                <span className="direction"><Trans id="message.to">To:</Trans></span> <a href=""><MessageRecipients message={message} user={user} /></a>
+                <span className="direction">
+                  <Trans id="message.to">
+                    To:&nbsp;<a href=""><MessageRecipients message={message} user={user} /></a>
+                  </Trans>
+                </span>
               </div>
             </div>
             {this.renderTags(message)}
