@@ -22,14 +22,12 @@ backend -> Gmail: validate token info
 Gmail -> backend: OK with authorization code
 backend -> user: ""200 OK"" Thanks for authorizing Caliopen !\nYour request is being processed.\nYou can safely close this popup.
 deactivate user
-client o-> backend: popup end detection :\n""GET api/v2/identities/remotes?pending=true""
 backend -> Gmail: ""GET"" with authorization secrets
 Gmail -> backend: token + secret for user
 deactivate backend
 backend --> backend: create remote identity with token credentials
-backend -> client: ""201 location: /identities/remote/<remote_id>""
-client -> backend: ""GET /identities/remote/<remote_id>""
-backend -> client: remote id
+client -> backend: ""GET /identities/remotes""
+backend -> client: []remote identities with newly created included if ok
 hnote right user: UI : « Success ! »
 client --> user: display identity created
 end
@@ -51,14 +49,12 @@ backend -> Twitter: validate token info
 Twitter -> backend: OK with authorization code
 backend -> user: ""200 OK"" Thanks for authorizing Caliopen !\nYour request is being processed.\nYou can safely close this popup.
 deactivate user
-client o-> backend: popup end detection :\n""GET api/v2/identities/remotes?pending=true""
 backend -> Twitter: ""GET"" with authorization secrets
 Twitter -> backend: token + secret for user
 deactivate backend
 backend --> backend: create remote identity with token credentials
-backend -> client: ""201 location: /identities/remote/<remote_id>""
-client -> backend: ""GET /identities/remote/<remote_id>""
-backend -> client: remote id
+client -> backend: ""GET /identities/remotes""
+backend -> client: []remote identities with newly created included if ok
 hnote right user: UI : « Success ! »
 client --> user: display identity created
 end
