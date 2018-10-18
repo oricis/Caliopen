@@ -36,16 +36,16 @@ func GetProvider(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	provider, err := caliopen.Facilities.RESTfacility.RetrieveProvider(userID, ctx.Param("provider_name"))
-	if err != nil {
-		var e error
-		switch err.Error() {
-		case "not found":
-			e = swgErr.New(http.StatusNotFound, "not found")
+	provider, errC := caliopen.Facilities.RESTfacility.GetProviderOauthFor(userID, ctx.Param("provider_name"))
+	if errC != nil {
+		returnedErr := new(swgErr.CompositeError)
+		switch errC.Code() {
+		case NotFoundCaliopenErr:
+			returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusNotFound, "RESTfacility returned error"), errC, errC.Cause())
 		default:
-			e = swgErr.New(http.StatusInternalServerError, err.Error())
+			returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusFailedDependency, "RESTfacility returned error"), errC, errC.Cause())
 		}
-		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
 		ctx.Abort()
 		return
 	}
@@ -58,10 +58,11 @@ func CallbackHandler(ctx *gin.Context) {
 	case "twitter":
 		token := ctx.Query("oauth_token")
 		verifier := ctx.Query("oauth_verifier")
-		remoteId, err := caliopen.Facilities.RESTfacility.CreateTwitterIdentity(token, verifier)
-		if err != nil {
-			e := swgErr.New(http.StatusInternalServerError, err.Error())
-			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		remoteId, errC := caliopen.Facilities.RESTfacility.CreateTwitterIdentity(token, verifier)
+		if errC != nil {
+			returnedErr := new(swgErr.CompositeError)
+			returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusFailedDependency, "RESTfacility returned error"), errC, errC.Cause())
+			http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
 			ctx.Abort()
 			return
 		}

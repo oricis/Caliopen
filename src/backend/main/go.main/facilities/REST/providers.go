@@ -5,7 +5,6 @@ import (
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/go-twitter/twitter"
-	"github.com/Sirupsen/logrus"
 	"github.com/dghubble/oauth1"
 	twitterOAuth1 "github.com/dghubble/oauth1/twitter"
 	"github.com/satori/go.uuid"
@@ -25,16 +24,18 @@ func (rest *RESTfacility) RetrieveProvidersList() (providers []Provider, err err
 	return providers, errors.New("providers slice is nil")
 }
 
-// RetrieveProvider returns provider's params required for client to initiate an Oauth request
-// In case of Twitter, auth request url is requested from twitter API endpoint on the fly.
+// GetProviderOauthFor returns provider's params required for authenticated user to initiate an Oauth request
+// In case of Twitter, auth request url is fetched from twitter API endpoint on the fly.
 // For all requests, an Oauth session cache is initialized for requesting user, making use of cache facility.
-func (rest *RESTfacility) RetrieveProvider(userId, name string) (Provider, error) {
-	if provider, ok := rest.providers[name]; ok {
+func (rest *RESTfacility) GetProviderOauthFor(userId, name string) (provider Provider, err CaliopenError) {
+	provider, found := rest.providers[name]
+	if found {
 		switch provider.Name {
 		case "twitter":
-			requestToken, requestSecret, err := setTwitterAuthRequestUrl(&provider, rest.hostname)
-			if err != nil {
-				return provider, fmt.Errorf("failed to retrieve Twitter auth request url with error : %s", err)
+			requestToken, requestSecret, e := setTwitterAuthRequestUrl(&provider, rest.hostname)
+			if e != nil {
+				err = WrapCaliopenErrf(e, FailDependencyCaliopenErr, "[GetProviderOauthFor] failed to set twitter aut request")
+				return
 			}
 			rest.Cache.SetOauthSession(requestToken, &OauthSession{
 				RequestSecret: requestSecret,
@@ -42,27 +43,30 @@ func (rest *RESTfacility) RetrieveProvider(userId, name string) (Provider, error
 				UserId:        userId,
 			})
 		default:
-			return Provider{}, errors.New("not implemented")
+			err = NewCaliopenErr(NotImplementedCaliopenErr, "not implemented")
+			return
 		}
-		return provider, nil
+		return
 	}
-	return Provider{}, errors.New("not found")
+	err = NewCaliopenErr(NotFoundCaliopenErr, "not found")
+	return
 }
 
-func (rest *RESTfacility) CreateTwitterIdentity(requestToken, verifier string) (remoteId string, err error) {
+func (rest *RESTfacility) CreateTwitterIdentity(requestToken, verifier string) (remoteId string, err CaliopenError) {
 	provider := rest.providers[TwitterProtocol]
 	conf := &oauth1.Config{
 		ConsumerKey:    provider.ConsumerKey,
 		ConsumerSecret: provider.ConsumerSecret,
 		Endpoint:       twitterOAuth1.AuthorizeEndpoint,
 	}
-	oauthCache, err := rest.Cache.GetOauthSession(requestToken)
-	if err != nil {
-		//TODO
+	oauthCache, e := rest.Cache.GetOauthSession(requestToken)
+	if e != nil {
+		err = WrapCaliopenErrf(e, NotFoundCaliopenErr, "[CreateTwitterIdentity] failed to retrieve Oauth session in cache for request token %s", requestToken)
+		return
 	}
-	accessToken, accessSecret, err := conf.AccessToken(requestToken, oauthCache.RequestSecret, verifier)
-	if err != nil {
-		//TODO
+	accessToken, accessSecret, e := conf.AccessToken(requestToken, oauthCache.RequestSecret, verifier)
+	if e != nil {
+		err = WrapCaliopenErrf(e, FailDependencyCaliopenErr, "[CreateTwitterIdentity] AccessToken request failed")
 	}
 
 	// retrieve twitter profile from Twitter api
@@ -74,48 +78,67 @@ func (rest *RESTfacility) CreateTwitterIdentity(requestToken, verifier string) (
 		SkipStatus:      twitter.Bool(true),
 		IncludeEmail:    twitter.Bool(false),
 	}
-	twitterUser, resp, err := twitterClient.Accounts.VerifyCredentials(accountVerifyParams)
-	if err != nil || resp.StatusCode != http.StatusOK {
-		return "", errors.New("twitter: unable to get Twitter User")
+	twitterUser, resp, e := twitterClient.Accounts.VerifyCredentials(accountVerifyParams)
+	if e != nil || resp.StatusCode != http.StatusOK ||
+		twitterUser == nil || twitterUser.ID == 0 || twitterUser.IDStr == "" {
+		err = NewCaliopenErr(FailDependencyCaliopenErr, "[CreateTwitterIdentity] twitter client failed to get Twitter User")
+		return
 	}
-	if twitterUser == nil || twitterUser.ID == 0 || twitterUser.IDStr == "" {
-		return "", errors.New("twitter: unable to get Twitter User")
-	}
+
 	// build user identity
 	//1.check if this user_identity already exists
-	foundIdentities, err := rest.store.LookupIdentityByIdentifier(twitterUser.ScreenName, TwitterProtocol)
-	if err != nil {
-		logrus.Warn(err)
-		//TODO
-	}
-	if len(foundIdentities) > 0 {
-		logrus.Warn("identity already exist")
-		//TODO: update current
-		return "", fmt.Errorf("twitter account alreadry registred in Caliopen. CASE NOT (YET) IMPLEMENTED")
-	}
-	userIdentity := new(UserIdentity)
-	userID := UUID(uuid.FromStringOrNil(oauthCache.UserId))
-	userIdentity.MarshallNew(userID)
-	userIdentity.Protocol = TwitterProtocol
-	userIdentity.Type = RemoteIdentity
-	userIdentity.DisplayName = twitterUser.Name
-	userIdentity.Identifier = twitterUser.ScreenName
-	userIdentity.Credentials = &Credentials{
-		"token":  accessToken,
-		"secret": accessSecret,
-	}
-
-	// save identity
-	logrus.Infof("%+v", *userIdentity)
-	e := rest.CreateUserIdentity(userIdentity)
+	foundIdentities, e := rest.store.LookupIdentityByIdentifier(twitterUser.ScreenName, TwitterProtocol)
 	if e != nil {
-		logrus.Warn(e)
-		//TODO
+		err = WrapCaliopenErrf(e, DbCaliopenErr, "[CreateTwitterIdentity] failed to lookup in store if identity already exists. Aborting")
+		return
 	}
-	return userIdentity.Id.String(), nil
+	foundCount := len(foundIdentities)
+	switch foundCount {
+	case 0:
+		userIdentity := new(UserIdentity)
+		userID := UUID(uuid.FromStringOrNil(oauthCache.UserId))
+		userIdentity.MarshallNew(userID)
+		userIdentity.Protocol = TwitterProtocol
+		userIdentity.Type = RemoteIdentity
+		userIdentity.DisplayName = twitterUser.Name
+		userIdentity.Identifier = twitterUser.ScreenName
+		userIdentity.Credentials = &Credentials{
+			"token":  accessToken,
+			"secret": accessSecret,
+		}
+
+		// save identity
+		e := rest.CreateUserIdentity(userIdentity)
+		if e != nil {
+			err = WrapCaliopenErr(e, FailDependencyCaliopenErr, "[CreateTwitterIdentity] failed to create user identity")
+			return
+		}
+		remoteId = userIdentity.Id.String()
+		return
+	case 1:
+		// this twitter identity already exists, checking if it belongs to this user and, if ok, just updating Twitter's name
+		storedIdentity, e := rest.RetrieveUserIdentity(foundIdentities[0][0], foundIdentities[0][1], false)
+		if e != nil || storedIdentity == nil {
+			err = WrapCaliopenErrf(e, DbCaliopenErr, "[CreateTwitterIdentity] failed to retrieve user identity found for twitter account %s", twitterUser.ScreenName)
+			return
+		}
+		modifiedFields := map[string]interface{}{
+			"DisplayName": twitterUser.Name,
+		}
+		storedIdentity.DisplayName = twitterUser.Name
+		if e := rest.store.UpdateUserIdentity(storedIdentity, modifiedFields); e != nil {
+			err = WrapCaliopenErrf(e, FailDependencyCaliopenErr, "[CreateTwitterIdentity] failed to update user identity in db")
+			return
+		}
+		remoteId = storedIdentity.Id.String()
+		return
+	default:
+		err = NewCaliopenErrf(FailDependencyCaliopenErr, "[CreateTwitterIdentity] inconsistency in store : more than one identity found with twitter screen name <%s>", twitterUser.ScreenName)
+		return
+	}
 }
 
-func setTwitterAuthRequestUrl(provider *Provider, hostname string) (requestToken, requestSecret string, err error) {
+func setTwitterAuthRequestUrl(provider *Provider, hostname string) (requestToken, requestSecret string, err CaliopenError) {
 
 	provider.OauthCallbackUri = fmt.Sprintf(CALLBACK_BASE_URI, "twitter")
 
@@ -126,13 +149,15 @@ func setTwitterAuthRequestUrl(provider *Provider, hostname string) (requestToken
 		CallbackURL:    "http://" + hostname + provider.OauthCallbackUri,
 		Endpoint:       twitterOAuth1.AuthorizeEndpoint,
 	}
-	requestToken, requestSecret, err = conf.RequestToken()
-	if err != nil {
-		//TODO
+	requestToken, requestSecret, e := conf.RequestToken()
+	if e != nil {
+		err = WrapCaliopenErrf(e, FailDependencyCaliopenErr, "[setTwitterAuthRequestUrl] failed with RequestToken()")
+		return
 	}
-	authUrl, err := conf.AuthorizationURL(requestToken)
-	if err != nil {
-		//TODO
+	authUrl, e := conf.AuthorizationURL(requestToken)
+	if e != nil {
+		err = WrapCaliopenErrf(e, FailDependencyCaliopenErr, "[setTwitterAuthRequestUrl] failed with AuthorizationURL()")
+		return
 	}
 	provider.OauthRequestUrl = authUrl.String()
 	return
