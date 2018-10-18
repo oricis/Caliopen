@@ -7,7 +7,7 @@ export const withAuthenticatedProps = () => (C) => {
     renderComponent({
       settings, isSettingsFetching, user, isUserFetching,
     }) {
-      const isFetching = isSettingsFetching || isUserFetching || !user || !settings;
+      const isFetching = isUserFetching || isSettingsFetching;
 
       return (
         <C settings={settings} user={user} isFetching={isFetching} {...this.props} />
