@@ -1,6 +1,6 @@
 {
-  "message.participants.me": "",
-  "messages.participants.and_x_others": "",
+  "message.to": "",
+  "message.from": "",
   "collection-field-group.action.add": "Hinzufügen",
   "confirm.action.confirm": "",
   "confirm.action.cancel": "",
@@ -274,6 +274,8 @@
   "message.pi.comportment": "",
   "message.pi.context": "",
   "message.pi.technic": "",
+  "message.participants.me": "",
+  "messages.participants.and_x_others": "",
   "discussion.action.label": "Whole discussion",
   "discussion.action.reply": "Reply",
   "password.forgot-form.title": "Kennwort vergessen",

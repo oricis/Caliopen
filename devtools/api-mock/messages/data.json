@@ -21,7 +21,7 @@
 	}, {
 		"address": "john@caliopen.local",
 		"contact_ids": ["c-john-01"],
-		"label": "Jaune john",
+		"label": "Jaune",
 		"protocol": "email",
 		"type": "From"
 	}, {
@@ -61,7 +61,7 @@
 	}, {
 		"address": "john@caliopen.local",
 		"contact_ids": ["c-john-01"],
-		"label": "Jaune john",
+		"label": "Jaune",
 		"protocol": "email",
 		"type": "Cc"
 	}, {
@@ -96,7 +96,7 @@
 	"participants": [{
 		"address": "john@caliopen.local",
 		"contact_ids": ["c-john-01"],
-		"label": "foo",
+		"label": "Jaune",
 		"protocol": "email",
 		"type": "To"
 	}, {
@@ -136,7 +136,7 @@
 	"participants": [{
 		"address": "john@caliopen.local",
 		"contact_ids": ["c-john-01"],
-		"label": "foo",
+		"label": "Jaune",
 		"protocol": "email",
 		"type": "To"
 	}, {
@@ -169,7 +169,7 @@
 	"participants": [{
 		"address": "john@caliopen.local",
 		"contact_ids": ["c-john-01"],
-		"label": "foo",
+		"label": "Jaune",
 		"protocol": "email",
 		"type": "From"
 	}, {
@@ -202,7 +202,7 @@
 	"participants": [{
 		"address": "john@caliopen.local",
 		"contact_ids": ["c-john-01"],
-		"label": "foo",
+		"label": "Jaune",
 		"protocol": "email",
 		"type": "To"
 	}, {
@@ -235,7 +235,7 @@
 	"participants": [{
 		"address": "john@caliopen.local",
 		"contact_ids": ["c-john-01"],
-		"label": "foo",
+		"label": "Jaune",
 		"protocol": "email",
 		"type": "From"
 	}, {
@@ -338,7 +338,7 @@
             "contact_ids": [
                 "c-john-01"
             ],
-            "label": "foo",
+            "label": "Jaune",
             "protocol": "email",
             "type": "To"
         },
@@ -392,7 +392,7 @@
             "contact_ids": [
                 "c-john-01"
             ],
-            "label": "foo",
+            "label": "Jaune",
             "protocol": "email",
             "type": "To"
         },
@@ -446,7 +446,7 @@
             "contact_ids": [
                 "c-john-01"
             ],
-            "label": "foo",
+            "label": "Jaune",
             "protocol": "email",
             "type": "To"
         },
@@ -500,7 +500,7 @@
             "contact_ids": [
                 "c-john-01"
             ],
-            "label": "foo",
+            "label": "Jaune",
             "protocol": "email",
             "type": "To"
         },
@@ -581,7 +581,7 @@
             "contact_ids": [
                 "c-john-01"
             ],
-            "label": "foo",
+            "label": "Jaune",
             "protocol": "email",
             "type": "To"
         },
@@ -662,7 +662,7 @@
             "contact_ids": [
                 "c-john-01"
             ],
-            "label": "foo",
+            "label": "Jaune",
             "protocol": "email",
             "type": "To"
         },
@@ -743,7 +743,7 @@
             "contact_ids": [
                 "c-john-01"
             ],
-            "label": "foo",
+            "label": "Jaune",
             "protocol": "email",
             "type": "To"
         },
@@ -824,7 +824,7 @@
             "contact_ids": [
                 "c-john-01"
             ],
-            "label": "foo",
+            "label": "Jaune",
             "protocol": "email",
             "type": "To"
         },
@@ -905,7 +905,7 @@
             "contact_ids": [
                 "c-john-01"
             ],
-            "label": "foo",
+            "label": "Jaune",
             "protocol": "email",
             "type": "To"
         },
@@ -986,7 +986,7 @@
             "contact_ids": [
                 "c-john-01"
             ],
-            "label": "foo",
+            "label": "Jaune",
             "protocol": "email",
             "type": "To"
         },
@@ -1067,7 +1067,7 @@
             "contact_ids": [
                 "c-john-01"
             ],
-            "label": "foo",
+            "label": "Jaune",
             "protocol": "email",
             "type": "To"
         },
