@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { Link, Button, Spinner, Icon, Dropdown, withDropdownControl } from '../../../../components';
 import { ContactAvatarLetter } from '../../../../modules/avatar';
 import DiscussionDraft, { TopRow, BodyRow, BottomRow } from '../DiscussionDraft';
@@ -79,7 +79,7 @@ class ReplyForm extends Component {
   renderDraftType() {
     const { i18n } = this.props;
     const typeTranslations = {
-      email: i18n._('reply-form.protocol.email', { defaults: 'email' }),
+      email: i18n._('reply-form.protocol.email', null, { defaults: 'email' }),
     };
     const draftType = typeTranslations[this.state.draft.type];
 

@@ -1,5 +1,5 @@
 import { compose } from 'redux';
-import { withI18n } from 'lingui-react';
+import { withI18n } from '@lingui/react';
 import { withSettings } from '../../modules/settings';
 import { withDevice } from '../../modules/device';
 import Presenter from './presenter';

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { Spinner, Link, Label, Subtitle, PasswordStrength, FieldErrors, TextBlock, Modal, Button, TextFieldGroup, CheckboxFieldGroup, FormGrid, FormRow, FormColumn } from '../../../../components/';
 import './style.scss';
 
@@ -124,8 +124,8 @@ class SignupForm extends Component {
       <Modal
         className="s-signup__modal"
         isOpen={this.state.isModalOpen}
-        contentLabel={i18n._('signup.privacy.modal.label', { defaults: 'About Piwik' })}
-        title={i18n._('signup.privacy.modal.label', { defaults: 'About Piwik' })}
+        contentLabel={i18n._('signup.privacy.modal.label', null, { defaults: 'About Piwik' })}
+        title={i18n._('signup.privacy.modal.label', null, { defaults: 'About Piwik' })}
         onClose={this.handleCloseModal}
       >
         <p>
@@ -189,8 +189,8 @@ class SignupForm extends Component {
                   id="signup_username"
                   name="username"
                   theme="contrasted"
-                  label={i18n._('signup.form.username.label', { defaults: 'Username' })}
-                  placeholder={i18n._('signup.form.username.placeholder', { defaults: 'username' })}
+                  label={i18n._('signup.form.username.label', null, { defaults: 'Username' })}
+                  placeholder={i18n._('signup.form.username.placeholder', null, { defaults: 'username' })}
                   value={this.state.formValues.username}
                   errors={errors.username}
                   onChange={this.handleInputChange}
@@ -207,8 +207,8 @@ class SignupForm extends Component {
                   id="signup_password"
                   theme="contrasted"
                   name="password"
-                  label={i18n._('signup.form.password.label', { defaults: 'Password' })}
-                  placeholder={i18n._('signup.form.password.placeholder', { defaults: 'password' })}
+                  label={i18n._('signup.form.password.label', null, { defaults: 'Password' })}
+                  placeholder={i18n._('signup.form.password.placeholder', null, { defaults: 'password' })}
                   type="password"
                   value={this.state.formValues.password}
                   errors={errors.password}
@@ -229,10 +229,13 @@ class SignupForm extends Component {
                   theme="contrasted"
                   name="recovery_email"
                   // Alpha: label "recovery email" replaced by "invitation email"
-        // label={i18n._('signup.form.recovery_email.label', { defaults: 'Backup email address' })}
-        // placeholder={i18n._('signup.form.recovery_email.placeholder', { defaults: '' })}
-                  label={i18n._('signup.form.invitation_email.label', { defaults: 'Invitation email:' })}
-                  placeholder={i18n._('signup.form.invitation_email.placeholder', { defaults: 'example@domain.tld' })}
+                  // label={
+                    // i18n._('signup.form.recovery_email.label',
+                    //  null, { defaults: 'Backup email address' })
+                    // }
+        // placeholder={i18n._('signup.form.recovery_email.placeholder', null, { defaults: '' })}
+                  label={i18n._('signup.form.invitation_email.label', null, { defaults: 'Invitation email:' })}
+                  placeholder={i18n._('signup.form.invitation_email.placeholder', null, { defaults: 'example@domain.tld' })}
                   value={this.state.formValues.recovery_email}
                   errors={errors.recovery_email}
                   onChange={this.handleInputChange}
@@ -249,7 +252,8 @@ class SignupForm extends Component {
                   <CheckboxFieldGroup
                     id="signup_tos"
                     className="s-signup__tos-checkbox"
-              label={i18n._('signup.form.tos.label', { defaults: 'I agree Terms and conditions' })}
+              label={i18n._('signup.form.tos.label',
+                null, { defaults: 'I agree Terms and conditions' })}
                     name="tos"
                     checked={this.state.formValues.tos}
                     errors={errors.tos}
@@ -276,7 +280,7 @@ class SignupForm extends Component {
                 <CheckboxFieldGroup
                   id="signup_privacy"
                   className="s-signup__privacy-checkbox"
-                  label={i18n._('signup.form.privacy.checkbox.label', { defaults: 'I understand and agree' })}
+                  label={i18n._('signup.form.privacy.checkbox.label', null, { defaults: 'I understand and agree' })}
                   name="privacy"
                   checked={this.state.formValues.privacy}
                   errors={errors.privacy}

@@ -17,10 +17,10 @@ class TimelineFilter extends Component {
     const { i18n } = this.props;
 
     this.translations = {
-      [TIMELINE_FILTER_ALL]: i18n._('timeline-filter.options.all', { defaults: 'All' }),
-      [TIMELINE_FILTER_RECEIVED]: i18n._('timeline-filter.options.received', { defaults: 'Received' }),
-      [TIMELINE_FILTER_SENT]: i18n._('timeline-filter.options.sent', { defaults: 'Sent' }),
-      [TIMELINE_FILTER_DRAFT]: i18n._('timeline-filter.options.draft', { defaults: 'Drafts' }),
+      [TIMELINE_FILTER_ALL]: i18n._('timeline-filter.options.all', null, { defaults: 'All' }),
+      [TIMELINE_FILTER_RECEIVED]: i18n._('timeline-filter.options.received', null, { defaults: 'Received' }),
+      [TIMELINE_FILTER_SENT]: i18n._('timeline-filter.options.sent', null, { defaults: 'Sent' }),
+      [TIMELINE_FILTER_DRAFT]: i18n._('timeline-filter.options.draft', null, { defaults: 'Drafts' }),
     };
   }
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { usernameNormalizer } from '../../../../modules/user';
 import { Link, Spinner, FieldErrors, TextFieldGroup, Button, FormGrid, FormRow, FormColumn } from '../../../../components/';
 
@@ -107,8 +107,8 @@ class SigninForm extends Component {
                 <TextFieldGroup
                   id="signin_username"
                   theme="contrasted"
-                  label={i18n._('signin.form.username.label', { defaults: 'Username' })}
-                  placeholder={i18n._('signin.form.username.placeholder', { defaults: 'username' })}
+                  label={i18n._('signin.form.username.label', null, { defaults: 'Username' })}
+                  placeholder={i18n._('signin.form.username.placeholder', null, { defaults: 'username' })}
                   name="username"
                   value={this.state.username}
                   errors={errors.username}
@@ -120,8 +120,8 @@ class SigninForm extends Component {
                 <TextFieldGroup
                   id="signin_password"
                   theme="contrasted"
-                  label={i18n._('signin.form.password.label', { defaults: 'Password' })}
-                  placeholder={i18n._('signin.form.password.placeholder', { defaults: 'password' })}
+                  label={i18n._('signin.form.password.label', null, { defaults: 'Password' })}
+                  placeholder={i18n._('signin.form.password.placeholder', null, { defaults: 'password' })}
                   name="password"
                   type="password"
                   value={this.state.password}

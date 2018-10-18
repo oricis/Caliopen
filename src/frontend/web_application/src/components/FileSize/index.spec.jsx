@@ -1,4 +1,4 @@
-jest.unmock('lingui-react');
+jest.unmock('@lingui/react');
 
 import React from 'react';
 import { shallow } from 'enzyme';

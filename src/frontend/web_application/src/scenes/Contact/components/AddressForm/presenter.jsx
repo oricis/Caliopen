@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { CountryDropdown as CountryDropdownBase, RegionDropdown as RegionDropdownBase } from 'react-country-region-selector';
 import { Field } from 'redux-form';
 import renderReduxField from '../../../../services/renderReduxField';
@@ -33,9 +33,9 @@ class AddressForm extends PureComponent {
   initTranslations() {
     const { i18n } = this.props;
     this.addressTypes = {
-      work: i18n._('contact.address_type.work', { defaults: 'Professional' }),
-      home: i18n._('contact.address_type.home', { defaults: 'Personal' }),
-      other: i18n._('contact.address_type.other', { defaults: 'Other' }),
+      work: i18n._('contact.address_type.work', null, { defaults: 'Professional' }),
+      home: i18n._('contact.address_type.home', null, { defaults: 'Personal' }),
+      other: i18n._('contact.address_type.other', null, { defaults: 'Other' }),
     };
   }
 
@@ -65,8 +65,8 @@ class AddressForm extends PureComponent {
               <Field
                 component={TextFieldGroup}
                 name="street"
-                label={i18n._('contact.address_form.street.label', { defaults: 'Street' })}
-                placeholder={i18n._('contact.address_form.street.label', { defaults: 'Street' })}
+                label={i18n._('contact.address_form.street.label', null, { defaults: 'Street' })}
+                placeholder={i18n._('contact.address_form.street.label', null, { defaults: 'Street' })}
                 showLabelforSr
               />
             </FormColumn>
@@ -76,8 +76,8 @@ class AddressForm extends PureComponent {
               <Field
                 component={TextFieldGroup}
                 name="postal_code"
-                label={i18n._('contact.address_form.postal_code.label', { defaults: 'Postal Code' })}
-                placeholder={i18n._('contact.address_form.postal_code.label', { defaults: 'Postal Code' })}
+                label={i18n._('contact.address_form.postal_code.label', null, { defaults: 'Postal Code' })}
+                placeholder={i18n._('contact.address_form.postal_code.label', null, { defaults: 'Postal Code' })}
                 showLabelforSr
               />
             </FormColumn>
@@ -85,8 +85,8 @@ class AddressForm extends PureComponent {
               <Field
                 component={TextFieldGroup}
                 name="city"
-                label={i18n._('contact.address_form.city.label', { defaults: 'City' })}
-                placeholder={i18n._('contact.address_form.city.label', { defaults: 'City' })}
+                label={i18n._('contact.address_form.city.label', null, { defaults: 'City' })}
+                placeholder={i18n._('contact.address_form.city.label', null, { defaults: 'City' })}
                 showLabelforSr
               />
             </FormColumn>
@@ -104,7 +104,7 @@ class AddressForm extends PureComponent {
                 id="contact-adress-country"
                 name="country"
                 classes="m-address-form__select"
-                defaultOptionLabel={i18n._('contact.address_form.select_country', { defaults: 'Country' })}
+                defaultOptionLabel={i18n._('contact.address_form.select_country', null, { defaults: 'Country' })}
               />
             </FormColumn>
             <FormColumn size="medium" bottomSpace>
@@ -119,7 +119,7 @@ class AddressForm extends PureComponent {
                 id="contact-adress-region"
                 name="region"
                 classes="m-address-form__select"
-                defaultOptionLabel={i18n._('contact.address_form.select_region', { defaults: 'Region' })}
+                defaultOptionLabel={i18n._('contact.address_form.select_region', null, { defaults: 'Region' })}
                 country={country}
               />
             </FormColumn>
@@ -127,7 +127,7 @@ class AddressForm extends PureComponent {
               <Field
                 component={SelectFieldGroup}
                 name="type"
-                label={i18n._('contact.address_form.type.label', { defaults: 'Type' })}
+                label={i18n._('contact.address_form.type.label', null, { defaults: 'Type' })}
                 options={addressTypeOptions}
                 showLabelforSr
               />

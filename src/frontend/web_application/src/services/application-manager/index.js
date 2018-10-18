@@ -1,4 +1,4 @@
-import { i18nMark } from 'lingui-react';
+import { i18nMark } from '@lingui/react';
 import { requestMessages } from '../../store/modules/message';
 import { requestContacts } from '../../store/modules/contact';
 
@@ -18,8 +18,8 @@ const APPLICATIONS = {
 };
 
 export const getLabels = i18n => ({
-  discussions: i18n._('header.menu.discussions', { defaults: 'Discussions' }),
-  contacts: i18n._('header.menu.contacts', { defaults: 'Contacts' }),
+  discussions: i18n._('header.menu.discussions', null, { defaults: 'Discussions' }),
+  contacts: i18n._('header.menu.contacts', null, { defaults: 'Contacts' }),
 });
 
 export const getInfosFromName = name => ({

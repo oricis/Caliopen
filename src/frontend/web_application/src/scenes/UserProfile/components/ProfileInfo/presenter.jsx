@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import classnames from 'classnames';
 import { formatName } from '../../../../services/contact';
 import { ContactAvatarLetter } from '../../../../modules/avatar';

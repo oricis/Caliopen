@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withI18n } from 'lingui-react';
+import { withI18n } from '@lingui/react';
 import classnames from 'classnames';
 import { WithTags, getTagLabel } from '../../../../modules/tags';
 import { withTagSearched } from '../../hoc/withTagSearched';
@@ -47,7 +47,7 @@ class TagList extends Component {
         <NavItem>
           {this.renderItem({
             tagName: '',
-            label: i18n._('tag_list.all_contacts', { defaults: 'All contacts' }),
+            label: i18n._('tag_list.all_contacts', null, { defaults: 'All contacts' }),
           })}
         </NavItem>
         <WithTags render={userTags => this.sortTags(i18n, userTags).map(tag => (

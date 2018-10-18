@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { Icon, Button } from '../../../../components/';
 import { notify, requestPermission, isSupported, PERMISSION_DENIED, PERMISSION_GRANTED } from '../../../../services/browser-notification';
 import './style.scss';
@@ -27,7 +27,7 @@ class DesktopNotificationSettings extends Component {
     const { i18n } = this.props;
 
     return notify({
-      message: i18n._('settings.desktop_notification.feedback.enabled', { defaults: 'Desktop notifications are enabled' }),
+      message: i18n._('settings.desktop_notification.feedback.enabled', null, { defaults: 'Desktop notifications are enabled' }),
     });
   }
 

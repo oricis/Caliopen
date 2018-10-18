@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import StickyNavBar from '../../layouts/Page/components/Navigation/components/StickyNavBar';
 import { MessageNotifications } from '../../modules/notification';
 import { Button, InfiniteScroll, Spinner } from '../../components';

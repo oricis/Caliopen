@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Trans, withI18n } from 'lingui-react';
+import { Trans, withI18n } from '@lingui/react';
 import { ManageEntityTags } from '../../../../modules/tags';
 import { Modal } from '../../../../components';
 import InstantMessage from '../InstantMessage';
@@ -79,7 +79,7 @@ class Message extends Component {
     return (
       <Modal
         isOpen={this.state.isTagModalOpen}
-        contentLabel={i18n._('tags.header.label', { defaults: 'Tags' })}
+        contentLabel={i18n._('tags.header.label', null, { defaults: 'Tags' })}
         title={title}
         onClose={this.handleCloseTags}
       >

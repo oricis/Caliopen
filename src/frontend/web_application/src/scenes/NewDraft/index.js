@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { withI18n } from 'lingui-react';
+import { withI18n } from '@lingui/react';
 import { clearDraft, syncDraft } from '../../store/modules/draft-message';
 import { newDraft, saveDraft, sendDraft } from '../../modules/draftMessage';
 import { uploadDraftAttachments, deleteDraftAttachment } from '../../modules/file';

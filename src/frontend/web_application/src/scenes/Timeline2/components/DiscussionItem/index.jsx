@@ -1,8 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
+<<<<<<< Updated upstream
 import { withI18n } from 'lingui-react';
 import classnames from 'classnames';
+=======
+import { withI18n } from '@lingui/react';
+>>>>>>> Stashed changes
 import { Badge, Icon, Link } from '../../../../components';
 import ParticipantsIconLetter from '../../../../components/ParticipantsIconLetter';
 import { getAveragePI, getPiClass } from '../../../../modules/pi';
@@ -94,7 +98,7 @@ class DiscussionItem extends PureComponent {
         {/*
         <div className="s-discussion-item__select">
           <Checkbox
-            label={i18n._('message-list.action.select_single_discussion',
+            label={i18n._('message-list.action.select_single_discussion', null,
               { defaults: 'Select/deselect this discussion' })}
             onChange={this.onCheckboxChange}
             id={discussionId}

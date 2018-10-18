@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { matchPath } from 'react-router-dom';
-import { withI18n } from 'lingui-react';
+import { withI18n } from '@lingui/react';
 import { RoutingContext } from '../contexts/RoutingContext';
 import Signin from '../../../scenes/Signin';
 import Signup from '../../../scenes/Signup';
@@ -87,7 +87,7 @@ class RoutingProvider extends Component {
               tab: {
                 type: 'application',
                 icon: 'home',
-                renderLabel: () => i18n._('route.timeline.label', { defaults: 'Timeline' }),
+                renderLabel: () => i18n._('route.timeline.label', null, { defaults: 'Timeline' }),
                 tabMatch: tabMatchRoute,
               },
             },
@@ -102,7 +102,7 @@ class RoutingProvider extends Component {
                     return discussion.participants.map(renderParticipant).join(' ');
                   }
 
-                  return i18n._('route.discussion.label', { defaults: 'Discussion ...' });
+                  return i18n._('route.discussion.label', null, { defaults: 'Discussion ...' });
                 },
                 tabMatch: tabMatchPathname,
               },
@@ -115,7 +115,7 @@ class RoutingProvider extends Component {
               strict: true,
               // tab: {
               //   type: 'compose',
-              //   renderLabel: () => i18n._('compose.route.label'),
+              //   renderLabel: () => i18n._('compose.route.label'), null,
               //   icon: 'pencil',
               //   tabMatch: tabMatchRoute,
               // },
@@ -127,7 +127,7 @@ class RoutingProvider extends Component {
               tab: {
                 type: 'compose',
                 icon: 'pencil',
-                renderLabel: () => i18n._('route.compose.label', { defaults: 'Compose' }),
+                renderLabel: () => i18n._('route.compose.label', null, { defaults: 'Compose' }),
                 tabMatch: tabMatchPathname,
               },
             },
@@ -139,7 +139,7 @@ class RoutingProvider extends Component {
               tab: {
                 type: 'application',
                 icon: 'address-book',
-                renderLabel: () => i18n._('route.contact-book.label', { defaults: 'Contacts' }),
+                renderLabel: () => i18n._('route.contact-book.label', null, { defaults: 'Contacts' }),
                 tabMatch: tabMatchRoute,
               },
             },
@@ -153,7 +153,7 @@ class RoutingProvider extends Component {
                 renderLabel: ({ contact }) => {
                   const { settings: { contact_display_format: format } } = this.props;
 
-                  return (contact && formatName({ contact, format })) || i18n._('contact.profile.name_not_set', { defaults: '(N/A)' });
+                  return (contact && formatName({ contact, format })) || i18n._('contact.profile.name_not_set', null, { defaults: '(N/A)' });
                 },
                 tabMatch: tabMatchPathname,
               },
@@ -165,7 +165,7 @@ class RoutingProvider extends Component {
               tab: {
                 type: 'default',
                 icon: 'address-book',
-                renderLabel: () => i18n._('route.new-contact.label', { defaults: 'New contact' }),
+                renderLabel: () => i18n._('route.new-contact.label', null, { defaults: 'New contact' }),
                 tabMatch: tabMatchRoute,
               },
             },
@@ -176,7 +176,7 @@ class RoutingProvider extends Component {
               tab: {
                 type: 'search',
                 icon: 'search',
-                renderLabel: ({ term }) => i18n._('route.search-results.label', { defaults: 'Results for: {term}', values: { term } }),
+                renderLabel: ({ term }) => i18n._('route.search-results.label', null, { defaults: 'Results for: {term}', values: { term } }),
                 tabMatch: tabMatchRoute,
               },
             },
@@ -187,7 +187,7 @@ class RoutingProvider extends Component {
               tab: {
                 type: 'default',
                 icon: 'user',
-                renderLabel: () => i18n._('route.user.label.default', { defaults: 'Account' }),
+                renderLabel: () => i18n._('route.user.label.default', null, { defaults: 'Account' }),
                 tabMatch: tabMatchRoute,
               },
               routes: [
@@ -197,7 +197,7 @@ class RoutingProvider extends Component {
                   tab: {
                     type: 'default',
                     icon: 'user',
-                    renderLabel: () => i18n._('route.user.label.profile', { defaults: 'Profile' }),
+                    renderLabel: () => i18n._('route.user.label.profile', null, { defaults: 'Profile' }),
                     tabMatch: tabMatchRoute,
                   },
                 },
@@ -207,7 +207,7 @@ class RoutingProvider extends Component {
                   tab: {
                     type: 'default',
                     icon: 'user',
-                    renderLabel: () => i18n._('route.user.label.privacy', { defaults: 'Privacy' }),
+                    renderLabel: () => i18n._('route.user.label.privacy', null, { defaults: 'Privacy' }),
                     tabMatch: tabMatchRoute,
                   },
                 },
@@ -217,7 +217,7 @@ class RoutingProvider extends Component {
                   tab: {
                     type: 'default',
                     icon: 'user',
-                    renderLabel: () => i18n._('route.user.label.security', { defaults: 'Security' }),
+                    renderLabel: () => i18n._('route.user.label.security', null, { defaults: 'Security' }),
                     tabMatch: tabMatchRoute,
                   },
                 },
@@ -227,7 +227,7 @@ class RoutingProvider extends Component {
               path: '/settings',
               app: 'settings',
               component: SettingsLayout,
-              renderLabel: () => i18n._('route.settings.label.default', { defaults: 'Settings' }),
+              renderLabel: () => i18n._('route.settings.label.default', null, { defaults: 'Settings' }),
               routes: [
                 {
                   path: '/settings/identities',
@@ -235,7 +235,7 @@ class RoutingProvider extends Component {
                   tab: {
                     type: 'default',
                     icon: 'cog',
-                    renderLabel: () => i18n._('route.settings.label.identities', { defaults: 'Security' }),
+                    renderLabel: () => i18n._('route.settings.label.identities', null, { defaults: 'Security' }),
                     tabMatch: tabMatchSettings,
                   },
                 },
@@ -245,7 +245,7 @@ class RoutingProvider extends Component {
                   tab: {
                     type: 'default',
                     icon: 'cog',
-                    renderLabel: () => i18n._('route.settings.label.application', { defaults: 'Devices' }),
+                    renderLabel: () => i18n._('route.settings.label.application', null, { defaults: 'Devices' }),
                     tabMatch: tabMatchSettings,
                   },
                 },
@@ -255,7 +255,7 @@ class RoutingProvider extends Component {
                   tab: {
                     type: 'default',
                     icon: 'cog',
-                    renderLabel: () => i18n._('route.settings.label.tags', { defaults: 'Tags' }),
+                    renderLabel: () => i18n._('route.settings.label.tags', null, { defaults: 'Tags' }),
                     tabMatch: tabMatchSettings,
                   },
                 },
@@ -267,7 +267,7 @@ class RoutingProvider extends Component {
                   tab: {
                     type: 'default',
                     icon: 'cog',
-                    renderLabel: () => i18n._('route.settings.label.devices', { defaults: 'Devices' }),
+                    renderLabel: () => i18n._('route.settings.label.devices', null, { defaults: 'Devices' }),
                     tabMatch: tabMatchSettings,
                   },
                 },
@@ -277,7 +277,7 @@ class RoutingProvider extends Component {
                   tab: {
                     type: 'default',
                     icon: 'cog',
-                    renderLabel: () => i18n._('route.settings.label.devices', { defaults: 'Devices' }),
+                    renderLabel: () => i18n._('route.settings.label.devices', null, { defaults: 'Devices' }),
                     tabMatch: tabMatchSettings,
                   },
                 },
@@ -289,7 +289,7 @@ class RoutingProvider extends Component {
                 // tab: {
                 //   type: 'default',
                 //   icon: 'cog',
-                //   renderLabel: () => i18n._('route.settings.label.signatures',
+                //   renderLabel: () => i18n._('route.settings.label.signatures', null,
                 // { defaults: 'Signatures' }),
                 //   tabMatch: tabMatchRoute,
                 // },

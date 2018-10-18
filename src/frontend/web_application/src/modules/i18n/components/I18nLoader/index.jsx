@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { I18nProvider } from 'lingui-react';
-import { unpackCatalog } from 'lingui-i18n';
+import { I18nProvider } from '@lingui/react';
 import { getLanguage } from '../../';
-
-// eslint-disable-next-line import/no-extraneous-dependencies
-const linguiDev = process.env.NODE_ENV !== 'production' ? require('lingui-i18n/dev') : undefined;
 
 class I18nLoader extends Component {
   static propTypes = {
@@ -22,13 +18,13 @@ class I18nLoader extends Component {
     // eslint-disable-next-line global-require, import/no-dynamic-require
     const catalog = require(`../../../../../locale/${language}/messages.js`);
 
-    return unpackCatalog(catalog);
+    return catalog;
   }
 
   static getCatalog = async (language) => {
     const catalog = await import(/* webpackMode: "lazy", webpackChunkName: "i18n-[index]" */`../../../../../locale/${language}/messages.js`);
 
-    return unpackCatalog(catalog);
+    return catalog;
   }
 
   state = {
@@ -89,7 +85,7 @@ class I18nLoader extends Component {
     }
 
     return (
-      <I18nProvider language={language} catalogs={catalogs} development={linguiDev}>
+      <I18nProvider language={language} catalogs={catalogs}>
         {children}
       </I18nProvider>
     );

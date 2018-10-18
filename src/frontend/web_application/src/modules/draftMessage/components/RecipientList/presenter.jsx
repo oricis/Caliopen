@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
 import classnames from 'classnames';
 import debounce from 'lodash.debounce';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { Dropdown, Button, Icon, VerticalMenu, VerticalMenuItem } from '../../../../components';
 import protocolsConfig, { ASSOC_PROTOCOL_ICON } from '../../../../services/protocols-config';
 import { addEventListener } from '../../../../services/event-manager';

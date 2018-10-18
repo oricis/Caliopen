@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import isEqual from 'lodash.isequal';
-import { Trans, withI18n } from 'lingui-react';
+import { Trans, withI18n } from '@lingui/react';
 import { WithTags } from '../../modules/tags';
 import { Section } from '../../components/';
 import TagSearch from './components/TagSearch';
@@ -95,7 +95,7 @@ class TagsSettings extends Component {
         userTags => (
           <div className="s-tags-settings">
             <div className="s-tags-settings__create">
-              <Section title={i18n._('settings.tags.title.create', { defaults: 'Create new tag' })}>
+              <Section title={i18n._('settings.tags.title.create', null, { defaults: 'Create new tag' })}>
                 <TagSearch
                   onChange={this.handleSearchChange}
                   errors={this.state.createErrors}
@@ -105,7 +105,7 @@ class TagsSettings extends Component {
               </Section>
             </div>
             <div className="s-tags-settings__tags">
-              <Section title={i18n._('settings.tags.title', { defaults: 'Tags' })}>
+              <Section title={i18n._('settings.tags.title', null, { defaults: 'Tags' })}>
                 {userTags.map(tag => (
                   <TagInput
                     key={tag.name}

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Trans, withI18n } from 'lingui-react';
+import { Trans, withI18n } from '@lingui/react';
 import renderReduxField from '../../../../services/renderReduxField';
 import { Icon, Button, FieldErrors, SelectFieldGroup as SelectFieldGroupBase, TextFieldGroup as TextFieldGroupBase, Fieldset, Legend, FormGrid, FormRow, FormColumn } from '../../../../components';
 import './style.scss';
@@ -28,9 +28,9 @@ class PhoneForm extends PureComponent {
   initTranslations() {
     const { i18n } = this.props;
     this.addressTypes = {
-      work: i18n._('contact.phone_type.work', { defaults: 'Professional' }),
-      home: i18n._('contact.phone_type.home', { defaults: 'Personal' }),
-      other: i18n._('contact.phone_type.other', { defaults: 'Other' }),
+      work: i18n._('contact.phone_type.work', null, { defaults: 'Professional' }),
+      home: i18n._('contact.phone_type.home', null, { defaults: 'Personal' }),
+      other: i18n._('contact.phone_type.other', null, { defaults: 'Other' }),
     };
   }
 
@@ -56,7 +56,7 @@ class PhoneForm extends PureComponent {
               <Field
                 component={SelectFieldGroup}
                 name="type"
-                label={i18n._('contact.phone_form.type.label', { defaults: 'Type' })}
+                label={i18n._('contact.phone_form.type.label', null, { defaults: 'Type' })}
                 showLabelforSr
                 options={typeOptions}
               />
@@ -66,7 +66,7 @@ class PhoneForm extends PureComponent {
                 component={TextFieldGroup}
                 name="number"
                 type="tel"
-                label={i18n._('contact.phone_form.number.label', { defaults: 'Number' })}
+                label={i18n._('contact.phone_form.number.label', null, { defaults: 'Number' })}
                 showLabelforSr
                 required
               />

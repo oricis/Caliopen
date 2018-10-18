@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { Section, Link, PasswordStrength, Button, Icon, FieldErrors, TextFieldGroup, FormGrid, FormColumn, FormRow } from '../../../../components/';
 
 import './style.scss';
@@ -68,7 +68,7 @@ class ResetPasswordForm extends Component {
 
     this.setState((prevState) => {
       const { password } = prevState.formValues;
-      const error = i18n._('password.form.new_password_confirmation.error', { defaults: 'Passwords don\'t match' });
+      const error = i18n._('password.form.new_password_confirmation.error', null, { defaults: 'Passwords don\'t match' });
       const passwordError = password === value ? [] : [error];
 
       return {
@@ -125,8 +125,8 @@ class ResetPasswordForm extends Component {
                 theme="contrasted"
                 value={this.state.formValues.password}
                 onChange={this.handlePasswordChange}
-                label={i18n._('password.form.new_password.label', { defaults: 'New password:' })}
-                placeholder={i18n._('password.form.new_password.placeholder', { defaults: 'Password' })}
+                label={i18n._('password.form.new_password.label', null, { defaults: 'New password:' })}
+                placeholder={i18n._('password.form.new_password.placeholder', null, { defaults: 'Enter new password' })}
                 required
               />
             </FormColumn>
@@ -143,8 +143,8 @@ class ResetPasswordForm extends Component {
                 value={this.state.confirmPassword}
                 onChange={this.handleConfirmPasswordChange}
                 errors={this.state.formErrors.passwordError}
-                label={i18n._('password.form.new_password_confirmation.label', { defaults: 'New password confirmation:' })}
-                placeholder={i18n._('password.form.new_password_confirmation.placeholder', { defaults: 'Password' })}
+                label={i18n._('password.form.new_password_confirmation.label', null, { defaults: 'New password confirmation:' })}
+                placeholder={i18n._('password.form.new_password_confirmation.placeholder', null, { defaults: 'Password' })}
                 required
               />
             </FormColumn>
@@ -175,7 +175,7 @@ class ResetPasswordForm extends Component {
     const { i18n } = this.props;
 
     return (
-      <Section title={i18n._('password.reset-form.title', { defaults: 'Reset your password' })} className="m-reset-password-form">
+      <Section title={i18n._('password.reset-form.title', null, { defaults: 'Reset your password' })} className="m-reset-password-form">
         {this.renderSection()}
         <div>
           <Link to="/auth/signin"><Trans id="password.action.go_signin">Signin</Trans></Link>

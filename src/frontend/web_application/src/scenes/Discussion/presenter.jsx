@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
 import classnames from 'classnames';
 import { withRouter } from 'react-router-dom';
-import { Trans, withI18n } from 'lingui-react';
+import { Trans, withI18n } from '@lingui/react';
 import { Badge, Button, Modal } from '../../components';
 import StickyNavBar from '../../layouts/Page/components/Navigation/components/StickyNavBar';
 import MessageList from './components/MessageList';
@@ -222,7 +222,7 @@ class Discussion extends Component {
     return (
       <Modal
         isOpen={this.state.isTagModalOpen}
-        contentLabel={i18n._('tags.header.label', { defaults: 'Tags' })}
+        contentLabel={i18n._('tags.header.label', null, { defaults: 'Tags' })}
         title={title}
         onClose={this.handleCloseTags}
       >
