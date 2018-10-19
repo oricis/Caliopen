@@ -130,7 +130,7 @@ func (ui *UserIdentity) SetDefaults() {
 	defaults := map[string]string{}
 
 	switch ui.Protocol {
-	case ImapProtocol:
+	case EmailProtocol:
 		defaults = map[string]string{
 			"lastseenuid":  "",
 			"lastsync":     "",   // RFC3339 date string

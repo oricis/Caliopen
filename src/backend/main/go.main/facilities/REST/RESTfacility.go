@@ -46,6 +46,7 @@ type (
 		RetrieveProvidersList() (providers []Provider, err error)
 		GetProviderOauthFor(userID, provider string) (Provider, CaliopenError)
 		CreateTwitterIdentity(requestToken, verifier string) (remoteId string, err CaliopenError)
+		CreateGmailIdentity(state, code string) (remoteId string, err CaliopenError)
 		//messages
 		GetMessagesList(filter IndexSearch) (messages []*Message, totalFound int64, err error)
 		GetMessagesRange(filter IndexSearch) (messages []*Message, totalFound int64, err error)
