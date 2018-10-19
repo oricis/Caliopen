@@ -82,17 +82,13 @@ providers_{provider_name}_callback:
               type: boolean
             message:
               type: string
-providers_test_{provider_name}:
+oauth_test:
   get:
-    description: serves an index to test twitter Oauth process
+    description: serves an index to test Oauth processes
     tags:
     - providers
     security: []
-    parameters:
-    - name: provider_name
-      in: path
-      type: string
-      required: true
+    parameters: []
     produces:
     - text/html
     responses:

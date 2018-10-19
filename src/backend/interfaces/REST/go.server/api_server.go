@@ -275,5 +275,5 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	prov.GET("", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"), providers.GetProvidersList)
 	prov.GET("/:provider_name", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"), providers.GetProvider)
 	prov.GET("/:provider_name/callback", providers.CallbackHandler)
-	api.StaticFile("/test/providers/twitter", "../../operations/providers/twitter.html")
+	api.StaticFile("/test/oauth", "../../operations/providers/oauth-test.html")
 }

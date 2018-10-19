@@ -68,6 +68,19 @@ func CallbackHandler(ctx *gin.Context) {
 		}
 		response := fmt.Sprintf(`{"identity_id":"%s"}`, remoteId)
 		ctx.Data(http.StatusOK, "application/json", []byte(response))
+	case "gmail":
+		state := ctx.Query("state")
+		code := ctx.Query("code")
+		remoteId, errC := caliopen.Facilities.RESTfacility.CreateGmailIdentity(state, code)
+		if errC != nil {
+			returnedErr := new(swgErr.CompositeError)
+			returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusFailedDependency, "RESTfacility returned error"), errC, errC.Cause())
+			http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
+			ctx.Abort()
+			return
+		}
+		response := fmt.Sprintf(`{"identity_id":"%s"}`, remoteId)
+		ctx.Data(http.StatusOK, "application/json", []byte(response))
 	default:
 		e := swgErr.New(http.StatusNotImplemented, "not implemented")
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)

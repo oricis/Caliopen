@@ -3454,21 +3454,14 @@
         }
       }
     },
-    "/v2/test/providers/{provider_name}": {
+    "/v2/test/oauth": {
       "get": {
-        "description": "serves an index to test twitter Oauth process",
+        "description": "serves an index to test Oauth processes",
         "tags": [
           "providers"
         ],
         "security": [],
-        "parameters": [
-          {
-            "name": "provider_name",
-            "in": "path",
-            "type": "string",
-            "required": true
-          }
-        ],
+        "parameters": [],
         "produces": [
           "text/html"
         ],
