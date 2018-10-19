@@ -80,7 +80,7 @@ packages:
         name: twitterworker
         build_target: github.com/CaliOpen/Caliopen/src/backend/protocols/go.twitter/cmd/twitterworker
         path: src/backend/protocols/go.twitter
-        description: IMAP daemon to handle transactions with Twitter API endpoints.
+        description: Twitter daemon to handle transactions with Twitter API endpoints.
         dependencies:
           go: "^1.7"
       -
