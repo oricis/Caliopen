@@ -21,14 +21,13 @@ pipeline:
     secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD, DOCKER_REGISTRY]
     environment:
       - DEPS=vendor
+      - BASE_DIR=src/backend
       - PLUGIN_DOCKERFILE=src/backend/Dockerfile.caliopen-go
       - PLUGIN_CONTEXT=/srv/caliopen/src/backend
       - PLUGIN_REPO=registry.caliopen.org/caliopen_go
     when:
       branch: [ develop, master ]
       event: [ push ]
-      matrix:
-        STEP: pre
     commands:
       - . devtools/drone/files_changed.sh
       - . devtools/drone/build_images.sh
@@ -37,75 +36,17 @@ pipeline:
 ##          TEST ON MASTER OR DEVELOP PR             ##
 #######################################################
 
-  # test-apiv2:
+  # test-go:
   #   group: test
   #   image: public-registry.caliopen.org/caliopen_go
   #   environment:
-  #     - PROG=interfaces/REST/go.server/cmd/caliopen_rest
   #     - BASE_DIR=src/backend
-  #     - LANG=go
   #   when:
   #     branch: [ develop, master ]
   #     event: [ pull_request ]
   #   commands:
   #     - . devtools/drone/files_changed.sh
   #     - . devtools/drone/test_go.sh
-
-  # test-lmtpd:
-  #   group: test
-  #   image: public-registry.caliopen.org/caliopen_go
-  #   environment:
-  #     - PROG=protocols/go.smtp/cmd/caliopen_lmtpd
-  #     - BASE_DIR=src/backend
-  #     - LANG=go
-  #   when:
-  #     branch: [ develop, master ]
-  #     event: [ pull_request ]
-  #   commands:
-  #     - . devtools/drone/files_changed.sh
-  #     - . devtools/drone/test_go.sh
-
-  # test-idpoller:
-  #   group: test
-  #   image: public-registry.caliopen.org/caliopen_go
-  #   environment:
-  #     - PROG=workers/go.remoteIDs/cmd/idpoller
-  #     - BASE_DIR=src/backend
-  #     - LANG=go
-  #   when:
-  #     branch: [ develop, master ]
-  #     event: [ pull_request ]
-  #   commands:
-  #     - . devtools/drone/files_changed.sh
-  #     - . devtools/drone/test_go.sh
-
-  # test-imapworker:
-  #   group: test
-  #   image: public-registry.caliopen.org/caliopen_go
-  #   environment:
-  #     - PROG=protocols/go.imap/cmd/imapworker
-  #     - DOCKERFILE=Dockerfile.imap-worker
-  #     - REPO=caliopen_imap_worker
-  #     - BASE_DIR=src/backend
-  #     - LANG=go
-  #   when:
-  #     branch: [ develop, master ]
-  #     event: [ pull_request ]
-  #   commands:
-  #     - . devtools/drone/files_changed.sh
-  #     - . devtools/drone/test_go.sh
-
-  test-go:
-    group: test
-    image: public-registry.caliopen.org/caliopen_go
-    environment:
-      - BASE_DIR=src/backend
-    when:
-      branch: [ develop, master ]
-      event: [ pull_request ]
-    commands:
-      - . devtools/drone/files_changed.sh
-      - . devtools/drone/test_go.sh
 
   test-py:
     group: test
