@@ -8,7 +8,7 @@ import json
 from caliopen_main.user.core import User
 from caliopen_main.contact.objects import Contact
 
-from caliopen_nats.delivery import UserMessageDelivery
+from caliopen_nats.delivery import UserMessageDelivery, UserTwitterDMDelivery
 from caliopen_pi.qualifiers import ContactMessageQualifier
 from caliopen_pgp.keys import ContactPublicKeyManager
 from caliopen_main.common.core import PublicKey
@@ -60,6 +60,39 @@ class InboundEmail(BaseHandler):
                 (queue: SMTPqueue, subject : inboundSMTP)'.format(
                     payload['order']))
             raise NotImplementedError
+
+class InboundTwitter(BaseHandler):
+    """Inbound TwitterDM class handler."""
+
+    def process_raw(self, msg, payload):
+        """Process an inbound raw message."""
+        nats_error = {
+            'error': '',
+            'message': 'inbound twitter message process failed'
+        }
+        nats_success = {
+            'message': 'OK : inbound twitter message proceeded'
+        }
+        user = User.get(payload['user_id'])
+        deliver = UserTwitterDMDelivery(user)
+        try:
+            new_message = deliver.process_raw(payload['message_id'])
+            nats_success['message_id'] = str(new_message.message_id)
+            self.natsConn.publish(msg.reply, json.dumps(nats_success))
+        except Exception as exc:
+            log.error("deliver process failed : {}".format(exc))
+            nats_error['error'] = str(exc.message)
+            self.natsConn.publish(msg.reply, json.dumps(nats_error))
+            return exc
+
+    def handler(self, msg):
+        """Handle an process_raw nats messages."""
+        payload = json.loads(msg.data)
+        log.info('Get payload order {}'.format(payload['order']))
+        if payload['order'] == "process_raw":
+            self.process_raw(msg, payload)
+        else:
+            log.warn('Unhandled payload type {}'.format(payload['order']))
 
 
 class ContactAction(BaseHandler):
