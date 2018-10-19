@@ -229,6 +229,27 @@ pipeline:
       - . devtools/drone/files_changed.sh
       - . devtools/drone/build_images.sh
 
+  build-twitterworker-develop:
+    group: build2
+    image: public-registry.caliopen.org/caliopen_drone_docker
+    privileged: true
+    secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD, DOCKER_REGISTRY]
+    environment:
+    - PLUGIN_DOCKERFILE=src/backend/Dockerfile.twitter-worker
+    - PLUGIN_CONTEXT=/srv/caliopen/src/backend
+    - PLUGIN_REPO=registry.caliopen.org/caliopen_twitter_worker
+    - PROG=protocols/go.twitter/cmd/twitterworker
+    - BASE_DIR=src/backend
+    - LANG=go
+    when:
+      branch: [ develop ]
+      event: [ push ]
+    commands:
+    - export PLUGIN_TAGS=develop,${DRONE_COMMIT_SHA}
+    - . devtools/drone/get_go_dependencies.sh
+    - . devtools/drone/files_changed.sh
+    - . devtools/drone/build_images.sh
+
   # Frontend develop image
   build-frontend-develop:
     group: build3
