@@ -13,7 +13,7 @@ fi
 
 if [ "$DRONE_BUILD_EVENT" = "pull_request" ];
 then
-	git fetch origin $DRONE_BRANCH:$DRONE_BRANCH
+	git fetch origin --no-tags $DRONE_BRANCH:$DRONE_BRANCH
 	BRANCHES="$DRONE_BRANCH...HEAD"
 elif [ $(git show --no-patch --format="%P" $DRONE_COMMIT | awk '{print NF}') = 2 ];
 then
@@ -41,7 +41,7 @@ else
 	DEPS=$BASE_DIR
 fi
 
-echo "Checking changes to $DEPS between $BRANCHES in $DEPS"
+echo "Checking changes to $DEPS between $BRANCHES"
 
 if ! git --no-pager diff --quiet --exit-code $BRANCHES -- $DEPS;
 then
