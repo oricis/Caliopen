@@ -387,7 +387,7 @@ pipeline:
     - latest
     - ${DRONE_TAG##release-}
 
-    build-all-release:
+  build-all-release:
     group: release3
     image: plugins/docker
     dockerfile: src/frontend/web_application/Dockerfile
