@@ -30,12 +30,16 @@ identities_locals:
 
 identities_remotes:
   get:
-    description: returns the list of user's remote identities
+    description: returns the list of user's remote identities, or filtered if query param
     tags:
     - identities
     security:
     - basicAuth: []
-    parameters: []
+    parameters:
+    - name: pending
+      in: query
+      type: string
+      required: false
     produces:
     - application/json
     responses:

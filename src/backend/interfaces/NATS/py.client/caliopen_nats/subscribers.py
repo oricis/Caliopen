@@ -55,7 +55,11 @@ class InboundEmail(BaseHandler):
         if payload['order'] == "process_raw":
             self.process_raw(msg, payload)
         else:
-            log.warn('Unhandled payload type {}'.format(payload['order']))
+            log.warn(
+                'Unhandled payload order "{}" \
+                (queue: SMTPqueue, subject : inboundSMTP)'.format(
+                    payload['order']))
+            raise NotImplementedError
 
 
 class ContactAction(BaseHandler):
@@ -73,6 +77,7 @@ class ContactAction(BaseHandler):
         qualifier = ContactMessageQualifier(user)
         log.info('Will process update for contact {0} of user {1}'.
                  format(contact.contact_id, user.user_id))
+        # TODO: (re)discover GPG keys
         qualifier.process(contact)
 
     def handler(self, msg):
@@ -82,10 +87,15 @@ class ContactAction(BaseHandler):
         if payload['order'] == "contact_update":
             self.process_update(msg, payload)
         else:
-            log.warn('Unhandled payload type {}'.format(payload['order']))
+            log.warn(
+                'Unhandled payload order "{}" \
+                (queue: contactQueue, subject : contactAction)'.format(
+                    payload['order']))
+            raise NotImplementedError
 
 
-class DiscoverKeyAction(BaseHandler):
+
+class KeyAction(BaseHandler):
     """Handler for public key discovery message."""
 
     def _process_key(self, user, contact, key):
@@ -140,5 +150,11 @@ class DiscoverKeyAction(BaseHandler):
     def handler(self, msg):
         """Handle a discover_key nats messages."""
         payload = json.loads(msg.data)
-        self.process_key_discovery(msg, payload)
-        return
+        if payload['order'] == "discover_key":
+            self.process_key_discovery(msg, payload)
+        else:
+            log.warn(
+                'Unhandled payload order "{}" \
+                (queue : keyQueue, subject : keyAction)'.format(
+                    payload['order']))
+            raise NotImplementedError

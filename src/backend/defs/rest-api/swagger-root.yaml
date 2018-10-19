@@ -33,6 +33,14 @@ paths:
     "$ref": paths/passwords.yaml#/passwords_reset
   "/v2/passwords/reset/{token}":
     "$ref": paths/passwords.yaml#/passwords_reset_{token}
+  "/v2/providers":
+    "$ref": paths/providers.yaml#/providers
+  "/v2/providers/{provider_name}":
+    "$ref": paths/providers.yaml#/providers_{provider_name}
+  "/v2/providers/{provider_name}/callback":
+    "$ref": paths/providers.yaml#/providers_{provider_name}_callback
+  "/v2/test/oauth":
+    "$ref": paths/providers.yaml#/oauth_test
 ## contacts ##
   "/v1/contacts":
     "$ref": paths/contacts.yaml#/contacts
@@ -44,6 +52,10 @@ paths:
     "$ref": paths/contactsV2.yaml#/contacts_{contact_id}
   "/v2/contacts/{contact_id}/identities":
     "$ref": paths/contactsV2.yaml#/contacts_{contact_id}_identities
+  "/v2/contacts/{contact_id}/publickeys":
+    "$ref": paths/contactsV2.yaml#/contacts_{contact_id}_publickeys
+  "/v2/contacts/{contact_id}/publickeys/{pubkey_id}":
+    "$ref": paths/contactsV2.yaml#/contacts_{contact_id}_publickeys_{pubkey_id}
   "/v2/contacts/{contact_id}/tags":
     "$ref": paths/contactsV2.yaml#/contacts_{contact_id}_tags
   "/v1/imports":

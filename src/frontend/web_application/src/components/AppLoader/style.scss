@@ -1,0 +1,28 @@
+@import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+$m-app-loader__brand-height: 42px !default;
+$m-app-loader__header-space: (
+  bottom: 36px,
+);
+
+.m-app-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+  &__brand {
+    height: $m-app-loader__brand-height;
+  }
+
+  &__header {
+    padding-bottom: map-get($m-app-loader__header-space, bottom);
+    text-align: center;
+  }
+
+  &__content {
+    border-top: 8px solid $co-color__primary;
+    text-align: center;
+  }
+}

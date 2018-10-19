@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from 'lingui-react';
 import classnames from 'classnames';
-import { getAveragePI, getPiClass } from '../../../../modules/pi/services/pi';
+import { getAveragePI, getPiClass } from '../../../../modules/pi';
 
 import sealedEnvelope from './assets/sealed-envelope.png';
 import postalCard from './assets/postal-card.png';
@@ -22,19 +22,19 @@ class MessagePi extends PureComponent {
     describe: false,
   };
 
-  componentDidMount() {
-    this.strongSrc = sealedEnvelope;
-    this.weakSrc = postalCard;
-  }
-
   // FIXME: Ugly implenentation.
   getPiQualities = ({ pi }) => {
     /* eslint-disable no-nested-ternary */
     // XXX: temp stuff waiting for actual spec
-    const labelFor = aspect => (aspect <= 33 ? 'bad' : aspect <= 66 ? 'warn' : 'ok');
-    const iconFor = aspect => (aspect <= 33 ? 'fa-times' : aspect <= 66 ? 'fa-warning' : 'fa-check');
+    const labelFor = aspect => getPiClass(aspect);
+    const iconFor = (aspect) => {
+      if (Number.isNaN(aspect)) return 'fa-question';
+
+      return aspect <= 33 ? 'fa-times' : aspect <= 66 ? 'fa-warning' : 'fa-check';
+    };
     /* eslint-enable no-nested-ternary */
-    const { technic, context, comportment } = pi || { technic: 0, context: 0, comportment: 0 };
+    const { technic, context, comportment } = pi ||
+      { technic: NaN, context: NaN, comportment: NaN };
 
     return {
       technic: { label: labelFor(technic), icon: iconFor(technic) },
@@ -43,7 +43,14 @@ class MessagePi extends PureComponent {
     };
   }
 
-  getPiImg = ({ pi }) => (getAveragePI(pi) <= 50 ? postalCard : sealedEnvelope);
+  getPiImg = ({ pi }) => {
+    const piAggregate = getAveragePI(pi);
+
+    // FIXME : add real disabled image.
+    if (Number.isNaN(piAggregate)) return 'disabled';
+
+    return piAggregate <= 50 ? postalCard : sealedEnvelope;
+  };
 
   strongSrc = '';
   weakSrc = '';
@@ -58,29 +65,32 @@ class MessagePi extends PureComponent {
         <ul className="m-message-pi__types">
           <li className={piQualities.comportment.label}>
             <i className={`fa ${piQualities.comportment.icon}`} />
-            <span>Expéditeur</span>
+            <Trans id="message.pi.comportment">Sender</Trans>
           </li>
           <li className={piQualities.context.label}>
             <i className={`fa ${piQualities.context.icon}`} />
-            <span>Départ</span>
+            <Trans id="message.pi.context">Departure</Trans>
           </li>
           <li className={piQualities.technic.label}>
             <i className={`fa ${piQualities.technic.icon}`} />
-            <span>Trajet</span>
+            <Trans id="message.pi.technic">Travel</Trans>
           </li>
         </ul>
       </div>
     );
   }
 
-  renderDescription = () => (
-    <p className="m-message-pi__metaphor">
-      <Trans>
-        Dans la vraie vie, ce message serait plus ou moins l&apos;équivalent d&apos;
-        une carte postale visible par tous.
-      </Trans>
-    </p>
-  );
+  renderDescription = (piAggregate) => {
+    const piQuality = getPiClass(piAggregate);
+
+    return (
+      <p className="m-message-pi__metaphor">
+        <Trans id={`message.pi.description.metaphor.${piQuality}`}>
+          Unknown message type.
+        </Trans>
+      </p>
+    );
+  };
 
   render() {
     const { illustrate, describe, pi } = this.props;
@@ -107,7 +117,7 @@ class MessagePi extends PureComponent {
             <span className="m-message-pi__numeric-value">{Math.round(piAggregate)}</span>
           </div>
         </div>
-        {describe ? this.renderDescription() : null}
+        {describe ? this.renderDescription(piAggregate) : null}
       </div>
     );
   }

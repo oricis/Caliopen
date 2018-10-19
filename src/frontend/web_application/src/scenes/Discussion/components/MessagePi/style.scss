@@ -11,11 +11,19 @@
     height: map_get($co-pi-height, 'progressbar');
     margin-bottom: 0;
 
-    &--weak-pi {
+    &--ugly {
       background-color: map_get($privacy-palette-high, 'ugly');
     }
 
-    &--strong-pi {
+    &--bad {
+      background-color: map_get($privacy-palette-high, 'bad');
+    }
+
+    &--good {
+      background-color: map_get($privacy-palette-high, 'good');
+    }
+
+    &--super {
       background-color: map_get($privacy-palette-high, 'super');
     }
   }
@@ -29,11 +37,19 @@
   &__progress-meter {
     height: map_get($co-pi-height, 'progressbar');
 
-    &--weak-pi {
+    &--ugly {
       background-color: map_get($privacy-palette, 'ugly');
     }
 
-    &--strong-pi  {
+    &--bad {
+      background-color: map_get($privacy-palette, 'bad');
+    }
+
+    &--good {
+      background-color: map_get($privacy-palette, 'good');
+    }
+
+    &--super  {
       background-color: map_get($privacy-palette, 'super');
     }
   }
@@ -72,16 +88,20 @@
       font-weight: 600;
       line-height: 1rem;
 
-      &.ok {
+      &.super {
         color: map_get($privacy-palette, 'super');
       }
 
-      &.bad {
-        color: map_get($privacy-palette, 'ugly');
+      &.good {
+        color: map_get($privacy-palette, 'good');
       }
 
-      &.warn {
-        color: map_get($privacy-palette, 'good');
+      &.bad {
+        color: map_get($privacy-palette, 'bad');
+      }
+
+      &.ugly {
+        color: map_get($privacy-palette, 'ugly');
       }
     }
   }
@@ -98,19 +118,30 @@
     }
 
     &__metaphor {
-      padding: $co-margin(xsmall) 0;
+      width: 100%;
+      padding-bottom: map_get($co-margin_, 'xsmall');
       border-bottom: 2px solid #999999;
       font-size: $co-font__size--xsmall;
     }
   }
 }
 
-.weak-pi {
+.ugly {
   .m-message-pi__metaphor, .m-message-pi__meter { border-color: map_get($privacy-palette-high, 'ugly'); }
   .m-message-pi__numeric-value { color: map_get($privacy-palette, 'ugly'); }
 }
 
-.strong-pi {
+.bad {
+  .m-message-pi__metaphor, .m-message-pi__meter { border-color: map_get($privacy-palette-high, 'bad'); }
+  .m-message-pi__numeric-value { color: map_get($privacy-palette, 'bad'); }
+}
+
+.good {
+  .m-message-pi__metaphor, .m-message-pi__meter { border-color: map_get($privacy-palette-high, 'good'); }
+  .m-message-pi__numeric-value { color: map_get($privacy-palette, 'good'); }
+}
+
+.super {
   .m-message-pi__metaphor, .m-message-pi__meter { border-color: map_get($privacy-palette-high, 'super'); }
   .m-message-pi__numeric-value { color: map_get($privacy-palette, 'super'); }
 }

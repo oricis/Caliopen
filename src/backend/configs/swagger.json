@@ -461,27 +461,11 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "privacy_features": {
-                            "type": "object",
-                            "properties": {}
+                          "alg": {
+                            "type": "string"
                           },
-                          "pi": {
-                            "type": "object",
-                            "properties": {
-                              "technic": {
-                                "type": "integer"
-                              },
-                              "context": {
-                                "type": "integer"
-                              },
-                              "comportment": {
-                                "type": "integer"
-                              },
-                              "version": {
-                                "type": "integer"
-                              }
-                            },
-                            "additionalProperties": true
+                          "crv": {
+                            "type": "string"
                           },
                           "date_insert": {
                             "type": "string",
@@ -491,15 +475,6 @@
                             "type": "string",
                             "format": "date-time"
                           },
-                          "contact_id": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          },
-                          "user_id": {
-                            "type": "string"
-                          },
                           "expire_date": {
                             "type": "string",
                             "format": "date-time"
@@ -507,20 +482,53 @@
                           "fingerprint": {
                             "type": "string"
                           },
-                          "key": {
+                          "kty": {
                             "type": "string"
                           },
-                          "name": {
+                          "key_id": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "resource_id": {
+                            "type": "string"
+                          },
+                          "resource_type": {
                             "type": "string"
                           },
                           "size": {
                             "type": "integer",
                             "format": "int32"
+                          },
+                          "use": {
+                            "type": "string"
+                          },
+                          "user_id": {
+                            "type": "string"
+                          },
+                          "x": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "y": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "key": {
+                            "type": "string",
+                            "description": "DER or PEM key, base64 encoded"
+                          },
+                          "label": {
+                            "type": "string"
                           }
                         },
                         "required": [
                           "key",
-                          "name"
+                          "label",
+                          "key_id",
+                          "resource_id",
+                          "user_id"
                         ],
                         "additionalProperties": false
                       }
@@ -787,27 +795,11 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "privacy_features": {
-                            "type": "object",
-                            "properties": {}
+                          "alg": {
+                            "type": "string"
                           },
-                          "pi": {
-                            "type": "object",
-                            "properties": {
-                              "technic": {
-                                "type": "integer"
-                              },
-                              "context": {
-                                "type": "integer"
-                              },
-                              "comportment": {
-                                "type": "integer"
-                              },
-                              "version": {
-                                "type": "integer"
-                              }
-                            },
-                            "additionalProperties": true
+                          "crv": {
+                            "type": "string"
                           },
                           "date_insert": {
                             "type": "string",
@@ -817,15 +809,6 @@
                             "type": "string",
                             "format": "date-time"
                           },
-                          "contact_id": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          },
-                          "user_id": {
-                            "type": "string"
-                          },
                           "expire_date": {
                             "type": "string",
                             "format": "date-time"
@@ -833,20 +816,53 @@
                           "fingerprint": {
                             "type": "string"
                           },
-                          "key": {
+                          "kty": {
                             "type": "string"
                           },
-                          "name": {
+                          "key_id": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "resource_id": {
+                            "type": "string"
+                          },
+                          "resource_type": {
                             "type": "string"
                           },
                           "size": {
                             "type": "integer",
                             "format": "int32"
+                          },
+                          "use": {
+                            "type": "string"
+                          },
+                          "user_id": {
+                            "type": "string"
+                          },
+                          "x": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "y": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "key": {
+                            "type": "string",
+                            "description": "DER or PEM key, base64 encoded"
+                          },
+                          "label": {
+                            "type": "string"
                           }
                         },
                         "required": [
                           "key",
-                          "name"
+                          "label",
+                          "key_id",
+                          "resource_id",
+                          "user_id"
                         ],
                         "additionalProperties": false
                       }
@@ -2268,8 +2284,8 @@
                       "protocol": {
                         "type": "string",
                         "enum": [
-                          "imap",
-                          "smtp"
+                          "email",
+                          "twitter"
                         ]
                       },
                       "status": {
@@ -2325,7 +2341,7 @@
     },
     "/v2/identities/remotes": {
       "get": {
-        "description": "returns the list of user's remote identities",
+        "description": "returns the list of user's remote identities, or filtered if query param",
         "tags": [
           "identities"
         ],
@@ -2334,7 +2350,14 @@
             "basicAuth": []
           }
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "pending",
+            "in": "query",
+            "type": "string",
+            "required": false
+          }
+        ],
         "produces": [
           "application/json"
         ],
@@ -2382,8 +2405,8 @@
                       "protocol": {
                         "type": "string",
                         "enum": [
-                          "imap",
-                          "smtp"
+                          "email",
+                          "twitter"
                         ]
                       },
                       "status": {
@@ -2478,8 +2501,8 @@
                 "protocol": {
                   "type": "string",
                   "enum": [
-                    "imap",
-                    "smtp"
+                    "email",
+                    "twitter"
                   ]
                 },
                 "status": {
@@ -2587,8 +2610,8 @@
                 "protocol": {
                   "type": "string",
                   "enum": [
-                    "imap",
-                    "smtp"
+                    "email",
+                    "twitter"
                   ]
                 },
                 "status": {
@@ -2790,8 +2813,8 @@
                     "protocol": {
                       "type": "string",
                       "enum": [
-                        "imap",
-                        "smtp"
+                        "email",
+                        "twitter"
                       ]
                     },
                     "status": {
@@ -2842,8 +2865,8 @@
                 "protocol": {
                   "type": "string",
                   "enum": [
-                    "imap",
-                    "smtp"
+                    "email",
+                    "twitter"
                   ]
                 },
                 "status": {
@@ -3266,6 +3289,189 @@
         }
       }
     },
+    "/v2/providers": {
+      "get": {
+        "description": "returns list of supported external providers for remote identities creation",
+        "tags": [
+          "identities",
+          "providers"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of supported providers",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "providers": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/providers/{provider_name}": {
+      "get": {
+        "description": "returns provider's properties, notably the url to call for initiating Oauth process",
+        "tags": [
+          "identities",
+          "providers"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "provider_name",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "providers infos",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "oauth_request_url": {
+                  "type": "string"
+                },
+                "protocol": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/providers/{provider_name}/callback": {
+      "get": {
+        "description": "url registered at provider to which its API will redirect user after user authentication",
+        "tags": [
+          "identities",
+          "providers"
+        ],
+        "security": [],
+        "parameters": [
+          {
+            "name": "provider_name",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "a simple message for user to inform Oauth process completion",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/test/oauth": {
+      "get": {
+        "description": "serves an index to test Oauth processes",
+        "tags": [
+          "providers"
+        ],
+        "security": [],
+        "parameters": [],
+        "produces": [
+          "text/html"
+        ],
+        "responses": {
+          "200": {
+            "description": "index to trigger oauth popup"
+          }
+        }
+      }
+    },
     "/v1/contacts": {
       "get": {
         "description": "Returns contacts belonging to current user according to given parameters",
@@ -3586,27 +3792,11 @@
                         "items": {
                           "type": "object",
                           "properties": {
-                            "privacy_features": {
-                              "type": "object",
-                              "properties": {}
+                            "alg": {
+                              "type": "string"
                             },
-                            "pi": {
-                              "type": "object",
-                              "properties": {
-                                "technic": {
-                                  "type": "integer"
-                                },
-                                "context": {
-                                  "type": "integer"
-                                },
-                                "comportment": {
-                                  "type": "integer"
-                                },
-                                "version": {
-                                  "type": "integer"
-                                }
-                              },
-                              "additionalProperties": true
+                            "crv": {
+                              "type": "string"
                             },
                             "date_insert": {
                               "type": "string",
@@ -3616,15 +3806,6 @@
                               "type": "string",
                               "format": "date-time"
                             },
-                            "contact_id": {
-                              "type": "string"
-                            },
-                            "type": {
-                              "type": "string"
-                            },
-                            "user_id": {
-                              "type": "string"
-                            },
                             "expire_date": {
                               "type": "string",
                               "format": "date-time"
@@ -3632,20 +3813,53 @@
                             "fingerprint": {
                               "type": "string"
                             },
-                            "key": {
+                            "kty": {
                               "type": "string"
                             },
-                            "name": {
+                            "key_id": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string"
+                            },
+                            "resource_id": {
+                              "type": "string"
+                            },
+                            "resource_type": {
                               "type": "string"
                             },
                             "size": {
                               "type": "integer",
                               "format": "int32"
+                            },
+                            "use": {
+                              "type": "string"
+                            },
+                            "user_id": {
+                              "type": "string"
+                            },
+                            "x": {
+                              "type": "integer",
+                              "format": "int64"
+                            },
+                            "y": {
+                              "type": "integer",
+                              "format": "int64"
+                            },
+                            "key": {
+                              "type": "string",
+                              "description": "DER or PEM key, base64 encoded"
+                            },
+                            "label": {
+                              "type": "string"
                             }
                           },
                           "required": [
                             "key",
-                            "name"
+                            "label",
+                            "key_id",
+                            "resource_id",
+                            "user_id"
                           ],
                           "additionalProperties": false
                         }
@@ -3860,27 +4074,11 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "privacy_features": {
-                        "type": "object",
-                        "properties": {}
+                      "alg": {
+                        "type": "string"
                       },
-                      "pi": {
-                        "type": "object",
-                        "properties": {
-                          "technic": {
-                            "type": "integer"
-                          },
-                          "context": {
-                            "type": "integer"
-                          },
-                          "comportment": {
-                            "type": "integer"
-                          },
-                          "version": {
-                            "type": "integer"
-                          }
-                        },
-                        "additionalProperties": true
+                      "crv": {
+                        "type": "string"
                       },
                       "date_insert": {
                         "type": "string",
@@ -3890,15 +4088,6 @@
                         "type": "string",
                         "format": "date-time"
                       },
-                      "contact_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      },
-                      "user_id": {
-                        "type": "string"
-                      },
                       "expire_date": {
                         "type": "string",
                         "format": "date-time"
@@ -3906,20 +4095,53 @@
                       "fingerprint": {
                         "type": "string"
                       },
-                      "key": {
+                      "kty": {
                         "type": "string"
                       },
-                      "name": {
+                      "key_id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "resource_id": {
+                        "type": "string"
+                      },
+                      "resource_type": {
                         "type": "string"
                       },
                       "size": {
                         "type": "integer",
                         "format": "int32"
+                      },
+                      "use": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "x": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "y": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "key": {
+                        "type": "string",
+                        "description": "DER or PEM key, base64 encoded"
+                      },
+                      "label": {
+                        "type": "string"
                       }
                     },
                     "required": [
                       "key",
-                      "name"
+                      "label",
+                      "key_id",
+                      "resource_id",
+                      "user_id"
                     ],
                     "additionalProperties": false
                   }
@@ -4234,27 +4456,11 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "privacy_features": {
-                        "type": "object",
-                        "properties": {}
+                      "alg": {
+                        "type": "string"
                       },
-                      "pi": {
-                        "type": "object",
-                        "properties": {
-                          "technic": {
-                            "type": "integer"
-                          },
-                          "context": {
-                            "type": "integer"
-                          },
-                          "comportment": {
-                            "type": "integer"
-                          },
-                          "version": {
-                            "type": "integer"
-                          }
-                        },
-                        "additionalProperties": true
+                      "crv": {
+                        "type": "string"
                       },
                       "date_insert": {
                         "type": "string",
@@ -4264,15 +4470,6 @@
                         "type": "string",
                         "format": "date-time"
                       },
-                      "contact_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      },
-                      "user_id": {
-                        "type": "string"
-                      },
                       "expire_date": {
                         "type": "string",
                         "format": "date-time"
@@ -4280,20 +4477,53 @@
                       "fingerprint": {
                         "type": "string"
                       },
-                      "key": {
+                      "kty": {
                         "type": "string"
                       },
-                      "name": {
+                      "key_id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "resource_id": {
+                        "type": "string"
+                      },
+                      "resource_type": {
                         "type": "string"
                       },
                       "size": {
                         "type": "integer",
                         "format": "int32"
+                      },
+                      "use": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "x": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "y": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "key": {
+                        "type": "string",
+                        "description": "DER or PEM key, base64 encoded"
+                      },
+                      "label": {
+                        "type": "string"
                       }
                     },
                     "required": [
                       "key",
-                      "name"
+                      "label",
+                      "key_id",
+                      "resource_id",
+                      "user_id"
                     ],
                     "additionalProperties": false
                   }
@@ -4722,27 +4952,11 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "privacy_features": {
-                            "type": "object",
-                            "properties": {}
+                          "alg": {
+                            "type": "string"
                           },
-                          "pi": {
-                            "type": "object",
-                            "properties": {
-                              "technic": {
-                                "type": "integer"
-                              },
-                              "context": {
-                                "type": "integer"
-                              },
-                              "comportment": {
-                                "type": "integer"
-                              },
-                              "version": {
-                                "type": "integer"
-                              }
-                            },
-                            "additionalProperties": true
+                          "crv": {
+                            "type": "string"
                           },
                           "date_insert": {
                             "type": "string",
@@ -4752,15 +4966,6 @@
                             "type": "string",
                             "format": "date-time"
                           },
-                          "contact_id": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          },
-                          "user_id": {
-                            "type": "string"
-                          },
                           "expire_date": {
                             "type": "string",
                             "format": "date-time"
@@ -4768,20 +4973,53 @@
                           "fingerprint": {
                             "type": "string"
                           },
-                          "key": {
+                          "kty": {
                             "type": "string"
                           },
-                          "name": {
+                          "key_id": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "resource_id": {
+                            "type": "string"
+                          },
+                          "resource_type": {
                             "type": "string"
                           },
                           "size": {
                             "type": "integer",
                             "format": "int32"
+                          },
+                          "use": {
+                            "type": "string"
+                          },
+                          "user_id": {
+                            "type": "string"
+                          },
+                          "x": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "y": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "key": {
+                            "type": "string",
+                            "description": "DER or PEM key, base64 encoded"
+                          },
+                          "label": {
+                            "type": "string"
                           }
                         },
                         "required": [
                           "key",
-                          "name"
+                          "label",
+                          "key_id",
+                          "resource_id",
+                          "user_id"
                         ],
                         "additionalProperties": false
                       }
@@ -5058,27 +5296,11 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "privacy_features": {
-                        "type": "object",
-                        "properties": {}
+                      "alg": {
+                        "type": "string"
                       },
-                      "pi": {
-                        "type": "object",
-                        "properties": {
-                          "technic": {
-                            "type": "integer"
-                          },
-                          "context": {
-                            "type": "integer"
-                          },
-                          "comportment": {
-                            "type": "integer"
-                          },
-                          "version": {
-                            "type": "integer"
-                          }
-                        },
-                        "additionalProperties": true
+                      "crv": {
+                        "type": "string"
                       },
                       "date_insert": {
                         "type": "string",
@@ -5088,15 +5310,6 @@
                         "type": "string",
                         "format": "date-time"
                       },
-                      "contact_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      },
-                      "user_id": {
-                        "type": "string"
-                      },
                       "expire_date": {
                         "type": "string",
                         "format": "date-time"
@@ -5104,20 +5317,53 @@
                       "fingerprint": {
                         "type": "string"
                       },
-                      "key": {
+                      "kty": {
                         "type": "string"
                       },
-                      "name": {
+                      "key_id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "resource_id": {
+                        "type": "string"
+                      },
+                      "resource_type": {
                         "type": "string"
                       },
                       "size": {
                         "type": "integer",
                         "format": "int32"
+                      },
+                      "use": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "x": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "y": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "key": {
+                        "type": "string",
+                        "description": "DER or PEM key, base64 encoded"
+                      },
+                      "label": {
+                        "type": "string"
                       }
                     },
                     "required": [
                       "key",
-                      "name"
+                      "label",
+                      "key_id",
+                      "resource_id",
+                      "user_id"
                     ],
                     "additionalProperties": false
                   }
@@ -5586,27 +5832,11 @@
                         "items": {
                           "type": "object",
                           "properties": {
-                            "privacy_features": {
-                              "type": "object",
-                              "properties": {}
+                            "alg": {
+                              "type": "string"
                             },
-                            "pi": {
-                              "type": "object",
-                              "properties": {
-                                "technic": {
-                                  "type": "integer"
-                                },
-                                "context": {
-                                  "type": "integer"
-                                },
-                                "comportment": {
-                                  "type": "integer"
-                                },
-                                "version": {
-                                  "type": "integer"
-                                }
-                              },
-                              "additionalProperties": true
+                            "crv": {
+                              "type": "string"
                             },
                             "date_insert": {
                               "type": "string",
@@ -5616,15 +5846,6 @@
                               "type": "string",
                               "format": "date-time"
                             },
-                            "contact_id": {
-                              "type": "string"
-                            },
-                            "type": {
-                              "type": "string"
-                            },
-                            "user_id": {
-                              "type": "string"
-                            },
                             "expire_date": {
                               "type": "string",
                               "format": "date-time"
@@ -5632,20 +5853,53 @@
                             "fingerprint": {
                               "type": "string"
                             },
-                            "key": {
+                            "kty": {
                               "type": "string"
                             },
-                            "name": {
+                            "key_id": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string"
+                            },
+                            "resource_id": {
+                              "type": "string"
+                            },
+                            "resource_type": {
                               "type": "string"
                             },
                             "size": {
                               "type": "integer",
                               "format": "int32"
+                            },
+                            "use": {
+                              "type": "string"
+                            },
+                            "user_id": {
+                              "type": "string"
+                            },
+                            "x": {
+                              "type": "integer",
+                              "format": "int64"
+                            },
+                            "y": {
+                              "type": "integer",
+                              "format": "int64"
+                            },
+                            "key": {
+                              "type": "string",
+                              "description": "DER or PEM key, base64 encoded"
+                            },
+                            "label": {
+                              "type": "string"
                             }
                           },
                           "required": [
                             "key",
-                            "name"
+                            "label",
+                            "key_id",
+                            "resource_id",
+                            "user_id"
                           ],
                           "additionalProperties": false
                         }
@@ -5860,27 +6114,11 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "privacy_features": {
-                        "type": "object",
-                        "properties": {}
+                      "alg": {
+                        "type": "string"
                       },
-                      "pi": {
-                        "type": "object",
-                        "properties": {
-                          "technic": {
-                            "type": "integer"
-                          },
-                          "context": {
-                            "type": "integer"
-                          },
-                          "comportment": {
-                            "type": "integer"
-                          },
-                          "version": {
-                            "type": "integer"
-                          }
-                        },
-                        "additionalProperties": true
+                      "crv": {
+                        "type": "string"
                       },
                       "date_insert": {
                         "type": "string",
@@ -5890,15 +6128,6 @@
                         "type": "string",
                         "format": "date-time"
                       },
-                      "contact_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      },
-                      "user_id": {
-                        "type": "string"
-                      },
                       "expire_date": {
                         "type": "string",
                         "format": "date-time"
@@ -5906,20 +6135,53 @@
                       "fingerprint": {
                         "type": "string"
                       },
-                      "key": {
+                      "kty": {
                         "type": "string"
                       },
-                      "name": {
+                      "key_id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "resource_id": {
+                        "type": "string"
+                      },
+                      "resource_type": {
                         "type": "string"
                       },
                       "size": {
                         "type": "integer",
                         "format": "int32"
+                      },
+                      "use": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "x": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "y": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "key": {
+                        "type": "string",
+                        "description": "DER or PEM key, base64 encoded"
+                      },
+                      "label": {
+                        "type": "string"
                       }
                     },
                     "required": [
                       "key",
-                      "name"
+                      "label",
+                      "key_id",
+                      "resource_id",
+                      "user_id"
                     ],
                     "additionalProperties": false
                   }
@@ -6237,27 +6499,11 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "privacy_features": {
-                        "type": "object",
-                        "properties": {}
+                      "alg": {
+                        "type": "string"
                       },
-                      "pi": {
-                        "type": "object",
-                        "properties": {
-                          "technic": {
-                            "type": "integer"
-                          },
-                          "context": {
-                            "type": "integer"
-                          },
-                          "comportment": {
-                            "type": "integer"
-                          },
-                          "version": {
-                            "type": "integer"
-                          }
-                        },
-                        "additionalProperties": true
+                      "crv": {
+                        "type": "string"
                       },
                       "date_insert": {
                         "type": "string",
@@ -6267,15 +6513,6 @@
                         "type": "string",
                         "format": "date-time"
                       },
-                      "contact_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      },
-                      "user_id": {
-                        "type": "string"
-                      },
                       "expire_date": {
                         "type": "string",
                         "format": "date-time"
@@ -6283,20 +6520,53 @@
                       "fingerprint": {
                         "type": "string"
                       },
-                      "key": {
+                      "kty": {
                         "type": "string"
                       },
-                      "name": {
+                      "key_id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "resource_id": {
+                        "type": "string"
+                      },
+                      "resource_type": {
                         "type": "string"
                       },
                       "size": {
                         "type": "integer",
                         "format": "int32"
+                      },
+                      "use": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "x": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "y": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "key": {
+                        "type": "string",
+                        "description": "DER or PEM key, base64 encoded"
+                      },
+                      "label": {
+                        "type": "string"
                       }
                     },
                     "required": [
                       "key",
-                      "name"
+                      "label",
+                      "key_id",
+                      "resource_id",
+                      "user_id"
                     ],
                     "additionalProperties": false
                   }
@@ -6728,27 +6998,11 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "privacy_features": {
-                            "type": "object",
-                            "properties": {}
+                          "alg": {
+                            "type": "string"
                           },
-                          "pi": {
-                            "type": "object",
-                            "properties": {
-                              "technic": {
-                                "type": "integer"
-                              },
-                              "context": {
-                                "type": "integer"
-                              },
-                              "comportment": {
-                                "type": "integer"
-                              },
-                              "version": {
-                                "type": "integer"
-                              }
-                            },
-                            "additionalProperties": true
+                          "crv": {
+                            "type": "string"
                           },
                           "date_insert": {
                             "type": "string",
@@ -6758,15 +7012,6 @@
                             "type": "string",
                             "format": "date-time"
                           },
-                          "contact_id": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          },
-                          "user_id": {
-                            "type": "string"
-                          },
                           "expire_date": {
                             "type": "string",
                             "format": "date-time"
@@ -6774,20 +7019,53 @@
                           "fingerprint": {
                             "type": "string"
                           },
-                          "key": {
+                          "kty": {
                             "type": "string"
                           },
-                          "name": {
+                          "key_id": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "resource_id": {
+                            "type": "string"
+                          },
+                          "resource_type": {
                             "type": "string"
                           },
                           "size": {
                             "type": "integer",
                             "format": "int32"
+                          },
+                          "use": {
+                            "type": "string"
+                          },
+                          "user_id": {
+                            "type": "string"
+                          },
+                          "x": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "y": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "key": {
+                            "type": "string",
+                            "description": "DER or PEM key, base64 encoded"
+                          },
+                          "label": {
+                            "type": "string"
                           }
                         },
                         "required": [
                           "key",
-                          "name"
+                          "label",
+                          "key_id",
+                          "resource_id",
+                          "user_id"
                         ],
                         "additionalProperties": false
                       }
@@ -7064,27 +7342,11 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "privacy_features": {
-                        "type": "object",
-                        "properties": {}
+                      "alg": {
+                        "type": "string"
                       },
-                      "pi": {
-                        "type": "object",
-                        "properties": {
-                          "technic": {
-                            "type": "integer"
-                          },
-                          "context": {
-                            "type": "integer"
-                          },
-                          "comportment": {
-                            "type": "integer"
-                          },
-                          "version": {
-                            "type": "integer"
-                          }
-                        },
-                        "additionalProperties": true
+                      "crv": {
+                        "type": "string"
                       },
                       "date_insert": {
                         "type": "string",
@@ -7094,15 +7356,6 @@
                         "type": "string",
                         "format": "date-time"
                       },
-                      "contact_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      },
-                      "user_id": {
-                        "type": "string"
-                      },
                       "expire_date": {
                         "type": "string",
                         "format": "date-time"
@@ -7110,20 +7363,53 @@
                       "fingerprint": {
                         "type": "string"
                       },
-                      "key": {
+                      "kty": {
                         "type": "string"
                       },
-                      "name": {
+                      "key_id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "resource_id": {
+                        "type": "string"
+                      },
+                      "resource_type": {
                         "type": "string"
                       },
                       "size": {
                         "type": "integer",
                         "format": "int32"
+                      },
+                      "use": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "x": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "y": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "key": {
+                        "type": "string",
+                        "description": "DER or PEM key, base64 encoded"
+                      },
+                      "label": {
+                        "type": "string"
                       }
                     },
                     "required": [
                       "key",
-                      "name"
+                      "label",
+                      "key_id",
+                      "resource_id",
+                      "user_id"
                     ],
                     "additionalProperties": false
                   }
@@ -7679,27 +7965,11 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "privacy_features": {
-                            "type": "object",
-                            "properties": {}
+                          "alg": {
+                            "type": "string"
                           },
-                          "pi": {
-                            "type": "object",
-                            "properties": {
-                              "technic": {
-                                "type": "integer"
-                              },
-                              "context": {
-                                "type": "integer"
-                              },
-                              "comportment": {
-                                "type": "integer"
-                              },
-                              "version": {
-                                "type": "integer"
-                              }
-                            },
-                            "additionalProperties": true
+                          "crv": {
+                            "type": "string"
                           },
                           "date_insert": {
                             "type": "string",
@@ -7709,15 +7979,6 @@
                             "type": "string",
                             "format": "date-time"
                           },
-                          "contact_id": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          },
-                          "user_id": {
-                            "type": "string"
-                          },
                           "expire_date": {
                             "type": "string",
                             "format": "date-time"
@@ -7725,20 +7986,53 @@
                           "fingerprint": {
                             "type": "string"
                           },
-                          "key": {
+                          "kty": {
                             "type": "string"
                           },
-                          "name": {
+                          "key_id": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "resource_id": {
+                            "type": "string"
+                          },
+                          "resource_type": {
                             "type": "string"
                           },
                           "size": {
                             "type": "integer",
                             "format": "int32"
+                          },
+                          "use": {
+                            "type": "string"
+                          },
+                          "user_id": {
+                            "type": "string"
+                          },
+                          "x": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "y": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "key": {
+                            "type": "string",
+                            "description": "DER or PEM key, base64 encoded"
+                          },
+                          "label": {
+                            "type": "string"
                           }
                         },
                         "required": [
                           "key",
-                          "name"
+                          "label",
+                          "key_id",
+                          "resource_id",
+                          "user_id"
                         ],
                         "additionalProperties": false
                       }
@@ -8015,27 +8309,11 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "privacy_features": {
-                        "type": "object",
-                        "properties": {}
+                      "alg": {
+                        "type": "string"
                       },
-                      "pi": {
-                        "type": "object",
-                        "properties": {
-                          "technic": {
-                            "type": "integer"
-                          },
-                          "context": {
-                            "type": "integer"
-                          },
-                          "comportment": {
-                            "type": "integer"
-                          },
-                          "version": {
-                            "type": "integer"
-                          }
-                        },
-                        "additionalProperties": true
+                      "crv": {
+                        "type": "string"
                       },
                       "date_insert": {
                         "type": "string",
@@ -8045,15 +8323,6 @@
                         "type": "string",
                         "format": "date-time"
                       },
-                      "contact_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      },
-                      "user_id": {
-                        "type": "string"
-                      },
                       "expire_date": {
                         "type": "string",
                         "format": "date-time"
@@ -8061,20 +8330,53 @@
                       "fingerprint": {
                         "type": "string"
                       },
-                      "key": {
+                      "kty": {
                         "type": "string"
                       },
-                      "name": {
+                      "key_id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "resource_id": {
+                        "type": "string"
+                      },
+                      "resource_type": {
                         "type": "string"
                       },
                       "size": {
                         "type": "integer",
                         "format": "int32"
+                      },
+                      "use": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "x": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "y": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "key": {
+                        "type": "string",
+                        "description": "DER or PEM key, base64 encoded"
+                      },
+                      "label": {
+                        "type": "string"
                       }
                     },
                     "required": [
                       "key",
-                      "name"
+                      "label",
+                      "key_id",
+                      "resource_id",
+                      "user_id"
                     ],
                     "additionalProperties": false
                   }
@@ -8225,6 +8527,647 @@
           },
           "424": {
             "description": "server failed to execute the request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/contacts/{contact_id}/publickeys": {
+      "post": {
+        "description": "Add a pgp public key to a contact",
+        "tags": [
+          "pgp",
+          "keys"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "contact_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "key",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "description": "DER or PEM key, base64 encoded"
+                },
+                "label": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "key",
+                "label"
+              ],
+              "additionalProperties": false
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Public key created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string",
+                  "description": "url to retrieve public key /contacts/{contact_id}/publickeys/{publickey_id}"
+                },
+                "publickey_id": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "malform request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable entity. Parameters were valid but the server was unable to create the key (probably because of a semantically erroneous document)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Returns all publickeys linked to contact",
+        "tags": [
+          "pgp",
+          "keys"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "contact_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of public keys",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "number of keys found"
+                },
+                "pubkeys": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "alg": {
+                        "type": "string"
+                      },
+                      "crv": {
+                        "type": "string"
+                      },
+                      "date_insert": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "date_update": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "expire_date": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "fingerprint": {
+                        "type": "string"
+                      },
+                      "kty": {
+                        "type": "string"
+                      },
+                      "key_id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "resource_id": {
+                        "type": "string"
+                      },
+                      "resource_type": {
+                        "type": "string"
+                      },
+                      "size": {
+                        "type": "integer",
+                        "format": "int32"
+                      },
+                      "use": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "x": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "y": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "key": {
+                        "type": "string",
+                        "description": "DER or PEM key, base64 encoded"
+                      },
+                      "label": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "key",
+                      "label",
+                      "key_id",
+                      "resource_id",
+                      "user_id"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/contacts/{contact_id}/publickeys/{pubkey_id}": {
+      "get": {
+        "description": "Retrieve publickey",
+        "tags": [
+          "keys",
+          "pgp"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "contact_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "pubkey_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with json object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "alg": {
+                  "type": "string"
+                },
+                "crv": {
+                  "type": "string"
+                },
+                "date_insert": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "date_update": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "expire_date": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "fingerprint": {
+                  "type": "string"
+                },
+                "kty": {
+                  "type": "string"
+                },
+                "key_id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "resource_id": {
+                  "type": "string"
+                },
+                "resource_type": {
+                  "type": "string"
+                },
+                "size": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "use": {
+                  "type": "string"
+                },
+                "user_id": {
+                  "type": "string"
+                },
+                "x": {
+                  "type": "integer",
+                  "format": "int64"
+                },
+                "y": {
+                  "type": "integer",
+                  "format": "int64"
+                },
+                "key": {
+                  "type": "string",
+                  "description": "DER or PEM key, base64 encoded"
+                },
+                "label": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "key",
+                "label",
+                "key_id",
+                "resource_id",
+                "user_id"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "description": "update a public key",
+        "tags": [
+          "keys",
+          "pgp"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "contact_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "pubkey_id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "patch",
+            "in": "body",
+            "required": true,
+            "description": "the patch to apply. Property _label_ is the only one patchable.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "current_state": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "current_state",
+                "label"
+              ]
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "Update successful. No body is returned."
+          },
+          "400": {
+            "description": "json payload malformed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden patch. Server is refusing to apply the given patch's properties to this ressource",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "public key not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "json is valid but patch conflicts with db's current state",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "json is valid but patch was semantically malformed or unprocessable",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a public key",
+        "tags": [
+          "keys",
+          "pgp"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "contact_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "pubkey_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful deletion"
+          },
+          "401": {
+            "description": "Unauthorized access",
             "schema": {
               "type": "object",
               "properties": {
@@ -12002,27 +12945,11 @@
                         "items": {
                           "type": "object",
                           "properties": {
-                            "privacy_features": {
-                              "type": "object",
-                              "properties": {}
+                            "alg": {
+                              "type": "string"
                             },
-                            "pi": {
-                              "type": "object",
-                              "properties": {
-                                "technic": {
-                                  "type": "integer"
-                                },
-                                "context": {
-                                  "type": "integer"
-                                },
-                                "comportment": {
-                                  "type": "integer"
-                                },
-                                "version": {
-                                  "type": "integer"
-                                }
-                              },
-                              "additionalProperties": true
+                            "crv": {
+                              "type": "string"
                             },
                             "date_insert": {
                               "type": "string",
@@ -12032,15 +12959,6 @@
                               "type": "string",
                               "format": "date-time"
                             },
-                            "contact_id": {
-                              "type": "string"
-                            },
-                            "type": {
-                              "type": "string"
-                            },
-                            "user_id": {
-                              "type": "string"
-                            },
                             "expire_date": {
                               "type": "string",
                               "format": "date-time"
@@ -12048,20 +12966,53 @@
                             "fingerprint": {
                               "type": "string"
                             },
-                            "key": {
+                            "kty": {
                               "type": "string"
                             },
-                            "name": {
+                            "key_id": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string"
+                            },
+                            "resource_id": {
+                              "type": "string"
+                            },
+                            "resource_type": {
                               "type": "string"
                             },
                             "size": {
                               "type": "integer",
                               "format": "int32"
+                            },
+                            "use": {
+                              "type": "string"
+                            },
+                            "user_id": {
+                              "type": "string"
+                            },
+                            "x": {
+                              "type": "integer",
+                              "format": "int64"
+                            },
+                            "y": {
+                              "type": "integer",
+                              "format": "int64"
+                            },
+                            "key": {
+                              "type": "string",
+                              "description": "DER or PEM key, base64 encoded"
+                            },
+                            "label": {
+                              "type": "string"
                             }
                           },
                           "required": [
                             "key",
-                            "name"
+                            "label",
+                            "key_id",
+                            "resource_id",
+                            "user_id"
                           ],
                           "additionalProperties": false
                         }
@@ -12202,27 +13153,11 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "privacy_features": {
-                        "type": "object",
-                        "properties": {}
+                      "alg": {
+                        "type": "string"
                       },
-                      "pi": {
-                        "type": "object",
-                        "properties": {
-                          "technic": {
-                            "type": "integer"
-                          },
-                          "context": {
-                            "type": "integer"
-                          },
-                          "comportment": {
-                            "type": "integer"
-                          },
-                          "version": {
-                            "type": "integer"
-                          }
-                        },
-                        "additionalProperties": true
+                      "crv": {
+                        "type": "string"
                       },
                       "date_insert": {
                         "type": "string",
@@ -12232,15 +13167,6 @@
                         "type": "string",
                         "format": "date-time"
                       },
-                      "contact_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      },
-                      "user_id": {
-                        "type": "string"
-                      },
                       "expire_date": {
                         "type": "string",
                         "format": "date-time"
@@ -12248,20 +13174,53 @@
                       "fingerprint": {
                         "type": "string"
                       },
-                      "key": {
+                      "kty": {
                         "type": "string"
                       },
-                      "name": {
+                      "key_id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "resource_id": {
+                        "type": "string"
+                      },
+                      "resource_type": {
                         "type": "string"
                       },
                       "size": {
                         "type": "integer",
                         "format": "int32"
+                      },
+                      "use": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "x": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "y": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "key": {
+                        "type": "string",
+                        "description": "DER or PEM key, base64 encoded"
+                      },
+                      "label": {
+                        "type": "string"
                       }
                     },
                     "required": [
                       "key",
-                      "name"
+                      "label",
+                      "key_id",
+                      "resource_id",
+                      "user_id"
                     ],
                     "additionalProperties": false
                   }
@@ -12517,27 +13476,11 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "privacy_features": {
-                            "type": "object",
-                            "properties": {}
+                          "alg": {
+                            "type": "string"
                           },
-                          "pi": {
-                            "type": "object",
-                            "properties": {
-                              "technic": {
-                                "type": "integer"
-                              },
-                              "context": {
-                                "type": "integer"
-                              },
-                              "comportment": {
-                                "type": "integer"
-                              },
-                              "version": {
-                                "type": "integer"
-                              }
-                            },
-                            "additionalProperties": true
+                          "crv": {
+                            "type": "string"
                           },
                           "date_insert": {
                             "type": "string",
@@ -12547,15 +13490,6 @@
                             "type": "string",
                             "format": "date-time"
                           },
-                          "contact_id": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string"
-                          },
-                          "user_id": {
-                            "type": "string"
-                          },
                           "expire_date": {
                             "type": "string",
                             "format": "date-time"
@@ -12563,20 +13497,53 @@
                           "fingerprint": {
                             "type": "string"
                           },
-                          "key": {
+                          "kty": {
                             "type": "string"
                           },
-                          "name": {
+                          "key_id": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "resource_id": {
+                            "type": "string"
+                          },
+                          "resource_type": {
                             "type": "string"
                           },
                           "size": {
                             "type": "integer",
                             "format": "int32"
+                          },
+                          "use": {
+                            "type": "string"
+                          },
+                          "user_id": {
+                            "type": "string"
+                          },
+                          "x": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "y": {
+                            "type": "integer",
+                            "format": "int64"
+                          },
+                          "key": {
+                            "type": "string",
+                            "description": "DER or PEM key, base64 encoded"
+                          },
+                          "label": {
+                            "type": "string"
                           }
                         },
                         "required": [
                           "key",
-                          "name"
+                          "label",
+                          "key_id",
+                          "resource_id",
+                          "user_id"
                         ],
                         "additionalProperties": false
                       }
@@ -12673,27 +13640,11 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "privacy_features": {
-                        "type": "object",
-                        "properties": {}
+                      "alg": {
+                        "type": "string"
                       },
-                      "pi": {
-                        "type": "object",
-                        "properties": {
-                          "technic": {
-                            "type": "integer"
-                          },
-                          "context": {
-                            "type": "integer"
-                          },
-                          "comportment": {
-                            "type": "integer"
-                          },
-                          "version": {
-                            "type": "integer"
-                          }
-                        },
-                        "additionalProperties": true
+                      "crv": {
+                        "type": "string"
                       },
                       "date_insert": {
                         "type": "string",
@@ -12703,15 +13654,6 @@
                         "type": "string",
                         "format": "date-time"
                       },
-                      "contact_id": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string"
-                      },
-                      "user_id": {
-                        "type": "string"
-                      },
                       "expire_date": {
                         "type": "string",
                         "format": "date-time"
@@ -12719,20 +13661,53 @@
                       "fingerprint": {
                         "type": "string"
                       },
-                      "key": {
+                      "kty": {
                         "type": "string"
                       },
-                      "name": {
+                      "key_id": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "resource_id": {
+                        "type": "string"
+                      },
+                      "resource_type": {
                         "type": "string"
                       },
                       "size": {
                         "type": "integer",
                         "format": "int32"
+                      },
+                      "use": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "string"
+                      },
+                      "x": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "y": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "key": {
+                        "type": "string",
+                        "description": "DER or PEM key, base64 encoded"
+                      },
+                      "label": {
+                        "type": "string"
                       }
                     },
                     "required": [
                       "key",
-                      "name"
+                      "label",
+                      "key_id",
+                      "resource_id",
+                      "user_id"
                     ],
                     "additionalProperties": false
                   }
