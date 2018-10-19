@@ -80,7 +80,7 @@ class ContactItem extends PureComponent {
     className: PropTypes.string,
     onSelectEntity: PropTypes.func.isRequired,
     isContactSelected: PropTypes.bool.isRequired,
-    i18n: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     tags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   };
   static defaultProps = {

@@ -73,7 +73,7 @@ render() {
           button
           to={URL_DEVICES}
         >
-          <Trans className="s-new-device-info__agreement" id="new-device-info.i-understand">I understand</Trans>
+          <Trans id="new-device-info.i-understand">I understand</Trans>
         </Link>
       </div>
     </div>

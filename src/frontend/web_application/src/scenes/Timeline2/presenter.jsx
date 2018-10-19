@@ -139,7 +139,7 @@ class Timeline extends Component {
         return (
           <div className="s-timeline__new-msg">
             <Button display="inline" onClick={this.makeHandleClickClearNotifications(clearNotifications)}>
-              <Trans id="timeline.new_messages">You have {notifications.length} new messages</Trans>
+              <Trans id="timeline.new_messages" values={[notifications.length]}>You have {0} new messages</Trans>
             </Button>
           </div>
         );
