@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { Button, InputFileGroup, Spinner } from '../../../../components/';
 import { getMaxSize } from '../../../../services/config';
 
@@ -101,7 +101,7 @@ class ImportContactForm extends Component {
           <InputFileGroup
             onInputChange={this.handleInputFileChange}
             errors={errors}
-            descr={i18n._('import-contact.form.descr', { defaults: 'You can import one .vcf or .vcard file.' })}
+            descr={i18n._('import-contact.form.descr', null, { defaults: 'You can import one .vcf or .vcard file.' })}
             fileTypes={VALID_EXT}
             maxSize={getMaxSize()}
           />

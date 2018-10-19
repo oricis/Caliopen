@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Trans, withI18n } from 'lingui-react';
+import { Trans, withI18n } from '@lingui/react';
 import Moment from 'react-moment';
 import { Button, Spinner, Icon, TextareaFieldGroup, DefList } from '../../../../components';
 import getPGPManager from '../../../../services/openpgp-manager';
@@ -85,11 +85,11 @@ class OpenPGPKey extends Component {
       i18n, locale, children, publicKeyArmored, privateKeyArmored, editMode,
     } = this.props;
     const openpgpStatuses = {
-      invalid: i18n._('openpgp.status.invalid', { defaults: 'Invalid' }),
-      expired: i18n._('openpgp.status.expired', { defaults: 'Expired' }),
-      revoked: i18n._('openpgp.status.revoked', { defaults: 'Revoked' }),
-      valid: i18n._('openpgp.status.valid', { defaults: 'Valid' }),
-      no_self_cert: i18n._('openpgp.status.no_self_cert', { defaults: 'No self cert' }),
+      invalid: i18n._('openpgp.status.invalid', null, { defaults: 'Invalid' }),
+      expired: i18n._('openpgp.status.expired', null, { defaults: 'Expired' }),
+      revoked: i18n._('openpgp.status.revoked', null, { defaults: 'Revoked' }),
+      valid: i18n._('openpgp.status.valid', null, { defaults: 'Valid' }),
+      no_self_cert: i18n._('openpgp.status.no_self_cert', null, { defaults: 'No self cert' }),
     };
 
     return (
@@ -144,25 +144,25 @@ class OpenPGPKey extends Component {
             <DefList
               className="m-openpgp-key__detail"
               definitions={[
-                { title: i18n._('openpgp.details.identities', { defaults: 'Identities' }), descriptions: this.state.openpgpKey.userIds },
-                { title: i18n._('openpgp.details.algorithm', { defaults: 'Algorithm' }), descriptions: [this.state.openpgpKey.algorithm] },
-                { title: i18n._('openpgp.details.key-size', { defaults: 'Key size' }), descriptions: [this.state.openpgpKey.bitSize] },
-                { title: i18n._('openpgp.details.status', { defaults: 'Status' }), descriptions: [openpgpStatuses[this.state.openpgpKey.keyStatus]] },
-                { title: i18n._('openpgp.details.creation', { defaults: 'Creation' }), descriptions: this.state.openpgpKey.created ? [<Moment format="ll" locale={locale}>{this.state.openpgpKey.created}</Moment>] : [] },
-                { title: i18n._('openpgp.details.expiration', { defaults: 'Expiration' }), descriptions: this.state.openpgpKey.expirationTime ? [<Moment format="ll" locale={locale}>{this.state.openpgpKey.expirationTime}</Moment>] : [] },
+                { title: i18n._('openpgp.details.identities', null, { defaults: 'Identities' }), descriptions: this.state.openpgpKey.userIds },
+                { title: i18n._('openpgp.details.algorithm', null, { defaults: 'Algorithm' }), descriptions: [this.state.openpgpKey.algorithm] },
+                { title: i18n._('openpgp.details.key-size', null, { defaults: 'Key size' }), descriptions: [this.state.openpgpKey.bitSize] },
+                { title: i18n._('openpgp.details.status', null, { defaults: 'Status' }), descriptions: [openpgpStatuses[this.state.openpgpKey.keyStatus]] },
+                { title: i18n._('openpgp.details.creation', null, { defaults: 'Creation' }), descriptions: this.state.openpgpKey.created ? [<Moment format="ll" locale={locale}>{this.state.openpgpKey.created}</Moment>] : [] },
+                { title: i18n._('openpgp.details.expiration', null, { defaults: 'Expiration' }), descriptions: this.state.openpgpKey.expirationTime ? [<Moment format="ll" locale={locale}>{this.state.openpgpKey.expirationTime}</Moment>] : [] },
               ]}
             />
 
             <TextareaFieldGroup
               className="m-openpgp-key__detail"
-              label={i18n._('openpgp.public-key', { defaults: 'Public key' })}
+              label={i18n._('openpgp.public-key', null, { defaults: 'Public key' })}
               readOnly
               value={publicKeyArmored}
             />
             {privateKeyArmored && (
               <TextareaFieldGroup
                 className="m-openpgp-key__detail"
-                label={i18n._('openpgp.private-key', { defaults: 'Private key' })}
+                label={i18n._('openpgp.private-key', null, { defaults: 'Private key' })}
                 readOnly
                 value={privateKeyArmored}
               />

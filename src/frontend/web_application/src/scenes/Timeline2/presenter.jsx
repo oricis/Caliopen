@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import StickyNavBar from '../../layouts/Page/components/Navigation/components/StickyNavBar';
 import { MessageNotifications } from '../../modules/notification';
 import { Button, InfiniteScroll, Spinner } from '../../components';
@@ -139,7 +139,7 @@ class Timeline extends Component {
         return (
           <div className="s-timeline__new-msg">
             <Button display="inline" onClick={this.makeHandleClickClearNotifications(clearNotifications)}>
-              <Trans id="timeline.new_messages">You have {notifications.length} new messages</Trans>
+              <Trans id="timeline.new_messages" values={[notifications.length]}>You have {0} new messages</Trans>
             </Button>
           </div>
         );

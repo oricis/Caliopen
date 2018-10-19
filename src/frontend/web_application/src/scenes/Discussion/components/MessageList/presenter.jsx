@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { Button, Spinner } from '../../../../components';
 import Message from '../../components/Message';
 import ProtocolSwitch from '../../components/ProtocolSwitch';

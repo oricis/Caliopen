@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { Button, Confirm, Icon, Spinner, Dropdown, withDropdownControl, TextFieldGroup } from '../../../../components/';
 import { ContactAvatarLetter } from '../../../../modules/avatar';
 import DiscussionDraft, { TopRow, BodyRow, BottomRow } from '../DiscussionDraft';
@@ -100,7 +100,7 @@ class NewDraftForm extends Component {
   renderDraftType() {
     const { i18n } = this.props;
     const typeTranslations = {
-      email: i18n._('reply-form.protocol.email', { defaults: 'email' }),
+      email: i18n._('reply-form.protocol.email', null, { defaults: 'email' }),
     };
     const draftType = typeTranslations[this.state.draft.type];
 
@@ -205,7 +205,7 @@ class NewDraftForm extends Component {
               <TextFieldGroup
                 className="m-new-draft__subject"
                 display="inline"
-                label={i18n._('messages.compose.form.subject.label', { defaults: 'Subject' })}
+                label={i18n._('messages.compose.form.subject.label', null, { defaults: 'Subject' })}
                 name="subject"
                 value={this.state.draft.subject}
                 onChange={this.handleChange}

@@ -1,15 +1,15 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
-import { withI18n } from 'lingui-react';
 import classnames from 'classnames';
+// import { withI18n } from '@lingui/react';
 import { Badge, Icon, Link } from '../../../../components';
 import ParticipantsIconLetter from '../../../../components/ParticipantsIconLetter';
 import { getAveragePI, getPiClass } from '../../../../modules/pi';
 
 import './style.scss';
 
-@withI18n()
+// @withI18n()
 class DiscussionItem extends PureComponent {
   static propTypes = {
     discussion: PropTypes.shape({
@@ -21,7 +21,7 @@ class DiscussionItem extends PureComponent {
       unread_count: PropTypes.number.isRequired,
       pi: PropTypes.shape({}).isRequired,
     }).isRequired,
-    i18n: PropTypes.shape({}).isRequired,
+    // i18n: PropTypes.shape({}).isRequired,
     onSelectDiscussion: PropTypes.func.isRequired,
     isDiscussionSelected: PropTypes.bool.isRequired,
     // isDeleting: PropTypes.bool.isRequired,
@@ -94,7 +94,7 @@ class DiscussionItem extends PureComponent {
         {/*
         <div className="s-discussion-item__select">
           <Checkbox
-            label={i18n._('message-list.action.select_single_discussion',
+            label={i18n._('message-list.action.select_single_discussion', null,
               { defaults: 'Select/deselect this discussion' })}
             onChange={this.onCheckboxChange}
             id={discussionId}

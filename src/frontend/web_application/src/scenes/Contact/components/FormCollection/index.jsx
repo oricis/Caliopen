@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { FieldArray, FormSection } from 'redux-form';
 import { Button, FormGrid, FormRow, FormColumn } from '../../../../components/';
 import TextList, { TextItem } from '../../../../components/TextList';

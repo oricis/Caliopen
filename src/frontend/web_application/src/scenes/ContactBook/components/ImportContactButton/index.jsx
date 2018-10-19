@@ -1,7 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Trans, withI18n } from 'lingui-react';
+import { Trans, withI18n } from '@lingui/react';
 import { Button, Modal } from '../../../../components';
 import ImportContact from '../ImportContact';
 
@@ -38,8 +38,8 @@ class ImportContactButton extends PureComponent {
     return (
       <Modal
         isOpen={this.state.isImportModalOpen}
-        contentLabel={i18n._('import-contact.action.import_contacts', { defaults: 'Import contacts' })}
-        title={i18n._('import-contact.action.import_contacts', { defaults: 'Import contacts' })}
+        contentLabel={i18n._('import-contact.action.import_contacts', null, { defaults: 'Import contacts' })}
+        title={i18n._('import-contact.action.import_contacts', null, { defaults: 'Import contacts' })}
         onClose={this.handleCloseImportModal}
       >
         <ImportContact

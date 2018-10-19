@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Trans, Plural } from 'lingui-react';
+import { Trans, Plural } from '@lingui/react';
 import ContactList from './components/ContactList';
 import { PageTitle, Spinner, Button, ActionBar, Checkbox, SidebarLayout, NavList, NavItem, Confirm, Modal } from '../../components';
 import { withPush } from '../../modules/routing';
@@ -182,7 +182,7 @@ class ContactBook extends Component {
     return (
       <Modal
         isOpen={this.state.isTagModalOpen}
-        contentLabel={i18n._('tags.header.label', { defaults: 'Tags' })}
+        contentLabel={i18n._('tags.header.label', null, { defaults: 'Tags' })}
         title={title}
         onClose={this.handleCloseTags}
       >
@@ -324,7 +324,7 @@ class ContactBook extends Component {
 
     return (
       <div className="s-contact-book">
-        <PageTitle title={i18n._('header.menu.contacts', { defaults: 'Contacts' })} />
+        <PageTitle title={i18n._('header.menu.contacts', null, { defaults: 'Contacts' })} />
         {this.renderActionBar()}
         <SidebarLayout
           sidebar={(

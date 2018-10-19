@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Trans, withI18n } from 'lingui-react';
+import { Trans, withI18n } from '@lingui/react';
 import { Link, Title, Button, Modal } from '../../components';
 import './style.scss';
 
@@ -44,10 +44,10 @@ renderModal = () => {
     <Modal
       isOpen={this.state.isModalOpen}
       className="s-new-device-info__modal"
-      title={i18n._('new-device-info.modal.title', { defaults: 'About new device' })}
+      title={i18n._('new-device-info.modal.title', null, { defaults: 'About new device' })}
       onClose={this.handleCloseModal}
     >
-      <div dangerouslySetInnerHTML={{ __html: i18n._('new-device-info.learn-more.content', { defaults: '<p>In order to compute the Privacy Index (PI) of a message, Caliopen needs to know more about the terminal you\'re using to consult said message: by nature a laptop isn\'t as private as a desktop (since you will be using your laptop in public more often).</p><p>Likewise a shared terminal (e.g. a free access computer in a public place) cannot be considered as private as your personal computer only you use.</p><p>Caliopen will take into account the informations you enter on the next screen, to better assess whether your more private messages can be displayed without a risk to be read by a third party: by default only the messages adapted to your terminal\'s privacy will be displayed.</p><p>It is therefore important to precisely describe a terminal\'s attributes on the first use, so that Caliopen can more effectively protect your privacy.</p>' }) }} />
+      <div dangerouslySetInnerHTML={{ __html: i18n._('new-device-info.learn-more.content', null, { defaults: '<p>In order to compute the Privacy Index (PI) of a message, Caliopen needs to know more about the terminal you\'re using to consult said message: by nature a laptop isn\'t as private as a desktop (since you will be using your laptop in public more often).</p><p>Likewise a shared terminal (e.g. a free access computer in a public place) cannot be considered as private as your personal computer only you use.</p><p>Caliopen will take into account the informations you enter on the next screen, to better assess whether your more private messages can be displayed without a risk to be read by a third party: by default only the messages adapted to your terminal\'s privacy will be displayed.</p><p>It is therefore important to precisely describe a terminal\'s attributes on the first use, so that Caliopen can more effectively protect your privacy.</p>' }) }} />
     </Modal>
   );
 }
@@ -73,7 +73,7 @@ render() {
           button
           to={URL_DEVICES}
         >
-          <Trans className="s-new-device-info__agreement" id="new-device-info.i-understand">I understand</Trans>
+          <Trans id="new-device-info.i-understand">I understand</Trans>
         </Link>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { withI18n } from 'lingui-react';
+import { withI18n } from '@lingui/react';
 import { getRecipients, getRecipientsExceptUser, isUserRecipient } from '../../../../services/message';
 
 @withI18n()
@@ -21,10 +21,10 @@ class MessageRecipients extends PureComponent {
     const recipients = this.getRecipientsArray();
     const numberRecipients = recipients.length;
 
-    if (numberRecipients === 0) return i18n._('message.participants.me', { defaults: 'Me' });
+    if (numberRecipients === 0) return i18n._('message.participants.me', null, { defaults: 'Me' });
     if (!shorten || numberRecipients === 1) return recipients.join(', ');
 
-    return i18n._('messages.participants.and_x_others', { values: { first: recipients[0], number: numberRecipients - 1 }, defaults: '{first} and {number, plural, one {# other} other {# others}}' });
+    return i18n._('messages.participants.and_x_others', { first: recipients[0], number: numberRecipients - 1 }, { defaults: '{first} and {number, plural, one {# other} other {# others}}' });
   };
 
   getRecipientsLabels = (recipients) => {
@@ -39,7 +39,7 @@ class MessageRecipients extends PureComponent {
 
     return isUserRecipient(message, user) ?
       [
-        i18n._('message.participants.me', { defaults: 'Me' }),
+        i18n._('message.participants.me', null, { defaults: 'Me' }),
         ...this.getRecipientsLabels(getRecipientsExceptUser(message, user)),
       ]
       :

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { Button, FieldErrors, TextareaFieldGroup, FormGrid, FormRow, FormColumn } from '../../../../components/';
 
 function generateStateFromProps(props, prevState) {

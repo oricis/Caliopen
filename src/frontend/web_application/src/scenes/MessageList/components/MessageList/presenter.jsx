@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import classnames from 'classnames';
 import { Button, MenuBar, Spinner, Confirm } from '../../../../components';
 import DayMessageList from '../DayMessageList';

@@ -87,7 +87,7 @@ class TagInput extends Component {
         />
         <Button
           onClick={this.handleUpdateTag}
-          aria-label={i18n._('settings.tag.action.save-tag', { defaults: 'Save' })}
+          aria-label={i18n._('settings.tag.action.save-tag', null, { defaults: 'Save' })}
           icon={this.state.isFetching ? <Spinner isLoading display="inline" /> : 'check'}
           disabled={this.state.isFetching}
         />
@@ -110,7 +110,7 @@ class TagInput extends Component {
         {tag.type === TAG_TYPE_USER && (
           <Button
             className="m-tag-input__delete"
-            aria-label={i18n._('settings.tags.action.delete', { defaults: 'Delete' })}
+            aria-label={i18n._('settings.tags.action.delete', null, { defaults: 'Delete' })}
             disabled={this.state.isFetching}
             onClick={this.handleDeleteTag}
             icon={this.state.isFetching ? <Spinner isLoading display="inline" /> : 'remove'}
