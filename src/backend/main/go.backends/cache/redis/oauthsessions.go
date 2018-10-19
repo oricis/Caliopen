@@ -15,11 +15,9 @@ const (
 	oauthSessionTTL    = 10 // ttl in minutes
 )
 
-// GetResetPasswordSession returns reset password session values stored for the user_id, if any
-// Returns a nil 'session' if key is not found
-func (cache *RedisBackend) GetOauthSession(userId string) (session *OauthSession, err error) {
-	key := oauthSessionPrefix + userId
-	session_str, err := cache.client.Get(key).Bytes()
+// GetOauthSession unmarshal json found at `key`, if any, into an OauthSession struct
+func (cache *RedisBackend) GetOauthSession(key string) (session *OauthSession, err error) {
+	session_str, err := cache.client.Get(oauthSessionPrefix + key).Bytes()
 	if err != nil {
 		return nil, err
 	}
@@ -31,19 +29,15 @@ func (cache *RedisBackend) GetOauthSession(userId string) (session *OauthSession
 	return
 }
 
-// SetResetPasswordSession stores key,value for given user_id and reset_token.
-// The key will be in the form of "resetsession::user_id".
-// Func will also call setResetPasswordToken() to add a secondary key in the form "resettoken::reset_token" pointing to the same value
-// Func returns a pointer to the Pass_reset_session object that represents values stored in the cache.
-// user_id and reset_token strings must be well-formatted, they will not be checked.
-func (cache *RedisBackend) SetOauthSession(userId string, session *OauthSession) (err error) {
+// SetOauthSession put `OauthSession` as a json string at `key` prefixed with oauthSessionPrefix
+func (cache *RedisBackend) SetOauthSession(key string, session *OauthSession) (err error) {
 	ttl := oauthSessionTTL * time.Minute
 	session_str, err := json.Marshal(session)
 	if err != nil {
 		return err
 	}
 
-	_, err = cache.client.Set(oauthSessionPrefix+userId, session_str, ttl).Result()
+	_, err = cache.client.Set(oauthSessionPrefix+key, session_str, ttl).Result()
 	if err != nil {
 		return err
 	}
@@ -51,10 +45,9 @@ func (cache *RedisBackend) SetOauthSession(userId string, session *OauthSession)
 	return nil
 }
 
-// DeleteResetPasswordSession will delete two keys in a row :
-// the resetsession key and the resettoken key
-func (cache *RedisBackend) DeleteOauthSession(userId string) error {
-	_, err := cache.client.Del(oauthSessionPrefix + userId).Result()
+// DeleteOauthSession deletes value found at `key` prefixed with oauthSessionPrefix
+func (cache *RedisBackend) DeleteOauthSession(key string) error {
+	_, err := cache.client.Del(oauthSessionPrefix + key).Result()
 	if err != nil {
 		return err
 	}
