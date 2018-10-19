@@ -8,19 +8,19 @@ Which tests are launched depends on the files changed (services modified).
 
 ### Pull requests
 
-When a PR is created or a new commit pushed to a PR, Drone captures the event `pull_request`. Depending on the files changed, Drone will launch a **lint check, unit tests and functional tests** in the case of the frontend (more info below), or unit tests for python. Go and Python tests are launched based on the dependecies of the service, but there are currently no tests implemented for GO.
+When a PR is created or a new commit pushed to a PR, Drone captures the event `pull_request`. Depending on the files changed, Drone will launch a **lint check, unit tests and functional tests** in the case of the frontend (more info below), or unit tests for python. Go and Python tests are prepared to be launched based on the modifications made to the dependencies of each service, this means a service is only tested if any of its dependencies is modified. There are currently no GO tests and Python tests are global and not tied to a service, so the pipeline currently only tests python in case of a modification to the backend. Future improvements include individual service testing.
 
 Those tests are made using the [merge and checkout strategy][2] so the tests will show the results as if the branch was be merged.
 
 ### Push
 
-When a branch is merged or commit pushed to `develop`, the event is caught by drone. Every service modified is then built and published to the Docker registry. Each Docker image is published with 2 tags: develop and the commit sha. In the case of a merge, only services modified in the merged branch are built. In the case of a direct push, there is no way of checking which files are changed, so every service is built and published.
+When a branch is merged or commit pushed to `develop`, the event is caught by drone. Every service **modified** is then built and published to the Docker registry. Each Docker image is published with 2 tags: develop and the commit sha. In the case of a merge, only services modified in the merged branch are built. In the case of a direct push, there is no way of checking which files are changed, so every service is built and published.
 
 A push on the `master` branch does not trigger any test nor build.
 
 ### Tag
 
-When a tag is created on any branch, Drone will build and publish Docker images with 2 tags: latest and the version of the release. The number of the version is extracted from the tag, stripping the "release-" part.
+When a ``release-${version}`` tag is created on any branch, Drone will build and publish Docker images with 2 tags: latest and the version of the release. The number of the version is extracted from the tag, stripping the "release-" part.
 
 ## Frontend
 
