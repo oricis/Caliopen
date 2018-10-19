@@ -373,6 +373,20 @@ pipeline:
       - latest
       - ${DRONE_TAG##release-}
 
+  build-twitterworker-release:
+    group: release2
+    image: plugins/docker
+    dockerfile: src/backend/Dockerfile.twitter-worker
+    context: /srv/caliopen/src/backend
+    repo: registry.caliopen.org/caliopen_twitter_worker
+    secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD, DOCKER_REGISTRY ]
+    when:
+      ref: [ "refs/tags/release-*" ]
+      event: [ tag ]
+    tags:
+    - latest
+    - ${DRONE_TAG##release-}
+
     build-all-release:
     group: release3
     image: plugins/docker
