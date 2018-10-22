@@ -15,6 +15,7 @@ import EmailForm from './components/EmailForm';
 import PhoneForm from './components/PhoneForm';
 import ImForm from './components/ImForm';
 import AddressForm from './components/AddressForm';
+import PublicKeyForm from './components/PublicKeyForm';
 // FIXME: birthday deactivated due to redux-form bug cf. AddFormFieldForm
 // import BirthdayForm from './components/BirthdayForm';
 import OrgaForm from './components/OrgaForm';
@@ -450,12 +451,17 @@ class Contact extends Component {
             propertyName="organizations"
             addButtonLabel={<Trans id="contact.action.add-organization">Add an organization</Trans>}
           />
-
           <Title hr><Trans id="contact.identities">Identities</Trans></Title>
           <FormCollection
             component={(<IdentityForm />)}
             propertyName="identities"
             addButtonLabel={<Trans id="contact.action.add-identity">Add an identity</Trans>}
+          />
+          <Title hr><Trans>Public Keys</Trans></Title>
+          <FormCollection
+            component={(<PublicKeyForm />)}
+            propertyName="public-keys"
+            addButtonLabel={<Trans id="contact.action.add-public-key">Add a public key</Trans>}
           />
           {this.renderEditBar()}
         </form>
