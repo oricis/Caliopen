@@ -3,6 +3,12 @@
 	"ignore": "test",
 	"package": [
 		{
+			"checksumSHA1": "j/0+O4eJ99Jrb9un/bwi5npLyOM=",
+			"path": "cloud.google.com/go/compute/metadata",
+			"revision": "d85eb0e711d3ac52c5d912b762c25044c8a140c7",
+			"revisionTime": "2018-10-22T23:34:07Z"
+		},
+		{
 			"checksumSHA1": "TNQPCiuDshNVgldXgCFznGBWEP0=",
 			"path": "github.com/CaliOpen/go-twitter/twitter",
 			"revision": "916eb1f6e7049ec5b2eb45665eca91fed68e7bc9",
@@ -43,18 +49,6 @@
 			"path": "github.com/cenkalti/backoff",
 			"revision": "adb73d5bf0d9237fab19ff58aebf658449e326df",
 			"revisionTime": "2018-06-08T13:49:19Z"
-		},
-		{
-			"checksumSHA1": "zSAENn9MzTCRqsEb4QXDZglhIbE=",
-			"path": "github.com/dghubble/oauth1",
-			"revision": "c0a405baf29f5ed2616bc1ef6b778532c960aa5b",
-			"revisionTime": "2018-05-22T04:49:49Z"
-		},
-		{
-			"checksumSHA1": "uo3tvE16IbjxYfdFIhKUx0HCn8A=",
-			"path": "github.com/dghubble/sling",
-			"revision": "c519674860ff275e0ceb12caf5d87b31765c4e71",
-			"revisionTime": "2018-01-25T22:13:52Z"
 		},
 		{
 			"checksumSHA1": "wQAOzoxEJpvog97VJ66++OGBpXY=",
@@ -105,6 +99,12 @@
 			"revisionTime": "2018-10-13T18:28:54Z"
 		},
 		{
+			"checksumSHA1": "zSAENn9MzTCRqsEb4QXDZglhIbE=",
+			"path": "github.com/dghubble/oauth1",
+			"revision": "c0a405baf29f5ed2616bc1ef6b778532c960aa5b",
+			"revisionTime": "2018-05-22T04:49:49Z"
+		},
+		{
 			"checksumSHA1": "3mj2/UJNPtEiVVw5TN+sTFi088c=",
 			"path": "github.com/dghubble/oauth1/twitter",
 			"revision": "c0a405baf29f5ed2616bc1ef6b778532c960aa5b",
@@ -115,6 +115,12 @@
 			"path": "github.com/dghubble/sessions",
 			"revision": "26dc61fdb7361714ff41a80a2ad18cbdf8ba1956",
 			"revisionTime": "2016-10-06T20:21:22Z"
+		},
+		{
+			"checksumSHA1": "uo3tvE16IbjxYfdFIhKUx0HCn8A=",
+			"path": "github.com/dghubble/sling",
+			"revision": "c519674860ff275e0ceb12caf5d87b31765c4e71",
+			"revisionTime": "2018-01-25T22:13:52Z"
 		},
 		{
 			"checksumSHA1": "kEy5i/jCIjemJK/sytEXjV5qWl4=",
