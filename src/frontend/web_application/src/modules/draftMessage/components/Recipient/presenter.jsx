@@ -29,7 +29,7 @@ class Recipient extends Component {
         large
         className={className}
         onDelete={this.handleClickRemove}
-        ariaLabel={i18n._('messages.compose.action.remove-recipient', { defaults: 'Remove recipient' })}
+        ariaLabel={i18n._('messages.compose.action.remove-recipient', null, { defaults: 'Remove recipient' })}
       >
         <Icon type={getIconType(participant.protocol)} rightSpaced />{participant.address}
       </Badge>

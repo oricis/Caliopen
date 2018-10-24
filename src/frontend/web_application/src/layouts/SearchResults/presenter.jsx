@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import PropTypes from 'prop-types';
 import { matchPath, withRouter } from 'react-router-dom';
 import MenuBar from '../../components/MenuBar';

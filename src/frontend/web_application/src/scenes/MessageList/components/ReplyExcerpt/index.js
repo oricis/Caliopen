@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { withI18n } from 'lingui-react';
+import { withI18n } from '@lingui/react';
 import { createMessageCollectionStateSelector } from '../../../../store/selectors/message';
 import Presenter from './presenter';
 

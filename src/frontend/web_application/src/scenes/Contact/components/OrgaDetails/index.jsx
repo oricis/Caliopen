@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import PropTypes from 'prop-types';
 
 class OrgaDetails extends PureComponent {

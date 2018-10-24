@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { Field } from 'redux-form';
 import renderReduxField from '../../../../services/renderReduxField';
 import { Button, Icon, FieldErrors, DatePickerGroup as DatePickerGroupBase, Fieldset, Legend, FormGrid, FormRow, FormColumn } from '../../../../components';
@@ -59,7 +59,7 @@ class BirthdayForm extends PureComponent {
                 id="contact-form-birthday"
                 className="m-contact-profile-form__birthday"
                 inputClassName="m-contact-profile-form__birthday-input"
-                label={i18n._('contact_profile.form.birthday.label', { defaults: 'Birthday' })}
+                label={i18n._('contact_profile.form.birthday.label', null, { defaults: 'Birthday' })}
                 onDateChange={this.handleBirthdayChanges}
                 showMonthDropdown
                 showYearDropdown

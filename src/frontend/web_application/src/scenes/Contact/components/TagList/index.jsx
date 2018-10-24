@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { withI18n } from 'lingui-react';
+import { withI18n } from '@lingui/react';
 import { WithTags, getTagLabel } from '../../../../modules/tags';
 import { Link, NavList, NavItem } from '../../../../components/';
 
@@ -34,7 +34,7 @@ class TagList extends PureComponent {
         <NavItem>
           {this.renderItem({
             tagName: '',
-            label: i18n._('tag_list.all_contacts', { defaults: 'All contacts' }),
+            label: i18n._('tag_list.all_contacts', null, { defaults: 'All contacts' }),
           })}
         </NavItem>
         <WithTags render={userTags => this.sortTags(i18n, userTags).map(tag => (

@@ -14,7 +14,6 @@ from elasticsearch import Elasticsearch
 from caliopen_storage.config import Configuration
 
 log = logging.getLogger(__name__)
-logging.basicConfig(level=logging.WARN)
 
 
 def migrate_index(**kwargs):

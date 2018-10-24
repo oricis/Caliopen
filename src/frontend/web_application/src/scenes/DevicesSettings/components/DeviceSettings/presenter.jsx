@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { Section } from '../../../../components';
 import DeviceForm from '../DeviceForm';
 import DeviceInformation from '../DeviceInformation';

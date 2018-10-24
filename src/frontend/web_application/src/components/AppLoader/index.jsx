@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import Spinner from '../Spinner';
 import Brand from '../Brand';
 import Link from '../Link';
@@ -51,7 +51,7 @@ class AppLoader extends Component {
     return this.renderContent((
       <Fragment>
         <p><Trans id="app-loader.feedback.failure">Something went wrong. Are you offline ?</Trans></p>
-        <p><Link href="/"><Trans id="app-loader.actin.retry">Please click here to retry</Trans></Link></p>
+        <p><Link href="/"><Trans id="app-loader.action.retry">Please click here to retry</Trans></Link></p>
       </Fragment>
     ));
   }

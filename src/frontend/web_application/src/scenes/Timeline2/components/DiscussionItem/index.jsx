@@ -1,13 +1,15 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
-import { withI18n } from 'lingui-react';
+import classnames from 'classnames';
+// import { withI18n } from '@lingui/react';
 import { Badge, Icon, Link } from '../../../../components';
 import ParticipantsIconLetter from '../../../../components/ParticipantsIconLetter';
+import { getAveragePI, getPiClass } from '../../../../modules/pi';
 
 import './style.scss';
 
-@withI18n()
+// @withI18n()
 class DiscussionItem extends PureComponent {
   static propTypes = {
     discussion: PropTypes.shape({
@@ -17,8 +19,9 @@ class DiscussionItem extends PureComponent {
       date_insert: PropTypes.string.isRequired,
       last_message_id: PropTypes.string.isRequired,
       unread_count: PropTypes.number.isRequired,
+      pi: PropTypes.shape({}).isRequired,
     }).isRequired,
-    i18n: PropTypes.shape({}).isRequired,
+    // i18n: PropTypes.shape({}).isRequired,
     onSelectDiscussion: PropTypes.func.isRequired,
     isDiscussionSelected: PropTypes.bool.isRequired,
     // isDeleting: PropTypes.bool.isRequired,
@@ -63,8 +66,9 @@ class DiscussionItem extends PureComponent {
   render() {
     const {
       excerpt, discussion_id: discussionId, total_count: total, date_insert: date,
-      last_message_id: lastMessageId, unread_count: unreadCount,
+      last_message_id: lastMessageId, unread_count: unreadCount, pi,
     } = this.props.discussion;
+    const piAggregate = getAveragePI(pi);
 
     // const { isDeleting, isDiscussionSelected, i18n } = this.props;
 
@@ -75,7 +79,7 @@ class DiscussionItem extends PureComponent {
         id={`discussion-${discussionId}`}
         data-nb-messages={total}
         data-date={date}
-        className={`s-discussion-item${unreadCount ? ' is-unread' : ''}`}
+        className={classnames('s-discussion-item', { 's-discussion-item--is-unread': unreadCount }, `s-discussion-item--${getPiClass(piAggregate)}`)}
       >
         <ParticipantsIconLetter labels={labels} />
         <a className="s-discussion-item__participants">{labels.join(', ')}</a>
@@ -90,7 +94,7 @@ class DiscussionItem extends PureComponent {
         {/*
         <div className="s-discussion-item__select">
           <Checkbox
-            label={i18n._('message-list.action.select_single_discussion',
+            label={i18n._('message-list.action.select_single_discussion', null,
               { defaults: 'Select/deselect this discussion' })}
             onChange={this.onCheckboxChange}
             id={discussionId}

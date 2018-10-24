@@ -1,6 +1,6 @@
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { withI18n } from 'lingui-react';
+import { withI18n } from '@lingui/react';
 import { withUser } from '../../../../hoc/user';
 import { updateAll } from '../../../../store/modules/notification';
 import { messageNotificationsSelector } from '../../../../store/selectors/notification';

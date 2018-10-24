@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Trans, withI18n } from 'lingui-react';
+import { Trans, withI18n } from '@lingui/react';
 import FieldGroup from '../FieldGroup';
 import InputFile from '../InputFile';
 import FileSize from '../FileSize';
@@ -68,7 +68,7 @@ class InputFileGroup extends Component {
     const errors = [];
 
     if (!file) {
-      return Promise.reject(i18n._('input-file-group.error.file_is_required', { defaults: 'A file is required' }));
+      return Promise.reject(i18n._('input-file-group.error.file_is_required', null, { defaults: 'A file is required' }));
     }
 
     const ext = file.name ? `.${file.name.split('.').pop()}` : null;

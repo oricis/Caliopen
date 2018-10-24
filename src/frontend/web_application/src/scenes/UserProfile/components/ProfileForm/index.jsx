@@ -1,4 +1,4 @@
-import { withI18n } from 'lingui-react';
+import { withI18n } from '@lingui/react';
 import { compose } from 'redux';
 import Presenter from './presenter';
 

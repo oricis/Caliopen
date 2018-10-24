@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Moment from 'react-moment';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { WithTags, getTagLabel, getCleanedTagCollection } from '../../../../modules/tags';
 import MessageDate from '../../../../components/MessageDate';
 import { AuthorAvatarLetter, SIZE_SMALL } from '../../../../modules/avatar';

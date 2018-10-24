@@ -16,8 +16,8 @@ describe('component RadioFieldGroup', () => {
     );
 
     expect(comp.find('input').length).toEqual(2);
-    expect(comp.find('input [value=3]').prop('checked')).toEqual(true);
-    comp.find('input [value=1]').simulate('change');
+    expect(comp.find('input[value=3]').prop('checked')).toEqual(true);
+    comp.find('input[value=1]').simulate('change');
     expect(props.onChange).toHaveBeenCalled();
   });
 });

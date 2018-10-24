@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- /suggest apiv2 route use user.shard_id index not user.user_id
+- message python object use user not user_id
+
+## [0.12.1] 2018-10-04
+
+### Fixed
+
+- Share an index for many users, scalibility of elasticsearch does not work using old scheme
+
+
 ### Added
 
 - Add an email or a social identity to a contact trigger PGP key discovery process

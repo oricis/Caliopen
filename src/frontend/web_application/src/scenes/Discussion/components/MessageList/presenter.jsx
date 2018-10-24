@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { Button, Spinner } from '../../../../components';
 import Message from '../../components/Message';
 import ProtocolSwitch from '../../components/ProtocolSwitch';
-import { calcPiValue } from '../../../../modules/pi';
+import { getAveragePI } from '../../../../modules/pi';
 
 import './style.scss';
 
@@ -62,7 +62,7 @@ class MessageList extends Component {
         && this.findMessageBefore(message).type !== message.type) {
         messageList.push(<ProtocolSwitch
           newProtocol={message.type}
-          pi={calcPiValue(message)}
+          pi={getAveragePI(message.pi)}
           date={message.date}
           key={`switch-${message.message_id}`}
         />);

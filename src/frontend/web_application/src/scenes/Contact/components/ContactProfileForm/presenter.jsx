@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { Field } from 'redux-form';
 import ContactTitleField from '../ContactTitleField';
 import renderReduxField from '../../../../services/renderReduxField';
@@ -80,32 +80,32 @@ class ContactProfileForm extends Component {
             <Field
               component={TextFieldGroup}
               className="m-contact-profile-form__input"
-              label={i18n._('contact_profile.form.name-prefix.label', { defaults: 'Prefix' })}
-              placeholder={i18n._('contact_profile.form.name-prefix.label', { defaults: 'Prefix' })}
+              label={i18n._('contact_profile.form.name-prefix.label', null, { defaults: 'Prefix' })}
+              placeholder={i18n._('contact_profile.form.name-prefix.label', null, { defaults: 'Prefix' })}
               name="name_prefix"
               showLabelforSr
             />
             <Field
               component={TextFieldGroup}
               className="m-contact-profile-form__input"
-              label={i18n._('contact_profile.form.firstname.label', { defaults: 'Firstname' })}
-              placeholder={i18n._('contact_profile.form.firstname.label', { defaults: 'Firstname' })}
+              label={i18n._('contact_profile.form.firstname.label', null, { defaults: 'Firstname' })}
+              placeholder={i18n._('contact_profile.form.firstname.label', null, { defaults: 'Firstname' })}
               name="given_name"
               showLabelforSr
             />
             <Field
               component={TextFieldGroup}
               className="m-contact-profile-form__input"
-              label={i18n._('contact_profile.form.lastname.label', { defaults: 'Lastname' })}
-              placeholder={i18n._('contact_profile.form.lastname.label', { defaults: 'Lastname' })}
+              label={i18n._('contact_profile.form.lastname.label', null, { defaults: 'Lastname' })}
+              placeholder={i18n._('contact_profile.form.lastname.label', null, { defaults: 'Lastname' })}
               name="family_name"
               showLabelforSr
             />
             <Field
               component={TextFieldGroup}
               className="m-contact-profile-form__input"
-              label={i18n._('contact_profile.form.name-suffix.label', { defaults: 'Suffix' })}
-              placeholder={i18n._('contact_profile.form.name-suffix.label', { defaults: 'Suffix' })}
+              label={i18n._('contact_profile.form.name-suffix.label', null, { defaults: 'Suffix' })}
+              placeholder={i18n._('contact_profile.form.name-suffix.label', null, { defaults: 'Suffix' })}
               name="name_suffix"
               showLabelforSr
             />

@@ -43,7 +43,7 @@ class DiscussionTab extends Tab {
             title={label}
             className="m-tab__content"
           >
-            {discussion && (<AvatarLetter className="tab__icon" word={label} />)}
+            {discussion && (<AvatarLetter className="m-tab__icon" word={label} />)}
             {label}
           </ItemLink>
         )}

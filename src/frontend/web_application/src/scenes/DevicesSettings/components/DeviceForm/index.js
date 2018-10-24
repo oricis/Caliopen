@@ -1,6 +1,6 @@
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { withI18n } from 'lingui-react';
+import { withI18n } from '@lingui/react';
 import { saveDevice } from '../../../../modules/device';
 import { withNotification } from '../../../../modules/userNotify';
 import Presenter from './presenter';

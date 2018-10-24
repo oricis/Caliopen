@@ -1,4 +1,4 @@
-import { withI18n } from 'lingui-react';
+import { withI18n } from '@lingui/react';
 import { createSelector } from 'reselect';
 import { compose } from 'redux';
 import { connect } from 'react-redux';

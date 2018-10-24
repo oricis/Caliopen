@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans, withI18n } from 'lingui-react';
+import { withI18n } from '@lingui/react';
+import { Trans } from '@lingui/macro'; // eslint-disable-line import/no-extraneous-dependencies
 import { Callout, Confirm, Button, TextFieldGroup, SelectFieldGroup, CheckboxFieldGroup, FormGrid, FormRow, FormColumn, FieldErrors } from '../../../../components';
 import LastConnection from '../LastConnection';
 import './style.scss';
@@ -289,7 +290,7 @@ class RemoteIdentityEmail extends Component {
             <TextFieldGroup
               type="email"
               label={<Trans id="remote_identity.form.identifier.label">Email:</Trans>}
-              placeholder={i18n._('remote_identity.form.identifier.placeholder', { defaults: 'john@doe.tld' })}
+              placeholder={i18n._('remote_identity.form.identifier.placeholder', null, { defaults: 'john@doe.tld' })}
               value={this.state.remoteIdentity.identifier}
               errors={this.state.formErrors.identifier}
               onChange={this.handleParamsChange}

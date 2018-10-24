@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { Title, Link, Button, Icon, TextFieldGroup, FieldErrors, Fieldset, Legend, FormGrid, FormRow, FormColumn } from '../../../../components/';
 
 import './style.scss';
@@ -87,8 +87,8 @@ class ForgotPasswordForm extends Component {
                   <FormColumn rightSpace={false} bottomSpace>
                     <TextFieldGroup
                       theme="contrasted"
-                      label={i18n._('password.forgot-form.username.label', { defaults: 'Username' })}
-                      placeholder={i18n._('password.forgot-form.username.placeholder', { defaults: 'Username' })}
+                      label={i18n._('password.forgot-form.username.label', null, { defaults: 'Username' })}
+                      placeholder={i18n._('password.forgot-form.username.placeholder', null, { defaults: 'Username' })}
                       name="username"
                       value={this.state.formValues.username}
                       errors={errors.username}
@@ -98,8 +98,8 @@ class ForgotPasswordForm extends Component {
                   <FormColumn rightSpace={false} bottomSpace>
                     <TextFieldGroup
                       theme="contrasted"
-                      label={i18n._('password.forgot-form.recovery_email.label', { defaults: 'Recovery email' })}
-                      placeholder={i18n._('password.forgot-form.recovery_email.placeholder', { defaults: 'Recovery email' })}
+                      label={i18n._('password.forgot-form.recovery_email.label', null, { defaults: 'Recovery email' })}
+                      placeholder={i18n._('password.forgot-form.recovery_email.placeholder', null, { defaults: 'Recovery email' })}
                       name="recovery_email"
                       value={this.state.formValues.recovery_email}
                       errors={errors.recovery_email}

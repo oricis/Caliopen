@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans, NumberFormat } from 'lingui-react';
+import { Trans } from '@lingui/macro'; // eslint-disable-line import/no-extraneous-dependencies
+import { NumberFormat } from '@lingui/react';
 
 class FileSize extends Component {
   static propTypes = {

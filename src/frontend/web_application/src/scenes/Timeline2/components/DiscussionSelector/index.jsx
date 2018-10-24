@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withI18n, Trans, Plural } from 'lingui-react';
+import { withI18n, Trans, Plural } from '@lingui/react';
 import { Checkbox, Button, Spinner, Confirm } from '../../../../components/';
 
 import './style.scss';
@@ -50,7 +50,7 @@ class DiscussionSelector extends Component {
         <Button
           icon={isDeleting ? (<Spinner isLoading display="inline" />) : 'trash'}
           disabled
-          aria-label={i18n._('timeline.action.delete', { defaults: 'Delete selected' })}
+          aria-label={i18n._('timeline.action.delete', null, { defaults: 'Delete selected' })}
         />
       );
     }
@@ -64,7 +64,7 @@ class DiscussionSelector extends Component {
           <Button
             icon={isDeleting ? (<Spinner isLoading display="inline" />) : 'trash'}
             onClick={confirm}
-            aria-label={i18n._('timeline.action.delete', { defaults: 'Delete selected' })}
+            aria-label={i18n._('timeline.action.delete', null, { defaults: 'Delete selected' })}
           />
         )}
       />
@@ -95,14 +95,14 @@ class DiscussionSelector extends Component {
               icon="tags"
               onClick={this.handleEditTags}
               disabled={count === 0}
-              aria-label={i18n._('timeline.action.manage-tags', { defaults: 'Manage tags' })}
+              aria-label={i18n._('timeline.action.manage-tags', null, { defaults: 'Manage tags' })}
             />
             {this.renderDeleteButton()}
           </span>
           */}
         <span className="m-discussion-selector__checkbox">
           <Checkbox
-            label={i18n._('message-list.action.select_all_discussions', { defaults: 'Select/deselect all discussions' })}
+            label={i18n._('message-list.action.select_all_discussions', null, { defaults: 'Select/deselect all discussions' })}
             id="discussion-selector"
             checked={checked}
             indeterminate={indeterminate}

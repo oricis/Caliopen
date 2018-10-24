@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { matchPath, withRouter } from 'react-router-dom';
-import { withI18n } from 'lingui-react';
+import { withI18n } from '@lingui/react';
 import MenuBar from '../../components/MenuBar';
 
 @withI18n()
@@ -22,10 +22,10 @@ class User extends PureComponent {
     const { i18n, children, location: { pathname } } = this.props;
 
     const navLinks = [
-      { key: 'user.profile', label: i18n._('user.profile', { defaults: 'Profile' }), to: '/user/profile' },
-      // { key: 'user.privacy', label: i18n._('user.privacy', { defaults: 'Privacy' }), to:
+      { key: 'user.profile', label: i18n._('user.profile', null, { defaults: 'Profile' }), to: '/user/profile' },
+      // { key: 'user.privacy', label: i18n._('user.privacy', null, { defaults: 'Privacy' }), to:
       // '/user/privacy' },
-      { key: 'user.security', label: i18n._('user.security', { defaults: 'Security' }), to: '/user/security' },
+      { key: 'user.security', label: i18n._('user.security', null, { defaults: 'Security' }), to: '/user/security' },
     ].map(link => ({
       ...link,
       isActive: matchPath(pathname, { path: link.to, exact: false, strict: false }) && true,

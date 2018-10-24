@@ -15,16 +15,25 @@ class AuthenticatedLayout extends Component {
     user: undefined,
     settings: undefined,
   };
-  state = {};
+  state = {
+    initialized: false,
+  };
+
+  componentWillReceiveProps(nextProps) {
+    const { isFetching } = this.props;
+    this.setState(prevState => ({
+      initialized: prevState.initialized || (isFetching && !nextProps.isFetching),
+    }));
+  }
 
   render() {
     const {
-      isFetching, user, settings, children,
+      user, settings, children,
     } = this.props;
 
     const appLoadProps = {
-      isLoading: isFetching,
-      hasFailure: !isFetching && (!user || !settings),
+      isLoading: !this.state.initialized,
+      hasFailure: this.state.initialized && (!user || !settings),
       children,
     };
 

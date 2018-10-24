@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withI18n } from 'lingui-react';
+import { withI18n } from '@lingui/react';
 import { Button, Spinner } from '../../../../components';
 import TextFieldGroup from '../../../../components/TextFieldGroup';
 
@@ -65,8 +65,8 @@ class TagSearch extends Component {
           name="terms"
           value={this.state.terms}
           className="m-add-tag__input"
-          label={i18n._('tags.form.add.label', { defaults: 'Add a tag' })}
-          placeholder={i18n._('tags.form.add.placeholder', { defaults: 'New tag ...' })}
+          label={i18n._('tags.form.add.label', null, { defaults: 'Add a tag' })}
+          placeholder={i18n._('tags.form.add.placeholder', null, { defaults: 'New tag ...' })}
           onChange={this.handleChange}
           showLabelforSr
           errors={errors}
@@ -77,7 +77,7 @@ class TagSearch extends Component {
           disabled={isFetching}
           shape="plain"
           onClick={this.handleSubmit}
-          aria-label={i18n._('tags.action.add', { defaults: 'Add' })}
+          aria-label={i18n._('tags.action.add', null, { defaults: 'Add' })}
         />
       </div>
     );

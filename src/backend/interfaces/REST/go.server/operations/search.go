@@ -23,6 +23,7 @@ func SimpleSearch(ctx *gin.Context) {
 	}
 
 	user_uuid, _ := uuid.FromString(ctx.MustGet("user_id").(string))
+	shard_id := ctx.MustGet("shard_id").(string)
 	var user_UUID UUID
 	var limit, offset int
 	user_UUID.UnmarshalBinary(user_uuid.Bytes())
@@ -67,10 +68,11 @@ func SimpleSearch(ctx *gin.Context) {
 
 	// build the search object
 	search := IndexSearch{
-		User_id: user_UUID,
-		Limit:   limit,
-		Offset:  offset,
-		ILrange: GetImportanceLevel(ctx),
+		User_id:  user_UUID,
+		Shard_id: shard_id,
+		Limit:    limit,
+		Offset:   offset,
+		ILrange:  GetImportanceLevel(ctx),
 	}
 
 	if field, ok := query["field"]; ok {
