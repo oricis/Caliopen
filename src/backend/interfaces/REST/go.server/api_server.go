@@ -34,8 +34,9 @@ type (
 	}
 
 	APIConfig struct {
-		Host           string `mapstructure:"host"`
+		Interface      string `mapstructure:"listen_interface"`
 		Port           string `mapstructure:"port"`
+		Hostname       string `mapstructure:"hostname"`
 		SwaggerFile    string `mapstructure:"swaggerSpec"`
 		BackendConfig  `mapstructure:"BackendConfig"`
 		IndexConfig    `mapstructure:"IndexConfig"`
@@ -132,6 +133,7 @@ func (server *REST_API) initialize(config APIConfig) error {
 			BaseUrl:       config.NotifierConfig.BaseUrl,
 			TemplatesPath: config.NotifierConfig.TemplatesPath,
 		},
+		Hostname: config.Hostname + ":" + config.Port,
 	}
 
 	err := caliopen.Initialize(caliopenConfig)
@@ -172,7 +174,7 @@ func (server *REST_API) start() error {
 	server.AddHandlers(api)
 
 	// listens
-	addr := server.config.Host + ":" + server.config.Port
+	addr := server.config.Interface + ":" + server.config.Port
 	err = router.Run(addr)
 	if err != nil {
 		log.WithError(err).Warn("unable to start gin server")

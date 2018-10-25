@@ -18,4 +18,4 @@ COPY --from=builder /go/src/github.com/CaliOpen/Caliopen/src/backend/caliopen_re
 WORKDIR  "/etc/caliopen"
 ENTRYPOINT ["caliopen_rest", "serve", "-c" ,"apiv2", "--configpath" ,"/etc/caliopen"]
 
-EXPOSE 31415
+EXPOSE 6544

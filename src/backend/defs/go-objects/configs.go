@@ -6,11 +6,12 @@ package objects
 
 type (
 	CaliopenConfig struct {
-		RESTstoreConfig RESTstoreConfig
-		RESTindexConfig RESTIndexConfig
-		NatsConfig      NatsConfig
 		CacheConfig     CacheConfig
+		Hostname        string
+		NatsConfig      NatsConfig
 		NotifierConfig  NotifierConfig
+		RESTindexConfig RESTIndexConfig
+		RESTstoreConfig RESTstoreConfig
 	}
 
 	// REST API
