@@ -37,7 +37,7 @@ type (
 		PrivacyFeatures *PrivacyFeatures  `cql:"privacy_features"   json:"privacy_features,omitempty"`
 		Tags            []string          `cql:"tagnames"           json:"tags,omitempty"                 patch:"system"`
 		Title           string            `cql:"title"              json:"title,omitempty"                patch:"user"`
-		UserId          UUID              `cql:"user_id"            json:"user_id,omitempty"      elastic:"omit"`
+		UserId          UUID              `cql:"user_id"            json:"user_id,omitempty"`
 	}
 
 	// ContactByContactPoints is the model of a Cassandra table to lookup contacts by address/email/phone/etc.

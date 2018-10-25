@@ -1,6 +1,7 @@
 ApiConfig:
-  host: 0.0.0.0
+  listen_interface: 0.0.0.0
   port: 6544
+  hostname: localhost
   BackendConfig:
     backend_name: cassandra
     backend_settings:
@@ -57,9 +58,9 @@ ApiConfig:
       consumer_key:
       consumer_secret:
 ProxyConfig:
-  host: 0.0.0.0
+  listen_interface: 0.0.0.0
   port: 31415
   routes:
-  - /api/v2/: 127.0.0.1:6544
+  - /api/v2/: localhost:6544
   - /: apiv1:6543         # route "/" catch all other requests
 
