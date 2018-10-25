@@ -67,6 +67,8 @@ class IndexedModelMixin(object):
             if desc.is_primary_key:
                 if name != 'user_id':
                     idx.meta.id = getattr(self, name)
+                else:
+                    self._process_column(desc, idx)
             else:
                 self._process_column(desc, idx)
         for k, v in extras.items():
