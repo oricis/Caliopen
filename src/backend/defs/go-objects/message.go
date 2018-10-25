@@ -40,7 +40,7 @@ type Message struct {
 	Subject             string             `cql:"subject"                  json:"subject"          `
 	Tags                []string           `cql:"tagnames"                 json:"tags,omitempty"                     patch:"system" `
 	Type                string             `cql:"type"                     json:"type,omitempty"             `
-	User_id             UUID               `cql:"user_id"                  json:"user_id,omitempty"                  elastic:"omit"         formatter:"rfc4122"`
+	User_id             UUID               `cql:"user_id"                  json:"user_id,omitempty"                  formatter:"rfc4122"`
 }
 
 type Messages []*Message
