@@ -87,28 +87,62 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 
 		out := SmtpEmail{
 			EmailMessage: em,
+			MTAparams:    nil,
 			Response:     make(chan *DeliveryAck),
 		}
 		//checks if identity is local or remote
-		//fetch credentials accordingly
+		//fetch credentials and remote server info accordingly
 		firstIdentity, err := b.Store.RetrieveUserIdentity(m.User_id.String(), m.UserIdentities[0].String(), true) // handle one identity only for now
 		if err != nil {
 			b.natsReplyError(msg, fmt.Errorf("broker failed to retrieve sender's identity with error : %s", err))
 			return resp, err
 		}
-		switch firstIdentity.Protocol {
-		case SmtpProtocol:
-			out.RemoteCredentials = nil
-		case ImapProtocol:
+		switch firstIdentity.Type {
+		case RemoteIdentity:
 			if firstIdentity.Credentials != nil {
-				out.RemoteCredentials = &MTAparams{
-					firstIdentity.Infos["outserver"],
-					(*firstIdentity.Credentials)["outusername"],
-					(*firstIdentity.Credentials)["outpassword"],
+				authType, foundAuthType := firstIdentity.Infos["authtype"]
+				if foundAuthType {
+					switch authType {
+					case Oauth1:
+						err = errors.New("oauth1 mechanism not implemented")
+						b.natsReplyError(msg, err)
+						return resp, err
+					case Oauth2:
+						out.MTAparams = &MTAparams{
+							AuthType: Oauth2,
+							Host:     firstIdentity.Infos["outserver"],
+							Password: (*firstIdentity.Credentials)["oauth2token"],
+							User:     (*firstIdentity.Credentials)["username"],
+						}
+					case LoginPassword:
+						out.MTAparams = &MTAparams{
+							AuthType: LoginPassword,
+							Host:     firstIdentity.Infos["outserver"],
+							Password: (*firstIdentity.Credentials)["outpassword"],
+							User:     (*firstIdentity.Credentials)["outusername"],
+						}
+					default:
+						err = fmt.Errorf("unknown auth mechanism : <%s>", authType)
+						b.natsReplyError(msg, err)
+						return resp, err
+					}
+				} else {
+					// fallback by trying default LoginPassword mechanism
+					out.MTAparams = &MTAparams{
+						AuthType: LoginPassword,
+						Host:     firstIdentity.Infos["outserver"],
+						Password: (*firstIdentity.Credentials)["outpassword"],
+						User:     (*firstIdentity.Credentials)["outusername"],
+					}
 				}
+
 			} else {
-				out.RemoteCredentials = nil
+				err = fmt.Errorf("remote identity %s has no credentials", firstIdentity.Id.String())
+				b.natsReplyError(msg, err)
+				return resp, err
 			}
+		case LocalIdentity:
+		//nothing to do, MTAparams is already nil
 		default:
 			b.natsReplyError(msg, fmt.Errorf("broker can't handle sender's protocol %s", firstIdentity.Protocol))
 			return resp, err
@@ -121,7 +155,7 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 			case resp, ok := <-out.Response:
 				if resp.Err || !ok || resp == nil {
 					log.WithError(err).Warn("outbound: delivery error from MTA")
-					b.natsReplyError(msg, errors.New("outbound: delivery error from MTA : " + resp.Response ))
+					b.natsReplyError(msg, errors.New("outbound: delivery error from MTA : "+resp.Response))
 					return
 				} else {
 					err = b.SaveIndexSentEmail(resp)

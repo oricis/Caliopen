@@ -7,6 +7,7 @@ package caliopen_smtp
 import (
 	"bytes"
 	"crypto/tls"
+	"errors"
 	"fmt"
 	broker "github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
@@ -102,29 +103,47 @@ func (lda *Lda) OutboundWorker() {
 			raw.WriteString((&outcoming.EmailMessage.Email.Raw).String())
 
 			// send via local or remote MTA, accordingly
-			if outcoming.RemoteCredentials != nil {
-				server := strings.Split(outcoming.RemoteCredentials.Host, ":")
+			if outcoming.MTAparams != nil {
+				server := strings.Split(outcoming.MTAparams.Host, ":")
+				host := server[0]
 				port, _ := strconv.Atoi(server[1])
 				var dialErr error
-				smtp_remote_sender, dialErr = gomail.NewDialer(
-					server[0],
-					port,
-					outcoming.RemoteCredentials.User,
-					outcoming.RemoteCredentials.Password,
-				).Dial()
-/*
-				autDialer := &gomail.Dialer{
-					Host: server[0],
-					Port: port,
-					Auth: sasl.NewXoauth2Client("user", "token"),
+				var remoteDialer *gomail.Dialer
+				switch outcoming.MTAparams.AuthType {
+				case Oauth1:
+					dialErr = errors.New("oauth1 mechanism not implemented")
+				case Oauth2:
+					remoteDialer = &gomail.Dialer{
+						Host: host,
+						Port: port,
+						SSL:  true,
+						Auth: &XOAuth2{
+							username: outcoming.MTAparams.User,
+							token:    outcoming.MTAparams.Password,
+						},
+					}
+				case LoginPassword:
+					remoteDialer = &gomail.Dialer{
+						Host:     host,
+						Port:     port,
+						Username: outcoming.MTAparams.User,
+						Password: outcoming.MTAparams.Password,
+						SSL:      port == 465,
+					}
+				default:
+					dialErr = fmt.Errorf("unknown auth mechanism <%s>", outcoming.MTAparams.AuthType)
 				}
-*/
+
+				if dialErr == nil {
+					smtp_remote_sender, dialErr = remoteDialer.Dial()
+				}
 				if dialErr != nil {
 					err = fmt.Errorf("outbound: unable to connect to remote MTA with error : %s", dialErr)
 				} else {
 					err = smtp_remote_sender.Send(from, to, &raw)
 				}
 			} else {
+				// no MTA params means submitter has to go through the configured local MTA
 				if !open {
 					var dialErr error
 					if smtp_sender, dialErr = d.Dial(); dialErr != nil {

@@ -29,32 +29,28 @@ type (
 	}
 
 	EmailBrokerConnectors struct {
-		Ingress chan *SmtpEmail
 		Egress  chan *SmtpEmail
+		Ingress chan *SmtpEmail
 	}
 
 	SmtpEmail struct {
-		EmailMessage      *EmailMessage
-		Response          chan *DeliveryAck
-		RemoteCredentials *MTAparams
+		EmailMessage *EmailMessage
+		MTAparams    *MTAparams
+		Response     chan *DeliveryAck
 	}
 
 	natsOrder struct {
-		Order     string `json:"order"`
 		MessageId string `json:"message_id"`
+		Order     string `json:"order"`
 		UserId    string `json:"user_id"`
-	}
-
-	natsAck struct {
-		Error   string `json:"error,omitempty"`
-		Message string `json:"message"`
 	}
 
 	//MTAparams is for embedding credentials to deliver email via a remote SMTP server
 	MTAparams struct {
+		AuthType string
 		Host     string
-		User     string
 		Password string
+		User     string
 	}
 )
 
@@ -73,7 +69,7 @@ func Initialize(conf LDAConfig) (broker *EmailBroker, connectors EmailBrokerConn
 			Keyspace:    conf.StoreConfig.Keyspace,
 			Consistency: gocql.Consistency(conf.StoreConfig.Consistency),
 			SizeLimit:   conf.StoreConfig.SizeLimit,
-			UseVault: conf.StoreConfig.UseVault,
+			UseVault:    conf.StoreConfig.UseVault,
 		}
 		if conf.StoreConfig.ObjectStore == "s3" {
 			c.WithObjStore = true
