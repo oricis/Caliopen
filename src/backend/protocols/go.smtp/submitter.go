@@ -112,6 +112,13 @@ func (lda *Lda) OutboundWorker() {
 					outcoming.RemoteCredentials.User,
 					outcoming.RemoteCredentials.Password,
 				).Dial()
+/*
+				autDialer := &gomail.Dialer{
+					Host: server[0],
+					Port: port,
+					Auth: sasl.NewXoauth2Client("user", "token"),
+				}
+*/
 				if dialErr != nil {
 					err = fmt.Errorf("outbound: unable to connect to remote MTA with error : %s", dialErr)
 				} else {

@@ -10,11 +10,13 @@ import (
 	"bytes"
 	"crypto/tls"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/emersion/go-imap"
 	"github.com/emersion/go-imap/client"
+	"github.com/emersion/go-sasl"
 	"strconv"
 	"strings"
 	"time"
@@ -57,7 +59,7 @@ func imapLogin(rId *UserIdentity) (tlsConn *tls.Conn, imapClient *client.Client,
 	}
 	log.Println("Connected")
 
-	// identify provider
+	// identify provider' capabilities
 	capabilities, _ := imapClient.Capability()
 	provider = Provider{Capabilities: capabilities}
 	for capability := range capabilities {
@@ -67,13 +69,40 @@ func imapLogin(rId *UserIdentity) (tlsConn *tls.Conn, imapClient *client.Client,
 		}
 	}
 
-	// Login
-	if err = imapClient.Login((*rId.Credentials)["inusername"], (*rId.Credentials)["inpassword"]); err != nil {
-		log.WithError(err).Error("[fetchMail] imapLogin failed to login IMAP")
-		return
+	// choose auth mechanism according to provider capabilities and identity's authtype
+	authType, foundAuthType := rId.Infos["authtype"]
+	if foundAuthType {
+		switch authType {
+		case Oauth1:
+			err = errors.New("oauth1 mechanism not implemented")
+			return
+		case Oauth2:
+			saslClient := sasl.NewXoauth2Client((*rId.Credentials)["username"], (*rId.Credentials)["oauth2token"])
+			err = imapClient.Authenticate(saslClient)
+			if err != nil {
+				log.WithError(err).Error("[fetchMail] imapLogin failed to authenticate user with proto Xoauth2")
+				return
+			}
+		case LoginPassword:
+			err = imapClient.Login((*rId.Credentials)["inusername"], (*rId.Credentials)["inpassword"])
+			if err != nil {
+				log.WithError(err).Error("[fetchMail] imapLogin failed to login IMAP")
+				return
+			}
+		default:
+			err = fmt.Errorf("unknown auth mechanism : <%s>", authType)
+			return
+		}
+	} else {
+		// fallback by trying default LoginPassword mechanism
+		err = imapClient.Login((*rId.Credentials)["inusername"], (*rId.Credentials)["inpassword"])
+		if err != nil {
+			log.WithError(err).Error("[fetchMail] imapLogin failed to login IMAP")
+			return
+		}
 	}
-	log.Println("Logged in")
 
+	log.Println("Logged in")
 	return
 }
 
