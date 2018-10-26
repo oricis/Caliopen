@@ -16,6 +16,9 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' github
 FROM scratch
 MAINTAINER Caliopen
 
+# Add CA certificates
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+
 COPY --from=builder /go/src/github.com/CaliOpen/Caliopen/src/backend/caliopen_lmtpd /usr/local/bin/caliopen_lmtpd
 
 WORKDIR "/etc/caliopen"

@@ -16,6 +16,9 @@ RUN CGO_ENABLED=0 GOOS=linux go install -a -ldflags '-extldflags "-static"' gith
 FROM scratch
 MAINTAINER Caliopen
 
+# Add CA certificates
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+
 COPY --from=builder /go/bin/idpoller /usr/local/bin/idpoller
 
 WORKDIR "/etc/caliopen"
