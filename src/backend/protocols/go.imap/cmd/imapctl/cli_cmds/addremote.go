@@ -89,7 +89,7 @@ func addRemote(cmd *cobra.Command, args []string) {
 		Identifier:  id.Login,
 		Status:      "active",
 		Type:        RemoteIdentity,
-		Protocol:    "imap",
+		Protocol:    EmailProtocol,
 		UserId:      id.UserId,
 	}
 	rId.Id.UnmarshalBinary(uuid.NewV4().Bytes())
