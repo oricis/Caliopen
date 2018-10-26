@@ -8,6 +8,12 @@ volumes:
     driver: local
 
 services:
+  caliopen_go:
+    image: public-registry.caliopen.org/caliopen_go
+    build:
+      context: ../src/backend
+      dockerfile: Dockerfile.caliopen-go
+
   # Proxy API
   proxy-api:
     image: nginx
