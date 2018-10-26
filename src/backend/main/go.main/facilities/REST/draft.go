@@ -34,10 +34,10 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err e
 	switch protocol {
 	case ImapProtocol:
 		natsTopic = Nats_outIMAP_topicKey
-	case SmtpProtocol:
+	case SmtpProtocol, EmailProtocol:
 		natsTopic = Nats_outSMTP_topicKey
 	default:
-		return nil, fmt.Errorf("no handler for <%s> protocol", protocol)
+		return nil, fmt.Errorf("[SendDraft] no handler for <%s> protocol", protocol)
 	}
 
 	rep, err := rest.nats_conn.Request(rest.natsTopics[natsTopic], []byte(natsMessage), 30*time.Second)

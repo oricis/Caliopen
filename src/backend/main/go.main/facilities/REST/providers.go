@@ -122,7 +122,7 @@ func (rest *RESTfacility) CreateTwitterIdentity(requestToken, verifier string) (
 		}
 		userIdentity.Infos = map[string]string{
 			"provider": "twitter",
-			"authtype": "oauth",
+			"authtype": Oauth1,
 		}
 		// save identity
 		e := rest.CreateUserIdentity(userIdentity)
@@ -167,13 +167,7 @@ func (rest *RESTfacility) CreateGmailIdentity(state, code string) (remoteId stri
 	gmailProvider := rest.providers["gmail"]
 	gmailProvider.OauthCallbackUri = fmt.Sprintf(CALLBACK_BASE_URI, "gmail")
 
-	oauthConfig := &oauth2.Config{
-		ClientID:     gmailProvider.Infos["client_id"],
-		ClientSecret: gmailProvider.Infos["client_secret"],
-		Endpoint:     googleOAuth2.Endpoint,
-		RedirectURL:  "http://" + rest.hostname + gmailProvider.OauthCallbackUri,
-		Scopes:       []string{"profile", "email"},
-	}
+	oauthConfig := setGoogleOauthConfig(gmailProvider, rest.hostname)
 
 	ctx := context.TODO()
 
@@ -183,7 +177,6 @@ func (rest *RESTfacility) CreateGmailIdentity(state, code string) (remoteId stri
 		err = WrapCaliopenErrf(e, NotFoundCaliopenErr, "[CreateGmailIdentity] failed to retrieve access token for state %s", state)
 		return
 	}
-
 	// retrieve gmail profile from Google api
 	httpClient := oauthConfig.Client(ctx, token)
 	googleService, e := googleApi.New(httpClient)
@@ -196,7 +189,6 @@ func (rest *RESTfacility) CreateGmailIdentity(state, code string) (remoteId stri
 		err = WrapCaliopenErr(e, NotFoundCaliopenErr, "[CreateGmailIdentity] failed to retrieve user from google api")
 		return
 	}
-
 	// build user identity
 	// 1. check if this user_identity already exists
 	foundIdentities, e := rest.store.LookupIdentityByIdentifier(googleUser.Email, EmailProtocol)
@@ -216,13 +208,13 @@ func (rest *RESTfacility) CreateGmailIdentity(state, code string) (remoteId stri
 		userIdentity.Identifier = googleUser.Email
 		userIdentity.Credentials = &Credentials{
 			"oauth2token": token.AccessToken,
-			"username":  googleUser.Email,
+			"username":    googleUser.Email,
 		}
 		userIdentity.Infos = map[string]string{
-			"inserver": gmailProvider.Infos["imapserver"],
+			"inserver":  gmailProvider.Infos["imapserver"],
 			"outserver": gmailProvider.Infos["smtpserver"],
-			"provider": "gmail",
-			"authtype": "oauth2",
+			"provider":  "gmail",
+			"authtype":  Oauth2,
 		}
 
 		// save identity
@@ -233,16 +225,22 @@ func (rest *RESTfacility) CreateGmailIdentity(state, code string) (remoteId stri
 		}
 		remoteId = userIdentity.Id.String()
 	case 1:
-		// this identity already exists, checking if it belongs to this user and, if ok, just updating display name
+		// this identity already exists, checking if it belongs to this user and, if ok, just updating display name and token
 		storedIdentity, e := rest.RetrieveUserIdentity(foundIdentities[0][0], foundIdentities[0][1], false)
 		if e != nil || storedIdentity == nil {
 			err = WrapCaliopenErrf(e, DbCaliopenErr, "[CreateGmailIdentity] failed to retrieve user identity found for twitter account %s", googleUser.Name)
 			return
 		}
+		storedIdentity.DisplayName = googleUser.Name
+		storedIdentity.Credentials = &Credentials{
+			"oauth2token": token.AccessToken,
+			"username":    storedIdentity.Identifier,
+		}
+
 		modifiedFields := map[string]interface{}{
 			"DisplayName": googleUser.Name,
+			"Credentials": storedIdentity.Credentials,
 		}
-		storedIdentity.DisplayName = googleUser.Name
 		if e := rest.store.UpdateUserIdentity(storedIdentity, modifiedFields); e != nil {
 			err = WrapCaliopenErrf(e, FailDependencyCaliopenErr, "[CreateGmailIdentity] failed to update user identity in db")
 			return
@@ -285,17 +283,21 @@ func setGoogleAuthRequestUrl(provider *Provider, hostname string) (state string,
 
 	provider.OauthCallbackUri = fmt.Sprintf(CALLBACK_BASE_URI, "gmail")
 
-	config := &oauth2.Config{
-		ClientID:     provider.Infos["client_id"],
-		ClientSecret: provider.Infos["client_secret"],
-		Endpoint:     googleOAuth2.Endpoint,
-		RedirectURL:  "http://" + hostname + provider.OauthCallbackUri,
-		Scopes:       []string{"profile", "email"},
-	}
+	config := setGoogleOauthConfig(*provider, hostname)
 
 	state = randomState()
 	provider.OauthRequestUrl = config.AuthCodeURL(state)
 	return
+}
+
+func setGoogleOauthConfig(provider Provider, hostname string) *oauth2.Config {
+	return &oauth2.Config{
+		ClientID:     provider.Infos["client_id"],
+		ClientSecret: provider.Infos["client_secret"],
+		Endpoint:     googleOAuth2.Endpoint,
+		RedirectURL:  "http://" + hostname + provider.OauthCallbackUri,
+		Scopes:       []string{"profile", "email", "https://mail.google.com/"},
+	}
 }
 
 // Returns a base64 encoded random 32 byte string.
