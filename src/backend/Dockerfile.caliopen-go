@@ -2,7 +2,7 @@
 # Author: Caliopen
 # Date: 2018-07-20
 
-FROM golang:1.10
+FROM golang:1.10.3
 MAINTAINER Caliopen
 
 RUN go get -u github.com/kardianos/govendor

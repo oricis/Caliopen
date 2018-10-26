@@ -8,6 +8,12 @@ volumes:
     driver: local
 
 services:
+  caliopen_go:
+    image: public-registry.caliopen.org/caliopen_go
+    build:
+      context: ../src/backend
+      dockerfile: Dockerfile.caliopen-go
+
   # Proxy API
   proxy-api:
     image: nginx
@@ -176,6 +182,19 @@ services:
       - nats:nats
     volumes:
       - ../src/backend/configs:/etc/caliopen
+
+  twitter-worker:
+    build:
+      context: ../src/backend
+      dockerfile: Dockerfile.twitter-worker
+    image: caliopen_twitterworker
+    links:
+    - cassandra:cassandra
+    - object-store:minio
+    - elasticsearch:elasticsearch
+    - nats:nats
+    volumes:
+    - ../src/backend/configs:/etc/caliopen
 
   # Poller for remote identities
   identity-poller:
