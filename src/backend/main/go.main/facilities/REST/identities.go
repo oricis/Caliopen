@@ -101,7 +101,9 @@ func (rest *RESTfacility) CreateUserIdentity(identity *UserIdentity) CaliopenErr
 		return NewCaliopenErr(UnprocessableCaliopenErr, "[CreateUserIdentity] miss mandatory property")
 	}
 
-	(*identity).Id.UnmarshalBinary(uuid.NewV4().Bytes())
+	if len((*identity).Id) == 0 || (bytes.Equal((*identity).Id.Bytes(), EmptyUUID.Bytes())) {
+		(*identity).Id.UnmarshalBinary(uuid.NewV4().Bytes())
+	}
 
 	// set defaults
 	identity.SetDefaults()
