@@ -7,7 +7,11 @@ import { userStateSelector } from '../../selectors/userStateSelector';
 
 const mapStateToProps = createSelector(
   [userStateSelector],
-  ({ user, isFetching, didInvalidate }) => ({ user, isFetching, didInvalidate })
+  ({
+    user, isFetching, didInvalidate, didLostAuth,
+  }) => ({
+    user, isFetching, didInvalidate, didLostAuth,
+  })
 );
 const mapDispatchToProps = dispatch => bindActionCreators({
   getUser,

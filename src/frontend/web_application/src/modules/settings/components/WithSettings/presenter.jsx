@@ -8,15 +8,14 @@ class WithSettings extends Component {
     synced: PropTypes.bool,
     requestSettings: PropTypes.func.isRequired,
     settings: PropTypes.shape({}),
-    isInvalidated: PropTypes.bool,
-    isFetching: PropTypes.bool,
+    isInvalidated: PropTypes.bool.isRequired,
+    didLostAuth: PropTypes.bool.isRequired,
+    isFetching: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
     settings: undefined,
     synced: false,
-    isInvalidated: false,
-    isFetching: false,
   };
 
   componentDidMount() {
@@ -31,14 +30,14 @@ class WithSettings extends Component {
 
   render() {
     const {
-      synced, render, settings, isFetching,
+      synced, render, settings, isFetching, didLostAuth,
     } = this.props;
 
     if (synced && !settings) {
       return null;
     }
 
-    return render(settings, isFetching);
+    return render(settings, isFetching, didLostAuth);
   }
 }
 
