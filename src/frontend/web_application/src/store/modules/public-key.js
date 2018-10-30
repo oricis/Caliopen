@@ -1,3 +1,5 @@
+import { strToBase64 } from '../../services/encode-utils';
+
 export const REQUEST_PUBLIC_KEYS = 'co/public-key/REQUEST_PUBLIC_KEYS';
 export const REQUEST_PUBLIC_KEYS_SUCCESS = 'co/public-key/REQUEST_PUBLIC_KEYS_SUCCESS';
 export const REQUEST_PUBLIC_KEYS_FAIL = 'co/public-key/REQUEST_PUBLIC_KEYS_FAIL';
@@ -20,14 +22,20 @@ export function requestPublicKeys({ contactId }) {
   };
 }
 
-export function createPublicKey({ contactId, params }) {
+export function createPublicKey({ contactId, publicKey }) {
+  const encodedKey = {
+    ...publicKey,
+    key: strToBase64(publicKey.key),
+  };
+
   return {
     type: CREATE_PUBLIC_KEY,
     payload: {
+      contactId,
       request: {
         method: 'post',
         url: `/api/v2/contacts/${contactId}/publickeys`,
-        data: params,
+        data: encodedKey,
       },
     },
   };
@@ -40,6 +48,7 @@ export function updatePublicKey({ contactId, publickey, original }) {
   return {
     type: UPDATE_PUBLIC_KEY,
     payload: {
+      contactId,
       request: {
         method: 'patch',
         url: `/api/v2/contacts/${contactId}/publickeys/${publicKeyId}`,
@@ -53,6 +62,7 @@ export function deletePublicKey({ contactId, publicKeyId }) {
   return {
     type: DELETE_PUBLIC_KEY,
     payload: {
+      contactId,
       request: {
         method: 'delete',
         url: `/api/v2/contacts/${contactId}/publickeys/${publicKeyId}`,
@@ -61,6 +71,32 @@ export function deletePublicKey({ contactId, publicKeyId }) {
   };
 }
 
+const initialState = {
+  isFetching: false,
+  keys: [],
+  total: 0,
+};
+
+const extractContactIdFromAction = action =>
+  action.meta.previousAction.payload.contactId;
+
+// TODO
+const keyListReducer = (state = [], action = {}) => {
+  const contactId = extractContactIdFromAction(action);
+}
+
 export default function reducer(state = initialState, action) {
-  
+  switch (action.type) {
+    case REQUEST_PUBLIC_KEYS:
+      return { ...state, isFetching: true };
+    case REQUEST_PUBLIC_KEYS_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        keys: action.payload.data.keys,
+        total: action.payload.data.total,
+      };
+    default:
+      return state;
+  }
 }

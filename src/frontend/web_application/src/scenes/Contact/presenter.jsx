@@ -15,6 +15,7 @@ import EmailForm from './components/EmailForm';
 import PhoneForm from './components/PhoneForm';
 import ImForm from './components/ImForm';
 import AddressForm from './components/AddressForm';
+import PublicKeyList from './components/PublicKeyList';
 import PublicKeyForm from './components/PublicKeyForm';
 // FIXME: birthday deactivated due to redux-form bug cf. AddFormFieldForm
 // import BirthdayForm from './components/BirthdayForm';
@@ -388,11 +389,17 @@ class Contact extends Component {
     );
   }
 
-  renderKeys = () => (
-    <Fragment>
-      <Title hr><Trans id="contact.keys.title">Public keys</Trans></Title>
-    </Fragment>
-  );
+  renderKeys = () => {
+    const { contactId } = this.props;
+
+    return (
+      <Fragment>
+        <Title hr><Trans id="contact.keys.title">Public keys</Trans></Title>
+        <PublicKeyList contactId={contactId} />
+        <PublicKeyForm contactId={contactId} />
+      </Fragment>
+    );
+  };
 
   renderLastMessages = () => (
     <Fragment>
@@ -456,12 +463,6 @@ class Contact extends Component {
             component={(<IdentityForm />)}
             propertyName="identities"
             addButtonLabel={<Trans id="contact.action.add-identity">Add an identity</Trans>}
-          />
-          <Title hr><Trans>Public Keys</Trans></Title>
-          <FormCollection
-            component={(<PublicKeyForm />)}
-            propertyName="public-keys"
-            addButtonLabel={<Trans id="contact.action.add-public-key">Add a public key</Trans>}
           />
           {this.renderEditBar()}
         </form>
@@ -531,9 +532,9 @@ class Contact extends Component {
             <div className="s-contact__contact-details">
               {this.renderContactDetails()}
             </div>
-            {/* <div className="s-contact__keys">
+            <div className="s-contact__keys">
               {this.renderKeys()}
-            </div> */}
+            </div>
             {/* <div className="s-contact__last-messages">
               {this.renderLastMessages()}
             </div> */}
