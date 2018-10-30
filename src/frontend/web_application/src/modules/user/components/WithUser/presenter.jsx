@@ -7,15 +7,14 @@ class WithUser extends Component {
     render: PropTypes.func.isRequired,
     getUser: PropTypes.func.isRequired,
     user: PropTypes.shape({}),
-    didInvalidate: PropTypes.bool,
-    isFetching: PropTypes.bool,
+    didInvalidate: PropTypes.bool.isRequired,
+    didLostAuth: PropTypes.bool.isRequired,
+    isFetching: PropTypes.bool.isRequired,
     synced: PropTypes.bool,
   };
 
   static defaultProps = {
     user: undefined,
-    didInvalidate: false,
-    isFetching: true,
     synced: false,
   };
 
@@ -31,14 +30,14 @@ class WithUser extends Component {
 
   render() {
     const {
-      render, user, isFetching, synced,
+      render, user, isFetching, synced, didLostAuth,
     } = this.props;
 
     if (synced && !user) {
       return null;
     }
 
-    return render(user, isFetching);
+    return render(user, isFetching, didLostAuth);
   }
 }
 

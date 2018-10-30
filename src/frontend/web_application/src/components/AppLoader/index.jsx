@@ -13,12 +13,14 @@ class AppLoader extends Component {
     children: PropTypes.node,
     isLoading: PropTypes.bool,
     hasFailure: PropTypes.bool,
+    fallbackUrl: PropTypes.string,
   };
   static defaultProps = {
     children: null,
     className: undefined,
     hasFailure: false,
     isLoading: true,
+    fallbackUrl: '/',
   };
 
   renderBrand = () => (
@@ -48,10 +50,12 @@ class AppLoader extends Component {
   }
 
   renderFailure() {
+    const { fallbackUrl } = this.props;
+
     return this.renderContent((
       <Fragment>
         <p><Trans id="app-loader.feedback.failure">Something went wrong. Are you offline ?</Trans></p>
-        <p><Link href="/"><Trans id="app-loader.action.retry">Please click here to retry</Trans></Link></p>
+        <p><Link href={fallbackUrl}><Trans id="app-loader.action.retry">Please click here to retry</Trans></Link></p>
       </Fragment>
     ));
   }

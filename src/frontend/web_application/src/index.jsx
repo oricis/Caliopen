@@ -4,6 +4,7 @@ import { Router } from 'react-router-dom';
 import PiwikReactRouter from 'piwik-react-router';
 import App from './App';
 import configureStore from './store/configure-store';
+import { initialState as initialStateSettings } from './store/modules/settings';
 import getRouterHistory from './services/router-history';
 import { getUserLocales } from './modules/i18n';
 import { getDefaultSettings } from './modules/settings';
@@ -34,8 +35,7 @@ const getHistory = () => {
 
 const store = configureStore({
   settings: {
-    isFetching: false,
-    isInvalidated: true,
+    ...initialStateSettings,
     settings,
   },
 }, devTools);

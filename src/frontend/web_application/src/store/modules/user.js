@@ -50,19 +50,22 @@ export function updateUserContact(contact) {
 const initialState = {
   isFetching: false,
   didInvalidate: false,
+  didLostAuth: false,
 };
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case REQUEST_USER:
       return { ...state, isFetching: true };
+    case REQUEST_USER_FAIL:
+      return { ...state, isFetching: false, didLostAuth: action.payload.status === 401 };
     case REQUEST_USER_SUCCESS:
-
       return {
         ...state,
         isFetching: false,
         didInvalidate: false,
         user: action.payload.data,
+        didLostAuth: false,
       };
     case INVALIDATE_USER:
       return { ...state, didInvalidate: true };

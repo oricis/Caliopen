@@ -7,7 +7,11 @@ import { settingsStateSelector } from '../../../../store/selectors/settings';
 
 const mapStateToProps = createSelector(
   [settingsStateSelector],
-  ({ settings, isFetching, isInvalidated }) => ({ settings, isFetching, isInvalidated })
+  ({
+    settings, isFetching, isInvalidated, didLostAuth,
+  }) => ({
+    settings, isFetching, isInvalidated, didLostAuth,
+  })
 );
 const mapDispatchToProps = dispatch => bindActionCreators({
   requestSettings,
