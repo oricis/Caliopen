@@ -1,28 +1,26 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { withI18n } from '@lingui/react';
 import { Trans } from '@lingui/macro'; // eslint-disable-line import/no-extraneous-dependencies
-import { Callout, Confirm, Button, TextFieldGroup, SelectFieldGroup, CheckboxFieldGroup, FormGrid, FormRow, FormColumn, FieldErrors } from '../../../../components';
-import LastConnection from '../LastConnection';
+import { TextFieldGroup, CheckboxFieldGroup, FormGrid, FormRow, FormColumn, FieldErrors, Confirm, Button, Spinner } from '../../../../components';
+import { REMOTE_IDENTITY_STATUS_ACTIVE, REMOTE_IDENTITY_STATUS_INACTIVE, PROTOCOL_EMAIL, Identity } from '../../../../modules/remoteIdentity';
+import Status from '../Status';
+import RemoteIdentityDetails from '../RemoteIdentityDetails';
 import './style.scss';
-
-const MAX_PHASE = 3;
-const MAIL_PROTOCOLS = ['imap'];
-const REMOTE_IDENTITY_STATUS = ['active', 'inactive'];
-const IDENTITY_TYPE_REMOTE = 'remote';
 
 function generateStateFromProps(props, prevState) {
   const {
-    remoteIdentity: {
-      identity_id: identityId, infos, credentials, status, protocol,
-      identifier,
-    },
-  } = props;
+    identity_id: identityId, infos, credentials, status, protocol,
+    identifier,
+  } = props.remoteIdentity || {};
   const [inserverHostname = '', inserverPort = ''] = infos && infos.inserver ? infos.inserver.split(':') : [];
-  const active = status ? status === REMOTE_IDENTITY_STATUS[0] : prevState.remoteIdentity.active;
+  const active = status ?
+    status === REMOTE_IDENTITY_STATUS_ACTIVE :
+    prevState.remoteIdentity.active;
 
   return {
-    phase: identityId ? 0 : 1,
+    editing: !identityId,
     remoteIdentity: {
       ...prevState.remoteIdentity,
       ...(identifier ? { identifier } : {}),
@@ -41,7 +39,7 @@ function generateStateFromProps(props, prevState) {
   };
 }
 
-function getRemoteIdentityFromState(state, props) {
+function getIdentityFromState(state, props) {
   const {
     remoteIdentity: {
       identifier, inserverHostname, inserverPort, inusername, inpassword, active, protocol,
@@ -54,7 +52,7 @@ function getRemoteIdentityFromState(state, props) {
     inpassword,
   } : undefined;
 
-  return {
+  return new Identity({
     ...remoteIdentity,
     credentials,
     display_name: identifier,
@@ -64,26 +62,30 @@ function getRemoteIdentityFromState(state, props) {
       inserver: `${inserverHostname}:${inserverPort}`,
     },
     protocol,
-    status: active ? 'active' : 'inactive',
-    type: remoteIdentity.type || IDENTITY_TYPE_REMOTE,
-  };
+    status: active ? REMOTE_IDENTITY_STATUS_ACTIVE : REMOTE_IDENTITY_STATUS_INACTIVE,
+  });
 }
 
 @withI18n()
 class RemoteIdentityEmail extends Component {
   static propTypes = {
-    remoteIdentity: PropTypes.shape({}).isRequired,
+    className: PropTypes.string,
+    remoteIdentity: PropTypes.shape({}),
     onChange: PropTypes.func.isRequired,
-    onDelete: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
+    onDelete: PropTypes.func,
+    onCancel: PropTypes.func,
     i18n: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
+    className: undefined,
+    remoteIdentity: {},
+    onDelete: () => {},
+    onCancel: () => {},
   }
 
-  state = {
-    phase: 0,
+  static initialState = {
+    editing: false,
     formErrors: {},
     advancedForm: false,
     remoteIdentity: {
@@ -93,50 +95,32 @@ class RemoteIdentityEmail extends Component {
       inusername: '',
       inpassword: '',
       active: true,
-      type: 'imap',
+      protocol: PROTOCOL_EMAIL,
     },
   };
 
+  state = { ...this.constructor.initialState };
+
   componentWillMount() {
+    this.init();
+  }
+
+  init = () => {
     this.setState(prevState => generateStateFromProps(this.props, prevState));
   }
-
-  handleEdit = () => {
-    this.setState({ phase: 1 });
+  reset = () => {
+    this.setState(generateStateFromProps(this.props, { ...this.constructor.initialState }));
   }
 
-  handleClickPrevious = () => {
-    this.setState(prevState => ({
-      phase: prevState.phase - 1,
-    }));
-  }
-
-  handleClickNext = () => {
-    if (this.validate({ phase: this.state.phase })) {
-      this.setState((prevState) => {
-        const { remoteIdentity } = prevState;
-        if (!remoteIdentity.entity_id && !remoteIdentity.inusername.length) {
-          remoteIdentity.inusername = remoteIdentity.identifier;
-        }
-
-        return {
-          phase: prevState.phase + 1,
-          remoteIdentity,
-        };
-      });
-    }
-  }
-
-  handleSave = async () => {
+  save = async () => {
     try {
       await this.props.onChange({
-        remoteIdentity: getRemoteIdentityFromState(this.state, this.props),
+        identity: getIdentityFromState(this.state, this.props),
       });
-      this.setState({ phase: 0 });
+      this.reset();
     } catch (errs) {
       if (errs.some(err => err.code === 6)) {
         this.setState({
-          phase: 1,
           formErrors: { identifier: [(<Trans id="remote_identity.form.identifier.error.uniqueness">This address is already configured</Trans>)] },
         });
       } else {
@@ -147,15 +131,24 @@ class RemoteIdentityEmail extends Component {
     }
   }
 
+  handleSave = async () => {
+    if (!this.validate()) {
+      return;
+    }
+
+    this.save();
+  }
+
   handleDelete = () => {
-    this.props.onDelete({ remoteIdentity: getRemoteIdentityFromState(this.state, this.props) });
+    const { remoteIdentity: identity } = this.props;
+
+    this.props.onDelete({ identity });
   }
 
   handleCancel = () => {
-    const { onCancel } = this.props;
-    this.setState(prevState => generateStateFromProps(this.props, prevState), () => {
-      onCancel();
-    });
+    this.reset();
+    // force usage of the callback using batching mecanism of setState
+    this.setState(() => ({}), () => this.props.onCancel());
   }
 
   handleParamsChange = (event) => {
@@ -169,26 +162,50 @@ class RemoteIdentityEmail extends Component {
     }));
   }
 
-  handleActivate = (event) => {
-    const { checked } = event.target;
+  handleBlurIdentifier = () => {
+    const { remoteIdentity } = this.props;
 
-    this.setState(prevState => ({
-      remoteIdentity: {
-        ...prevState.remoteIdentity,
-        active: checked,
-      },
-    }), () => {
-      this.props.onChange({ remoteIdentity: getRemoteIdentityFromState(this.state, this.props) });
+    if (remoteIdentity.entity_id) {
+      return;
+    }
+
+    this.setState((prevState) => {
+      if (prevState.remoteIdentity.inusername.length > 0) {
+        return {};
+      }
+
+      return {
+        remoteIdentity: {
+          ...prevState.remoteIdentity,
+          inusername: prevState.remoteIdentity.identifier,
+        },
+      };
     });
   }
 
-  validate = ({ phase }) => {
+  handleActivate = (active) => {
+    this.setState(prevState => ({
+      remoteIdentity: {
+        ...prevState.remoteIdentity,
+        active,
+      },
+    }), () => {
+      this.props.onChange({ identity: getIdentityFromState(this.state, this.props) });
+    });
+  }
+
+  handleToggleEdit = () => {
+    this.setState(prevState => ({
+      editing: !prevState.editing,
+    }));
+  }
+
+  validate = () => {
     let isValid = true;
 
     const phaseValidation = (properties) => {
       properties.forEach(({ formProperty, error }) => {
-        const value = !!this.state.remoteIdentity
-          && this.state.remoteIdentity[formProperty];
+        const value = this.state.remoteIdentity[formProperty];
 
         if (!value || value.length === 0) {
           this.setState(prevState => ({
@@ -209,84 +226,33 @@ class RemoteIdentityEmail extends Component {
       });
     };
 
-    if (phase >= 1) {
-      phaseValidation([
-        { formProperty: 'identifier', error: <Trans id="remote_identity.form.identifier.error">a valid email is required</Trans> },
-      ]);
-    }
+    const { remoteIdentity } = this.props;
 
-    if (phase >= 3) {
-      phaseValidation([
-        { formProperty: 'inusername', error: <Trans id="remote_identity.form.username.error">login is required</Trans> },
-        { formProperty: 'inpassword', error: <Trans id="remote_identity.form.password.error">password is required</Trans> },
-      ]);
-    }
-
-    if (phase >= 2) {
-      phaseValidation([
-        { formProperty: 'inserverHostname', error: <Trans id="remote_identity.form.serverHostname.error">mail server is required</Trans> },
-        { formProperty: 'inserverPort', error: <Trans id="remote_identity.form.serverPort.error">port is required</Trans> },
-        { formProperty: 'protocol', error: <Trans id="remote_identity.form.protocol.error">protocol is required</Trans> },
-      ]);
-    }
+    phaseValidation([
+      { formProperty: 'identifier', error: <Trans id="remote_identity.form.identifier.error">a valid email is required</Trans> },
+      { formProperty: 'inserverHostname', error: <Trans id="remote_identity.form.serverHostname.error">mail server is required</Trans> },
+      { formProperty: 'inserverPort', error: <Trans id="remote_identity.form.serverPort.error">port is required</Trans> },
+      { formProperty: 'protocol', error: <Trans id="remote_identity.form.protocol.error">protocol is required</Trans> },
+      ...(!remoteIdentity.identity_id ||
+          this.state.remoteIdentity.inusername.length > 0 ||
+          this.state.remoteIdentity.inpassword.length > 0 ?
+        [
+          { formProperty: 'inusername', error: <Trans id="remote_identity.form.username.error">login is required</Trans> },
+          { formProperty: 'inpassword', error: <Trans id="remote_identity.form.password.error">password is required</Trans> },
+        ] : []
+      ),
+    ]);
 
     return isValid;
   }
 
-  renderStatus = (status) => {
-    const statusLabels = {
-      active: (<Trans id="remote_identity.status.active">Enabled</Trans>),
-      inactive: (<Trans id="remote_identity.status.inactive">Disabled</Trans>),
-    };
-
-    return statusLabels[status];
-  }
-
-  renderFormPhase0() {
-    const { remoteIdentity } = this.props;
-
-    if (!remoteIdentity.identity_id) {
-      return null;
-    }
-
-    return (
-      <FormGrid>
-        <FormRow>
-          <FormColumn bottomSpace>
-            <Trans id="remote_identity.last_connection">Last connection: <LastConnection lastCheck={remoteIdentity.last_check} /></Trans>
-          </FormColumn>
-        </FormRow>
-        {remoteIdentity.infos.lastFetchError && (
-          <FormRow>
-            <FormColumn bottomSpace>
-              <Callout color="alert">{remoteIdentity.infos.lastFetchError}</Callout>
-            </FormColumn>
-          </FormRow>
-        )}
-        <FormRow>
-          <FormColumn bottomSpace>
-            <CheckboxFieldGroup
-              checked={this.state.remoteIdentity.active}
-              errors={this.state.formErrors.status}
-              onChange={this.handleActivate}
-              name="active"
-              label={this.renderStatus(this.state.remoteIdentity.active ? 'active' : 'inactive')}
-              displaySwitch
-              showTextLabel
-            />
-          </FormColumn>
-        </FormRow>
-      </FormGrid>
-    );
-  }
-
-  renderFormPhase1() {
+  renderForm() {
     const { remoteIdentity, i18n } = this.props;
 
     return (
       <FormGrid>
         <FormRow>
-          <FormColumn bottomSpace>
+          <FormColumn bottomSpace size="medium">
             <TextFieldGroup
               type="email"
               label={<Trans id="remote_identity.form.identifier.label">Email:</Trans>}
@@ -294,37 +260,18 @@ class RemoteIdentityEmail extends Component {
               value={this.state.remoteIdentity.identifier}
               errors={this.state.formErrors.identifier}
               onChange={this.handleParamsChange}
+              onBlur={this.handleBlurIdentifier}
               name="identifier"
               // specificity of backend: the identifier and protocol are unique and immutable
               // cf. https://github.com/CaliOpen/Caliopen/blob/d6bbe43cc1098844f53eaec283e08c19c5f871bc/doc/specifications/identities/index.md#model
-              disabled={remoteIdentity.identity_id && true}
+              disabled={remoteIdentity && remoteIdentity.identity_id && true}
               autoComplete="email"
               required
             />
           </FormColumn>
-          <FormColumn bottomSpace>
-            {remoteIdentity.identity_id && (
-              <CheckboxFieldGroup
-                value={this.state.remoteIdentity.active}
-                errors={this.state.formErrors.status}
-                onChange={this.handleParamsChange}
-                name="active"
-                label={this.renderStatus(this.state.remoteIdentity.active ? 'active' : 'inactive')}
-                displaySwitch
-                showTextLabel
-              />
-            )}
-          </FormColumn>
         </FormRow>
-      </FormGrid>
-    );
-  }
-
-  renderFormPhase2() {
-    return (
-      <FormGrid>
         <FormRow>
-          <FormColumn bottomSpace>
+          {/* <FormColumn bottomSpace size="medium">
             <SelectFieldGroup
               label={<Trans id="remote_identity.form.protocol.label">Protocol:</Trans>}
               value={this.state.remoteIdentity.protocol}
@@ -335,8 +282,8 @@ class RemoteIdentityEmail extends Component {
               required
               disabled
             />
-          </FormColumn>
-          <FormColumn bottomSpace>
+          </FormColumn> */}
+          <FormColumn bottomSpace fluid>
             <TextFieldGroup
               label={<Trans id="remote_identity.form.incomming_mail_server.label">Incoming mail server:</Trans>}
               value={this.state.remoteIdentity.inserverHostname}
@@ -347,7 +294,7 @@ class RemoteIdentityEmail extends Component {
               required
             />
           </FormColumn>
-          <FormColumn bottomSpace>
+          <FormColumn bottomSpace size="shrink">
             <TextFieldGroup
               label={<Trans id="remote_identity.form.port.label">Port:</Trans>}
               value={this.state.remoteIdentity.inserverPort}
@@ -360,15 +307,8 @@ class RemoteIdentityEmail extends Component {
             />
           </FormColumn>
         </FormRow>
-      </FormGrid>
-    );
-  }
-
-  renderFormPhase3() {
-    return (
-      <FormGrid>
         <FormRow>
-          <FormColumn bottomSpace>
+          <FormColumn bottomSpace size="medium">
             <TextFieldGroup
               label={<Trans id="remote_identity.form.username.label">Login:</Trans>}
               value={this.state.remoteIdentity.inusername}
@@ -379,7 +319,7 @@ class RemoteIdentityEmail extends Component {
               required
             />
           </FormColumn>
-          <FormColumn bottomSpace>
+          <FormColumn bottomSpace size="medium">
             <TextFieldGroup
               label={<Trans id="remote_identity.form.password.label">Password:</Trans>}
               type="password"
@@ -392,101 +332,23 @@ class RemoteIdentityEmail extends Component {
             />
           </FormColumn>
         </FormRow>
+        {remoteIdentity && remoteIdentity.identity_id && (
+          <FormRow>
+            <FormColumn bottomSpace>
+              <CheckboxFieldGroup
+                checked={this.state.remoteIdentity.active}
+                errors={this.state.formErrors.status}
+                onChange={this.handleParamsChange}
+                name="active"
+                label={<Status status={this.state.remoteIdentity.active ? 'active' : 'inactive'} />}
+                displaySwitch
+                showTextLabel
+              />
+            </FormColumn>
+          </FormRow>
+        )}
       </FormGrid>
     );
-  }
-
-  renderActionsCreate() {
-    return (
-      <div>
-        {this.state.phase >= 1 && (
-          <Button onClick={this.handleCancel} shape="plain" className="m-remote-identity-email__action">
-            <Trans id="remote_identity.action.cancel">Cancel</Trans>
-          </Button>
-        )}
-        {this.state.phase > 1 && (
-          <Button onClick={this.handleClickPrevious} shape="hollow" className="m-remote-identity-email__action">
-            <Trans id="remote_identity.action.back">Previous</Trans>
-          </Button>
-        )}
-        {this.state.phase < MAX_PHASE && (
-          <Button shape="plain" onClick={this.handleClickNext} className="m-remote-identity-email__action">
-            <Trans id="remote_identity.action.next">Next</Trans>
-          </Button>
-        )}
-        {this.state.phase === MAX_PHASE && (
-          <Button onClick={this.handleSave} shape="plain" color="secondary" className="m-remote-identity-email__action m-remote-identity-email__action--push-right">
-            <Trans id="remote_identity.action.finish">Connect</Trans>
-          </Button>
-        )}
-      </div>
-    );
-  }
-
-  renderActionsEdit() {
-    return (
-      <div>
-        <Confirm
-          title={<Trans id="remote_identity.confirm-delete.title">Delete the external account</Trans>}
-          content={<Trans id="remote_identity.confirm-delete.content">The external account will deactivated then deleted.</Trans>}
-          onConfirm={this.handleDelete}
-          render={confirm => (
-            <Button onClick={confirm} shape="plain" color="alert" className="m-remote-identity-email__action">
-              <Trans id="remote_identity.action.delete">Delete</Trans>
-            </Button>
-          )}
-        />
-        {this.state.phase === 0 && (
-          <Button onClick={this.handleEdit} shape="hollow" className="m-remote-identity-email__action">
-            <Trans id="remote_identity.action.edit">Edit</Trans>
-          </Button>
-        )}
-        {this.state.phase >= 1 && (
-          <Button onClick={this.handleCancel} shape="hollow" className="m-remote-identity-email__action">
-            <Trans id="remote_identity.action.cancel">Cancel</Trans>
-          </Button>
-        )}
-        {this.state.phase > 1 && (
-          <Button onClick={this.handleClickPrevious} shape="hollow" className="m-remote-identity-email__action">
-            <Trans id="remote_identity.action.back">Previous</Trans>
-          </Button>
-        )}
-        {this.state.phase >= 1 && this.state.phase < MAX_PHASE && (
-          <Button shape="plain" onClick={this.handleClickNext} className="m-remote-identity-email__action">
-            <Trans id="remote_identity.action.next">Next</Trans>
-          </Button>
-        )}
-        {this.state.phase >= 1 && (
-          <Button onClick={this.handleSave} shape="plain" className="m-remote-identity-email__action m-remote-identity-email__action--push-right">
-            <Trans id="remote_identity.action.save">Save</Trans>
-          </Button>
-        )}
-      </div>
-    );
-  }
-
-  renderActions() {
-    const { remoteIdentity } = this.props;
-
-    if (remoteIdentity && remoteIdentity.identity_id) {
-      return this.renderActionsEdit();
-    }
-
-    return this.renderActionsCreate();
-  }
-
-  renderPhase() {
-    switch (this.state.phase) {
-      default:
-      case 0:
-        return this.renderFormPhase0();
-      case 1:
-        return this.renderFormPhase1();
-      case 2:
-        return this.renderFormPhase2();
-      case 3:
-        return this.renderFormPhase3();
-    }
   }
 
   renderGlobalError() {
@@ -499,11 +361,75 @@ class RemoteIdentityEmail extends Component {
     );
   }
 
-  render() {
+  renderContent() {
+    const { remoteIdentity } = this.props;
+    if (this.state.editing) {
+      return this.renderForm();
+    }
+
+
     return (
-      <div className="m-remote-identity-email">
+      <RemoteIdentityDetails
+        remoteIdentity={remoteIdentity}
+        active={this.state.remoteIdentity.active}
+        onToggleActivate={this.handleActivate}
+        onChange={this.handleChange}
+        onDelete={this.handleDelete}
+        onEdit={this.handleToggleEdit}
+        onClear={this.handleClear}
+      />
+    );
+  }
+
+  renderActions() {
+    const { remoteIdentity } = this.props;
+
+    return (
+      <div>
+        {remoteIdentity.identity_id && (
+          <Confirm
+            title={<Trans id="remote_identity.confirm-delete.title">Delete the external account</Trans>}
+            content={<Trans id="remote_identity.confirm-delete.content">The external account will deactivated then deleted.</Trans>}
+            onConfirm={this.handleDelete}
+            render={confirm => (
+              <Button onClick={confirm} shape="plain" color="alert" className="m-remote-identity-email__action">
+                <Trans id="remote_identity.action.delete">Delete</Trans>
+              </Button>
+            )}
+          />
+        )}
+        {!this.state.editing && (
+          <Button onClick={this.handleToggleEdit} shape="hollow" className="m-remote-identity-email__action">
+            <Trans id="remote_identity.action.edit">Edit</Trans>
+          </Button>
+        )}
+        {this.state.editing && (
+          <Fragment>
+            <Button onClick={this.handleCancel} shape="hollow" className="m-remote-identity-email__action">
+              <Trans id="remote_identity.action.cancel">Cancel</Trans>
+            </Button>
+            <Button
+              onClick={this.handleSave}
+              shape="plain"
+              className="m-remote-identity-email__action"
+              icon={this.state.hasActivity ? (<Spinner isloading display="inline" />) : 'email'}
+              disabled={this.state.hasActivity}
+            >
+              <Trans id="remote_identity.action.save">Save</Trans>
+            </Button>
+          </Fragment>
+        )}
+      </div>
+    );
+  }
+
+  render() {
+    const { className } = this.props;
+
+    return (
+      <div className={classnames('m-remote-identity-email', className)}>
         {this.renderGlobalError()}
-        {this.renderPhase()}
+        {this.renderContent()}
         {this.renderActions()}
       </div>
     );

@@ -17,7 +17,7 @@ describe('component RemoteIdentityEmail', () => {
     };
 
     const wrapper = shallow(<RemoteIdentityEmail {...props} />).dive();
-    expect(wrapper.state().phase).toEqual(1);
+    expect(wrapper.state().editing).toEqual(true);
   });
 
   it('existing remoteIdentity', () => {
@@ -33,6 +33,6 @@ describe('component RemoteIdentityEmail', () => {
     };
 
     const wrapper = shallow(<RemoteIdentityEmail {...props} />).dive();
-    expect(wrapper.state().phase).toEqual(0);
+    expect(wrapper.state().editing).toEqual(false);
   });
 });

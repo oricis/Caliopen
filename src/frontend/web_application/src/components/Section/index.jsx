@@ -8,24 +8,28 @@ class Section extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
     title: PropTypes.node,
+    titleProps: PropTypes.shape({}),
     descr: PropTypes.node,
     hasSeparator: PropTypes.bool,
     children: PropTypes.node,
     borderContext: PropTypes.oneOf(['disabled', 'safe', 'public', 'unsecure']),
+    shape: PropTypes.oneOf(['plain', 'none']),
   };
 
   static defaultProps = {
     className: undefined,
     title: undefined,
+    titleProps: {},
     descr: undefined,
     hasSeparator: false,
     children: undefined,
     borderContext: undefined,
+    shape: 'plain',
   };
 
   render() {
     const {
-      title, descr, children, hasSeparator, className, borderContext,
+      title, titleProps, descr, children, hasSeparator, className, borderContext, shape,
     } = this.props;
 
     const borderModifier = borderContext && {
@@ -35,11 +39,16 @@ class Section extends PureComponent {
       'm-section--border-unsecure': borderContext === 'unsecure',
     };
 
+    const modifiers = {
+      'm-section--plain': shape === 'plain',
+      'm-section--separator': hasSeparator,
+    };
+
     return (
-      <section className={classnames('m-section', { 'm-section--separator': hasSeparator }, borderModifier, className)}>
+      <section className={classnames('m-section', modifiers, borderModifier, className)}>
         {(title || descr) &&
           <header className="m-section__header">
-            {title && <Title className="m-section__title">{title}</Title>}
+            {title && <Title className="m-section__title" {...titleProps}>{title}</Title>}
             {descr && <p className="m-section__descr">{descr}</p>}
           </header>
         }

@@ -12,6 +12,7 @@ import messageReducer from './modules/message';
 import notificationReducer from './modules/notification';
 import openPGPKeychainReducer from './modules/openpgp-keychain';
 import participantSuggestionsReducer from './modules/participant-suggestions';
+import providerReducer from './modules/provider';
 import remoteIdentityReducer from './modules/remote-identity';
 import searchReducer from './modules/search';
 import settingsReducer from './modules/settings';
@@ -31,6 +32,7 @@ const reducer = combineReducers({
   notification: notificationReducer,
   openPGPKeychain: openPGPKeychainReducer,
   participantSuggestions: participantSuggestionsReducer,
+  provider: providerReducer,
   remoteIdentity: remoteIdentityReducer,
   search: searchReducer,
   settings: settingsReducer,

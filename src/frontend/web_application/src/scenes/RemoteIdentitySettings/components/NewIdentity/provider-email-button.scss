@@ -1,0 +1,10 @@
+@import '../../../../styles/common';
+
+.m-provider-email-button {
+  &__icon {
+    vertical-align: middle;
+    height: 40px;
+    color: $co-color__primary;
+    font-size: 34px;
+  }
+}
