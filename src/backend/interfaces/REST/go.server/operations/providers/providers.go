@@ -1,7 +1,6 @@
 package providers
 
 import (
-	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
@@ -58,7 +57,7 @@ func CallbackHandler(ctx *gin.Context) {
 	case "twitter":
 		token := ctx.Query("oauth_token")
 		verifier := ctx.Query("oauth_verifier")
-		remoteId, errC := caliopen.Facilities.RESTfacility.CreateTwitterIdentity(token, verifier)
+		_, errC := caliopen.Facilities.RESTfacility.CreateTwitterIdentity(token, verifier)
 		if errC != nil {
 			returnedErr := new(swgErr.CompositeError)
 			returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusFailedDependency, "RESTfacility returned error"), errC, errC.Cause())
@@ -66,12 +65,11 @@ func CallbackHandler(ctx *gin.Context) {
 			ctx.Abort()
 			return
 		}
-		response := fmt.Sprintf(`{"identity_id":"%s"}`, remoteId)
-		ctx.Data(http.StatusOK, "application/json", []byte(response))
+		ctx.Status(http.StatusOK)
 	case "gmail":
 		state := ctx.Query("state")
 		code := ctx.Query("code")
-		remoteId, errC := caliopen.Facilities.RESTfacility.CreateGmailIdentity(state, code)
+		_, errC := caliopen.Facilities.RESTfacility.CreateGmailIdentity(state, code)
 		if errC != nil {
 			returnedErr := new(swgErr.CompositeError)
 			returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusFailedDependency, "RESTfacility returned error"), errC, errC.Cause())
@@ -79,8 +77,7 @@ func CallbackHandler(ctx *gin.Context) {
 			ctx.Abort()
 			return
 		}
-		response := fmt.Sprintf(`{"identity_id":"%s"}`, remoteId)
-		ctx.Data(http.StatusOK, "application/json", []byte(response))
+		ctx.Status(http.StatusOK)
 	default:
 		e := swgErr.New(http.StatusNotImplemented, "not implemented")
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
