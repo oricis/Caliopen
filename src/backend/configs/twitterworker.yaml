@@ -36,8 +36,8 @@ BrokerConfig:
       urls: # many allowed
       - http://elasticsearch:9200
     #messaging system
-    in_topic: inboundTwitter
-    out_topic: outboundTwitter
+    in_topic: inboundTWITTER
+    out_topic: outboundTWITTER
     nats_queue: Twitterqueue
     # notifications
     NotifierConfig:

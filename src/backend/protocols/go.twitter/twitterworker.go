@@ -11,7 +11,7 @@ import (
 
 var (
 	WorkersGuard   *sync.RWMutex
-	TwitterWorkers map[string]*Worker
+	TwitterWorkers map[string]*Worker // one worker per active Twitter account
 	NatsConn       *nats.Conn
 )
 

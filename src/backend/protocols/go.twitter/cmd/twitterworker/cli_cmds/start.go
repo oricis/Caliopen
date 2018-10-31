@@ -77,9 +77,14 @@ func start(cmd *cobra.Command, args []string) {
 	if err != nil {
 		log.WithError(err).Fatal("[TwitterWorker] initialization of NATS connexion failed")
 	}
-	_, err = twd.NatsConn.QueueSubscribe(twd.AppConfig.BrokerConfig.NatsTopicFetcher, twd.AppConfig.BrokerConfig.NatsQueue, twd.NatsMsgHandler)
+	_, err = twd.NatsConn.QueueSubscribe(twd.AppConfig.BrokerConfig.NatsTopicFetcher, twd.AppConfig.BrokerConfig.NatsQueue, twd.WorkerMsgHandler)
 	if err != nil {
-		log.WithError(err).Fatal("[TwitterWorker] initialization of NATS subscription failed")
+		log.WithError(err).Fatal("[TwitterWorker] initialization of NATS fetcher subscription failed")
+	}
+
+	_, err = twd.NatsConn.QueueSubscribe(twd.AppConfig.BrokerConfig.LDAConfig.OutTopic, twd.AppConfig.BrokerConfig.NatsQueue, twd.DMmsgHandler)
+	if err != nil {
+		log.WithError(err).Fatal("[TwitterWorker] initialization of NATS fetcher subscription failed")
 	}
 
 	log.Info("Twitter worker started")

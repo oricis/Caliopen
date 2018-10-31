@@ -6,13 +6,16 @@ package twitterworker
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/nats-io/go-nats"
 	"time"
 )
 
-func NatsMsgHandler(msg *nats.Msg) {
+// WorkerMsgHandler handles messages coming on topic dedicated to workers management
+func WorkerMsgHandler(msg *nats.Msg) {
 	message := TwitterOrder{}
 	err := json.Unmarshal(msg.Data, &message)
 	if err != nil {
@@ -62,4 +65,23 @@ func NatsMsgHandler(msg *nats.Msg) {
 		//TODO
 		log.Infof("received remove_worker order for remote twitter ID %s", message.RemoteId)
 	}
+}
+
+// DMmsgHandler handles messages coming on topic dedicated to DM management
+func DMmsgHandler(msg *nats.Msg) {
+	natsReplyError(msg, errors.New("not implemented"))
+}
+
+func natsReplyError(msg *nats.Msg, err error) {
+	log.WithError(err).Warnf("email broker [outbound] : error when processing incoming nats message : %s", *msg)
+
+	var order TwitterOrder
+	json.Unmarshal(msg.Data, &order)
+	ack := DeliveryAck{
+		Err:      true,
+		Response: fmt.Sprintf("failed to send message with error « %s » ", err), //TODO
+	}
+
+	json_resp, _ := json.Marshal(ack)
+	NatsConn.Publish(msg.Reply, json_resp)
 }

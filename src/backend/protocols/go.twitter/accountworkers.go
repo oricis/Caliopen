@@ -98,12 +98,33 @@ func (worker *Worker) Start() error {
 			case PollDM:
 				worker.PollDM()
 			case Stop:
+				worker.broker.Connectors.Halt <- struct{}{}
 				break deskLoop
 			default:
 				logrus.Warnf("worker received unknown command number %d", command)
 			}
 		}
 	}(worker)
+
+	go func(w *Worker) {
+		select {
+		case egress, ok  := <- worker.broker.Connectors.Egress:
+			if !ok {
+				//TODO
+				return
+			}
+		eventResponse, _, e := worker.twitterClient.DirectMessages.EventsCreate(egress.DM.Message)
+			if e != nil {
+				//TODO
+			}
+		if eventResponse.Event.Message != nil {
+			//TODO ?
+		}
+			case <- worker.broker.Connectors.Halt:
+				return
+		}
+	}(worker)
+
 	return nil
 }
 
@@ -181,6 +202,11 @@ func (worker *Worker) PollDM() {
 
 func (worker *Worker) dmNotSeen(event twitter.DirectMessageEvent) bool {
 	return worker.lastDMseen < event.ID
+}
+
+// SendDM delivers DM to Twitter endpoint
+func (worker *Worker) SendDM() {
+
 }
 
 // sort interface

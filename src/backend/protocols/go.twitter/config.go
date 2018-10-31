@@ -13,16 +13,8 @@ type WorkerConfig struct {
 	BrokerConfig broker.BrokerConfig `mapstructure:"BrokerConfig"`
 }
 
-const (
-	DefaultPollInterval = 10 // poll interval in seconds
-)
-
-var TwitterAppKey string
-var TwitterAppSecret string
 var AppConfig *WorkerConfig
 
 func init() {
-	TwitterAppKey ="TSpJhxzkNo43Q0d64Vz10a29I"
-	TwitterAppSecret = "kU4mWmFXZPXdzztePHA0uwU57m6CpfbGp2TNzpwgmDiGyjUyxL"
 	AppConfig = &WorkerConfig{}
 }

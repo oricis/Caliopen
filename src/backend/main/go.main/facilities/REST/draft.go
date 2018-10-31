@@ -41,7 +41,6 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err e
 	default:
 		return nil, fmt.Errorf("[SendDraft] no handler for <%s> protocol", protocol)
 	}
-
 	rep, err := rest.nats_conn.Request(rest.natsTopics[natsTopic], []byte(natsMessage), 30*time.Second)
 	if err != nil {
 		log.WithError(err).Warn("[RESTfacility]: SendDraft error")

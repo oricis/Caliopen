@@ -79,11 +79,12 @@ type (
 	}
 
 	NatsConfig struct {
-		Url            string `mapstructure:"url"`
-		OutSMTP_topic  string `mapstructure:"outSMTP_topic"`
-		OutIMAP_topic  string `mapstructure:"outIMAP_topic"`
-		Contacts_topic string `mapstructure:"contacts_topic"`
-		Keys_topic     string `mapstructure:"keys_topic"`
+		Url              string `mapstructure:"url"`
+		OutSMTP_topic    string `mapstructure:"outSMTP_topic"`
+		OutIMAP_topic    string `mapstructure:"outIMAP_topic"`
+		OutTWITTER_topic string `mapstructure:"outTWITTER_topic"`
+		Contacts_topic   string `mapstructure:"contacts_topic"`
+		Keys_topic       string `mapstructure:"keys_topic"`
 	}
 
 	NotifierConfig struct {
@@ -124,11 +125,12 @@ func (server *REST_API) initialize(config APIConfig) error {
 			Db:       config.CacheSettings.Db,
 		},
 		NatsConfig: obj.NatsConfig{
-			Url:            config.NatsConfig.Url,
-			OutSMTP_topic:  config.NatsConfig.OutSMTP_topic,
-			OutIMAP_topic:  config.NatsConfig.OutIMAP_topic,
-			Contacts_topic: config.NatsConfig.Contacts_topic,
-			Keys_topic:     config.NatsConfig.Keys_topic,
+			Url:              config.NatsConfig.Url,
+			OutSMTP_topic:    config.NatsConfig.OutSMTP_topic,
+			OutIMAP_topic:    config.NatsConfig.OutIMAP_topic,
+			OutTWITTER_topic: config.NatsConfig.OutTWITTER_topic,
+			Contacts_topic:   config.NatsConfig.Contacts_topic,
+			Keys_topic:       config.NatsConfig.Keys_topic,
 		},
 		NotifierConfig: obj.NotifierConfig{
 			AdminUsername: config.NotifierConfig.AdminUsername,
@@ -136,7 +138,7 @@ func (server *REST_API) initialize(config APIConfig) error {
 			TemplatesPath: config.NotifierConfig.TemplatesPath,
 		},
 		Providers: config.Providers,
-		Hostname: config.Hostname + ":" + config.Port,
+		Hostname:  config.Hostname + ":" + config.Port,
 	}
 
 	err := caliopen.Initialize(caliopenConfig)

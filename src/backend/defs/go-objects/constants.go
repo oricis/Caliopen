@@ -39,7 +39,7 @@ const (
 	Nats_inSMTP_topicKey     = "inSMTP_topic"
 	Nats_Contacts_topicKey   = "contacts_topic"
 	Nats_outIMAP_topicKey    = "outIMAP_topic"
-	Nats_outTwitter_topicKey = "outTwitter_topic"
+	Nats_outTwitter_topicKey = "outTWITTER_topic"
 	Nats_Keys_topicKey       = "keys_topic"
 
 	//participant types
