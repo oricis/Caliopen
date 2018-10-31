@@ -12,6 +12,7 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/store/cassandra"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/facilities/Notifications"
+	"github.com/CaliOpen/go-twitter/twitter"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/nats-io/go-nats"
@@ -20,6 +21,7 @@ import (
 type (
 	TwitterBroker struct {
 		Config            BrokerConfig
+		Connectors        TwitterBrokerConnectors
 		Index             backends.LDAIndex
 		NatsConn          *nats.Conn
 		Notifier          Notifications.Notifiers
@@ -37,6 +39,22 @@ type (
 		StoreConfig      StoreConfig `mapstructure:"store_settings"`
 		StoreName        string      `mapstructure:"store_name"`
 		LDAConfig        LDAConfig   `mapstructure:"LDAConfig"`
+	}
+
+	natsOrder struct {
+		MessageId string `json:"message_id"`
+		Order     string `json:"order"`
+		UserId    string `json:"user_id"`
+	}
+
+	DMpayload struct {
+		DM       *twitter.DirectMessageEvent
+		Response chan *DeliveryAck
+	}
+
+	TwitterBrokerConnectors struct {
+		Egress chan *DMpayload
+		Halt   chan struct{}
 	}
 )
 
@@ -106,6 +124,9 @@ func Initialize(conf BrokerConfig) (broker *TwitterBroker, err error) {
 		},
 	}
 	broker.Notifier = Notifications.NewNotificationsFacility(caliopenConfig, broker.NatsConn)
+	broker.Connectors = TwitterBrokerConnectors{
+		Egress: make(chan *DMpayload, 5),
+	}
 	return
 }
 

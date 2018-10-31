@@ -16,6 +16,10 @@ import (
 	"time"
 )
 
+const (
+	DirectMessageType = "message_create"
+)
+
 // SaveRawDM marshal DM to json and save it as a raw message object in store
 func (broker *TwitterBroker) SaveRawDM(dm *twitter.DirectMessageEvent, userId UUID) (rawMessageId UUID, err error) {
 
@@ -39,6 +43,28 @@ func (broker *TwitterBroker) SaveRawDM(dm *twitter.DirectMessageEvent, userId UU
 	}
 
 	return rawMsg.Raw_msg_id, nil
+}
+
+// MarshalDM builds a 'ready to send' Twitter direct message from a Caliopen message
+func (b *TwitterBroker) MarshalDM(msg *Message) (dm *twitter.DirectMessageEvent, err error) {
+
+	dm = &twitter.DirectMessageEvent{
+		Type: DirectMessageType,
+		Message: &twitter.DirectMessageEventMessage{
+			Target: twitter.DMEventMessageTarget{
+				RecipientID: msg.Participants[0].Address, //TODO : handle multiple participants
+			},
+			Data: twitter.DMEventMessageData{
+				Text: msg.Body_plain, // TODO : check body length to conform to Twitter API
+			},
+		},
+	}
+	return
+}
+
+func (b *TwitterBroker) SaveIndexSentDM(ack *DeliveryAck) error {
+	//TODO
+	return errors.New("not implemented")
 }
 
 // UnmarshalDM creates a new Caliopen Message entity from a twitter1.1's DM event
