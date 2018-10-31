@@ -36,6 +36,8 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err e
 		natsTopic = Nats_outIMAP_topicKey
 	case SmtpProtocol, EmailProtocol:
 		natsTopic = Nats_outSMTP_topicKey
+	case TwitterProtocol:
+		natsTopic = Nats_outTwitter_topicKey
 	default:
 		return nil, fmt.Errorf("[SendDraft] no handler for <%s> protocol", protocol)
 	}

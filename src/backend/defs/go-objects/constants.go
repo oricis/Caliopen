@@ -28,18 +28,19 @@ const (
 	ContactIndexType = "indexed_contact"
 
 	// authentication methods
-	LoginPassword    = "login-password"
-	Oauth1           = "Oauth1"
-	Oauth2           = "Oauth2"
+	LoginPassword = "login-password"
+	Oauth1        = "Oauth1"
+	Oauth2        = "Oauth2"
 
 	//nats related constants
-	Nats_message_tmpl      = "{\"order\":\"%s\", \"message_id\":\"%s\", \"user_id\":\"%s\"}"
-	Nats_contact_tmpl      = "{\"order\":\"%s\", \"contact_id\":\"%s\", \"user_id\":\"%s\"}"
-	Nats_outSMTP_topicKey  = "outSMTP_topic"
-	Nats_inSMTP_topicKey   = "inSMTP_topic"
-	Nats_Contacts_topicKey = "contacts_topic"
-	Nats_outIMAP_topicKey  = "outIMAP_topic"
-	Nats_Keys_topicKey     = "keys_topic"
+	Nats_message_tmpl        = "{\"order\":\"%s\", \"message_id\":\"%s\", \"user_id\":\"%s\"}"
+	Nats_contact_tmpl        = "{\"order\":\"%s\", \"contact_id\":\"%s\", \"user_id\":\"%s\"}"
+	Nats_outSMTP_topicKey    = "outSMTP_topic"
+	Nats_inSMTP_topicKey     = "inSMTP_topic"
+	Nats_Contacts_topicKey   = "contacts_topic"
+	Nats_outIMAP_topicKey    = "outIMAP_topic"
+	Nats_outTwitter_topicKey = "outTwitter_topic"
+	Nats_Keys_topicKey       = "keys_topic"
 
 	//participant types
 	ParticipantBcc     = "Bcc"
