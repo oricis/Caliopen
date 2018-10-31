@@ -150,7 +150,19 @@ class Message(ObjectIndexable):
         message.user_id = UUID(user.user_id)
         message.is_draft = True
         message.is_received = False
-        message.type = "email"  # TODO: type handling from participants
+
+        # embed protocol from recipient's one and refuse multiple protocol
+        for participant in message.participants:
+            if participant.type == "To":
+                if not message.type:
+                    message.type = participant.protocol
+                else:
+                    if participant.protocol != message.type:
+                        raise Exception("multiple protocols not implemented")
+        if not message.type:
+            log.warn("failed to pick a protocol")
+            raise Exception("`message protocol is missing")
+
         message.date = message.date_sort = message.date_insert = \
             datetime.datetime.now(tz=pytz.utc)
         message.discussion_id = find_or_create_discussion(user, draft_param)
@@ -257,7 +269,7 @@ class Message(ObjectIndexable):
         if "parent_id" in current_state and current_state["parent_id"] == "":
             del (current_state["parent_id"])
         if "discussion_id" in current_state and \
-           current_state["discussion_id"] == "":
+                current_state["discussion_id"] == "":
             del (current_state["discussion_id"])
 
         # handle body key mapping to body_plain or body_html

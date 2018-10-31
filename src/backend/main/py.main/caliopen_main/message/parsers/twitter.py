@@ -1,21 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import base64
 import json
-from itertools import groupby
-from mailbox import Message
-from email.header import decode_header
 from datetime import datetime
 import pytz
-import hashlib
-
-from email.utils import parsedate_tz, mktime_tz, getaddresses
 
 import zope.interface
 
-from caliopen_main.common.helpers.normalize import clean_email_address
-from caliopen_main.common.helpers.strings import to_utf8
 from caliopen_main.common.interfaces import (IAttachmentParser, IMessageParser,
                                              IParticipantParser)
 

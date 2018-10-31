@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 """Caliopen user message qualification logic."""
 from __future__ import absolute_import, print_function, unicode_literals
-import json
 import logging
-from datetime import datetime
-import pytz
 
 from caliopen_main.message.parameters import (NewInboundMessage,
                                               Participant,
