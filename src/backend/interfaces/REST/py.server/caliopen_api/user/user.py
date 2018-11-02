@@ -186,6 +186,7 @@ class UserAPI(Api):
         try:
             user = User.create(param)
         except Exception as exc:
+            log.exception('Error during user creation {0}'.format(exc))
             raise NotAcceptable(detail=exc.message)
 
         log.info('Created user {} with name {}'.
