@@ -34,8 +34,8 @@ type (
 		IndexName        string      `mapstructure:"index_name"`
 		NatsQueue        string      `mapstructure:"nats_queue"`
 		NatsURL          string      `mapstructure:"nats_url"`
-		NatsTopicFetcher string      `mapstructure:"nats_topic_fetcher"`
-		NatsTopicSender  string      `mapstructure:"nats_topic_sender"`
+		NatsTopicWorkers string      `mapstructure:"nats_topic_worker"`
+		NatsTopicDMs     string      `mapstructure:"nats_topic_direct_message"`
 		StoreConfig      StoreConfig `mapstructure:"store_settings"`
 		StoreName        string      `mapstructure:"store_name"`
 		LDAConfig        LDAConfig   `mapstructure:"LDAConfig"`

@@ -6,11 +6,11 @@ package twitterworker
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/nats-io/go-nats"
+	"github.com/pkg/errors"
 	"time"
 )
 
@@ -24,7 +24,6 @@ func WorkerMsgHandler(msg *nats.Msg) {
 	}
 	switch message.Order {
 	case "sync":
-		//TODO
 		log.Infof("received sync order for remote twitter ID %s", message.RemoteId)
 		if worker, ok := TwitterWorkers[message.UserId+message.RemoteId]; ok {
 			select {
@@ -69,11 +68,47 @@ func WorkerMsgHandler(msg *nats.Msg) {
 
 // DMmsgHandler handles messages coming on topic dedicated to DM management
 func DMmsgHandler(msg *nats.Msg) {
-	natsReplyError(msg, errors.New("not implemented"))
+	message := TwitterOrder{}
+	err := json.Unmarshal(msg.Data, &message)
+	if err != nil {
+		log.WithError(err).Errorf("Unable to unmarshal message from NATS. Payload was <%s>", string(msg.Data))
+		return
+	}
+	switch message.Order {
+	case "sync":
+		log.Infof("received sync order for remote twitter ID %s", message.RemoteId)
+		if worker, ok := TwitterWorkers[message.UserId+message.RemoteId]; ok {
+			select {
+			case worker.WorkerDesk <- PollDM:
+				log.Infof("[NatsMsgHandler] ordering to pollDM for remote %s (user %s)", message.RemoteId, message.UserId)
+			case <-time.After(30 * time.Second):
+				log.Warnf("[NatsMsgHandler] worker's desk is full for remote %s (user %s)", message.RemoteId, message.UserId)
+			}
+		} else {
+			log.Warnf("[NatsMsgHandler] failed to retrieve registered worker for remote %s (user %s). Trying to add one.", message.RemoteId, message.UserId)
+			worker, err := NewWorker(AppConfig, message.UserId, message.RemoteId)
+			if err != nil {
+				log.WithError(err).Warnf("[NatsMsgHandler] failed to create new worker for remote %s (user %s)", message.RemoteId, message.UserId)
+			} else {
+				registerWorker(worker)
+				worker.Start()
+			}
+			select {
+			case worker.WorkerDesk <- PollDM:
+				log.Infof("[NatsMsgHandler] ordering to pollDM for remote %s (user %s)", message.RemoteId, message.UserId)
+			case <-time.After(30 * time.Second):
+				log.Warnf("[NatsMsgHandler] worker's desk is full for remote %s (user %s)", message.RemoteId, message.UserId)
+			}
+		}
+	case "deliver":
+		natsReplyError(msg, errors.New("not implemented"))
+	default:
+		natsReplyError(msg, errors.New("not implemented"))
+	}
 }
 
 func natsReplyError(msg *nats.Msg, err error) {
-	log.WithError(err).Warnf("email broker [outbound] : error when processing incoming nats message : %s", *msg)
+	log.WithError(err).Warnf("twitter broker [outbound] : error when processing incoming nats message : %s", *msg)
 
 	var order TwitterOrder
 	json.Unmarshal(msg.Data, &order)

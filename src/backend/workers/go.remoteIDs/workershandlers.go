@@ -30,7 +30,7 @@ func (p *Poller) addWorkerFor(idkey string) error {
 			log.WithError(e).Warn("[addWorkerFor] failed to marshal nats message")
 			return e
 		}
-		return p.NatsConn.Publish(p.Config.NatsTopics["twitter"], j)
+		return p.NatsConn.Publish(p.Config.NatsTopics["twitter_worker"], j)
 
 	}
 	return nil
@@ -55,7 +55,7 @@ func (p *Poller) removeWorkerFor(idkey string) error {
 			log.WithError(e).Warn("[addWorkerFor] failed to marshal nats message")
 			return e
 		}
-		return p.NatsConn.Publish(p.Config.NatsTopics["twitter"], j)
+		return p.NatsConn.Publish(p.Config.NatsTopics["twitter_worker"], j)
 
 	}
 	return nil
@@ -80,7 +80,7 @@ func (p *Poller) updateWorkerFor(idkey string) error {
 			log.WithError(e).Warn("[addWorkerFor] failed to marshal nats message")
 			return e
 		}
-		return p.NatsConn.Publish(p.Config.NatsTopics["twitter"], j)
+		return p.NatsConn.Publish(p.Config.NatsTopics["twitter_worker"], j)
 
 	}
 	return nil

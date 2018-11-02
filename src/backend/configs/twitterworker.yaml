@@ -3,9 +3,9 @@ twitter_app_secret: xxxxxx
 BrokerConfig:
   #messaging system
   nats_url: nats://nats:4222
-  nats_queue: Twitterworkers                                # NATS group queue for workers
-  nats_topic_fetcher: twitterFetcher                        # NATS topic to listen to actions to execute
-  nats_topic_sender: twitterSender                          # NATS topic to listen to actions to execute
+  nats_queue: Twitterworkers                             # NATS group queue for workers
+  nats_topic_worker: twitter_worker                      # NATS topic to listen to orders for handling workers (add, update, delete)
+  nats_topic_direct_message: twitter_dm                  # NATS topic to listen to orders for handling DMs (fetch, send)
   #storage facility
   store_name: cassandra                                  # backend to store raw emails and messages (inbound & outbound)
   store_settings:
@@ -36,9 +36,7 @@ BrokerConfig:
       urls: # many allowed
       - http://elasticsearch:9200
     #messaging system
-    in_topic: inboundTWITTER
-    out_topic: outboundTWITTER
-    nats_queue: Twitterqueue
+    in_topic: inboundTwitter
     # notifications
     NotifierConfig:
       admin_username: admin                                # username on whose behalf notifiers will act. This admin user must have been created before by other means.

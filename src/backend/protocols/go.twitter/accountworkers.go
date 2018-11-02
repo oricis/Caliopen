@@ -14,8 +14,10 @@ import (
 	"github.com/Sirupsen/logrus"
 	log "github.com/Sirupsen/logrus"
 	"github.com/dghubble/oauth1"
+	"github.com/nats-io/go-nats"
 	"sort"
 	"strconv"
+	"sync"
 )
 
 type Worker struct {
@@ -43,6 +45,12 @@ const (
 
 	lastSeenInfosKey = "lastseendm"
 	lastSyncInfosKey = "lastsync"
+)
+
+var (
+	WorkersGuard   *sync.RWMutex
+	TwitterWorkers map[string]*Worker // one worker per active Twitter account
+	NatsConn       *nats.Conn
 )
 
 // NewWorker create a worker dedicated to a specific twitter account.
@@ -90,6 +98,14 @@ func NewWorker(config *WorkerConfig, userID, remoteID string) (worker *Worker, e
 	return
 }
 
+func registerWorker(worker *Worker) {
+	workerKey := worker.userAccount.userID.String() + worker.userAccount.remoteID.String()
+	WorkersGuard.Lock()
+	delete(TwitterWorkers, workerKey) // do not register same worker twice
+	TwitterWorkers[workerKey] = worker
+	WorkersGuard.Unlock()
+}
+
 func (worker *Worker) Start() error {
 	go func(w *Worker) {
 	deskLoop:
@@ -108,20 +124,20 @@ func (worker *Worker) Start() error {
 
 	go func(w *Worker) {
 		select {
-		case egress, ok  := <- worker.broker.Connectors.Egress:
+		case egress, ok := <-worker.broker.Connectors.Egress:
 			if !ok {
 				//TODO
 				return
 			}
-		eventResponse, _, e := worker.twitterClient.DirectMessages.EventsCreate(egress.DM.Message)
+			eventResponse, _, e := worker.twitterClient.DirectMessages.EventsCreate(egress.DM.Message)
 			if e != nil {
 				//TODO
 			}
-		if eventResponse.Event.Message != nil {
-			//TODO ?
-		}
-			case <- worker.broker.Connectors.Halt:
-				return
+			if eventResponse.Event.Message != nil {
+				//TODO ?
+			}
+		case <-worker.broker.Connectors.Halt:
+			return
 		}
 	}(worker)
 
