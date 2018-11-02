@@ -92,8 +92,7 @@ def setup_shard_index(shard):
 
     # PUT mappings for each type, if any
     for name, kls in core_registry.items():
-        if hasattr(kls, "_index_class") and \
-                getattr(kls, '_index_class') and \
+        if getattr(kls, '_index_class', None) and \
                 hasattr(kls._model_class, 'user_id'):
             idx_kls = kls._index_class()
             if hasattr(idx_kls, "build_mapping"):
