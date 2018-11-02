@@ -7,6 +7,10 @@ from caliopen_main.message.parameters import (NewInboundMessage,
                                               Participant,
                                               Attachment)
 from caliopen_main.message.parsers.twitter import TwitterDM
+from caliopen_main.discussion.core import Discussion
+from caliopen_storage.config import Configuration
+
+from ..features.types import unmarshall_features
 
 log = logging.getLogger(__name__)
 
@@ -18,6 +22,16 @@ class UserDMQualifier(object):
 
     def __init__(self, user):
         self.user = user
+
+    def _get_tags(self, message):
+        """Evaluate user rules to get all tags for a mail."""
+        tags = []
+        if message.privacy_features.get('is_internal', False):
+            # XXX do not hardcode the wanted tag
+            internal_tag = [x for x in self.user.tags if x.name == 'internal']
+            if internal_tag:
+                tags.append(internal_tag[0].name)
+        message.tags = tags
 
     def get_participant(self, participant):
         """TODO: find related contact"""
@@ -59,6 +73,24 @@ class UserDMQualifier(object):
             raise Exception("no participant found in raw message {}".format(
                 raw.raw_msg_id))
 
+        # Compute PI !!
+        # TODO
+
+        # compute tags
+        self._get_tags(new_message)
+        if new_message.tags:
+            log.debug('Resolved tags {}'.format(new_message.tags))
+
+        # lookup by external references
+        # TODO
+        # for now a new discussion is created each time
+
+        discussion = Discussion.create_from_message(self.user, message)
+        log.debug('Created discussion {}'.format(discussion.discussion_id))
+        new_message.discussion_id = discussion.discussion_id
+        # Format features
+        new_message.privacy_features = \
+            unmarshall_features(new_message.privacy_features)
         try:
             new_message.validate()
         except Exception as exc:
