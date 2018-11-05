@@ -17,7 +17,10 @@ export function requestPublicKeys({ contactId }) {
   return {
     type: REQUEST_PUBLIC_KEYS,
     payload: {
-      url: `api/v2/contacts/${contactId}/publickeys`,
+      contactId,
+      request: {
+        url: `/api/v2/contacts/${contactId}/publickeys`,
+      },
     },
   };
 }
@@ -71,31 +74,47 @@ export function deletePublicKey({ contactId, publicKeyId }) {
   };
 }
 
-const initialState = {
-  isFetching: false,
-  keys: [],
-  total: 0,
-};
+const initialState = {};
 
 const extractContactIdFromAction = action =>
   action.meta.previousAction.payload.contactId;
 
-// TODO
 const keyListReducer = (state = [], action = {}) => {
   const contactId = extractContactIdFromAction(action);
-}
+
+  return {
+    ...state,
+    [contactId]: {
+      keys: action.payload.data.pubkeys,
+      isFetching: false,
+      total: action.payload.data.total,
+      didInvalidate: false,
+    },
+  };
+};
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case REQUEST_PUBLIC_KEYS:
-      return { ...state, isFetching: true };
-    case REQUEST_PUBLIC_KEYS_SUCCESS:
+    case CREATE_PUBLIC_KEY_SUCCESS:
+    case UPDATE_PUBLIC_KEY_SUCCESS:
+    case DELETE_PUBLIC_KEY_SUCCESS:
       return {
         ...state,
-        isFetching: false,
-        keys: action.payload.data.keys,
-        total: action.payload.data.total,
+        [extractContactIdFromAction(action)]: {
+          ...state[extractContactIdFromAction(action)],
+          didInvalidate: true,
+        },
       };
+    case REQUEST_PUBLIC_KEYS:
+      return {
+        ...state,
+        [action.payload.contactId]: {
+          ...state[action.payload.contactId],
+          isFetching: true,
+        },
+      };
+    case REQUEST_PUBLIC_KEYS_SUCCESS:
+      return keyListReducer(state, action);
     default:
       return state;
   }
