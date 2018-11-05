@@ -3,7 +3,7 @@ const userUtil = require('../utils/user-util');
 const capitalize = str => `${str.charAt(0).toUpperCase()}${str.slice(1)}`;
 
 
-fdescribe('Remote Identity Settings', () => {
+describe('Remote Identity Settings', () => {
   const EC = protractor.ExpectedConditions;
 
   const crudOAuth = async ({ providerName }) => {
