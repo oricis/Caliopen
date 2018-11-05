@@ -52,7 +52,7 @@ func (es *ElasticSearchBackend) UpdateMessage(user *objects.UserInfo, msg *objec
 	}
 
 	update, err := es.Client.Update().Index(user.Shard_id).Type(objects.MessageIndexType).Id(msg.Message_id.String()).
-		Doc(fields).
+		Doc(jsonFields).
 		Refresh("wait_for").
 		Do(context.TODO())
 	if err != nil {
