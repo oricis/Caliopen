@@ -17,25 +17,29 @@ import (
 	"github.com/nats-io/go-nats"
 	"sort"
 	"strconv"
+	"strings"
 	"sync"
+	"time"
 )
 
-type Worker struct {
-	WorkerDesk       chan uint
-	broker           *broker.TwitterBroker
-	lastDMseen       string
-	twitterClient    *twitter.Client
-	userAccount      *TwitterAccount
-	usersScreenNames map[int64]string // a cache facility to avoid calling too often twitter API for screen_name lookup
-}
+type (
+	Worker struct {
+		WorkerDesk       chan uint
+		broker           *broker.TwitterBroker
+		lastDMseen       string
+		twitterClient    *twitter.Client
+		userAccount      *TwitterAccount
+		usersScreenNames map[int64]string // a cache facility to avoid calling too often twitter API for screen_name lookup
+	}
 
-type TwitterAccount struct {
-	accessToken       string
-	accessTokenSecret string
-	userID            UUID
-	remoteID          UUID
-	screenName        string
-}
+	TwitterAccount struct {
+		accessToken       string
+		accessTokenSecret string
+		userID            UUID
+		remoteID          UUID
+		screenName        string
+	}
+)
 
 const (
 	//WorkerDesk commands
@@ -45,6 +49,11 @@ const (
 
 	lastSeenInfosKey = "lastseendm"
 	lastSyncInfosKey = "lastsync"
+
+	lastErrorKey      = "lastFetchError"
+	dateFirstErrorKey = "firstErrorDate"
+	dateLastErrorKey  = "lastErrorDate"
+	errorsCountKey    = "errorsCount"
 )
 
 var (
@@ -68,11 +77,11 @@ func NewWorker(config *WorkerConfig, userID, remoteID string) (worker *Worker, e
 	// retrieve data from db
 	remote, err = worker.broker.Store.RetrieveUserIdentity(userID, remoteID, true)
 	if err != nil {
-		log.WithError(err).Infof("[PollDM] failed to retrieve remote identity <%s> (user <%s>)", worker.userAccount.remoteID, worker.userAccount.userID)
+		log.WithError(err).Infof("[PollDM] failed to retrieve remote identity <%s> (user <%s>)", remoteID, userID)
 		return
 	}
 	if remote.Credentials == nil {
-		log.WithError(err).Infof("[PollDM] failed to retrieve credentials for remote identity <%s> (user <%s>)", worker.userAccount.remoteID, worker.userAccount.userID)
+		log.WithError(err).Infof("[PollDM] failed to retrieve credentials for remote identity <%s> (user <%s>)", remoteID, userID)
 		return
 	}
 	worker.userAccount = &TwitterAccount{
@@ -100,9 +109,20 @@ func NewWorker(config *WorkerConfig, userID, remoteID string) (worker *Worker, e
 
 func registerWorker(worker *Worker) {
 	workerKey := worker.userAccount.userID.String() + worker.userAccount.remoteID.String()
+	// do not register same broker twice
+	if w, ok := TwitterWorkers[workerKey]; ok {
+		removeWorker(w)
+	}
 	WorkersGuard.Lock()
-	delete(TwitterWorkers, workerKey) // do not register same worker twice
 	TwitterWorkers[workerKey] = worker
+	WorkersGuard.Unlock()
+}
+
+func removeWorker(worker *Worker) {
+	workerKey := worker.userAccount.userID.String() + worker.userAccount.remoteID.String()
+	WorkersGuard.Lock()
+	worker.Stop()
+	delete(TwitterWorkers, workerKey)
 	WorkersGuard.Unlock()
 }
 
@@ -114,7 +134,7 @@ func (worker *Worker) Start() error {
 			case PollDM:
 				worker.PollDM()
 			case Stop:
-				worker.broker.Connectors.Halt <- struct{}{}
+				removeWorker(worker)
 				break deskLoop
 			default:
 				logrus.Warnf("worker received unknown command number %d", command)
@@ -126,17 +146,17 @@ func (worker *Worker) Start() error {
 		select {
 		case egress, ok := <-worker.broker.Connectors.Egress:
 			if !ok {
-				//TODO
+				log.Infof("Egress chan for worker %s has been closed. Shutting-down it.", worker.userAccount.userID.String()+worker.userAccount.remoteID.String())
+				worker.WorkerDesk <- Stop
 				return
 			}
-			eventResponse, _, e := worker.twitterClient.DirectMessages.EventsCreate(egress.DM.Message)
-			if e != nil {
+			err := worker.SendDM(egress)
+			if err != nil {
 				//TODO
-			}
-			if eventResponse.Event.Message != nil {
-				//TODO ?
+				worker.broker.NatsConn.Publish(egress.Reply, []byte("TODO"))
 			}
 		case <-worker.broker.Connectors.Halt:
+			worker.WorkerDesk <- Stop
 			return
 		}
 	}(worker)
@@ -144,16 +164,28 @@ func (worker *Worker) Start() error {
 	return nil
 }
 
+func (worker *Worker) Stop() {
+	// destroy broker
+	worker.broker.ShutDown()
+	// close desk
+	if _, ok := <-worker.WorkerDesk; ok {
+		close(worker.WorkerDesk)
+	}
+}
+
 // PollDM calls Twitter API endpoint to fetch DM for worker
 func (worker *Worker) PollDM() {
 	DMs, _, err := worker.twitterClient.DirectMessages.EventsList(&twitter.DirectMessageEventsListParams{Count: 10})
 	if err != nil {
-		if e, ok := err.(twitter.APIError); ok {
-			for _, err := range e.Errors {
-				if err.Code == 88 {
-					log.Infof("twitter returned rate limit error, slowing down worker for account @%s", worker.userAccount.screenName)
-					accountInfos, err := worker.broker.Store.RetrieveRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String())
-					if err == nil {
+		accountInfos, retrieveErr := worker.broker.Store.RetrieveRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String())
+		if retrieveErr == nil {
+			if e, ok := err.(twitter.APIError); ok {
+				var rateLimitError bool
+				errorsMessages := new(strings.Builder)
+				for _, err := range e.Errors {
+					if err.Code == 88 {
+						rateLimitError = true
+						log.Infof("twitter returned rate limit error, slowing down worker for account @%s", worker.userAccount.screenName)
 						if pollInterval, ok := accountInfos["pollinterval"]; ok {
 							interval, e := strconv.Atoi(pollInterval)
 							if e == nil {
@@ -173,7 +205,14 @@ func (worker *Worker) PollDM() {
 								}
 							}
 						}
+						break
+					} else {
+						errorsMessages.WriteString(err.Message + " ")
 					}
+				}
+				if !rateLimitError {
+					accountInfos[lastErrorKey] = errorsMessages.String()
+					worker.broker.Store.UpdateRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String(), accountInfos)
 				}
 			}
 		} else {
