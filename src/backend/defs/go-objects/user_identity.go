@@ -10,6 +10,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
+	"regexp"
 	"time"
 )
 
@@ -130,7 +131,7 @@ func (ui *UserIdentity) SetDefaults() {
 	defaults := map[string]string{}
 
 	switch ui.Protocol {
-	case "imap":
+	case EmailProtocol:
 		defaults = map[string]string{
 			"lastseenuid":  "",
 			"lastsync":     "",   // RFC3339 date string
@@ -138,6 +139,12 @@ func (ui *UserIdentity) SetDefaults() {
 			"outserver":    "",   // server hostname[|port]
 			"uidvalidity":  "",   // uidvalidity to invalidate data if needed (see RFC4549#section-4.1)
 			"pollinterval": "15", // how often remote account should be polled, in minutes.
+		}
+	case TwitterProtocol:
+		defaults = map[string]string{
+			"lastseendm":   "",
+			"lastsync":     "",  // RFC3339 date string
+			"pollinterval": "2", // how often remote account should be polled, in minutes.
 		}
 	}
 
@@ -147,6 +154,27 @@ func (ui *UserIdentity) SetDefaults() {
 		for default_key, default_value := range defaults {
 			if v, ok := ui.Infos[default_key]; !ok || v == "" {
 				(*ui).Infos[default_key] = default_value
+			}
+		}
+	}
+
+	// try to infer authentication mechanism
+	if authType, ok := ui.Infos["authtype"]; !ok || authType == "" {
+		loginPassRegex, _ := regexp.Compile(`(?i)password|login`)
+		oauth1Regex, _ := regexp.Compile(`(?i)auth1`)
+		oauth2Regex, _ := regexp.Compile(`(?i)auth2`)
+	credentialsLoop:
+		for k, _ := range *ui.Credentials {
+			switch {
+			case loginPassRegex.MatchString(k):
+				(*ui).Infos["authtype"] = LoginPassword
+				break credentialsLoop
+			case oauth1Regex.MatchString(k):
+				(*ui).Infos["authtype"] = Oauth1
+				break credentialsLoop
+			case oauth2Regex.MatchString(k):
+				(*ui).Infos["authtype"] = Oauth2
+				break credentialsLoop
 			}
 		}
 	}
@@ -162,7 +190,7 @@ func (ui *UserIdentity) SetDefaults() {
 	// try to set DisplayName and Identifier if it is missing
 	if ui.Identifier == "" {
 		switch ui.Protocol {
-		case "imap":
+		case ImapProtocol:
 			(*ui).Identifier, _ = (*ui.Credentials)["username"]
 		}
 	}

@@ -2284,8 +2284,8 @@
                       "protocol": {
                         "type": "string",
                         "enum": [
-                          "imap",
-                          "smtp"
+                          "email",
+                          "twitter"
                         ]
                       },
                       "status": {
@@ -2341,7 +2341,7 @@
     },
     "/v2/identities/remotes": {
       "get": {
-        "description": "returns the list of user's remote identities",
+        "description": "returns the list of user's remote identities, or filtered if query param",
         "tags": [
           "identities"
         ],
@@ -2350,7 +2350,14 @@
             "basicAuth": []
           }
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "pending",
+            "in": "query",
+            "type": "string",
+            "required": false
+          }
+        ],
         "produces": [
           "application/json"
         ],
@@ -2398,8 +2405,8 @@
                       "protocol": {
                         "type": "string",
                         "enum": [
-                          "imap",
-                          "smtp"
+                          "email",
+                          "twitter"
                         ]
                       },
                       "status": {
@@ -2494,8 +2501,7 @@
                 "protocol": {
                   "type": "string",
                   "enum": [
-                    "imap",
-                    "smtp",
+                    "email",
                     "twitter"
                   ]
                 },
@@ -2604,8 +2610,8 @@
                 "protocol": {
                   "type": "string",
                   "enum": [
-                    "imap",
-                    "smtp"
+                    "email",
+                    "twitter"
                   ]
                 },
                 "status": {
@@ -2807,8 +2813,8 @@
                     "protocol": {
                       "type": "string",
                       "enum": [
-                        "imap",
-                        "smtp"
+                        "email",
+                        "twitter"
                       ]
                     },
                     "status": {
@@ -2859,8 +2865,8 @@
                 "protocol": {
                   "type": "string",
                   "enum": [
-                    "imap",
-                    "smtp"
+                    "email",
+                    "twitter"
                   ]
                 },
                 "status": {
@@ -3279,6 +3285,189 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/v2/providers": {
+      "get": {
+        "description": "returns list of supported external providers for remote identities creation",
+        "tags": [
+          "identities",
+          "providers"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of supported providers",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "providers": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/providers/{provider_name}": {
+      "get": {
+        "description": "returns provider's properties, notably the url to call for initiating Oauth process",
+        "tags": [
+          "identities",
+          "providers"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "provider_name",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "providers infos",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "oauth_request_url": {
+                  "type": "string"
+                },
+                "protocol": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/providers/{provider_name}/callback": {
+      "get": {
+        "description": "url registered at provider to which its API will redirect user after user authentication",
+        "tags": [
+          "identities",
+          "providers"
+        ],
+        "security": [],
+        "parameters": [
+          {
+            "name": "provider_name",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "a simple message for user to inform Oauth process completion",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/test/oauth": {
+      "get": {
+        "description": "serves an index to test Oauth processes",
+        "tags": [
+          "providers"
+        ],
+        "security": [],
+        "parameters": [],
+        "produces": [
+          "text/html"
+        ],
+        "responses": {
+          "200": {
+            "description": "index to trigger oauth popup"
           }
         }
       }

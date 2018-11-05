@@ -33,6 +33,14 @@ paths:
     "$ref": paths/passwords.yaml#/passwords_reset
   "/v2/passwords/reset/{token}":
     "$ref": paths/passwords.yaml#/passwords_reset_{token}
+  "/v2/providers":
+    "$ref": paths/providers.yaml#/providers
+  "/v2/providers/{provider_name}":
+    "$ref": paths/providers.yaml#/providers_{provider_name}
+  "/v2/providers/{provider_name}/callback":
+    "$ref": paths/providers.yaml#/providers_{provider_name}_callback
+  "/v2/test/oauth":
+    "$ref": paths/providers.yaml#/oauth_test
 ## contacts ##
   "/v1/contacts":
     "$ref": paths/contacts.yaml#/contacts

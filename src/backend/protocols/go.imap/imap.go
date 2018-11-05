@@ -10,11 +10,13 @@ import (
 	"bytes"
 	"crypto/tls"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/emersion/go-imap"
 	"github.com/emersion/go-imap/client"
+	"github.com/emersion/go-sasl"
 	"strconv"
 	"strings"
 	"time"
@@ -22,12 +24,6 @@ import (
 
 // ImapFetcherHeaders are headers added to emails fetched from remote IMAP
 type ImapFetcherHeaders map[string]string
-
-type Provider struct {
-	name         string           // gmail, yahoo, etc.
-	capabilities map[string]bool  // capabilites sent back by provider at connection time
-	fetchItems   []imap.FetchItem // provider specific items that we want to fetch
-}
 
 const (
 	//gmail related
@@ -42,8 +38,8 @@ func init() {
 	providers = map[string]Provider{
 		// as of april, 2018 (see https://developers.google.com/gmail/imap/imap-extensions)
 		"X-GM-EXT-1": {
-			name:       "gmail",
-			fetchItems: []imap.FetchItem{gmail_msgid, gmail_labels},
+			Name:       "gmail",
+			FetchItems: []imap.FetchItem{gmail_msgid, gmail_labels},
 		},
 	}
 }
@@ -63,23 +59,50 @@ func imapLogin(rId *UserIdentity) (tlsConn *tls.Conn, imapClient *client.Client,
 	}
 	log.Println("Connected")
 
-	// identify provider
+	// identify provider' capabilities
 	capabilities, _ := imapClient.Capability()
-	provider = Provider{capabilities: capabilities}
+	provider = Provider{Capabilities: capabilities}
 	for capability := range capabilities {
 		if p, ok := providers[capability]; ok {
-			provider.name = p.name
-			provider.fetchItems = p.fetchItems
+			provider.Name = p.Name
+			provider.FetchItems = p.FetchItems
 		}
 	}
 
-	// Login
-	if err = imapClient.Login((*rId.Credentials)["inusername"], (*rId.Credentials)["inpassword"]); err != nil {
-		log.WithError(err).Error("[fetchMail] imapLogin failed to login IMAP")
-		return
+	// choose auth mechanism according to provider capabilities and identity's authtype
+	authType, foundAuthType := rId.Infos["authtype"]
+	if foundAuthType {
+		switch authType {
+		case Oauth1:
+			err = errors.New("oauth1 mechanism not implemented")
+			return
+		case Oauth2:
+			saslClient := sasl.NewXoauth2Client((*rId.Credentials)["username"], (*rId.Credentials)["oauth2token"])
+			err = imapClient.Authenticate(saslClient)
+			if err != nil {
+				log.WithError(err).Error("[fetchMail] imapLogin failed to authenticate user with proto Xoauth2")
+				return
+			}
+		case LoginPassword:
+			err = imapClient.Login((*rId.Credentials)["inusername"], (*rId.Credentials)["inpassword"])
+			if err != nil {
+				log.WithError(err).Error("[fetchMail] imapLogin failed to login IMAP")
+				return
+			}
+		default:
+			err = fmt.Errorf("unknown auth mechanism : <%s>", authType)
+			return
+		}
+	} else {
+		// fallback by trying default LoginPassword mechanism
+		err = imapClient.Login((*rId.Credentials)["inusername"], (*rId.Credentials)["inpassword"])
+		if err != nil {
+			log.WithError(err).Error("[fetchMail] imapLogin failed to login IMAP")
+			return
+		}
 	}
-	log.Println("Logged in")
 
+	log.Println("Logged in")
 	return
 }
 
@@ -175,7 +198,7 @@ func buildXheaders(tlsConn *tls.Conn, rId *UserIdentity, box *imapBox, message *
 	connState := tlsConn.ConnectionState()
 
 	var proto string
-	if provider.capabilities["IMAP4rev1"] == true {
+	if provider.Capabilities["IMAP4rev1"] == true {
 		proto = "with IMAP4rev1 protocol"
 	}
 	xHeaders = make(ImapFetcherHeaders)
@@ -197,7 +220,7 @@ func buildXheaders(tlsConn *tls.Conn, rId *UserIdentity, box *imapBox, message *
 	if len(message.Flags) > 0 {
 		xHeaders["X-Fetched-Imap-Flags"] = base64.StdEncoding.EncodeToString([]byte(strings.Join(message.Flags, "\r\n")))
 	}
-	switch provider.name {
+	switch provider.Name {
 	case "gmail":
 		xHeaders["X-Fetched-"+gmail_msgid] = message.Items[gmail_msgid].(string)
 		gLabels := strings.Builder{}
@@ -235,8 +258,8 @@ func fetch(imapClient *client.Client, provider Provider, from, to uint32, ch cha
 
 	log.Info("beginning to fetch messages…")
 	items := []imap.FetchItem{imap.FetchFlags, imap.FetchUid, "BODY.PEEK[]"}
-	if len(provider.fetchItems) > 0 {
-		items = append(items, provider.fetchItems...)
+	if len(provider.FetchItems) > 0 {
+		items = append(items, provider.FetchItems...)
 	}
 
 	return imapClient.UidFetch(seqset, items, ch)

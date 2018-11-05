@@ -1,6 +1,10 @@
-export * from './actions/createRemoteIdentity';
-export * from './actions/deleteRemoteIdentity';
-export * from './actions/updateRemoteIdentity';
-export * from './selectors/remoteIdentities';
-export * from './selectors/remoteIdentity';
-export * from './selectors/remoteIdentityState';
+export * from './actions/createIdentity';
+export * from './actions/deleteIdentity';
+export * from './actions/updateIdentity';
+export { default as ProviderIcon } from './components/ProviderIcon';
+export * from './hoc/withAuthorize';
+export * from './hoc/withProviders';
+export * from './model/Identity';
+export * from './selectors/identitiesSelector';
+export * from './selectors/identitySelector';
+export * from './selectors/identityStateSelector';

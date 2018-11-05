@@ -14,6 +14,7 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/messages"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/notifications"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/participants"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/providers"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/tags"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/users"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
@@ -43,6 +44,7 @@ type (
 		CacheSettings  `mapstructure:"RedisConfig"`
 		NatsConfig     `mapstructure:"NatsConfig"`
 		NotifierConfig `mapstructure:"NotifierConfig"`
+		Providers      []obj.Provider `mapstructure:"Providers"`
 	}
 
 	BackendConfig struct {
@@ -133,6 +135,7 @@ func (server *REST_API) initialize(config APIConfig) error {
 			BaseUrl:       config.NotifierConfig.BaseUrl,
 			TemplatesPath: config.NotifierConfig.TemplatesPath,
 		},
+		Providers: config.Providers,
 		Hostname: config.Hostname + ":" + config.Port,
 	}
 
@@ -267,4 +270,11 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	notif := api.Group("/notifications", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
 	notif.GET("", notifications.GetPendingNotif)
 	notif.DELETE("", notifications.DeleteNotifications)
+
+	/** providers **/
+	prov := api.Group("/providers")
+	prov.GET("", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"), providers.GetProvidersList)
+	prov.GET("/:provider_name", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"), providers.GetProvider)
+	prov.GET("/:provider_name/callback", providers.CallbackHandler)
+	api.StaticFile("/test/oauth", "../interfaces/REST/go.server/operations/providers/oauth-test.html")
 }

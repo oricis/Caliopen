@@ -16,8 +16,7 @@ properties:
   protocol:
     type: string
     enum:
-    - imap
-    - smtp
+    - email
     - twitter
   status:
     type: string

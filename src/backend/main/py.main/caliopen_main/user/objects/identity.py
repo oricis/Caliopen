@@ -10,8 +10,10 @@ from caliopen_main.common.objects.base import ObjectUser
 
 from ..store.identity import UserIdentity as ModelUserIdentity
 
+
 class Credentials():
     _attrs = {}
+
 
 class UserIdentity(ObjectUser):
     """Local or remote identity related to an user."""
@@ -32,7 +34,3 @@ class UserIdentity(ObjectUser):
     _model_class = ModelUserIdentity
     _pkey_name = 'identity_id'
     _db = None  # model instance with data from db
-
-    _index_class = None
-    _index = None
-

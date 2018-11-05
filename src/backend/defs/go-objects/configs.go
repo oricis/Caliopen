@@ -10,6 +10,7 @@ type (
 		Hostname        string
 		NatsConfig      NatsConfig
 		NotifierConfig  NotifierConfig
+		Providers       []Provider `mapstructure:"Providers"`
 		RESTindexConfig RESTIndexConfig
 		RESTstoreConfig RESTstoreConfig
 	}
@@ -17,13 +18,13 @@ type (
 	// REST API
 	RESTstoreConfig struct {
 		BackendName  string   `mapstructure:"backend_name"`
+		Consistency  uint16   `mapstructure:"consistency_level"`
 		Hosts        []string `mapstructure:"hosts"`
 		Keyspace     string   `mapstructure:"keyspace"`
-		Consistency  uint16   `mapstructure:"consistency_level"`
-		SizeLimit    uint64   `mapstructure:"raw_size_limit"` // max size for db (in bytes)
-		ObjStoreType string   `mapstructure:"object_store"`
 		OSSConfig    `mapstructure:"object_store_settings"`
-		UseVault     bool `mapstructure:"use_vault"`
+		ObjStoreType string `mapstructure:"object_store"`
+		SizeLimit    uint64 `mapstructure:"raw_size_limit"` // max size for db (in bytes)
+		UseVault     bool   `mapstructure:"use_vault"`
 		VaultConfig  `mapstructure:"vault_settings"`
 	}
 
@@ -85,6 +86,11 @@ type (
 		Url      string `mapstructure:"url"`
 		Username string `mapstructure:"username"`
 		Password string `mapstructure:"password"`
+	}
+
+	// providers
+	ProvidersConfig struct {
+		Providers []Provider `mapstructure:"Providers"`
 	}
 
 	LDAConfig struct {

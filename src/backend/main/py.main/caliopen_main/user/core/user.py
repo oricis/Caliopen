@@ -423,7 +423,7 @@ class User(BaseCore):
                                                identity_id=uuid.uuid4(),
                                                type='local',
                                                status='active',
-                                               protocol='smtp',
+                                               protocol='email',
                                                display_name=display_name)
                 #  insert entries in relevant lookup tables
                 IdentityLookup.create(identifier=identity.identifier,

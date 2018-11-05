@@ -2,9 +2,10 @@ import { createAction, createSelector } from 'bouchon';
 import { v1 as uuidv1 } from 'uuid';
 import createCollectionMiddleware from '../collection-middleware';
 
-const actions = {
+export const actions = {
   get: createAction('Get remote_identities'),
   post: createAction('post remote_identities'),
+  createOauth: createAction('post remote_identities'),
   patch: createAction('patch remote_identities'),
   delete: createAction('delete remote_identities'),
 };
@@ -14,11 +15,16 @@ const selectors = {
   last: () => state => [...state.remote_identities].pop(),
   lastLocation: () => createSelector(
     selectors.last(),
-    ({ identity_id }) => ({ location: `/api/v2/remote_identity/${identity_id}`, identity_id })
+    ({ identity_id }) => ({
+      location: `/api/v2/remote_identity/${identity_id}`,
+      identity_id,
+      // FIXME: to del; backend inconsistency for now
+      remote_id: identity_id,
+    })
   ),
-  byId: ({ message_id }) => createSelector(
+  byId: ({ identity_id }) => createSelector(
     selectors.all(),
-    remoteIdentity => remoteIdentity.find(message => message.message_id === message_id)
+    remoteIdentity => remoteIdentity.find(identity => identity.identity_id === identity_id)
   ),
 };
 
@@ -31,6 +37,56 @@ const reducer = {
       ...body,
     }
   ]),
+  [actions.createOauth]: (state, { req }) => {
+    const { providerName } = req.params;
+
+    switch (providerName) {
+      case 'gmail':
+        return [
+          ...state,
+          {
+            identity_id: uuidv1(),
+            display_name: 'dev@gmail',
+            identifier: 'dev@gmail.com',
+            infos: {
+              authtype:'oauth2',
+              inserver:'imap.gmail.com:993',
+              lastseenuid:'',
+              lastsync:'',
+              outserver:'smtp.gmail.com:465',
+              pollinterval:'15',
+              provider:'gmail',
+              uidvalidity:''
+            },
+            protocol: 'email',
+            status: 'inactive',
+            type: 'remote',
+          },
+        ];
+      case 'twitter':
+        return [
+          ...state,
+          {
+            identity_id: uuidv1(),
+            display_name: '@dev',
+            identifier: '@dev',
+            infos: {
+              authtype:'oauth2',
+              lastseenuid:'',
+              lastsync:'',
+              pollinterval:'15',
+              provider:'twitter',
+              uidvalidity:''
+            },
+            protocol: 'twitter',
+            status: 'inactive',
+            type: 'remote',
+          },
+        ];
+      default:
+        throw new Error('unknown provider');
+    }
+  },
   [actions.patch]: (state, { params, body }) => {
     const nextState = [...state];
     const original = state.find(remoteIdentity => remoteIdentity.identity_id === params.identity_id);

@@ -7,6 +7,7 @@
 package go_remoteIDs
 
 import (
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 )
 
@@ -16,7 +17,7 @@ func (p *Poller) AddJobFor(idkey string) (err error) {
 	defer p.cacheMux.Unlock()
 	if entry, ok := p.Cache[idkey]; ok {
 		switch entry.remoteProtocol {
-		case "imap":
+		case EmailProtocol:
 			cronStr := "@every " + entry.pollInterval + "m"
 			entry.cronId, err = p.MainCron.AddJob(cronStr, imapJob{
 				remoteId:  entry.remoteID.String(),
@@ -29,7 +30,7 @@ func (p *Poller) AddJobFor(idkey string) (err error) {
 				return
 			}
 			p.Cache[idkey] = entry
-		case "twitter":
+		case TwitterProtocol:
 			cronStr := "@every " + entry.pollInterval + "m"
 			entry.cronId, err = p.MainCron.AddJob(cronStr, twitterJob{
 				remoteId:  entry.remoteID.String(),
@@ -61,7 +62,7 @@ func (p *Poller) RemoveJobFor(idkey string) (err error) {
 	if entry, ok := p.Cache[idkey]; ok {
 		p.MainCron.Remove(entry.cronId)
 		switch entry.remoteProtocol {
-		case "twitter":
+		case TwitterProtocol:
 			p.removeWorkerFor(idkey)
 		}
 		return
