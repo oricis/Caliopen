@@ -39,7 +39,6 @@ func (es *ElasticSearchBackend) CreateMessage(user *objects.UserInfo, msg *objec
 }
 
 func (es *ElasticSearchBackend) UpdateMessage(user *objects.UserInfo, msg *objects.Message, fields map[string]interface{}) error {
-
 	//get json field name for each field to modify
 	jsonFields := map[string]interface{}{}
 	for field, value := range fields {
@@ -52,7 +51,7 @@ func (es *ElasticSearchBackend) UpdateMessage(user *objects.UserInfo, msg *objec
 	}
 
 	update, err := es.Client.Update().Index(user.Shard_id).Type(objects.MessageIndexType).Id(msg.Message_id.String()).
-		Doc(fields).
+		Doc(jsonFields).
 		Refresh("wait_for").
 		Do(context.TODO())
 	if err != nil {
