@@ -9,10 +9,10 @@
 			"revisionTime": "2018-10-22T23:34:07Z"
 		},
 		{
-			"checksumSHA1": "TNQPCiuDshNVgldXgCFznGBWEP0=",
+			"checksumSHA1": "Wf5tRqrY0FmOn6v0Z+eYcQg++wA=",
 			"path": "github.com/CaliOpen/go-twitter/twitter",
-			"revision": "916eb1f6e7049ec5b2eb45665eca91fed68e7bc9",
-			"revisionTime": "2018-10-03T15:42:12Z"
+			"revision": "42c42b3ba271602390217a98f93317158f766ad6",
+			"revisionTime": "2018-11-05T16:47:08Z"
 		},
 		{
 			"checksumSHA1": "NX4v3cbkXAJxFlrncqT9yEUBuoA=",
@@ -49,12 +49,6 @@
 			"path": "github.com/cenkalti/backoff",
 			"revision": "adb73d5bf0d9237fab19ff58aebf658449e326df",
 			"revisionTime": "2018-06-08T13:49:19Z"
-		},
-		{
-			"checksumSHA1": "wQAOzoxEJpvog97VJ66++OGBpXY=",
-			"path": "github.com/dghubble/go-twitter/twitter",
-			"revision": "a34e9059cd58e96429cee9c8a87fd8d907da6843",
-			"revisionTime": "2018-08-17T20:11:12Z"
 		},
 		{
 			"checksumSHA1": "/Y+nibvtN7yeCtsvyGLerVkBKTE=",
