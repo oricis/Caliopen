@@ -22,4 +22,4 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /go/bin/twitterworker /usr/local/bin/twitterworker
 
 WORKDIR "/etc/caliopen"
-ENTRYPOINT [ "twitterworker", "start", "-c", "-p", "/twitterworker.pid"]
+ENTRYPOINT [ "twitterworker", "start", "--configpath", "/etc/caliopen", "-p", "/twitterworker.pid"]
