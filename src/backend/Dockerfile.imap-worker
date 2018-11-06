@@ -24,4 +24,4 @@ COPY --from=builder /go/bin/imapworker /usr/local/bin/imapworker
 COPY --from=builder /go/bin/imapctl /usr/local/bin/imapctl
 
 WORKDIR "/etc/caliopen"
-ENTRYPOINT [ "imapworker", "start", "-c", "imapworker", "--configpath", "/etc/caliopen" ]
+ENTRYPOINT [ "imapworker", "start", "-c", "imapworker", "--configpath", "/etc/caliopen", "-p", "/imapworker.pid"]

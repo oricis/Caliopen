@@ -22,6 +22,6 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /go/src/github.com/CaliOpen/Caliopen/src/backend/caliopen_lmtpd /usr/local/bin/caliopen_lmtpd
 
 WORKDIR "/etc/caliopen"
-ENTRYPOINT ["caliopen_lmtpd", "serve", "-c", "lmtp", "--configpath", "/etc/caliopen"]
+ENTRYPOINT ["caliopen_lmtpd", "serve", "-c", "lmtp", "--configpath", "/etc/caliopen", "-p", "/caliopen_lmtpd.pid"]
 
 EXPOSE 2525
