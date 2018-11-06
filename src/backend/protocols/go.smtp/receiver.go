@@ -26,7 +26,7 @@ func (lda *Lda) handler(peer Peer, ev SmtpEnvelope) error {
 	}
 	incoming := &broker.SmtpEmail{
 		EmailMessage: &emailMessage,
-		Response:     make(chan *DeliveryAck),
+		Response:     make(chan *broker.EmailDeliveryAck),
 	}
 	defer close(incoming.Response)
 

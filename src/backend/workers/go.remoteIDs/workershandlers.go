@@ -20,7 +20,7 @@ func (p *Poller) addWorkerFor(idkey string) error {
 	}
 	switch entry.remoteProtocol {
 	case "twitter":
-		natsMsg := TwitterOrder{
+		natsMsg := BrokerOrder{
 			Order:    "add_worker",
 			UserId:   entry.userID.String(),
 			RemoteId: entry.remoteID.String(),
@@ -45,7 +45,7 @@ func (p *Poller) removeWorkerFor(idkey string) error {
 	}
 	switch entry.remoteProtocol {
 	case "twitter":
-		natsMsg := TwitterOrder{
+		natsMsg := BrokerOrder{
 			Order:    "remove_worker",
 			UserId:   entry.userID.String(),
 			RemoteId: entry.remoteID.String(),
@@ -70,7 +70,7 @@ func (p *Poller) updateWorkerFor(idkey string) error {
 	}
 	switch entry.remoteProtocol {
 	case "twitter":
-		natsMsg := TwitterOrder{
+		natsMsg := BrokerOrder{
 			Order:    "reload_worker",
 			UserId:   entry.userID.String(),
 			RemoteId: entry.remoteID.String(),

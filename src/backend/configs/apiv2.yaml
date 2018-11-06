@@ -33,7 +33,7 @@ ApiConfig:
     url: nats://nats:4222
     outSMTP_topic: outboundSMTP       # topic's name for "send" draft order via SMTP
     outIMAP_topic: outboundIMAP       # topic's name for "send" draft order via remote SMTP+IMAP
-    outTWITTER_topic: outboundTWITTER # topics's name for "send" draft order via TWITTER
+    outTWITTER_topic: twitter_dm      # topics's name for "send" draft order via TWITTER
     contacts_topic: contactAction     # topic's name to post messages regarding contacts' events
     keys_topic: keyAction             # topic-s name to post messages regarding public key events
   swaggerSpec: ./swagger.json #absolute path or relative path to go.server bin

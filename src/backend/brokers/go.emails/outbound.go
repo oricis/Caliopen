@@ -88,7 +88,7 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 		out := SmtpEmail{
 			EmailMessage: em,
 			MTAparams:    nil,
-			Response:     make(chan *DeliveryAck),
+			Response:     make(chan *EmailDeliveryAck),
 		}
 		//checks if identity is local or remote
 		//fetch credentials and remote server info accordingly

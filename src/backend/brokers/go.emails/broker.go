@@ -36,7 +36,7 @@ type (
 	SmtpEmail struct {
 		EmailMessage *EmailMessage
 		MTAparams    *MTAparams
-		Response     chan *DeliveryAck
+		Response     chan *EmailDeliveryAck
 	}
 
 	natsOrder struct {
@@ -51,6 +51,13 @@ type (
 		Host     string
 		Password string
 		User     string
+	}
+
+	// DeliveryAck holds reply from nats when using request/reply system for email
+	EmailDeliveryAck struct {
+		EmailMessage *EmailMessage `json:"-"`
+		Err          bool          `json:"error"`
+		Response     string        `json:"message,omitempty"`
 	}
 )
 
