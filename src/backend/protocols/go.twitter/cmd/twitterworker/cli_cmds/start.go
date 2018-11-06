@@ -16,12 +16,10 @@ import (
 	"fmt"
 	twd "github.com/CaliOpen/Caliopen/src/backend/protocols/go.twitter"
 	log "github.com/Sirupsen/logrus"
-	"github.com/nats-io/go-nats"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
 	"os/signal"
-	"sync"
 	"syscall"
 )
 
@@ -52,7 +50,8 @@ func init() {
 
 func start(cmd *cobra.Command, args []string) {
 
-	err := readConfig(twd.AppConfig)
+	var conf twd.WorkerConfig
+	err := readConfig(&conf)
 	if err != nil {
 		log.WithError(err).Fatal("Error while reading config")
 	}
@@ -70,26 +69,14 @@ func start(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	twd.WorkersGuard = new(sync.RWMutex)
-	twd.TwitterWorkers = map[string]*twd.Worker{}
-
-	twd.NatsConn, err = nats.Connect(twd.AppConfig.BrokerConfig.NatsURL)
+	worker, err := twd.InitAndStartWorker(conf)
 	if err != nil {
-		log.WithError(err).Fatal("[TwitterWorker] initialization of NATS connexion failed")
-	}
-	_, err = twd.NatsConn.QueueSubscribe(twd.AppConfig.BrokerConfig.NatsTopicWorkers, twd.AppConfig.BrokerConfig.NatsQueue, twd.WorkerMsgHandler)
-	if err != nil {
-		log.WithError(err).Fatal("[TwitterWorker] initialization of NATS fetcher subscription failed")
-	}
-
-	_, err = twd.NatsConn.QueueSubscribe(twd.AppConfig.BrokerConfig.NatsTopicDMs, twd.AppConfig.BrokerConfig.NatsQueue, twd.DMmsgHandler)
-	if err != nil {
-		log.WithError(err).Fatal("[TwitterWorker] initialization of NATS fetcher subscription failed")
+		log.WithError(err).Fatal("failed to init and start worker")
 	}
 
 	log.Info("Twitter worker started")
 	// listening mode, waiting for nats orders to add/update workers or os sig to shutdown
-	sigHandler()
+	sigHandler(worker)
 
 }
 
@@ -115,24 +102,16 @@ func readConfig(config *twd.WorkerConfig) error {
 
 	return nil
 }
-func sigHandler() {
+func sigHandler(worker *twd.Worker) {
 	signal.Notify(signalChannel, syscall.SIGHUP, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGINT, syscall.SIGKILL)
 
 	for sig := range signalChannel {
 
 		if sig == syscall.SIGHUP {
-			err := readConfig(twd.AppConfig)
-			if err != nil {
-				log.WithError(err).Error("Error while ReadConfig (reload)")
-			} else {
-				log.Info("Configuration is reloaded")
-			}
 			// TODO: handle SIGHUP
 		} else if sig == syscall.SIGTERM || sig == syscall.SIGQUIT || sig == syscall.SIGINT {
 			log.Info("Shutdown signal caught")
-			for _, w := range twd.TwitterWorkers {
-				w.WorkerDesk <- twd.Stop
-			}
+			worker.Stop()
 			log.Info("Shutdown completed, exiting")
 			os.Exit(0)
 		} else {
