@@ -13,119 +13,83 @@
 package twitter_broker
 
 import (
-	"encoding/json"
 	"errors"
-	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
-	"github.com/nats-io/go-nats"
 	"time"
 )
 
-// retrieves a caliopen message from db, build a DM from it
-// sends it through twitter API and stores the raw direct message sent in db
-func (b *TwitterBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
+// retrieves a caliopen message from db, builds a DM from it
+// gives back DM to worker for it delivers it through twitter API
+// waits for worker ack and finishes saving new state.
+func (b *TwitterBroker) ProcessOutDM(order BrokerOrder, worker chan *DMpayload) {
 
-	resp = []byte{}
-	var order natsOrder
-	err = json.Unmarshal(msg.Data, &order)
+	dmPayload := &DMpayload{
+		Response: make(chan TwitterDeliveryAck),
+	}
+
+	// 1. build DM
+	m, err := b.Store.RetrieveMessage(order.UserId, order.MessageId)
 	if err != nil {
+		replyError(err, worker)
+		return
+	}
+	if m == nil {
+		replyError(errors.New("message from db is empty"), worker)
+		return
+	}
+	if !m.Is_draft {
+		replyError(errors.New("message is not a draft"), worker)
+		return
+	}
+	dmPayload.DM, err = MarshalDM(m)
+	if err != nil {
+		replyError(err, worker)
+		return
+	}
+	if dmPayload.DM.Message.Target.RecipientScreenName == "" {
+		replyError(errors.New("missing recipient"), worker)
 		return
 	}
 
-	if order.Order == "deliver" {
-		//retrieve message from db
-		m, err := b.Store.RetrieveMessage(order.UserId, order.MessageId)
-		if err != nil {
-			log.Warn(err)
-			b.natsReplyError(msg, err)
-			return resp, err
-		}
-		if m == nil {
-			b.natsReplyError(msg, errors.New("message from db is empty"))
-			return resp, err
-		}
-		//checks if message is draft
-		if !m.Is_draft {
-			b.natsReplyError(msg, errors.New("message is not a draft"))
-			return resp, err
-		}
-
-		dm, err := b.MarshalDM(m)
-		if err != nil {
-			log.Warn(err)
-			b.natsReplyError(msg, err)
-			return resp, err
-		}
-
-		//checks that we have at least one sender and one recipient
-		if dm.Message.SenderID == "" || dm.Message.Target.RecipientID == "" {
-			b.natsReplyError(msg, errors.New("missing sender and/or recipient"))
-			return resp, err
-		}
-
-		out := DMpayload{
-			DM: dm,
-			Response:     make(chan *DeliveryAck),
-		}
-
-		b.Connectors.Egress <- &out
-		// non-blocking wait for delivery ack
-		go func(out *DMpayload, natsMsg *nats.Msg) {
-			select {
-			case resp, ok := <-out.Response:
-				if resp.Err || !ok || resp == nil {
-					log.WithError(err).Warn("outbound: delivery error from MTA")
-					b.natsReplyError(msg, errors.New("outbound: delivery error from MTA : "+resp.Response))
-					return
-				} else {
-					err = b.SaveIndexSentDM(resp)
-					if err != nil {
-						log.Warn("outbound: error when saving back sent email")
-						resp.Response = err.Error()
-						resp.Err = true
-					} else {
-						resp.Err = false
-						resp.Response = "message " + resp.EmailMessage.Message.Message_id.String() + " has been sent."
-					}
-				}
-				json_resp, _ := json.Marshal(resp)
-				b.NatsConn.Publish(msg.Reply, json_resp)
-			case <-time.After(time.Second * 30):
-				b.natsReplyError(msg, errors.New("SMTP server response timeout"))
+	// 2. give it back to twitter worker and wait for response
+	select {
+	case worker <- dmPayload:
+		select {
+		case ack := <-dmPayload.Response:
+			if ack.Err {
+				close(worker)
+				return
 			}
+		// 3. DM has been sent, saving state before ending process
+			if err := b.SaveIndexSentDM(order, &ack); err != nil {
+				replyError(err, worker)
+				return
+			}
+			worker <- &DMpayload{}
+			close(worker)
+		case <-time.After(30 * time.Second):
+			log.Warn("[ProcessOutDM] 30 second timeout when waiting worker ack")
+			close(worker)
 			return
-		}(&out, msg)
+		}
+
+	case <-time.After(30 * time.Second):
+		log.Warn("[ProcessOutDM] 30 second timeout when giving DM to worker")
+		close(worker)
+		return
 	}
-	return resp, err
 }
 
-// bespoke implementation of the json.Unmarshaler interface
-// assuming well formatted NATS JSON message
-// hydrates the natsOrder with provided data
-func (msg *natsOrder) UnmarshalJSON(data []byte) error {
-	//TODO: better error handling
-	if len(data) == 122 {
-		msg.Order = string(data[10:17])
-		msg.MessageId = string(data[34:70])
-		msg.UserId = string(data[84:120])
-	} else {
-		log.Warnf("[Broker outbound] invalid natsOrder length for nats message : %s", data)
-		return fmt.Errorf("[Broker outbound] invalid natsOrder length. Should be 122 bytes it is : %d", len(data))
+func replyError(err error, worker chan *DMpayload) {
+	defer close(worker)
+	dmPayload := &DMpayload{
+		Err: err,
 	}
-	return nil
-}
-
-func (b *TwitterBroker) natsReplyError(msg *nats.Msg, err error) {
-	log.WithError(err).Warnf("email broker [outbound] : error when processing incoming nats message : %s", *msg)
-
-	var order natsOrder
-	json.Unmarshal(msg.Data, &order)
-	ack := DeliveryAck{
-		Err:      true,
-		Response: fmt.Sprintf("failed to send message %s with error « %s » ", order.MessageId, err.Error()),
+	select {
+	case worker <- dmPayload:
+		return
+	case <-time.After(3 * time.Second):
+		return
 	}
-
-	json_resp, _ := json.Marshal(ack)
-	b.NatsConn.Publish(msg.Reply, json_resp)
 }
