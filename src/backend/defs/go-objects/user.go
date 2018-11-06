@@ -106,6 +106,7 @@ func (user *User) UnmarshalCQLMap(input map[string]interface{}) {
 	user.RecoveryEmail, _ = input["recovery_email"].(string)
 	userid, _ := input["user_id"].(gocql.UUID)
 	user.UserId.UnmarshalBinary(userid.Bytes())
+	user.ShardId, _ = input["shard_id"].(string)
 }
 
 func (user *User) UnmarshalJSON(b []byte) error {
