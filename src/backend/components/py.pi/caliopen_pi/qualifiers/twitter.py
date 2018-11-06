@@ -8,7 +8,10 @@ from caliopen_main.message.parameters import (NewInboundMessage,
                                               Attachment)
 from caliopen_main.message.parsers.twitter import TwitterDM
 from caliopen_main.discussion.core import Discussion
-from caliopen_storage.config import Configuration
+from caliopen_main.discussion.core import (DiscussionThreadLookup,
+                                           DiscussionListLookup,
+                                           DiscussionGlobalLookup)
+from caliopen_storage.exception import NotFound
 
 from ..features.types import unmarshall_features
 
@@ -19,6 +22,12 @@ class UserDMQualifier(object):
     """
     Process a Twitter direct message to unmarshal it in our stack
     """
+
+    _lookups = {
+        'global': DiscussionGlobalLookup,
+        'thread': DiscussionThreadLookup,
+        'list': DiscussionListLookup,
+    }
 
     def __init__(self, user):
         self.user = user
@@ -32,6 +41,32 @@ class UserDMQualifier(object):
             if internal_tag:
                 tags.append(internal_tag[0].name)
         message.tags = tags
+
+    def lookup(self, sequence):
+        """Process lookup sequence to find discussion to associate."""
+        log.debug('Lookup sequence %r' % sequence)
+        for prop in sequence:
+            try:
+                kls = self._lookups[prop[0]]
+                log.debug('Will lookup %s with value %s' %
+                          (prop[0], prop[1]))
+                return kls.get(self.user, prop[1])
+            except NotFound:
+                log.debug('Lookup type %s with value %s failed' %
+                          (prop[0], prop[1]))
+
+        return None
+
+    def create_lookups(self, sequence, message):
+        """Initialize lookup classes for the related sequence."""
+        for prop in sequence:
+            kls = self._lookups[prop[0]]
+            params = {
+                kls._pkey_name: prop[1],
+                'discussion_id': message.discussion_id
+            }
+            lookup = kls.create(self.user, **params)
+            log.info('Create lookup %r' % lookup)
 
     def get_participant(self, participant):
         """TODO: find related contact"""
@@ -63,6 +98,7 @@ class UserDMQualifier(object):
         new_message.is_answered = False
         new_message.is_received = True
         new_message.importance_level = 0  # XXX tofix on parser
+        new_message.external_references = message.external_references
 
         participants = []
         for p in message.participants:
@@ -82,12 +118,18 @@ class UserDMQualifier(object):
             log.debug('Resolved tags {}'.format(new_message.tags))
 
         # lookup by external references
-        # TODO
-        # for now a new discussion is created each time
+        lookup_sequence = message.lookup_discussion_sequence()
+        lkp = self.lookup(lookup_sequence)
+        log.debug('Lookup with sequence {} give {}'.
+              format(lookup_sequence, lkp))
 
-        discussion = Discussion.create_from_message(self.user, message)
-        log.debug('Created discussion {}'.format(discussion.discussion_id))
-        new_message.discussion_id = discussion.discussion_id
+        if lkp:
+            new_message.discussion_id = lkp.discussion_id
+        else:
+            discussion = Discussion.create_from_message(self.user, message)
+            log.debug('Created discussion {}'.format(discussion.discussion_id))
+            new_message.discussion_id = discussion.discussion_id
+            self.create_lookups(lookup_sequence, new_message)
         # Format features
         new_message.privacy_features = \
             unmarshall_features(new_message.privacy_features)
