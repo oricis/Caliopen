@@ -208,6 +208,7 @@ func (rest *RESTfacility) CreateGmailIdentity(state, code string) (remoteId stri
 		userIdentity.Identifier = googleUser.Email
 		userIdentity.Credentials = &Credentials{
 			"oauth2token": token.AccessToken,
+			"oauth2refreshtoken": token.RefreshToken,
 			"username":    googleUser.Email,
 		}
 		userIdentity.Infos = map[string]string{
@@ -225,7 +226,7 @@ func (rest *RESTfacility) CreateGmailIdentity(state, code string) (remoteId stri
 		}
 		remoteId = userIdentity.Id.String()
 	case 1:
-		// this identity already exists, checking if it belongs to this user and, if ok, just updating display name and token
+		// this identity already exists, checking if it belongs to this user and, if ok, just updating display name and tokens
 		storedIdentity, e := rest.RetrieveUserIdentity(foundIdentities[0][0], foundIdentities[0][1], false)
 		if e != nil || storedIdentity == nil {
 			err = WrapCaliopenErrf(e, DbCaliopenErr, "[CreateGmailIdentity] failed to retrieve user identity found for twitter account %s", googleUser.Name)
@@ -234,6 +235,7 @@ func (rest *RESTfacility) CreateGmailIdentity(state, code string) (remoteId stri
 		storedIdentity.DisplayName = googleUser.Name
 		storedIdentity.Credentials = &Credentials{
 			"oauth2token": token.AccessToken,
+			"oauth2refreshtoken": token.RefreshToken,
 			"username":    storedIdentity.Identifier,
 		}
 
