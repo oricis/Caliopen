@@ -6,6 +6,7 @@ import Presenter from './presenter';
 
 const mapStateToProps = (state, ownProps) => ({
   initialValues: ownProps.publicKey,
+  form: ownProps.publicKey ? `public-key-${ownProps.publicKey.key_id}` : 'public-key-new',
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -19,5 +20,5 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  reduxForm({ form: 'public-key-new' }),
+  reduxForm(),
 )(Presenter);

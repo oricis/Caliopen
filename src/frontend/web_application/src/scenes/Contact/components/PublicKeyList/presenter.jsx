@@ -36,7 +36,7 @@ class PublicKeyList extends Component {
     }
   }
 
-  onDelete = () => {
+  onSuccess = () => {
     this.setState({ editMode: false });
   }
 
@@ -49,8 +49,12 @@ class PublicKeyList extends Component {
     return score;
   };
 
-  setEditMode = () => {
+  enterEditMode = () => {
     this.setState({ editMode: true });
+  }
+
+  quitEditMode = () => {
+    this.setState({ editMode: false });
   }
 
   handleEdit = publicKey => () => this.setState({ editMode: publicKey.key_id });
@@ -65,7 +69,8 @@ class PublicKeyList extends Component {
             <PublicKeyForm
               contactId={contactId}
               publicKey={publicKey}
-              onDelete={this.onDelete}
+              onSuccess={this.onSuccess}
+              onCancel={this.quitEditMode}
             />
           : (
             <div key={publicKey.key_id} className="m-public-key-list__key">
@@ -74,10 +79,16 @@ class PublicKeyList extends Component {
               <Button icon="edit" onClick={this.handleEdit(publicKey)} />
             </div>
           )))}
-        { this.state.editMode === true ? <PublicKeyForm contactId={contactId} /> :
-        <Button onClick={this.setEditMode} type="button">
-          <Trans id="public-keys-list.add-key.label">Add public key</Trans>
-        </Button> }
+        { this.state.editMode === true ?
+          <PublicKeyForm
+            contactId={contactId}
+            onSuccess={this.onSuccess}
+            onCancel={this.quitEditMode}
+          />
+          :
+          <Button onClick={this.enterEditMode} icon="key" type="button">
+            <Trans id="public-keys-list.add-key.label">Add public key</Trans>
+          </Button> }
       </Fragment>
     );
   }

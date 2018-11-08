@@ -44,8 +44,8 @@ export function createPublicKey({ contactId, publicKey }) {
   };
 }
 
-export function updatePublicKey({ contactId, publickey, original }) {
-  const { publicKeyId, label } = publickey;
+export function updatePublicKey({ contactId, publicKey, original }) {
+  const { publicKeyId, label } = publicKey;
   const data = { label, current_state: original };
 
   return {
