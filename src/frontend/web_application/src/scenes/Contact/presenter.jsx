@@ -16,7 +16,6 @@ import PhoneForm from './components/PhoneForm';
 import ImForm from './components/ImForm';
 import AddressForm from './components/AddressForm';
 import PublicKeyList from './components/PublicKeyList';
-import PublicKeyForm from './components/PublicKeyForm';
 // FIXME: birthday deactivated due to redux-form bug cf. AddFormFieldForm
 // import BirthdayForm from './components/BirthdayForm';
 import OrgaForm from './components/OrgaForm';
@@ -396,7 +395,6 @@ class Contact extends Component {
       <Fragment>
         <Title hr><Trans id="contact.keys.title">Public keys</Trans></Title>
         <PublicKeyList contactId={contactId} />
-        <PublicKeyForm contactId={contactId} />
       </Fragment>
     );
   };

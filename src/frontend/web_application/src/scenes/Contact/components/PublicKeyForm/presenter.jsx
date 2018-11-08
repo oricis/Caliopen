@@ -5,6 +5,8 @@ import { withI18n, Trans } from '@lingui/react';
 import renderReduxField from '../../../../services/renderReduxField';
 import { Button, FieldErrors, Fieldset, FormColumn, FormGrid, FormRow, Icon, Legend, TextFieldGroup as TextFieldGroupBase, TextareaFieldGroup as TextareaFieldGroupBase } from '../../../../components';
 
+import './style.scss';
+
 const TextFieldGroup = renderReduxField(TextFieldGroupBase);
 const TextareaFieldGroup = renderReduxField(TextareaFieldGroupBase);
 
@@ -17,7 +19,9 @@ class PublicKeyForm extends PureComponent {
     publicKey: PropTypes.shape({}),
     handleSubmit: PropTypes.func.isRequired,
     form: PropTypes.string.isRequired,
-    createPublicKey: PropTypes.func.isRequired,
+    savePublicKey: PropTypes.func.isRequired,
+    deletePublicKey: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -25,13 +29,28 @@ class PublicKeyForm extends PureComponent {
     errors: [],
   };
 
+  static getDerivedStateFromProps(props) {
+    return { mode: props.publicKey === undefined ? 'add' : 'edit' };
+  }
+
   handleSubmit = (ev) => {
-    const { contactId, handleSubmit, createPublicKey } = this.props;
-    this.setState({ isSaving: true });
+    const { contactId, handleSubmit, savePublicKey } = this.props;
+
     handleSubmit(ev)
-      .then(publicKey => createPublicKey({ contactId, publicKey }));
+      .then(publicKey => savePublicKey({ contactId, publicKey }));
   };
-  handleDelete = () => {};
+
+  handleDelete = () => {
+    const {
+      contactId, publicKey, deletePublicKey, onDelete,
+    } = this.props;
+
+    deletePublicKey({ contactId, publicKeyId: publicKey.key_id });
+
+    if (onDelete) {
+      onDelete();
+    }
+  };
 
   render() {
     const { form, errors, i18n } = this.props;
@@ -65,7 +84,8 @@ class PublicKeyForm extends PureComponent {
                   component={TextareaFieldGroup}
                   label={i18n._('contact.public_key_form.key.label', null, { defaults: 'Key (ascii armored)' })}
                   name="key"
-                  required
+                  required={this.state.mode === 'add'}
+                  disabled={this.state.mode === 'edit'}
                 />
               </FormColumn>
             </FormRow>

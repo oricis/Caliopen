@@ -1,18 +1,23 @@
 import { compose, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
-import { requestPublicKeys, createPublicKey } from '../../../../store/modules/public-key';
+import { requestPublicKeys, createPublicKey, updatePublicKey, deletePublicKey } from '../../../../store/modules/public-key';
 import Presenter from './presenter';
 
-const mapDispatchToProps = dispatch => ({
+const mapStateToProps = (state, ownProps) => ({
+  initialValues: ownProps.publicKey,
+});
+
+const mapDispatchToProps = (dispatch, ownProps) => ({
   ...bindActionCreators({
     requestPublicKeys,
-    createPublicKey,
+    savePublicKey: ownProps.publicKey ? updatePublicKey : createPublicKey,
+    deletePublicKey,
   }, dispatch),
   onSubmit: values => Promise.resolve(values),
 });
 
 export default compose(
-  connect(null, mapDispatchToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   reduxForm({ form: 'public-key-new' }),
 )(Presenter);
