@@ -124,10 +124,12 @@ class PublicKeyForm extends PureComponent {
                       { label: publicKey.label, fingerprint: publicKey.fingerprint },
                       { defaults: 'Are you sure you want to delete the key "{label} - {fingerprint}" ? This action cannot be undone.' }
                     )}
-                    render={confirm =>
-                      <Button className="m-public-key-form__button-remove"type="button" color="alert" icon="remove" onClick={confirm}>Supprimer la clef</Button>}
+                    render={confirm => (
+                      <Button className="m-public-key-form__button-remove"type="button" color="alert" icon="remove" onClick={confirm}>
+                        <Trans id="contact.public_key_form.delete_key">Delete Key</Trans>
+                      </Button>)}
                   /> : null}
-                {onCancel ? <Button icon="remove" className="m-public-key-form__button-cancel" onClick={onCancel}>Annuler</Button> : null}
+                {onCancel ? <Button icon="remove" className="m-public-key-form__button-cancel" onClick={onCancel}><Trans id="contact.public_key_form.cancel">Cancel</Trans></Button> : null}
                 <Button type="submit" icon="check" color="active" className="m-public-key-form__button-validate">
                   <Trans id="contact.public_key_form.validate">Validate</Trans>
                 </Button>

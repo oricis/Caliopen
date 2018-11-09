@@ -109,7 +109,7 @@ class PublicKeyList extends Component {
           />
           :
           <Button onClick={this.enterEditMode} color="active" icon="key" type="button">
-            <Trans id="public-keys-list.add-key.label">Add public key</Trans>
+            <Trans id="contact.public_keys_list.add_key.label">Add public key</Trans>
           </Button> }
       </ul>
     );
