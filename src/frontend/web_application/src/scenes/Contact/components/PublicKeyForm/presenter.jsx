@@ -37,21 +37,27 @@ class PublicKeyForm extends PureComponent {
     const {
       contactId, handleSubmit, publicKey,
       createPublicKey, updatePublicKey,
+      onSuccess,
     } = this.props;
+    try {
+      if (publicKey) {
+        const { key_id: publicKeyId, label } = publicKey;
 
-    if (publicKey) {
-      const { key_id: publicKeyId, label } = publicKey;
-
-      handleSubmit(ev)
-        .then(values => updatePublicKey({
-          contactId,
-          publicKey: { ...values, publicKeyId },
-          original: { label },
-        }));
+        handleSubmit(ev)
+          .then(values => updatePublicKey({
+            contactId,
+            publicKey: { ...values, publicKeyId },
+            original: { label },
+          }));
+      } else {
+        handleSubmit(ev)
+          .then(values => createPublicKey({ contactId, publicKey: values }));
+      }
+    } catch (ex) {
+      return;
     }
 
-    handleSubmit(ev)
-      .then(values => createPublicKey({ contactId, publicKey: values }));
+    if (onSuccess) onSuccess();
   };
 
   handleDelete = () => {
@@ -60,9 +66,7 @@ class PublicKeyForm extends PureComponent {
     } = this.props;
 
     deletePublicKey({ contactId, publicKeyId: publicKey.key_id });
-    if (onSuccess) {
-      onSuccess();
-    }
+    if (onSuccess) onSuccess();
   };
 
   render() {

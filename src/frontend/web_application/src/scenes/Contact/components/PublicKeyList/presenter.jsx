@@ -15,10 +15,11 @@ class PublicKeyList extends Component {
     publicKeys: PropTypes.arrayOf(PropTypes.shape({})),
     requestPublicKeys: PropTypes.func.isRequired,
     deletePublicKey: PropTypes.func.isRequired,
-    didInvalidate: PropTypes.bool.isRequired,
+    didInvalidate: PropTypes.bool,
   };
 
   static defaultProps = {
+    didInvalidate: false,
     publicKeys: [],
   };
 
@@ -28,16 +29,30 @@ class PublicKeyList extends Component {
 
   componentDidMount() {
     const {
-      publicKeys, contactId, didInvalidate, requestPublicKeys,
+      publicKeys, contactId, requestPublicKeys,
     } = this.props;
 
-    if (publicKeys.length === 0 || didInvalidate) {
+    if (publicKeys.length === 0 || this.state.didInvalidate) {
       requestPublicKeys({ contactId });
     }
   }
 
+  componentDidUpdate() {
+    const {
+      publicKeys, contactId, requestPublicKeys,
+    } = this.props;
+
+    if (publicKeys.length === 0 || this.state.didInvalidate) {
+      requestPublicKeys({ contactId });
+    }
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    return { ...state, didInvalidate: props.didInvalidate };
+  }
+
   onSuccess = () => {
-    this.setState({ editMode: false });
+    this.setState({ editMode: false, didInvalidate: true });
   }
 
   getKeyQuality = (publicKey) => {
@@ -67,6 +82,7 @@ class PublicKeyList extends Component {
         {publicKeys.map(publicKey => (
           this.state.editMode === publicKey.key_id ?
             <PublicKeyForm
+              key={publicKey.key_id}
               contactId={contactId}
               publicKey={publicKey}
               onSuccess={this.onSuccess}
