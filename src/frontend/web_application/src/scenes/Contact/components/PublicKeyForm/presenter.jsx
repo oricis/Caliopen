@@ -19,7 +19,8 @@ class PublicKeyForm extends PureComponent {
     publicKey: PropTypes.shape({}),
     handleSubmit: PropTypes.func.isRequired,
     form: PropTypes.string.isRequired,
-    savePublicKey: PropTypes.func.isRequired,
+    createPublicKey: PropTypes.func.isRequired,
+    updatePublicKey: PropTypes.func.isRequired,
     deletePublicKey: PropTypes.func.isRequired,
     onSuccess: PropTypes.func,
     onCancel: PropTypes.func,
@@ -34,11 +35,23 @@ class PublicKeyForm extends PureComponent {
 
   handleSubmit = (ev) => {
     const {
-      contactId, handleSubmit, publicKey: { label }, savePublicKey,
+      contactId, handleSubmit, publicKey,
+      createPublicKey, updatePublicKey,
     } = this.props;
 
+    if (publicKey) {
+      const { key_id: publicKeyId, label } = publicKey;
+
+      handleSubmit(ev)
+        .then(values => updatePublicKey({
+          contactId,
+          publicKey: { ...values, publicKeyId },
+          original: { label },
+        }));
+    }
+
     handleSubmit(ev)
-      .then(publicKey => savePublicKey({ contactId, publicKey, original: { label } }));
+      .then(values => createPublicKey({ contactId, publicKey: values }));
   };
 
   handleDelete = () => {

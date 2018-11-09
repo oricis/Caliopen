@@ -9,10 +9,11 @@ const mapStateToProps = (state, ownProps) => ({
   form: ownProps.publicKey ? `public-key-${ownProps.publicKey.key_id}` : 'public-key-new',
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
+const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({
     requestPublicKeys,
-    savePublicKey: ownProps.publicKey ? updatePublicKey : createPublicKey,
+    createPublicKey,
+    updatePublicKey,
     deletePublicKey,
   }, dispatch),
   onSubmit: values => Promise.resolve(values),
