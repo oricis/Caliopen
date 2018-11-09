@@ -32,7 +32,7 @@ export const typeAssoc = {
   editor: 'fa fa-font',
   exchange: 'fa fa-exchange',
   'exclamation-triangle': 'fa fa-exclamation-triangle',
-  'expire-soon': 'fa fa-clock',
+  'expire-soon': 'fa fa-clock-o',
   desktop: 'fa fa-desktop',
   facebook: 'fa fa-facebook',
   filter: 'fa fa-filter',

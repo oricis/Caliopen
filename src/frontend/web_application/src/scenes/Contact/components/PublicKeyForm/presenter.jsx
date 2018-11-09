@@ -39,6 +39,7 @@ class PublicKeyForm extends PureComponent {
       createPublicKey, updatePublicKey,
       onSuccess,
     } = this.props;
+
     try {
       if (publicKey) {
         const { key_id: publicKeyId, label } = publicKey;
@@ -79,7 +80,7 @@ class PublicKeyForm extends PureComponent {
         <FormGrid className="m-public-key-form">
           <Fieldset>
             <FormRow>
-              <FormColumn>
+              <FormColumn rightSpaced={false}>
                 <Legend>
                   <Icon rightSpaced type="key" />
                   <Trans id="contact.public_key_form.legend">Public Key</Trans>
@@ -88,7 +89,7 @@ class PublicKeyForm extends PureComponent {
               {errors.length > 0 && <FormColumn><FieldErrors errors={errors} /></FormColumn>}
             </FormRow>
             <FormRow>
-              <FormColumn>
+              <FormColumn rightSpaced={false}>
                 <Field
                   component={TextFieldGroup}
                   name="label"
@@ -98,7 +99,7 @@ class PublicKeyForm extends PureComponent {
               </FormColumn>
             </FormRow>
             <FormRow>
-              <FormColumn>
+              <FormColumn rightSpaced={false}>
                 <Field
                   component={TextareaFieldGroup}
                   label={i18n._('contact.public_key_form.key.label', null, { defaults: 'Key (ascii armored)' })}
@@ -109,9 +110,7 @@ class PublicKeyForm extends PureComponent {
               </FormColumn>
             </FormRow>
             <FormRow>
-              <FormColumn>
-                <Button type="submit" icon="key">Ajouter la clef</Button>
-                {onCancel ? <Button icon="remove" onClick={onCancel}>Annuler</Button> : null}
+              <FormColumn className="m-public-key-form__actions" rightSpaced={false}>
                 {publicKey ?
                   <Confirm
                     onConfirm={this.handleDelete}
@@ -126,8 +125,12 @@ class PublicKeyForm extends PureComponent {
                       { defaults: 'Are you sure you want to delete the key "{label} - {fingerprint}" ? This action cannot be undone.' }
                     )}
                     render={confirm =>
-                      <Button type="button" color="alert" icon="remove" onClick={confirm}>Supprimer la clef</Button>}
+                      <Button className="m-public-key-form__button-remove"type="button" color="alert" icon="remove" onClick={confirm}>Supprimer la clef</Button>}
                   /> : null}
+                {onCancel ? <Button icon="remove" className="m-public-key-form__button-cancel" onClick={onCancel}>Annuler</Button> : null}
+                <Button type="submit" icon="check" color="active" className="m-public-key-form__button-validate">
+                  <Trans id="contact.public_key_form.validate">Validate</Trans>
+                </Button>
               </FormColumn>
             </FormRow>
           </Fieldset>

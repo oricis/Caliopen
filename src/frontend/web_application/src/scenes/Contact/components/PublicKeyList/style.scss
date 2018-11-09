@@ -1,4 +1,28 @@
-.m-public-key-list__key {
-  display: flex;
-  justify-content: space-between;
+@import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+.m-public-key-list {
+  &__key {
+    display: flex;
+    align-items: center;
+    margin-left: $co-margin;
+  }
+
+  &__edit-button {
+    margin-left: auto;
+  }
+
+  &__quality-icon {
+    &--weak {
+      color: map-get($privacy-palette, 'ugly');
+    }
+
+    &--average {
+      color: map-get($privacy-palette, 'good');
+    }
+
+    &--good {
+      color: map-get($privacy-palette, 'super');
+    }
+  }
 }

@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
 import { Button, Icon } from '../../../../components';
@@ -6,7 +6,7 @@ import PublicKeyForm from '../PublicKeyForm';
 
 import './style.scss';
 
-// const KEY_QUALITY_CLASSES = ['weak', 'average', 'good'];
+const KEY_QUALITY_CLASSES = ['weak', 'average', 'good'];
 const KEY_QUALITY_ICONS = ['exclamation-triangle', 'expire-soon', 'info-circle'];
 
 class PublicKeyList extends Component {
@@ -14,7 +14,6 @@ class PublicKeyList extends Component {
     contactId: PropTypes.string.isRequired,
     publicKeys: PropTypes.arrayOf(PropTypes.shape({})),
     requestPublicKeys: PropTypes.func.isRequired,
-    deletePublicKey: PropTypes.func.isRequired,
     didInvalidate: PropTypes.bool,
   };
 
@@ -59,7 +58,8 @@ class PublicKeyList extends Component {
     let score = 2;
 
     score -= Date.parse(publicKey.expire_date) > Date.now() ? 0 : 1;
-    score -= publicKey.size >= 2048 ? 0 : 1;
+    // XXX: not sure about this
+    // score -= publicKey.size >= 2048 ? 0 : 1;
 
     return score;
   };
@@ -78,22 +78,28 @@ class PublicKeyList extends Component {
     const { publicKeys, contactId } = this.props;
 
     return (
-      <Fragment>
+      <ul>
         {publicKeys.map(publicKey => (
           this.state.editMode === publicKey.key_id ?
-            <PublicKeyForm
-              key={publicKey.key_id}
-              contactId={contactId}
-              publicKey={publicKey}
-              onSuccess={this.onSuccess}
-              onCancel={this.quitEditMode}
-            />
+            <li>
+              <PublicKeyForm
+                key={publicKey.key_id}
+                contactId={contactId}
+                publicKey={publicKey}
+                onSuccess={this.onSuccess}
+                onCancel={this.quitEditMode}
+              />
+            </li>
           : (
-            <div key={publicKey.key_id} className="m-public-key-list__key">
-              <Icon type={KEY_QUALITY_ICONS[this.getKeyQuality(publicKey)]} rightSpaced />
+            <li key={publicKey.key_id} className="m-public-key-list__key">
+              <Icon
+                type={KEY_QUALITY_ICONS[this.getKeyQuality(publicKey)]}
+                className={`m-public-key-list__quality-icon--${KEY_QUALITY_CLASSES[this.getKeyQuality(publicKey)]}`}
+                rightSpaced
+              />
               <strong className="m-public-key-list__key-label">{publicKey.label}</strong>&nbsp;:&nbsp;{publicKey.fingerprint}
-              <Button icon="edit" onClick={this.handleEdit(publicKey)} />
-            </div>
+              <Button icon="edit" className="m-public-key-list__edit-button" onClick={this.handleEdit(publicKey)} />
+            </li>
           )))}
         { this.state.editMode === true ?
           <PublicKeyForm
@@ -102,10 +108,10 @@ class PublicKeyList extends Component {
             onCancel={this.quitEditMode}
           />
           :
-          <Button onClick={this.enterEditMode} icon="key" type="button">
+          <Button onClick={this.enterEditMode} color="active" icon="key" type="button">
             <Trans id="public-keys-list.add-key.label">Add public key</Trans>
           </Button> }
-      </Fragment>
+      </ul>
     );
   }
 }
