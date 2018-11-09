@@ -70,7 +70,7 @@ pipeline:
     secrets: [ SAUCE_USERNAME , SAUCE_ACCESS_KEY, SAUCE_ADDRESS ]
     environment:
       - SAUCE_PORT=4445
-      - FRONTEND_ADDRESS=172.17.0.2
+      - FRONTEND_ADDRESS=test-frontend
       - BASE_DIR=src/frontend
     commands:
       - . devtools/drone/files_changed.sh
@@ -400,3 +400,10 @@ pipeline:
     tags:
       - latest
       - ${DRONE_TAG##release-}
+
+services:
+
+  sauce-connect:
+    image: joscha/docker-sauce-connect
+    secrets: [ SAUCE_USERNAME , SAUCE_ACCESS_KEY ]
+    command: -u $SAUCE_USERNAME -k $SAUCE_ACCESS_KEY -i caliopen -o
