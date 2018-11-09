@@ -406,4 +406,4 @@ services:
   sauce-connect:
     image: joscha/docker-sauce-connect
     secrets: [ SAUCE_USERNAME , SAUCE_ACCESS_KEY ]
-    command: -u $SAUCE_USERNAME -k $SAUCE_ACCESS_KEY -i caliopen -o
+    command: -u $${SAUCE_USERNAME} -k $${SAUCE_ACCESS_KEY} -i caliopen --output-config
