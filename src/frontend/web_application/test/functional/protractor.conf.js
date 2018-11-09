@@ -1,6 +1,6 @@
 const { SpecReporter } = require('jasmine-spec-reporter');
 
-const front_url = process.env.FRONTEND_ADDRESS || 'localhost' ;
+const frontUrl = process.env.FRONTEND_ADDRESS || 'localhost';
 
 const cfg = {
   SELENIUM_PROMISE_MANAGER: true,
@@ -29,7 +29,7 @@ const cfg = {
     // print: () => {},
     defaultTimeoutInterval: 70 * 1000,
   },
-  baseUrl: `http://${front_url}:4000/`,
+  baseUrl: `http://${frontUrl}:4000/`,
   onPrepare: () => {
     browser.ignoreSynchronization = true;
     browser.manage().window().setSize(1024, 768);
