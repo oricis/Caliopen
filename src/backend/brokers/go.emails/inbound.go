@@ -39,7 +39,7 @@ func (b *EmailBroker) incomingSmtpWorker() {
 	for in := range b.Connectors.Ingress {
 		if in.EmailMessage == nil {
 			log.Warn("[EmailBroker] incomingSmtpWorker received an empty payload")
-			ack := &DeliveryAck{
+			ack := &EmailDeliveryAck{
 				EmailMessage: in.EmailMessage,
 				Err:          true,
 				Response:     "empty payload",
@@ -68,7 +68,7 @@ func (b *EmailBroker) imapWorker() {
 	for in := range b.Connectors.Ingress {
 		if in.EmailMessage == nil {
 			log.Warn("[EmailBroker] imapWorker received an empty payload")
-			ack := &DeliveryAck{
+			ack := &EmailDeliveryAck{
 				EmailMessage: in.EmailMessage,
 				Err:          true,
 				Response:     "empty payload",
@@ -85,7 +85,7 @@ func (b *EmailBroker) imapWorker() {
 }
 
 func (b *EmailBroker) processInboundSMTP(in *SmtpEmail, raw_only bool) {
-	resp := &DeliveryAck{
+	resp := &EmailDeliveryAck{
 		EmailMessage: in.EmailMessage,
 		Err:          false,
 		Response:     "",
@@ -127,7 +127,7 @@ func (b *EmailBroker) processInboundSMTP(in *SmtpEmail, raw_only bool) {
 func (b *EmailBroker) processInboundIMAP(in *SmtpEmail) {
 	// emails coming from imap fetches are not addressed to a local recipient
 	// local recipient MUST be embedded in SmtpEmail.Message before calling this method
-	resp := &DeliveryAck{
+	resp := &EmailDeliveryAck{
 		EmailMessage: in.EmailMessage,
 		Err:          false,
 		Response:     "",
@@ -148,9 +148,9 @@ func (b *EmailBroker) processInboundIMAP(in *SmtpEmail) {
 
 // stores raw email + json + message and sends an order on NATS topic for next composant to process it
 // if raw_only is true, only stores the raw email with its json representation but do not unmarshal to our message model
-func (b *EmailBroker) processInbound(rcptsIds []UUID, in *SmtpEmail, raw_only bool, resp *DeliveryAck) {
+func (b *EmailBroker) processInbound(rcptsIds []UUID, in *SmtpEmail, raw_only bool, resp *EmailDeliveryAck) {
 	// do not forget to send back ack
-	defer func(r *DeliveryAck) {
+	defer func(r *EmailDeliveryAck) {
 		in.Response <- r
 	}(resp)
 

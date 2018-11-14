@@ -56,7 +56,7 @@ class RawMessage(BaseCore):
             log.warn(exc)
             raise NotFound
 
-        if raw_msg.raw_data == "" and raw_msg.uri != "":
+        if raw_msg.raw_data == '' and raw_msg.uri != '':
             # means raw message data have been stored in object store
             # need to retrieve raw_data from it
             url = urlparse.urlsplit(raw_msg.uri)

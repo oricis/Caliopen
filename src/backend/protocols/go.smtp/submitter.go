@@ -128,7 +128,7 @@ func (lda *Lda) OutboundWorker() {
 						Port:     port,
 						Username: outcoming.MTAparams.User,
 						Password: outcoming.MTAparams.Password,
-						SSL:      port == 465,
+						SSL:      true,
 					}
 				default:
 					dialErr = fmt.Errorf("unknown auth mechanism <%s>", outcoming.MTAparams.AuthType)
@@ -157,7 +157,7 @@ func (lda *Lda) OutboundWorker() {
 				}
 			}
 
-			var ack DeliveryAck
+			var ack broker.EmailDeliveryAck
 			if err != nil {
 				log.WithError(err).Warn("outbound: unable to send to MTA")
 				ack.Err = true

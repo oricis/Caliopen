@@ -18,7 +18,7 @@ import (
 
 const (
 	natsMessageTmpl  = "{\"order\":\"%s\",\"user_id\":\"%s\",\"remote_id\":\"%s\",\"message_id\": \"%s\"}"
-	natsOrder        = "process_raw"
+	natsOrderRaw     = "process_raw"
 	NatsError        = "nats error"
 	lastSeenInfosKey = "lastseendm"
 	lastSyncInfosKey = "lastsync"
@@ -31,7 +31,7 @@ func (broker *TwitterBroker) ProcessInDM(userID, remoteID UUID, dm *twitter.Dire
 		return err
 	}
 	// send process order to nats
-	natsMessage := fmt.Sprintf(natsMessageTmpl, natsOrder, userID.String(), remoteID.String(), rawID.String())
+	natsMessage := fmt.Sprintf(natsMessageTmpl, natsOrderRaw, userID.String(), remoteID.String(), rawID.String())
 	resp, err := broker.NatsConn.Request(broker.Config.LDAConfig.InTopic, []byte(natsMessage), 10*time.Second)
 	if err != nil {
 		if broker.NatsConn.LastError() != nil {

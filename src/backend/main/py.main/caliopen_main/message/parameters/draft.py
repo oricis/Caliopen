@@ -111,7 +111,7 @@ class Draft(NewInboundMessage):
         from_participant = Participant()
         from_participant.address = user_identity.identifier
         from_participant.label = user_identity.display_name
-        from_participant.protocol = "email"
+        from_participant.protocol = user_identity.protocol
         from_participant.type = "From"
         from_participant.contact_ids = [user.contact.contact_id]
         self.participants.append(from_participant)

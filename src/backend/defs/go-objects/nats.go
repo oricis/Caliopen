@@ -18,15 +18,15 @@ type IMAPorder struct {
 	Server   string
 }
 
-type TwitterOrder struct {
-	Order    string `json:"order"`
-	RemoteId string `json:"remote_id"`
-	UserId   string `json:"user_id"`
+type BrokerOrder struct {
+	MessageId string `json:"message_id"`
+	Order     string `json:"order"`
+	RemoteId  string `json:"remote_id"`
+	UserId    string `json:"user_id"`
 }
 
-// DeliveryAck holds reply from nats when using request/reply system for email
+// DeliveryAck holds reply from nats when using request/reply system for messages
 type DeliveryAck struct {
-	EmailMessage *EmailMessage `json:"-"`
 	Err          bool          `json:"error"`
 	Response     string        `json:"message,omitempty"`
 }

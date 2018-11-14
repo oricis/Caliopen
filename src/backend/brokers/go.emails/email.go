@@ -155,7 +155,7 @@ func (b *EmailBroker) MarshalEmail(msg *Message) (em *EmailMessage, err error) {
 //  - cleans-up temporary attachment files if any
 //  - stores raw outbound email counterpart
 //  - creates discussion lookup entry
-func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
+func (b *EmailBroker) SaveIndexSentEmail(ack *EmailDeliveryAck) error {
 
 	// save raw email in db
 	/*

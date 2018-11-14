@@ -34,7 +34,7 @@ func (p *Poller) AddJobFor(idkey string) (err error) {
 			cronStr := "@every " + entry.pollInterval + "m"
 			entry.cronId, err = p.MainCron.AddJob(cronStr, twitterJob{
 				remoteId:  entry.remoteID.String(),
-				natsTopic: p.Config.NatsTopics["twitter"],
+				natsTopic: p.Config.NatsTopics["twitter_dm"],
 				poller:    p,
 				userId:    entry.userID.String(),
 			})

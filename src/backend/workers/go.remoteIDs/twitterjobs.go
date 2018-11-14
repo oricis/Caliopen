@@ -18,7 +18,7 @@ type twitterJob struct {
 }
 
 func (j twitterJob) Run() {
-	msg, err := json.Marshal(TwitterOrder{
+	msg, err := json.Marshal(BrokerOrder{
 		Order:    "sync",
 		UserId:   j.userId,
 		RemoteId: j.remoteId,

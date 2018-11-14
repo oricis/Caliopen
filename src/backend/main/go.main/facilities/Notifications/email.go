@@ -86,8 +86,17 @@ func (notif *Notifier) SendEmailAdminToUser(user *User, email *Message) error {
 
 	log.Infof("[NotificationsFacility] sending email admin for user <%s> [%s]", user.Name, user.UserId.String())
 	const nats_order = "deliver"
-	natsMessage := fmt.Sprintf(Nats_message_tmpl, nats_order, email.Message_id.String(), notif.admin.UserId.String())
-	rep, err := notif.natsQueue.Request(notif.natsTopics[Nats_outSMTP_topicKey], []byte(natsMessage), 30*time.Second)
+
+	order := BrokerOrder{
+		Order:     nats_order,
+		MessageId: email.Message_id.String(),
+		UserId:    notif.admin.UserId.String(),
+	}
+	natsMessage, e := json.Marshal(order)
+	if e != nil {
+		return fmt.Errorf("[EmailNotifiers] failed to build nats message : %s", e.Error())
+	}
+	rep, err := notif.natsQueue.Request(notif.natsTopics[Nats_outSMTP_topicKey], natsMessage, 30*time.Second)
 	if err != nil {
 		log.WithError(err).Warn("[EmailNotifiers]: SendEmailAdminToUser error")
 		if notif.natsQueue.LastError() != nil {

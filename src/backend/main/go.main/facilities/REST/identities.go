@@ -117,7 +117,7 @@ func (rest *RESTfacility) CreateUserIdentity(identity *UserIdentity) CaliopenErr
 		return WrapCaliopenErr(err, DbCaliopenErr, "[CreateUserIdentity] CreateUserIdentity failed to create identity in store")
 	}
 
-	//TODO: emit nats message to IDpoller
+	//TODO: emit nats message to IDpoller if it's a remote identity
 
 	return nil
 }
@@ -181,7 +181,8 @@ func (rest *RESTfacility) PatchUserIdentity(patch []byte, userId, identityId str
 		return WrapCaliopenErrf(err4, FailDependencyCaliopenErr, "[RESTfacility] PatchUserIdentity failed with UpdateUserIdentity error : %s", err4)
 	}
 
-	//TODO: emit nats message to IDpoller
+	//TODO: emit nats message to IDpoller if it's a remote identity
+
 	return nil
 }
 
