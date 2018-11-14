@@ -21,7 +21,7 @@ type Worker struct {
 	Id       uint8
 	Lda      *Lda
 	NatsConn *nats.Conn
-	NatsSubs  []*nats.Subscription
+	NatsSubs []*nats.Subscription
 	Store    backends.LDAStore
 }
 
@@ -29,8 +29,8 @@ type Worker struct {
 func NewWorker(config WorkerConfig, id uint8) (worker *Worker, err error) {
 
 	w := Worker{
-		Config: config,
-		Id:     id,
+		Config:   config,
+		Id:       id,
 		NatsSubs: make([]*nats.Subscription, 2),
 	}
 	//copy relevant config to LDAConfig
@@ -126,24 +126,26 @@ func (worker *Worker) natsMsgHandler(msg *nats.Msg) {
 	switch message.Order {
 	case "sync": // simplest order sent by local agent to initiate a sync op for a stored remote identity
 		fetcher := Fetcher{
+			Hostname: worker.Config.Hostname,
 			Store: worker.Store,
 			Lda:   worker.Lda,
 		}
 		go fetcher.SyncRemoteWithLocal(message)
 	case "fullfetch": // order sent by imapctl to initiate a fetch op for an user
 		fetcher := Fetcher{
+			Hostname: worker.Config.Hostname,
 			Store: worker.Store,
 			Lda:   worker.Lda,
 		}
 		go fetcher.FetchRemoteToLocal(message)
 	case "deliver": // order sent by api2 to send a draft via remote SMTP/IMAP
-	sender := Sender{
-		NatsConn: worker.NatsConn,
-		NatsMessage: msg,
-		OutSMTPtopic: "outboundSMTP", //TODO: get it from config file
-		Store: worker.Store,
-	}
-	go sender.SendDraft(msg)
+		sender := Sender{
+			NatsConn:     worker.NatsConn,
+			NatsMessage:  msg,
+			OutSMTPtopic: "outboundSMTP", //TODO: get it from config file
+			Store:        worker.Store,
+		}
+		go sender.SendDraft(msg)
 	case "test":
 		log.Info("Order « test » received")
 	}

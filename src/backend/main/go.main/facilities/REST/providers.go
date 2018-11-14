@@ -2,22 +2,19 @@ package REST
 
 import (
 	"context"
-	"crypto/rand"
-	"encoding/base64"
 	"errors"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/users"
 	"github.com/CaliOpen/go-twitter/twitter"
 	"github.com/dghubble/oauth1"
 	twitterOAuth1 "github.com/dghubble/oauth1/twitter"
 	"github.com/satori/go.uuid"
 	"golang.org/x/oauth2"
-	googleOAuth2 "golang.org/x/oauth2/google"
 	googleApi "google.golang.org/api/oauth2/v2"
 	"net/http"
+	"time"
 )
-
-const CALLBACK_BASE_URI = "/api/v2/providers/%s/callback"
 
 func (rest *RESTfacility) RetrieveProvidersList() (providers []Provider, err error) {
 	if rest.providers != nil {
@@ -38,7 +35,7 @@ func (rest *RESTfacility) GetProviderOauthFor(userId, name string) (provider Pro
 	if found {
 		switch provider.Name {
 		case "twitter":
-			requestToken, requestSecret, e := setTwitterAuthRequestUrl(&provider, rest.hostname)
+			requestToken, requestSecret, e := setTwitterAuthRequestUrl(&provider, rest.Hostname)
 			if e != nil {
 				err = WrapCaliopenErrf(e, FailDependencyCaliopenErr, "[GetProviderOauthFor] failed to set twitter aut request")
 				return
@@ -48,7 +45,7 @@ func (rest *RESTfacility) GetProviderOauthFor(userId, name string) (provider Pro
 				UserId:        userId,
 			})
 		case "gmail":
-			state, e := setGoogleAuthRequestUrl(&provider, rest.hostname)
+			state, e := users.SetGoogleAuthRequestUrl(&provider, rest.Hostname)
 			if e != nil {
 				err = WrapCaliopenErrf(e, FailDependencyCaliopenErr, "[GetProviderOauthFor] failed to set twitter aut request")
 				return
@@ -165,14 +162,14 @@ func (rest *RESTfacility) CreateGmailIdentity(state, code string) (remoteId stri
 	}
 
 	gmailProvider := rest.providers["gmail"]
-	gmailProvider.OauthCallbackUri = fmt.Sprintf(CALLBACK_BASE_URI, "gmail")
+	gmailProvider.OauthCallbackUri = fmt.Sprintf(users.CALLBACK_BASE_URI, "gmail")
 
-	oauthConfig := setGoogleOauthConfig(gmailProvider, rest.hostname)
+	oauthConfig := users.SetGoogleOauthConfig(gmailProvider, rest.Hostname)
 
 	ctx := context.TODO()
 
-	// get the access token that will be added to UserIdentity.Credentials
-	token, e := oauthConfig.Exchange(ctx, code)
+	// get access & refresh tokens that will be added to UserIdentity.Credentials
+	token, e := oauthConfig.Exchange(ctx, code, oauth2.AccessTypeOffline)
 	if e != nil {
 		err = WrapCaliopenErrf(e, NotFoundCaliopenErr, "[CreateGmailIdentity] failed to retrieve access token for state %s", state)
 		return
@@ -207,9 +204,11 @@ func (rest *RESTfacility) CreateGmailIdentity(state, code string) (remoteId stri
 		userIdentity.DisplayName = googleUser.Name
 		userIdentity.Identifier = googleUser.Email
 		userIdentity.Credentials = &Credentials{
-			"oauth2token": token.AccessToken,
-			"oauth2refreshtoken": token.RefreshToken,
-			"username":    googleUser.Email,
+			users.CRED_ACCESS_TOKEN:  token.AccessToken,
+			users.CRED_REFRESH_TOKEN: token.RefreshToken,
+			users.CRED_TOKEN_EXPIRY:  token.Expiry.Format(time.RFC3339),
+			users.CRED_TOKEN_TYPE:    token.TokenType,
+			users.CRED_USERNAME:      googleUser.Email,
 		}
 		userIdentity.Infos = map[string]string{
 			"inserver":  gmailProvider.Infos["imapserver"],
@@ -234,9 +233,11 @@ func (rest *RESTfacility) CreateGmailIdentity(state, code string) (remoteId stri
 		}
 		storedIdentity.DisplayName = googleUser.Name
 		storedIdentity.Credentials = &Credentials{
-			"oauth2token": token.AccessToken,
-			"oauth2refreshtoken": token.RefreshToken,
-			"username":    storedIdentity.Identifier,
+			users.CRED_ACCESS_TOKEN:  token.AccessToken,
+			users.CRED_REFRESH_TOKEN: token.RefreshToken,
+			users.CRED_TOKEN_EXPIRY:  token.Expiry.Format(time.RFC3339),
+			users.CRED_TOKEN_TYPE:    token.TokenType,
+			users.CRED_USERNAME:      storedIdentity.Identifier,
 		}
 
 		modifiedFields := map[string]interface{}{
@@ -258,7 +259,7 @@ func (rest *RESTfacility) CreateGmailIdentity(state, code string) (remoteId stri
 
 func setTwitterAuthRequestUrl(provider *Provider, hostname string) (requestToken, requestSecret string, err CaliopenError) {
 
-	provider.OauthCallbackUri = fmt.Sprintf(CALLBACK_BASE_URI, "twitter")
+	provider.OauthCallbackUri = fmt.Sprintf(users.CALLBACK_BASE_URI, "twitter")
 
 	//IMPORTANT TODO: make use of vault to store consumer key and secret
 	conf := &oauth1.Config{
@@ -279,32 +280,4 @@ func setTwitterAuthRequestUrl(provider *Provider, hostname string) (requestToken
 	}
 	provider.OauthRequestUrl = authUrl.String()
 	return
-}
-
-func setGoogleAuthRequestUrl(provider *Provider, hostname string) (state string, err error) {
-
-	provider.OauthCallbackUri = fmt.Sprintf(CALLBACK_BASE_URI, "gmail")
-
-	config := setGoogleOauthConfig(*provider, hostname)
-
-	state = randomState()
-	provider.OauthRequestUrl = config.AuthCodeURL(state)
-	return
-}
-
-func setGoogleOauthConfig(provider Provider, hostname string) *oauth2.Config {
-	return &oauth2.Config{
-		ClientID:     provider.Infos["client_id"],
-		ClientSecret: provider.Infos["client_secret"],
-		Endpoint:     googleOAuth2.Endpoint,
-		RedirectURL:  "http://" + hostname + provider.OauthCallbackUri,
-		Scopes:       []string{"profile", "email", "https://mail.google.com/"},
-	}
-}
-
-// Returns a base64 encoded random 32 byte string.
-func randomState() string {
-	b := make([]byte, 32)
-	rand.Read(b)
-	return base64.RawURLEncoding.EncodeToString(b)
 }

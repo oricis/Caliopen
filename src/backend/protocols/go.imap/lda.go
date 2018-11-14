@@ -20,6 +20,7 @@ type Lda struct {
 	Config           WorkerConfig
 	broker           *broker.EmailBroker
 	brokerConnectors broker.EmailBrokerConnectors
+	Providers        map[string]Provider
 }
 
 func NewLda(config WorkerConfig) (*Lda, error) {
@@ -27,6 +28,10 @@ func NewLda(config WorkerConfig) (*Lda, error) {
 	lda := Lda{}
 	lda.Config = config
 	lda.broker, lda.brokerConnectors, err = broker.Initialize(config.LDAConfig)
+	lda.Providers = make(map[string]Provider)
+	for _, provider := range config.LDAConfig.Providers {
+		lda.Providers[provider.Name] = provider
+	}
 	return &lda, err
 }
 
@@ -44,7 +49,7 @@ func (lda *Lda) deliverMail(mail *Email, userId string) (err error) {
 	}
 	incoming := &broker.SmtpEmail{
 		EmailMessage: emailMsg,
-		Response:     make(chan *DeliveryAck),
+		Response:     make(chan *broker.EmailDeliveryAck),
 	}
 	defer close(incoming.Response)
 

@@ -179,22 +179,6 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 	return resp, err
 }
 
-// bespoke implementation of the json.Unmarshaler interface
-// assuming well formatted NATS JSON message
-// hydrates the natsOrder with provided data
-func (msg *natsOrder) UnmarshalJSON(data []byte) error {
-	//TODO: better error handling
-	if len(data) == 122 {
-		msg.Order = string(data[10:17])
-		msg.MessageId = string(data[34:70])
-		msg.UserId = string(data[84:120])
-	} else {
-		log.Warnf("[Broker outbound] invalid natsOrder length for nats message : %s", data)
-		return fmt.Errorf("[Broker outbound] invalid natsOrder length. Should be 122 bytes it is : %d", len(data))
-	}
-	return nil
-}
-
 func (b *EmailBroker) natsReplyError(msg *nats.Msg, err error) {
 	log.WithError(err).Warnf("email broker [outbound] : error when processing incoming nats message : %s", *msg)
 

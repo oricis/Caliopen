@@ -13,6 +13,7 @@ import (
 	"errors"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/users"
 	log "github.com/Sirupsen/logrus"
 	"github.com/emersion/go-imap"
 	"github.com/emersion/go-imap/client"
@@ -77,16 +78,16 @@ func imapLogin(rId *UserIdentity) (tlsConn *tls.Conn, imapClient *client.Client,
 			err = errors.New("oauth1 mechanism not implemented")
 			return
 		case Oauth2:
-			saslClient := sasl.NewXoauth2Client((*rId.Credentials)["username"], (*rId.Credentials)["oauth2token"])
+			saslClient := sasl.NewXoauth2Client((*rId.Credentials)[users.CRED_USERNAME], (*rId.Credentials)[users.CRED_ACCESS_TOKEN])
 			err = imapClient.Authenticate(saslClient)
 			if err != nil {
-				log.WithError(err).Error("[fetchMail] imapLogin failed to authenticate user with proto Xoauth2")
+				log.WithError(err).Errorf("[fetchMail] imapLogin failed to authenticate identity %s with proto Xoauth2", rId.Id)
 				return
 			}
 		case LoginPassword:
 			err = imapClient.Login((*rId.Credentials)["inusername"], (*rId.Credentials)["inpassword"])
 			if err != nil {
-				log.WithError(err).Error("[fetchMail] imapLogin failed to login IMAP")
+				log.WithError(err).Errorf("[fetchMail] imapLogin failed to login IMAP for user %s", rId.UserId)
 				return
 			}
 		default:
