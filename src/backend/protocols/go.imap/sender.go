@@ -8,38 +8,38 @@ package imap_worker
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/users"
 	log "github.com/Sirupsen/logrus"
 	"github.com/nats-io/go-nats"
-	"errors"
 	"time"
 )
 
 type Sender struct {
-	NatsConn     *nats.Conn
-	NatsMessage  *nats.Msg
-	OutSMTPtopic string
-	Store backends.LDAStore
-}
-
-type smtpOrder struct {
-	Order     string `json:"order"`
-	MessageId string `json:"message_id"`
-	UserId    string `json:"user_id"`
+	Hostname      string
+	ImapProviders map[string]Provider
+	NatsConn      *nats.Conn
+	NatsMessage   *nats.Msg
+	OutSMTPtopic  string
+	Store         backends.LDAStore
 }
 
 func (s *Sender) SendDraft(msg *nats.Msg) error {
-	var order smtpOrder
+	var order BrokerOrder
 	err := json.Unmarshal(msg.Data, &order)
 	if err != nil {
 		return fmt.Errorf("Unable to unmarshal message from NATS. Payload was <%s>", string(msg.Data))
 	}
-
+	order.Order = "deliver"
 	//1. make use of our lmtpd to send email
-	const nats_order = "deliver"
-	natsMessage := fmt.Sprintf(Nats_message_tmpl, nats_order, order.MessageId, order.UserId)
+	natsMessage, e := json.Marshal(order)
+	if e != nil {
+		log.WithError(e).Info("[SendDraft] failed to build nats message")
+		return errors.New("[SendDraft] failed to build nats message")
+	}
 	smtpReply, err := s.NatsConn.Request(s.OutSMTPtopic, []byte(natsMessage), 30*time.Second)
 
 	//2. handle LMTP response
@@ -108,6 +108,12 @@ func (s *Sender) UploadSentMessageToRemote(msg *Message) error {
 		return err
 	}
 
+	if user.Infos["authtype"] == Oauth2 {
+		err = users.ValidateOauth2Credentials(user, s, true)
+		if err != nil {
+			return err
+		}
+	}
 	_, imapClient, _, err := imapLogin(user)
 	if err != nil {
 		return err
@@ -115,4 +121,18 @@ func (s *Sender) UploadSentMessageToRemote(msg *Message) error {
 	defer imapClient.Logout()
 
 	return uploadSentMessage(imapClient, rawMail.Raw_data, msg.Date)
+}
+
+/* Oauth2Interfacer implementation */
+
+func (s *Sender) GetProviders() map[string]Provider {
+	return s.ImapProviders
+}
+
+func (s *Sender) GetHostname() string {
+	return s.Hostname
+}
+
+func (s *Sender) GetIdentityStore() backends.IdentityStorageUpdater {
+	return s.Store
 }
