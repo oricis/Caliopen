@@ -63,7 +63,7 @@ class TwitterDM(object):
 
     @property
     def date(self):
-        return datetime.fromtimestamp(float(self.dm["created_timestamp"][0:10]),
+        return datetime.fromtimestamp(float(self.dm["created_timestamp"])/1000,
                                       tz=pytz.utc)
 
     @property
@@ -79,7 +79,7 @@ class TwitterDM(object):
     @property
     def hash_participants(self):
         """Create an hash from participants addresses for global lookup."""
-        addresses = [x.address for x in self.participants]
+        addresses = [x.address.lower() for x in self.participants]
         addresses = list(set(addresses))
         addresses.sort()
         return hashlib.sha256(''.join(addresses)).hexdigest()
