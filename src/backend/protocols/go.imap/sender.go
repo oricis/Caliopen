@@ -27,18 +27,36 @@ type Sender struct {
 	Store         backends.LDAStore
 }
 
-func (s *Sender) SendDraft(msg *nats.Msg) error {
+func (s *Sender) SendDraft(msg *nats.Msg) {
 	var order BrokerOrder
 	err := json.Unmarshal(msg.Data, &order)
 	if err != nil {
-		return fmt.Errorf("Unable to unmarshal message from NATS. Payload was <%s>", string(msg.Data))
+		s.natsReplyError(msg, fmt.Errorf("Unable to unmarshal message from NATS. Payload was <%s>", string(msg.Data)))
+		return
 	}
-	order.Order = "deliver"
+	// get userIdentity and check auth params validity
+	if err != nil {
+		s.natsReplyError(msg, err)
+		return
+	}
+	userIdentity, err := s.Store.RetrieveUserIdentity(order.UserId, order.RemoteId, true)
+	if err != nil {
+		s.natsReplyError(msg, err)
+		return
+	}
+	if userIdentity.Infos["authtype"] == Oauth2 {
+		err = users.ValidateOauth2Credentials(userIdentity, s, true)
+		if err != nil {
+			s.natsReplyError(msg, err)
+			return
+		}
+	}
+
 	//1. make use of our lmtpd to send email
 	natsMessage, e := json.Marshal(order)
 	if e != nil {
-		log.WithError(e).Info("[SendDraft] failed to build nats message")
-		return errors.New("[SendDraft] failed to build nats message")
+		s.natsReplyError(msg, errors.New("[SendDraft] failed to build nats message"))
+		return
 	}
 	smtpReply, err := s.NatsConn.Request(s.OutSMTPtopic, []byte(natsMessage), 30*time.Second)
 
@@ -46,41 +64,39 @@ func (s *Sender) SendDraft(msg *nats.Msg) error {
 	if err != nil {
 		if smtpReply != nil {
 			s.natsReplyError(msg, errors.New(smtpReply.Reply))
+			return
 		} else {
 			s.natsReplyError(msg, err)
+			return
 		}
-		return err
 	}
 	var reply DeliveryAck
 	err = json.Unmarshal(smtpReply.Data, &reply)
 	if err != nil {
-		e := fmt.Errorf("[IMAPworker]SendDraft failed to unmarshal smtpReply : %s", err)
-		s.natsReplyError(msg, e)
-		return e
+		s.natsReplyError(msg, fmt.Errorf("[IMAPworker]SendDraft failed to unmarshal smtpReply : %s", err))
+		return
 	}
 	if reply.Err {
-		e := fmt.Errorf("[IMAPworker]SendDraft smtpReply has error : %s", reply.Response)
 		s.natsReplyError(msg, errors.New(reply.Response))
-		return e
+		return
 	}
 
-	//3. no error when sending email, then upload a copy to remote IMAP account
-	sentMsg, err := s.Store.RetrieveMessage(order.UserId, order.MessageId)
-	if err != nil {
-		e := fmt.Errorf("[IMAPworker]SendDraft failed to retrieve sent message : %s", err)
-		s.natsReplyError(msg, e)
-		return e
+	//3. no error when sending email,
+	// if applicable upload a copy to remote IMAP account
+	if userIdentity.Type == RemoteIdentity {
+		sentMsg, err := s.Store.RetrieveMessage(order.UserId, order.MessageId)
+		if err != nil {
+			s.natsReplyError(msg, fmt.Errorf("[IMAPworker]SendDraft failed to retrieve sent message : %s", err))
+			return
+		}
+		err = s.UploadSentMessageToRemote(userIdentity, sentMsg)
+		if err != nil {
+			s.natsReplyError(msg, fmt.Errorf("[IMAPworker]SendDraft failed to upload sent email to remote IMAP account : %s", err))
+			return
+		}
 	}
-	err = s.UploadSentMessageToRemote(sentMsg)
-	if err != nil {
-		e := fmt.Errorf("[IMAPworker]SendDraft failed to upload sent email to remote IMAP account : %s", err)
-		s.natsReplyError(msg, e)
-		return e
-	}
-
 	//4. respond to caller
 	s.NatsConn.Publish(msg.Reply, smtpReply.Data)
-	return nil
 }
 
 func (s *Sender) natsReplyError(msg *nats.Msg, err error) {
@@ -95,12 +111,7 @@ func (s *Sender) natsReplyError(msg *nats.Msg, err error) {
 	s.NatsConn.Publish(msg.Reply, json_resp)
 }
 
-func (s *Sender) UploadSentMessageToRemote(msg *Message) error {
-	//get user
-	user, err := s.Store.RetrieveUserIdentity(msg.User_id.String(), msg.UserIdentities[0].String(), true)
-	if err != nil {
-		return err
-	}
+func (s *Sender) UploadSentMessageToRemote(userIdentity *UserIdentity, msg *Message) error {
 
 	//get raw message
 	rawMail, err := s.Store.GetRawMessage(msg.Raw_msg_id.String())
@@ -108,13 +119,13 @@ func (s *Sender) UploadSentMessageToRemote(msg *Message) error {
 		return err
 	}
 
-	if user.Infos["authtype"] == Oauth2 {
-		err = users.ValidateOauth2Credentials(user, s, true)
+	if userIdentity.Infos["authtype"] == Oauth2 {
+		err = users.ValidateOauth2Credentials(userIdentity, s, true)
 		if err != nil {
 			return err
 		}
 	}
-	_, imapClient, _, err := imapLogin(user)
+	_, imapClient, _, err := imapLogin(userIdentity)
 	if err != nil {
 		return err
 	}

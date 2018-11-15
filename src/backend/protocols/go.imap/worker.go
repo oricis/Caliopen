@@ -142,7 +142,7 @@ func (worker *Worker) natsMsgHandler(msg *nats.Msg) {
 		sender := Sender{
 			NatsConn:      worker.NatsConn,
 			NatsMessage:   msg,
-			OutSMTPtopic:  "outboundSMTP", //TODO: get it from config file
+			OutSMTPtopic:  worker.Config.LDAConfig.OutTopic,
 			Store:         worker.Store,
 			Hostname:      worker.Config.Hostname,
 			ImapProviders: worker.Lda.Providers,

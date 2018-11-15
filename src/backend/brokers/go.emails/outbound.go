@@ -20,6 +20,7 @@ import (
 	"errors"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/users"
 	log "github.com/Sirupsen/logrus"
 	"github.com/nats-io/go-nats"
 	"time"
@@ -53,7 +54,6 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 	if err != nil {
 		return
 	}
-
 	if order.Order == "deliver" {
 		//retrieve message from db
 		m, err := b.Store.RetrieveMessage(order.UserId, order.MessageId)
@@ -108,11 +108,12 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 						b.natsReplyError(msg, err)
 						return resp, err
 					case Oauth2:
+
 						out.MTAparams = &MTAparams{
 							AuthType: Oauth2,
 							Host:     firstIdentity.Infos["outserver"],
-							Password: (*firstIdentity.Credentials)["oauth2token"],
-							User:     (*firstIdentity.Credentials)["username"],
+							Password: (*firstIdentity.Credentials)[users.CRED_ACCESS_TOKEN],
+							User:     (*firstIdentity.Credentials)[users.CRED_USERNAME],
 						}
 					case LoginPassword:
 						out.MTAparams = &MTAparams{
