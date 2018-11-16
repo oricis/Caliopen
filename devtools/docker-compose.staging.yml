@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 volumes:
   index:
     driver: local
@@ -21,11 +21,11 @@ services:
   apiv2:
     image: public-registry.caliopen.org/caliopen_apiv2:develop
     links:
-      - redis:redis.dev.caliopen.org
-      - cassandra:cassandra.dev.caliopen.org
-      - nats:nats.dev.caliopen.org
-      - elasticsearch:es.dev.caliopen.org
-      - object-store:minio.dev.caliopen.org
+      - redis:redis
+      - cassandra:cassandra
+      - nats:nats
+      - elasticsearch:es
+      - object-store:minio
     expose:
       - "6544"
     volumes:
@@ -36,9 +36,9 @@ services:
   apiv1:
     image: public-registry.caliopen.org/caliopen_apiv1:develop
     links:
-      - redis:redis.dev.caliopen.org
-      - cassandra:cassandra.dev.caliopen.org
-      - elasticsearch:es.dev.caliopen.org
+      - redis:redis
+      - cassandra:cassandra
+      - elasticsearch:es
     expose:
       - "6543"
     volumes:
@@ -88,9 +88,9 @@ services:
   cli:
     image: public-registry.caliopen.org/caliopen_cli:develop
     links:
-      - cassandra:cassandra.dev.caliopen.org
-      - elasticsearch:es.dev.caliopen.org
-      - lmtpd:lmtpd.dev.caliopen.org
+      - cassandra:cassandra
+      - elasticsearch:es
+      - lmtpd:lmtpd
     environment:
       CQLENG_ALLOW_SCHEMA_MANAGEMENT: 1
     volumes:
@@ -101,7 +101,7 @@ services:
   frontend:
     image: public-registry.caliopen.org/caliopen_frontend:develop
     links:
-      - proxy-api:api.dev.caliopen.org
+      - proxy-api:api
     ports:
       - "127.0.0.1:4000:4000"
 
@@ -109,11 +109,11 @@ services:
   lmtpd:
     image: public-registry.caliopen.org/caliopen_lmtpd:develop
     links:
-      - cassandra:cassandra.dev.caliopen.org
-      - elasticsearch:es.dev.caliopen.org
-      - object-store:minio.dev.caliopen.org
-      - nats:nats.dev.caliopen.org
-      - mq-worker:mc.dev.caliopen.org
+      - cassandra:cassandra
+      - elasticsearch:es
+      - object-store:minio
+      - nats:nats
+      - mq-worker:mc
     ports:
       - "127.0.0.1:2525:2525"
     volumes:
@@ -129,9 +129,9 @@ services:
   mq-worker:
     image: public-registry.caliopen.org/caliopen_mq_worker:develop
     links:
-      - cassandra:cassandra.dev.caliopen.org
-      - elasticsearch:es.dev.caliopen.org
-      - nats:nats.dev.caliopen.org
+      - cassandra:cassandra
+      - elasticsearch:es
+      - nats:nats
     volumes:
       - ../src/backend/configs/caliopen.yaml:/etc/caliopen/caliopen.yaml
 
@@ -150,21 +150,24 @@ services:
   imap-worker:
     image: public-registry.caliopen.org/caliopen_imap_worker:develop
     links:
-      - cassandra:cassandra.dev.caliopen.org
-      - object-store:minio.dev.caliopen.org
-      - elasticsearch:es.dev.caliopen.org
-      - nats:nats.dev.caliopen.org
+      - cassandra:cassandra
+      - object-store:minio
+      - elasticsearch:es
+      - nats:nats
     volumes:
       - ../src/backend/configs/imapworker.yaml:/etc/caliopen/imapworker.yaml
+    environment:
+      - MINIO_ACCESS_KEY=CALIOPEN_ACCESS_KEY_
+      - MINIO_SECRET_KEY=CALIOPEN_SECRET_KEY_BE_GOOD_AND_LIVE_OLD
 
 
   # Poller for remote identities
   identity-poller:
     image: public-registry.caliopen.org/caliopen_identity_poller:develop
     links:
-      - imap-worker:imap-worker.dev.caliopen.org
-      - cassandra:cassandra.dev.caliopen.org
-      - nats:nats.dev.caliopen.org
+      - imap-worker:imap-worker
+      - cassandra:cassandra
+      - nats:nats
     volumes:
       - ../src/backend/configs/idpoller.yaml:/etc/caliopen/idpoller.yaml
 
