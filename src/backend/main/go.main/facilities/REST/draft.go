@@ -31,19 +31,21 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err e
 
 	var natsTopic string
 	switch protocol {
-	case ImapProtocol:
+	case EmailProtocol, ImapProtocol:
 		natsTopic = Nats_outIMAP_topicKey
 		order = BrokerOrder{
 			Order:     nats_order,
 			MessageId: msg_id,
 			UserId:    user_id,
+			RemoteId: draft.UserIdentities[0].String(), // handle one identity only for now
 		}
-	case SmtpProtocol, EmailProtocol:
+	case SmtpProtocol:
 		natsTopic = Nats_outSMTP_topicKey
 		order = BrokerOrder{
 			Order:     nats_order,
 			MessageId: msg_id,
 			UserId:    user_id,
+			RemoteId: draft.UserIdentities[0].String(), // handle one identity only for now
 		}
 	case TwitterProtocol:
 		natsTopic = Nats_outTwitter_topicKey

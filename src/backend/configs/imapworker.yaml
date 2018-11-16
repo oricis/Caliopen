@@ -1,4 +1,5 @@
 workers: 2                                             # number of concurrent workers
+hostname: localhost
 #messaging system
 nats_url: nats://nats:4222
 nats_queue: IMAPworkers                                # NATS group queue for workers
@@ -42,3 +43,9 @@ LDAConfig:
   # notifications
   NotifierConfig:
     admin_username: admin                                # username on whose behalf notifiers will act. This admin user must have been created before by other means.
+  Providers:                                             # temporary supported providers list for remote identities before moving this data into store facility
+    - name: gmail
+      protocol: email
+      infos:
+        client_id:
+        client_secret:
