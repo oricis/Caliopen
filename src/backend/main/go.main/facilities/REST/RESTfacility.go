@@ -95,7 +95,7 @@ type (
 		nats_conn  *nats.Conn
 		providers  map[string]Provider
 		store      backends.APIStorage
-		hostname   string
+		Hostname   string
 	}
 )
 
@@ -170,6 +170,6 @@ func NewRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility
 		}
 	}
 
-	rest_facility.hostname = config.Hostname
+	rest_facility.Hostname = config.Hostname
 	return rest_facility
 }

@@ -20,6 +20,7 @@ import (
 	"errors"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/users"
 	log "github.com/Sirupsen/logrus"
 	"github.com/nats-io/go-nats"
 	"time"
@@ -53,7 +54,6 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 	if err != nil {
 		return
 	}
-
 	if order.Order == "deliver" {
 		//retrieve message from db
 		m, err := b.Store.RetrieveMessage(order.UserId, order.MessageId)
@@ -108,11 +108,12 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 						b.natsReplyError(msg, err)
 						return resp, err
 					case Oauth2:
+
 						out.MTAparams = &MTAparams{
 							AuthType: Oauth2,
 							Host:     firstIdentity.Infos["outserver"],
-							Password: (*firstIdentity.Credentials)["oauth2token"],
-							User:     (*firstIdentity.Credentials)["username"],
+							Password: (*firstIdentity.Credentials)[users.CRED_ACCESS_TOKEN],
+							User:     (*firstIdentity.Credentials)[users.CRED_USERNAME],
 						}
 					case LoginPassword:
 						out.MTAparams = &MTAparams{
@@ -177,22 +178,6 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 		}(&out, msg)
 	}
 	return resp, err
-}
-
-// bespoke implementation of the json.Unmarshaler interface
-// assuming well formatted NATS JSON message
-// hydrates the natsOrder with provided data
-func (msg *natsOrder) UnmarshalJSON(data []byte) error {
-	//TODO: better error handling
-	if len(data) == 122 {
-		msg.Order = string(data[10:17])
-		msg.MessageId = string(data[34:70])
-		msg.UserId = string(data[84:120])
-	} else {
-		log.Warnf("[Broker outbound] invalid natsOrder length for nats message : %s", data)
-		return fmt.Errorf("[Broker outbound] invalid natsOrder length. Should be 122 bytes it is : %d", len(data))
-	}
-	return nil
 }
 
 func (b *EmailBroker) natsReplyError(msg *nats.Msg, err error) {

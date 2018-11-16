@@ -24,7 +24,10 @@ import (
 	"time"
 )
 
-const nats_message_tmpl = "{\"order\":\"%s\",\"user_id\": \"%s\", \"message_id\": \"%s\"}"
+const(
+	natsMessageTmpl  = "{\"order\":\"%s\",\"user_id\":\"%s\",\"remote_id\":\"%s\",\"message_id\": \"%s\"}"
+	natsOrderRaw     = "process_raw"
+)
 
 func (b *EmailBroker) startIncomingSmtpAgents() error {
 	for i := 0; i < b.Config.InWorkers; i++ {
@@ -185,8 +188,7 @@ func (b *EmailBroker) processInbound(rcptsIds []UUID, in *SmtpEmail, raw_only bo
 	for _, rcptId := range rcptsIds {
 		go func(rcptId UUID, errs *multierror.Error) {
 			defer wg.Done()
-			const nats_order = "process_raw"
-			natsMessage := fmt.Sprintf(nats_message_tmpl, nats_order, rcptId.String(), m.Raw_msg_id.String())
+			natsMessage := fmt.Sprintf(natsMessageTmpl, natsOrderRaw, rcptId.String(), "", m.Raw_msg_id.String())
 			// XXX manage timeout correctly
 			resp, err := b.NatsConn.Request(b.Config.InTopic, []byte(natsMessage), 10*time.Second)
 			if err != nil {

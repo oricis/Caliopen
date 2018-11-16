@@ -52,7 +52,7 @@ ApiConfig:
       client_id:
       client_secret:
       imapserver: imap.gmail.com:993
-      smtpserver: smtp.gmail.com:465
+      smtpserver: smtp.gmail.com:587
   - name: twitter
     protocol: twitter
     infos:

@@ -17,7 +17,7 @@ type (
 		RetrieveUserIdentity(userId, RemoteId string, withCredentials bool) (*UserIdentity, error)
 		LookupIdentityByIdentifier(string, ...string) ([][2]string, error)
 		LookupIdentityByType(string, ...string) ([][2]string, error)
-		UpdateUserIdentity(userIdentity *UserIdentity, fields map[string]interface{}) error
+		IdentityStorageUpdater
 		DeleteUserIdentity(userIdentity *UserIdentity) error
 		RetrieveRemoteIdentities(userId string, withCredentials bool) ([]*UserIdentity, error)
 		RetrieveAllRemotes(withCredentials bool) (<-chan *UserIdentity, error)
@@ -28,3 +28,7 @@ type (
 		Close()
 	}
 )
+
+type IdentityStorageUpdater interface {
+	UpdateUserIdentity(userIdentity *UserIdentity, fields map[string]interface{}) error
+}
