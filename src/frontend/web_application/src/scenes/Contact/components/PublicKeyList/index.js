@@ -13,8 +13,9 @@ const mapStateToProps = createSelector(
     const keyState = publicKeysState[contactId];
 
     return {
-      publicKeys: keyState ? publicKeysState[contactId].keys : [],
+      publicKeys: keyState ? keyState.keys : [],
       didInvalidate: keyState ? keyState.didInvalidate : false,
+      isFetching: keyState ? keyState.isFetching : false,
     };
   }
 );

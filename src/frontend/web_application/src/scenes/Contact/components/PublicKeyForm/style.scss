@@ -2,7 +2,7 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
 .m-public-key-form {
-  padding-left: map-get($co-form__spacing, 'medium');
+  padding-left: map_get($co-form__spacing, 'medium');
   background-color: $co-color__bg__back--higher;
 
   &__actions {
@@ -10,6 +10,6 @@
   }
 
   &__button-cancel {
-    margin-left:auto;
+    margin-left: auto;
   }
 }

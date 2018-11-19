@@ -22,14 +22,12 @@ class PublicKeyForm extends PureComponent {
     createPublicKey: PropTypes.func.isRequired,
     updatePublicKey: PropTypes.func.isRequired,
     deletePublicKey: PropTypes.func.isRequired,
-    onSuccess: PropTypes.func,
-    onCancel: PropTypes.func,
+    onSuccess: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     publicKey: undefined,
-    onSuccess: undefined,
-    onCancel: undefined,
     errors: [],
   };
 
@@ -58,7 +56,7 @@ class PublicKeyForm extends PureComponent {
       return;
     }
 
-    if (onSuccess) onSuccess();
+    onSuccess();
   };
 
   handleDelete = () => {
@@ -67,7 +65,7 @@ class PublicKeyForm extends PureComponent {
     } = this.props;
 
     deletePublicKey({ contactId, publicKeyId: publicKey.key_id });
-    if (onSuccess) onSuccess();
+    onSuccess();
   };
 
   render() {
@@ -93,7 +91,7 @@ class PublicKeyForm extends PureComponent {
                 <Field
                   component={TextFieldGroup}
                   name="label"
-                  label={i18n._('contact.public_key_form.label.label', { defaults: 'Key label' })}
+                  label={i18n._('contact.public_key_form.label.label', null, { defaults: 'Key label' })}
                   required
                 />
               </FormColumn>
@@ -129,7 +127,7 @@ class PublicKeyForm extends PureComponent {
                         <Trans id="contact.public_key_form.delete_key">Delete Key</Trans>
                       </Button>)}
                   /> : null}
-                {onCancel ? <Button icon="remove" className="m-public-key-form__button-cancel" onClick={onCancel}><Trans id="contact.public_key_form.cancel">Cancel</Trans></Button> : null}
+                <Button icon="remove" className="m-public-key-form__button-cancel" onClick={onCancel}><Trans id="contact.public_key_form.cancel">Cancel</Trans></Button>
                 <Button type="submit" icon="check" color="active" className="m-public-key-form__button-validate">
                   <Trans id="contact.public_key_form.validate">Validate</Trans>
                 </Button>
