@@ -209,6 +209,7 @@ services:
       - imap-worker:imapworker
       - mq-worker:mq-worker
       - nats:nats
+      - twitter-worker:twitter-worker
     volumes:
       - ../src/backend/configs:/etc/caliopen
 

@@ -160,12 +160,22 @@ services:
       - MINIO_ACCESS_KEY=CALIOPEN_ACCESS_KEY_
       - MINIO_SECRET_KEY=CALIOPEN_SECRET_KEY_BE_GOOD_AND_LIVE_OLD
 
+  twitter-worker:
+    image: public-registry.caliopen.org/caliopen_twitterworker:develop
+    links:
+    - cassandra:cassandra
+    - object-store:minio
+    - elasticsearch:elasticsearch
+    - nats:nats
+    volumes:
+    - ../src/backend/configs/twitterworker.yaml:/etc/caliopen/twitterworker.yaml
 
   # Poller for remote identities
   identity-poller:
     image: public-registry.caliopen.org/caliopen_identity_poller:develop
     links:
       - imap-worker:imap-worker
+      - twitter-worker:twitter-worker
       - cassandra:cassandra
       - nats:nats
     volumes:
