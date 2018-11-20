@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.12.3] 2018-10-26
+
+### Fixed
+
+- Manage better how to declare an user index on signup
+- Index contact and message with correct user_id
+
+### Changed
+
+- Build go images with a vendor sync and with CA certificates for TLS connection
+
+## [0.12.2] 2018-10-15
+
 ### Fixed
 
 - /suggest apiv2 route use user.shard_id index not user.user_id

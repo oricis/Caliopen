@@ -20,7 +20,7 @@ var (
 	}
 )
 
-const __version__ = "0.12.2"
+const __version__ = "0.12.3"
 
 func init() {
 	cobra.OnInitialize()
