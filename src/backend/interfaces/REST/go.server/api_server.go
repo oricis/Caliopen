@@ -36,6 +36,7 @@ type (
 
 	APIConfig struct {
 		Interface      string `mapstructure:"listen_interface"`
+		ListenPort     string `mapstructure:"listen_port"`
 		Port           string `mapstructure:"port"`
 		Hostname       string `mapstructure:"hostname"`
 		SwaggerFile    string `mapstructure:"swaggerSpec"`
@@ -179,7 +180,7 @@ func (server *REST_API) start() error {
 	server.AddHandlers(api)
 
 	// listens
-	addr := server.config.Interface + ":" + server.config.Port
+	addr := server.config.Interface + ":" + server.config.ListenPort
 	err = router.Run(addr)
 	if err != nil {
 		log.WithError(err).Warn("unable to start gin server")

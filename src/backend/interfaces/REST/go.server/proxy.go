@@ -26,7 +26,8 @@ func StartProxy(config ProxyConfig) {
 }
 
 type ProxyConfig struct {
-	Interface string            `mapstructure:"listen_interface"`
-	Port      string            `mapstructure:"port"`
-	Routes    map[string]string `mapstructure:"routes"`
+	Interface  string            `mapstructure:"listen_interface"`
+	ListenPort string            `mapstructure:"listen_port"`
+	Port       string            `mapstructure:"port"`
+	Routes     map[string]string `mapstructure:"routes"`
 }
