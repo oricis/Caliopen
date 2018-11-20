@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-APPS="apiv1 apiv2 cli frontend broker mq_worker identity_poller imap_worker twitter_worker"
+APPS="apiv1 apiv2 cli frontend lmtpd mq_worker identity_poller imap_worker twitter_worker"
 STAGE=$1
 VERSION="${CALIOPEN_VERSION}"
 source ./registry.conf

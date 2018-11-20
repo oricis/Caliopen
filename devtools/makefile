@@ -49,7 +49,7 @@ publish-develop: tag-develop ## Publish the `develop` tagged image
 
 tag-develop: ## Generate image with `develop` tag
 	@echo 'create tag develop'
-	docker tag $(APP_NAME) $(DOCKER_REPO)/$(APP_NAME):develop
+	docker tag caliopen_$(APP_NAME) $(DOCKER_REPO)/$(APP_NAME):develop
 # HELPERS
 
 # generate script to login to docker registry
