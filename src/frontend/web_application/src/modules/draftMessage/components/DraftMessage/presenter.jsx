@@ -310,9 +310,13 @@ class DraftMessage extends Component {
     const {
       className, i18n, draftFormRef, onFocus, scrollTarget: { forwardRef },
     } = this.props;
+    const ref = (el) => {
+      draftFormRef(el);
+      forwardRef(el);
+    };
 
     return (
-      <div className={classnames(className, 'm-draft-message-quick')} ref={draftFormRef}>
+      <div className={classnames(className, 'm-draft-message-quick')} ref={ref}>
         <div className={classnames(className, 'm-draft-message-quick__container')}>
           <div className="m-draft-message-quick__toggle-advanced">
             {this.renderToggleAdvancedButton()}
@@ -321,7 +325,6 @@ class DraftMessage extends Component {
             className="m-draft-message-quick__input"
             onChange={this.handleChange}
             onFocus={onFocus}
-            ref={forwardRef}
             name="body"
             value={this.state.draftMessage.body}
             placeholder={this.getQuickInputPlaceholder()}
