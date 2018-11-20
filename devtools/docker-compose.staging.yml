@@ -101,9 +101,11 @@ services:
   frontend:
     image: public-registry.caliopen.org/caliopen_frontend:develop
     links:
-      - proxy-api:api
+      - proxy-api:proxy-api
     ports:
       - "127.0.0.1:4000:4000"
+    environment:
+      CALIOPEN_API_HOSTNAME: proxy-api
 
   # Broker
   lmtpd:
