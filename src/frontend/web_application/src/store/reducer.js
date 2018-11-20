@@ -18,6 +18,7 @@ import searchReducer from './modules/search';
 import settingsReducer from './modules/settings';
 import tagReducer from './modules/tag';
 import userReducer from './modules/user';
+import publicKeyReducer from './modules/public-key';
 
 const reducer = combineReducers({
   notifications: notifyReducer,
@@ -39,6 +40,7 @@ const reducer = combineReducers({
   tag: tagReducer,
   user: userReducer,
   form: formReducer,
+  publicKey: publicKeyReducer,
 });
 
 export default reducer;

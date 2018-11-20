@@ -15,6 +15,7 @@ import EmailForm from './components/EmailForm';
 import PhoneForm from './components/PhoneForm';
 import ImForm from './components/ImForm';
 import AddressForm from './components/AddressForm';
+import PublicKeyList from './components/PublicKeyList';
 // FIXME: birthday deactivated due to redux-form bug cf. AddFormFieldForm
 // import BirthdayForm from './components/BirthdayForm';
 import OrgaForm from './components/OrgaForm';
@@ -387,11 +388,16 @@ class Contact extends Component {
     );
   }
 
-  renderKeys = () => (
-    <Fragment>
-      <Title hr><Trans id="contact.keys.title">Public keys</Trans></Title>
-    </Fragment>
-  );
+  renderKeys = () => {
+    const { contactId } = this.props;
+
+    return (
+      <Fragment>
+        <Title hr><Trans id="contact.keys.title">Public keys</Trans></Title>
+        <PublicKeyList contactId={contactId} />
+      </Fragment>
+    );
+  };
 
   renderLastMessages = () => (
     <Fragment>
@@ -450,7 +456,6 @@ class Contact extends Component {
             propertyName="organizations"
             addButtonLabel={<Trans id="contact.action.add-organization">Add an organization</Trans>}
           />
-
           <Title hr><Trans id="contact.identities">Identities</Trans></Title>
           <FormCollection
             component={(<IdentityForm />)}
@@ -525,9 +530,9 @@ class Contact extends Component {
             <div className="s-contact__contact-details">
               {this.renderContactDetails()}
             </div>
-            {/* <div className="s-contact__keys">
+            <div className="s-contact__keys">
               {this.renderKeys()}
-            </div> */}
+            </div>
             {/* <div className="s-contact__last-messages">
               {this.renderLastMessages()}
             </div> */}
