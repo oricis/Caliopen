@@ -30,7 +30,7 @@ services:
       - "6544"
     volumes:
       - ../src/backend/configs/apiv2.yaml:/etc/caliopen/apiv2.yaml
-      - ../src/backend/configs/caliopen.yaml:/etc/caliopen/caliopen.yaml
+      - ../src/backend/configs/swagger.json:/etc/caliopen/swagger.json
 
   # Caliopen APIv1
   apiv1:
@@ -161,7 +161,7 @@ services:
       - MINIO_SECRET_KEY=CALIOPEN_SECRET_KEY_BE_GOOD_AND_LIVE_OLD
 
   twitter-worker:
-    image: public-registry.caliopen.org/caliopen_twitterworker:develop
+    image: public-registry.caliopen.org/caliopen_twitter_worker:develop
     links:
     - cassandra:cassandra
     - object-store:minio

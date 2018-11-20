@@ -146,7 +146,7 @@ services:
       - "4222:4222"
 
   # NATS Message Handler
-  mq-worker:
+  mq_worker:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.mq-worker
@@ -173,11 +173,11 @@ services:
       - MINIO_SECRET_KEY=CALIOPEN_SECRET_KEY_BE_GOOD_AND_LIVE_OLD
 
   # Worker for remote identities
-  imap-worker:
+  imap_worker:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.imap-worker
-    image: caliopen_imapworker
+    image: caliopen_imap_worker
     links:
       - cassandra:cassandra
       - object-store:minio
@@ -186,11 +186,11 @@ services:
     volumes:
       - ../src/backend/configs:/etc/caliopen
 
-  twitter-worker:
+  twitter_worker:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.twitter-worker
-    image: caliopen_twitterworker
+    image: caliopen_twitter_worker
     links:
     - cassandra:cassandra
     - object-store:minio
@@ -200,16 +200,16 @@ services:
     - ../src/backend/configs:/etc/caliopen
 
   # Poller for remote identities
-  identity-poller:
+  identity_poller:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.identity-poller
-    image: caliopen_idpoller
+    image: caliopen_identity_poller
     links:
-      - imap-worker:imapworker
-      - mq-worker:mq-worker
+      - imap_worker:imapworker
+      - mq_worker:mqworker
       - nats:nats
-      - twitter-worker:twitter-worker
+      - twitter_worker:twitterworker
     volumes:
       - ../src/backend/configs:/etc/caliopen
 
