@@ -16,3 +16,5 @@ export const scrollTop = (y, isAnimated = false) => {
 };
 
 export { default as ScrollDetector } from './components/ScrollDetector';
+export * from './hoc/withScrollManager';
+export * from './hoc/withScrollTarget';

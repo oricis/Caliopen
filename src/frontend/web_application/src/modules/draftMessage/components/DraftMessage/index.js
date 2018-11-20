@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-// import withScrollTarget from '../../../../modules/scroll/hoc/scrollTarget';
 import { createMessageCollectionStateSelector } from '../../../../store/selectors/message';
 import { deleteDraft, deleteDraftSuccess, clearDraft, syncDraft } from '../../../../store/modules/draft-message';
 import { updateTagCollection } from '../../../../modules/tags';
@@ -137,7 +136,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 }, dispatch);
 
 export default compose(...[
-  // withScrollTarget(),
   withDraftMessage(),
   withCurrentInternalId(),
   connect(mapStateToProps, mapDispatchToProps),

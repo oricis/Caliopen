@@ -8,7 +8,7 @@ import { addEventListener } from '../../../services/event-manager';
 const SCROLL_DEBOUNCE_WAIT = 700;
 
 // XXX: may be scrollRestauration will be usefull https://reacttraining.com/react-router/web/guides/scroll-restoration
-const withScrollManager = () => (Comp) => {
+export const withScrollManager = ({ namespace = 'scrollManager' } = {}) => (Comp) => {
   @withUpdateTab()
   @withCurrentTab()
   @withRouter
@@ -81,11 +81,15 @@ const withScrollManager = () => (Comp) => {
     shouldScrollToTarget = () => this.props.location.key;
 
     render() {
-      return <Comp scrollToTarget={this.shouldScrollToTarget} {...this.props} />;
+      const injected = {
+        [namespace]: {
+          scrollToTarget: this.shouldScrollToTarget,
+        },
+      };
+
+      return <Comp {...injected} {...this.props} />;
     }
   }
 
   return ScrollManager;
 };
-
-export default withScrollManager;

@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
-import { bindActionCreators, compose } from 'redux';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import withScrollManager from '../../modules/scroll/hoc/scrollManager';
 import { requestDiscussions, hasMore, loadMoreDiscussions } from '../../store/modules/discussion';
 import { UserSelector } from '../../store/selectors/user';
 import { getUser } from '../../modules/user/actions/getUser';
@@ -32,8 +31,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   // updateMessagesTags,
 }, dispatch);
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  //  withTags(),
-  withScrollManager(),
-)(Presenter);
+export default connect(mapStateToProps, mapDispatchToProps)(Presenter);

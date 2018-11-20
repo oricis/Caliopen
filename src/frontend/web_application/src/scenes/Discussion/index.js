@@ -9,7 +9,6 @@ import { UserSelector } from '../../store/selectors/user';
 import { withTags, updateTagCollection } from '../../modules/tags';
 import { sortMessages } from '../../services/message';
 import { getUser } from '../../modules/user/actions/getUser';
-import withScrollManager from '../../modules/scroll/hoc/scrollManager';
 import { withPush } from '../../modules/routing/hoc/withPush';
 import Discussion from './presenter';
 
@@ -79,7 +78,6 @@ const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withScrollManager(),
   withTags(),
   withPush(),
 )(Discussion);

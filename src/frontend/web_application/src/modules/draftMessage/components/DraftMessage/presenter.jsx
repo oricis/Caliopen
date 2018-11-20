@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { withI18n } from '@lingui/react';
 import { Trans } from '@lingui/macro'; // eslint-disable-line import/no-extraneous-dependencies
 import { Button, Icon, InputText, TextareaFieldGroup, TextFieldGroup, Link, Confirm } from '../../../../components';
+import { withScrollTarget } from '../../../scroll';
 import RecipientList from '../RecipientList';
 import AttachmentManager from '../AttachmentManager';
 import IdentitySelector from '../IdentitySelector';
@@ -18,12 +19,14 @@ import './toggle-advanced-draft-button.scss';
 @withI18n()
 @withNotification()
 @withIdentities()
+@withScrollTarget()
 class DraftMessage extends Component {
   static propTypes = {
     className: PropTypes.string,
     isReply: PropTypes.bool,
     i18n: PropTypes.shape({}).isRequired,
     identities: PropTypes.arrayOf(PropTypes.shape({})),
+    scrollTarget: PropTypes.shape({ forwardRef: PropTypes.func }).isRequired,
     internalId: PropTypes.string.isRequired,
     draftMessage: PropTypes.shape({
       user_identities: PropTypes.arrayOf(PropTypes.string),
@@ -40,8 +43,7 @@ class DraftMessage extends Component {
     onUploadAttachments: PropTypes.func.isRequired,
     onDeleteAttachement: PropTypes.func.isRequired,
     draftFormRef: PropTypes.func,
-    forwardRef: PropTypes.func,
-    scrollToMe: PropTypes.func,
+    onFocus: PropTypes.func,
   };
   static defaultProps = {
     className: undefined,
@@ -54,9 +56,6 @@ class DraftMessage extends Component {
     draftFormRef: () => {},
     onFocus: () => {},
     onSent: () => {},
-
-    // forwardRef: undefined,
-    // scrollToMe: undefined,
   };
 
   static genererateStateFromProps(props, prevState) {
@@ -308,7 +307,9 @@ class DraftMessage extends Component {
   }
 
   renderQuick() {
-    const { className, i18n, draftFormRef } = this.props;
+    const {
+      className, i18n, draftFormRef, onFocus, scrollTarget: { forwardRef },
+    } = this.props;
 
     return (
       <div className={classnames(className, 'm-draft-message-quick')} ref={draftFormRef}>
@@ -319,6 +320,8 @@ class DraftMessage extends Component {
           <InputText
             className="m-draft-message-quick__input"
             onChange={this.handleChange}
+            onFocus={onFocus}
+            ref={forwardRef}
             name="body"
             value={this.state.draftMessage.body}
             placeholder={this.getQuickInputPlaceholder()}
@@ -340,13 +343,18 @@ class DraftMessage extends Component {
 
   renderAdvanced() {
     const {
-      className, draftMessage, parentMessage, original, draftFormRef, isReply, identities,
+      className, draftMessage, parentMessage, original, draftFormRef, isReply, identities, onFocus,
+      scrollTarget: { forwardRef },
     } = this.props;
 
     const hasSubject = this.state.draftMessage.identityId && identities.find(identity => identity.identity_id === this.state.draftMessage.identityId).protocol === 'email';
+    const ref = (el) => {
+      draftFormRef(el);
+      forwardRef(el);
+    };
 
     return (
-      <div className={classnames(className, 'm-draft-message-advanced')} ref={draftFormRef}>
+      <div className={classnames(className, 'm-draft-message-advanced')} ref={ref} >
         <div className="m-draft-message-advanced__toggle-simple">
           {isReply && this.renderToggleAdvancedButton()}
         </div>
@@ -382,6 +390,7 @@ class DraftMessage extends Component {
             inputProps={{
               name: 'body',
               onChange: this.handleChange,
+              onFocus,
               value: this.state.draftMessage.body,
             }}
           />

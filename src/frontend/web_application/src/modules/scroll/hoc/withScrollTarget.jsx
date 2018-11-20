@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { scrollTop, getViewPortTop } from '../';
 
-export default () => (Component) => {
+export const withScrollTarget = ({ namespace = 'scrollTarget' } = {}) => (Component) => {
   class ScrollTarget extends PureComponent {
     static propTypes = {
       scrollToMe: PropTypes.func,
@@ -35,7 +35,15 @@ export default () => (Component) => {
     }
 
     render() {
-      return (<Component forwardRef={this.getRef} {...this.props} />);
+      const injected = {
+        [namespace]: {
+          forwardRef: this.getRef,
+        },
+      };
+
+      console.log({ injected });
+
+      return (<Component {...injected} {...this.props} />);
     }
   }
 

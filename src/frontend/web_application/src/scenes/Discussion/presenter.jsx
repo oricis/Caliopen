@@ -11,12 +11,14 @@ import ReplyExcerpt from './components/ReplyExcerpt';
 import { withCloseTab } from '../../modules/tab';
 import { ManageEntityTags } from '../../modules/tags';
 import { DraftMessage } from '../../modules/draftMessage';
+import { withScrollManager } from '../../modules/scroll';
 import { addEventListener } from '../../services/event-manager';
 
 import './style.scss';
 
 const LOAD_MORE_THROTTLE = 1000;
 
+@withScrollManager()
 @withCloseTab()
 @withI18n()
 @withRouter
@@ -28,7 +30,7 @@ class Discussion extends Component {
     requestDiscussion: PropTypes.func.isRequired,
     user: PropTypes.shape({}),
     isUserFetching: PropTypes.bool.isRequired,
-    scrollToTarget: PropTypes.func.isRequired,
+    scrollManager: PropTypes.shape({ scrollToTarget: PropTypes.func.isRequired }).isRequired,
     isFetching: PropTypes.bool.isRequired,
     didInvalidate: PropTypes.bool.isRequired,
     hasMore: PropTypes.bool.isRequired,
@@ -236,7 +238,7 @@ class Discussion extends Component {
 
   render() {
     const {
-      discussionId, messages, scrollToTarget, isFetching, location,
+      discussionId, messages, scrollManager: { scrollToTarget }, isFetching, location,
       hasMore, user, isUserFetching, discussion,
     } = this.props;
     const hash = location.hash ? location.hash.slice(1) : null;
@@ -293,8 +295,6 @@ class Discussion extends Component {
         <div className={classnames('s-discussion__reply', { 's-discussion__reply--open': this.state.isDraftFocus })}>
           <DraftMessage
             scrollToMe={hash === 'reply' ? scrollToTarget : undefined}
-            discussionId={discussionId}
-            internalId={discussionId}
             onFocus={this.handleFocusDraft}
             onSent={this.handleMessageSent}
             draftFormRef={(node) => { this.replyFormRef = node; }}

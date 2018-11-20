@@ -6,7 +6,6 @@ import { deleteContacts } from '../../modules/contact';
 import { updateContactTags } from '../../modules/tags';
 
 import { requestContacts, loadMoreContacts, hasMore } from '../../store/modules/contact';
-import withScrollManager from '../../modules/scroll/hoc/scrollManager';
 import Presenter from './presenter';
 
 const contactSelector = state => state.contact;
@@ -28,6 +27,5 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withScrollManager(),
   withI18n(),
 )(Presenter);
