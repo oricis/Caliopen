@@ -41,18 +41,19 @@ const getStateFromProps = props => ({
 
 class RecipientList extends Component {
   static propTypes = {
+    className: PropTypes.string,
     internalId: PropTypes.string,
     recipients: PropTypes.arrayOf(PropTypes.shape({})),
-    onRecipientsChange: PropTypes.func,
+    onRecipientsChange: PropTypes.func.isRequired,
     setSearchTerms: PropTypes.func.isRequired,
     search: PropTypes.func.isRequired,
     searchResults: PropTypes.arrayOf(PropTypes.shape({})),
   };
   static defaultProps = {
+    className: undefined,
     internalId: undefined,
     recipients: [],
     searchResults: [],
-    onRecipientsChange: () => {},
   };
 
   state = {
@@ -297,11 +298,11 @@ class RecipientList extends Component {
   render() {
     const componentId = uuidV1();
     const dropdownId = uuidV1();
-    const { searchResults } = this.props;
+    const { searchResults, className } = this.props;
 
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <div id={componentId} onClick={this.handleClickRecipientList} ref={(el) => { this.recipientListRef = el; }} role="presentation" className="m-recipient-list">
+      <div id={componentId} onClick={this.handleClickRecipientList} ref={(el) => { this.recipientListRef = el; }} role="presentation" className={classnames('m-recipient-list', className)}>
         { !this.state.recipients.length && (
           <span className="m-recipient-list__placeholder">
             <Trans id="messages.compose.form.to.label">To</Trans>

@@ -18,7 +18,7 @@ const mapStateToProps = createSelector(
       .sort((a, b) => (new Date(b.date_update) - new Date(a.date_update))),
     hasMore: discussionState && hasMore(discussionState),
     isFetching: discussionState.isFetching,
-    // didInvalidate: timeline && timeline.didInvalidate,
+    didInvalidate: discussionState.didInvalidate,
     isUserFetching: userState.isFetching,
     user: userState.user,
   })

@@ -7,10 +7,10 @@ import { Trans, withI18n } from '@lingui/react';
 import { Badge, Button, Modal } from '../../components';
 import StickyNavBar from '../../layouts/Page/components/Navigation/components/StickyNavBar';
 import MessageList from './components/MessageList';
-import ReplyForm from '../MessageList/components/ReplyForm';
-import ReplyExcerpt from '../MessageList/components/ReplyExcerpt';
+import ReplyExcerpt from './components/ReplyExcerpt';
 import { withCloseTab } from '../../modules/tab';
 import { ManageEntityTags } from '../../modules/tags';
+import { DraftMessage } from '../../modules/draftMessage';
 import { addEventListener } from '../../services/event-manager';
 
 import './style.scss';
@@ -291,13 +291,15 @@ class Discussion extends Component {
           isUserFetching={isUserFetching}
         />
         <div className={classnames('s-discussion__reply', { 's-discussion__reply--open': this.state.isDraftFocus })}>
-          <ReplyForm
+          <DraftMessage
             scrollToMe={hash === 'reply' ? scrollToTarget : undefined}
             discussionId={discussionId}
             internalId={discussionId}
             onFocus={this.handleFocusDraft}
             onSent={this.handleMessageSent}
             draftFormRef={(node) => { this.replyFormRef = node; }}
+            hasDiscussion
+            isReply={messages.length > 0}
           />
         </div>
         <div className={classnames('s-discussion__reply-excerpt', { 's-discussion__reply-excerpt--close': this.state.isDraftFocus })}>

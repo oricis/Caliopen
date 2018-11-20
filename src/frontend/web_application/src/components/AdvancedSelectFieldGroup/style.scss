@@ -1,0 +1,44 @@
+@import '../../styles/common';
+@import '../../styles/object/o-form-element';
+
+.m-advanced-select-field-group {
+  &__label {
+    display: block;
+    margin-bottom: $co-component__spacing;
+  }
+
+  &__input {
+    @include o-form-element;
+    min-width: map_get($co-margin_, 'xlarge');
+
+    &--decorated {
+      @include o-form-element--light;
+    }
+  }
+
+  &__select-wrapper {
+    @include o-form-element-select-wrapper;
+    &::after {
+      right: initial;
+    }
+  }
+
+  &__option-button {
+    height: $co-component__height;
+    text-align: left;
+  }
+
+  &--dark {
+    &__select-wrapper,
+    &__select {
+      @include o-form-element--dark;
+    }
+  }
+
+  &--inline {
+    &__label,
+    &__select-wrapper {
+      display: inline-block;
+    }
+  }
+}

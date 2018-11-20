@@ -15,7 +15,6 @@ const getRedirect = (queryString) => {
 
 class Signin extends Component {
   static propTypes = {
-    initSettings: PropTypes.func.isRequired,
     location: PropTypes.shape({}).isRequired,
     i18n: PropTypes.shape({}).isRequired,
     clientDevice: PropTypes.shape({}),
@@ -54,8 +53,6 @@ class Signin extends Component {
   }
 
   handleSigninSuccess = async (response) => {
-    const { initSettings } = this.props;
-
     const nextState = {
       isAuthenticated: true,
     };
@@ -64,7 +61,6 @@ class Signin extends Component {
       nextState.redirectDevice = true;
     }
 
-    initSettings();
     this.setState(nextState);
   }
 

@@ -1,0 +1,54 @@
+@import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+.m-draft-message-advanced {
+  @include flex-grid-row($size: expand);
+  background-color: #f6fcff;
+
+  &__recipient-list {
+    // margin-right: $co-margin;
+    // margin-bottom: $co-margin;
+    // margin-left: $co-margin;
+  }
+
+  &__toggle-simple {
+    @include flex-grid-size(shrink);
+    width: 3.438rem;
+    height: 3.438rem;
+  }
+
+  &__identity {
+    height: 3.438rem;
+    margin-bottom: map_get($co-margin_, 'xsmall');
+  }
+
+  &__container {
+    @include flex-grid-size;
+    padding-right: map_get($co-margin_, 'xlarge');
+    padding-left: map_get($co-margin_, 'xsmall');
+  }
+
+  &__action-send {
+    @include flex-grid-size(12);
+    padding-right: map_get($co-margin_, 'xlarge');
+    background-color: #ecf9ff;
+    text-align: right;
+  }
+
+  &__action-button {
+    margin-top: map_get($co-margin_, 'small');
+    margin-bottom: map_get($co-margin_, 'small');
+    margin-left: map_get($co-margin_, 'xsmall');
+  }
+
+  &__button-send {
+    background-color: #07b798;
+  }
+
+  &__subject,
+  &__recipient-list,
+  &__body,
+  &__attachments {
+    margin-bottom: $co-margin;
+  }
+}

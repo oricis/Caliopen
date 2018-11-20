@@ -8,7 +8,7 @@ import withScrollTarget from '../../../../modules/scroll/hoc/scrollTarget';
 import { withPush } from '../../../../modules/routing/hoc/withPush';
 import { getTagLabelFromName } from '../../../../modules/tags';
 import { Badge, Button, Confirm } from '../../../../components';
-import MessageAttachments from '../../../MessageList/components/MessageAttachments';
+import MessageAttachments from '../MessageAttachments';
 import MessageRecipients from '../MessageRecipients';
 import MessagePi from '../MessagePi';
 import { getAuthor } from '../../../../services/message';

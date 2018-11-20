@@ -260,9 +260,11 @@ class OpenPGPKeyForm extends Component {
             <TextareaFieldGroup
               className="m-account-openpgp-form__field-group"
               label={i18n._('user.openpgp.form.public-key.label', null, { defaults: 'Public key' })}
-              value={this.state.importForm.publicKeyArmored}
-              onChange={this.handleImportChanges}
-              name="publicKeyArmored"
+              inputProps={{
+                value: this.state.importForm.publicKeyArmored,
+                onChange: this.handleImportChanges,
+                name: 'publicKeyArmored',
+              }}
               errors={
                 importForm.errors.publicKeyArmored &&
                   importForm.errors.publicKeyArmored.map(key => this.errorsLabels[key])
@@ -271,9 +273,11 @@ class OpenPGPKeyForm extends Component {
             <TextareaFieldGroup
               className="m-account-openpgp-form__field-group"
               label={i18n._('user.openpgp.form.private-key.label', null, { defaults: 'Private key' })}
-              value={this.state.importForm.privateKeyArmored}
-              onChange={this.handleImportChanges}
-              name="privateKeyArmored"
+              inputProps={{
+                value: this.state.importForm.privateKeyArmored,
+                onChange: this.handleImportChanges,
+                name: 'privateKeyArmored',
+              }}
               errors={
                 importForm.errors.privateKeyArmored &&
                   importForm.errors.privateKeyArmored.map(key => this.errorsLabels[key])

@@ -45,6 +45,7 @@ export const typeAssoc = {
   'list-ul': 'fa fa-list-ul',
   lock: 'fa fa-lock',
   'map-marker': 'fa fa-map-marker',
+  'paper-plane': 'fa fa-paper-plane',
   paperclip: 'fa fa-paperclip',
   pencil: 'fa fa-pencil',
   plug: 'fa fa-plug',

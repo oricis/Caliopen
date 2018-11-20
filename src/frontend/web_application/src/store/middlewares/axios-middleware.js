@@ -24,7 +24,7 @@ export default axiosMiddleware(getClient(), {
           'has-close-all': 'l-notification-center__notification--has-close-all',
           item__message: 'l-notification-center__notification-item-message',
         };
-        if (error.response.status === 401) {
+        if (error.response && error.response.status === 401) {
           const notification = {
             // FIXME: trad 'auth.feedback.deauth'
             message: 'You are not authenticated anymore. Please reconnect.',
@@ -39,7 +39,7 @@ export default axiosMiddleware(getClient(), {
           }
         }
 
-        if (error.response.status >= 500) {
+        if (error.response && error.response.status >= 500) {
           const notification = {
             // FIXME: trad
             message: 'Sorry, an unexpected error occured. developers will work hard on this error during alpha phase. Please feel free to describe us what happened.',

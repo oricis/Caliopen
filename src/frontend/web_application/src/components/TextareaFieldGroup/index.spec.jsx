@@ -6,7 +6,9 @@ describe('component TextareaFieldGroup', () => {
   it('should render', () => {
     const props = {
       label: 'Foo',
-      onChange: jest.fn(),
+      inputProps: {
+        onChange: jest.fn(),
+      },
     };
 
     const comp = shallow(
@@ -14,7 +16,6 @@ describe('component TextareaFieldGroup', () => {
     );
 
     expect(comp.find('FieldGroup').length).toEqual(1);
-    comp.find('textarea').simulate('change');
-    expect(props.onChange).toHaveBeenCalled();
+    expect(comp.find('Textarea').length).toEqual(1);
   });
 });
