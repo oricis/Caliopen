@@ -390,7 +390,7 @@
   "remote_identity.status.inactive": "",
   "remote_identity.twitter.help": "",
   "reply-form.by": "per {draftType}",
-  "reply-form.in-reply-to": "Als Antwort auf: {excerpt}",
+  "reply-form.in-reply-to": "Als Antwort auf: {0}",
   "reply-form.now": "Jetzt",
   "reply-form.protocol.email": "Nachricht",
   "reply-form.you": "Sie",

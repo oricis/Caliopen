@@ -390,7 +390,7 @@
   "remote_identity.status.inactive": "Désactivé",
   "remote_identity.twitter.help": "Vous serez redirigé vers twitter pour vous authentifier et autoriser l’application",
   "reply-form.by": "par {draftType}",
-  "reply-form.in-reply-to": "En réponse à : {excerpt}",
+  "reply-form.in-reply-to": "En réponse à : {0}",
   "reply-form.now": "Maintenant",
   "reply-form.protocol.email": "email",
   "reply-form.you": "Vous",
