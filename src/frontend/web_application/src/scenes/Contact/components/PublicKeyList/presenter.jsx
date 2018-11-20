@@ -81,7 +81,7 @@ class PublicKeyList extends Component {
 
     if (this.state.editMode && this.state.editKey === publicKey.key_id) {
       return (
-        <li>
+        <li key={publicKey.key_id}>
           <PublicKeyForm
             key={publicKey.key_id}
             contactId={contactId}
