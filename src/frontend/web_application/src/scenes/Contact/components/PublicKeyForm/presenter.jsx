@@ -19,8 +19,6 @@ class PublicKeyForm extends PureComponent {
     publicKey: PropTypes.shape({}),
     handleSubmit: PropTypes.func.isRequired,
     form: PropTypes.string.isRequired,
-    createPublicKey: PropTypes.func.isRequired,
-    updatePublicKey: PropTypes.func.isRequired,
     deletePublicKey: PropTypes.func.isRequired,
     onSuccess: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
@@ -29,34 +27,6 @@ class PublicKeyForm extends PureComponent {
   static defaultProps = {
     publicKey: undefined,
     errors: [],
-  };
-
-  handleSubmit = (ev) => {
-    const {
-      contactId, handleSubmit, publicKey,
-      createPublicKey, updatePublicKey,
-      onSuccess,
-    } = this.props;
-
-    try {
-      if (publicKey) {
-        const { key_id: publicKeyId, label } = publicKey;
-
-        handleSubmit(ev)
-          .then(values => updatePublicKey({
-            contactId,
-            publicKey: { ...values, publicKeyId },
-            original: { label },
-          }));
-      } else {
-        handleSubmit(ev)
-          .then(values => createPublicKey({ contactId, publicKey: values }));
-      }
-    } catch (ex) {
-      return;
-    }
-
-    onSuccess();
   };
 
   handleDelete = () => {
@@ -71,10 +41,11 @@ class PublicKeyForm extends PureComponent {
   render() {
     const {
       form, errors, i18n, publicKey, onCancel,
+      handleSubmit,
     } = this.props;
 
     return (
-      <form onSubmit={this.handleSubmit} method="post">
+      <form onSubmit={handleSubmit} method="post">
         <FormGrid className="m-public-key-form">
           <Fieldset>
             <FormRow>
