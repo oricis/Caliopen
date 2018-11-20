@@ -265,7 +265,7 @@ func setTwitterAuthRequestUrl(provider *Provider, hostname string) (requestToken
 	conf := &oauth1.Config{
 		ConsumerKey:    provider.Infos["consumer_key"],
 		ConsumerSecret: provider.Infos["consumer_secret"],
-		CallbackURL:    "http://" + hostname + provider.OauthCallbackUri,
+		CallbackURL:    hostname + provider.OauthCallbackUri,
 		Endpoint:       twitterOAuth1.AuthorizeEndpoint,
 	}
 	requestToken, requestSecret, e := conf.RequestToken()

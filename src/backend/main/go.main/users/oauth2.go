@@ -79,7 +79,7 @@ func SetGoogleOauthConfig(provider Provider, hostname string) *oauth2.Config {
 		ClientID:     provider.Infos["client_id"],
 		ClientSecret: provider.Infos["client_secret"],
 		Endpoint:     googleOAuth2.Endpoint,
-		RedirectURL:  "http://" + hostname + provider.OauthCallbackUri,
+		RedirectURL:  hostname + provider.OauthCallbackUri,
 		Scopes:       []string{"profile", "email", "https://mail.google.com/"},
 	}
 }

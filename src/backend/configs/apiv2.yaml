@@ -1,7 +1,7 @@
 ApiConfig:
   listen_interface: 0.0.0.0
   listen_port: 6544
-  hostname: localhost
+  hostname: http://localhost
   port: 6544
   BackendConfig:
     backend_name: cassandra
