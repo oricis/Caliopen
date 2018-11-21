@@ -22,7 +22,7 @@ import (
 type (
 	RESTservices interface {
 		UsernameIsAvailable(string) (bool, error)
-		SuggestRecipients(user_id, query_string string) (suggests []RecipientSuggestion, err error)
+		SuggestRecipients(user *UserInfo, query_string string) (suggests []RecipientSuggestion, err error)
 		GetSettings(user_id string) (settings *Settings, err error)
 		//contacts
 		CreateContact(contact *Contact) error
