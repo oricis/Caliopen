@@ -290,15 +290,20 @@ class DraftMessage extends Component {
   }
 
   renderRecipientList({ className } = {}) {
-    const { canEditRecipients, internalId } = this.props;
+    const { canEditRecipients } = this.props;
 
     if (canEditRecipients) {
+      const { internalId, identities } = this.props;
+      const identity = identities
+        .find(ident => ident.identity_id === this.state.draftMessage.identityId);
+
       return (
         <RecipientList
           className={className}
           internalId={internalId}
           recipients={this.state.draftMessage.recipients}
           onRecipientsChange={this.handleRecipientsChange}
+          identity={identity}
         />
       );
     }

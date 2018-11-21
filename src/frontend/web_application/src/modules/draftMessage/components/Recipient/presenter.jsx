@@ -11,10 +11,12 @@ class Recipient extends Component {
     onRemove: PropTypes.func,
     i18n: PropTypes.shape({}).isRequired,
     className: PropTypes.string,
+    isValid: PropTypes.bool,
   };
   static defaultProps = {
     onRemove: () => {},
     className: undefined,
+    isValid: true,
   };
 
   handleClickRemove = () => {
@@ -22,7 +24,9 @@ class Recipient extends Component {
   }
 
   render() {
-    const { participant, className, i18n } = this.props;
+    const {
+      participant, className, i18n, isValid,
+    } = this.props;
 
     return (
       <Badge
@@ -30,6 +34,7 @@ class Recipient extends Component {
         className={className}
         onDelete={this.handleClickRemove}
         ariaLabel={i18n._('messages.compose.action.remove-recipient', null, { defaults: 'Remove recipient' })}
+        color={!isValid ? 'alert' : undefined}
       >
         <Icon type={getIconType(participant.protocol)} rightSpaced />{participant.address}
       </Badge>

@@ -8,6 +8,7 @@ import { Dropdown, Button, Icon, VerticalMenu, VerticalMenuItem } from '../../..
 import protocolsConfig, { ASSOC_PROTOCOL_ICON } from '../../../../services/protocols-config';
 import { addEventListener } from '../../../../services/event-manager';
 import Recipient from '../Recipient';
+import { isValidRecipient } from '../../services/isValidRecipient';
 import './style.scss';
 
 export const KEY = {
@@ -48,6 +49,7 @@ class RecipientList extends Component {
     setSearchTerms: PropTypes.func.isRequired,
     search: PropTypes.func.isRequired,
     searchResults: PropTypes.arrayOf(PropTypes.shape({})),
+    identity: PropTypes.shape({}).isRequired,
   };
   static defaultProps = {
     className: undefined,
@@ -298,7 +300,7 @@ class RecipientList extends Component {
   render() {
     const componentId = uuidV1();
     const dropdownId = uuidV1();
-    const { searchResults, className } = this.props;
+    const { searchResults, className, identity } = this.props;
 
     return (
       // eslint-disable-next-line jsx-a11y/no-static-element-interactions
@@ -314,6 +316,7 @@ class RecipientList extends Component {
             className="m-recipient-list__recipient"
             participant={participant}
             onRemove={this.handleRemoveRecipient}
+            isValid={isValidRecipient({ recipient: participant, identity })}
           />
         ))}
         <div className="m-recipient-list__search">
@@ -335,9 +338,9 @@ class RecipientList extends Component {
             isMenu
           >
             <VerticalMenu>
-              {searchResults.map((identity, index) => (
-                <VerticalMenuItem key={`${identity.address}_${identity.protocol}`}>
-                  {this.renderSearchResult(identity, index, searchResults)}
+              {searchResults.map((ident, index) => (
+                <VerticalMenuItem key={`${ident.address}_${ident.protocol}`}>
+                  {this.renderSearchResult(ident, index, searchResults)}
                 </VerticalMenuItem>
               ))}
             </VerticalMenu>
