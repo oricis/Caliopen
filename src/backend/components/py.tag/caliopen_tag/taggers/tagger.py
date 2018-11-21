@@ -36,5 +36,6 @@ class MessageTagger(object):
         msg = msg.replace("\n", " ")
         msg = ' '.join(word_tokenize(msg))  # TODO: Add language support
         predictions = self.model.predict(msg, k=self.k, threshold=self.threshold)
-        result = [(predictions[0][i][9:], predictions[1][i]) for i in range(self.k)]
+        nb_result = len(predictions[0])
+        result = [(predictions[0][i][9:], predictions[1][i]) for i in range(nb_result)]
         return result
