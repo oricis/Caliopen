@@ -5,9 +5,10 @@ import HorizontalScroll from '../HorizontalScroll';
 import { Tab, NavbarItem, ApplicationTab, DiscussionTab, ContactTab, SearchTab } from '../Navbar/components';
 import { Button, Icon } from '../../../../components/';
 import { Tab as TabModel, withCurrentTab } from '../../../../modules/tab';
-import { findTabbableRouteConfig } from '../../../../modules/routing';
+import { withPush, findTabbableRouteConfig } from '../../../../modules/routing';
 import './style.scss';
 
+@withPush()
 @withCurrentTab()
 class Navigation extends Component {
   static propTypes = {
@@ -17,6 +18,7 @@ class Navigation extends Component {
     tabs: PropTypes.arrayOf(PropTypes.instanceOf(TabModel)).isRequired,
     routes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     removeTab: PropTypes.func.isRequired,
+    push: PropTypes.func.isRequired,
   };
   static defaultProps = {
     className: undefined,
@@ -25,6 +27,10 @@ class Navigation extends Component {
   };
 
   getTabIdentifier = ({ pathname, search, hash }) => `${pathname}${search}${hash}`;
+
+  handleClickCompose = () => {
+    this.props.push('/compose');
+  }
 
   renderTab({ tab }) {
     const { removeTab, routes, currentTab } = this.props;
@@ -95,7 +101,7 @@ class Navigation extends Component {
         <HorizontalScroll subscribedState={subscribedState}>
           {tabs.map(tab => this.renderTab({ tab }))}
           <NavbarItem key="compose-button" className={classnames('l-navigation__compose-item', { 'l-navigation__compose-item--sticky': isSticky })}>
-            <Button shape="plain" display="expanded" className="l-navigation__compose-btn">
+            <Button onClick={this.handleClickCompose} shape="plain" display="expanded" className="l-navigation__compose-btn">
               <Icon type="pencil" /> <Icon type="plus" />
             </Button>
           </NavbarItem>
