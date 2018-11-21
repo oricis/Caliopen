@@ -162,10 +162,12 @@ class Discussion extends Component {
   };
 
   handleMessageReply = () => {
-    const { messages, onMessageReply, push } = this.props;
+    const {
+      messages, onMessageReply, push, discussionId,
+    } = this.props;
     const message = messages[messages.length - 1];
 
-    onMessageReply({ message });
+    onMessageReply({ discussionId, message });
     push({ hash: 'reply' });
   };
 

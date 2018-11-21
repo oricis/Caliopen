@@ -43,6 +43,7 @@ const mapStateToProps = createSelector(
       allowEditRecipients: messages.length === 1 && message && true,
       message,
       parentMessage,
+      lastMessage,
       draft,
       isRequestingDraft,
       isDeletingDraft,

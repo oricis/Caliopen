@@ -170,6 +170,7 @@
   "draft.feedback.save-error": "Unable to save the draft",
   "draft.feedback.saved": "Draft saved",
   "draft.feedback.send-error": "Unable to send the message",
+  "draftmessage.reply-not-available-except-email": "Replying to a Twitter DM will be available soon. Thank you for your patience.",
   "file.size.B": "{size} B",
   "file.size.gB": "<0/> gB",
   "file.size.kB": "<0/> kB",

@@ -9,6 +9,7 @@ class ReplyForm extends Component {
     allowEditRecipients: PropTypes.bool,
     message: PropTypes.shape({ }),
     parentMessage: PropTypes.shape({ }),
+    lastMessage: PropTypes.shape({ }),
     draft: PropTypes.shape({ }),
     isRequestingDraft: PropTypes.bool,
     isDeletingDraft: PropTypes.bool,
@@ -31,6 +32,7 @@ class ReplyForm extends Component {
     allowEditRecipients: false,
     message: undefined,
     parentMessage: undefined,
+    lastMessage: undefined,
     draft: undefined,
     onSent: undefined,
     isRequestingDraft: false,
@@ -172,7 +174,7 @@ class ReplyForm extends Component {
 
   render() {
     const {
-      draft, discussionId, allowEditRecipients, user, parentMessage, draftFormRef,
+      draft, discussionId, allowEditRecipients, user, parentMessage, draftFormRef, lastMessage,
     } = this.props;
 
     if (!draft) {
@@ -198,6 +200,7 @@ class ReplyForm extends Component {
       <div id="reply" ref={this.props.forwardRef}>
         <ReplyFormBase
           parentMessage={parentMessage}
+          lastMessage={lastMessage}
           draft={draft}
           onChange={this.handleEdit}
           onSave={this.handleSave}

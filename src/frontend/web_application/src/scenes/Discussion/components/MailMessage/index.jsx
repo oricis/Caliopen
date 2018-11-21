@@ -61,7 +61,8 @@ class MailMessage extends Component {
 
   handleReply = () => {
     const { onReply, message, push } = this.props;
-    onReply({ message, push });
+    onReply({ message });
+    push({ hash: 'reply' });
   }
 
   renderTags = ({ tags }) => {

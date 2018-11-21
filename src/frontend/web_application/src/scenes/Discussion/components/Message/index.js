@@ -5,11 +5,9 @@ import { updateTagCollection, withTags } from '../../../../modules/tags';
 
 import Presenter from './presenter';
 
-const onReply = ({ message, push }) => (dispatch) => {
+const onReply = ({ message }) => (dispatch) => {
   dispatch(reply({ internalId: message.discussion_id, message }));
-  dispatch(push({ hash: 'reply' }));
 };
-
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   onReply,
