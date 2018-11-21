@@ -26,7 +26,12 @@ const mapStateToProps = createSelector(
   (messagesById, discussionState, discussionId, userState, {
     didInvalidate, messageIds, hasMore, isFetching,
   }) => {
-    const messages = sortMessages(messageIds.map(messageId => messagesById[messageId]), false);
+    const canBeClosed = messageIds.length === 0;
+    const messages = sortMessages(
+      messageIds.map(messageId => messagesById[messageId])
+        .filter(msg => msg.is_draft === false),
+      false
+    );
 
     return {
       discussionId,
@@ -37,6 +42,7 @@ const mapStateToProps = createSelector(
       isFetching,
       didInvalidate,
       hasMore,
+      canBeClosed,
     };
   }
 );

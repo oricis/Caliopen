@@ -34,6 +34,7 @@ class Discussion extends Component {
     hasMore: PropTypes.bool.isRequired,
     location: PropTypes.shape({}).isRequired,
     messages: PropTypes.arrayOf(PropTypes.shape({})),
+    canBeClosed: PropTypes.bool.isRequired,
     onMessageReply: PropTypes.func.isRequired,
     onMessageSent: PropTypes.func.isRequired,
     setMessageRead: PropTypes.func.isRequired,
@@ -119,9 +120,9 @@ class Discussion extends Component {
   }
 
   eventuallyCloseTab = () => {
-    const { isFetching, messages, closeTab } = this.props;
+    const { isFetching, canBeClosed, closeTab } = this.props;
 
-    if (this.state.initialized && !isFetching && messages.length === 0) {
+    if (this.state.initialized && !isFetching && canBeClosed) {
       closeTab();
     }
   }
