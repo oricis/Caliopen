@@ -53,7 +53,7 @@ class DiscussionIndexManager(object):
         agg = A('terms', field='discussion_id',
                 order={'last_message': 'desc'}, size=size, shard_size=size)
         search.aggs.bucket('discussions', agg) \
-            .metric('last_message', 'max', field='date_insert')
+            .metric('last_message', 'max', field='date_sort')
         result = search.execute()
         if hasattr(result, 'aggregations'):
             # Something found
@@ -78,7 +78,7 @@ class DiscussionIndexManager(object):
         if not include_draft:
             search = search.filter("match", is_draft=False)
 
-        result = search.sort('-date_insert').execute()
+        result = search.sort('-date_sort')[0:1].execute()
         if not result.hits:
             # XXX what to do better if not found ?
             return {}

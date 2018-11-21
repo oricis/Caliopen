@@ -61,7 +61,7 @@ def build_discussion(core, index):
     discuss.user_id = core.user_id
     discuss.discussion_id = core.discussion_id
     discuss.date_insert = core.date_insert
-    discuss.date_update = index.last_message.date_insert
+    discuss.date_update = index.last_message.date_sort
     # TODO : excerpt from plain or html body
     maxsize = 100
     discuss.last_message_id = index.last_message.message_id 
