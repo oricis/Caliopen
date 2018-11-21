@@ -6,6 +6,8 @@ import StickyNavBar from '../../layouts/Page/components/Navigation/components/St
 import { MessageNotifications } from '../../modules/notification';
 import { Button, InfiniteScroll, Spinner } from '../../components';
 import DiscussionItem from './components/DiscussionItem';
+import { withSettings } from '../../modules/settings';
+
 // XXX waiting for API
 // import DiscussionSelector from './components/DiscussionSelector';
 
@@ -13,6 +15,7 @@ import './style.scss';
 
 const LOAD_MORE_THROTTLE = 1000;
 
+@withSettings()
 class Timeline extends Component {
   static propTypes = {
     user: PropTypes.shape({}),
@@ -28,6 +31,7 @@ class Timeline extends Component {
     // didInvalidate: PropTypes.bool,
     hasMore: PropTypes.bool,
     // updateDiscussionTags: PropTypes.func.isRequired,
+    settings: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
@@ -148,7 +152,7 @@ class Timeline extends Component {
   )
 
   renderDiscussions() {
-    const { discussions, user } = this.props;
+    const { discussions, user, settings } = this.props;
     const { selectedDiscussions } = this.state;
 
     if (discussions) {
@@ -162,6 +166,7 @@ class Timeline extends Component {
               onSelectDiscussion={this.onSelectDiscussion}
               onSelectAllDiscussions={this.onSelectAllDiscussions}
               isDiscussionSelected={selectedDiscussions.includes(discussion.discussion_id)}
+              settings={settings}
             />
           ))}
         </ul>);
