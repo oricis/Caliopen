@@ -8,14 +8,16 @@ import { getUser } from '../../modules/user/actions/getUser';
 
 import Presenter from './presenter';
 
-const discussionSelector = state => state.discussion;
+const discussionStateSelector = state => state.discussion;
 
 const mapStateToProps = createSelector(
-  [discussionSelector, UserSelector],
-  (discussion, userState) => ({
-    discussions: discussion.discussions.map(id => discussion.discussionsById[id]),
-    hasMore: discussion && hasMore(discussion),
-    isFetching: discussion.isFetching,
+  [discussionStateSelector, UserSelector],
+  (discussionState, userState) => ({
+    discussions: discussionState.discussions
+      .map(id => discussionState.discussionsById[id])
+      .sort((a, b) => (new Date(b.date_update) - new Date(a.date_update))),
+    hasMore: discussionState && hasMore(discussionState),
+    isFetching: discussionState.isFetching,
     // didInvalidate: timeline && timeline.didInvalidate,
     isUserFetching: userState.isFetching,
     user: userState.user,

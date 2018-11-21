@@ -16,7 +16,7 @@ class DiscussionItem extends PureComponent {
       excerpt: PropTypes.string.isRequired,
       discussion_id: PropTypes.string.isRequired,
       total_count: PropTypes.number.isRequired,
-      date_insert: PropTypes.string.isRequired,
+      date_update: PropTypes.string.isRequired,
       last_message_id: PropTypes.string.isRequired,
       unread_count: PropTypes.number.isRequired,
       pi: PropTypes.shape({}).isRequired,
@@ -28,6 +28,7 @@ class DiscussionItem extends PureComponent {
     user: PropTypes.shape({
       contact: PropTypes.shape({ contact_id: PropTypes.string.isRequired }).isRequired,
     }).isRequired,
+    settings: PropTypes.shape({ default_locale: PropTypes.string.isRequired }).isRequired,
   };
 
   onCheckboxChange = (ev) => {
@@ -64,8 +65,9 @@ class DiscussionItem extends PureComponent {
   );
 
   render() {
+    const { settings } = this.props;
     const {
-      excerpt, discussion_id: discussionId, total_count: total, date_insert: date,
+      excerpt, discussion_id: discussionId, total_count: total, date_update: date,
       last_message_id: lastMessageId, unread_count: unreadCount, pi,
     } = this.props.discussion;
     const piAggregate = getAveragePI(pi);
@@ -90,7 +92,7 @@ class DiscussionItem extends PureComponent {
         </Link>
         {this.renderTags(this.props.discussion)}
         <span className="s-discussion-item__message-type"><Icon type="envelope" /></span>
-        <Moment className="s-discussion-item__message-date" fromNow locale="fr">{date}</Moment>
+        <Moment className="s-discussion-item__message-date" fromNow locale={settings.default_locale}>{date}</Moment>
         {/*
         <div className="s-discussion-item__select">
           <Checkbox
