@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from '@lingui/react';
+import { Trans, i18nMark } from '@lingui/react';
 import classnames from 'classnames';
-import { getAveragePI, getPiClass } from '../../../../modules/pi';
+import { getAveragePI, getPiClass, PI_LEVEL_DISABLED, PI_LEVEL_UGLY, PI_LEVEL_BAD, PI_LEVEL_GOOD, PI_LEVEL_SUPER } from '../../../../modules/pi';
 
 import sealedEnvelope from './assets/sealed-envelope.png';
 import postalCard from './assets/postal-card.png';
@@ -83,11 +83,20 @@ class MessagePi extends PureComponent {
   renderDescription = (piAggregate) => {
     const piQuality = getPiClass(piAggregate);
 
+    if (piQuality === PI_LEVEL_DISABLED) {
+      return null;
+    }
+
+    const metaphors = {
+      [PI_LEVEL_UGLY]: i18nMark('message.pi.description.metaphor.ugly'),
+      [PI_LEVEL_BAD]: i18nMark('message.pi.description.metaphor.bad'),
+      [PI_LEVEL_GOOD]: i18nMark('message.pi.description.metaphor.good'),
+      [PI_LEVEL_SUPER]: i18nMark('message.pi.description.metaphor.super'),
+    };
+
     return (
       <p className="m-message-pi__metaphor">
-        <Trans id={`message.pi.description.metaphor.${piQuality}`}>
-          Unknown message type.
-        </Trans>
+        <Trans key={piQuality} id={metaphors[piQuality]} />
       </p>
     );
   };
@@ -95,26 +104,31 @@ class MessagePi extends PureComponent {
   render() {
     const { illustrate, describe, pi } = this.props;
     const piAggregate = getAveragePI(pi);
+    const piClass = getPiClass(piAggregate);
+    const piValue = piAggregate ? Math.round(piAggregate) : '?';
+    const progressMeterStyle = piAggregate ? {
+      width: `${piAggregate}%`,
+    } : {};
 
     return (
       <div className="m-message-pi">
         {illustrate ? this.renderIllustration() : null}
         <div className="m-message-pi__meter">
           <div
-            className={classnames(['m-message-pi__progress', `m-message-pi__progress--${getPiClass(piAggregate)}`])}
+            className={classnames(['m-message-pi__progress', `m-message-pi__progress--${piClass}`])}
             role="progressbar"
             aria-valuenow={piAggregate}
             aria-valuemax="100"
             tabIndex="0"
           >
             <div
-              className={classnames('m-message-pi__progress-meter', `m-message-pi__progress-meter--${getPiClass(piAggregate)}`)}
-              style={{ width: `${piAggregate}%` }}
+              className={classnames('m-message-pi__progress-meter', `m-message-pi__progress-meter--${piClass}`)}
+              style={progressMeterStyle}
             />
           </div>
           <div className="m-message-pi__numeric">
-            <span className="m-message-pi__numeric-legend">Privacy index&thinsp;:</span>
-            <span className="m-message-pi__numeric-value">{Math.round(piAggregate)}</span>
+            <span className="m-message-pi__numeric-legend"><Trans id="message.pi.label">Privacy index:</Trans></span>
+            <span className="m-message-pi__numeric-value">{piValue}</span>
           </div>
         </div>
         {describe ? this.renderDescription(piAggregate) : null}
