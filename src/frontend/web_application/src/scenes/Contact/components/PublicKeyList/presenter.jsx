@@ -16,6 +16,7 @@ class PublicKeyList extends Component {
     requestPublicKeys: PropTypes.func.isRequired,
     didInvalidate: PropTypes.bool,
     isFetching: PropTypes.bool.isRequired,
+    needsFetching: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
@@ -30,20 +31,21 @@ class PublicKeyList extends Component {
 
   componentDidMount() {
     const {
-      publicKeys, contactId, requestPublicKeys, isFetching,
+      contactId, requestPublicKeys, isFetching, needsFetching,
+      didInvalidate,
     } = this.props;
 
-    if (!isFetching && (publicKeys.length === 0 || this.props.didInvalidate)) {
+    if (!isFetching && (needsFetching || didInvalidate)) {
       requestPublicKeys({ contactId });
     }
   }
 
   componentDidUpdate() {
     const {
-      publicKeys, contactId, requestPublicKeys, isFetching,
+      contactId, requestPublicKeys, isFetching, needsFetching,
     } = this.props;
 
-    if (!isFetching && (publicKeys.length === 0 || this.props.didInvalidate)) {
+    if (!isFetching && (needsFetching || this.props.didInvalidate)) {
       requestPublicKeys({ contactId });
     }
   }
