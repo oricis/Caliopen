@@ -73,13 +73,21 @@ func (es *ElasticSearchBackend) RecipientsSuggest(user *UserInfo, query_string s
 	ims_q := elastic.NewNestedQuery("ims", nested_ims_q)
 	ims_q.InnerHit(elastic.NewInnerHit())
 
+	queries = []elastic.Query{
+		elastic.NewPrefixQuery("identities.name", q_string).Boost(2),
+		elastic.NewPrefixQuery("identities.infos", q_string).Boost(2), // TODO: check if this query could find string within infos map
+	}
+	nested_socials_q := elastic.NewBoolQuery().Should(queries...)
+	socials_q := elastic.NewNestedQuery("identities", nested_socials_q)
+	socials_q.InnerHit(elastic.NewInnerHit())
+
 	// doc source pruning
 	fsc := elastic.NewFetchSourceContext(true)
 	fsc.Include("title")
 
 	// run the query
 	main_query := elastic.NewBoolQuery().Filter(elastic.NewTermQuery("user_id", user.User_id)).
-					Should(participants_q, contact_name_q, emails_q, ims_q)
+		Should(participants_q, contact_name_q, emails_q, ims_q, socials_q)
 	search := es.Client.Search().
 		Index(user.Shard_id).
 		FetchSourceContext(fsc).
@@ -155,6 +163,5 @@ func extractParticipantInfos(message_hit *elastic.SearchHit) (suggest RecipientS
 		suggest.Protocol = participant.Protocol
 		return
 	}
-	err = errors.New("[ES RecipientSuggest] empty participants result set")
 	return
 }
