@@ -250,6 +250,7 @@
   "message.pi.description.metaphor.good": "Dans la vraie vie, ce message serait plus ou moins l'équivalent d'une lettre sous enveloppe.",
   "message.pi.description.metaphor.super": "Dans la vraie vie, ce message serait plus ou moins l'équivalent d'une lettre cachetée portée par un messager fiable.",
   "message.pi.description.metaphor.ugly": "Dans la vraie vie, ce message serait plus ou moins l'équivalent d'une carte postale visible par tous.",
+  "message.pi.label": "Indice de confidentialité :",
   "message.pi.technic": "Trajet",
   "message.to": "To:",
   "messages.compose.action.copy": "Copier à",

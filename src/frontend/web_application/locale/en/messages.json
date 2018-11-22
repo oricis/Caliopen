@@ -250,6 +250,7 @@
   "message.pi.description.metaphor.good": "In real life this message would be somewhat equivalent to letter within an envelope.",
   "message.pi.description.metaphor.super": "In real life, this message would be somewhat equivalent to a sealed letter carried by a reliable messenger.",
   "message.pi.description.metaphor.ugly": "In real life this message would be somewhat equivalent to a postal card visible by everyone.",
+  "message.pi.label": "Privacy index:",
   "message.pi.technic": "Travel",
   "message.to": "À :",
   "messages.compose.action.copy": "Copy to",

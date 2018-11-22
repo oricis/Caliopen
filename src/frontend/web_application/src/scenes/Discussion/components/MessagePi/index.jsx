@@ -104,26 +104,31 @@ class MessagePi extends PureComponent {
   render() {
     const { illustrate, describe, pi } = this.props;
     const piAggregate = getAveragePI(pi);
+    const piClass = getPiClass(piAggregate);
+    const piValue = piAggregate ? Math.round(piAggregate) : '?';
+    const progressMeterStyle = piAggregate ? {
+      width: `${piAggregate}%`,
+    } : {};
 
     return (
       <div className="m-message-pi">
         {illustrate ? this.renderIllustration() : null}
         <div className="m-message-pi__meter">
           <div
-            className={classnames(['m-message-pi__progress', `m-message-pi__progress--${getPiClass(piAggregate)}`])}
+            className={classnames(['m-message-pi__progress', `m-message-pi__progress--${piClass}`])}
             role="progressbar"
             aria-valuenow={piAggregate}
             aria-valuemax="100"
             tabIndex="0"
           >
             <div
-              className={classnames('m-message-pi__progress-meter', `m-message-pi__progress-meter--${getPiClass(piAggregate)}`)}
-              style={{ width: `${piAggregate}%` }}
+              className={classnames('m-message-pi__progress-meter', `m-message-pi__progress-meter--${piClass}`)}
+              style={progressMeterStyle}
             />
           </div>
           <div className="m-message-pi__numeric">
-            <span className="m-message-pi__numeric-legend">Privacy index&thinsp;:</span>
-            <span className="m-message-pi__numeric-value">{Math.round(piAggregate)}</span>
+            <span className="m-message-pi__numeric-legend"><Trans id="message.pi.label">Privacy index:</Trans></span>
+            <span className="m-message-pi__numeric-value">{piValue}</span>
           </div>
         </div>
         {describe ? this.renderDescription(piAggregate) : null}
