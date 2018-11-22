@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from '@lingui/react';
+import { Trans, i18nMark } from '@lingui/react';
 import classnames from 'classnames';
-import { getAveragePI, getPiClass } from '../../../../modules/pi';
+import { getAveragePI, getPiClass, PI_LEVEL_DISABLED, PI_LEVEL_UGLY, PI_LEVEL_BAD, PI_LEVEL_GOOD, PI_LEVEL_SUPER } from '../../../../modules/pi';
 
 import sealedEnvelope from './assets/sealed-envelope.png';
 import postalCard from './assets/postal-card.png';
@@ -83,11 +83,20 @@ class MessagePi extends PureComponent {
   renderDescription = (piAggregate) => {
     const piQuality = getPiClass(piAggregate);
 
+    if (piQuality === PI_LEVEL_DISABLED) {
+      return null;
+    }
+
+    const metaphors = {
+      [PI_LEVEL_UGLY]: i18nMark('message.pi.description.metaphor.ugly'),
+      [PI_LEVEL_BAD]: i18nMark('message.pi.description.metaphor.bad'),
+      [PI_LEVEL_GOOD]: i18nMark('message.pi.description.metaphor.good'),
+      [PI_LEVEL_SUPER]: i18nMark('message.pi.description.metaphor.super'),
+    };
+
     return (
       <p className="m-message-pi__metaphor">
-        <Trans id={`message.pi.description.metaphor.${piQuality}`}>
-          Unknown message type.
-        </Trans>
+        <Trans key={piQuality} id={metaphors[piQuality]} />
       </p>
     );
   };
