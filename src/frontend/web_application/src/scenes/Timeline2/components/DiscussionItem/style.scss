@@ -10,7 +10,7 @@ $s-discussion-item__spacing: 0.5rem;
   align-items: stretch;
   margin: 0.125rem 0;
   border-left: 0.5rem solid $co-color__fg__back--lower;
-  background-color: $co-color__fg__back;
+  background-color: $co-color__fg__back--lower;
   font-size: 0.875rem;
   line-height: 3rem;
 
@@ -31,7 +31,7 @@ $s-discussion-item__spacing: 0.5rem;
   }
 
   &--is-unread {
-    background-color: $co-color__fg__back--lower;
+    background-color: $co-color__fg__back;
   }
 
   &__message-type {
