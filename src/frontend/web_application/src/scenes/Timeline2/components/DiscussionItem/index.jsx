@@ -81,7 +81,7 @@ class DiscussionItem extends PureComponent {
         id={`discussion-${discussionId}`}
         data-nb-messages={total}
         data-date={date}
-        className={classnames('s-discussion-item', { 's-discussion-item--is-unread': unreadCount }, `s-discussion-item--${getPiClass(piAggregate)}`)}
+        className={classnames('s-discussion-item', { 's-discussion-item--is-unread': unreadCount > 0 }, `s-discussion-item--${getPiClass(piAggregate)}`)}
       >
         <ParticipantsIconLetter labels={labels} />
         <a className="s-discussion-item__participants">{labels.join(', ')}</a>
