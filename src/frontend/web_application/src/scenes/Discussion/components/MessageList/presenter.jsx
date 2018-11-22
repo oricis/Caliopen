@@ -5,9 +5,11 @@ import { Button, Spinner } from '../../../../components';
 import Message from '../../components/Message';
 import ProtocolSwitch from '../../components/ProtocolSwitch';
 import { getAveragePI } from '../../../../modules/pi';
+import { withSettings } from '../../../../modules/settings';
 
 import './style.scss';
 
+@withSettings()
 class MessageList extends Component {
   static propTypes = {
     messages: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
@@ -21,6 +23,7 @@ class MessageList extends Component {
     user: PropTypes.shape({}),
     isUserFetching: PropTypes.bool.isRequired,
     hash: PropTypes.string,
+    settings: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
@@ -52,7 +55,7 @@ class MessageList extends Component {
   renderList() {
     const {
       messages, onMessageRead, onMessageUnread, onMessageDelete,
-      hash, scrollToTarget, user,
+      hash, scrollToTarget, user, settings,
     } = this.props;
 
     const messageList = [];
@@ -65,6 +68,7 @@ class MessageList extends Component {
           pi={getAveragePI(message.pi)}
           date={message.date}
           key={`switch-${message.message_id}`}
+          settings={settings}
         />);
       }
 
@@ -76,6 +80,7 @@ class MessageList extends Component {
         key={message.message_id}
         scrollToMe={message.message_id === hash ? scrollToTarget : undefined}
         user={user}
+        settings={settings}
       />);
 
       return messageList;

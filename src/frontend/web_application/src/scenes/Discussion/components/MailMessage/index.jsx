@@ -33,6 +33,7 @@ class MailMessage extends Component {
     push: PropTypes.func.isRequired,
     i18n: PropTypes.shape({}).isRequired,
     tags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    settings: PropTypes.shape({ default_locale: PropTypes.string.isRequired }).isRequired,
   };
 
   onVisibilityChange = (isVisible) => {
@@ -83,7 +84,7 @@ class MailMessage extends Component {
 
   render() {
     const {
-      message, forwardRef, onOpenTags, user,
+      message, forwardRef, onOpenTags, user, settings: { default_locale: locale },
     } = this.props;
     const pi = getAveragePI(message.pi);
     const author = getAuthor(message);
@@ -95,7 +96,7 @@ class MailMessage extends Component {
             <div className="s-mail-message__details--what-who-when">
               <i className="fa fa-envelope" />&nbsp;
               <a className="s-mail-message__details-from" href="#">{author.label}</a>&nbsp;
-              <Moment fromNow locale="fr">{message.date}</Moment>
+              <Moment fromNow locale={locale}>{message.date}</Moment>
             </div>
             <div className="s-mail-message__details-to">
               <Trans id="message.to">To:</Trans>
@@ -108,10 +109,10 @@ class MailMessage extends Component {
             <MessagePi pi={message.pi} illustrate describe />
             <div className="s-mail-message__participants">
               <div className="s-mail-message__participants-from">
-                <span className="direction"><Trans id="message.from">From:</Trans>:</span> <a href="">{author.label}</a>
+                <span className="direction"><Trans id="message.from">From:</Trans></span> {author.label}
               </div>
               <div className="s-mail-message__participants-to">
-                <span className="direction"><Trans id="message.to">To:</Trans></span> <a href=""><MessageRecipients message={message} user={user} /></a>
+                <span className="direction"><Trans id="message.to">To:</Trans></span> <MessageRecipients message={message} user={user} />
               </div>
             </div>
             {this.renderTags(message)}
