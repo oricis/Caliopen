@@ -67,7 +67,6 @@ class ImForm extends PureComponent {
               <Field
                 component={TextFieldGroup}
                 name="address"
-                type="email"
                 label={i18n._('contact.im_form.address.label', null, { defaults: 'Address' })}
                 showLabelforSr
                 required
