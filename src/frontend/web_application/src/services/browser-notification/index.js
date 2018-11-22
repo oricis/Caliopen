@@ -40,12 +40,12 @@ const isDocumentVisible = () => {
   return !document[hidden];
 };
 
-export const notify = async ({ message }) => {
+export const notify = async ({ message, force = false }) => {
   if (!isSupported) {
     return Promise.reject('Browser notifications not supported');
   }
 
-  if (isDocumentVisible()) {
+  if (isDocumentVisible() && !force) {
     return undefined;
   }
 
