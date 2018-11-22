@@ -26,30 +26,30 @@ master: build repo-login publish-latest publish-version ## Publish the `{version
 
 publish-latest: tag-latest ## Publish the `latest` tagged image
 	@echo 'publish latest to $(DOCKER_REPO)'
-	docker push $(DOCKER_REPO)/$(APP_NAME):latest
+	docker push $(DOCKER_REPO)/caliopen_$(APP_NAME):latest
 
 publish-version: tag-version ## Publish the `{version}` tagged image
 	@echo 'publish $(VERSION) to $(DOCKER_REPO)'
-	docker push $(DOCKER_REPO)/$(APP_NAME):$(VERSION)
+	docker push $(DOCKER_REPO)/caliopen_$(APP_NAME):$(VERSION)
 
 tag-latest: ## Generate image `app`:latest
 	@echo 'create tag latest'
-	docker tag $(APP_NAME) $(DOCKER_REPO)/$(APP_NAME):latest
+	docker tag caliopen_$(APP_NAME) $(DOCKER_REPO)/caliopen_$(APP_NAME):latest
 
 tag-version: ## Generate image `app`:`{version}`
 	@echo 'create tag $(VERSION)'
-	docker tag $(APP_NAME) $(DOCKER_REPO)/$(APP_NAME):$(VERSION)
+	docker tag caliopen_$(APP_NAME) $(DOCKER_REPO)/caliopen_$(APP_NAME):$(VERSION)
 
 # Develop images
 develop: build repo-login publish-develop ## Build and publish the `develop` tagged images
 
 publish-develop: tag-develop ## Publish the `develop` tagged image
 	@echo 'publish develop to $(DOCKER_REPO)'
-	docker push $(DOCKER_REPO)/$(APP_NAME):develop
+	docker push $(DOCKER_REPO)/caliopen_$(APP_NAME):develop
 
 tag-develop: ## Generate image with `develop` tag
 	@echo 'create tag develop'
-	docker tag caliopen_$(APP_NAME) $(DOCKER_REPO)/$(APP_NAME):develop
+	docker tag caliopen_$(APP_NAME) $(DOCKER_REPO)/caliopen_$(APP_NAME):develop
 # HELPERS
 
 # generate script to login to docker registry
