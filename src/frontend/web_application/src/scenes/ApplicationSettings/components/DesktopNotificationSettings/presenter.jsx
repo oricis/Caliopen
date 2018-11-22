@@ -28,6 +28,7 @@ class DesktopNotificationSettings extends Component {
 
     return notify({
       message: i18n._('settings.desktop_notification.feedback.enabled', null, { defaults: 'Desktop notifications are enabled' }),
+      force: true,
     });
   }
 
