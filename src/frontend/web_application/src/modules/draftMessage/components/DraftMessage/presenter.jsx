@@ -355,7 +355,21 @@ class DraftMessage extends Component {
       scrollTarget: { forwardRef },
     } = this.props;
 
-    const hasSubject = this.state.draftMessage.identityId && identities.find(identity => identity.identity_id === this.state.draftMessage.identityId).protocol === 'email';
+    const isSubjectSupported = ({ draft }) => {
+      if (!draft.identityId) {
+        return false;
+      }
+
+      const currIdentity = identities.find(ident => ident.identity_id === draft.identityId);
+
+      if (!currIdentity) {
+        return false;
+      }
+
+      return currIdentity.protocol === 'email';
+    };
+
+    const hasSubject = isSubjectSupported({ draft: this.state.draftMessage });
     const ref = (el) => {
       draftFormRef(el);
       forwardRef(el);
