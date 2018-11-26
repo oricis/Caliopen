@@ -23,9 +23,9 @@ class AuthenticatedLayout extends Component {
     initialized: false,
   };
 
-  componentDidUpdate(prevProps) {
-    const { isFetching } = this.props;
-    if (prevProps.isFetching && !isFetching) {
+  componentDidUpdate(prevProps, prevState) {
+    const { user, settings, isFetching } = this.props;
+    if (!prevState.initialized && !!user && !!settings && !isFetching) {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
         initialized: true,
