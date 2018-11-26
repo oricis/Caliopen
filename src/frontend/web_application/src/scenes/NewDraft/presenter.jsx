@@ -1,24 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
-import { DraftMessage } from '../../modules/draftMessage';
-import { withPush, withReplace } from '../../modules/routing';
+import { DraftMessage, withCurrentInternalId } from '../../modules/draftMessage';
+import { withReplace } from '../../modules/routing';
 import './style.scss';
 
-@withPush()
 @withReplace()
+@withCurrentInternalId()
 class NewDraft extends Component {
   static propTypes = {
-    i18n: PropTypes.shape({}).isRequired,
-    draft: PropTypes.shape({}),
-    message: PropTypes.shape({}),
     internalId: PropTypes.string,
-    currentTab: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
-    draft: undefined,
-    message: undefined,
     internalId: undefined,
   };
 
