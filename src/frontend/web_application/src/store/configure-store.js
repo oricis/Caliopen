@@ -1,6 +1,7 @@
 import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './reducer';
 import axiosMiddleware from './middlewares/axios-middleware';
+import encryptionMiddleware from './middlewares/encryption-middleware';
 import contactMiddleware from './middlewares/contacts-middleware';
 import deviceMiddleware from './middlewares/device-middleware';
 import discussionMiddleware from './middlewares/discussions-middleware';
@@ -12,6 +13,7 @@ import searchMiddleware from './middlewares/search-middleware';
 import thunkMiddleware from './middlewares/thunk-middleware';
 
 const middlewares = [
+  encryptionMiddleware,
   axiosMiddleware,
   contactMiddleware,
   deviceMiddleware,
@@ -27,10 +29,6 @@ const middlewares = [
 if (CALIOPEN_ENV === 'development' || CALIOPEN_ENV === 'staging') {
   middlewares.push(require('./middlewares/crash-reporter-middleware').default); // eslint-disable-line
   middlewares.push(require('./middlewares/freeze').default); // eslint-disable-line
-}
-
-if (BUILD_TARGET === 'browser') {
-  middlewares.push(require('./middlewares/openpgp-middleware').default); // eslint-disable-line
 }
 
 const createStoreWithMiddleware = applyMiddleware(...middlewares)(createStore);
