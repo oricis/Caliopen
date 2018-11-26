@@ -1,2 +1,2 @@
 export const isValidRecipient = ({ recipient, identity }) =>
-  recipient.protocol === identity.protocol;
+  !identity || recipient.protocol === identity.protocol;
