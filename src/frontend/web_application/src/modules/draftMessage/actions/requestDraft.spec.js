@@ -62,7 +62,7 @@ jest.mock('../../message', () => {
     },
   };
 });
-jest.mock('../../identity', () => ({
+jest.mock('./getDefaultIdentity', () => ({
   getDefaultIdentity: ({ parentMessage } = {}) => (dispatch) => {
     dispatch({ type: 'getDefaultIdentity', payload: { parentMessage } });
 

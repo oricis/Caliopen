@@ -1,4 +1,4 @@
-import { getDefaultIdentity } from '../../identity';
+import { getDefaultIdentity } from './getDefaultIdentity';
 import { getMessage } from '../../message';
 import { createDraft } from '../../../store/modules/draft-message';
 

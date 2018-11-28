@@ -1,5 +1,4 @@
-import { getLocalIdentities } from './getLocalIdentities';
-import { getRemoteIdentities } from './getRemoteIdentities';
+import { getLocalIdentities, getRemoteIdentities } from '../../identity';
 
 const isRecipient = ({ participants, identity }) => participants
   .some(participant => participant.type === 'To' &&

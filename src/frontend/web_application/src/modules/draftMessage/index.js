@@ -1,3 +1,4 @@
+export * from './actions/getDefaultIdentity';
 export * from './actions/newDraft';
 export * from './actions/reply';
 export * from './actions/requestDraft';

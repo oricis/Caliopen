@@ -3,16 +3,23 @@ import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { createMessageCollectionStateSelector } from '../../../../store/selectors/message';
 import { deleteDraft, deleteDraftSuccess, clearDraft, syncDraft } from '../../../../store/modules/draft-message';
+import { withContacts } from '../../../../modules/contact';
 import { updateTagCollection } from '../../../../modules/tags';
 import { saveDraft, sendDraft } from '../../../../modules/draftMessage';
 import { uploadDraftAttachments, deleteDraftAttachment } from '../../../../modules/file';
 import { deleteMessage } from '../../../../modules/message';
+import { withIdentities } from '../../../../modules/identity';
+import { userSelector } from '../../../../modules/user';
 import { getLastMessage } from '../../../../services/message';
 import { withDraftMessage } from './withDraftMessage';
 import { withCurrentInternalId } from '../../hoc/withCurrentInternalId';
+import { filterIdentities } from '../../services/filterIdentities';
+
 import Presenter from './presenter';
 
 const internalIdSelector = (state, ownProps) => ownProps.internalId;
+const identitiesSelector = (state, ownProps) => ownProps.identities;
+const contactsSelector = (state, ownProps) => ownProps.contacts;
 const draftSelector = (state, {
   draftMessage, isRequestingDraft, isDeletingDraft, original,
 }) =>
@@ -21,18 +28,30 @@ const draftSelector = (state, {
   });
 
 const messageCollectionStateSelector = createMessageCollectionStateSelector(() => 'discussion', internalIdSelector);
+const sentMessagesSelector = createSelector(
+  [messageCollectionStateSelector],
+  ({ messages }) => messages.filter(item => item.is_draft !== true)
+);
+const parentMessageSelector = createSelector([
+  draftSelector, sentMessagesSelector,
+], ({ draftMessage }, sentMessages) => draftMessage && sentMessages
+  .find(item => item.message_id === draftMessage.parent_id));
+
+const availableIdentitiesSelector = createSelector([
+  identitiesSelector, userSelector, contactsSelector, parentMessageSelector,
+], (identities, user, contacts, parentMessage) => filterIdentities({
+  identities, user, contacts, parentMessage,
+}));
 
 const mapStateToProps = createSelector(
   [
-    draftSelector, messageCollectionStateSelector, internalIdSelector,
+    draftSelector, messageCollectionStateSelector, internalIdSelector, availableIdentitiesSelector,
+    parentMessageSelector, sentMessagesSelector,
   ],
   ({
     draftMessage, isRequestingDraft, isDeletingDraft, original,
-  }, { messages }, internalId) => {
-    const sentMessages = messages.filter(item => item.is_draft !== true);
+  }, { messages }, internalId, availableIdentities, parentMessage, sentMessages) => {
     const lastMessage = getLastMessage(sentMessages);
-    const parentMessage = draftMessage && sentMessages
-      .find(item => item.message_id === draftMessage.parent_id && item !== lastMessage);
 
     return {
       draftMessage,
@@ -40,8 +59,9 @@ const mapStateToProps = createSelector(
       isDeletingDraft,
       canEditRecipients: messages.length === 0 || (messages.length === 1 && original && true),
       original,
-      parentMessage,
+      parentMessage: parentMessage !== lastMessage ? parentMessage : undefined,
       internalId,
+      availableIdentities,
     };
   }
 );
@@ -138,5 +158,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 export default compose(...[
   withDraftMessage(),
   withCurrentInternalId(),
+  withIdentities(),
+  withContacts(),
   connect(mapStateToProps, mapDispatchToProps),
 ])(Presenter);

@@ -9,7 +9,6 @@ import RecipientList from '../RecipientList';
 import AttachmentManager from '../AttachmentManager';
 import IdentitySelector from '../IdentitySelector';
 import { getRecipients } from '../../../../services/message/';
-import { withIdentities } from '../../../identity';
 import { withNotification } from '../../../userNotify';
 
 import './draft-message-quick.scss';
@@ -18,14 +17,13 @@ import './toggle-advanced-draft-button.scss';
 
 @withI18n()
 @withNotification()
-@withIdentities()
 @withScrollTarget()
 class DraftMessage extends Component {
   static propTypes = {
     className: PropTypes.string,
     isReply: PropTypes.bool,
     i18n: PropTypes.shape({}).isRequired,
-    identities: PropTypes.arrayOf(PropTypes.shape({})),
+    availableIdentities: PropTypes.arrayOf(PropTypes.shape({})),
     scrollTarget: PropTypes.shape({ forwardRef: PropTypes.func }).isRequired,
     internalId: PropTypes.string.isRequired,
     draftMessage: PropTypes.shape({
@@ -47,7 +45,7 @@ class DraftMessage extends Component {
   };
   static defaultProps = {
     className: undefined,
-    identities: [],
+    availableIdentities: [],
     isReply: false,
     draftMessage: undefined,
     original: undefined,
@@ -80,7 +78,7 @@ class DraftMessage extends Component {
   }
 
   static getDraftFromState(state, props) {
-    // const identity = props.identities
+    // const identity = props.availableIdentities
     //   .find(ident => ident.identity_id === state.draftMessage.identityId);
 
     return {
@@ -134,10 +132,11 @@ class DraftMessage extends Component {
   }
 
   getQuickInputPlaceholder = () => {
-    const { i18n, draftMessage, identities } = this.props;
+    const { i18n, draftMessage, availableIdentities } = this.props;
 
     const [identityId] = draftMessage.user_identities;
-    const { identifier } = identities.find(identity => identity.identity_id === identityId);
+    const { identifier } = availableIdentities
+      .find(identity => identity.identity_id === identityId);
 
     const recipientsList = this.getRecipientList();
 
@@ -322,8 +321,8 @@ class DraftMessage extends Component {
     const { canEditRecipients } = this.props;
 
     if (canEditRecipients) {
-      const { internalId, identities } = this.props;
-      const identity = identities
+      const { internalId, availableIdentities } = this.props;
+      const identity = availableIdentities
         .find(ident => ident.identity_id === this.state.draftMessage.identityId);
 
       return (
@@ -380,8 +379,8 @@ class DraftMessage extends Component {
 
   renderAdvanced() {
     const {
-      className, draftMessage, parentMessage, original, draftFormRef, isReply, identities, onFocus,
-      scrollTarget: { forwardRef },
+      className, draftMessage, parentMessage, original, draftFormRef, isReply, availableIdentities,
+      onFocus, scrollTarget: { forwardRef },
     } = this.props;
 
     const isSubjectSupported = ({ draft }) => {
@@ -389,7 +388,8 @@ class DraftMessage extends Component {
         return false;
       }
 
-      const currIdentity = identities.find(ident => ident.identity_id === draft.identityId);
+      const currIdentity = availableIdentities
+        .find(ident => ident.identity_id === draft.identityId);
 
       if (!currIdentity) {
         return false;
@@ -412,7 +412,7 @@ class DraftMessage extends Component {
         <div className="m-draft-message-advanced__container">
           <IdentitySelector
             className="m-draft-message-advanced__identity"
-            identities={identities}
+            identities={availableIdentities}
             identityId={this.state.draftMessage.identityId}
             onChange={this.handleIdentityChange}
           />
