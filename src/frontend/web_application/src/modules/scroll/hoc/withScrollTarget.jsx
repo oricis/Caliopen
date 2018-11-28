@@ -41,8 +41,6 @@ export const withScrollTarget = ({ namespace = 'scrollTarget' } = {}) => (Compon
         },
       };
 
-      console.log({ injected });
-
       return (<Component {...injected} {...this.props} />);
     }
   }
