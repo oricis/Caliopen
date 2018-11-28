@@ -1,13 +1,20 @@
-import { getLocalIdentities } from '../../identity';
+import { getDefaultIdentity } from '../../identity';
+import { getMessage } from '../../message';
 import { createDraft } from '../../../store/modules/draft-message';
 
 export const newDraft = ({ internalId, draft }) =>
   async (dispatch) => {
-    // TODO: let the form decides which identity to use
-    const localIdentities = await dispatch(getLocalIdentities());
+    const parentMessage = draft.parent_id ?
+      await dispatch(getMessage({ messageId: draft.parent_id })) :
+      undefined;
+    const localIdentity = await dispatch(getDefaultIdentity({ parentMessage }));
     const nextDraft = {
       ...draft,
-      user_identities: localIdentities.map((identity => identity.identity_id)),
+      user_identities: [
+        ...(localIdentity ? [localIdentity.identity_id] : []),
+      ],
+      // FIXME: cf. #1111
+      // protocol: localIdentity && localIdentity.protocol,
     };
 
     dispatch(createDraft({

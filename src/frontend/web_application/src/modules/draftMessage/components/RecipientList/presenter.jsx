@@ -295,7 +295,7 @@ class RecipientList extends Component {
         role="presentation"
         className={classnames('m-recipient-list', className)}
       >
-        { !recipients.length && (
+        {!recipients.length && (
           <span className="m-recipient-list__placeholder">
             <Trans id="messages.compose.form.to.label">To</Trans>
           </span>

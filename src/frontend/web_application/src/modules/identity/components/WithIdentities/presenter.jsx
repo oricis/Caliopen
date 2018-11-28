@@ -6,34 +6,30 @@ class WithIdentities extends Component {
     render: PropTypes.func.isRequired,
     remoteIdentities: PropTypes.arrayOf(PropTypes.shape({})),
     remoteIsFetching: PropTypes.bool,
-    remotedidInvalidated: PropTypes.bool,
-    requestRemoteIdentities: PropTypes.func.isRequired,
+    getRemoteIdentities: PropTypes.func.isRequired,
     localIdentities: PropTypes.arrayOf(PropTypes.shape({})),
     localIsFetching: PropTypes.bool,
-    localdidInvalidated: PropTypes.bool,
-    requestLocalIdentities: PropTypes.func.isRequired,
+    getLocalIdentities: PropTypes.func.isRequired,
   };
   static defaultProps = {
     remoteIdentities: undefined,
     localIdentities: undefined,
     remoteIsFetching: false,
     localIsFetching: false,
-    remotedidInvalidated: false,
-    localdidInvalidated: false,
   };
 
   componentDidMount() {
     const {
-      remoteIdentities, remoteIsFetching, remotedidInvalidated, requestRemoteIdentities,
-      localIdentities, localIsFetching, localdidInvalidated, requestLocalIdentities,
+      remoteIsFetching, getRemoteIdentities,
+      localIsFetching, getLocalIdentities,
     } = this.props;
 
-    if ((remoteIdentities.length === 0 || remotedidInvalidated) && !remoteIsFetching) {
-      requestRemoteIdentities();
+    if (!remoteIsFetching) {
+      getRemoteIdentities();
     }
 
-    if ((localIdentities.length === 0 || localdidInvalidated) && !localIsFetching) {
-      requestLocalIdentities();
+    if (!localIsFetching) {
+      getLocalIdentities();
     }
   }
 

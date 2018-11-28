@@ -31,26 +31,55 @@ jest.mock('../../message', () => {
         case '02':
           return Promise.resolve({
             message_id: 'last-msg',
-            discussion_id: '01',
+            discussion_id: '02',
             subject: 'Parent msg subject',
             is_draft: false,
+            type: 'email',
+          });
+        case '03':
+          return Promise.resolve({
+            message_id: 'twitter-msg',
+            discussion_id: '03',
+            is_draft: false,
+            type: 'twitter',
           });
         default:
           return Promise.resolve(undefined);
       }
     },
+    getMessage: ({ messageId }) => (dispatch) => {
+      dispatch({ type: 'getMessage', payload: { messageId } });
+
+      switch (messageId) {
+        case 'twitter-msg':
+          return {
+            message_id: messageId,
+            type: 'twitter',
+          };
+        default:
+          return undefined;
+      }
+    },
   };
 });
 jest.mock('../../identity', () => ({
-  getLocalIdentities: () => (dispatch) => {
-    dispatch({ type: 'getLocalIdentities', payload: { } });
+  getDefaultIdentity: ({ parentMessage } = {}) => (dispatch) => {
+    dispatch({ type: 'getDefaultIdentity', payload: { parentMessage } });
 
-    return Promise.resolve([]);
+    if (!!parentMessage && parentMessage.type === 'twitter') {
+      return Promise.resolve({
+        identity_id: 'ident-twitter',
+      });
+    }
+
+    return Promise.resolve({
+      identity_id: 'ident-default-mail',
+    });
   },
 }));
 
 describe('modules draftMessage - actions - requestDraft', () => {
-  it('creates a new draft for a new discussion', async () => {
+  describe('new discussion', () => {
     const store = mockStore({
       message: {
         messagesById: {},
@@ -63,110 +92,157 @@ describe('modules draftMessage - actions - requestDraft', () => {
     const draft = {
       body: '',
       subject: '',
-      user_identities: [],
+      user_identities: expect.anything(),
       message_id: expect.anything(),
     };
 
-    const expectedActions = [
-      requestDraftBase({ internalId: 'unknown' }),
-      { type: 'getLocalIdentities', payload: { } },
-      createDraft({ internalId: 'unknown', draft }),
-      requestDraftSuccess({
-        internalId: 'unknown',
-        draft,
-      }),
-    ];
-    const action = requestDraft({ internalId: 'unknown', hasDiscussion: false });
+    it('creates a new draft', async () => {
+      const expectedActions = [
+        requestDraftBase({ internalId: 'unknown' }),
+        { type: 'getDefaultIdentity', payload: { } },
+        createDraft({ internalId: 'unknown', draft }),
+        requestDraftSuccess({
+          internalId: 'unknown',
+          draft,
+        }),
+      ];
+      const action = requestDraft({ internalId: 'unknown', hasDiscussion: false });
 
-    const result = await store.dispatch(action);
-    expect(result).toEqual(draft);
-    expect(store.getActions()).toEqual(expectedActions);
+      const result = await store.dispatch(action);
+      expect(result).toEqual(draft);
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+
+    it('has default identity', async () => {
+      const action = requestDraft({ internalId: 'unknown', hasDiscussion: false });
+
+      const result = await store.dispatch(action);
+      expect(result.user_identities).toEqual(['ident-default-mail']);
+    });
   });
 
-  it('creates a new draft for an existing discussion', async () => {
-    const store = mockStore({
-      message: {
-        messagesById: {},
-      },
-      draftMessage: {
-        draftsByInternalId: {
+  describe('existing discussion', () => {
+    it('creates a new draft', async () => {
+      const store = mockStore({
+        message: {
+          messagesById: {},
         },
-      },
-    });
-    const draft = {
-      discussion_id: '02',
-      body: '',
-      user_identities: [],
-      parent_id: 'last-msg',
-      subject: 'Parent msg subject',
-      message_id: expect.anything(),
-    };
-
-    const expectedActions = [
-      requestDraftBase({ internalId: '02' }),
-      { type: 'getDraft', payload: { discussionId: '02' } },
-      { type: 'getLastMessage', payload: { discussionId: '02' } },
-      { type: 'getLocalIdentities', payload: { } },
-      createDraft({ internalId: '02', draft }),
-      requestDraftSuccess({ internalId: '02', draft }),
-    ];
-    const action = requestDraft({ internalId: '02', hasDiscussion: true });
-
-    const result = await store.dispatch(action);
-    expect(result).toEqual(draft);
-    expect(store.getActions()).toEqual(expectedActions);
-  });
-
-  it('uses store', async () => {
-    const draft = {
-      message_id: 'bar',
-      discussion_id: 'foo',
-      is_draft: true,
-    };
-
-    const store = mockStore({
-      message: {
-        messagesById: {},
-      },
-      draftMessage: {
-        draftsByInternalId: {
-          foo: draft,
+        draftMessage: {
+          draftsByInternalId: {
+          },
         },
-      },
+      });
+      const draft = {
+        discussion_id: '02',
+        body: '',
+        user_identities: expect.anything(),
+        parent_id: 'last-msg',
+        subject: 'Parent msg subject',
+        message_id: expect.anything(),
+      };
+
+      const expectedActions = [
+        requestDraftBase({ internalId: '02' }),
+        { type: 'getDraft', payload: { discussionId: '02' } },
+        { type: 'getLastMessage', payload: { discussionId: '02' } },
+        { type: 'getMessage', payload: { messageId: draft.parent_id } },
+        { type: 'getDefaultIdentity', payload: { } },
+        createDraft({ internalId: '02', draft }),
+        requestDraftSuccess({ internalId: '02', draft }),
+      ];
+      const action = requestDraft({ internalId: '02', hasDiscussion: true });
+
+      const result = await store.dispatch(action);
+      expect(result).toEqual(draft);
+      expect(store.getActions()).toEqual(expectedActions);
     });
 
-    const expectedActions = [];
-    const action = requestDraft({ internalId: 'foo', hasDiscussion: true });
+    it('new twitter draft', async () => {
+      const store = mockStore({
+        message: {
+          messagesById: {},
+        },
+        draftMessage: {
+          draftsByInternalId: {
+          },
+        },
+      });
+      const draft = {
+        discussion_id: '03',
+        body: '',
+        subject: '',
+        user_identities: ['ident-twitter'],
+        parent_id: 'twitter-msg',
+        message_id: expect.anything(),
+      };
 
-    const result = await store.dispatch(action);
-    expect(result).toEqual(draft);
-    expect(store.getActions()).toEqual(expectedActions);
-  });
+      const expectedActions = [
+        requestDraftBase({ internalId: '03' }),
+        { type: 'getDraft', payload: { discussionId: '03' } },
+        { type: 'getLastMessage', payload: { discussionId: '03' } },
+        { type: 'getMessage', payload: { messageId: draft.parent_id } },
+        { type: 'getDefaultIdentity', payload: { parentMessage: { message_id: 'twitter-msg', type: 'twitter' } } },
+        createDraft({ internalId: '03', draft }),
+        requestDraftSuccess({ internalId: '03', draft }),
+      ];
+      const action = requestDraft({ internalId: '03', hasDiscussion: true });
 
-  it('fetch discussion with a result', async () => {
-    const draft = {
-      message_id: 'bar',
-      discussion_id: '01',
-      is_draft: true,
-    };
-    const store = mockStore({
-      message: {
-        messagesById: {},
-      },
-      draftMessage: {
-        draftsByInternalId: {},
-      },
+      const result = await store.dispatch(action);
+      expect(result).toEqual(draft);
+      expect(store.getActions()).toEqual(expectedActions);
     });
 
-    const expectedActions = [
-      requestDraftBase({ internalId: '01' }),
-      { type: 'getDraft', payload: { discussionId: '01' } },
-      requestDraftSuccess({ internalId: '01', draft }),
-    ];
-    const action = requestDraft({ internalId: '01', hasDiscussion: true });
+    it('uses store', async () => {
+      const draft = {
+        message_id: 'bar',
+        discussion_id: 'foo',
+        is_draft: true,
+      };
 
-    const result = await store.dispatch(action);
-    expect(result).toEqual(draft);
-    expect(store.getActions()).toEqual(expectedActions);
+      const store = mockStore({
+        message: {
+          messagesById: {},
+        },
+        draftMessage: {
+          draftsByInternalId: {
+            foo: draft,
+          },
+        },
+      });
+
+      const expectedActions = [];
+      const action = requestDraft({ internalId: 'foo', hasDiscussion: true });
+
+      const result = await store.dispatch(action);
+      expect(result).toEqual(draft);
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+
+    it('fetch discussion with a result', async () => {
+      const draft = {
+        message_id: 'bar',
+        discussion_id: '01',
+        is_draft: true,
+      };
+      const store = mockStore({
+        message: {
+          messagesById: {},
+        },
+        draftMessage: {
+          draftsByInternalId: {},
+        },
+      });
+
+      const expectedActions = [
+        requestDraftBase({ internalId: '01' }),
+        { type: 'getDraft', payload: { discussionId: '01' } },
+        requestDraftSuccess({ internalId: '01', draft }),
+      ];
+      const action = requestDraft({ internalId: '01', hasDiscussion: true });
+
+      const result = await store.dispatch(action);
+      expect(result).toEqual(draft);
+      expect(store.getActions()).toEqual(expectedActions);
+    });
   });
 });

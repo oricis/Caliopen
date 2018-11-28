@@ -80,12 +80,17 @@ class DraftMessage extends Component {
   }
 
   static getDraftFromState(state, props) {
+    // const identity = props.identities
+    //   .find(ident => ident.identity_id === state.draftMessage.identityId);
+
     return {
       ...props.draftMessage,
       body: state.draftMessage.body,
       subject: state.draftMessage.subject,
       user_identities: [state.draftMessage.identityId],
       participants: state.draftMessage.recipients,
+      // FIXME: cf. #1111
+      // protocol: identity && identity.protocol,
     };
   }
 
@@ -110,14 +115,38 @@ class DraftMessage extends Component {
     }
   }
 
+  getRecipientList = () => {
+    const { draftMessage } = this.props;
+
+    // participants may not be present when the draft is new, it is the responsibility of the
+    // backend to calculate what will be the participants for a reply
+    if (!draftMessage || !draftMessage.participants) {
+      return null;
+    }
+
+    const recipients = getRecipients(draftMessage);
+
+    if (recipients.length > 3) {
+      return recipients.map(recipient => recipient.identifier).join(', ').concat('...');
+    }
+
+    return recipients.map(recipient => recipient.identifier).join(', ');
+  }
+
   getQuickInputPlaceholder = () => {
-    const { i18n, draftMessage } = this.props;
-    const recipients = ['foobar'];
-    const protocol = 'mail';
-    const recipientsList = recipients.join(', ');
+    const { i18n, draftMessage, identities } = this.props;
+
+    const [identityId] = draftMessage.user_identities;
+    const { identifier } = identities.find(identity => identity.identity_id === identityId);
+
+    const recipientsList = this.getRecipientList();
+
+    if (draftMessage && draftMessage.discussion_id && recipientsList) {
+      return i18n._('draft-message.form.placeholder.quick-reply', { recipients: recipientsList, protocol: identifier }, { defaults: 'Quick reply to {recipients} from {protocol}' });
+    }
 
     if (draftMessage && draftMessage.discussion_id) {
-      return i18n._('draft-message.form.placeholder.quick-reply', { recipients: recipientsList, protocol }, { defaults: 'Quick reply to {recipients} by {protocol}' });
+      return i18n._('draft-message.form.placeholder.quick-reply-no-recipients', { identifier }, { defaults: 'Quick reply from {identifier}' });
     }
 
     return i18n._('draft-message.form.placeholder.quick-start', null, { defaults: 'Start a new discussion' });
