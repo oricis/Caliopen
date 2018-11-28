@@ -108,7 +108,7 @@ class UserMessageQualifier(object):
         new_message.body_plain = message.body_plain
         new_message.date = message.date
         new_message.size = message.size
-        new_message.type = message.message_type
+        new_message.protocol = message.message_protocol
         new_message.is_unread = True
         new_message.is_draft = False
         new_message.is_answered = False

@@ -84,7 +84,7 @@ class Message(ObjectIndexable):
         'raw_msg_id': UUID,
         'subject': types.StringType,
         'tags': [types.StringType],
-        'type': types.StringType,
+        'protocol': types.StringType,
         'user_id': UUID,
         'user_identities': [UUID],
     }

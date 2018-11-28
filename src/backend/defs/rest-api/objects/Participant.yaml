@@ -9,7 +9,7 @@ properties:
       type: string
   label:              # 'display-name' for email ; 'real name' for IRC
     type: string
-  protocol:           # email, IRC…
+  protocol:           # email, twitter…
     type: string
   type:               # for now, enum is RFC5322's field types for emails.
     type: string
