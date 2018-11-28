@@ -115,6 +115,10 @@ class Draft(NewInboundMessage):
         from_participant.type = "From"
         from_participant.contact_ids = [user.contact.contact_id]
         self.participants.append(from_participant)
+
+        # set message's protocol to sender's one
+        self.protocol = from_participant.protocol
+
         return from_participant
 
     def _check_discussion_consistency(self, user):
