@@ -20,7 +20,7 @@ class AuthenticatedLayout extends Component {
     settings: undefined,
   };
   state = {
-    initialized: false,
+    initialized: !!this.props.user && !!this.props.settings && !this.props.isFetching,
   };
 
   componentDidUpdate(prevProps, prevState) {
