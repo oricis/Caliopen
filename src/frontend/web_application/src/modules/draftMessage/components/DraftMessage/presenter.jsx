@@ -38,6 +38,7 @@ class DraftMessage extends Component {
     // useful for invalidate discussion collection messages
     onSent: PropTypes.func,
     onDeleteMessage: PropTypes.func.isRequired,
+    onDeleteMessageSuccessfull: PropTypes.func,
     onUploadAttachments: PropTypes.func.isRequired,
     onDeleteAttachement: PropTypes.func.isRequired,
     draftFormRef: PropTypes.func,
@@ -54,6 +55,7 @@ class DraftMessage extends Component {
     draftFormRef: () => {},
     onFocus: () => {},
     onSent: () => {},
+    onDeleteMessageSuccessfull: () => {},
   };
 
   static genererateStateFromProps(props, prevState) {
@@ -223,12 +225,13 @@ class DraftMessage extends Component {
     this.setState({ isSending: false });
   }
 
-  handleDelete = () => {
+  handleDelete = async () => {
     const {
-      original, internalId, onDeleteMessage,
+      original, internalId, onDeleteMessage, onDeleteMessageSuccessfull,
     } = this.props;
 
-    onDeleteMessage({ message: original, internalId });
+    await onDeleteMessage({ message: original, internalId });
+    onDeleteMessageSuccessfull();
   }
 
   // @deprecated: edit tags button has been removed
