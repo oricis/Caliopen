@@ -406,5 +406,8 @@ services:
   sauce-connect:
     image: joscha/docker-sauce-connect
     secrets: [ SAUCE_USERNAME , SAUCE_ACCESS_KEY ]
+    when:
+      branch: [ develop, master ]
+      event: [ pull_request ]
     commands:
       - sc -u $${SAUCE_USERNAME} -k $${SAUCE_ACCESS_KEY} -i caliopen
