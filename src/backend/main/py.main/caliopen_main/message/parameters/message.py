@@ -41,7 +41,7 @@ class NewMessage(Model):
     raw_msg_id = UUIDType()
     subject = StringType()
     tags = ListType(StringType(), default=lambda: [])
-    protocol = StringType(choices=MESSAGE_PROTOCOLS)
+    protocol = StringType(choices=MESSAGE_PROTOCOLS, required=False)
     user_identities = ListType(UUIDType(), default=lambda: [])
 
     class Options:
