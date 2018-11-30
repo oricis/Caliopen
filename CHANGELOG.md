@@ -6,6 +6,33 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.13.0] 2018-11-30
+
+### Added
+
+- API to manage cryptographic public keys related to a contact 
+- API to list known remote identity providers 
+- Create remote identity for gmail and twitter using Oauth mechanisms 
+- A new worker to fetch twitter direct messages 
+- Support touch scroll on navigation tabs
+- Manage public keys of a contact
+- App loader splash screen
+
+### Changed
+
+- Brand new UI
+- Message Timeline replaced by Discussion Timeline
+- IM address for a contact is more permisive
+
+### Removed
+
+- Sidescreen on small screen
+- In discussion messages grouped by date
+
+### Fixed
+
+- Translation of new device screen in English
+
 ## [0.12.3] 2018-10-26
 
 ### Fixed
