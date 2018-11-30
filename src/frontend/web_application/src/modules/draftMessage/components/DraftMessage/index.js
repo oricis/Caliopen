@@ -18,7 +18,9 @@ import { filterIdentities } from '../../services/filterIdentities';
 import Presenter from './presenter';
 
 const internalIdSelector = (state, ownProps) => ownProps.internalId;
-const identitiesSelector = (state, ownProps) => ownProps.identities;
+const identityStateSelector = (state, { identHoc: { identities, isFetching } }) => ({
+  identities, isFetching,
+});
 const contactsSelector = (state, ownProps) => ownProps.contacts;
 const draftSelector = (state, {
   draftMessage, isRequestingDraft, isDeletingDraft, original,
@@ -38,33 +40,34 @@ const parentMessageSelector = createSelector([
   .find(item => item.message_id === draftMessage.parent_id));
 
 const availableIdentitiesSelector = createSelector([
-  identitiesSelector, userSelector, contactsSelector, parentMessageSelector,
-], (identities, user, contacts, parentMessage) => filterIdentities({
+  identityStateSelector, userSelector, contactsSelector, parentMessageSelector,
+], ({ identities }, user, contacts, parentMessage) => filterIdentities({
   identities, user, contacts, parentMessage,
 }));
 
-const mapStateToProps = createSelector(
-  [
-    draftSelector, messageCollectionStateSelector, internalIdSelector, availableIdentitiesSelector,
-    parentMessageSelector, sentMessagesSelector,
-  ],
-  ({
+const mapStateToProps = createSelector([
+  draftSelector, messageCollectionStateSelector, internalIdSelector, availableIdentitiesSelector,
+  parentMessageSelector, sentMessagesSelector, identityStateSelector,
+], (
+  {
     draftMessage, isRequestingDraft, isDeletingDraft, original,
-  }, { messages }, internalId, availableIdentities, parentMessage, sentMessages) => {
-    const lastMessage = getLastMessage(sentMessages);
+  }, { messages }, internalId, availableIdentities, parentMessage, sentMessages,
+  { isFetching: isIdentitiesFetching }
+) => {
+  const lastMessage = getLastMessage(sentMessages);
 
-    return {
-      draftMessage,
-      isRequestingDraft,
-      isDeletingDraft,
-      canEditRecipients: messages.length === 0 || (messages.length === 1 && original && true),
-      original,
-      parentMessage: parentMessage !== lastMessage ? parentMessage : undefined,
-      internalId,
-      availableIdentities,
-    };
-  }
-);
+  return {
+    draftMessage,
+    isFetching: isRequestingDraft || isIdentitiesFetching,
+    isDeletingDraft,
+    canEditRecipients: messages.length === 0 || (messages.length === 1 && original && true),
+    original,
+    parentMessage: parentMessage !== lastMessage ? parentMessage : undefined,
+    internalId,
+    availableIdentities,
+    isReply: parentMessage && true,
+  };
+});
 
 const onEditDraft = ({ internalId, draft, message }) => dispatch =>
   dispatch(saveDraft({ internalId, draft, message }, { withThrottle: true }));
@@ -158,7 +161,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 export default compose(...[
   withDraftMessage(),
   withCurrentInternalId(),
-  withIdentities(),
+  withIdentities({ namespace: 'identHoc' }),
   withContacts(),
   connect(mapStateToProps, mapDispatchToProps),
 ])(Presenter);

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withI18n } from '@lingui/react';
 import { Trans } from '@lingui/macro'; // eslint-disable-line import/no-extraneous-dependencies
-import { Button, Icon, InputText, TextareaFieldGroup, TextFieldGroup, Link, Confirm } from '../../../../components';
+import { Button, Icon, InputText, TextareaFieldGroup, TextFieldGroup, Link, Confirm, PlaceholderBlock, Callout } from '../../../../components';
 import { withScrollTarget } from '../../../scroll';
 import RecipientList from '../RecipientList';
 import AttachmentManager from '../AttachmentManager';
@@ -13,6 +13,7 @@ import { withNotification } from '../../../userNotify';
 
 import './draft-message-quick.scss';
 import './draft-message-advanced.scss';
+import './draft-message-placeholder.scss';
 import './toggle-advanced-draft-button.scss';
 
 @withI18n()
@@ -43,6 +44,7 @@ class DraftMessage extends Component {
     onDeleteAttachement: PropTypes.func.isRequired,
     draftFormRef: PropTypes.func,
     onFocus: PropTypes.func,
+    isFetching: PropTypes.bool,
   };
   static defaultProps = {
     className: undefined,
@@ -56,24 +58,31 @@ class DraftMessage extends Component {
     onFocus: () => {},
     onSent: () => {},
     onDeleteMessageSuccessfull: () => {},
+    isFetching: true,
   };
 
   static genererateStateFromProps(props, prevState) {
-    const { draftMessage, isReply } = props;
+    const {
+      draftMessage, isReply, availableIdentities, isFetching,
+    } = props;
 
     if (!draftMessage) {
       return prevState;
     }
 
     const recipients = getRecipients(draftMessage);
+    const identityId = draftMessage.user_identities[0] || '';
+
+    const currIdentity = availableIdentities.find(identity => identity.identity_id === identityId);
 
     return {
-      advancedForm: !isReply,
+      initialized: !isFetching,
+      advancedForm: !isReply || !currIdentity,
       draftMessage: {
         ...prevState.draftMessage,
         body: draftMessage.body,
         subject: draftMessage.subject,
-        identityId: draftMessage.user_identities[0],
+        identityId,
         recipients,
       },
     };
@@ -107,9 +116,16 @@ class DraftMessage extends Component {
   state = this.constructor.genererateStateFromProps(this.props, this.constructor.initialState);
 
   componentDidUpdate(prevProps) {
-    if (!prevProps.draftMessage && !!this.props.draftMessage) {
-      // dangerous if latency made the user already start to fill the draft
-      // TODO: refactor with placeholder blocks
+    const propNames = ['draftMessage', 'isReply', 'availableIdentities', 'isFetching'];
+    const hasChanged = propNames.reduce((acc, propName) => {
+      if (acc) {
+        return true;
+      }
+
+      return this.props[propName] !== prevProps[propName];
+    }, false);
+
+    if (!this.state.initialized && hasChanged) {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState(prevState => this.constructor.genererateStateFromProps(this.props, prevState));
     }
@@ -138,15 +154,15 @@ class DraftMessage extends Component {
 
     const [identityId] = draftMessage.user_identities;
     const { identifier } = availableIdentities
-      .find(identity => identity.identity_id === identityId);
+      .find(identity => identity.identity_id === identityId) || {};
 
     const recipientsList = this.getRecipientList();
 
-    if (draftMessage && draftMessage.discussion_id && recipientsList) {
+    if (draftMessage && draftMessage.discussion_id && recipientsList && identifier) {
       return i18n._('draft-message.form.placeholder.quick-reply', { recipients: recipientsList, protocol: identifier }, { defaults: 'Quick reply to {recipients} from {protocol}' });
     }
 
-    if (draftMessage && draftMessage.discussion_id) {
+    if (draftMessage && draftMessage.discussion_id && identifier) {
       return i18n._('draft-message.form.placeholder.quick-reply-no-recipients', { identifier }, { defaults: 'Quick reply from {identifier}' });
     }
 
@@ -300,6 +316,23 @@ class DraftMessage extends Component {
         message: original,
       });
     });
+  }
+
+  renderPlaceholder() {
+    const {
+      className, draftFormRef, scrollTarget: { forwardRef },
+    } = this.props;
+
+    const ref = (el) => {
+      draftFormRef(el);
+      forwardRef(el);
+    };
+
+    return (
+      <div ref={ref}>
+        <PlaceholderBlock className={classnames(className, 'm-draft-message-placeholder')} />
+      </div>
+    );
   }
 
   renderToggleAdvancedButton() {
@@ -485,6 +518,29 @@ class DraftMessage extends Component {
   }
 
   render() {
+    if (!this.state.initialized) {
+      return this.renderPlaceholder();
+    }
+
+    const {
+      availableIdentities, className, draftFormRef, scrollTarget: { forwardRef },
+    } = this.props;
+
+    if (availableIdentities.length === 0) {
+      const ref = (el) => {
+        draftFormRef(el);
+        forwardRef(el);
+      };
+
+      return (
+        <div className={classnames(className)} ref={ref} >
+          <Callout color="info">
+            <Trans id="draft-message.no-available-identities">You have no available identities for this discussion. You can add one in your <Link to="/settings/identities">settings</Link></Trans>
+          </Callout>
+        </div>
+      );
+    }
+
     return this.state.advancedForm ? this.renderAdvanced() : this.renderQuick();
   }
 }

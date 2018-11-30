@@ -298,8 +298,7 @@ class Discussion extends Component {
             onFocus={this.handleFocusDraft}
             onSent={this.handleMessageSent}
             draftFormRef={(node) => { this.replyFormRef = node; }}
-            hasDiscussion
-            isReply={messages.length > 0}
+            hasDiscussion // mandatory for withDraftMessage HoC!
           />
         </div>
         <div className={classnames('s-discussion__reply-excerpt', { 's-discussion__reply-excerpt--close': this.state.isDraftFocus })}>

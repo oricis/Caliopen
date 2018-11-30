@@ -1,11 +1,13 @@
 import React from 'react';
 import WithIdentities from '../components/WithIdentities';
 
-export const withIdentities = () => (WrappedComp) => {
+export const withIdentities = ({ namespace } = {}) => (WrappedComp) => {
   const C = props => (
     <WithIdentities
       render={({ identities, isFetching }) => {
-        const localProps = { identities, isFetching };
+        const localProps = namespace ?
+          { [namespace]: { identities, isFetching } } :
+          { identities, isFetching };
 
         return (
           <WrappedComp {...localProps} {...props} />
