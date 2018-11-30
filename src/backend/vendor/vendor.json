@@ -1033,6 +1033,12 @@
 			"revisionTime": "2018-09-10T22:10:05Z"
 		},
 		{
+			"checksumSHA1": "Qyhes/zuLDRC41nI/ko3IyHw8a8=",
+			"path": "golang.org/x/oauth2/jwt",
+			"revision": "28207608b83849a028d4f12e46533a6b6894ecaf",
+			"revisionTime": "2018-11-28T21:13:12Z"
+		},
+		{
 			"checksumSHA1": "REkmyB368pIiip76LiqMLspgCRk=",
 			"path": "golang.org/x/sys/cpu",
 			"revision": "1561086e645b2809fb9f8a1e2a38160bf8d53bf4",
