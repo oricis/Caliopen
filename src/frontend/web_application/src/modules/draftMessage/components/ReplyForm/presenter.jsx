@@ -83,7 +83,7 @@ class ReplyForm extends Component {
     const typeTranslations = {
       email: i18n._('reply-form.protocol.email', null, { defaults: 'email' }),
     };
-    const draftType = typeTranslations[this.state.draft.type];
+    const draftType = typeTranslations[this.state.draft.protocol];
 
     return (
       <div className="m-reply__type">
@@ -91,7 +91,7 @@ class ReplyForm extends Component {
           <Trans id="reply-form.by">by {draftType}</Trans>
         </span>
         {' '}
-        <Icon className="m-reply__type-icon" type={this.state.draft.type} spaced />
+        <Icon className="m-reply__type-icon" type={this.state.draft.protocol} spaced />
         {' '}
         <Icon type="angle-down" spaced />
       </div>
@@ -105,8 +105,13 @@ class ReplyForm extends Component {
     } = this.props;
     const dropdownId = uuidV1();
     const excerpt = parentMessage && parentMessage.excerpt;
+    const isMail = message => !message.protocol || message.protocol === 'email';
 
-    if ((!parentMessage && !lastMessage) || (parentMessage && parentMessage.type === 'email') || (lastMessage && lastMessage.type === 'email')) {
+    if (
+      (!parentMessage && !lastMessage) ||
+      (parentMessage && isMail(parentMessage)) ||
+      (lastMessage && isMail(lastMessage))
+    ) {
       return (
         <DiscussionDraft className="m-reply" draftFormRef={draftFormRef}>
           <div className="m-reply__avatar-col">
@@ -119,7 +124,7 @@ class ReplyForm extends Component {
             <TopRow className="m-reply__top-bar">
               <div className="m-reply__top-bar-info">
                 <div className="m-reply__author"><Trans id="reply-form.you">You</Trans></div>
-                {this.state.draft.type && this.renderDraftType()}
+                {this.state.draft.protocol && this.renderDraftType()}
                 <div className="m-reply__date"><Trans id="reply-form.now">Now</Trans></div>
               </div>
 
