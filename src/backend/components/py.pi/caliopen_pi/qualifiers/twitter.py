@@ -92,7 +92,7 @@ class UserDMQualifier(object):
         new_message.raw_msg_id = raw.raw_msg_id
         new_message.body_plain = message.body_plain
         new_message.date = message.date
-        new_message.type = message.type
+        new_message.protocol = message.protocol
         new_message.is_unread = True
         new_message.is_draft = False
         new_message.is_answered = False

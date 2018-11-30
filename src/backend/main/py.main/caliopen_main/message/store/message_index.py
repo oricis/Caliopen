@@ -41,7 +41,7 @@ class IndexedMessage(BaseIndexDocument):
     raw_msg_id = Keyword()
     subject = Text()
     tags = Keyword(multi=True)
-    type = Keyword()
+    protocol = Keyword()
     user_identities = Keyword(multi=True)
 
     @property
@@ -129,7 +129,7 @@ class IndexedMessage(BaseIndexDocument):
 
         m.field('subject', 'text')
         m.field('tags', Keyword(multi=True))
-        m.field('type', 'keyword')
+        m.field('protocol', 'keyword')
         m.field('user_identities', Keyword(multi=True))
 
         return m

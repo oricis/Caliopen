@@ -68,7 +68,7 @@ func (notif *Notifier) SendEmailAdminToUser(user *User, email *Message) error {
 	(*email).Discussion_id.UnmarshalBinary(uuid.NewV4().Bytes())
 	(*email).Is_draft = true
 	(*email).Participants = []Participant{sender, recipient}
-	(*email).Type = EmailProtocol
+	(*email).Protocol = EmailProtocol
 	(*email).User_id = notif.admin.UserId
 
 	// save & index message

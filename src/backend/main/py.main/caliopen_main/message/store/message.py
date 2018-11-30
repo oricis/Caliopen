@@ -45,5 +45,5 @@ class Message(BaseModel, IndexedModelMixin):
     raw_msg_id = columns.UUID()
     subject = columns.Text()  # Subject of email, the message for short
     tags = columns.List(columns.Text(), db_field="tagnames")
-    type = columns.Text()
+    protocol = columns.Text()
     user_identities = columns.List(columns.UUID)

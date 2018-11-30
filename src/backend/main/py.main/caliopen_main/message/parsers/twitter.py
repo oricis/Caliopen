@@ -8,8 +8,7 @@ import hashlib
 
 import zope.interface
 
-from caliopen_main.common.interfaces import (IAttachmentParser, IMessageParser,
-                                             IParticipantParser)
+from caliopen_main.common.interfaces import (IMessageParser, IParticipantParser)
 
 log = logging.getLogger(__name__)
 
@@ -22,7 +21,7 @@ class TwitterDM(object):
     zope.interface.implements(IMessageParser)
 
     recipient_headers = ['From', 'To']
-    message_type = 'DM twitter'
+    message_protocol = 'twitter'
     warnings = []
     body_html = ""
     body_plain = ""
@@ -33,9 +32,7 @@ class TwitterDM(object):
         self.recipient_name = self.dm["message_create"]["target"][
             "recipient_screen_name"]
         self.sender_name = self.dm["message_create"]["sender_screen_name"]
-
-
-        self.type = self.message_type
+        self.protocol = self.message_protocol
         self.is_unread = True  # TODO: handle DM sent by user
         #                                     if broker keeps them when fetching
         self.is_draft = False
@@ -114,7 +111,7 @@ class TwitterParticipant(object):
     zope.interface.implements(IParticipantParser)
 
     def __init__(self, type, screen_name):
-        """Parse an email address and create a participant."""
+        """Parse a twitter address and create a participant."""
         self.type = type
         self.address = screen_name
         self.label = screen_name

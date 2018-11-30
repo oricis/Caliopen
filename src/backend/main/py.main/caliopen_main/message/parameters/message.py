@@ -15,7 +15,7 @@ from caliopen_main.pi.parameters import PIParameter
 import caliopen_storage.helpers.json as helpers
 
 RECIPIENT_TYPES = ['To', 'From', 'Cc', 'Bcc', 'Reply-To', 'Sender']
-MESSAGE_TYPES = ['email', 'DM twitter']
+MESSAGE_PROTOCOLS = ['email', 'twitter']
 MESSAGE_STATES = ['draft', 'sending', 'sent', 'cancel',
                   'unread', 'read', 'deleted']
 
@@ -41,7 +41,7 @@ class NewMessage(Model):
     raw_msg_id = UUIDType()
     subject = StringType()
     tags = ListType(StringType(), default=lambda: [])
-    type = StringType(choices=MESSAGE_TYPES)
+    protocol = StringType(choices=MESSAGE_PROTOCOLS)
     user_identities = ListType(UUIDType(), default=lambda: [])
 
     class Options:

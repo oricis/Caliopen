@@ -84,7 +84,7 @@ class Message(ObjectIndexable):
         'raw_msg_id': UUID,
         'subject': types.StringType,
         'tags': [types.StringType],
-        'type': types.StringType,
+        'protocol': types.StringType,
         'user_id': UUID,
         'user_identities': [UUID],
     }
@@ -151,15 +151,12 @@ class Message(ObjectIndexable):
         message.is_draft = True
         message.is_received = False
 
-        # embed protocol from recipient's one and refuse multiple protocol
+        # forbid multiple protocol
         for participant in message.participants:
-            if participant.type == "To":
-                if not message.type:
-                    message.type = participant.protocol
-                else:
-                    if participant.protocol != message.type:
-                        raise Exception("multiple protocols not implemented")
-        if not message.type:
+            if participant.protocol != message.protocol:
+                raise Exception("multiple protocols not implemented")
+
+        if not message.protocol:
             log.warn("failed to pick a protocol")
             raise Exception("`message protocol is missing")
 

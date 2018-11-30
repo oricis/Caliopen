@@ -65,7 +65,7 @@ properties:
     type: array
     items:
       type: string
-  type:
+  protocol:
     type: string
   user_id:
     type: string
@@ -79,6 +79,6 @@ properties:
   #- message_id
   #- raw_msg_id
   #- participants
-  #- type
+  #- protocol
   #- user_id
 additionalProperties: false

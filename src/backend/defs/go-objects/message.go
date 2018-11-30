@@ -39,7 +39,7 @@ type Message struct {
 	Raw_msg_id          UUID               `cql:"raw_msg_id"               json:"raw_msg_id,omitempty"                                      formatter:"rfc4122"`
 	Subject             string             `cql:"subject"                  json:"subject"          `
 	Tags                []string           `cql:"tagnames"                 json:"tags,omitempty"                     patch:"system" `
-	Type                string             `cql:"type"                     json:"type,omitempty"             `
+	Protocol            string             `cql:"protocol"                 json:"protocol,omitempty"             `
 	User_id             UUID               `cql:"user_id"                  json:"user_id,omitempty"                  formatter:"rfc4122"`
 }
 
@@ -258,8 +258,8 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 			msg.Tags = append(msg.Tags, tag.(string))
 		}
 	}
-	if t, ok := input["type"].(string); ok {
-		msg.Type = t
+	if p, ok := input["protocol"].(string); ok {
+		msg.Protocol = p
 	}
 	if user_id, ok := input["user_id"].(string); ok {
 		if id, err := uuid.FromString(user_id); err == nil {
@@ -405,8 +405,8 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 			msg.Tags = append(msg.Tags, tag)
 		}
 	}
-	if t, ok := input["type"].(string); ok {
-		msg.Type = t
+	if p, ok := input["protocol"].(string); ok {
+		msg.Protocol = p
 	}
 	if user_id, ok := input["user_id"].(gocql.UUID); ok {
 		msg.User_id.UnmarshalBinary(user_id.Bytes())
