@@ -1,9 +1,3 @@
-const ASSOC_MESSAGE_TYPE_PROTOCOL = {
-  email: 'email',
-  'DM twitter': 'twitter',
-  twitter: 'twitter',
-};
-
 const getParticipantsContactsExceptUser = ({ contacts, participants, user }) => participants
   .reduce((acc, participant) => {
     if (!participant.contact_ids) {
@@ -43,12 +37,6 @@ export const filterIdentities = ({
     return identities;
   }
 
-  // FIXME: message.type migh become message.protocol
-  const messageProtocol = ASSOC_MESSAGE_TYPE_PROTOCOL[parentMessage.type];
-  if (!messageProtocol) {
-    throw new Error(`unkown message type ${parentMessage.type}`);
-  }
-
   const participantsContacts = getParticipantsContactsExceptUser({
     contacts,
     participants: parentMessage.participants,
@@ -57,7 +45,7 @@ export const filterIdentities = ({
 
   // in a discussion 1-to-n we allow to switch identity of the same protocol
   if (participantsContacts.length === 0 || participantsContacts.lentgh > 1) {
-    return identities.filter(identity => identity.protocol === messageProtocol);
+    return identities.filter(identity => identity.protocol === parentMessage.protocol);
   }
 
   // in a discussion 1-to-1 we allow to switch identity of the protocol that the associated contact
