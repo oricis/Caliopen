@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+// unable to use @lingui/macro due to a miss-interpolated value in Plural component
 import { Trans, Plural } from '@lingui/react';
 import ContactList from './components/ContactList';
 import { PageTitle, Spinner, Button, ActionBar, Checkbox, SidebarLayout, NavList, NavItem, Confirm, Modal } from '../../components';
@@ -215,11 +216,10 @@ class ContactBook extends Component {
             {count > 0 && (
               <Fragment>
                 <span className="s-contact-book-menu__label">
-                  <Plural
+                  <Trans
                     id="contact-book.contacts.selected"
-                    value={count}
-                    one={<Trans>#/{totalCount} selected contact:</Trans>}
-                    other={<Trans>#/{totalCount} selected contacts:</Trans>}
+                    values={{ count, totalCount }}
+                    defaults="{count, plural, one {#/{totalCount} selected contact:} other {#/{totalCount} selected contacts:}}"
                   />
                 </span>
                 <Confirm
@@ -228,25 +228,16 @@ class ContactBook extends Component {
                     <Plural
                       id="contact-book.confirm-delete.title"
                       value={count}
-                      one={<Trans>Delete contact</Trans>}
-                      other={<Trans>Delete contacts</Trans>}
+                      one="Delete contact"
+                      other="Delete contacts"
                     />
                   )}
                   content={(
                     <Plural
                       id="contact-book.confirm-delete.content"
                       value={count}
-                      one={(
-                        <Trans>
-                          The deletion is permanent, are you sure you want to delete this contact ?
-                        </Trans>
-                      )}
-                      other={(
-                        <Trans>
-                          The deletion is permanent, are you sure you want to delete these
-                          contacts ?
-                        </Trans>
-                      )}
+                      one="The deletion is permanent, are you sure you want to delete this contact?"
+                      other="The deletion is permanent, are you sure you want to delete these contacts?"
                     />
                   )}
                   render={confirm => (
