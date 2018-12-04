@@ -28,10 +28,18 @@
     padding-left: map_get($co-margin_, 'xsmall');
   }
 
+  &__errors,
   &__action-send {
     @include flex-grid-size(12);
     padding-right: map_get($co-margin_, 'xlarge');
     background-color: #ecf9ff;
+  }
+
+  &__errors {
+    padding-bottom: map_get($co-margin_, 'small');
+    text-align: center;
+  }
+  &__action-send {
     text-align: right;
   }
 

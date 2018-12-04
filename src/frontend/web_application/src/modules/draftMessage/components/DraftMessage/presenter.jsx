@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withI18n } from '@lingui/react';
 import { Trans } from '@lingui/macro'; // eslint-disable-line import/no-extraneous-dependencies
-import { Button, Icon, InputText, TextareaFieldGroup, TextFieldGroup, Link, Confirm, PlaceholderBlock, Callout } from '../../../../components';
+import { Button, Icon, InputText, TextareaFieldGroup, TextFieldGroup, Link, Confirm, PlaceholderBlock, Callout, FieldErrors } from '../../../../components';
 import { withScrollTarget } from '../../../scroll';
 import RecipientList from '../RecipientList';
 import AttachmentManager from '../AttachmentManager';
@@ -89,17 +89,12 @@ class DraftMessage extends Component {
   }
 
   static getDraftFromState(state, props) {
-    // const identity = props.availableIdentities
-    //   .find(ident => ident.identity_id === state.draftMessage.identityId);
-
     return {
       ...props.draftMessage,
       body: state.draftMessage.body,
       subject: state.draftMessage.subject,
       user_identities: [state.draftMessage.identityId],
       participants: state.draftMessage.recipients,
-      // FIXME: cf. #1111
-      // protocol: identity && identity.protocol,
     };
   }
 
@@ -167,6 +162,32 @@ class DraftMessage extends Component {
     }
 
     return i18n._('draft-message.form.placeholder.quick-start', null, { defaults: 'Start a new discussion' });
+  }
+
+  getIdentity = () => this.props.availableIdentities
+    .find(ident => ident.identity_id === this.state.draftMessage.identityId);
+
+  validate = () => {
+    const currentDraft = this.state.draftMessage;
+    const identity = this.getIdentity();
+
+    if (!identity) {
+      return [
+        (<Trans id="draft-message.errors.missing-identity">An identity is mandatory to send a message</Trans>),
+      ];
+    }
+
+    const { protocol } = identity;
+    if (
+      currentDraft.recipients &&
+      currentDraft.recipients.some(participant => participant.protocol !== protocol)
+    ) {
+      return [
+        (<Trans id="draft-message.errors.invalid-participant">According to your identity, all your participants must use a {protocol} address to contact them all together</Trans>),
+      ];
+    }
+
+    return [];
   }
 
   handleToggleAdvancedForm = () => {
@@ -357,9 +378,8 @@ class DraftMessage extends Component {
     const { canEditRecipients } = this.props;
 
     if (canEditRecipients) {
-      const { internalId, availableIdentities } = this.props;
-      const identity = availableIdentities
-        .find(ident => ident.identity_id === this.state.draftMessage.identityId);
+      const { internalId } = this.props;
+      const identity = this.getIdentity();
 
       return (
         <RecipientList
@@ -384,6 +404,9 @@ class DraftMessage extends Component {
       forwardRef(el);
     };
 
+    const hasRecipients = this.state.draftMessage.recipients &&
+      this.state.draftMessage.recipients.length > 0;
+
     return (
       <div className={classnames(className, 'm-draft-message-quick')} ref={ref}>
         <div className={classnames(className, 'm-draft-message-quick__container')}>
@@ -406,6 +429,7 @@ class DraftMessage extends Component {
               title={i18n._('draft-message.action.send', null, { defaults: 'Send' })}
               className="m-draft-message-quick__send-button"
               onClick={this.handleSend}
+              disabled={!hasRecipients}
             />
           </div>
         </div>
@@ -439,6 +463,11 @@ class DraftMessage extends Component {
       draftFormRef(el);
       forwardRef(el);
     };
+
+    const errors = this.validate();
+    const isValid = errors.length === 0;
+    const hasRecipients = this.state.draftMessage.recipients &&
+      this.state.draftMessage.recipients.length > 0;
 
     return (
       <div className={classnames(className, 'm-draft-message-advanced')} ref={ref} >
@@ -509,10 +538,16 @@ class DraftMessage extends Component {
             shape="plain"
             className="m-draft-message-advanced__action-button m-draft-message-advanced__button-send"
             onClick={this.handleSend}
+            disabled={!isValid || !hasRecipients}
           >
             <Icon type="laptop" /> --- <Icon type="user" /> <Trans id="draft-message.action.send">Send</Trans>
           </Button>
         </div>
+        {!isValid && (
+          <div className="m-draft-message-advanced__errors">
+            <FieldErrors errors={errors} />
+          </div>
+        )}
       </div>
     );
   }

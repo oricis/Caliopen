@@ -167,6 +167,8 @@
   "discussion.action.reply": "Reply",
   "draft-message.action.send": "",
   "draft-message.action.toggle-advanced": "",
+  "draft-message.errors.invalid-participant": "",
+  "draft-message.errors.missing-identity": "",
   "draft-message.form.identity.label": "",
   "draft-message.form.identity.placeholder": "",
   "draft-message.form.placeholder.quick-reply": "",

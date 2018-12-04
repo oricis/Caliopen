@@ -167,6 +167,8 @@
   "discussion.action.reply": "Répondre",
   "draft-message.action.send": "Envoyer",
   "draft-message.action.toggle-advanced": "Formulaire avancé ou rapide",
+  "draft-message.errors.invalid-participant": "En fonction de votre identité, tous vos participants doivent utiliser une adresse {protocol} pour les contacter ensemble.",
+  "draft-message.errors.missing-identity": "Une identité est nécéssaire pour envoyer un message.",
   "draft-message.form.identity.label": "De :",
   "draft-message.form.identity.placeholder": "Mon identité",
   "draft-message.form.placeholder.quick-reply": "Réponse rapide pour {recipients} par {protocol}",
