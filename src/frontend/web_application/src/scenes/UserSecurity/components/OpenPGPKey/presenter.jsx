@@ -156,15 +156,19 @@ class OpenPGPKey extends Component {
             <TextareaFieldGroup
               className="m-openpgp-key__detail"
               label={i18n._('openpgp.public-key', null, { defaults: 'Public key' })}
-              readOnly
-              value={publicKeyArmored}
+              inputProps={{
+                readOnly: true,
+                value: publicKeyArmored,
+              }}
             />
             {privateKeyArmored && (
               <TextareaFieldGroup
                 className="m-openpgp-key__detail"
                 label={i18n._('openpgp.private-key', null, { defaults: 'Private key' })}
-                readOnly
-                value={privateKeyArmored}
+                inputProps={{
+                  readOnly: true,
+                  value: privateKeyArmored,
+                }}
               />
             )}
           </div>

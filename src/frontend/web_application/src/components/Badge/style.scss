@@ -75,4 +75,11 @@ $m-badge--large__padding: ($m-badge--large__height - $m-badge--large__font-size)
     font-size: $m-badge--large__font-size;
     line-height: $m-badge--large__height;
   }
+
+  @each $name, $color in $caliopen-palette {
+    &--#{$name} {
+      background-color: $color;
+      color: $co-color__contrast__text;
+    }
+  }
 }

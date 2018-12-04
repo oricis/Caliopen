@@ -2,7 +2,6 @@ import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { search, loadMore, getKey, hasMore } from '../../store/modules/search';
-import withScrollManager from '../../modules/scroll/hoc/scrollManager';
 import { withSearchParams } from '../../modules/routing';
 import Presenter from './presenter';
 
@@ -33,5 +32,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 export default compose(
   withSearchParams(),
   connect(mapStateToProps, mapDispatchToProps),
-  withScrollManager()
 )(Presenter);

@@ -4,11 +4,11 @@ import Moment from 'react-moment';
 import { Trans } from '@lingui/react';
 import classnames from 'classnames';
 import VisibilitySensor from 'react-visibility-sensor';
-import withScrollTarget from '../../../../modules/scroll/hoc/scrollTarget';
+import { withScrollTarget } from '../../../../modules/scroll';
 import { withPush } from '../../../../modules/routing/hoc/withPush';
 import { getTagLabelFromName } from '../../../../modules/tags';
 import { Badge, Button, Confirm } from '../../../../components';
-import MessageAttachments from '../../../MessageList/components/MessageAttachments';
+import MessageAttachments from '../MessageAttachments';
 import MessageRecipients from '../MessageRecipients';
 import MessagePi from '../MessagePi';
 import { getAuthor } from '../../../../services/message';
@@ -28,12 +28,12 @@ class MailMessage extends Component {
     onMessageDelete: PropTypes.func.isRequired,
     onOpenTags: PropTypes.func.isRequired,
     onReply: PropTypes.func.isRequired,
-    forwardRef: PropTypes.func.isRequired,
     user: PropTypes.shape({}).isRequired,
     push: PropTypes.func.isRequired,
-    i18n: PropTypes.shape({}).isRequired,
     tags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     settings: PropTypes.shape({ default_locale: PropTypes.string.isRequired }).isRequired,
+    i18n: PropTypes.shape({}).isRequired,
+    scrollTarget: PropTypes.shape({ forwardRef: PropTypes.func }).isRequired,
   };
 
   onVisibilityChange = (isVisible) => {
@@ -84,7 +84,7 @@ class MailMessage extends Component {
 
   render() {
     const {
-      message, forwardRef, onOpenTags, user, settings: { default_locale: locale },
+      message, scrollTarget: { forwardRef }, onOpenTags, user, settings: { default_locale: locale },
     } = this.props;
     const pi = getAveragePI(message.pi);
     const author = getAuthor(message);

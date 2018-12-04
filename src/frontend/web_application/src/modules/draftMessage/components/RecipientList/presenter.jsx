@@ -8,6 +8,7 @@ import { Dropdown, Button, Icon, VerticalMenu, VerticalMenuItem } from '../../..
 import protocolsConfig, { ASSOC_PROTOCOL_ICON } from '../../../../services/protocols-config';
 import { addEventListener } from '../../../../services/event-manager';
 import Recipient from '../Recipient';
+import { isValidRecipient } from '../../services/isValidRecipient';
 import './style.scss';
 
 export const KEY = {
@@ -35,40 +36,30 @@ const makeParticipant = ({
   type,
 });
 
-const getStateFromProps = props => ({
-  recipients: props.recipients,
-});
-
 class RecipientList extends Component {
   static propTypes = {
+    className: PropTypes.string,
     internalId: PropTypes.string,
     recipients: PropTypes.arrayOf(PropTypes.shape({})),
-    onRecipientsChange: PropTypes.func,
+    onRecipientsChange: PropTypes.func.isRequired,
     setSearchTerms: PropTypes.func.isRequired,
     search: PropTypes.func.isRequired,
     searchResults: PropTypes.arrayOf(PropTypes.shape({})),
+    identity: PropTypes.shape({}),
   };
   static defaultProps = {
+    className: undefined,
     internalId: undefined,
     recipients: [],
     searchResults: [],
-    onRecipientsChange: () => {},
+    identity: undefined,
   };
 
   state = {
-    recipients: [],
     searchTerms: '',
     activeSearchResultIndex: 0,
     searchOpened: false,
   };
-
-  componentWillMount() {
-    this.setState(getStateFromProps(this.props));
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState(getStateFromProps(nextProps));
-  }
 
   focusSearch() {
     this.searchInputRef.focus();
@@ -180,16 +171,15 @@ class RecipientList extends Component {
   addParticipant(participant) {
     const compareParticipants = (a, b) => a.address === b.address && a.protocol === b.protocol;
 
-    this.setState(prevState => ({
-      recipients: [
-        ...prevState.recipients
-          .filter(previousParticipant => !compareParticipants(previousParticipant, participant)),
-        participant,
-      ],
-    }), () => {
-      this.resetSearch();
-      this.props.onRecipientsChange(this.state.recipients);
-    });
+    const { recipients } = this.props;
+    const nextRecipients = [
+      ...recipients
+        .filter(previousParticipant => !compareParticipants(previousParticipant, participant)),
+      participant,
+    ];
+
+    this.resetSearch();
+    this.props.onRecipientsChange(nextRecipients);
   }
 
   makeAddKnownParticipant(identity) {
@@ -226,8 +216,9 @@ class RecipientList extends Component {
   }
 
   eventuallyEditRecipient() {
-    if (this.state.searchTerms.length === 0 && this.state.recipients.length) {
-      this.editRecipient(this.state.recipients[this.state.recipients.length - 1]);
+    const { recipients } = this.props;
+    if (this.state.searchTerms.length === 0 && recipients.length) {
+      this.editRecipient(recipients[recipients.length - 1]);
     }
   }
 
@@ -247,14 +238,9 @@ class RecipientList extends Component {
   }
 
   removeRecipient(participant) {
-    this.setState(
-      prevState => ({
-        recipients: prevState.recipients.filter(curr => curr !== participant),
-      }),
-      () => {
-        this.props.onRecipientsChange(this.state.recipients);
-      }
-    );
+    const { recipients } = this.props;
+    const nextRecipients = recipients.filter(curr => curr !== participant);
+    this.props.onRecipientsChange(nextRecipients);
   }
 
   renderSearchResult(identity, index, results) {
@@ -297,22 +283,30 @@ class RecipientList extends Component {
   render() {
     const componentId = uuidV1();
     const dropdownId = uuidV1();
-    const { searchResults } = this.props;
+    const {
+      searchResults, className, identity, recipients,
+    } = this.props;
 
     return (
-      // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-      <div id={componentId} onClick={this.handleClickRecipientList} ref={(el) => { this.recipientListRef = el; }} role="presentation" className="m-recipient-list">
-        { !this.state.recipients.length && (
+      <div
+        id={componentId}
+        onClick={this.handleClickRecipientList}
+        ref={(el) => { this.recipientListRef = el; }}
+        role="presentation"
+        className={classnames('m-recipient-list', className)}
+      >
+        {!recipients.length && (
           <span className="m-recipient-list__placeholder">
             <Trans id="messages.compose.form.to.label">To</Trans>
           </span>
         )}
-        {this.state.recipients.map(participant => (
+        {recipients.map(participant => (
           <Recipient
             key={`${participant.address}_${participant.protocol}`}
             className="m-recipient-list__recipient"
             participant={participant}
             onRemove={this.handleRemoveRecipient}
+            isValid={isValidRecipient({ recipient: participant, identity })}
           />
         ))}
         <div className="m-recipient-list__search">
@@ -334,9 +328,9 @@ class RecipientList extends Component {
             isMenu
           >
             <VerticalMenu>
-              {searchResults.map((identity, index) => (
-                <VerticalMenuItem key={`${identity.address}_${identity.protocol}`}>
-                  {this.renderSearchResult(identity, index, searchResults)}
+              {searchResults.map((ident, index) => (
+                <VerticalMenuItem key={`${ident.address}_${ident.protocol}`}>
+                  {this.renderSearchResult(ident, index, searchResults)}
                 </VerticalMenuItem>
               ))}
             </VerticalMenu>

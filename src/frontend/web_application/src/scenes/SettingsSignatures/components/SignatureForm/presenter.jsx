@@ -73,11 +73,12 @@ class SignatureForm extends Component {
           <FormRow>
             <FormColumn size="shrink" bottomSpace >
               <TextareaFieldGroup
-                name="signature"
-                defaultValue={this.state.settings.signature}
-                onChange={this.handleTextareaChange}
+                inputProps={{
+                  name: 'signature',
+                  defaultValue: this.state.settings.signature,
+                  onChange: this.handleTextareaChange,
+                }}
                 label={i18n._('settings.signature.label', { defaults: 'Signature' })}
-                showTextLabel
               />
             </FormColumn>
           </FormRow>

@@ -6,8 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Switch identity, send twitter DM, validation…
+
 ### Fixed
 
+- avatar size in tabs for twitter DM
+- splash screen initialization after reconnect
 - BSOD when selecting contact
 - All messages detected as Twitter DM
 

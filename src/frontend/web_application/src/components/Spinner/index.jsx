@@ -9,6 +9,7 @@ class Spinner extends PureComponent {
     height: PropTypes.number,
     width: PropTypes.number,
     display: PropTypes.oneOf(['inline', 'inline-block']),
+    theme: PropTypes.oneOf(['default', 'bright']),
     className: PropTypes.string,
   };
   static defaultProps = {
@@ -16,17 +17,19 @@ class Spinner extends PureComponent {
     height: 14,
     width: 14,
     display: 'inline-block',
+    theme: 'default',
     className: undefined,
   };
 
   render() {
     const {
-      isLoading, height, width, className, display,
+      isLoading, height, width, className, display, theme,
     } = this.props;
 
     const spinnerProps = {
       className: classnames(className, 'm-spinner', {
         'm-spinner--inline-block': display === 'inline-block',
+        'm-spinner--bright': theme === 'bright',
       }),
     };
 

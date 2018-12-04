@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
-import { bindActionCreators, compose } from 'redux';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import withScrollManager from '../../modules/scroll/hoc/scrollManager';
 import { requestDiscussions, hasMore, loadMoreDiscussions } from '../../store/modules/discussion';
 import { UserSelector } from '../../store/selectors/user';
 import { getUser } from '../../modules/user/actions/getUser';
@@ -18,7 +17,7 @@ const mapStateToProps = createSelector(
       .sort((a, b) => (new Date(b.date_update) - new Date(a.date_update))),
     hasMore: discussionState && hasMore(discussionState),
     isFetching: discussionState.isFetching,
-    // didInvalidate: timeline && timeline.didInvalidate,
+    didInvalidate: discussionState.didInvalidate,
     isUserFetching: userState.isFetching,
     user: userState.user,
   })
@@ -32,8 +31,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   // updateMessagesTags,
 }, dispatch);
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  //  withTags(),
-  withScrollManager(),
-)(Presenter);
+export default connect(mapStateToProps, mapDispatchToProps)(Presenter);

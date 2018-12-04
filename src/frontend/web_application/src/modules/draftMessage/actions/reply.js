@@ -1,8 +1,8 @@
 import { saveDraft } from './saveDraft';
-import { requestDiscussionDraft } from './requestDiscussionDraft';
+import { requestDraft } from './requestDraft';
 
 export const reply = ({ internalId, message: messageInReply }) => async (dispatch) => {
-  const message = await dispatch(requestDiscussionDraft({
+  const message = await dispatch(requestDraft({
     internalId, discussionId: messageInReply.discussion_id,
   }));
 

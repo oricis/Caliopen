@@ -12,6 +12,7 @@ class Badge extends PureComponent {
     large: PropTypes.bool,
     low: PropTypes.bool,
     radiusType: PropTypes.oneOf(['no', 'normal', 'rounded']),
+    color: PropTypes.oneOf(['success', 'alert', 'secondary', 'active']),
     onDelete: PropTypes.func, // If onDelete is set, the delete button will be shown
     ariaLabel: PropTypes.string, // option to show aria-label on delete button
     isLoading: PropTypes.bool, // option to show spinner on delete button
@@ -23,6 +24,7 @@ class Badge extends PureComponent {
     large: false,
     low: false,
     radiusType: 'normal',
+    color: undefined,
     onDelete: undefined,
     ariaLabel: null,
     isLoading: false,
@@ -32,7 +34,7 @@ class Badge extends PureComponent {
   render() {
     const {
       children, className, onDelete, low, large, radiusType, isLoading, ariaLabel, rightSpaced,
-      ...props
+      color, ...props
     } = this.props;
 
     const badgeProps = {
@@ -43,6 +45,10 @@ class Badge extends PureComponent {
         'm-badge--normal-radius': radiusType === 'normal',
         'm-badge--rounded-radius': radiusType === 'rounded',
         'm-badge--right-spaced': rightSpaced,
+        'm-badge--active': color === 'active',
+        'm-badge--alert': color === 'alert',
+        'm-badge--secondary': color === 'secondary',
+        'm-badge--success': color === 'success',
       }, className),
       ...props,
     };

@@ -1,19 +1,26 @@
-import { v4 as uuidv4 } from 'uuid';
-import { getLocalIdentities } from '../../identity';
+import { getDefaultIdentity } from './getDefaultIdentity';
+import { getMessage } from '../../message';
 import { createDraft } from '../../../store/modules/draft-message';
 
-export const newDraft = ({ internalId, draft: { body = '', message_id: messageId = uuidv4(), ...draftParams } = {} }) =>
+export const newDraft = ({ internalId, draft }) =>
   async (dispatch) => {
-    // TODO: let the form decides which identity to use
-    const localIdentities = await dispatch(getLocalIdentities());
-
-    const draft = {
-      message_id: messageId,
-      body,
-      user_identities: localIdentities.map((identity => identity.identity_id)),
-      ...draftParams,
+    const parentMessage = draft.parent_id ?
+      await dispatch(getMessage({ messageId: draft.parent_id })) :
+      undefined;
+    const localIdentity = await dispatch(getDefaultIdentity({ parentMessage }));
+    const nextDraft = {
+      ...draft,
+      user_identities: [
+        ...(localIdentity ? [localIdentity.identity_id] : []),
+      ],
+      // FIXME: cf. #1111
+      // protocol: localIdentity && localIdentity.protocol,
     };
-    dispatch(createDraft({ internalId, draft }));
 
-    return draft;
+    dispatch(createDraft({
+      internalId,
+      draft: nextDraft,
+    }));
+
+    return nextDraft;
   };

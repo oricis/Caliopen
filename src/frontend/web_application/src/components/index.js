@@ -28,6 +28,7 @@ export { default as Title } from './Title';
 export { default as VerticalMenu, VerticalMenuItem, Separator } from './VerticalMenu';
 
 // Forms
+export { default as AdvancedSelectFieldGroup } from './AdvancedSelectFieldGroup';
 export { default as Checkbox } from './Checkbox';
 export { default as CheckboxFieldGroup } from './CheckboxFieldGroup';
 export { default as CollectionFieldGroup } from './CollectionFieldGroup';
@@ -45,4 +46,5 @@ export { default as RadioFieldGroup } from './RadioFieldGroup';
 export { default as SelectFieldGroup } from './SelectFieldGroup';
 export { default as Switch } from './Switch';
 export { default as TextFieldGroup } from './TextFieldGroup';
+export { default as Textarea } from './Textarea';
 export { default as TextareaFieldGroup } from './TextareaFieldGroup';

@@ -28,7 +28,7 @@ class Timeline extends Component {
     discussions: PropTypes.arrayOf(PropTypes.shape({})),
     // tags: PropTypes.arrayOf(PropTypes.shape({})),
     isFetching: PropTypes.bool,
-    // didInvalidate: PropTypes.bool,
+    didInvalidate: PropTypes.bool,
     hasMore: PropTypes.bool,
     // updateDiscussionTags: PropTypes.func.isRequired,
     settings: PropTypes.shape({}).isRequired,
@@ -39,7 +39,7 @@ class Timeline extends Component {
     // tags: [],
     user: {},
     isFetching: false,
-    // didInvalidate: false,
+    didInvalidate: false,
     hasMore: false,
   };
 
@@ -107,9 +107,9 @@ class Timeline extends Component {
 
   loadDiscussions = async (props, force = false) => {
     const {
-      requestDiscussions, isFetching,
+      requestDiscussions, isFetching, didInvalidate,
     } = props;
-    if ((!this.state.initialized || force) && !isFetching) {
+    if ((!this.state.initialized || force || didInvalidate) && !isFetching) {
       // "initialized" is not well named,
       // we consider it "initialized" as soon as we start fetching messages to prevent multiple
       // fetchs because setState would be applied at the very end after multiple
