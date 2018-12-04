@@ -142,7 +142,9 @@ const onSendDraft = ({ draft, message, internalId }) => async (dispatch) => {
     }));
     await dispatch(sendDraft({ draft: messageUpToDate }));
 
-    return dispatch(clearDraft({ internalId }));
+    dispatch(clearDraft({ internalId }));
+
+    return messageUpToDate;
   } catch (err) {
     return Promise.reject(err);
   }

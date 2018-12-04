@@ -242,19 +242,19 @@ class DraftMessage extends Component {
 
   handleSend = async () => {
     const {
-      onSendDraft, internalId, original, draftMessage, notifyError, i18n, onSent,
+      onSendDraft, internalId, original, notifyError, i18n, onSent,
     } = this.props;
 
     this.setState({ isSending: true });
 
     try {
-      await onSendDraft({
+      const message = await onSendDraft({
         draft: this.constructor.getDraftFromState(this.state, this.props),
         message: original,
         internalId,
       });
 
-      onSent({ message: draftMessage });
+      onSent({ message });
     } catch (err) {
       notifyError({
         message: i18n._('draft.feedback.send-error', null, { defaults: 'Unable to send the message' }),
