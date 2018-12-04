@@ -6,6 +6,7 @@
 }
 
 .m-spinner {
+  $baseName: &;
   &--inline-block {
     display: inline-block;
     padding: ($co-margin / 2);
@@ -20,6 +21,16 @@
     svg {
       path {
         fill: $co-color__fg__text--higher;
+      }
+    }
+
+  }
+  &--bright {
+    #{$baseName}__icon {
+      svg {
+        path {
+          fill: $co-color__contrast__text;
+        }
       }
     }
   }

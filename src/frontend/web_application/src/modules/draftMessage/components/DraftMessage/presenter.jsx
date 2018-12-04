@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withI18n } from '@lingui/react';
 import { Trans } from '@lingui/macro'; // eslint-disable-line import/no-extraneous-dependencies
-import { Button, Icon, InputText, TextareaFieldGroup, TextFieldGroup, Link, Confirm, PlaceholderBlock, Callout, FieldErrors } from '../../../../components';
+import { Button, Icon, InputText, TextareaFieldGroup, TextFieldGroup, Link, Confirm, PlaceholderBlock, Callout, FieldErrors, Spinner } from '../../../../components';
 import { withScrollTarget } from '../../../scroll';
 import RecipientList from '../RecipientList';
 import AttachmentManager from '../AttachmentManager';
@@ -100,6 +100,7 @@ class DraftMessage extends Component {
 
   static initialState = {
     advancedForm: true,
+    isSending: false,
     draftMessage: {
       body: '',
       identityId: '',
@@ -538,9 +539,16 @@ class DraftMessage extends Component {
             shape="plain"
             className="m-draft-message-advanced__action-button m-draft-message-advanced__button-send"
             onClick={this.handleSend}
-            disabled={!isValid || !hasRecipients}
+            disabled={!isValid || !hasRecipients || this.state.isSending}
           >
-            <Icon type="laptop" /> --- <Icon type="user" /> <Trans id="draft-message.action.send">Send</Trans>
+            {this.state.isSending && (<Spinner display="inline" theme="bright" />)}
+            {!this.state.isSending && (<Icon type="laptop" />)}
+            {' '}
+            ---
+            {' '}
+            <Icon type="user" />
+            {' '}
+            <Trans id="draft-message.action.send">Send</Trans>
           </Button>
         </div>
         {!isValid && (
