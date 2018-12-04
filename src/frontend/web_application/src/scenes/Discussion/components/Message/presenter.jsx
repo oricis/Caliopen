@@ -32,7 +32,7 @@ class Message extends Component {
   isMail = () => {
     const { message } = this.props;
 
-    return message.type === 'email';
+    return !message.protocol || message.protocol === 'email';
   };
 
   handleTagsChange = async ({ tags }) => {

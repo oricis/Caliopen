@@ -70,7 +70,7 @@ def build_discussion(core, index):
                                        maxsize) if index.last_message.body_plain else u''
     discuss.total_count = index.total_count
     discuss.subject = index.last_message.subject
-    discuss.protocol = index.last_message.type
+    discuss.protocol = index.last_message.protocol
 
     # TODO
     # discussion.privacy_index = index_message.privacy_index

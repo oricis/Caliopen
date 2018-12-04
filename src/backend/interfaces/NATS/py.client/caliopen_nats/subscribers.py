@@ -61,6 +61,7 @@ class InboundEmail(BaseHandler):
                     payload['order']))
             raise NotImplementedError
 
+
 class InboundTwitter(BaseHandler):
     """Inbound TwitterDM class handler."""
 
@@ -104,7 +105,7 @@ class ContactAction(BaseHandler):
         if 'user_id' not in payload or 'contact_id' not in payload:
             raise Exception('Invalid contact_update structure')
         user = User.get(payload['user_id'])
-        contact = Contact(user.user_id, contact_id=payload['contact_id'])
+        contact = Contact(user, contact_id=payload['contact_id'])
         contact.get_db()
         contact.unmarshall_db()
         qualifier = ContactMessageQualifier(user)
@@ -125,7 +126,6 @@ class ContactAction(BaseHandler):
                 (queue: contactQueue, subject : contactAction)'.format(
                     payload['order']))
             raise NotImplementedError
-
 
 
 class KeyAction(BaseHandler):

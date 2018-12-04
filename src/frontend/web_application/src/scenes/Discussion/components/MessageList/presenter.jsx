@@ -61,10 +61,10 @@ class MessageList extends Component {
     const messageList = [];
 
     return (messages.length > 0) && messages.reduce((acc, message) => {
-      if (message.type !== 'email' && messageList.length > 0
-        && this.findMessageBefore(message).type !== message.type) {
+      if (message.protocol !== 'email' && messageList.length > 0
+        && this.findMessageBefore(message).protocol !== message.protocol) {
         messageList.push(<ProtocolSwitch
-          newProtocol={message.type}
+          newProtocol={message.protocol}
           pi={getAveragePI(message.pi)}
           date={message.date}
           key={`switch-${message.message_id}`}
