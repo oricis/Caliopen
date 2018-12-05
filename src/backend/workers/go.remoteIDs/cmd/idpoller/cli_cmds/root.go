@@ -33,7 +33,7 @@ var (
 	}
 )
 
-const __version__ = "0.13.0"
+const __version__ = "0.13.1"
 
 func init() {
 	RootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false,
