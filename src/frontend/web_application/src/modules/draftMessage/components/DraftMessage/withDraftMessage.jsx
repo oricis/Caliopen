@@ -6,10 +6,10 @@ export const withDraftMessage = () => (WrappedComp) => {
     <WithDraftMessage
       hasDiscussion={hasDiscussion}
       render={({
-        draftMessage, isRequestingDraft, isDeletingDraft, original,
+        requestDraft, draftMessage, isRequestingDraft, isDeletingDraft, original,
       }) => {
         const draftMessageProps = {
-          hasDiscussion, draftMessage, isRequestingDraft, isDeletingDraft, original,
+          hasDiscussion, requestDraft, draftMessage, isRequestingDraft, isDeletingDraft, original,
         };
 
         return (

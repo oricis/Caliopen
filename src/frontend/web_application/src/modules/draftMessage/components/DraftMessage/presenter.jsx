@@ -30,6 +30,7 @@ class DraftMessage extends Component {
     draftMessage: PropTypes.shape({
       user_identities: PropTypes.arrayOf(PropTypes.string),
     }),
+    requestDraft: PropTypes.func.isRequired,
     original: PropTypes.shape({}),
     onEditDraft: PropTypes.func.isRequired,
     // onSaveDraft: PropTypes.func.isRequired,
@@ -45,6 +46,7 @@ class DraftMessage extends Component {
     draftFormRef: PropTypes.func,
     onFocus: PropTypes.func,
     isFetching: PropTypes.bool,
+    hasDiscussion: PropTypes.bool,
   };
   static defaultProps = {
     className: undefined,
@@ -59,6 +61,7 @@ class DraftMessage extends Component {
     onSent: () => {},
     onDeleteMessageSuccessfull: () => {},
     isFetching: true,
+    hasDiscussion: false,
   };
 
   static genererateStateFromProps(props, prevState) {
@@ -99,6 +102,7 @@ class DraftMessage extends Component {
   }
 
   static initialState = {
+    initialized: false,
     advancedForm: true,
     isSending: false,
     draftMessage: {
@@ -242,7 +246,7 @@ class DraftMessage extends Component {
 
   handleSend = async () => {
     const {
-      onSendDraft, internalId, original, notifyError, i18n, onSent,
+      onSendDraft, internalId, original, notifyError, i18n, onSent, requestDraft, hasDiscussion,
     } = this.props;
 
     this.setState({ isSending: true });
@@ -253,6 +257,13 @@ class DraftMessage extends Component {
         message: original,
         internalId,
       });
+
+      this.setState({
+        initialized: false,
+        draftMessage: undefined,
+      });
+
+      await requestDraft({ internalId, hasDiscussion });
 
       onSent({ message });
     } catch (err) {

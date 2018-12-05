@@ -5,7 +5,9 @@ import { createMessageCollectionStateSelector } from '../../../../store/selector
 import { deleteDraft, deleteDraftSuccess, clearDraft, syncDraft } from '../../../../store/modules/draft-message';
 import { withContacts } from '../../../../modules/contact';
 import { updateTagCollection } from '../../../../modules/tags';
-import { saveDraft, sendDraft } from '../../../../modules/draftMessage';
+import { saveDraft } from '../../actions/saveDraft';
+import { sendDraft } from '../../actions/sendDraft';
+import { calcSyncDraft } from '../../services/calcSyncDraft';
 import { uploadDraftAttachments, deleteDraftAttachment } from '../../../../modules/file';
 import { deleteMessage } from '../../../../modules/message';
 import { withIdentities } from '../../../../modules/identity';
@@ -95,8 +97,9 @@ const onUpdateEntityTags = (internalId, i18n, message, { type, entity, tags }) =
       i18n,
       { type, entity: savedDraft, tags }
     ));
+    const nextDraft = calcSyncDraft({ message: messageUpTodate, draft: entity });
 
-    return dispatch(syncDraft({ internalId, draft: messageUpTodate }));
+    return dispatch(syncDraft({ internalId, draft: nextDraft }));
   };
 
 const onUploadAttachments = (internalId, i18n, message, { draft, attachments }) =>
@@ -110,8 +113,9 @@ const onUploadAttachments = (internalId, i18n, message, { draft, attachments }) 
       const messageUpTodate = await dispatch(uploadDraftAttachments({
         message: savedDraft, attachments,
       }));
+      const nextDraft = calcSyncDraft({ message: messageUpTodate, draft });
 
-      return dispatch(syncDraft({ internalId, draft: messageUpTodate }));
+      return dispatch(syncDraft({ internalId, draft: nextDraft }));
     } catch (err) {
       return Promise.reject(err);
     }
@@ -129,7 +133,9 @@ const onDeleteAttachement = (internalId, i18n, message, { draft, attachment }) =
         message: savedDraft, attachment,
       }));
 
-      return dispatch(syncDraft({ internalId, draft: messageUpTodate }));
+      const nextDraft = calcSyncDraft({ message: messageUpTodate, draft });
+
+      return dispatch(syncDraft({ internalId, draft: nextDraft }));
     } catch (err) {
       return Promise.reject(err);
     }

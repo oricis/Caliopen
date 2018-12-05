@@ -2,8 +2,9 @@ import { fetchMessages } from './fetchMessages';
 import { discussionSelector } from '../selectors/discussionSelector';
 
 export const getLastMessage = ({ discussionId }) => async (dispatch, getState) => {
-  let [lastMessage] = discussionSelector(getState(), { discussionId })
-    .sort((a, b) => a.date_sort < b.date_sort);
+  const messages = discussionSelector(getState(), { discussionId });
+  messages.sort((a, b) => ((new Date(a.date_sort)) - (new Date(b.date_sort))) * -1);
+  let [lastMessage] = messages;
 
   if (lastMessage) {
     return lastMessage;

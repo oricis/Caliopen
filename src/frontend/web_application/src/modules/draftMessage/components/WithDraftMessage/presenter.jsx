@@ -32,11 +32,11 @@ class WithDraftMessage extends Component {
 
   render() {
     const {
-      render, draftMessage, original, isRequestingDraft, isDeletingDraft,
+      render, requestDraft, draftMessage, original, isRequestingDraft, isDeletingDraft,
     } = this.props;
 
     return render({
-      draftMessage, original, isRequestingDraft, isDeletingDraft,
+      requestDraft, draftMessage, original, isRequestingDraft, isDeletingDraft,
     });
   }
 }
