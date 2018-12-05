@@ -20,7 +20,7 @@ describe('Compose new message', () => {
       const writeButtonSelector = by.cssContainingText('.m-action-btns__btn', 'Compose');
 
       await element(writeButtonSelector).click();
-      await browser.wait(EC.presenceOf($('.m-new-draft')), 1000);
+      await browser.wait(EC.presenceOf($('.s-new-draft')), 1000);
       const items = await element.all(by.css('.m-navbar-item .m-item-link'))
         .filter(item => item.getText().then(text => text === 'Compose'));
       expect(items.length).toEqual(1);
@@ -28,13 +28,13 @@ describe('Compose new message', () => {
       const draftBodyElement1 = element(by.css('.m-discussion-textarea__body'));
       await draftBodyElement1.sendKeys(text1);
       await element(writeButtonSelector).click();
-      await browser.wait(EC.presenceOf($('.m-new-draft')), 1000);
+      await browser.wait(EC.presenceOf($('.s-new-draft')), 1000);
       await expect(element(by.css('.m-discussion-textarea__body')).getText()).not.toEqual(text1);
       const items2 = await element.all(by.css('.m-navbar-item .m-item-link'))
         .filter(item => item.getText().then(text => text === 'Compose'));
       expect(items2.length).toEqual(2);
       await items2[0].click();
-      await browser.wait(EC.presenceOf($('.m-new-draft')), 1000);
+      await browser.wait(EC.presenceOf($('.s-new-draft')), 1000);
       expect(element(by.css('.m-discussion-textarea__body')).getText()).toEqual(text1);
     });
   });
@@ -46,7 +46,7 @@ describe('Compose new message', () => {
       const writeButtonSelector = by.cssContainingText('.m-action-btns__btn', 'Compose');
 
       await element(writeButtonSelector).click();
-      await browser.wait(EC.presenceOf($('.m-new-draft')), 1000);
+      await browser.wait(EC.presenceOf($('.s-new-draft')), 1000);
       expect(element(by.cssContainingText('.m-navbar-item', 'Compose')).isPresent()).toEqual(true);
       console.log('write msg');
       const draftBodyElement1 = element(by.css('.m-discussion-textarea__body'));
@@ -69,7 +69,7 @@ describe('Compose new message', () => {
       const writeButtonSelector = by.cssContainingText('.m-action-btns__btn', 'Compose');
 
       await element(writeButtonSelector).click();
-      await browser.wait(EC.presenceOf($('.m-new-draft')), 1000);
+      await browser.wait(EC.presenceOf($('.s-new-draft')), 1000);
       console.info('search recipient');
       const searchInputElement = element(by.css('.m-recipient-list__search-input'));
       await searchInputElement.sendKeys('ben');
@@ -92,7 +92,7 @@ describe('Compose new message', () => {
       const writeButtonSelector = by.cssContainingText('.m-action-btns__btn', 'Compose');
 
       await element(writeButtonSelector).click();
-      await browser.wait(EC.presenceOf($('.m-new-draft')), 1000);
+      await browser.wait(EC.presenceOf($('.s-new-draft')), 1000);
       console.info('search recipient');
       const searchInputElement = element(by.css('.m-recipient-list__search-input'));
 
@@ -116,7 +116,7 @@ describe('Compose new message', () => {
       const searchTerm = 'ben';
 
       await element(writeButtonSelector).click();
-      await browser.wait(EC.presenceOf($('.m-new-draft')), 1000);
+      await browser.wait(EC.presenceOf($('.s-new-draft')), 1000);
       console.log('search recipient');
       const searchInputElement = element(by.css('.m-recipient-list__search-input'));
       await searchInputElement.sendKeys(searchTerm);
@@ -124,7 +124,7 @@ describe('Compose new message', () => {
       expect(element(dropdownSelector).isDisplayed()).toEqual(true);
       await element(by.css('.m-recipient-list__search-input')).click();
       expect(element(dropdownSelector).isDisplayed()).toEqual(true);
-      await element(by.cssContainingText('.m-new-draft__author', 'You')).click();
+      await element(by.cssContainingText('.s-new-draft__author', 'You')).click();
       expect(element(dropdownSelector).isDisplayed()).toEqual(false);
       expect(element(by.cssContainingText('.m-recipient-list__recipient', searchTerm)).isDisplayed()).toEqual(true);
     });
@@ -134,7 +134,7 @@ describe('Compose new message', () => {
       const searchResultItemsSelector = by.css('.m-recipient-list__search-result');
 
       await element(writeButtonSelector).click();
-      await browser.wait(EC.presenceOf($('.m-new-draft')), 1000);
+      await browser.wait(EC.presenceOf($('.s-new-draft')), 1000);
       console.log('search recipient');
       const searchInputElement = element(by.css('.m-recipient-list__search-input'));
       await searchInputElement.sendKeys('caliopen');
