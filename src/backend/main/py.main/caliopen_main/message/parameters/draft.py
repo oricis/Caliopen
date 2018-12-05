@@ -117,7 +117,10 @@ class Draft(NewInboundMessage):
         self.participants.append(from_participant)
 
         # set message's protocol to sender's one
-        self.protocol = from_participant.protocol
+        if from_participant.protocol in ['email', 'smtp', 'imap']:
+            self.protocol = 'email'
+        else:
+            self.protocol = from_participant.protocol
 
         return from_participant
 
