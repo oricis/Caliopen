@@ -12,7 +12,16 @@
   margin-bottom: 1rem;
 
   &--from-user {
-   flex-direction: row-reverse;
+    flex-direction: row-reverse;
+    margin-left: auto;
+
+    .m-instant-message__info {
+      background-color: #feffff;
+    }
+
+    .m-instant-message__content {
+      background-color: #f0faff;
+    }
   }
 
   &__author {
