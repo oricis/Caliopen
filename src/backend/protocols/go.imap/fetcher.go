@@ -128,21 +128,17 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPorder) error {
 	// 4. backup sync state in db
 	var fields map[string]interface{}
 	delete((*userIdentity).Infos, "syncing")
-	if _, ok := userIdentity.Infos[errorsCountKey]; ok {
-		// if this key is in Infos then imap connection failed
-		// do not update LastCheck time
-		fields = map[string]interface{}{
-			"Infos": userIdentity.Infos,
-		}
-	} else {
-		userIdentity.LastCheck = time.Now()
+	userIdentity.LastCheck = time.Now()
+	if _, ok := userIdentity.Infos[errorsCountKey]; !ok {
+		// if errorsCountKey IS NOT in Infos then sync succeeded
+		// update infos accordingly
 		userIdentity.Infos["uidvalidity"] = strconv.Itoa(int(box.uidValidity))
 		userIdentity.Infos["lastsync"] = userIdentity.LastCheck.Format(time.RFC3339)
 		userIdentity.Infos["lastseenuid"] = strconv.Itoa(int(box.lastSeenUid))
-		fields = map[string]interface{}{
-			"LastCheck": userIdentity.LastCheck,
-			"Infos":     userIdentity.Infos,
-		}
+	}
+	fields = map[string]interface{}{
+		"LastCheck": userIdentity.LastCheck,
+		"Infos":     userIdentity.Infos,
 	}
 	err = f.Store.UpdateUserIdentity(userIdentity, fields)
 	if err != nil {
@@ -315,7 +311,8 @@ func (f *Fetcher) handleFetchFailure(userIdentity *UserIdentity, err CaliopenErr
 
 	// udpate UserIdentity in db
 	return f.Store.UpdateUserIdentity(userIdentity, map[string]interface{}{
-		"Infos": userIdentity.Infos,
+		"Infos":     userIdentity.Infos,
+		"LastCheck": lastDate,
 	})
 
 }
