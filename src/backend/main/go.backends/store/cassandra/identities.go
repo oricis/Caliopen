@@ -185,7 +185,11 @@ func (cb *CassandraBackend) RetrieveRemoteIdentities(userId string, withCredenti
 		}
 		count++
 		i := make(map[string]interface{})
-		cb.SessionQuery(`SELECT * FROM user_identity WHERE user_id = ? AND identity_id = ?`, userId, identityID).MapScan(i)
+		e := cb.SessionQuery(`SELECT * FROM user_identity WHERE user_id = ? AND identity_id = ?`, userId, identityID).MapScan(i)
+		if e != nil {
+			log.Warnf("[CassandraBackend] RetrieveRemoteIdentities failed on inconsistency between identity_type_lookup and user_identity for user %s and identity %s", userId, identityID)
+			continue
+		}
 		identity := new(UserIdentity)
 		identity.UnmarshalCQLMap(i)
 		if withCredentials {
@@ -362,4 +366,16 @@ func (cb *CassandraBackend) IsRemoteIdentity(userId, identityId string) bool {
 		return false
 	}
 	return true
+}
+
+// TimestampRemoteLastCheck writes timestamp to user_identity.last_check property.
+// If no time is provided defaults to time.Now()
+func (cb *CassandraBackend) TimestampRemoteLastCheck(userId, remoteId string, t ...time.Time) error {
+	var timestamp time.Time
+	if len(t) < 1 {
+		timestamp = time.Now()
+	} else {
+		timestamp = t[0]
+	}
+	return cb.SessionQuery(`UPDATE user_identity SET last_check = ? WHERE user_id = ? AND identity_id = ?`, timestamp, userId, remoteId).Exec()
 }
