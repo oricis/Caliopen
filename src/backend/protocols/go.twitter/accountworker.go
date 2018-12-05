@@ -157,57 +157,62 @@ func (worker *AccountWorker) Stop() {
 // PollDM calls Twitter API endpoint to fetch DMs
 // it passes unseen DM to its embedded broker
 func (worker *AccountWorker) PollDM() {
+	// do not forget to always write down last_check timestamp before leaving
+	defer func() {
+		e := worker.broker.Store.TimestampRemoteLastCheck(worker.userAccount.userID.String(), worker.userAccount.remoteID.String())
+		if e != nil {
+			log.WithError(e).Warnf("[AccountWorker %s] PollDM failed to update last_check state in db", worker.userAccount.remoteID.String())
+		}
+	}()
+	// retrieve user_identity.infos
+	accountInfos, retrieveErr := worker.broker.Store.RetrieveRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String())
+	if retrieveErr != nil {
+		log.WithError(retrieveErr).Warnf("[AccountWorker %s] PollDM failed to retrieve infos map", worker.userAccount.remoteID.String())
+		return
+	}
+	// retrieve DM list from twitter API
 	DMs, _, err := worker.twitterClient.DirectMessages.EventsList(&twitter.DirectMessageEventsListParams{Count: 50})
-	if err == nil {
-		accountInfos, retrieveErr := worker.broker.Store.RetrieveRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String())
-		if retrieveErr == nil {
-			if e, ok := err.(twitter.APIError); ok {
-				var rateLimitError bool
-				errorsMessages := new(strings.Builder)
-				for _, err := range e.Errors {
-					if err.Code == 88 {
-						rateLimitError = true
-						log.Infof("[AccountWorker %s] PollDM : twitter returned rate limit error, slowing down worker for account", worker.userAccount.remoteID)
-						if pollInterval, ok := accountInfos["pollinterval"]; ok {
-							interval, e := strconv.Atoi(pollInterval)
-							if e == nil {
-								newInterval := strconv.Itoa(interval * 2)
-								accountInfos["pollinterval"] = newInterval
-								worker.broker.Store.UpdateRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String(), accountInfos)
-								order := RemoteIDNatsMessage{
-									IdentityId:   worker.userAccount.remoteID.String(),
-									Order:        "update_interval",
-									PollInterval: newInterval,
-									Protocol:     "twitter",
-									UserId:       worker.userAccount.userID.String(),
-								}
-								jorder, jerr := json.Marshal(order)
-								if jerr == nil {
-									worker.broker.NatsConn.Publish("idCache", jorder)
-								}
+	if err != nil {
+		if e, ok := err.(twitter.APIError); ok {
+			errorsMessages := new(strings.Builder)
+			for _, err := range e.Errors {
+				if err.Code == 88 {
+					log.Infof("[AccountWorker %s] PollDM : twitter returned rate limit error, slowing down worker for account", worker.userAccount.remoteID)
+					if pollInterval, ok := accountInfos["pollinterval"]; ok {
+						interval, e := strconv.Atoi(pollInterval)
+						if e == nil {
+							newInterval := strconv.Itoa(interval * 2)
+							accountInfos["pollinterval"] = newInterval
+							worker.broker.Store.UpdateRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String(), accountInfos)
+							order := RemoteIDNatsMessage{
+								IdentityId:   worker.userAccount.remoteID.String(),
+								Order:        "update_interval",
+								PollInterval: newInterval,
+								Protocol:     "twitter",
+								UserId:       worker.userAccount.userID.String(),
+							}
+							jorder, jerr := json.Marshal(order)
+							if jerr == nil {
+								worker.broker.NatsConn.Publish("idCache", jorder)
 							}
 						}
-						return
-					} else {
-						errorsMessages.WriteString(err.Message + " ")
 					}
 				}
-				if !rateLimitError {
-					accountInfos[lastErrorKey] = errorsMessages.String()
-					e := worker.broker.Store.UpdateRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String(), accountInfos)
-					if e != nil {
-						log.WithError(e).Warnf("[AccountWorker %s] PollDM failed to update sync state in db", worker.userAccount.remoteID.String())
-					}
-					return
-				}
+				errorsMessages.WriteString(err.Message + " ")
 			}
+			e := worker.saveErrorState(accountInfos, errorsMessages.String())
+			if e != nil {
+				log.WithError(e).Warnf("[AccountWorker %s] PollDM failed to update sync state in db", worker.userAccount.remoteID.String())
+			}
+			return
+
 		} else {
-			log.WithError(retrieveErr).Warnf("[AccountWorker %s] PollDM failed to retrieve infos map", worker.userAccount.remoteID.String())
+			e := worker.saveErrorState(accountInfos, err.Error())
+			if e != nil {
+				log.WithError(e).Warnf("[AccountWorker %s] PollDM failed to update sync state in db", worker.userAccount.remoteID.String())
+			}
 			return
 		}
-	} else {
-		log.WithError(err).Warnf("[AccountWorker %s] PollDM failed", worker.userAccount.remoteID.String())
-		return
 	}
 
 	sort.Sort(ByAscID(DMs.Events)) // reverse events order to get older DMs first
@@ -232,6 +237,14 @@ func (worker *AccountWorker) PollDM() {
 			}
 			worker.lastDMseen = event.ID
 		}
+	}
+	delete(accountInfos, lastErrorKey)
+	delete(accountInfos, errorsCountKey)
+	delete(accountInfos, dateFirstErrorKey)
+	delete(accountInfos, dateLastErrorKey)
+	e := worker.broker.Store.UpdateRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String(), accountInfos)
+	if e != nil {
+		log.WithError(e).Warnf("[AccountWorker %s] PollDM failed to update sync state in db", worker.userAccount.remoteID.String())
 	}
 	log.Infof("[AccountWorker %s] PollDM finished", worker.userAccount.remoteID.String())
 }
@@ -314,6 +327,50 @@ func (worker *AccountWorker) getAccountName(accountID string) (accountName strin
 		return accountName
 	}
 	return
+}
+
+func (worker *AccountWorker) saveErrorState(infos map[string]string, err string) error {
+
+	// ensure errors data fields are present
+	if _, ok := infos[lastErrorKey]; !ok {
+		infos[lastErrorKey] = ""
+	}
+	if _, ok := infos[dateFirstErrorKey]; !ok {
+		infos[dateFirstErrorKey] = ""
+	}
+	if _, ok := infos[dateLastErrorKey]; !ok {
+		infos[dateLastErrorKey] = ""
+	}
+	if _, ok := infos[errorsCountKey]; !ok {
+		infos[errorsCountKey] = "0"
+	}
+
+	// log last error
+	infos[lastErrorKey] = "Twitter connection failed : " + err
+	log.Warnf("Twitter connection failed for remote identity %s : %s", worker.userAccount.remoteID, err)
+	// increment counter
+	count, _ := strconv.Atoi(infos[errorsCountKey])
+	count++
+	infos[errorsCountKey] = strconv.Itoa(count)
+
+	// update dates
+	lastDate := time.Now()
+	var firstDate time.Time
+	firstDate, _ = time.Parse(time.RFC3339, infos[dateFirstErrorKey])
+	if firstDate.IsZero() {
+		firstDate = lastDate
+	}
+	infos[dateFirstErrorKey] = firstDate.Format(time.RFC3339)
+	infos[dateLastErrorKey] = lastDate.Format(time.RFC3339)
+
+	// check failuresThreshold
+	if lastDate.Sub(firstDate)/time.Hour > failuresThreshold {
+		// TODO : disable remote identity and send nats message to identities_worker
+	}
+
+	// udpate UserIdentity in db
+	return worker.broker.Store.UpdateRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String(), infos)
+
 }
 
 // sort interface
