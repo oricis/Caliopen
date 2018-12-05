@@ -70,6 +70,7 @@ func (notif *Notifier) SendEmailAdminToUser(user *User, email *Message) error {
 	(*email).Participants = []Participant{sender, recipient}
 	(*email).Protocol = EmailProtocol
 	(*email).User_id = notif.admin.UserId
+	(*email).UserIdentities = []UUID{notif.adminLocalID.Id}
 
 	// save & index message
 	err := notif.store.CreateMessage(email)
@@ -91,6 +92,7 @@ func (notif *Notifier) SendEmailAdminToUser(user *User, email *Message) error {
 		Order:     nats_order,
 		MessageId: email.Message_id.String(),
 		UserId:    notif.admin.UserId.String(),
+		RemoteId:  notif.adminLocalID.Id.String(),
 	}
 	natsMessage, e := json.Marshal(order)
 	if e != nil {
