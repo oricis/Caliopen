@@ -6,10 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.13.1] 2018-12-05
+
 ### Fixed
 
 - BSOD when selecting contact
 - All messages detected as Twitter DM
+- Missing user_identity when sending the reset password notification
+- Legacy protocol values are considered as valid
 
 ## [0.13.0] 2018-11-30
 
