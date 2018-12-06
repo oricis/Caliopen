@@ -49,12 +49,9 @@ const mapStateToProps = createSelector(
 const deleteDiscussion = ({ discussionId, messages }) => async (dispatch) => {
   await Promise.all(messages.map(message => dispatch(deleteMessageRaw({ message }))));
 
-  return dispatch(invalidate({ type: 'discussion', key: discussionId }));
+  return dispatch(invalidate('discussion', discussionId));
 };
 
-const onMessageSent = ({ message }) => (dispatch) => {
-  dispatch(invalidate({ type: 'discussion', key: message.discussion_id }));
-};
 const updateDiscussionTags = ({ i18n, messages, tags }) => async dispatch =>
   Promise.all(messages.map(message =>
     dispatch(updateTagCollection(i18n, { type: 'message', entity: message, tags }))));
@@ -72,7 +69,6 @@ const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
     requestDiscussion.bind(null, { discussionId: getDiscussionIdFromProps(ownProps) }),
   updateDiscussionTags,
   onMessageReply,
-  onMessageSent,
   getUser,
 }, dispatch);
 

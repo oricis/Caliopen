@@ -8,7 +8,7 @@ describe('modules identity - service - filterIdentities', () => {
   ];
 
   const contacts = [
-    { contact_id: 'contact-user', emails: [{ address: 'me@caliopen.local' }] },
+    { contact_id: 'contact-user', emails: [{ address: 'me@caliopen.local' }], identities: [{ name: 'me', type: 'twitter' }] },
     { contact_id: 'contact-with-all-protocols', emails: [{ address: 'foo@bar.tld' }], identities: [{ name: 'foo', type: 'twitter' }] },
     { contact_id: 'contact-with-email-protocol', emails: [{ address: 'foo2@bar2.tld' }] },
   ];
@@ -25,7 +25,7 @@ describe('modules identity - service - filterIdentities', () => {
 
   it('filter parent message protocol (email) (1-to-n no contacts)', () => {
     const parentMessage = {
-      type: 'email',
+      protocol: 'email',
       participants: [
         { address: 'foo@contact.tld', protocol: 'email' },
         { address: 'foo2@contact.tld', protocol: 'email' },
@@ -38,7 +38,7 @@ describe('modules identity - service - filterIdentities', () => {
 
   it('filter parent message protocol (twitter) (1-to-n)', () => {
     const parentMessage = {
-      type: 'DM twitter',
+      protocol: 'twitter',
       participants: [
         { address: '@contact', protocol: 'twitter' },
         { address: '@contact2', protocol: 'twitter' },
@@ -51,19 +51,21 @@ describe('modules identity - service - filterIdentities', () => {
 
   it('filter discussion 1-to-1 available contact address', () => {
     const parentMessage = {
-      type: 'DM twitter',
+      protocol: 'twitter',
       participants: [
         { address: '@contact', protocol: 'twitter', contact_ids: ['contact-with-all-protocols'] },
         { address: '@me', protocol: 'twitter', contact_ids: ['contact-user'] },
       ],
     };
 
-    expect(filterIdentities({ identities, parentMessage, contacts, user })).toEqual(identities);
+    expect(filterIdentities({
+      identities, parentMessage, contacts, user,
+    })).toEqual(identities);
   });
 
   it('filter discussion 1-to-1 without contact', () => {
     const parentMessage = {
-      type: 'DM twitter',
+      protocol: 'twitter',
       participants: [
         { address: '@contact', protocol: 'twitter' },
         { address: '@me', protocol: 'twitter', contact_ids: ['contact-user'] },
@@ -75,7 +77,7 @@ describe('modules identity - service - filterIdentities', () => {
 
   it('filter discussion 1-to-n with contacts', () => {
     const parentMessage = {
-      type: 'email',
+      protocol: 'email',
       participants: [
         { address: 'foo@bar.tld', protocol: 'email', contacts_ids: ['contact-with-all-protocols'] },
         { address: 'foo2@bar2.tld', protocol: 'email', contacts_ids: ['contact-with-email-protocol'] },
@@ -83,6 +85,8 @@ describe('modules identity - service - filterIdentities', () => {
       ],
     };
 
-    expect(filterIdentities({ identities, parentMessage, contacts, user })).toEqual([identities[0], identities[2]]);
+    expect(filterIdentities({
+      identities, parentMessage, contacts, user,
+    })).toEqual([identities[0], identities[2]]);
   });
 });

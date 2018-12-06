@@ -7,7 +7,7 @@ const getParticipantsContactsExceptUser = ({ contacts, participants, user }) => 
     const contactIds = participant.contact_ids
       .filter(contactId => contactId !== user.contact.contact_id);
 
-    if (contactIds.lentgh === 0) {
+    if (contactIds.length === 0) {
       return acc;
     }
 
@@ -44,7 +44,7 @@ export const filterIdentities = ({
   });
 
   // in a discussion 1-to-n we allow to switch identity of the same protocol
-  if (participantsContacts.length === 0 || participantsContacts.lentgh > 1) {
+  if (participantsContacts.length === 0 || participantsContacts.length > 1) {
     return identities.filter(identity => identity.protocol === parentMessage.protocol);
   }
 

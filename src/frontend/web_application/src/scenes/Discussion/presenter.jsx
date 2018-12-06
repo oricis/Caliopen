@@ -38,7 +38,6 @@ class Discussion extends Component {
     messages: PropTypes.arrayOf(PropTypes.shape({})),
     canBeClosed: PropTypes.bool.isRequired,
     onMessageReply: PropTypes.func.isRequired,
-    onMessageSent: PropTypes.func.isRequired,
     setMessageRead: PropTypes.func.isRequired,
     deleteMessage: PropTypes.func.isRequired,
     // XXX: waiting for API
@@ -180,8 +179,6 @@ class Discussion extends Component {
     return updateDiscussionTags({ i18n, messages, tags });
   };
 
-  handleMessageSent = message => this.props.onMessageSent({ message });
-
   loadMore = () => {
     const { hasMore, isFetching } = this.props;
 
@@ -296,7 +293,6 @@ class Discussion extends Component {
           <DraftMessage
             scrollToMe={hash === 'reply' ? scrollToTarget : undefined}
             onFocus={this.handleFocusDraft}
-            onSent={this.handleMessageSent}
             draftFormRef={(node) => { this.replyFormRef = node; }}
             hasDiscussion // mandatory for withDraftMessage HoC!
           />

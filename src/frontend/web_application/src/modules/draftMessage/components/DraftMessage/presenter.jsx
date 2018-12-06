@@ -30,6 +30,7 @@ class DraftMessage extends Component {
     draftMessage: PropTypes.shape({
       user_identities: PropTypes.arrayOf(PropTypes.string),
     }),
+    requestDraft: PropTypes.func.isRequired,
     original: PropTypes.shape({}),
     onEditDraft: PropTypes.func.isRequired,
     // onSaveDraft: PropTypes.func.isRequired,
@@ -45,6 +46,7 @@ class DraftMessage extends Component {
     draftFormRef: PropTypes.func,
     onFocus: PropTypes.func,
     isFetching: PropTypes.bool,
+    hasDiscussion: PropTypes.bool,
   };
   static defaultProps = {
     className: undefined,
@@ -59,6 +61,7 @@ class DraftMessage extends Component {
     onSent: () => {},
     onDeleteMessageSuccessfull: () => {},
     isFetching: true,
+    hasDiscussion: false,
   };
 
   static genererateStateFromProps(props, prevState) {
@@ -99,6 +102,7 @@ class DraftMessage extends Component {
   }
 
   static initialState = {
+    initialized: false,
     advancedForm: true,
     isSending: false,
     draftMessage: {
@@ -167,6 +171,16 @@ class DraftMessage extends Component {
 
   getIdentity = () => this.props.availableIdentities
     .find(ident => ident.identity_id === this.state.draftMessage.identityId);
+
+  getCanSend = () => {
+    const { isReply } = this.props;
+    const errors = this.validate();
+    const isValid = errors.length === 0;
+    const hasRecipients = this.state.draftMessage.recipients &&
+      this.state.draftMessage.recipients.length > 0;
+
+    return (isReply || hasRecipients) && !this.state.isSending && isValid;
+  }
 
   validate = () => {
     const currentDraft = this.state.draftMessage;
@@ -242,7 +256,7 @@ class DraftMessage extends Component {
 
   handleSend = async () => {
     const {
-      onSendDraft, internalId, original, notifyError, i18n, onSent,
+      onSendDraft, internalId, original, notifyError, i18n, onSent, requestDraft, hasDiscussion,
     } = this.props;
 
     this.setState({ isSending: true });
@@ -253,6 +267,13 @@ class DraftMessage extends Component {
         message: original,
         internalId,
       });
+
+      this.setState({
+        initialized: false,
+        draftMessage: undefined,
+      });
+
+      await requestDraft({ internalId, hasDiscussion });
 
       onSent({ message });
     } catch (err) {
@@ -405,8 +426,7 @@ class DraftMessage extends Component {
       forwardRef(el);
     };
 
-    const hasRecipients = this.state.draftMessage.recipients &&
-      this.state.draftMessage.recipients.length > 0;
+    const canSend = this.getCanSend();
 
     return (
       <div className={classnames(className, 'm-draft-message-quick')} ref={ref}>
@@ -430,7 +450,7 @@ class DraftMessage extends Component {
               title={i18n._('draft-message.action.send', null, { defaults: 'Send' })}
               className="m-draft-message-quick__send-button"
               onClick={this.handleSend}
-              disabled={!hasRecipients}
+              disabled={!canSend}
             />
           </div>
         </div>
@@ -466,9 +486,7 @@ class DraftMessage extends Component {
     };
 
     const errors = this.validate();
-    const isValid = errors.length === 0;
-    const hasRecipients = this.state.draftMessage.recipients &&
-      this.state.draftMessage.recipients.length > 0;
+    const canSend = this.getCanSend();
 
     return (
       <div className={classnames(className, 'm-draft-message-advanced')} ref={ref} >
@@ -539,7 +557,7 @@ class DraftMessage extends Component {
             shape="plain"
             className="m-draft-message-advanced__action-button m-draft-message-advanced__button-send"
             onClick={this.handleSend}
-            disabled={!isValid || !hasRecipients || this.state.isSending}
+            disabled={!canSend}
           >
             {this.state.isSending && (<Spinner display="inline" theme="bright" />)}
             {!this.state.isSending && (<Icon type="laptop" />)}
@@ -551,7 +569,7 @@ class DraftMessage extends Component {
             <Trans id="draft-message.action.send">Send</Trans>
           </Button>
         </div>
-        {!isValid && (
+        {errors.length > 0 && (
           <div className="m-draft-message-advanced__errors">
             <FieldErrors errors={errors} />
           </div>
