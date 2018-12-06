@@ -8,8 +8,8 @@ describe('modules identity - service - filterIdentities', () => {
   ];
 
   const contacts = [
-    { contact_id: 'contact-user', emails: [{ address: 'me@caliopen.local' }] },
-    { contact_id: 'contact-with-all-protocols', emails: [{ address: 'foo@bar.tld' }], identities: [{ name: 'foo', protocol: 'twitter' }] },
+    { contact_id: 'contact-user', emails: [{ address: 'me@caliopen.local' }], identities: [{ name: 'me', type: 'twitter' }] },
+    { contact_id: 'contact-with-all-protocols', emails: [{ address: 'foo@bar.tld' }], identities: [{ name: 'foo', type: 'twitter' }] },
     { contact_id: 'contact-with-email-protocol', emails: [{ address: 'foo2@bar2.tld' }] },
   ];
 
@@ -58,7 +58,9 @@ describe('modules identity - service - filterIdentities', () => {
       ],
     };
 
-    expect(filterIdentities({ identities, parentMessage, contacts, user })).toEqual(identities);
+    expect(filterIdentities({
+      identities, parentMessage, contacts, user,
+    })).toEqual(identities);
   });
 
   it('filter discussion 1-to-1 without contact', () => {
