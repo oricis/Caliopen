@@ -1,11 +1,14 @@
 @import '../../../../styles/common';
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
+/* XXX: add a margin if message is on top of the list */
 .m-message-list__load-more +.m-instant-message {
   margin-top: 1rem;
 }
 
 .m-instant-message {
+  $baseName: &;
+
   display: flex;
   flex-direction: row;
   width: 44.5rem;
@@ -15,12 +18,17 @@
     flex-direction: row-reverse;
     margin-left: auto;
 
-    .m-instant-message__info {
+    #{$baseName}__info {
       background-color: #feffff;
     }
 
-    .m-instant-message__content {
+    #{$baseName}__content {
       background-color: #f0faff;
+    }
+
+    #{$baseName}__author {
+      padding-right: 0.25rem;
+      padding-left: 0.25rem;
     }
   }
 
@@ -66,12 +74,6 @@
 
     &__to {
       color: #a7abad;
-    }
-  }
-
-  .m-message-pi {
-    &__meter {
-      border-bottom: none;
     }
   }
 

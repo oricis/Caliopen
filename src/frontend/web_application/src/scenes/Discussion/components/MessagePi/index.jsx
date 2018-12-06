@@ -113,7 +113,7 @@ class MessagePi extends PureComponent {
     return (
       <div className="m-message-pi">
         {illustrate ? this.renderIllustration() : null}
-        <div className="m-message-pi__meter">
+        <div className={classnames('m-message-pi__meter', { 'm-message-pi__meter--no-separator': !describe })}>
           <div
             className={classnames(['m-message-pi__progress', `m-message-pi__progress--${piClass}`])}
             role="progressbar"
