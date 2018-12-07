@@ -42,7 +42,7 @@ You can see the full video of the test by browsing open results on the [project 
 
 ### Variables
 
-This variables are defined as Drone secrets and are not available for non-members of Caliopen, some of them are defined as secrets only to avoid hardcoding them:
+The following variables are defined as Drone secrets and are not available for non-members of Caliopen, some of them are defined as secrets only to avoid hardcoding them:
 
 * SAUCE_ACCESS_KEY: Saucelabs api key
 * SAUCE_USERNAME: Saucelabs username
