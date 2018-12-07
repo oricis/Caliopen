@@ -8,12 +8,6 @@ volumes:
     driver: local
 
 services:
-  caliopen_go:
-    image: public-registry.caliopen.org/caliopen_go
-    build:
-      context: ../src/backend
-      dockerfile: Dockerfile.caliopen-go
-
   # Proxy API
   proxy-api:
     image: nginx
@@ -133,7 +127,7 @@ services:
       - elasticsearch:elasticsearch
       - object-store:minio
       - nats:nats
-      - inbucket:inbucket
+      - inbucket:smtp
     ports:
       - "2525:2525"
     volumes:
