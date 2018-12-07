@@ -1,3 +1,10 @@
+const IDENTITY_PROTOCOLS = {
+  email: 'email',
+  smtp: 'email',
+  imap: 'email',
+  twitter: 'twitter',
+};
+
 const getParticipantsContactsExceptUser = ({ contacts, participants, user }) => participants
   .reduce((acc, participant) => {
     if (!participant.contact_ids) {
@@ -30,6 +37,15 @@ const getAvailableProtocolsForTheContact = ({ contact }) => {
   return protocols;
 };
 
+const getMessageProtocol = (message) => {
+  const { protocol } = message;
+  if (!protocol) {
+    return 'email';
+  }
+
+  return message.protocol;
+};
+
 export const filterIdentities = ({
   identities, parentMessage, contacts, user,
 }) => {
@@ -45,7 +61,8 @@ export const filterIdentities = ({
 
   // in a discussion 1-to-n we allow to switch identity of the same protocol
   if (participantsContacts.length === 0 || participantsContacts.length > 1) {
-    return identities.filter(identity => identity.protocol === parentMessage.protocol);
+    return identities.filter(identity =>
+      IDENTITY_PROTOCOLS[identity.protocol] === getMessageProtocol(parentMessage));
   }
 
   // in a discussion 1-to-1 we allow to switch identity of the protocol that the associated contact

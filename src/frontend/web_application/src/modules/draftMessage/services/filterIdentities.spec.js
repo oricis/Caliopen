@@ -89,4 +89,41 @@ describe('modules identity - service - filterIdentities', () => {
       identities, parentMessage, contacts, user,
     })).toEqual([identities[0], identities[2]]);
   });
+
+  // TODO: temporary fix for https://github.com/CaliOpen/Caliopen/issues/1131
+  it('mail identities can be several protocols', () => {
+    const multiMailIdentitities = [
+      { identity_id: 'foo', type: 'local', protocol: 'smtp' },
+      { identity_id: 'bar', type: 'remote', protocol: 'imap' },
+      { identity_id: 'baz', type: 'remote', protocol: 'email' },
+      { identity_id: 'bad', type: 'remote', protocol: 'twitter' },
+    ];
+    const parentMessage = {
+      protocol: 'email',
+      participants: [
+        { address: 'foo@bar.tld', protocol: 'email', contacts_ids: ['contact-with-all-protocols'] },
+        { address: 'foo2@bar2.tld', protocol: 'email', contacts_ids: ['contact-with-email-protocol'] },
+        { address: 'me@caliopen.local', protocol: 'email', contact_ids: ['contact-user'] },
+      ],
+    };
+
+    expect(filterIdentities({
+      identities: multiMailIdentitities, parentMessage, contacts, user,
+    })).toEqual([multiMailIdentitities[0], multiMailIdentitities[1], multiMailIdentitities[2]]);
+  });
+
+  // TODO: temporary fix for https://github.com/CaliOpen/Caliopen/issues/1130
+  it('parent message might not has protocol', () => {
+    const parentMessage = {
+      participants: [
+        { address: 'foo@bar.tld', protocol: 'email', contacts_ids: ['contact-with-all-protocols'] },
+        { address: 'foo2@bar2.tld', protocol: 'email', contacts_ids: ['contact-with-email-protocol'] },
+        { address: 'me@caliopen.local', protocol: 'email', contact_ids: ['contact-user'] },
+      ],
+    };
+
+    expect(filterIdentities({
+      identities, parentMessage, contacts, user,
+    })).toEqual([identities[0], identities[2]]);
+  });
 });
