@@ -151,14 +151,14 @@ class Message(ObjectIndexable):
         message.is_draft = True
         message.is_received = False
 
+        if not message.protocol:
+            log.warn("failed to pick a protocol")
+            raise Exception("`message protocol is missing")
+
         # forbid multiple protocol
         for participant in message.participants:
             if participant.protocol != message.protocol:
                 raise Exception("multiple protocols not implemented")
-
-        if not message.protocol:
-            log.warn("failed to pick a protocol")
-            raise Exception("`message protocol is missing")
 
         message.date = message.date_sort = message.date_insert = \
             datetime.datetime.now(tz=pytz.utc)
