@@ -144,7 +144,7 @@ pipeline:
       - . devtools/drone/files_changed.sh # Check if any file has been modified
       - . devtools/drone/build_images.sh # Build docker image
 
-  # GO develop images
+  ## GO develop images
   build-apiv2-develop:
     group: build2
     image: public-registry.caliopen.org/caliopen_drone_docker
@@ -250,7 +250,6 @@ pipeline:
     - . devtools/drone/files_changed.sh
     - . devtools/drone/build_images.sh
 
-  # Frontend develop image
   build-frontend-develop:
     group: build3
     image: public-registry.caliopen.org/caliopen_drone_docker
@@ -274,7 +273,6 @@ pipeline:
 ##          BUILD AND PUBLISH ON TAG: RELEASE-         ##
 #########################################################
 
-# Build and pusblish all images
   build-py-cli-release:
     group: release1
     image: plugins/docker
@@ -401,10 +399,17 @@ pipeline:
       - latest
       - ${DRONE_TAG##release-}
 
+#########################################################
+##                     SERVICES                        ##
+#########################################################
+
 services:
 
   sauce-connect:
     image: joscha/docker-sauce-connect
     secrets: [ SAUCE_USERNAME , SAUCE_ACCESS_KEY ]
+    when:
+      branch: [ develop, master ]
+      event: [ pull_request ]
     commands:
       - sc -u $${SAUCE_USERNAME} -k $${SAUCE_ACCESS_KEY} -i caliopen
