@@ -577,18 +577,18 @@ class ObjectIndexable(ObjectUser):
         # update_sibling is an empty sibling that will be filled
         # with attributes from self
         update_sibling = self.__class__(user=self.user)
-
         m = self._index._doc_type.mapping.to_dict()
         for att in m[self._index._doc_type.name]["properties"]:
             if not att.startswith("_") and att in index_sibling.keys():
                 if update:
                     if getattr(self, att) != getattr(index_sibling, att):
                         setattr(update_sibling, att, getattr(self, att))
+                    else:
+                        delattr(update_sibling, att)
                 else:
                     setattr(update_sibling, att, getattr(self, att))
 
         update_dict = update_sibling.marshall_dict()
-
         for k, v in update_dict.iteritems():
             if k in self._index_class.__dict__:
                 # do not try to set a property directly
@@ -598,7 +598,6 @@ class ObjectIndexable(ObjectUser):
                 setattr(self._index, k, v)
 
         if update:
-            delattr(update_sibling, "user_id")
             return update_sibling.marshall_dict()
 
     def unmarshall_index(self, **options):
