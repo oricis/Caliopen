@@ -1,7 +1,8 @@
+/* eslint-disable no-unneeded-ternary, no-nested-ternary */
 import React from 'react';
-import PropTypes from 'prop-types';
+// extends https://github.com/elrumordelaluz/reactour/blob/master/src/TourPortal.js
 import TourPortalBase from 'reactour/dist/TourPortal';
-import { TopMask, RightMask, BottomMask, LeftMask, ElementMask, Navigation, Dot } from 'reactour/dist/components';
+import { Navigation, Dot, SvgMask, Controls } from 'reactour/dist/components';
 import cn from 'classnames';
 import Guide from '../Guide';
 import { Button } from '../../../../../../components/';
@@ -19,50 +20,13 @@ const CN = {
 };
 
 class TourPortal extends TourPortalBase {
-  static propTypes = {
-    badgeContent: PropTypes.func,
-    highlightedMaskClassName: PropTypes.string,
-    className: PropTypes.string,
-    closeWithMask: PropTypes.bool,
-    inViewThreshold: PropTypes.number,
-    isOpen: PropTypes.bool.isRequired,
-    lastStepNextButton: PropTypes.string,
-    maskClassName: PropTypes.string,
-    maskSpace: PropTypes.number,
-    nextButton: PropTypes.string,
-    onAfterOpen: PropTypes.func,
-    onBeforeClose: PropTypes.func,
-    onRequestClose: PropTypes.func,
-    prevButton: PropTypes.string,
-    scrollDuration: PropTypes.number,
-    scrollOffset: PropTypes.number,
-    showButtons: PropTypes.bool,
-    showNavigation: PropTypes.bool,
-    showNavigationNumber: PropTypes.bool,
-    showNumber: PropTypes.bool,
-    startAt: PropTypes.number,
-    steps: PropTypes.arrayOf(PropTypes.shape({
-      selector: PropTypes.string.isRequired,
-      content: PropTypes.oneOfType([
-        PropTypes.node,
-        PropTypes.element,
-        PropTypes.func,
-      ]).isRequired,
-      position: PropTypes.oneOf(['top', 'right', 'bottom', 'left', 'center']),
-      action: PropTypes.func,
-      style: PropTypes.object,
-    })),
-    update: PropTypes.string,
-    updateDelay: PropTypes.number,
-    disableInteraction: PropTypes.bool,
-  }
-
   render() {
     const {
       className,
       steps,
       maskClassName,
       showButtons,
+      showCloseButton,
       showNavigation,
       showNavigationNumber,
       showNumber,
@@ -71,11 +35,14 @@ class TourPortal extends TourPortalBase {
       lastStepNextButton,
       nextButton,
       prevButton,
-      closeButton,
-      skipButton,
       badgeContent,
       highlightedMaskClassName,
       disableInteraction,
+      disableDotsNavigation,
+      nextStep,
+      prevStep,
+      rounded,
+      accentColor,
     } = this.props;
 
     const {
@@ -108,47 +75,28 @@ class TourPortal extends TourPortalBase {
               [CN.mask.isOpen]: isOpen,
             })}
           >
-            <TopMask
-              targetTop={targetTop}
-              padding={maskSpace}
-              className={maskClassName}
-            />
-            <RightMask
-              targetTop={targetTop}
-              targetLeft={targetLeft}
+            <SvgMask
+              windowWidth={windowWidth}
+              windowHeight={windowHeight}
               targetWidth={targetWidth}
               targetHeight={targetHeight}
-              windowWidth={windowWidth}
-              padding={maskSpace}
-              className={maskClassName}
-            />
-            <BottomMask
-              targetHeight={targetHeight}
-              targetTop={targetTop}
-              windowHeight={windowHeight}
-              padding={maskSpace}
-              className={maskClassName}
-            />
-            <LeftMask
-              targetHeight={targetHeight}
               targetTop={targetTop}
               targetLeft={targetLeft}
               padding={maskSpace}
+              rounded={rounded}
               className={maskClassName}
+              disableInteraction={
+                disableInteraction && steps[current].stepInteraction
+                  ? !steps[current].stepInteraction
+                  : disableInteraction
+              }
+              disableInteractionClassName={`${
+                CN.mask.disableInteraction
+              } ${highlightedMaskClassName}`}
             />
           </div>
-          {disableInteraction && (
-            <ElementMask
-              targetTop={targetTop}
-              targetLeft={targetLeft}
-              targetWidth={targetWidth}
-              targetHeight={targetHeight}
-              padding={maskSpace}
-              className={highlightedMaskClassName}
-            />
-          )}
           <Guide
-            innerRef={(c) => { this.helper = c; }}
+            ref={this.helper}
             targetHeight={targetHeight}
             targetWidth={targetWidth}
             targetTop={targetTop}
@@ -164,22 +112,27 @@ class TourPortal extends TourPortalBase {
             tabIndex={-1}
             current={current}
             style={steps[current].style ? steps[current].style : {}}
+            rounded={rounded}
             className={cn(CN.helper.base, className, {
               [CN.helper.isOpen]: isOpen,
             })}
+            accentColor={accentColor}
           >
             {showNumber && (
+              // overide Badge with className
               <div className="m-tour-portal__badge">
-                {typeof badgeContent === 'function' ? (
+                {typeof badgeContent === 'function' ?
                   badgeContent(current + 1, steps.length)
-                ) : (
-                  current + 1
-                )}
+                  : current + 1}
               </div>
             )}
-            <div className="m-tour-portal__close">
-              <Button onClick={onRequestClose} icon="remove"><span className="show-for-sr">{closeButton}</span></Button>
-            </div>
+            {/* append close section */}
+            {showCloseButton && (
+              <div className="m-tour-portal__close">
+                <Button onClick={onRequestClose} icon="remove"><span className="show-for-sr">{onRequestClose}</span></Button>
+              </div>
+            )}
+            {/* add className */}
             <div className="m-tour-portal__content">
               {steps[current] &&
                 (typeof steps[current].content === 'function'
@@ -191,54 +144,64 @@ class TourPortal extends TourPortalBase {
                   : steps[current].content)}
             </div>
             <div className="m-tour-portal__controls">
-              {showButtons && (current !== 0 || !skipButton) && (
-                <Button
-                  onClick={this.prevStep}
-                  disabled={current === 0}
-                >
-                  {prevButton}
-                </Button>
-              )}
-              {showButtons && current === 0 && (
-                <Button onClick={onRequestClose}>{skipButton}</Button>
-              )}
+              {(showButtons || showNavigation) && (
+                <Controls data-tour-elem="controls">
+                  {showButtons && (
+                    // replace SvgArrow components by simple Buttons
+                    <Button
+                      onClick={
+                        typeof prevStep === 'function' ? prevStep : this.prevStep
+                      }
+                      disabled={current === 0}
+                    >
+                      {prevButton}
+                    </Button>
+                  )}
 
-              {showNavigation && (
-                <Navigation>
-                  {steps.map((s, i) => (
-                    <Dot
-                      key={`${s.selector}_${i}`}
-                      onClick={() => this.gotoStep(i)}
-                      current={current}
-                      index={i}
-                      disabled={current === i}
-                      showNumber={showNavigationNumber}
-                    />
-                  ))}
-                </Navigation>
-              )}
+                  {showNavigation && (
+                    <Navigation data-tour-elem="navigation">
+                      {steps.map((s, i) => (
+                        <Dot
+                          key={`${s.selector ? s.selector : 'undef'}_${i}`}
+                          onClick={() => this.gotoStep(i)}
+                          current={current}
+                          index={i}
+                          disabled={current === i || disableDotsNavigation}
+                          showNumber={showNavigationNumber}
+                          data-tour-elem="dot"
+                        />
+                      ))}
+                    </Navigation>
+                  )}
 
-              {showButtons && (
-                <Button
-                  onClick={() => {
-                    if (current !== steps.length - 1) {
-                      return this.nextStep();
-                    }
-
-                    if (lastStepNextButton) {
-                      return onRequestClose();
-                    }
-
-                    return null;
-                  }}
-                  disabled={!lastStepNextButton && current === steps.length - 1}
-                  shape={(current !== (steps.length - 1)) ? 'plain' : null}
-                >
-                  {current === steps.length - 1 ? lastStepNextButton : nextButton}
-                </Button>
+                  {showButtons && (
+                    <Button
+                      onClick={
+                        current === steps.length - 1
+                          ? lastStepNextButton
+                            ? onRequestClose
+                            : () => {}
+                          : typeof nextStep === 'function'
+                            ? nextStep
+                            : this.nextStep
+                      }
+                      disabled={
+                        !lastStepNextButton && current === steps.length - 1
+                      }
+                    >
+                      {lastStepNextButton && current === steps.length - 1
+                        ? lastStepNextButton
+                        : nextButton
+                        ? nextButton
+                        : null
+                      }
+                    </Button>
+                  )}
+                </Controls>
               )}
             </div>
           </Guide>
+          {this.props.children}
         </div>
       );
     }
