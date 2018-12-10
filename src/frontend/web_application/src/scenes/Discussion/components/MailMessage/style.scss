@@ -1,7 +1,8 @@
 @import '../../../../styles/common';
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
-.instant +.s-mail-message {
+/* XXX add a margin when MailMessage is followed by InstantMessage */
+.m-instant-message +.s-mail-message {
   margin-top: 2rem;
 }
 

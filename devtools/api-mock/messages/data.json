@@ -256,7 +256,61 @@
     "privacy_features": {},
     "raw_msg_id": "1ac9a18b-2453-45e7-b778-528043de4373",
     "subject": "Ils sont fous ces romains.",
-    "protocol": "email",
+    "protocol": "twitter",
+    "pi": {
+        "technic": 30,
+        "context": 10,
+        "comportment": 1,
+        "version": 1
+    },
+    "participants": [
+        {
+            "address": "john@caliopen.local",
+            "contact_ids": [
+                "c-john-01"
+            ],
+            "label": "foo",
+            "protocol": "email",
+            "type": "From"
+        },
+        {
+            "address": "panoramix@caliopen.local",
+            "contacts_ids": [
+                "fedd1cc7-2db3-442f-a42a-24e21e98ff52"
+            ],
+            "protocol": "email",
+            "label": "Panoramix",
+            "type": "To"
+        },
+        {
+            "address": "asterix@caliopen.local",
+            "contacts_ids": [
+                "2c8fb086-86da-4a87-9abc-668b73578f49"
+            ],
+            "protocol": "email",
+            "label": "Astérix",
+            "type": "To"
+        }
+    ],
+    "user_identities": ["aaaa-bbbb-cccc-ddd1"],
+    "body": "Ils sont fous, ces gaulois.\n",
+    "excerpt": "Ils sont fous, ces gaulois.",
+    "date": "0042-09-08T14:55:00+00:00",
+    "date_insert": "0042-09-08T15:00:00+00:00",
+    "date_sort": "0042-09-08T15:00:00+00:00"
+},
+{
+    "attachment": [],
+    "discussion_id": "b1256c1e-7b65-4fe2-8960-a7d6c0c4a051",
+    "message_id": "74488b21-318c-4c60-be21-36cea07cfde2",
+    "is_answered": true,
+    "is_draft": false,
+    "is_received": true,
+    "importance_level": 0,
+    "privacy_features": {},
+    "raw_msg_id": "1ac9a18b-2453-45e7-b778-528043de4373",
+    "subject": "Ils sont fous ces romains.",
+    "type": "email",
     "pi": {
         "technic": 30,
         "context": 10,

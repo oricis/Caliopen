@@ -1,6 +1,26 @@
 @import '../../../../styles/common';
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 
+.ugly {
+  .m-message-pi__metaphor, .m-message-pi__meter { border-color: map_get($privacy-palette-high, 'ugly'); }
+  .m-message-pi__numeric-value { color: map_get($privacy-palette, 'ugly'); }
+}
+
+.bad {
+  .m-message-pi__metaphor, .m-message-pi__meter { border-color: map_get($privacy-palette-high, 'bad'); }
+  .m-message-pi__numeric-value { color: map_get($privacy-palette, 'bad'); }
+}
+
+.good {
+  .m-message-pi__metaphor, .m-message-pi__meter { border-color: map_get($privacy-palette-high, 'good'); }
+  .m-message-pi__numeric-value { color: map_get($privacy-palette, 'good'); }
+}
+
+.super {
+  .m-message-pi__metaphor, .m-message-pi__meter { border-color: map_get($privacy-palette-high, 'super'); }
+  .m-message-pi__numeric-value { color: map_get($privacy-palette, 'super'); }
+}
+
 .m-message-pi {
   display: flex;
   flex-direction: row;
@@ -32,6 +52,10 @@
     flex-grow: 1;
     width: 45%;
     border-bottom: 2px solid #999999;
+
+    &--no-separator {
+      border-bottom: none;
+    }
   }
 
   &__progress-meter {
@@ -126,22 +150,3 @@
   }
 }
 
-.ugly {
-  .m-message-pi__metaphor, .m-message-pi__meter { border-color: map_get($privacy-palette-high, 'ugly'); }
-  .m-message-pi__numeric-value { color: map_get($privacy-palette, 'ugly'); }
-}
-
-.bad {
-  .m-message-pi__metaphor, .m-message-pi__meter { border-color: map_get($privacy-palette-high, 'bad'); }
-  .m-message-pi__numeric-value { color: map_get($privacy-palette, 'bad'); }
-}
-
-.good {
-  .m-message-pi__metaphor, .m-message-pi__meter { border-color: map_get($privacy-palette-high, 'good'); }
-  .m-message-pi__numeric-value { color: map_get($privacy-palette, 'good'); }
-}
-
-.super {
-  .m-message-pi__metaphor, .m-message-pi__meter { border-color: map_get($privacy-palette-high, 'super'); }
-  .m-message-pi__numeric-value { color: map_get($privacy-palette, 'super'); }
-}

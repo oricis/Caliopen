@@ -4,14 +4,16 @@ import Moment from 'react-moment';
 import classNames from 'classnames';
 import VisibilitySensor from 'react-visibility-sensor';
 import { withScrollTarget } from '../../../../modules/scroll';
-import { isMessageFromUser } from '../../../../services/message';
+import { isMessageFromUser, getAuthor, isUserRecipient, getRecipientsExceptUser, getRecipients } from '../../../../services/message';
 import { getAveragePI, getPiClass } from '../../../../modules/pi';
 import { AuthorAvatarLetter } from '../../../../modules/avatar';
+import { Icon } from '../../../../components';
+import MessagePi from '../MessagePi';
 
 import './style.scss';
 
 const PROTOCOL_ICONS = {
-  facebook: 'facebook-square',
+  facebook: 'facebook',
   twitter: 'twitter',
   sms: 'phone',
   email: 'envelope',
@@ -23,6 +25,8 @@ class InstantMessage extends PureComponent {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
     onMessageRead: PropTypes.func.isRequired,
+    forwardRef: PropTypes.func.isRequired,
+    i18n: PropTypes.func.isRequired,
     // XXX: No UI for that
     // onMessageUnread: PropTypes.func.isRequired,
     // onDeleteMessage: PropTypes.func.isRequired,
@@ -39,40 +43,63 @@ class InstantMessage extends PureComponent {
   }
 
   getClassNames = (pi, message) => classNames(
-    'instant',
-    this.getPiClass(pi),
-    { fromUser: isMessageFromUser(message, this.props.user) }
+    'm-instant-message',
+    `${getPiClass(pi)}`,
+    { 'm-instant-message--from-user': isMessageFromUser(message, this.props.user) }
   );
 
-  getProtocolIconType = protocol => PROTOCOL_ICONS[protocol] || 'comment';
+  getProtocolIconType = ({ protocol }) => PROTOCOL_ICONS[protocol] || 'comment';
 
-  extractAuthor = ({ participants }) => participants.find(participant => participant.type === 'From');
+  getRecipientsString = (shorten) => {
+    const { i18n } = this.props;
+    const recipients = this.getRecipientsArray();
+    const numberRecipients = recipients.length;
+
+    if (numberRecipients === 0) return i18n._('message.participants.me', null, { defaults: 'Me' });
+    if (!shorten || numberRecipients === 1) return recipients.join(', ');
+
+    return i18n._('messages.participants.and_x_others', { first: recipients[0], number: numberRecipients - 1 }, { defaults: '{first} and {number, plural, one {# other} other {# others}}' });
+  };
+
+  getRecipientsLabels = (recipients) => {
+    if (!recipients) return [];
+
+    return recipients.map(recipient =>
+      (recipient.label ? recipient.label : recipient.address));
+  };
+
+  getRecipientsArray = () => {
+    const { message, user, i18n } = this.props;
+
+    return isUserRecipient(message, user) ?
+      [
+        i18n._('message.participants.me', null, { defaults: 'Me' }),
+        ...this.getRecipientsLabels(getRecipientsExceptUser(message, user)),
+      ]
+      :
+      this.getRecipientsLabels(getRecipients(message));
+  }
 
   render() {
     const { message, scrollTarget: { forwardRef } } = this.props;
-    const author = this.extractAuthor(message);
+    const author = getAuthor(message);
     const pi = getAveragePI(message.pi);
 
     return (
-      <article className={`instant ${getPiClass(pi)}`} ref={forwardRef}>
-        <header className="from">
+      <article className={this.getClassNames(pi, message)} ref={forwardRef}>
+        <header className="m-instant-message__author">
           <AuthorAvatarLetter message={message} />
-          <i className={`fa fa-${this.getProtocolIconType(message.type)}`} />
-          <Moment format="HH:mm">{message.date}</Moment>
+          <Icon type={this.getProtocolIconType(message)} />
+          <Moment className="m-instant-message__time" format="HH:mm">{message.date}</Moment>
         </header>
-        <aside className="info">
-          <div className="participants">
-            <span className="from">{author.label}</span>
-            <span className="to">à Vous <i className="fa fa-caret-down" /></span>
+        <aside className="m-instant-message__info">
+          <div className="m-instant-message__participants">
+            <span className="m-instant-message__participants__from">{author.label}</span>
+            <span className="m-instant-message__participants__to">{this.getRecipientsString(true)}<Icon type="caret-down" title={this.getRecipientsString(false)} /></span>
           </div>
-          <div className="pi">
-            <div className="pi-numeric">{Math.round(pi)}</div>
-            <div className="progress" role="progressbar">
-              <div className="progress-meter" style={{ width: `${pi}%` }} />
-            </div>
-          </div>
+          <MessagePi illustrate={false} describe={false} pi={message.pi} />
         </aside>
-        <div className="content">{message.body}</div>
+        <div className="m-instant-message__content">{message.body}</div>
         <VisibilitySensor onChange={this.onVisibilityChange} scrollCheck scrollThrottle={100} />
       </article>
     );

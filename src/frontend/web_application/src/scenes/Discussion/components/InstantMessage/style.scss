@@ -1,14 +1,38 @@
-.action-bar+.instant {
+@import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+/* XXX: add a margin if message is on top of the list */
+.m-message-list__load-more +.m-instant-message {
   margin-top: 1rem;
 }
 
-.instant {
+.m-instant-message {
+  $baseName: &;
+
   display: flex;
   flex-direction: row;
   width: 44.5rem;
   margin-bottom: 1rem;
 
-  header {
+  &--from-user {
+    flex-direction: row-reverse;
+    margin-left: auto;
+
+    #{$baseName}__info {
+      background-color: #feffff;
+    }
+
+    #{$baseName}__content {
+      background-color: #f0faff;
+    }
+
+    #{$baseName}__author {
+      padding-right: 0.25rem;
+      padding-left: 0.25rem;
+    }
+  }
+
+  &__author {
     display: flex;
     flex: 0 0;
     flex-basis: 3rem;
@@ -28,76 +52,32 @@
     }
   }
 
-  aside {
+  &__info {
     flex: 0 0;
     flex-basis: 10.125rem;
     padding: 0.5rem 1rem;
     background-color: #c5e8f6;
+  }
 
-    .participants {
-      width: auto;
-      margin-right: 0;
+  &__participants {
+    width: auto;
+    margin-right: 0;
 
-      span {
-        display: block;
-        font-size: 0.825rem;
-      }
+    &__to, &__from {
+      display: block;
+      font-size: 0.825rem;
     }
 
-    .from {
+    &__from {
       font-size: 0.875rem;
     }
 
-    .to {
+    &__to {
       color: #a7abad;
     }
-
-    .pi>div {
-      display: inline-block;
-      vertical-align: middle;
-    }
-    
-    .pi-numeric {
-      margin-right: 1rem;
-      font-size: 0.825rem;
-      font-weight: 600;
-    }
-
-    .progress {
-      width: 5.75rem;
-      height: 0.25rem;
-      margin-bottom: 0;
-    }
   }
 
-  &.ugly {
-    .progress {
-      background-color: #edccd4;
-    }
-
-    .progress-meter {
-      background-color: #ec0f48;
-    }
-
-    .pi-numeric {
-      color: #ec0f48;
-    }
-  }
-
-  &.super {
-    .progress {
-      background-color: #cbe8e3;
-    }
-
-    .progress-meter {
-      background-color: #07b798;
-    }
-
-    .pi-numeric {
-      color: #07b798;
-    }
-  }
-  .content {
+  &__content {
     flex-basis: 31.875rem;
     padding: 1rem;
     background-color: #b7e2f4;
