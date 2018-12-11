@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import { Trans } from '@lingui/react';
 import classnames from 'classnames';
-import VisibilitySensor from 'react-visibility-sensor';
 import { withScrollTarget } from '../../../../modules/scroll';
 import { withPush } from '../../../../modules/routing/hoc/withPush';
 import { getTagLabelFromName } from '../../../../modules/tags';
@@ -36,21 +35,13 @@ class MailMessage extends Component {
     scrollTarget: PropTypes.shape({ forwardRef: PropTypes.func }).isRequired,
   };
 
-  onVisibilityChange = (isVisible) => {
-    const { message, onMessageRead } = this.props;
-
-    if (isVisible) {
-      if (message.is_unread) { onMessageRead({ message }); }
-    }
-  }
-
   handleMessageDelete = () => {
     const { message, onMessageDelete } = this.props;
 
     onMessageDelete({ message });
   }
 
-  handleToggle = () => {
+  handleToggleMarkAsRead = () => {
     const { message, onMessageRead, onMessageUnread } = this.props;
 
     if (message.is_unread) {
@@ -129,7 +120,6 @@ class MailMessage extends Component {
               <MessageAttachments message={message} />
             </div>
           </div>
-          <VisibilitySensor onChange={this.onVisibilityChange} scrollCheck scrollThrottle={100} />
         </div>
         <footer className="s-mail-message__actions">
           <Button className="m-message-action-container__action" onClick={this.handleReply} icon="reply" responsive="icon-only">
@@ -154,7 +144,7 @@ class MailMessage extends Component {
               </Button>
             )}
           />
-          <Button className="m-message-action-container__action" onClick={this.handleToggle} responsive="icon-only">
+          <Button className="m-message-action-container__action" onClick={this.handleToggleMarkAsRead} responsive="icon-only">
             {message.is_unread ? (
               <Trans id="message-list.message.action.mark_as_read">Mark as read</Trans>
             ) : (

@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Trans, withI18n } from '@lingui/react';
+import VisibilitySensor from 'react-visibility-sensor';
 import { ManageEntityTags } from '../../../../modules/tags';
 import { Modal } from '../../../../components';
 import InstantMessage from '../InstantMessage';
@@ -28,6 +29,14 @@ class Message extends Component {
   state = {
     isTagModalOpen: false,
   };
+
+  onVisibilityChange = (isVisible) => {
+    const { message, onMessageRead } = this.props;
+
+    if (isVisible && message.is_unread) {
+      onMessageRead({ message });
+    }
+  }
 
   isMail = () => {
     const { message } = this.props;
@@ -99,15 +108,22 @@ class Message extends Component {
     };
 
     return (
-      <Fragment>
-        {
-          this.isMail() ?
-            <MailMessage {...commonProps} />
-            :
-            <InstantMessage {...commonProps} />
-        }
-        {this.renderTagsModal()}
-      </Fragment>
+      <VisibilitySensor
+        partialVisibility="bottom"
+        onChange={this.onVisibilityChange}
+        scrollCheck
+        scrollThrottle={2000}
+      >
+        <Fragment>
+          {
+            this.isMail() ?
+              <MailMessage {...commonProps} />
+              :
+              <InstantMessage {...commonProps} />
+          }
+          {this.renderTagsModal()}
+        </Fragment>
+      </VisibilitySensor>
     );
   }
 }

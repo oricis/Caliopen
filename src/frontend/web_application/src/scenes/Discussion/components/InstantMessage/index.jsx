@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import classNames from 'classnames';
-import VisibilitySensor from 'react-visibility-sensor';
 import { withScrollTarget } from '../../../../modules/scroll';
 import { isMessageFromUser, getAuthor, isUserRecipient, getRecipientsExceptUser, getRecipients } from '../../../../services/message';
 import { getAveragePI, getPiClass } from '../../../../modules/pi';
@@ -33,14 +32,6 @@ class InstantMessage extends PureComponent {
     user: PropTypes.shape({}).isRequired,
     scrollTarget: PropTypes.shape({ forwardRef: PropTypes.func }).isRequired,
   };
-
-  onVisibilityChange = (isVisible) => {
-    const { message, onMessageRead } = this.props;
-
-    if (isVisible) {
-      if (message.is_unread) { onMessageRead({ message }); }
-    }
-  }
 
   getClassNames = (pi, message) => classNames(
     'm-instant-message',
@@ -100,7 +91,6 @@ class InstantMessage extends PureComponent {
           <MessagePi illustrate={false} describe={false} pi={message.pi} />
         </aside>
         <div className="m-instant-message__content">{message.body}</div>
-        <VisibilitySensor onChange={this.onVisibilityChange} scrollCheck scrollThrottle={100} />
       </article>
     );
   }
