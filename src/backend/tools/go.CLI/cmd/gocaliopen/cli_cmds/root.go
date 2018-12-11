@@ -68,7 +68,7 @@ gocaliopen subcommands could interact with
 	}
 )
 
-const __version__ = "0.13.1"
+const __version__ = "0.13.2"
 
 func init() {
 	cobra.OnInitialize(initConfig)
