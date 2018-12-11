@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.13.2] 2018-12-11
+
 ### Added
 
 - Switch identity, send twitter DM, validation…
