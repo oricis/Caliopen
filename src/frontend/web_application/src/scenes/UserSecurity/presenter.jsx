@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
+import getClient from '../../services/api-client';
 // import OpenPGPKeysDetails from './components/OpenPGPKeysDetails';
 // import TFAForm from './components/TFAForm';
 import { PageTitle, Section } from '../../components/';
@@ -30,10 +30,8 @@ class UserSecurity extends Component {
 
   handleSubmit = (data) => {
     const { user } = this.props;
-    axios.patch(`/api/v2/users/${user.user_id}`, {
+    getClient().patch(`/api/v2/users/${user.user_id}`, {
       ...data,
-    }, {
-      headers: { 'X-Requested-With': 'XMLHttpRequest' },
     }).then(this.handleSubmitSuccess, this.handleSubmitError);
   }
 
