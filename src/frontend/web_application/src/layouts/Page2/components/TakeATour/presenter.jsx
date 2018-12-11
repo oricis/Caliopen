@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from '@lingui/react';
+import { Trans } from '@lingui/macro'; // eslint-disable-line import/no-extraneous-dependencies
 import Tour from './components/Tour';
 import { Button } from '../../../../components/';
-
-import './style.scss';
 
 class TakeATour extends Component {
   static propTypes = {

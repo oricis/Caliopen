@@ -12949,10 +12949,10 @@ react@^16.5.2:
     prop-types "^15.6.2"
     schedule "^0.5.0"
 
-reactour@^1.9.0:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/reactour/-/reactour-1.9.0.tgz#79e31c4ebe79af1d36105cca3e7b6dbbc28d5b2e"
-  integrity sha512-qq5z0c7d6UEP2LRBZ09r5Dw5RErnPdfrj3kGfuvKkHzH3VmpLkzMDcYbsw24UaXuLetXsf/nrfc9xJUw9J9RPA==
+reactour@^1.10.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/reactour/-/reactour-1.10.0.tgz#f9d7a69fbd665f429417d2ceabec9d86c34e80c0"
+  integrity sha512-X9qheM3fGq/PePrvW9b4lM1P0h4ZgaIvYouP0+aDe7hvjO7QrUnPlo0JXX3OcboO2lNA3oL5/sNuATg2fT7xBw==
   dependencies:
     classnames "2.2.6"
     exenv "1.2.2"
