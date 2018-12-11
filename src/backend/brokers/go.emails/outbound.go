@@ -92,6 +92,10 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 		}
 		//checks if identity is local or remote
 		//fetch credentials and remote server info accordingly
+		if m.UserIdentities == nil || len(m.UserIdentities) == 0 {
+			b.natsReplyError(msg, errors.New("message "+m.Message_id.String()+" (user "+m.User_id.String()+") has no user identity embedded"))
+			return resp, err
+		}
 		firstIdentity, err := b.Store.RetrieveUserIdentity(m.User_id.String(), m.UserIdentities[0].String(), true) // handle one identity only for now
 		if err != nil {
 			b.natsReplyError(msg, fmt.Errorf("broker failed to retrieve sender's identity with error : %s", err))
