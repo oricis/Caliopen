@@ -1,9 +1,4 @@
-const IDENTITY_PROTOCOLS = {
-  email: 'email',
-  smtp: 'email',
-  imap: 'email',
-  twitter: 'twitter',
-};
+import { getIdentityProtocol } from './getIdentityProtocol';
 
 const getParticipantsContactsExceptUser = ({ contacts, participants, user }) => participants
   .reduce((acc, participant) => {
@@ -62,7 +57,7 @@ export const filterIdentities = ({
   // in a discussion 1-to-n we allow to switch identity of the same protocol
   if (participantsContacts.length === 0 || participantsContacts.length > 1) {
     return identities.filter(identity =>
-      IDENTITY_PROTOCOLS[identity.protocol] === getMessageProtocol(parentMessage));
+      getIdentityProtocol(identity) === getMessageProtocol(parentMessage));
   }
 
   // in a discussion 1-to-1 we allow to switch identity of the protocol that the associated contact

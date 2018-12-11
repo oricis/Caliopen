@@ -10,6 +10,7 @@ import AttachmentManager from '../AttachmentManager';
 import IdentitySelector from '../IdentitySelector';
 import { getRecipients } from '../../../../services/message/';
 import { withNotification } from '../../../userNotify';
+import { getIdentityProtocol } from '../../services/getIdentityProtocol';
 
 import './draft-message-quick.scss';
 import './draft-message-advanced.scss';
@@ -192,7 +193,8 @@ class DraftMessage extends Component {
       ];
     }
 
-    const { protocol } = identity;
+    const protocol = getIdentityProtocol(identity);
+
     if (
       currentDraft.recipients &&
       currentDraft.recipients.some(participant => participant.protocol !== protocol)
