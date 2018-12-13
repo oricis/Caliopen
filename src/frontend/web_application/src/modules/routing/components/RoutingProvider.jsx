@@ -12,7 +12,7 @@ import AuthPageLayout from '../../../layouts/AuthPage';
 import PageLayout from '../../../layouts/Page2';
 import SettingsLayout from '../../../layouts/Settings';
 import UserLayout from '../../../layouts/User';
-import Timeline from '../../../scenes/Timeline2';
+import Timeline from '../../../scenes/Timeline';
 import NewDraft from '../../../scenes/NewDraft';
 import SearchResults from '../../../scenes/SearchResults';
 import UserProfile from '../../../scenes/UserProfile';
