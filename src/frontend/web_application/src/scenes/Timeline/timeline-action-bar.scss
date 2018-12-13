@@ -1,0 +1,9 @@
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+.s-timeline-action-bar {
+  @include flex-grid-row($size: expand);
+
+  &__filters {
+    @include flex-grid-size(shrink);
+  }
+}

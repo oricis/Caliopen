@@ -86,9 +86,12 @@ $s-discussion-item__spacing: 0.5rem;
   }
 
   &__message-date {
-    flex: 0 0 auto;
+    flex: 0 1 auto;
     margin: auto $s-discussion-item__spacing;
+    overflow: hidden;
+    text-overflow: ellipsis;
     text-align: right;
+    white-space: nowrap;
 
     @include breakpoint(medium) {
       flex: 1 0 10rem;

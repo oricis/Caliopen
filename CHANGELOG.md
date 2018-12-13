@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Timeline responsiveness (dates & action bar)
 - Display last protocol used for a discussion in the timeline
 - Automatic set read when displaying a message
 - More permissive protocol validation in draft according to identities
