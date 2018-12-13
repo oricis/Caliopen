@@ -1,10 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import throttle from 'lodash.throttle';
+import isEqual from 'lodash.isequal';
 import { Trans } from '@lingui/react';
-import StickyNavBar from '../../layouts/Page/components/Navigation/components/StickyNavBar';
 import { MessageNotifications } from '../../modules/notification';
-import { Button, InfiniteScroll, Spinner } from '../../components';
+import { ScrollDetector } from '../../modules/scroll';
+import { Button, InfiniteScroll, ActionBar, CheckboxFieldGroup, PlaceholderBlock, TextBlock } from '../../components';
 import DiscussionItem from './components/DiscussionItem';
 import { withSettings } from '../../modules/settings';
 
@@ -12,8 +14,11 @@ import { withSettings } from '../../modules/settings';
 // import DiscussionSelector from './components/DiscussionSelector';
 
 import './style.scss';
+import './timeline-action-bar.scss';
 
 const LOAD_MORE_THROTTLE = 1000;
+const FILTER_RANGE_DEFAULT = { min: 0, max: 10 };
+const FILTER_RANGE_ALL = { min: -10, max: 10 };
 
 @withSettings()
 class Timeline extends Component {
@@ -32,6 +37,11 @@ class Timeline extends Component {
     hasMore: PropTypes.bool,
     // updateDiscussionTags: PropTypes.func.isRequired,
     settings: PropTypes.shape({}).isRequired,
+    filterImportance: PropTypes.func.isRequired,
+    importanceRange: PropTypes.shape({
+      min: PropTypes.number,
+      max: PropTypes.number,
+    }).isRequired,
   };
 
   static defaultProps = {
@@ -127,6 +137,16 @@ class Timeline extends Component {
     }
   };
 
+  handleToggleShowSpam = () => {
+    const { filterImportance, importanceRange } = this.props;
+
+    const nextRange = isEqual(importanceRange, FILTER_RANGE_DEFAULT) ?
+      FILTER_RANGE_ALL :
+      FILTER_RANGE_DEFAULT;
+
+    filterImportance(nextRange);
+  }
+
   makeHandleClickClearNotifications = cb => () => {
     this.loadDiscussions(this.props, true);
     cb();
@@ -151,56 +171,86 @@ class Timeline extends Component {
     />
   )
 
+  renderPlaceholder = () => (
+    <ul className="s-timeline__discussion-list">
+      {[1, 2, 3, 4, 5].map(n => (
+        <PlaceholderBlock key={n} className="s-timeline__discussion-item-placeholder" />
+      ))}
+    </ul>
+  );
+
   renderDiscussions() {
     const { discussions, user, settings } = this.props;
     const { selectedDiscussions } = this.state;
 
-    if (discussions) {
-      return (
-        <ul className="s-discussion-list">
-          {discussions.map(discussion => (
-            <DiscussionItem
-              key={discussion.discussion_id}
-              user={user}
-              discussion={discussion}
-              onSelectDiscussion={this.onSelectDiscussion}
-              onSelectAllDiscussions={this.onSelectAllDiscussions}
-              isDiscussionSelected={selectedDiscussions.includes(discussion.discussion_id)}
-              settings={settings}
-            />
-          ))}
-        </ul>);
+    if (!discussions.length) {
+      return this.renderPlaceholder();
     }
 
-    return (<Spinner isLoading />);
+    return (
+      <ul className="s-timeline__discussion-list">
+        {discussions.map(discussion => (
+          <DiscussionItem
+            key={discussion.discussion_id}
+            user={user}
+            discussion={discussion}
+            onSelectDiscussion={this.onSelectDiscussion}
+            onSelectAllDiscussions={this.onSelectAllDiscussions}
+            isDiscussionSelected={selectedDiscussions.includes(discussion.discussion_id)}
+            settings={settings}
+          />
+        ))}
+      </ul>
+    );
   }
 
   render() {
-    const { discussions, hasMore } = this.props;
+    const { hasMore, isFetching, importanceRange } = this.props;
+    const hasSpam = isEqual(importanceRange, FILTER_RANGE_ALL);
     // const nbSelectedDiscussions = this.state.selectedDiscussions.length;
 
     return (
       <Fragment>
-        <section id="discussions" className="s-timeline">
-          <StickyNavBar className="s-timeline__action-bar" stickyClassName="sticky">
-            <div className="s-timeline__actions--placeholder">
-              {discussions ? null : <Spinner isLoading /> }
-            </div>
-            {/*  <DiscussionSelector
-              count={nbSelectedDiscussions}
-              checked={nbSelectedDiscussions > 0
-                  && nbSelectedDiscussions === discussions.length}
-                  totalCount={discussions.length}
-                  onSelectAllDiscussions={this.onSelectAllDiscussions}
-                  onEditTags={this.handleOpenTags}
-                  onDeleteDiscussions={this.handleDeleteDiscussions}
-                  isDeleting={this.state.isDeleting}
-                  indeterminate={nbSelectedDiscussions > 0
-                      && nbSelectedDiscussions < discussions.length}
-                    />
-                    */
-            }
-          </StickyNavBar>
+        <section className="s-timeline">
+          <ScrollDetector
+            offset={136}
+            render={isSticky => (
+              <div className={classnames('s-timeline__action-bar-wrapper', { 's-timeline__action-bar-wrapper--sticky': isSticky })}>
+                <ActionBar
+                  className={classnames('s-timeline__action-bar')}
+                  hr={false}
+                  isFetching={isFetching}
+                  actionsNode={!isFetching && (
+                    <div className="s-timeline-action-bar">
+                      <TextBlock>
+                        <CheckboxFieldGroup
+                          className="s-timeline-action-bar__filter"
+                          displaySwitch
+                          showTextLabel
+                          label={(<Trans id="timeline.action.display-spam">Show spam</Trans>)}
+                          onChange={this.handleToggleShowSpam}
+                          checked={hasSpam}
+                        />
+                      </TextBlock>
+                    </div>
+                  )}
+                />
+              </div>
+            )}
+          />
+          {/*  <DiscussionSelector
+            count={nbSelectedDiscussions}
+            checked={nbSelectedDiscussions > 0
+                && nbSelectedDiscussions === discussions.length}
+                totalCount={discussions.length}
+                onSelectAllDiscussions={this.onSelectAllDiscussions}
+                onEditTags={this.handleOpenTags}
+                onDeleteDiscussions={this.handleDeleteDiscussions}
+                isDeleting={this.state.isDeleting}
+                indeterminate={nbSelectedDiscussions > 0
+                    && nbSelectedDiscussions < discussions.length}
+                  />
+                  */}
           <InfiniteScroll onReachBottom={this.loadMore}>
             <Fragment>
               {this.renderNotifications()}

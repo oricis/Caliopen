@@ -20,6 +20,7 @@ class DiscussionItem extends PureComponent {
       last_message_id: PropTypes.string.isRequired,
       unread_count: PropTypes.number.isRequired,
       pi: PropTypes.shape({}).isRequired,
+      protocol: PropTypes.string,
     }).isRequired,
     // i18n: PropTypes.shape({}).isRequired,
     onSelectDiscussion: PropTypes.func.isRequired,
@@ -68,13 +69,14 @@ class DiscussionItem extends PureComponent {
     const { settings } = this.props;
     const {
       excerpt, discussion_id: discussionId, total_count: total, date_update: date,
-      last_message_id: lastMessageId, unread_count: unreadCount, pi,
+      last_message_id: lastMessageId, unread_count: unreadCount, pi, protocol,
     } = this.props.discussion;
     const piAggregate = getAveragePI(pi);
 
     // const { isDeleting, isDiscussionSelected, i18n } = this.props;
 
     const labels = this.buildParticipantsLabels(this.props.discussion);
+    const iconProtocol = protocol || 'email';
 
     return (
       <li
@@ -91,7 +93,7 @@ class DiscussionItem extends PureComponent {
           {excerpt}
         </Link>
         {this.renderTags(this.props.discussion)}
-        <span className="s-discussion-item__message-type"><Icon type="envelope" /></span>
+        <span className="s-discussion-item__message-type"><Icon type={iconProtocol} /></span>
         <Moment className="s-discussion-item__message-date" fromNow locale={settings.default_locale}>{date}</Moment>
         {/*
         <div className="s-discussion-item__select">

@@ -37,7 +37,6 @@ $s-discussion-item__spacing: 0.5rem;
   &__message-type {
     justify-self: flex-end;
     margin: 0 $s-discussion-item__spacing;
-    color: $co-color__contrast__text;
  }
 
   &__tags {
@@ -87,13 +86,12 @@ $s-discussion-item__spacing: 0.5rem;
   }
 
   &__message-date {
-    flex: 0 0 auto;
+    flex: 0 1 auto;
     margin: auto $s-discussion-item__spacing;
+    overflow: hidden;
+    text-overflow: ellipsis;
     text-align: right;
-
-    @include breakpoint(medium) {
-      flex: 1 0 10rem;
-    }
+    white-space: nowrap;
   }
 
   &__select {

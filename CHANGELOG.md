@@ -6,8 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Toggle show spam
+- Placeholder when loading Timeline
+
 ### Fixed
 
+- Timeline responsiveness (dates & action bar)
+- Display last protocol used for a discussion in the timeline
 - Automatic set read when displaying a message
 - More permissive protocol validation in draft according to identities
 

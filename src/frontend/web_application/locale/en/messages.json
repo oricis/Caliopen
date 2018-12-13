@@ -560,6 +560,7 @@
   "timeline-filter.options.received": "Received",
   "timeline-filter.options.sent": "Sent",
   "timeline.action.delete": "Delete",
+  "timeline.action.display-spam": "Show spam",
   "timeline.action.manage-tags": "Manage tags",
   "timeline.confirm-delete.content": "The deletion is permanent, are you sure you want to delete these messages?",
   "timeline.confirm-delete.title": "Delete message(s)",

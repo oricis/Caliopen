@@ -1,31 +1,21 @@
 @import '../../styles/common';
-
-.sticky-action-bar {
-  position: fixed;
-  top: 41px;
-  right: 0;
-  left: 0;
-  background-color: white;
-}
+@import '../../styles/vendor/bootstrap_foundation-sites';
 
 .s-timeline {
+  $baseName: &;
   background-color: white;
 
   &__action-bar {
     margin: 0 auto;
     background-color: white;
+  }
 
-    &.sticky {
-      position: fixed;
-      top: 41px;
-      right: 0;
-      left: 0;
-      background-color: white;
+  &__discussion-list {
+    background-color: lightgrey;
+  }
 
-      .s-timeline__actions, .s-timeline__actions--placeholder {
-        padding: 0 40px;
-      }
-    }
+  &__discussion-item-placeholder {
+    margin: 0.125rem 0; // XXX refactor duplicated from DiscussionItem
   }
 
   &__load-more {
@@ -37,14 +27,22 @@
     background-color: $co-color__fg__back;
     text-align: center;
   }
-}
 
-.s-timeline__actions--placeholder {
-  max-width: $co-site-width;
-  height: $co-component__height;
-  margin: 0 auto;
-}
+  &__action-bar-wrapper {
+    // XXX: may be move to a layout component (do not forget that it can be recursive)
+    &--sticky {
+      position: fixed;
+      top: 41px;
+      right: 0;
+      left: 0;
+      background-color: white;
 
-.s-discussion-list {
-  background-color: lightgrey;
+      @include breakpoint(medium) {
+        #{$baseName}__action-bar {
+          max-width: $co-site-width;
+          padding: 0 40px;
+        }
+      }
+    }
+  }
 }
