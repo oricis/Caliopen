@@ -92,10 +92,6 @@ $s-discussion-item__spacing: 0.5rem;
     text-overflow: ellipsis;
     text-align: right;
     white-space: nowrap;
-
-    @include breakpoint(medium) {
-      flex: 1 0 10rem;
-    }
   }
 
   &__select {
