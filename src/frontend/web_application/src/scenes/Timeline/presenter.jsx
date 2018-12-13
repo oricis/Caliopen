@@ -6,7 +6,7 @@ import isEqual from 'lodash.isequal';
 import { Trans } from '@lingui/react';
 import { MessageNotifications } from '../../modules/notification';
 import { ScrollDetector } from '../../modules/scroll';
-import { Button, InfiniteScroll, ActionBar, CheckboxFieldGroup, PlaceholderBlock } from '../../components';
+import { Button, InfiniteScroll, ActionBar, CheckboxFieldGroup, PlaceholderBlock, TextBlock } from '../../components';
 import DiscussionItem from './components/DiscussionItem';
 import { withSettings } from '../../modules/settings';
 
@@ -220,14 +220,16 @@ class Timeline extends Component {
                   isFetching={isFetching}
                   actionsNode={!isFetching && (
                     <div className="s-timeline-action-bar">
-                      <CheckboxFieldGroup
-                        className="s-timeline-action-bar__filter"
-                        displaySwitch
-                        showTextLabel
-                        label={(<Trans id="timeline.action.display-spam">Show spam</Trans>)}
-                        onChange={this.handleToggleShowSpam}
-                        checked={hasSpam}
-                      />
+                      <TextBlock>
+                        <CheckboxFieldGroup
+                          className="s-timeline-action-bar__filter"
+                          displaySwitch
+                          showTextLabel
+                          label={(<Trans id="timeline.action.display-spam">Show spam</Trans>)}
+                          onChange={this.handleToggleShowSpam}
+                          checked={hasSpam}
+                        />
+                      </TextBlock>
                     </div>
                   )}
                 />
