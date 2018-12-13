@@ -171,18 +171,20 @@ class Timeline extends Component {
     />
   )
 
+  renderPlaceholder = () => (
+    <ul className="s-timeline__discussion-list">
+      {[1, 2, 3, 4, 5].map(n => (
+        <PlaceholderBlock key={n} className="s-timeline__discussion-item-placeholder" />
+      ))}
+    </ul>
+  );
+
   renderDiscussions() {
     const { discussions, user, settings } = this.props;
     const { selectedDiscussions } = this.state;
 
     if (!discussions.length) {
-      return (
-        <ul className="s-timeline__discussion-list">
-          {[1, 2, 3, 4, 5].map(n => (
-            <PlaceholderBlock key={n} className="s-timeline__discussion-item-placeholder" />
-          ))}
-        </ul>
-      );
+      return this.renderPlaceholder();
     }
 
     return (
