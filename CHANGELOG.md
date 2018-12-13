@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Crash when replying a message.
 - Help button has no effects
 - Unable to change password
 - Better layout for twitter DM
