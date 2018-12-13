@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import throttle from 'lodash.throttle';
+import isEqual from 'lodash.isequal';
 import { Trans } from '@lingui/react';
 import { MessageNotifications } from '../../modules/notification';
 import { ScrollDetector } from '../../modules/scroll';
@@ -16,6 +17,8 @@ import './style.scss';
 import './timeline-action-bar.scss';
 
 const LOAD_MORE_THROTTLE = 1000;
+const FILTER_RANGE_DEFAULT = { min: 0, max: 10 };
+const FILTER_RANGE_ALL = { min: -10, max: 10 };
 
 @withSettings()
 class Timeline extends Component {
@@ -34,6 +37,11 @@ class Timeline extends Component {
     hasMore: PropTypes.bool,
     // updateDiscussionTags: PropTypes.func.isRequired,
     settings: PropTypes.shape({}).isRequired,
+    filterImportance: PropTypes.func.isRequired,
+    importanceRange: PropTypes.shape({
+      min: PropTypes.number,
+      max: PropTypes.number,
+    }).isRequired,
   };
 
   static defaultProps = {
@@ -129,6 +137,16 @@ class Timeline extends Component {
     }
   };
 
+  handleToggleShowSpam = () => {
+    const { filterImportance, importanceRange } = this.props;
+
+    const nextRange = isEqual(importanceRange, FILTER_RANGE_DEFAULT) ?
+      FILTER_RANGE_ALL :
+      FILTER_RANGE_DEFAULT;
+
+    filterImportance(nextRange);
+  }
+
   makeHandleClickClearNotifications = cb => () => {
     this.loadDiscussions(this.props, true);
     cb();
@@ -185,7 +203,8 @@ class Timeline extends Component {
   }
 
   render() {
-    const { hasMore, isFetching } = this.props;
+    const { hasMore, isFetching, importanceRange } = this.props;
+    const hasSpam = isEqual(importanceRange, FILTER_RANGE_ALL);
     // const nbSelectedDiscussions = this.state.selectedDiscussions.length;
 
     return (
@@ -206,6 +225,8 @@ class Timeline extends Component {
                         displaySwitch
                         showTextLabel
                         label={(<Trans id="timeline.action.display-spam">Show spam</Trans>)}
+                        onChange={this.handleToggleShowSpam}
+                        checked={hasSpam}
                       />
                     </div>
                   )}

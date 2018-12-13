@@ -2,6 +2,8 @@
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
 $switch-height: 2rem !default;
+$switch-radius: 1rem;
+$switch-paddle-radius: 1rem;
 
 .m-switch {
   @include switch-container;
