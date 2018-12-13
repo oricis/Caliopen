@@ -5,7 +5,7 @@ import throttle from 'lodash.throttle';
 import { Trans } from '@lingui/react';
 import { MessageNotifications } from '../../modules/notification';
 import { ScrollDetector } from '../../modules/scroll';
-import { Button, InfiniteScroll, Spinner, ActionBar, CheckboxFieldGroup } from '../../components';
+import { Button, InfiniteScroll, ActionBar, CheckboxFieldGroup, PlaceholderBlock } from '../../components';
 import DiscussionItem from './components/DiscussionItem';
 import { withSettings } from '../../modules/settings';
 
@@ -157,24 +157,31 @@ class Timeline extends Component {
     const { discussions, user, settings } = this.props;
     const { selectedDiscussions } = this.state;
 
-    if (discussions) {
+    if (!discussions.length) {
       return (
         <ul className="s-timeline__discussion-list">
-          {discussions.map(discussion => (
-            <DiscussionItem
-              key={discussion.discussion_id}
-              user={user}
-              discussion={discussion}
-              onSelectDiscussion={this.onSelectDiscussion}
-              onSelectAllDiscussions={this.onSelectAllDiscussions}
-              isDiscussionSelected={selectedDiscussions.includes(discussion.discussion_id)}
-              settings={settings}
-            />
+          {[1, 2, 3, 4, 5].map(n => (
+            <PlaceholderBlock key={n} className="s-timeline__discussion-item-placeholder" />
           ))}
-        </ul>);
+        </ul>
+      );
     }
 
-    return (<Spinner isLoading />);
+    return (
+      <ul className="s-timeline__discussion-list">
+        {discussions.map(discussion => (
+          <DiscussionItem
+            key={discussion.discussion_id}
+            user={user}
+            discussion={discussion}
+            onSelectDiscussion={this.onSelectDiscussion}
+            onSelectAllDiscussions={this.onSelectAllDiscussions}
+            isDiscussionSelected={selectedDiscussions.includes(discussion.discussion_id)}
+            settings={settings}
+          />
+        ))}
+      </ul>
+    );
   }
 
   render() {

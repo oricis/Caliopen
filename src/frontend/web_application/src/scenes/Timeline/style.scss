@@ -14,6 +14,10 @@
     background-color: lightgrey;
   }
 
+  &__discussion-item-placeholder {
+    margin: 0.125rem 0; // XXX refactor duplicated from DiscussionItem
+  }
+
   &__load-more {
     margin: 1rem auto;
     text-align: center;
