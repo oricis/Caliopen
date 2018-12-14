@@ -24,7 +24,7 @@ export const KEY = {
 
 const makeParticipant = ({
   address,
-  protocol = 'email',
+  protocol,
   label,
   contact_ids: contactIds,
   type = 'To',
@@ -184,11 +184,12 @@ class RecipientList extends Component {
 
   makeAddKnownParticipant(identity) {
     return () => {
-      const { address } = identity;
+      const { address, protocol, label } = identity;
       this.addParticipant(makeParticipant({
         address,
-        label: address,
+        label: label || address,
         contact_ids: identity.contact_id ? [identity.contact_id] : [],
+        protocol,
       }));
     };
   }
