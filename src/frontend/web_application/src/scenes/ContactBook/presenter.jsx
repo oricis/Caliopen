@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 // unable to use @lingui/macro due to a miss-interpolated value in Plural component
-import { Trans, Plural } from '@lingui/react';
+import { Trans, Plural, withI18n } from '@lingui/react';
 import ContactList from './components/ContactList';
 import { PageTitle, Spinner, Button, ActionBar, Checkbox, SidebarLayout, NavList, NavItem, Confirm, Modal } from '../../components';
 import { withPush } from '../../modules/routing';
@@ -30,6 +30,7 @@ function getFilteredContacts(contactList, tag) {
 @withTags()
 @withTagSearched()
 @withPush()
+@withI18n()
 class ContactBook extends Component {
   static propTypes = {
     push: PropTypes.func.isRequired,
@@ -38,6 +39,7 @@ class ContactBook extends Component {
     deleteContacts: PropTypes.func.isRequired,
     updateContactTags: PropTypes.func.isRequired,
     contacts: PropTypes.arrayOf(PropTypes.shape({})),
+    userContact: PropTypes.shape({}),
     tags: PropTypes.arrayOf(PropTypes.shape({})),
     tagSearched: PropTypes.string,
     isFetching: PropTypes.bool,
@@ -48,6 +50,7 @@ class ContactBook extends Component {
 
   static defaultProps = {
     contacts: [],
+    userContact: undefined,
     tags: [],
     tagSearched: '',
     isFetching: false,
@@ -289,12 +292,15 @@ class ContactBook extends Component {
   }
 
   renderContacts() {
-    const { contacts, hasMore, tagSearched } = this.props;
+    const {
+      contacts, userContact, hasMore, tagSearched,
+    } = this.props;
 
     return (
       <Fragment>
         <ContactList
           contacts={getFilteredContacts(contacts, tagSearched)}
+          userContact={userContact}
           sortDir={this.state.sortDir}
           onSelectEntity={this.onSelectEntity}
           selectedContactsIds={this.state.selectedEntitiesIds}

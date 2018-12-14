@@ -27,6 +27,7 @@
   "contact-book.contacts.selected": "{count, plural, one {#/{totalCount} contact sélectionné :} other {#/{totalCount} contacts sélectionnées :}}",
   "contact-book.contacts.title": "Contacts",
   "contact-book.groups.title": "Tags",
+  "contact-book.my-contact-details": "Mes coordonnées",
   "contact-book.tags.action.edit-groups": "Éditer les tags",
   "contact.action-bar.label": "Contact :",
   "contact.action.add-identity": "Ajouter une identité",

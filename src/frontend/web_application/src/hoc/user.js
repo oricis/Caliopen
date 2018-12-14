@@ -1,3 +1,4 @@
+// @deprecated: use modules/user
 import { createSelector } from 'reselect';
 import { connect } from 'react-redux';
 import { UserSelector } from '../store/selectors/user';

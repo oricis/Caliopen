@@ -1,22 +1,34 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { withI18n } from '@lingui/react';
 import { deleteContacts } from '../../modules/contact';
+import { withUser } from '../../modules/user';
 import { updateContactTags } from '../../modules/tags';
 
 import { requestContacts, loadMoreContacts, hasMore } from '../../store/modules/contact';
 import Presenter from './presenter';
 
-const contactSelector = state => state.contact;
+const contactStateSelector = state => state.contact;
+const userSelector = (state, ownProps) => ownProps.userState.user;
+const contactsExceptUserSelector = createSelector(
+  [contactStateSelector, userSelector],
+  (contactState, user) => contactState.contacts
+    .filter(contactId => !user || contactId !== user.contact.contact_id)
+    .map(contactId => contactState.contactsById[contactId])
+);
 const mapStateToProps = createSelector(
-  [contactSelector],
-  contactState => ({
-    contacts: contactState.contacts.map(contactId => contactState.contactsById[contactId]),
-    isFetching: contactState.isFetching,
-    didInvalidate: contactState.didInvalidate,
-    hasMore: hasMore(contactState),
-  })
+  [contactStateSelector, contactsExceptUserSelector, userSelector],
+  (contactState, contacts, user) => {
+    const userContact = user && user.contact;
+
+    return {
+      contacts,
+      isFetching: contactState.isFetching,
+      didInvalidate: contactState.didInvalidate,
+      hasMore: hasMore(contactState),
+      userContact,
+    };
+  }
 );
 const mapDispatchToProps = dispatch => bindActionCreators({
   requestContacts,
@@ -26,6 +38,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 }, dispatch);
 
 export default compose(
+  withUser(),
   connect(mapStateToProps, mapDispatchToProps),
-  withI18n(),
 )(Presenter);
