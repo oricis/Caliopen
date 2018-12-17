@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Trans } from '@lingui/react';
 import classnames from 'classnames';
 import { Title, Link } from '../../../../components/';
 import { withTags } from '../../../../modules/tags';
@@ -15,6 +16,7 @@ const ALPHA = '#abcdefghijklmnopqrstuvwxyz';
 class ContactList extends PureComponent {
   static propTypes = {
     contacts: PropTypes.arrayOf(PropTypes.shape({})),
+    userContact: PropTypes.shape({}),
     selectedContactsIds: PropTypes.arrayOf(PropTypes.string),
     tags: PropTypes.arrayOf(PropTypes.string),
     contactDisplayOrder: PropTypes.string.isRequired,
@@ -24,6 +26,7 @@ class ContactList extends PureComponent {
   };
   static defaultProps = {
     contacts: [],
+    userContact: undefined,
     tags: [],
     selectedContactsIds: [],
     sortDir: DEFAULT_SORT_DIR,
@@ -90,7 +93,7 @@ class ContactList extends PureComponent {
 
   render() {
     const {
-      contacts, contactDisplayOrder, contactDisplayFormat: format, onSelectEntity,
+      contacts, userContact, contactDisplayOrder, contactDisplayFormat: format, onSelectEntity,
       selectedContactsIds, tags,
     } = this.props;
 
@@ -121,6 +124,17 @@ class ContactList extends PureComponent {
       <div className="m-contact-list">
         {this.renderNav(firstLettersWithContacts)}
         <div className="m-contact-list__list">
+          {userContact && (
+            <div className="m-contact-list__group">
+              <Title caps hr size="large" className="m-contact-list__alpha-title"><Trans id="contact-book.my-contact-details">Mes coordonées</Trans></Title>
+              <ContactItem
+                className="m-contact-list__contact"
+                contact={userContact}
+                tags={tags}
+                selectDisabled
+              />
+            </div>
+          )}
           {firstLetters.map(letter => (
             contactsGroupedByLetter[letter] && (
               <div key={letter} className="m-contact-list__group">

@@ -78,14 +78,18 @@ class ContactItem extends PureComponent {
     contact: PropTypes.shape({}),
     contactDisplayFormat: PropTypes.string.isRequired,
     className: PropTypes.string,
-    onSelectEntity: PropTypes.func.isRequired,
-    isContactSelected: PropTypes.bool.isRequired,
+    onSelectEntity: PropTypes.func,
+    isContactSelected: PropTypes.bool,
+    selectDisabled: PropTypes.bool,
     i18n: PropTypes.shape({}).isRequired,
     tags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   };
   static defaultProps = {
     contact: undefined,
     className: undefined,
+    onSelectEntity: () => {},
+    isContactSelected: false,
+    selectDisabled: false,
   };
 
   onCheckboxChange = (ev) => {
@@ -131,7 +135,7 @@ class ContactItem extends PureComponent {
 
   render() {
     const {
-      contact, contactDisplayFormat: format, className, isContactSelected,
+      contact, contactDisplayFormat: format, className, isContactSelected, selectDisabled,
     } = this.props;
 
     if (!contact) {
@@ -173,12 +177,12 @@ class ContactItem extends PureComponent {
           ))}
         </div>
         <TextBlock className="m-contact-item__select">
-          <Checkbox
+          {!selectDisabled && <Checkbox
             label={<Trans id="contact-book.action.select">Select the contact</Trans>}
             showLabelforSr
             onChange={this.onCheckboxChange}
             checked={isContactSelected}
-          />
+          />}
         </TextBlock>
       </div>
     );
