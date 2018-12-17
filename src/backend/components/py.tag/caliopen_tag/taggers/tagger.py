@@ -2,6 +2,7 @@
 """Caliopen user message qualification logic."""
 from __future__ import absolute_import, print_function, unicode_literals
 import logging
+from bs4 import BeautifulSoup
 
 from nltk.tokenize import word_tokenize
 
@@ -9,6 +10,7 @@ import fastText
 
 log = logging.getLogger(__name__)
 resources_path = "/home/estelle/Projects/Caliopen/github/Caliopen/src/backend/components/py.tag/caliopen_tag/resources/"
+
 
 class MessageTagger(object):
     """Tag a message using a tagging model"""
@@ -24,7 +26,6 @@ class MessageTagger(object):
         self.k = k
         self.threshold = threshold
 
-
     def process(self, msg):
         """Qualification for a message.
 
@@ -33,9 +34,21 @@ class MessageTagger(object):
         Afterwards, it will predict tag and return tag + prediction.
         Finally, it will remove the __label__ prefix to predicted tags.
         """
-        msg = msg.replace("\n", " ")
-        msg = ' '.join(word_tokenize(msg))  # TODO: Add language support
-        predictions = self.model.predict(msg, k=self.k, threshold=self.threshold)
+        text = prepare_msg(msg) # TODO: Add language support
+        predictions = self.model.predict(text, k=self.k, threshold=self.threshold)
         nb_result = len(predictions[0])
         result = [(predictions[0][i][9:], predictions[1][i]) for i in range(nb_result)]
         return result
+
+
+def prepare_msg(msg):
+    text = extract_text(msg)
+    text = text.replace("\n", " ") # Because FastText doesn't accept newline char
+    text = ' '.join(word_tokenize(text))
+    text = text.lower()
+    return text
+
+
+def extract_text(msg):
+    soup = BeautifulSoup(msg, "html.parser")
+    return soup.text

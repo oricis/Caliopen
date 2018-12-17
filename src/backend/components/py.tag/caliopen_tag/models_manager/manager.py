@@ -11,6 +11,13 @@ import fastText
 log = logging.getLogger(__name__)
 resources_path = "/home/estelle/Projects/Caliopen/github/Caliopen/src/backend/components/py.tag/caliopen_tag/resources/"
 
+
+def labelling(msg):
+    labels = msg.get_tags()
+    labels = ['__label__' + label for label in labels]
+    return ' '.join(labels)
+
+
 class ModelManager(object):
     """
     Manage tagging model:
@@ -56,18 +63,13 @@ class ModelManager(object):
         for message in data:
             content = message.get_body().replace("\n", " ")
             tokens = word_tokenize(content)  # TODO: add multiple language support: language=message.get_language()
-            f.write(self._labelize(message) + ' '.join(tokens) + "\n")
+            f.write(labelling(message) + ' '.join(tokens) + "\n")
 
         self.tempfilename = f.name
         f.close()
 
-    def _labelize(self, msg):
-        labels = msg.get_tags()
-        labels = ['__label__' + label for label in labels]
-        return ' '.join(labels)
-
     def _pre_processing_file(self):
-        log.info('Training file is ready.')
+        log.info('Training file is ready: ' + self.tempfilename)
         pass
 
     def _train_tagging_model(self, output):
