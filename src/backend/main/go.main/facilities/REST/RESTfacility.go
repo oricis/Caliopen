@@ -22,7 +22,7 @@ import (
 type (
 	RESTservices interface {
 		UsernameIsAvailable(string) (bool, error)
-		SuggestRecipients(user_id, query_string string) (suggests []RecipientSuggestion, err error)
+		SuggestRecipients(user *UserInfo, query_string string) (suggests []RecipientSuggestion, err error)
 		GetSettings(user_id string) (settings *Settings, err error)
 		//contacts
 		CreateContact(contact *Contact) error
@@ -31,6 +31,7 @@ type (
 		UpdateContact(user *UserInfo, contact, oldContact *Contact, update map[string]interface{}) error
 		PatchContact(user *UserInfo, patch []byte, contactID string) error
 		DeleteContact(userID, contactID string) error
+		ContactExists(userID, contactID string) bool
 		//identities
 		RetrieveContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error)
 		RetrieveLocalIdentities(user_id string) (identities []UserIdentity, err error)
@@ -41,6 +42,11 @@ type (
 		PatchUserIdentity(patch []byte, userId, RemoteId string) CaliopenError
 		DeleteUserIdentity(userId, remoteId string) CaliopenError
 		IsRemoteIdentity(userId, remoteId string) bool
+		//providers
+		RetrieveProvidersList() (providers []Provider, err error)
+		GetProviderOauthFor(userID, provider string) (Provider, CaliopenError)
+		CreateTwitterIdentity(requestToken, verifier string) (remoteId string, err CaliopenError)
+		CreateGmailIdentity(state, code string) (remoteId string, err CaliopenError)
 		//messages
 		GetMessagesList(filter IndexSearch) (messages []*Message, totalFound int64, err error)
 		GetMessagesRange(filter IndexSearch) (messages []*Message, totalFound int64, err error)
@@ -75,13 +81,21 @@ type (
 		UpdateDevice(device, oldDevice *Device, update map[string]interface{}) CaliopenError
 		PatchDevice(patch []byte, userId, deviceId string) CaliopenError
 		DeleteDevice(userId, deviceId string) CaliopenError
+		//keys
+		CreatePGPPubKey(label string, pubkey []byte, contact *Contact) (*PublicKey, CaliopenError)
+		RetrieveContactPubKeys(userId, contactId string) (pubkeys PublicKeys, err CaliopenError)
+		RetrievePubKey(userId, resourceId, keyId string) (pubkey *PublicKey, err CaliopenError)
+		DeletePubKey(pubkey *PublicKey) CaliopenError
+		PatchPubKey(patch []byte, userId, resourceId, keyId string) CaliopenError
 	}
 	RESTfacility struct {
-		store      backends.APIStorage
-		index      backends.APIIndex
 		Cache      backends.APICache
-		nats_conn  *nats.Conn
+		index      backends.APIIndex
 		natsTopics map[string]string
+		nats_conn  *nats.Conn
+		providers  map[string]Provider
+		store      backends.APIStorage
+		Hostname   string
 	}
 )
 
@@ -89,10 +103,11 @@ func NewRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility
 	rest_facility = new(RESTfacility)
 	rest_facility.nats_conn = nats_conn
 	rest_facility.natsTopics = map[string]string{
-		Nats_outSMTP_topicKey:     config.NatsConfig.OutSMTP_topic,
-		Nats_outIMAP_topicKey:     config.NatsConfig.OutIMAP_topic,
-		Nats_Contacts_topicKey:    config.NatsConfig.Contacts_topic,
-		Nats_DiscoverKey_topicKey: config.NatsConfig.Keys_topic,
+		Nats_outSMTP_topicKey:    config.NatsConfig.OutSMTP_topic,
+		Nats_outIMAP_topicKey:    config.NatsConfig.OutIMAP_topic,
+		Nats_Contacts_topicKey:   config.NatsConfig.Contacts_topic,
+		Nats_outTwitter_topicKey: config.NatsConfig.OutTWITTER_topic,
+		Nats_Keys_topicKey:       config.NatsConfig.Keys_topic,
 	}
 	switch config.RESTstoreConfig.BackendName {
 	case "cassandra":
@@ -148,5 +163,13 @@ func NewRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility
 
 	rest_facility.Cache = backends.APICache(cach) // type conversion
 
+	rest_facility.providers = map[string]Provider{}
+	for _, provider := range config.Providers {
+		if provider.Name != "" {
+			rest_facility.providers[provider.Name] = provider
+		}
+	}
+
+	rest_facility.Hostname = config.Hostname
 	return rest_facility
 }

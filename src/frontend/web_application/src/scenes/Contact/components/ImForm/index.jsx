@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Trans, withI18n } from 'lingui-react';
+import { Trans, withI18n } from '@lingui/react';
 import renderReduxField from '../../../../services/renderReduxField';
 import { Button, Icon, FieldErrors, SelectFieldGroup as SelectFieldGroupBase, TextFieldGroup as TextFieldGroupBase, Fieldset, Legend, FormGrid, FormRow, FormColumn } from '../../../../components';
 import './style.scss';
@@ -29,10 +29,10 @@ class ImForm extends PureComponent {
     const { i18n } = this.props;
 
     this.addressTypes = {
-      work: i18n._('contact.im_type.work', { defaults: 'Work' }),
-      home: i18n._('contact.im_type.home', { defaults: 'Home' }),
-      other: i18n._('contact.im_type.other', { defaults: 'Other' }),
-      netmeeting: i18n._('contact.im_type.netmeeting', { defaults: 'Netmeeting' }),
+      work: i18n._('contact.im_type.work', null, { defaults: 'Professional' }),
+      home: i18n._('contact.im_type.home', null, { defaults: 'Personal' }),
+      other: i18n._('contact.im_type.other', null, { defaults: 'Other' }),
+      netmeeting: i18n._('contact.im_type.netmeeting', null, { defaults: 'Netmeeting' }),
     };
   }
 
@@ -58,7 +58,7 @@ class ImForm extends PureComponent {
               <Field
                 component={SelectFieldGroup}
                 name="type"
-                label={i18n._('contact.im_form.type.label', { defaults: 'Type' })}
+                label={i18n._('contact.im_form.type.label', null, { defaults: 'Type' })}
                 showLabelforSr
                 options={addressTypeOptions}
               />
@@ -67,8 +67,7 @@ class ImForm extends PureComponent {
               <Field
                 component={TextFieldGroup}
                 name="address"
-                type="email"
-                label={i18n._('contact.im_form.address.label', { defaults: 'Address' })}
+                label={i18n._('contact.im_form.address.label', null, { defaults: 'Address' })}
                 showLabelforSr
                 required
               />

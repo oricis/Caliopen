@@ -167,8 +167,13 @@ func ServeError(rw gin.ResponseWriter, r *http.Request, err error) {
 	switch e := err.(type) {
 	case *swgErr.CompositeError:
 		er := flattenComposite(e)
+		var lastCode int
 		//get the last error code to return it to client
-		lastCode := int(er.Errors[0].(swgErr.Error).Code())
+		if lastErr, ok := er.Errors[0].(swgErr.Error); ok {
+		lastCode = int(lastErr.Code())
+		} else {
+			lastCode = int(e.Code())
+		}
 		rw.WriteHeader(asHTTPCode(lastCode))
 		if r == nil || r.Method != "HEAD" {
 			rw.Write(errorAsJSON(er))
@@ -196,28 +201,26 @@ func ServeError(rw gin.ResponseWriter, r *http.Request, err error) {
 		}
 	}
 	rw.Flush()
-	conn, _, _ := rw.Hijack()
-	conn.Close()
 }
 
 func errorAsJSON(err swgErr.Error) []byte {
-	errors := struct {
+	errs := struct {
 		Errors jsonErrors `json:"errors"`
 	}{}
 	switch er := err.(type) {
 	case *swgErr.CompositeError:
 		for _, e := range er.Errors {
 			if swgerr, ok := e.(swgErr.Error); ok {
-				errors.Errors = append(errors.Errors, jsonError{swgerr.Code(), e.Error(), ""})
+				errs.Errors = append(errs.Errors, jsonError{swgerr.Code(), e.Error(), ""})
 			} else {
-				errors.Errors = append(errors.Errors, jsonError{err.Code(), e.Error(), ""})
+				errs.Errors = append(errs.Errors, jsonError{err.Code(), e.Error(), ""})
 			}
 		}
-		b, _ := json.Marshal(errors)
+		b, _ := json.Marshal(errs)
 		return b
 	default:
-		errors.Errors = append(errors.Errors, jsonError{err.Code(), err.Error(), ""})
-		b, _ := json.Marshal(errors)
+		errs.Errors = append(errs.Errors, jsonError{err.Code(), err.Error(), ""})
+		b, _ := json.Marshal(errs)
 		return b
 	}
 }

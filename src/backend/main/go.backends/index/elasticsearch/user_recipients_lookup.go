@@ -34,7 +34,7 @@ type (
 )
 
 // build ES queries and responses for finding relevant recipients when an user compose a message
-func (es *ElasticSearchBackend) RecipientsSuggest(user_id, query_string string) (suggests []RecipientSuggestion, err error) {
+func (es *ElasticSearchBackend) RecipientsSuggest(user *UserInfo, query_string string) (suggests []RecipientSuggestion, err error) {
 	suggests = []RecipientSuggestion{}
 	q_string := query_string
 	// build nested queries for participants lookup
@@ -65,14 +65,31 @@ func (es *ElasticSearchBackend) RecipientsSuggest(user_id, query_string string) 
 	emails_q := elastic.NewNestedQuery("emails", nested_emails_q)
 	emails_q.InnerHit(elastic.NewInnerHit())
 
+	queries = []elastic.Query{
+		elastic.NewPrefixQuery("ims.address", q_string).Boost(2),
+		elastic.NewPrefixQuery("ims.label", q_string).Boost(2),
+	}
+	nested_ims_q := elastic.NewBoolQuery().Should(queries...)
+	ims_q := elastic.NewNestedQuery("ims", nested_ims_q)
+	ims_q.InnerHit(elastic.NewInnerHit())
+
+	queries = []elastic.Query{
+		elastic.NewPrefixQuery("identities.name", q_string).Boost(2),
+		elastic.NewPrefixQuery("identities.infos", q_string).Boost(2), // TODO: check if this query could find string within infos map
+	}
+	nested_socials_q := elastic.NewBoolQuery().Should(queries...)
+	socials_q := elastic.NewNestedQuery("identities", nested_socials_q)
+	socials_q.InnerHit(elastic.NewInnerHit())
+
 	// doc source pruning
 	fsc := elastic.NewFetchSourceContext(true)
 	fsc.Include("title")
 
 	// run the query
-	main_query := elastic.NewBoolQuery().Should(participants_q, contact_name_q, emails_q)
+	main_query := elastic.NewBoolQuery().Filter(elastic.NewTermQuery("user_id", user.User_id)).
+		Should(participants_q, contact_name_q, emails_q, ims_q, socials_q)
 	search := es.Client.Search().
-		Index(user_id).
+		Index(user.Shard_id).
 		FetchSourceContext(fsc).
 		Size(30)
 	/** log the full json query to help development
@@ -95,6 +112,7 @@ func (es *ElasticSearchBackend) RecipientsSuggest(user_id, query_string string) 
 			suggest, e := extractParticipantInfos(hit)
 			if e != nil {
 				log.WithError(e).Warnf("[Elasticsearch] failed to extract message participants")
+				continue
 			}
 			//deduplicate
 			if _, ok := participants_suggests[suggest.Address]; !ok {
@@ -105,6 +123,7 @@ func (es *ElasticSearchBackend) RecipientsSuggest(user_id, query_string string) 
 			suggest, e := extractContactInfos(hit)
 			if e != nil {
 				log.WithError(e).Warnf("[Elasticsearch] failed to extract contact info")
+				continue
 			}
 			suggests = append(suggests, suggest)
 		default:
@@ -131,15 +150,18 @@ func extractContactInfos(contact_hit *elastic.SearchHit) (suggest RecipientSugge
 }
 
 func extractParticipantInfos(message_hit *elastic.SearchHit) (suggest RecipientSuggestion, err error) {
-	inner_hit := message_hit.InnerHits["participants"].Hits.Hits[0]
-	var participant returnedParticipant
-	if e := json.Unmarshal(*inner_hit.Source, &participant); e != nil {
-		err = errors.New("[ES RecipientSuggest] failed unmarshaling hit's source : " + e.Error())
+	if participants, ok := message_hit.InnerHits["participants"]; ok && len(participants.Hits.Hits) > 0 {
+		inner_hit := message_hit.InnerHits["participants"].Hits.Hits[0]
+		var participant returnedParticipant
+		if e := json.Unmarshal(*inner_hit.Source, &participant); e != nil {
+			err = errors.New("[ES RecipientSuggest] failed unmarshaling hit's source : " + e.Error())
+			return
+		}
+		suggest.Source = "participant"
+		suggest.Label = participant.Label
+		suggest.Address = participant.Address
+		suggest.Protocol = participant.Protocol
 		return
 	}
-	suggest.Source = "participant"
-	suggest.Label = participant.Label
-	suggest.Address = participant.Address
-	suggest.Protocol = participant.Protocol
 	return
 }

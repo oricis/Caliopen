@@ -1,8 +1,6 @@
 import { combineReducers } from 'redux';
 import notifyReducer from 'react-redux-notify';
-import { routerReducer } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
-import applicationReducer from './modules/application';
 import contactReducer from './modules/contact';
 import deviceReducer from './modules/device';
 import discussionReducer from './modules/discussion';
@@ -14,16 +12,16 @@ import messageReducer from './modules/message';
 import notificationReducer from './modules/notification';
 import openPGPKeychainReducer from './modules/openpgp-keychain';
 import participantSuggestionsReducer from './modules/participant-suggestions';
+import providerReducer from './modules/provider';
 import remoteIdentityReducer from './modules/remote-identity';
 import searchReducer from './modules/search';
 import settingsReducer from './modules/settings';
-import tabReducer from './modules/tab';
 import tagReducer from './modules/tag';
 import userReducer from './modules/user';
+import publicKeyReducer from './modules/public-key';
 
 const reducer = combineReducers({
   notifications: notifyReducer,
-  application: applicationReducer,
   contact: contactReducer,
   device: deviceReducer,
   discussion: discussionReducer,
@@ -35,14 +33,14 @@ const reducer = combineReducers({
   notification: notificationReducer,
   openPGPKeychain: openPGPKeychainReducer,
   participantSuggestions: participantSuggestionsReducer,
+  provider: providerReducer,
   remoteIdentity: remoteIdentityReducer,
   search: searchReducer,
   settings: settingsReducer,
-  tab: tabReducer,
   tag: tagReducer,
   user: userReducer,
-  router: routerReducer,
   form: formReducer,
+  publicKey: publicKeyReducer,
 });
 
 export default reducer;

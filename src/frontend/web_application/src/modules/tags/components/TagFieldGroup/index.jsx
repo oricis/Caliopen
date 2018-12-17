@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withI18n } from 'lingui-react';
+import { withI18n } from '@lingui/react';
 import classnames from 'classnames';
 import { TextFieldGroup, Button, Spinner } from '../../../../components';
 
@@ -65,8 +65,8 @@ class TagFieldGroup extends Component {
     const inputProps = {
       ...input,
       className: classnames(input.className, 'm-tags-search__input'),
-      label: i18n._('tags.form.search.label', { defaults: 'Search' }),
-      placeholder: i18n._('tags.form.search.placeholder', { defaults: 'Search a tag ...' }),
+      label: i18n._('tags.form.search.label', null, { defaults: 'Search' }),
+      placeholder: i18n._('tags.form.search.placeholder', null, { defaults: 'Search a tag ...' }),
       onChange: this.handleChange,
       showLabelforSr: true,
       errors,
@@ -84,7 +84,7 @@ class TagFieldGroup extends Component {
           icon={isFetching ? (<Spinner isLoading display="inline" />) : 'plus'}
           disabled={isFetching}
           onClick={this.handleSubmit}
-          aria-label={i18n._('tags.action.add', { defaults: 'Add' })}
+          aria-label={i18n._('tags.action.add', null, { defaults: 'Add' })}
         />
       </div>
     );

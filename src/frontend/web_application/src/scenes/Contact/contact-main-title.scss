@@ -1,0 +1,42 @@
+@import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+.s-contact-main-title {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  grid-template-areas: "avatar name" "pi orga";
+
+  &__avatar {
+    grid-area: avatar;
+    align-self: center;
+    margin-right: 1rem;
+  }
+
+  &__name {
+    grid-area: name;
+    color: #0f98c6;
+    font-size: 1.75rem;
+    font-weight: 700;
+  }
+
+  &__pi {
+    grid-area: pi;
+    justify-self: center;
+    margin-right: 1rem;
+    color: rgba(7, 183, 152, 0.8);
+    font-size: 2.625rem;
+    font-weight: 700;
+    line-height: 2.625rem;
+  }
+
+  &__organizations {
+    grid-area: orga;
+    font-weight: 700;
+  }
+
+  @include breakpoint(medium) {
+    & {
+      grid-template-areas: "avatar name name" "avatar pi orga";
+    }
+  }
+}

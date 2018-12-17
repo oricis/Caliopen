@@ -5,7 +5,7 @@ export const isSupported = typeof window !== 'undefined' && 'Notification' in wi
 
 export const requestPermission = () => new Promise((resolve, reject) => {
   if (!isSupported) {
-    reject('Browser notifications not supported');
+    reject(new Error('Browser notifications not supported'));
 
     return;
   }
@@ -40,12 +40,12 @@ const isDocumentVisible = () => {
   return !document[hidden];
 };
 
-export const notify = async ({ message }) => {
+export const notify = async ({ message, force = false }) => {
   if (!isSupported) {
     return Promise.reject('Browser notifications not supported');
   }
 
-  if (isDocumentVisible()) {
+  if (isDocumentVisible() && !force) {
     return undefined;
   }
 

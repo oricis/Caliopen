@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 // import Moment from 'react-moment';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { Icon, TextBlock } from '../../../../components';
 import './style.scss';
 

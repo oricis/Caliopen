@@ -11,11 +11,14 @@ import (
 	swgErr "github.com/go-openapi/errors"
 	"net/http"
 	"strings"
+	."github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 )
 
 // GET …/participants/suggest?context=xxxx&q=xxx
 func Suggest(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
+	shard_id := ctx.MustGet("shard_id").(string)
+	user_info := &UserInfo{User_id: user_id, Shard_id: shard_id}
 	query_context := ctx.Request.URL.Query().Get("context")
 	if query_context == "" {
 		e := swgErr.New(http.StatusUnprocessableEntity, "Missing 'context' param in query")
@@ -42,7 +45,7 @@ func Suggest(ctx *gin.Context) {
 		// convert string query to lower to benefit the case insensitive search from ES
 		// as suggest is in the context of a msg_compose, ie : we are looking for an address
 		query_string = strings.ToLower(query_string)
-		suggests, err := caliopen.Facilities.RESTfacility.SuggestRecipients(user_id, query_string)
+		suggests, err := caliopen.Facilities.RESTfacility.SuggestRecipients(user_info, query_string)
 
 		if err != nil {
 			e := swgErr.New(http.StatusInternalServerError, err.Error())

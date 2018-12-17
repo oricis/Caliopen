@@ -1,0 +1,17 @@
+@import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+.m-provider-button-container {
+  @include flex-grid-row($size: expand);
+  background-color: #F8F8F8;
+
+  &__button {
+    @include flex-grid-size(4);
+  }
+
+  &__label {
+    @include flex-grid-size(8);
+    padding: map_get($co-margin_, 'xsmall') map_get($co-margin_, 'small');
+    color: $co-color__fg__text--high;
+  }
+}

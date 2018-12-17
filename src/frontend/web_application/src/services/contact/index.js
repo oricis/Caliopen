@@ -28,7 +28,7 @@ export function formatName({ contact, format }) {
   return title || getContactTitle(contact);
 }
 
-export function getFirstLetter(string, defaultLetter = '?') {
+export function getFirstLetter(string, defaultLetter) {
   let firstLetter = defaultLetter;
   if (string) {
     firstLetter = string.substr(0, 1).toLowerCase();

@@ -19,6 +19,10 @@ $m-badge--large__padding: ($m-badge--large__height - $m-badge--large__font-size)
   line-height: $m-badge__height;
   white-space: nowrap;
 
+  &--right-spaced {
+    margin-right: $co-margin / 4;
+  }
+
   &__text {
     @include flex-grid-size;
     padding: $m-badge__padding;
@@ -70,5 +74,12 @@ $m-badge--large__padding: ($m-badge--large__height - $m-badge--large__font-size)
     height: $m-badge--large__height;
     font-size: $m-badge--large__font-size;
     line-height: $m-badge--large__height;
+  }
+
+  @each $name, $color in $caliopen-palette {
+    &--#{$name} {
+      background-color: $color;
+      color: $co-color__contrast__text;
+    }
   }
 }

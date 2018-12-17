@@ -1,11 +1,12 @@
 // --- Colors ---
 // bright colors
-$co-color__primary:                   #1395ba;
+$co-color__primary:                   #0f98c6;
 $co-color__primary--lower:            darken($co-color__primary, 15%);
 $co-color__primary--low:              darken($co-color__primary, 10%);
 $co-color__primary--high:             #8dceec;
 $co-color__primary--higher:           lighten($co-color__primary--high, 15%);
 $co-color__primary__text:             #8dceec;
+$co-color__primary__text--alt:        black;
 
 $co-color__secondary:                 #13ba95;
 $co-color__secondary--lower:          darken($co-color__secondary, 15%);
@@ -42,6 +43,14 @@ $privacy-palette: (
   good: #ebc064,
   bad: #d66291,
   ugly: #ed0e47,
+);
+
+$privacy-palette-high: (
+  disabled: #c2c2c2,
+  super: #cbe8e3,
+  good: lighten(#ebc064, 30%),
+  bad: lighten(#d66291, 30%),
+  ugly: #edccd4,
 );
 
 $context-palette: (
@@ -86,8 +95,11 @@ $co-color__fg__border--higher:        #f9f9f9;
 $co-color__fg__text:                  #444;
 $co-color__fg__text--lower:           darken($co-color__fg__text, 20%);
 $co-color__fg__text--low:             darken($co-color__fg__text, 10%);
-$co-color__fg__text--high:            lighten($co-color__fg__text, 15%);
+$co-color__fg__text--high:            #505050;
 $co-color__fg__text--higher:          lighten($co-color__fg__text, 30%);
+
+// sidebar
+$co-color__sidebar__back:             #e8f5fb;
 
 // background
 $co-color__bg__back:                  #bbe8fd;

@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { messagesByIdSelector } from '../../../store/selectors/message';
 
-const discussionIdSelector = (state, { discussionId }) => {
+export const discussionIdSelector = (state, { discussionId }) => {
   if (!discussionId) {
     throw new Error('discussionId must be passed when calling discussionSelector, e.g discussionSelector(state, { discussionId })');
   }

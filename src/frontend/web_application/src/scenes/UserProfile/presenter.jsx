@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { Section, PageTitle, Button, Confirm, TextFieldGroup } from '../../components/';
 import ProfileForm from './components/ProfileForm';
 import ProfileInfo from './components/ProfileInfo';
@@ -49,7 +49,7 @@ class UserProfile extends Component {
 
   handleError = () => {
     const { i18n, notifyError } = this.props;
-    notifyError({ message: i18n._('contact.feedback.unable_to_save', { defaults: 'Unable to save the contact' }) });
+    notifyError({ message: i18n._('contact.feedback.unable_to_save', null, { defaults: 'Unable to save the contact' }) });
   }
 
   handlePasswordChange = (ev) => {
@@ -126,8 +126,8 @@ class UserProfile extends Component {
                   <Trans id="user.delete-form.modal-content">Are you sure to delete your Caliopen account ?</Trans>
                 </p>
                 <TextFieldGroup
-                  label={i18n._('user.delete-form.password.label', { defaults: 'Password' })}
-                  placeholder={i18n._('user.delete-form.password.placeholder', { defaults: 'password' })}
+                  label={i18n._('user.delete-form.password.label', null, { defaults: 'Password' })}
+                  placeholder={i18n._('user.delete-form.password.placeholder', null, { defaults: 'password' })}
                   name="password"
                   type="password"
                   value={this.state.password}
@@ -157,7 +157,7 @@ class UserProfile extends Component {
         <div className="s-user-profile__info">
           <ProfileInfo user={user} />
         </div>
-        <Section className="s-user-profile__details" title={i18n._('user.profile.form.title', { defaults: 'Complete your profile' })}>
+        <Section className="s-user-profile__details" title={i18n._('user.profile.form.title', null, { defaults: 'Complete your profile' })}>
           {this.renderForm()}
         </Section>
       </div>

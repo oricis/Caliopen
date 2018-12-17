@@ -7,6 +7,7 @@ package backends
 import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"io"
+	"time"
 )
 
 //LDA only deals with email
@@ -32,6 +33,9 @@ type LDAStore interface {
 	RetrieveUserIdentity(userId, identityId string, withCredentials bool) (*UserIdentity, error)
 	UpdateUserIdentity(userIdentity *UserIdentity, fields map[string]interface{}) error
 	RetrieveUser(user_id string) (user *User, err error)
+	UpdateRemoteInfosMap(userId, remoteId string, infos map[string]string) error
+	RetrieveRemoteInfosMap(userId, remoteId string) (infos map[string]string, err error)
+	TimestampRemoteLastCheck(userId, remoteId string, time ...time.Time) error
 }
 
 type LDAIndex interface {

@@ -16,8 +16,7 @@ import (
 
 func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err error) {
 	const nats_order = "deliver"
-	natsMessage := fmt.Sprintf(Nats_message_tmpl, nats_order, msg_id, user_id)
-
+	var order BrokerOrder
 	draft, draftErr := rest.store.RetrieveMessage(user_id, msg_id)
 	if draftErr != nil {
 		log.WithError(draftErr).Info("[SendDraft] failed to retrieve draft from store")
@@ -32,31 +31,56 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err e
 
 	var natsTopic string
 	switch protocol {
-	case ImapProtocol:
+	case EmailProtocol, ImapProtocol:
 		natsTopic = Nats_outIMAP_topicKey
+		order = BrokerOrder{
+			Order:     nats_order,
+			MessageId: msg_id,
+			UserId:    user_id,
+			RemoteId: draft.UserIdentities[0].String(), // handle one identity only for now
+		}
 	case SmtpProtocol:
 		natsTopic = Nats_outSMTP_topicKey
+		order = BrokerOrder{
+			Order:     nats_order,
+			MessageId: msg_id,
+			UserId:    user_id,
+			RemoteId: draft.UserIdentities[0].String(), // handle one identity only for now
+		}
+	case TwitterProtocol:
+		natsTopic = Nats_outTwitter_topicKey
+		order = BrokerOrder{
+			Order:     nats_order,
+			MessageId: msg_id,
+			UserId:    user_id,
+			RemoteId:  draft.UserIdentities[0].String(), // handle one identity for now
+		}
 	default:
-		return nil, fmt.Errorf("no handler for <%s> protocol", protocol)
+		return nil, fmt.Errorf("[SendDraft] no handler for <%s> protocol", protocol)
 	}
-
-	rep, err := rest.nats_conn.Request(rest.natsTopics[natsTopic], []byte(natsMessage), 30*time.Second)
+	natsMessage, e := json.Marshal(order)
+	if e != nil {
+		log.WithError(e).Info("[SendDraft] failed to build nats message")
+		return nil, errors.New("[SendDraft] failed to build nats message")
+	}
+	rep, err := rest.nats_conn.Request(rest.natsTopics[natsTopic], natsMessage, 30*time.Second)
 	if err != nil {
-		log.WithError(err).Warn("[RESTfacility]: SendDraft error")
+		log.WithError(err).Warn("[RESTfacility]: SendDraft error (1)")
 		if rest.nats_conn.LastError() != nil {
 			log.WithError(rest.nats_conn.LastError()).Warn("[RESTfacility]: SendDraft error")
 			return nil, err
 		}
 		return nil, err
 	}
+
 	var reply DeliveryAck
 	err = json.Unmarshal(rep.Data, &reply)
 	if err != nil {
-		log.WithError(err).Warn("[RESTfacility]: SendDraft error")
+		log.WithError(err).Warn("[RESTfacility]: SendDraft error (2)")
 		return nil, err
 	}
 	if reply.Err {
-		log.Warn("[RESTfacility]: SendDraft error")
+		log.Warn("[RESTfacility]: SendDraft error (3)")
 		return nil, errors.New(reply.Response)
 	}
 	msg, err = rest.store.RetrieveMessage(user_id, msg_id)

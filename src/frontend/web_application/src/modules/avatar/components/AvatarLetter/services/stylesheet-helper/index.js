@@ -6,7 +6,7 @@ export default function getClassName(word, defaultLetter = 'none') {
   }
 
   if ('abcdefghijklmnopqrstuvwxyz'.indexOf(letter) === -1) {
-    letter = defaultLetter;
+    letter = letter === '+' ? 'plus' : defaultLetter;
   }
 
   return `m-letter--${letter}`;

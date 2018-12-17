@@ -86,7 +86,7 @@ class UserMessageQualifier(object):
         p.address = participant.address
         p.type = participant.type
         p.label = participant.label
-        p.protocol = message.message_type
+        p.protocol = message.message_protocol
         log.debug('Will lookup contact {} for user {}'.
                   format(participant.address, self.user.user_id))
         c = Contact.lookup(self.user, participant.address)
@@ -108,7 +108,7 @@ class UserMessageQualifier(object):
         new_message.body_plain = message.body_plain
         new_message.date = message.date
         new_message.size = message.size
-        new_message.type = message.message_type
+        new_message.protocol = message.message_protocol
         new_message.is_unread = True
         new_message.is_draft = False
         new_message.is_answered = False

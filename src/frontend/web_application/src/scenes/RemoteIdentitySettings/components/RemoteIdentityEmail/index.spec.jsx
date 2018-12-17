@@ -2,6 +2,11 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import RemoteIdentityEmail from './';
 
+jest.mock('../../../../modules/settings', () => ({
+  WithSettings: ({ render }) => render({}, false),
+  withSettings: () => C => props => <C {...props} />,
+}));
+
 describe('component RemoteIdentityEmail', () => {
   it('init form', () => {
     const props = {
@@ -12,7 +17,7 @@ describe('component RemoteIdentityEmail', () => {
     };
 
     const wrapper = shallow(<RemoteIdentityEmail {...props} />).dive();
-    expect(wrapper.state().phase).toEqual(1);
+    expect(wrapper.state().editing).toEqual(true);
   });
 
   it('existing remoteIdentity', () => {
@@ -28,6 +33,6 @@ describe('component RemoteIdentityEmail', () => {
     };
 
     const wrapper = shallow(<RemoteIdentityEmail {...props} />).dive();
-    expect(wrapper.state().phase).toEqual(0);
+    expect(wrapper.state().editing).toEqual(false);
   });
 });

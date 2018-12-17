@@ -7,6 +7,7 @@
 package go_remoteIDs
 
 import (
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 )
 
@@ -15,22 +16,36 @@ func (p *Poller) AddJobFor(idkey string) (err error) {
 	p.cacheMux.Lock()
 	defer p.cacheMux.Unlock()
 	if entry, ok := p.Cache[idkey]; ok {
-		switch entry.remoteID.Protocol {
-		case "imap":
+		switch entry.remoteProtocol {
+		case EmailProtocol:
 			cronStr := "@every " + entry.pollInterval + "m"
 			entry.cronId, err = p.MainCron.AddJob(cronStr, imapJob{
-				remoteId:  entry.remoteID.Id.String(),
+				remoteId:  entry.remoteID.String(),
 				natsTopic: p.Config.NatsTopics["imap"],
 				poller:    p,
-				userId:    entry.remoteID.UserId.String(),
+				userId:    entry.userID.String(),
 			})
 			if err != nil {
 				log.WithError(err).Warn("[AddJobFor] failed to add job to MainCron")
 				return
 			}
 			p.Cache[idkey] = entry
+		case TwitterProtocol:
+			cronStr := "@every " + entry.pollInterval + "m"
+			entry.cronId, err = p.MainCron.AddJob(cronStr, twitterJob{
+				remoteId:  entry.remoteID.String(),
+				natsTopic: p.Config.NatsTopics["twitter_dm"],
+				poller:    p,
+				userId:    entry.userID.String(),
+			})
+			if err != nil {
+				log.WithError(err).Warn("[AddJobFor] failed to add job to MainCron")
+				return
+			}
+			p.Cache[idkey] = entry
+			p.addWorkerFor(idkey)
 		default:
-			log.WithError(err).Warnf("[AddJobFor] unknow Remote Identity type <%s>", entry.remoteID.Type)
+			log.WithError(err).Warnf("[AddJobFor] unknow Remote Identity protocol <%s>", entry.remoteProtocol)
 			return
 		}
 		return
@@ -46,6 +61,10 @@ func (p *Poller) RemoveJobFor(idkey string) (err error) {
 	defer p.cacheMux.Unlock()
 	if entry, ok := p.Cache[idkey]; ok {
 		p.MainCron.Remove(entry.cronId)
+		switch entry.remoteProtocol {
+		case TwitterProtocol:
+			p.removeWorkerFor(idkey)
+		}
 		return
 	} else {
 		log.WithError(err).Warnf("[RemoveJobFor] failed to retrieve cache key <%s>", idkey)
@@ -60,5 +79,10 @@ func (p *Poller) UpdateJobFor(idkey string) (err error) {
 	if err != nil {
 		return
 	}
-	return p.AddJobFor(idkey)
+	err = p.AddJobFor(idkey)
+	if err != nil {
+		return
+	}
+	p.updateWorkerFor(idkey)
+	return
 }

@@ -4,10 +4,11 @@ const DocumentTitle = require('react-document-title');
 const serialize = require('serialize-javascript');
 const Bootstrap = require('./components/Bootstrap').default;
 const configureStore = require('../../src/store/configure-store').default;
-const { getUserLocales } = require('../../src/services/i18n');
+const { getUserLocales } = require('../../src/modules/i18n');
 const { getDefaultSettings } = require('../../src/modules/settings');
 const template = require('../../dist/server/template.html');
 const { getConfig } = require('../config');
+const { initialState: initialStateSettings } = require('../../src/store/modules/settings');
 
 /**
  * base html template
@@ -16,12 +17,10 @@ function getMarkup({ store, context, location }) {
   try {
     const { protocol, hostname, port } = getConfig();
     const config = { protocol, hostname, port };
-    const markup = ReactDOMServer.renderToString(
-      React.createElement(Bootstrap, {
-        context, location, store, config,
-      }));
+    const markup = ReactDOMServer.renderToString(React.createElement(Bootstrap, {
+      context, location, store, config,
+    }));
     const documentTitle = DocumentTitle.rewind();
-
     const initialState = store.getState();
 
     return [
@@ -42,14 +41,10 @@ function applyUserLocaleToGlobal(req) {
 
 module.exports = (req, res) => {
   applyUserLocaleToGlobal(req);
-
-  const locales = getUserLocales();
-  const settings = getDefaultSettings(locales[0]);
-
-  // XXX: prefetch
   const initialState = {
     settings: {
-      settings,
+      ...initialStateSettings,
+      settings: getDefaultSettings(getUserLocales()[0]),
     },
   };
 

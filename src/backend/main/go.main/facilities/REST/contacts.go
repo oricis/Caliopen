@@ -90,7 +90,7 @@ func (rest *RESTfacility) RetrieveContact(userID, contactID string) (contact *Co
 
 // PatchContact is a shortcut for REST api to :
 // - retrieve the contact from db
-// - UpdateWithPatch()
+// - UpdateWithPatch() with UserActor role
 // - then UpdateContact() to save updated contact to stores & index if everything went good.
 func (rest *RESTfacility) PatchContact(user *UserInfo, patch []byte, contactID string) error {
 
@@ -132,7 +132,6 @@ func (rest *RESTfacility) PatchContact(user *UserInfo, patch []byte, contactID s
 		// check if title has to be re-computed
 		case "AdditionalName", "FamilyName", "GivenName", "NamePrefix", "NameSuffix":
 			needNewTitle = true
-			break
 		// Check if we can try to discover a public key
 		case "Emails", "Identities":
 			discoverKey = true
@@ -172,8 +171,8 @@ func (rest *RESTfacility) launchKeyDiscovery(current_contact *Contact, updatedFi
 		if err != nil {
 			return
 		}
-		log.Infof("Will publish nats topic %s for message %s", rest.natsTopics[Nats_DiscoverKey_topicKey], string(natsMessage))
-		rest.PublishOnNats(string(natsMessage), rest.natsTopics[Nats_DiscoverKey_topicKey])
+		log.Infof("Will publish nats topic %s for contact %s", rest.natsTopics[Nats_Keys_topicKey], current_contact.ContactId.String())
+		rest.PublishOnNats(string(natsMessage), rest.natsTopics[Nats_Keys_topicKey])
 	}(current_contact)
 	return nil
 }
@@ -248,4 +247,8 @@ func (rest *RESTfacility) DeleteContact(userID, contactID string) error {
 		return fmt.Errorf("%s", strings.Join(*errGroup, " / "))
 	}
 	return nil
+}
+
+func (rest *RESTfacility) ContactExists(userID, contactID string) bool {
+	return rest.store.ContactExists(userID, contactID)
 }

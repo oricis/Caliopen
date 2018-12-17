@@ -14,7 +14,7 @@ import (
 	"net/http"
 )
 
-//GET …/contacts/{contact_id}/identities
+//GET …/contacts/{contactID}/identities
 func GetIdentities(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
 	contact_id, err := operations.NormalizeUUIDstring(ctx.Param("contactID"))

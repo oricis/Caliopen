@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withI18n } from 'lingui-react';
+import { withI18n } from '@lingui/react';
 import { Icon } from '../../../../components';
 
 @withI18n()
@@ -18,9 +18,9 @@ class EmailDetails extends Component {
   initTranslations() {
     const { i18n } = this.props;
     this.emailTypesTranslations = {
-      work: i18n._('contact.email_type.work', { defaults: 'Professional' }),
-      home: i18n._('contact.email_type.home', { defaults: 'Personal' }),
-      other: i18n._('contact.email_type.other', { defaults: 'Other' }),
+      work: i18n._('contact.email_type.work', null, { defaults: 'Professional' }),
+      home: i18n._('contact.email_type.home', null, { defaults: 'Personal' }),
+      other: i18n._('contact.email_type.other', null, { defaults: 'Other' }),
     };
   }
 
@@ -29,7 +29,7 @@ class EmailDetails extends Component {
 
     const address = !email.is_primary ?
       email.address :
-      (<strong title={i18n._('contact.primary', { defaults: 'Primary' })}>{email.address}</strong>);
+      (<strong title={i18n._('contact.primary', null, { defaults: 'Primary' })}>{email.address}</strong>);
 
     return (
       <span className="m-email-details">

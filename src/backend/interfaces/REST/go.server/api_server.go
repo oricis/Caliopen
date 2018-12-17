@@ -14,6 +14,7 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/messages"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/notifications"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/participants"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/providers"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/tags"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/users"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
@@ -34,14 +35,17 @@ type (
 	}
 
 	APIConfig struct {
-		Host           string `mapstructure:"host"`
+		Interface      string `mapstructure:"listen_interface"`
+		ListenPort     string `mapstructure:"listen_port"`
 		Port           string `mapstructure:"port"`
+		Hostname       string `mapstructure:"hostname"`
 		SwaggerFile    string `mapstructure:"swaggerSpec"`
 		BackendConfig  `mapstructure:"BackendConfig"`
 		IndexConfig    `mapstructure:"IndexConfig"`
 		CacheSettings  `mapstructure:"RedisConfig"`
 		NatsConfig     `mapstructure:"NatsConfig"`
 		NotifierConfig `mapstructure:"NotifierConfig"`
+		Providers      []obj.Provider `mapstructure:"Providers"`
 	}
 
 	BackendConfig struct {
@@ -76,11 +80,12 @@ type (
 	}
 
 	NatsConfig struct {
-		Url            string `mapstructure:"url"`
-		OutSMTP_topic  string `mapstructure:"outSMTP_topic"`
-		OutIMAP_topic  string `mapstructure:"outIMAP_topic"`
-		Contacts_topic string `mapstructure:"contacts_topic"`
-		Keys_topic     string `mapstructure:"keys_topic"`
+		Url              string `mapstructure:"url"`
+		OutSMTP_topic    string `mapstructure:"outSMTP_topic"`
+		OutIMAP_topic    string `mapstructure:"outIMAP_topic"`
+		OutTWITTER_topic string `mapstructure:"outTWITTER_topic"`
+		Contacts_topic   string `mapstructure:"contacts_topic"`
+		Keys_topic       string `mapstructure:"keys_topic"`
 	}
 
 	NotifierConfig struct {
@@ -121,17 +126,20 @@ func (server *REST_API) initialize(config APIConfig) error {
 			Db:       config.CacheSettings.Db,
 		},
 		NatsConfig: obj.NatsConfig{
-			Url:            config.NatsConfig.Url,
-			OutSMTP_topic:  config.NatsConfig.OutSMTP_topic,
-			OutIMAP_topic:  config.NatsConfig.OutIMAP_topic,
-			Contacts_topic: config.NatsConfig.Contacts_topic,
-			Keys_topic:     config.NatsConfig.Keys_topic,
+			Url:              config.NatsConfig.Url,
+			OutSMTP_topic:    config.NatsConfig.OutSMTP_topic,
+			OutIMAP_topic:    config.NatsConfig.OutIMAP_topic,
+			OutTWITTER_topic: config.NatsConfig.OutTWITTER_topic,
+			Contacts_topic:   config.NatsConfig.Contacts_topic,
+			Keys_topic:       config.NatsConfig.Keys_topic,
 		},
 		NotifierConfig: obj.NotifierConfig{
 			AdminUsername: config.NotifierConfig.AdminUsername,
 			BaseUrl:       config.NotifierConfig.BaseUrl,
 			TemplatesPath: config.NotifierConfig.TemplatesPath,
 		},
+		Providers: config.Providers,
+		Hostname:  config.Hostname + ":" + config.Port,
 	}
 
 	err := caliopen.Initialize(caliopenConfig)
@@ -172,7 +180,7 @@ func (server *REST_API) start() error {
 	server.AddHandlers(api)
 
 	// listens
-	addr := server.config.Host + ":" + server.config.Port
+	addr := server.config.Interface + ":" + server.config.ListenPort
 	err = router.Run(addr)
 	if err != nil {
 		log.WithError(err).Warn("unable to start gin server")
@@ -231,6 +239,12 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	cts.PATCH("/:contactID", contacts.PatchContact)
 	cts.DELETE("/:contactID", contacts.DeleteContact)
 	cts.GET("/:contactID/identities", contacts.GetIdentities)
+	//publickeys
+	cts.POST("/:contactID/publickeys", contacts.NewPublicKey)
+	cts.GET("/:contactID/publickeys", contacts.GetPubKeys)
+	cts.GET("/:contactID/publickeys/:pubkeyID", contacts.GetPubKey)
+	cts.PATCH("/:contactID/publickeys/:pubkeyID", contacts.PatchPubKey)
+	cts.DELETE("/:contactID/publickeys/:pubkeyID", contacts.DeletePubKey)
 	//tags
 	cts.PATCH("/:contactID/tags", tags.PatchResourceWithTags)
 
@@ -259,4 +273,11 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	notif := api.Group("/notifications", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
 	notif.GET("", notifications.GetPendingNotif)
 	notif.DELETE("", notifications.DeleteNotifications)
+
+	/** providers **/
+	prov := api.Group("/providers")
+	prov.GET("", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"), providers.GetProvidersList)
+	prov.GET("/:provider_name", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"), providers.GetProvider)
+	prov.GET("/:provider_name/callback", providers.CallbackHandler)
+	api.StaticFile("/test/oauth", "../interfaces/REST/go.server/operations/providers/oauth-test.html")
 }

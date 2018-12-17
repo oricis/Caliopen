@@ -1,0 +1,13 @@
+@import '../../../../styles/common';
+
+.m-action-btns {
+  display: flex;
+
+  &__btn {
+    margin-left: $co-margin;
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+}

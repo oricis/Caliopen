@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans, withI18n } from 'lingui-react';
+import { Trans, withI18n } from '@lingui/react';
 import classnames from 'classnames';
 import { Spinner, Button, FieldErrors, CheckboxFieldGroup, SelectFieldGroup, TextFieldGroup, TextareaFieldGroup } from '../../../../components/';
 
@@ -105,9 +105,9 @@ class OpenPGPKeyForm extends Component {
     const { i18n } = this.props;
 
     this.errorsLabels = {
-      [ERROR_UNABLE_READ_PUBLIC_KEY]: i18n._('openpgp.feedback.unable-read-public-key', { defaults: 'Unable to read public key' }),
-      [ERROR_UNABLE_READ_PRIVATE_KEY]: i18n._('openpgp.feedback.unable-read-private-key', { defaults: 'Unable to read private key' }),
-      [ERROR_FINGERPRINTS_NOT_MATCH]: i18n._('openpgp.feedback.fingerprints-not-match', { defaults: 'Fingerprints do not match' }),
+      [ERROR_UNABLE_READ_PUBLIC_KEY]: i18n._('openpgp.feedback.unable-read-public-key', null, { defaults: 'Unable to read public key' }),
+      [ERROR_UNABLE_READ_PRIVATE_KEY]: i18n._('openpgp.feedback.unable-read-private-key', null, { defaults: 'Unable to read private key' }),
+      [ERROR_FINGERPRINTS_NOT_MATCH]: i18n._('openpgp.feedback.fingerprints-not-match', null, { defaults: 'Fingerprints do not match' }),
     };
   }
 
@@ -195,7 +195,7 @@ class OpenPGPKeyForm extends Component {
               this.emailOptions.length !== 1 && (
                 <SelectFieldGroup
                   className="m-account-openpgp-form__field-group"
-                  label={i18n._('user.openpgp.form.email.label', { defaults: 'Email' })}
+                  label={i18n._('user.openpgp.form.email.label', null, { defaults: 'Email' })}
                   value={this.state.generateForm.email}
                   onChange={this.handleGenerateChanges}
                   name="email"
@@ -216,7 +216,7 @@ class OpenPGPKeyForm extends Component {
               {' '}
               <CheckboxFieldGroup
                 displaySwitch
-                label={i18n._('user.openpgp.has-passphrase', { defaults: 'Enable passphrase' })}
+                label={i18n._('user.openpgp.has-passphrase', null, { defaults: 'Enable passphrase' })}
                 value={this.state.hasPassphrase}
                 onChange={this.handleToggleHasPassprase}
               />
@@ -225,7 +225,7 @@ class OpenPGPKeyForm extends Component {
             {this.state.hasPassphrase && (
               <div className="m-account-openpgp-form__field-group">
                 <TextFieldGroup
-                  label={i18n._('user.openpgp.form.passphrase.label', { defaults: 'Passphrase' })}
+                  label={i18n._('user.openpgp.form.passphrase.label', null, { defaults: 'Passphrase' })}
                   value={this.state.generateForm.passphrase}
                   onChange={this.handleGenerateChanges}
                   name="passphrase"
@@ -259,10 +259,12 @@ class OpenPGPKeyForm extends Component {
             }
             <TextareaFieldGroup
               className="m-account-openpgp-form__field-group"
-              label={i18n._('user.openpgp.form.public-key.label', { defaults: 'Public key' })}
-              value={this.state.importForm.publicKeyArmored}
-              onChange={this.handleImportChanges}
-              name="publicKeyArmored"
+              label={i18n._('user.openpgp.form.public-key.label', null, { defaults: 'Public key' })}
+              inputProps={{
+                value: this.state.importForm.publicKeyArmored,
+                onChange: this.handleImportChanges,
+                name: 'publicKeyArmored',
+              }}
               errors={
                 importForm.errors.publicKeyArmored &&
                   importForm.errors.publicKeyArmored.map(key => this.errorsLabels[key])
@@ -270,10 +272,12 @@ class OpenPGPKeyForm extends Component {
             />
             <TextareaFieldGroup
               className="m-account-openpgp-form__field-group"
-              label={i18n._('user.openpgp.form.private-key.label', { defaults: 'Private key' })}
-              value={this.state.importForm.privateKeyArmored}
-              onChange={this.handleImportChanges}
-              name="privateKeyArmored"
+              label={i18n._('user.openpgp.form.private-key.label', null, { defaults: 'Private key' })}
+              inputProps={{
+                value: this.state.importForm.privateKeyArmored,
+                onChange: this.handleImportChanges,
+                name: 'privateKeyArmored',
+              }}
               errors={
                 importForm.errors.privateKeyArmored &&
                   importForm.errors.privateKeyArmored.map(key => this.errorsLabels[key])

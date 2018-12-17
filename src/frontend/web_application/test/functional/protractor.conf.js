@@ -1,6 +1,6 @@
 const { SpecReporter } = require('jasmine-spec-reporter');
 
-const front_url = process.env.FRONTEND_ADDRESS || 'localhost' ;
+const frontUrl = process.env.FRONTEND_ADDRESS || 'localhost';
 
 const cfg = {
   SELENIUM_PROMISE_MANAGER: true,
@@ -9,7 +9,7 @@ const cfg = {
       browserName: 'chrome',
       maxInstances: 1,
       chromeOptions: {
-        args: ['--no-sandbox', '--disable-dev-shm-usage', '--headless', '--disable-gpu', '--disable-extensions', 'lang=en-US'],
+        args: ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--disable-extensions', 'lang=en-US'],
         prefs: {
           intl: { accept_languages: 'en-US' },
         },
@@ -29,7 +29,7 @@ const cfg = {
     // print: () => {},
     defaultTimeoutInterval: 70 * 1000,
   },
-  baseUrl: `http://${front_url}:4000/`,
+  baseUrl: `http://${frontUrl}:4000/`,
   onPrepare: () => {
     browser.ignoreSynchronization = true;
     browser.manage().window().setSize(1024, 768);
@@ -66,6 +66,8 @@ if (process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY) {
   cfg.sauceSeleniumAddress = process.env.SAUCE_ADDRESS + ':' + process.env.SAUCE_PORT + '/wd/hub';
   cfg.sauceSeleniumUseHttp = true;
   const branch = process.env.DRONE_BRANCH;
+  const prNumber = process.env.DRONE_PULL_REQUEST;
+  const name = `CaliOpen e2e - ${prNumber ? `#${prNumber}` : branch}`;
 
   cfg.multiCapabilities = [
     // {
@@ -73,35 +75,35 @@ if (process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY) {
     //   platform: 'Linux',
     //   version: '48.0',
     //   'tunnel-identifier': 'caliopen',
-    //   name: `CaliOpen e2e - ${branch}`,
+    //   name,
     // },
     {
       browserName: 'firefox',
       platform: 'Linux',
       version: '45.0',
       'tunnel-identifier': 'caliopen',
-      name: `CaliOpen e2e - ${branch}`,
+      name,
     },
     // {
     //   browserName: 'chrome',
     //   platform: 'Windows 10',
     //   version: '68.0',
     //   'tunnel-identifier': 'caliopen',
-    //   name: `CaliOpen e2e - ${branch}`,
+    //   name,
     // },
     // {
     //   browserName: 'MicrosoftEdge',
     //   platform: 'Windows 10',
     //   version: '16.16299',
     //   'tunnel-identifier': 'caliopen',
-    //   name: `CaliOpen e2e - ${branch}`,
+    //   name,
     // },
     // {
     //   browserName: 'safari',
     //   platform: 'macOS 10.13',
     //   version: '11.1',
     //   'tunnel-identifier': 'caliopen',
-    //   name: `CaliOpen e2e - ${branch}`,
+    //   name,
     // }
   ];
 }

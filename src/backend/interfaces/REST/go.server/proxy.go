@@ -18,7 +18,7 @@ func StartProxy(config ProxyConfig) {
 		}))
 	}
 
-	addr := config.Host + ":" + config.Port
+	addr := config.Interface + ":" + config.Port
 	log.Printf("HTTP proxy listening on %s", addr)
 	log.Fatal(http.ListenAndServe(addr, mux))
 
@@ -26,7 +26,8 @@ func StartProxy(config ProxyConfig) {
 }
 
 type ProxyConfig struct {
-	Host   string            `mapstructure:"host"`
-	Port   string            `mapstructure:"port"`
-	Routes map[string]string `mapstructure:"routes"`
+	Interface  string            `mapstructure:"listen_interface"`
+	ListenPort string            `mapstructure:"listen_port"`
+	Port       string            `mapstructure:"port"`
+	Routes     map[string]string `mapstructure:"routes"`
 }

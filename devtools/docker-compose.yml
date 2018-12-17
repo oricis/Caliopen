@@ -12,25 +12,25 @@ services:
   proxy-api:
     image: nginx
     links:
-      - api:api
+      - apiv2:apiv2
       - apiv1:apiv1
     ports:
       - "31415:31415"
     volumes:
       - ./conf/proxy-api.conf:/etc/nginx/nginx.conf
   # Caliopen APIv2
-  api:
+  apiv2:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.go-api
-    image: caliopen_api
+    image: caliopen_apiv2
     ## this very bad config for a public machine
     links:
       - redis:redis
       - cassandra:cassandra
       - elasticsearch:elasticsearch
       - nats:nats
-      - object_store:minio
+      - object-store:minio
     ports:
       - "6544:6544"
     volumes:
@@ -97,7 +97,7 @@ services:
     links:
       - cassandra:cassandra
       - elasticsearch:elasticsearch
-      - broker:broker
+      - lmtpd:lmtpd
     environment:
       CQLENG_ALLOW_SCHEMA_MANAGEMENT: 1
     volumes:
@@ -115,18 +115,19 @@ services:
       - proxy-api:proxy-api
     environment:
       CALIOPEN_API_HOSTNAME: proxy-api
+
   # Broker
-  broker:
+  lmtpd:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.go-lmtp
-    image: caliopen_broker
+    image: caliopen_lmtpd
     links:
       - cassandra:cassandra
       - elasticsearch:elasticsearch
-      - object_store:minio
+      - object-store:minio
       - nats:nats
-      - inbucket:inbucket
+      - inbucket:smtp
     ports:
       - "2525:2525"
     volumes:
@@ -139,11 +140,11 @@ services:
       - "4222:4222"
 
   # NATS Message Handler
-  message_handler:
+  mq_worker:
     build:
       context: ../src/backend
-      dockerfile: Dockerfile.message-handler
-    image: caliopen_message_handler
+      dockerfile: Dockerfile.mq-worker
+    image: caliopen_mq_worker
     links:
       - cassandra:cassandra
       - elasticsearch:elasticsearch
@@ -152,7 +153,7 @@ services:
       - ../src/backend/configs:/etc/caliopen
 
   # object storage
-  object_store:
+  object-store:
     image: minio/minio
     ports:
       - "9090:9090"
@@ -161,31 +162,48 @@ services:
       - store:/export
     command:
       server --address :9090 -C /etc/caliopen/minio /export
+    environment:
+      - MINIO_ACCESS_KEY=CALIOPEN_ACCESS_KEY_
+      - MINIO_SECRET_KEY=CALIOPEN_SECRET_KEY_BE_GOOD_AND_LIVE_OLD
 
   # Worker for remote identities
-  identity_worker:
+  imap_worker:
     build:
       context: ../src/backend
-      dockerfile: Dockerfile.identity-worker
-    image: caliopen_imapworker
+      dockerfile: Dockerfile.imap-worker
+    image: caliopen_imap_worker
     links:
       - cassandra:cassandra
-      - object_store:minio
+      - object-store:minio
       - elasticsearch:elasticsearch
       - nats:nats
     volumes:
       - ../src/backend/configs:/etc/caliopen
+
+  twitter_worker:
+    build:
+      context: ../src/backend
+      dockerfile: Dockerfile.twitter-worker
+    image: caliopen_twitter_worker
+    links:
+    - cassandra:cassandra
+    - object-store:minio
+    - elasticsearch:elasticsearch
+    - nats:nats
+    volumes:
+    - ../src/backend/configs:/etc/caliopen
 
   # Poller for remote identities
   identity_poller:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.identity-poller
-    image: caliopen_idpoller
+    image: caliopen_identity_poller
     links:
-      - identity_worker:imapworker
-      - message_handler:message_handler
+      - imap_worker:imapworker
+      - mq_worker:mqworker
       - nats:nats
+      - twitter_worker:twitterworker
     volumes:
       - ../src/backend/configs:/etc/caliopen
 

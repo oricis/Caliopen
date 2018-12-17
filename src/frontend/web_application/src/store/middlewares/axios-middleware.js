@@ -1,7 +1,6 @@
 import axiosMiddleware from 'redux-axios-middleware';
 import { createNotification, NOTIFICATION_TYPE_ERROR } from 'react-redux-notify';
 import getClient from '../../services/api-client';
-import { getTranslator } from '../../services/i18n';
 
 export default axiosMiddleware(getClient(), {
   returnRejectedPromiseOnError: true,
@@ -25,10 +24,10 @@ export default axiosMiddleware(getClient(), {
           'has-close-all': 'l-notification-center__notification--has-close-all',
           item__message: 'l-notification-center__notification-item-message',
         };
-        if (error.response.status === 401) {
-          const { translate: __ } = getTranslator();
+        if (error.response && error.response.status === 401) {
           const notification = {
-            message: __('auth.feedback.deauth'),
+            // FIXME: trad 'auth.feedback.deauth'
+            message: 'You are not authenticated anymore. Please reconnect.',
             type: NOTIFICATION_TYPE_ERROR,
             duration: 0,
             canDismiss: true,
@@ -40,10 +39,10 @@ export default axiosMiddleware(getClient(), {
           }
         }
 
-        if (error.response.status >= 500) {
-          const { translate: __ } = getTranslator();
+        if (error.response && error.response.status >= 500) {
           const notification = {
-            message: __('Sorry, an unexpected error occured. developers will work hard on this error during alpha phase. Please feel free to describe us what happened.'),
+            // FIXME: trad
+            message: 'Sorry, an unexpected error occured. developers will work hard on this error during alpha phase. Please feel free to describe us what happened.',
             type: NOTIFICATION_TYPE_ERROR,
             duration: 0,
             canDismiss: true,

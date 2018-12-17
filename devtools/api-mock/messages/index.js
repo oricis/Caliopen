@@ -40,7 +40,15 @@ const selectors = {
   ),
   byId: ({ message_id }) => createSelector(
     selectors.all(),
-    messages => messages.find(message => message.message_id === message_id)
+    messages => {
+      const result = messages.find(message => message.message_id === message_id);
+
+      if (!result) {
+        throw `no message found for ${message_id}`;
+      }
+
+      return result;
+    }
   ),
 };
 

@@ -120,7 +120,7 @@ class MailMessage(object):
     zope.interface.implements(IMessageParser)
 
     recipient_headers = ['From', 'To', 'Cc', 'Bcc']
-    message_type = 'email'
+    message_protocol = 'email'
     warnings = []
     body_html = ""
     body_plain = ""

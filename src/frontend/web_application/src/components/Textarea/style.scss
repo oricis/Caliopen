@@ -1,0 +1,13 @@
+@import '../../styles/common';
+@import '../../styles/object/o-form-element';
+
+.m-textarea {
+  @include o-form-element;
+  @include o-form-element--light;
+
+  min-height: 3 * $co-component__height;
+
+  &--expanded {
+    width: 100%;
+  }
+}

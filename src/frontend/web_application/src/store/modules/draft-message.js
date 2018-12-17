@@ -87,25 +87,6 @@ export function setRecipientSearchTerms({ internalId, searchTerms }) {
   };
 }
 
-function syncDraftReducer(state, message) {
-  const {
-    body,
-    subject,
-    participants,
-    parent_id: parentId,
-    identities,
-  } = state;
-
-  return {
-    ...message,
-    body,
-    subject,
-    participants,
-    parent_id: parentId,
-    identities,
-  };
-}
-
 function draftReducer(state = {}, action) {
   switch (action.type) {
     case CREATE_DRAFT:
@@ -116,7 +97,7 @@ function draftReducer(state = {}, action) {
         ...action.payload.draft,
       };
     case SYNC_DRAFT:
-      return syncDraftReducer(state, action.payload.draft);
+      return { ...action.payload.draft };
     default:
       return state;
   }

@@ -6,7 +6,6 @@ import { getCleanedTagCollection } from '../../services/getTagLabel';
 
 class ManageEntityTags extends PureComponent {
   static propTypes = {
-    type: PropTypes.string.isRequired,
     entity: PropTypes.shape({}),
     onChange: PropTypes.func.isRequired,
   };

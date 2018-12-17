@@ -61,14 +61,16 @@ def build_discussion(core, index):
     discuss.user_id = core.user_id
     discuss.discussion_id = core.discussion_id
     discuss.date_insert = core.date_insert
-    discuss.date_update = index.last_message.date_insert
+    discuss.date_update = index.last_message.date_sort
     # TODO : excerpt from plain or html body
     maxsize = 100
+    discuss.last_message_id = index.last_message.message_id 
+    discuss.last_message_subject = index.last_message.subject
     discuss.excerpt = unicode_truncate(index.last_message.body_plain,
                                        maxsize) if index.last_message.body_plain else u''
     discuss.total_count = index.total_count
     discuss.subject = index.last_message.subject
-    discuss.protocol = index.last_message.type
+    discuss.protocol = index.last_message.protocol
 
     # TODO
     # discussion.privacy_index = index_message.privacy_index

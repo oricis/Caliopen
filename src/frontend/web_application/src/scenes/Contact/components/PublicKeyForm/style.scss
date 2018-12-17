@@ -1,0 +1,15 @@
+@import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+.m-public-key-form {
+  padding-left: map_get($co-form__spacing, 'medium');
+  background-color: $co-color__bg__back--higher;
+
+  &__actions {
+    display: flex;
+  }
+
+  &__button-cancel {
+    margin-left: auto;
+  }
+}

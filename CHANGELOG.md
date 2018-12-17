@@ -6,6 +6,63 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- participants added from suggestions always define `email` protocol
+- More permissive protocol validation in draft according to identities
+
+## [0.13.2] 2018-12-11
+
+### Added
+
+- Switch identity, send twitter DM, validation…
+- Support new dm twitter notification
+
+### Fixed
+
+- Crash when replying a message.
+- Help button has no effects
+- Unable to change password
+- Better layout for twitter DM
+- Avatar size in tabs for twitter DM
+- Splash screen initialization after reconnect
+
+## [0.13.1] 2018-12-05
+
+### Fixed
+
+- BSOD when selecting contact
+- All messages detected as Twitter DM
+- Missing user_identity when sending the reset password notification
+- Legacy protocol values are considered as valid
+
+## [0.13.0] 2018-11-30
+
+### Added
+
+- API to manage cryptographic public keys related to a contact
+- API to list known remote identity providers
+- Create remote identity for gmail and twitter using Oauth mechanisms
+- A new worker to fetch twitter direct messages
+- Support touch scroll on navigation tabs
+- Manage public keys of a contact
+- App loader splash screen
+
+### Changed
+
+- Brand new UI
+- Message Timeline replaced by Discussion Timeline
+- IM address for a contact is more permisive
+
+### Removed
+
+- Sidescreen on small screen
+- In discussion messages grouped by date
+
+### Fixed
+
+- Translation of new device screen in English
+
 ## [0.12.3] 2018-10-26
 
 ### Fixed

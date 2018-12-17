@@ -3,16 +3,15 @@ export const REQUEST_DISCUSSIONS = 'co/discussion/REQUEST_DISCUSSIONS';
 export const REQUEST_DISCUSSIONS_SUCCESS = 'co/discussion/REQUEST_DISCUSSIONS_SUCCESS';
 export const REQUEST_DISCUSSIONS_FAIL = 'co/discussion/REQUEST_DISCUSSIONS_FAIL';
 export const INVALIDATE_DISCUSSIONS = 'co/discussion/INVALIDATE_DISCUSSIONS';
+export const REMOVE_DISCUSSION_FROM_COLLECTION = 'co/discussion/REMOVE_DISCUSSION_FROM_COLLECTION';
 export const LOAD_MORE_DISCUSSIONS = 'co/discussion/LOAD_MORE_DISCUSSIONS';
 export const REQUEST_DISCUSSION = 'co/discussion/REQUEST_DISCUSSION';
 export const REQUEST_DISCUSSION_SUCCESS = 'co/discussion/REQUEST_DISCUSSION_SUCCESS';
+export const REQUEST_DISCUSSION_FAIL = 'co/discussion/REQUEST_DISCUSSION_FAIL';
 export const UPDATE_DISCUSSION = 'co/discussion/UPDATE_DISCUSSION';
 export const REMOVE_DISCUSSION = 'co/discussion/REMOVE_DISCUSSION';
 
 export function requestDiscussions(params = {}) {
-  const deprecated = new Error('requestDiscussions is deprecated');
-  console.warn(deprecated);
-
   const { offset = 0, limit = 20 } = params;
 
   return {
@@ -34,9 +33,6 @@ export function loadMoreDiscussions() {
 }
 
 export function requestDiscussion({ discussionId }) {
-  const deprecated = new Error('requestDiscussion is deprecated');
-  console.warn(deprecated);
-
   return {
     type: REQUEST_DISCUSSION,
     payload: {
@@ -53,6 +49,14 @@ export function invalidate() {
     payload: {},
   };
 }
+export function removeDiscussionFromCollection({ discussionId }) {
+  return {
+    type: REMOVE_DISCUSSION_FROM_COLLECTION,
+    payload: {
+      discussionId,
+    },
+  };
+}
 
 export function updateDiscussion() {
   const deprecated = new Error('updateDiscussion is deprecated');
@@ -60,26 +64,39 @@ export function updateDiscussion() {
 }
 
 function discussionsByIdReducer(state = {}, action = {}) {
-  return action.payload.data.discussions.reduce((previousState, discussion) => ({
-    ...previousState,
-    [discussion.discussion_id]: discussion,
-  }), state);
+  switch (action.type) {
+    case REQUEST_DISCUSSIONS_SUCCESS:
+      return action.payload.data.discussions.reduce((previousState, discussion) => ({
+        ...previousState,
+        [discussion.discussion_id]: discussion,
+      }), state);
+    case REMOVE_DISCUSSION_FROM_COLLECTION:
+      return {
+        ...state,
+        [action.payload.discussionId]: undefined,
+      };
+    default:
+      return state;
+  }
 }
 
 function discussionIdsReducer(state = [], action = {}) {
-  if (action.type !== REQUEST_DISCUSSIONS_SUCCESS) {
-    return state;
+  switch (action.type) {
+    case REQUEST_DISCUSSIONS_SUCCESS:
+      return [...state]
+        .concat(action.payload.data.discussions.map(discussion => discussion.discussion_id))
+        .reduce((prev, curr) => {
+          if (prev.indexOf(curr) === -1) {
+            prev.push(curr);
+          }
+
+          return prev;
+        }, []);
+    case REMOVE_DISCUSSION_FROM_COLLECTION:
+      return [...state].filter(discussionId => discussionId !== action.payload.discussionId);
+    default:
+      return state;
   }
-
-  return [...state]
-    .concat(action.payload.data.discussions.map(discussion => discussion.discussion_id))
-    .reduce((prev, curr) => {
-      if (prev.indexOf(curr) === -1) {
-        prev.push(curr);
-      }
-
-      return prev;
-    }, []);
 }
 
 export function getNextOffset(state) {
@@ -103,6 +120,9 @@ export default function reducer(state = initialState, action) {
     case REQUEST_DISCUSSION:
     case REQUEST_DISCUSSIONS:
       return { ...state, isFetching: true };
+    case REQUEST_DISCUSSION_FAIL:
+    case REQUEST_DISCUSSIONS_FAIL:
+      return { ...state, isFetching: false };
     case REQUEST_DISCUSSION_SUCCESS:
       return {
         ...state,
@@ -129,6 +149,13 @@ export default function reducer(state = initialState, action) {
       };
     case INVALIDATE_DISCUSSIONS:
       return { ...state, didInvalidate: true };
+    case REMOVE_DISCUSSION_FROM_COLLECTION:
+      return {
+        ...state,
+        discussions: discussionIdsReducer(state.discussions, action),
+        discussionsById: discussionsByIdReducer(state.discussionsById, action),
+        total: state.total - 1,
+      };
     default:
       return state;
   }

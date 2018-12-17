@@ -1,27 +1,31 @@
 import throttle from 'lodash.throttle';
 import { v4 as uuidv4 } from 'uuid';
 import isEqual from 'lodash.isequal';
+import { calcSyncDraft } from '../services/calcSyncDraft';
 import { updateMessage } from '../../../store/actions/message';
 import { createMessage } from '../../../modules/message';
 import { editDraft as editDraftBase, syncDraft } from '../../../store/modules/draft-message';
 
 const UPDATE_WAIT_TIME = 5 * 1000;
 
-const createDraft = ({ internalId, draft = { message_id: uuidv4() } }) => async (dispatch) => {
-  try {
-    const message = await dispatch(createMessage({ message: draft }));
-    dispatch(syncDraft({ internalId, draft: message }));
+const createDraft = ({ internalId, draft = { message_id: uuidv4() } }) =>
+  async (dispatch) => {
+    try {
+      const message = await dispatch(createMessage({ message: draft }));
+      const nextDraft = calcSyncDraft({ draft, message });
+      dispatch(syncDraft({ internalId, draft: nextDraft }));
 
-    return message;
-  } catch (err) {
-    return Promise.reject(err);
-  }
-};
+      return message;
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  };
 
 const updateDraft = ({ internalId, draft, message }) => async (dispatch) => {
   try {
     const messageUpToDate = await dispatch(updateMessage({ message: draft, original: message }));
-    dispatch(syncDraft({ internalId, draft: messageUpToDate }));
+    const nextDraft = calcSyncDraft({ draft, message });
+    dispatch(syncDraft({ internalId, draft: nextDraft }));
 
     return messageUpToDate;
   } catch (err) {

@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: message-handler
+  name: mq-worker
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: message-handler
+      app: mq-worker
   template:
     metadata:
       labels:
-        type: message-handler
+        type: mq-worker
         tier: backend
-        app: message-handler
+        app: mq-worker
     spec:
       containers:
-      - image: public-registry.caliopen.org/caliopen_message_handler:develop
+      - image: public-registry.caliopen.org/caliopen_mq_worker:develop
         imagePullPolicy: Always
-        name: message-handler
+        name: mq-worker
         volumeMounts:
         - name: config-volume
           mountPath: /etc/caliopen

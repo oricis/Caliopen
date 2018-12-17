@@ -122,7 +122,7 @@ class Email(NewEmail):
 class NewIM(Model):
     """Input structure for a new IM."""
 
-    address = InternetAddressType(required=True)
+    address = StringType(required=True)
     is_primary = BooleanType(default=False)
     label = StringType()
     protocol = StringType()

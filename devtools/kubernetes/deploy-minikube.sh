@@ -181,13 +181,13 @@ create_go_deployments(){
 	echo
 	echo "GO applications deployment:"
 	echo "---------------------------"
-	kubectl delete svc api broker
+	kubectl delete svc apiv2 lmtpd
 	kubectl apply -f services/api-service.yaml \
-	-f services/broker-service.yaml
-	kubectl apply -f deployments/broker-deployment.yaml \
-	-f deployments/api-deployment.yaml \
+	-f services/lmtpd-service.yaml
+	kubectl apply -f deployments/lmtpd-deployment.yaml \
+	-f deployments/apiv2-deployment.yaml \
 	-f deployments/identity-poller-deployment.yaml \
-	-f deployments/identity-worker-deployment.yaml
+	-f deployments/imap-worker-deployment.yaml
 }
 
 create_python_deployments(){
@@ -196,7 +196,7 @@ create_python_deployments(){
 	echo "---------------------------"
 	kubectl delete svc apiv1
 	kubectl apply -f services/apiv1-service.yaml
-	kubectl apply -f deployments/message-handler-deployment.yaml \
+	kubectl apply -f deployments/mq-worker-deployment.yaml \
 	-f deployments/apiv1-deployment.yaml
 }
 

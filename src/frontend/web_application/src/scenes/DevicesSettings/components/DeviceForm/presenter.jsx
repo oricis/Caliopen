@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import classnames from 'classnames';
 import { Button, FormGrid, FormRow, FormColumn, Label, TextFieldGroup, SelectFieldGroup, CollectionFieldGroup } from '../../../../components';
 import './style.scss';
@@ -64,7 +64,7 @@ class DeviceForm extends Component {
 
     const { i18n } = this.props;
 
-    return { isValid: false, errors: [i18n._('device.feedback.invalid_ip', { defaults: 'IP or subnet address is invalid.' })] };
+    return { isValid: false, errors: [i18n._('device.feedback.invalid_ip', null, { defaults: 'IP or subnet address is invalid.' })] };
   }
 
   handleSubmit = async (event) => {
@@ -81,17 +81,17 @@ class DeviceForm extends Component {
   render() {
     const { i18n } = this.props;
     const deviceTypes = [
-      { value: 'desktop', label: i18n._('device.type.desktop', { defaults: 'Desktop' }) },
-      { value: 'laptop', label: i18n._('device.type.laptop', { defaults: 'Laptop' }) },
-      { value: 'smartphone', label: i18n._('device.type.smartphone', { defaults: 'Smartphone' }) },
-      { value: 'tablet', label: i18n._('device.type.tablet', { defaults: 'Tablet' }) },
-      { value: 'other', label: i18n._('device.type.other', { defaults: 'Other' }) },
+      { value: 'desktop', label: i18n._('device.type.desktop', null, { defaults: 'Desktop' }) },
+      { value: 'laptop', label: i18n._('device.type.laptop', null, { defaults: 'Laptop' }) },
+      { value: 'smartphone', label: i18n._('device.type.smartphone', null, { defaults: 'Smartphone' }) },
+      { value: 'tablet', label: i18n._('device.type.tablet', null, { defaults: 'Tablet' }) },
+      { value: 'other', label: i18n._('device.type.other', null, { defaults: 'Other' }) },
     ];
     const locationTypes = [
-      { label: i18n._('device.location.type.unknown', { defaults: 'Unknown' }), value: 'unknown' },
-      { label: i18n._('device.location.type.home', { defaults: 'Home' }), value: 'home' },
-      { label: i18n._('device.location.type.work', { defaults: 'Work' }), value: 'work' },
-      { label: i18n._('device.location.type.public', { defaults: 'Public' }), value: 'public' },
+      { label: i18n._('device.location.type.unknown', null, { defaults: 'Unknown' }), value: 'unknown' },
+      { label: i18n._('device.location.type.home', null, { defaults: 'Home' }), value: 'home' },
+      { label: i18n._('device.location.type.work', null, { defaults: 'Work' }), value: 'work' },
+      { label: i18n._('device.location.type.public', null, { defaults: 'Public' }), value: 'public' },
     ];
     const defaultLocation = { address: '', type: locationTypes[0].value };
 
@@ -111,7 +111,7 @@ class DeviceForm extends Component {
           <TextFieldGroup
             showLabelforSr
             name="address"
-            label={i18n._('device.form.locations.address.label', { defaults: 'IP or subnet mask' })}
+            label={i18n._('device.form.locations.address.label', null, { defaults: 'IP or subnet mask' })}
             value={location.address}
             onChange={handleChange}
             className="m-device-form__location-address"
@@ -119,7 +119,7 @@ class DeviceForm extends Component {
           <SelectFieldGroup
             showLabelforSr
             name="type"
-            label={i18n._('device.form.locations.type.label', { defaults: 'Connection location' })}
+            label={i18n._('device.form.locations.type.label', null, { defaults: 'Connection location' })}
             value={location.type}
             options={locationTypes}
             onChange={handleChange}
@@ -135,7 +135,7 @@ class DeviceForm extends Component {
           <FormRow>
             <FormColumn bottomSpace rightSpace={false}>
               <TextFieldGroup
-                label={i18n._('device.manage_form.name.label', { defaults: 'Name:' })}
+                label={i18n._('device.manage_form.name.label', null, { defaults: 'Name:' })}
                 name="name"
                 id="device-name"
                 value={this.state.device.name}
@@ -159,7 +159,7 @@ class DeviceForm extends Component {
             <FormColumn rightSpace={false} bottomSpace >
               <SelectFieldGroup
                 className="m-device-form__type"
-                label={i18n._('device.manage_form.type.label', { defaults: 'Type:' })}
+                label={i18n._('device.manage_form.type.label', null, { defaults: 'Type:' })}
                 name="type"
                 id="device-type"
                 value={this.state.device.type}

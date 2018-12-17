@@ -1,0 +1,39 @@
+@import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+.m-draft-message-quick {
+  background-color: #fff;
+
+  &__recipient-list {
+    margin-right: $co-margin;
+    margin-bottom: $co-margin;
+    margin-left: $co-margin;
+  }
+
+  &__container {
+    @include flex-grid-row($size: expand);
+    border: 1px solid #9a989b;
+  }
+
+  &__toggle-advanced {
+    @include flex-grid-size(shrink);
+    width: 3.438rem;
+    height: 3.438rem;
+  }
+
+  &__input {
+    @include flex-grid-size;
+    border: none;
+  }
+
+  &__send {
+    @include flex-grid-size(shrink);
+    width: 3.438rem;
+    height: 3.438rem;
+  }
+
+  &__send-button {
+    height: 100%;
+    font-size: 1.3rem;
+  }
+}

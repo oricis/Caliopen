@@ -155,7 +155,7 @@ func (b *EmailBroker) MarshalEmail(msg *Message) (em *EmailMessage, err error) {
 //  - cleans-up temporary attachment files if any
 //  - stores raw outbound email counterpart
 //  - creates discussion lookup entry
-func (b *EmailBroker) SaveIndexSentEmail(ack *DeliveryAck) error {
+func (b *EmailBroker) SaveIndexSentEmail(ack *EmailDeliveryAck) error {
 
 	// save raw email in db
 	/*
@@ -278,7 +278,7 @@ func (b *EmailBroker) UnmarshalEmail(em *EmailMessage, user_id UUID) (msg *Messa
 		Privacy_features: &PrivacyFeatures{},
 		Raw_msg_id:       em.Message.Raw_msg_id,
 		Subject:          parsed_mail.Header.Get("subject"),
-		Type:             EmailProtocol,
+		Protocol:         EmailProtocol,
 		User_id:          user_id,
 	}
 

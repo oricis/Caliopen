@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { Button, FieldErrors, TextareaFieldGroup, FormGrid, FormRow, FormColumn } from '../../../../components/';
 
 function generateStateFromProps(props, prevState) {
@@ -73,11 +73,12 @@ class SignatureForm extends Component {
           <FormRow>
             <FormColumn size="shrink" bottomSpace >
               <TextareaFieldGroup
-                name="signature"
-                defaultValue={this.state.settings.signature}
-                onChange={this.handleTextareaChange}
+                inputProps={{
+                  name: 'signature',
+                  defaultValue: this.state.settings.signature,
+                  onChange: this.handleTextareaChange,
+                }}
                 label={i18n._('settings.signature.label', { defaults: 'Signature' })}
-                showTextLabel
               />
             </FormColumn>
           </FormRow>

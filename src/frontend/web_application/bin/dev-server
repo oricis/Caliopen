@@ -36,6 +36,7 @@ const start = () => {
     logger.debug(stats.toString({ chunk: false, colors: true }));
     if (err || stats.hasErrors()) {
       logger.error('unable to compile');
+      console.log(stats.compilation.errors);
 
       return;
     }

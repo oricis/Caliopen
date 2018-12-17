@@ -14,23 +14,18 @@ else
     FRONTEND_CHANGE=`(cd $PROJECT_DIRECTORY && git diff-tree --no-commit-id --name-only -r HEAD..$TARGET_BRANCH -- src/frontend)`
 fi
 
+cd ${PROJECT_DIRECTORY}/devtools
+
 function do_backend_tests {
-    # Test build of go containers
-    cd ${PROJECT_DIRECTORY}/devtools
-    docker-compose build api broker
-    # Python unittests
-    ./setup-virtualenv.sh
-
-    cd ${PROJECT_DIRECTORY}
-    source .venv/bin/activate
-
-    export CALIOPEN_BASEDIR=${PROJECT_DIRECTORY}
-    nosetests -sv src/backend/main/py.main/caliopen_main/tests
-    nosetests -sv src/backend/components/py.pi/caliopen_pi/tests
+    # Test build of backend Docker containers
+    docker build -f ${PROJECT_DIRECTORY}/src/backend/Dockerfile.caliopen-go -t public-registry.caliopen.org/caliopen_go ../src/backend --no-cache
+    docker build -f ${PROJECT_DIRECTORY}/src/backend/Dockerfile.caliopen-python -t public-registry.caliopen.org/caliopen_py ../src/backend --no-cache
+    docker-compose build apiv2 lmtpd identity_poller imap_worker twitter_worker apiv1 cli mq_worker
 }
 
 function do_frontend_tests {
-    (cd $PROJECT_DIRECTORY/src/frontend/web_application && yarn && yarn test)
+    # Test build of frontend Docker containers
+    docker-compose build frontend
 }
 
 

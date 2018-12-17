@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { WithSettings } from '../../modules/settings';
 import SearchResultsLayout from '../../layouts/SearchResults';
 import { Link, InfiniteScroll, PageTitle, Button, BlockList } from '../../components/';

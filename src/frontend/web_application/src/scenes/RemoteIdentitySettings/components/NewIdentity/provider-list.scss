@@ -1,0 +1,11 @@
+@import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+.m-provider-list {
+  &__provider {
+    margin-top: map_get($co-margin_, 'xsmall');
+    &:first-of-type {
+      margin-top: unset;
+    }
+  }
+}

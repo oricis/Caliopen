@@ -1,14 +1,4 @@
-import { POST_ACTIONS_SUCCESS, LOAD_MORE_MESSAGES, requestMessage, requestMessages, getNextOffset } from '../modules/message';
-
-const postActionsHandler = ({ store, action }) => {
-  if (action.type !== POST_ACTIONS_SUCCESS) {
-    return;
-  }
-
-  const { meta: { previousAction: { payload: { message } } } } = action;
-
-  store.dispatch(requestMessage(message.message_id));
-};
+import { LOAD_MORE_MESSAGES, requestMessages, getNextOffset } from '../modules/message';
 
 const loadMoreHandler = ({ store, action }) => {
   if (action.type !== LOAD_MORE_MESSAGES) {
@@ -25,7 +15,6 @@ const loadMoreHandler = ({ store, action }) => {
 export default store => next => (action) => {
   const result = next(action);
 
-  postActionsHandler({ store, action });
   loadMoreHandler({ store, action });
 
   return result;

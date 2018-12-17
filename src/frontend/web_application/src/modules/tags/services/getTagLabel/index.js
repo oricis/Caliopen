@@ -1,4 +1,4 @@
-import { i18nMark } from 'lingui-react';
+import { i18nMark } from '@lingui/react';
 
 export const TAG_IMPORTANT = 'IMPORTANT';
 export const TAG_INBOX = 'INBOX';
@@ -17,7 +17,8 @@ export const getTag = (tags, name) => tags.find(item => item.name === name);
 
 export const getTagLabel = (i18n, tag) => {
   if (!tag.label) {
-    return SYSTEM_TAGS[tag.name] ? i18n._(SYSTEM_TAGS[tag.name], { defaults: tag.name }) : tag.name;
+    return SYSTEM_TAGS[tag.name] ?
+      i18n._(SYSTEM_TAGS[tag.name], null, { defaults: tag.name }) : tag.name;
   }
 
   return tag.label;

@@ -68,8 +68,9 @@ func (notif *Notifier) SendEmailAdminToUser(user *User, email *Message) error {
 	(*email).Discussion_id.UnmarshalBinary(uuid.NewV4().Bytes())
 	(*email).Is_draft = true
 	(*email).Participants = []Participant{sender, recipient}
-	(*email).Type = EmailProtocol
+	(*email).Protocol = EmailProtocol
 	(*email).User_id = notif.admin.UserId
+	(*email).UserIdentities = []UUID{notif.adminLocalID.Id}
 
 	// save & index message
 	err := notif.store.CreateMessage(email)
@@ -77,7 +78,7 @@ func (notif *Notifier) SendEmailAdminToUser(user *User, email *Message) error {
 		log.WithError(err).Warn("[EmailNotifiers]: SendEmailAdminToUser failed to store draft")
 		return err
 	}
-	user_info := &UserInfo{User_id: user.UserId.String(), Shard_id: user.ShardId}
+	user_info := &UserInfo{User_id: notif.admin.UserId.String(), Shard_id: notif.admin.ShardId}
 	err = notif.index.CreateMessage(user_info, email)
 	if err != nil {
 		log.WithError(err).Warn("[EmailNotifiers]: SendEmailAdminToUser failed to index draft")
@@ -86,8 +87,18 @@ func (notif *Notifier) SendEmailAdminToUser(user *User, email *Message) error {
 
 	log.Infof("[NotificationsFacility] sending email admin for user <%s> [%s]", user.Name, user.UserId.String())
 	const nats_order = "deliver"
-	natsMessage := fmt.Sprintf(Nats_message_tmpl, nats_order, email.Message_id.String(), notif.admin.UserId.String())
-	rep, err := notif.natsQueue.Request(notif.natsTopics[Nats_outSMTP_topicKey], []byte(natsMessage), 30*time.Second)
+
+	order := BrokerOrder{
+		Order:     nats_order,
+		MessageId: email.Message_id.String(),
+		UserId:    notif.admin.UserId.String(),
+		RemoteId:  notif.adminLocalID.Id.String(),
+	}
+	natsMessage, e := json.Marshal(order)
+	if e != nil {
+		return fmt.Errorf("[EmailNotifiers] failed to build nats message : %s", e.Error())
+	}
+	rep, err := notif.natsQueue.Request(notif.natsTopics[Nats_outSMTP_topicKey], natsMessage, 30*time.Second)
 	if err != nil {
 		log.WithError(err).Warn("[EmailNotifiers]: SendEmailAdminToUser error")
 		if notif.natsQueue.LastError() != nil {

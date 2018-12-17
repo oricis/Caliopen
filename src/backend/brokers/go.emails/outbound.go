@@ -20,6 +20,7 @@ import (
 	"errors"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/users"
 	log "github.com/Sirupsen/logrus"
 	"github.com/nats-io/go-nats"
 	"time"
@@ -53,7 +54,6 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 	if err != nil {
 		return
 	}
-
 	if order.Order == "deliver" {
 		//retrieve message from db
 		m, err := b.Store.RetrieveMessage(order.UserId, order.MessageId)
@@ -87,28 +87,67 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 
 		out := SmtpEmail{
 			EmailMessage: em,
-			Response:     make(chan *DeliveryAck),
+			MTAparams:    nil,
+			Response:     make(chan *EmailDeliveryAck),
 		}
 		//checks if identity is local or remote
-		//fetch credentials accordingly
+		//fetch credentials and remote server info accordingly
+		if m.UserIdentities == nil || len(m.UserIdentities) == 0 {
+			b.natsReplyError(msg, errors.New("message "+m.Message_id.String()+" (user "+m.User_id.String()+") has no user identity embedded"))
+			return resp, err
+		}
 		firstIdentity, err := b.Store.RetrieveUserIdentity(m.User_id.String(), m.UserIdentities[0].String(), true) // handle one identity only for now
 		if err != nil {
 			b.natsReplyError(msg, fmt.Errorf("broker failed to retrieve sender's identity with error : %s", err))
 			return resp, err
 		}
-		switch firstIdentity.Protocol {
-		case SmtpProtocol:
-			out.RemoteCredentials = nil
-		case ImapProtocol:
+		switch firstIdentity.Type {
+		case RemoteIdentity:
 			if firstIdentity.Credentials != nil {
-				out.RemoteCredentials = &MTAparams{
-					firstIdentity.Infos["outserver"],
-					(*firstIdentity.Credentials)["outusername"],
-					(*firstIdentity.Credentials)["outpassword"],
+				authType, foundAuthType := firstIdentity.Infos["authtype"]
+				if foundAuthType {
+					switch authType {
+					case Oauth1:
+						err = errors.New("oauth1 mechanism not implemented")
+						b.natsReplyError(msg, err)
+						return resp, err
+					case Oauth2:
+
+						out.MTAparams = &MTAparams{
+							AuthType: Oauth2,
+							Host:     firstIdentity.Infos["outserver"],
+							Password: (*firstIdentity.Credentials)[users.CRED_ACCESS_TOKEN],
+							User:     (*firstIdentity.Credentials)[users.CRED_USERNAME],
+						}
+					case LoginPassword:
+						out.MTAparams = &MTAparams{
+							AuthType: LoginPassword,
+							Host:     firstIdentity.Infos["outserver"],
+							Password: (*firstIdentity.Credentials)["outpassword"],
+							User:     (*firstIdentity.Credentials)["outusername"],
+						}
+					default:
+						err = fmt.Errorf("unknown auth mechanism : <%s>", authType)
+						b.natsReplyError(msg, err)
+						return resp, err
+					}
+				} else {
+					// fallback by trying default LoginPassword mechanism
+					out.MTAparams = &MTAparams{
+						AuthType: LoginPassword,
+						Host:     firstIdentity.Infos["outserver"],
+						Password: (*firstIdentity.Credentials)["outpassword"],
+						User:     (*firstIdentity.Credentials)["outusername"],
+					}
 				}
+
 			} else {
-				out.RemoteCredentials = nil
+				err = fmt.Errorf("remote identity %s has no credentials", firstIdentity.Id.String())
+				b.natsReplyError(msg, err)
+				return resp, err
 			}
+		case LocalIdentity:
+		//nothing to do, MTAparams is already nil
 		default:
 			b.natsReplyError(msg, fmt.Errorf("broker can't handle sender's protocol %s", firstIdentity.Protocol))
 			return resp, err
@@ -121,7 +160,7 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 			case resp, ok := <-out.Response:
 				if resp.Err || !ok || resp == nil {
 					log.WithError(err).Warn("outbound: delivery error from MTA")
-					b.natsReplyError(msg, errors.New("outbound: delivery error from MTA : " + resp.Response ))
+					b.natsReplyError(msg, errors.New("outbound: delivery error from MTA : "+resp.Response))
 					return
 				} else {
 					err = b.SaveIndexSentEmail(resp)
@@ -143,22 +182,6 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 		}(&out, msg)
 	}
 	return resp, err
-}
-
-// bespoke implementation of the json.Unmarshaler interface
-// assuming well formatted NATS JSON message
-// hydrates the natsOrder with provided data
-func (msg *natsOrder) UnmarshalJSON(data []byte) error {
-	//TODO: better error handling
-	if len(data) == 122 {
-		msg.Order = string(data[10:17])
-		msg.MessageId = string(data[34:70])
-		msg.UserId = string(data[84:120])
-	} else {
-		log.Warnf("[Broker outbound] invalid natsOrder length for nats message : %s", data)
-		return fmt.Errorf("[Broker outbound] invalid natsOrder length. Should be 122 bytes it is : %d", len(data))
-	}
-	return nil
 }
 
 func (b *EmailBroker) natsReplyError(msg *nats.Msg, err error) {

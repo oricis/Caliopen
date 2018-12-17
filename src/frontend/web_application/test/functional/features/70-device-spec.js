@@ -45,13 +45,14 @@ describe('Device', () => {
 
   describe('Revoke on a unverified device', () => {
     it('Hides the button except itself', async () => {
+      debugger;
       await signin(); // create default
       await clearKeypairInLocalStorage({ save: true });
       await signin();
       await clearKeypairInLocalStorage();
       await signin();
-      await browser.wait(EC.presenceOf(element(by.css('.s-new-device-info__agreement')), 5 * 1000));
-      await element(by.cssContainingText('.s-new-device-info__agreement', 'I understand')).click();
+      await browser.wait(EC.presenceOf(element(by.css('.s-new-device-info')), 5 * 1000));
+      await element(by.cssContainingText('.m-link', 'I understand')).click();
       await browser.wait(EC.presenceOf(element(by.css('.s-devices-settings__device')), 5 * 1000));
       const nbDevices = await element.all(by.css('.s-devices-settings__device')).count();
       const deviceBlock = element(by.cssContainingText('.s-devices-settings__device', `desktop ${nbDevices - 2}`));
@@ -73,8 +74,8 @@ describe('Device', () => {
       await signin();
       await clearKeypairInLocalStorage({ save: true });
       await signin();
-      await browser.wait(EC.presenceOf(element(by.css('.s-new-device-info__agreement')), 5 * 1000));
-      await element(by.cssContainingText('.s-new-device-info__agreement', 'I understand')).click();
+      await browser.wait(EC.presenceOf(element(by.css('.s-new-device-info')), 5 * 1000));
+      await element(by.cssContainingText('.m-link', 'I understand')).click();
       const nbDevices = await element.all(by.css('.s-devices-settings__device')).count();
       const deviceBlock = element(by.cssContainingText('.s-devices-settings__device', `desktop ${nbDevices - 1}`));
       await deviceBlock.element(by.cssContainingText('.m-button', 'Revoke this device')).click();

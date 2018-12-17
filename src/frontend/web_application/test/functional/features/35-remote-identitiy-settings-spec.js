@@ -1,40 +1,73 @@
 const userUtil = require('../utils/user-util');
 
+const capitalize = str => `${str.charAt(0).toUpperCase()}${str.slice(1)}`;
+
+
 describe('Remote Identity Settings', () => {
   const EC = protractor.ExpectedConditions;
 
+  const crudOAuth = async ({ providerName }) => {
+    await element(by.cssContainingText('.m-provider-button', capitalize(providerName))).click();
+    const mainWindow = await browser.getWindowHandle();
+    await browser.switchTo().window(`authorization_${providerName}`);
+    await element(by.cssContainingText('a', `authorize ${providerName}`)).click();
+    await browser.switchTo().window(mainWindow);
+    let identityElement;
+    // eslint-disable-next-line default-case
+    switch (providerName) {
+      case 'gmail':
+        identityElement = element(by.cssContainingText('.s-settings-identities__identity', 'dev@gmail'));
+        break;
+      case 'twitter':
+        identityElement = element(by.cssContainingText('.s-settings-identities__identity', '@dev'));
+        break;
+    }
+    await browser.wait(EC.presenceOf(identityElement), 5 * 1000);
+    await identityElement.element(by.cssContainingText('.m-button', 'Delete')).click();
+    await element(by.cssContainingText('.m-button', 'Yes I\'m sure')).click();
+    await browser.wait(EC.stalenessOf(identityElement), 5 * 1000);
+    expect(identityElement.isPresent()).toEqual(false);
+  };
+
   beforeAll(async () => {
     await userUtil.signin();
-  });
-
-  it('CRUD', async () => {
     await userUtil.showSettings('External accounts');
     await browser.wait(EC.presenceOf($('.l-settings')), 5 * 1000);
+  });
+
+  it('crud remote email', async () => {
     debugger;
-    await element(by.cssContainingText('.m-button', 'Continue')).click();
-    await element(by.css('input[name=identifier]')).sendKeys('foobar');
-    await element(by.cssContainingText('.m-button', 'Next')).click();
-    await element(by.css('input[name=serverHostname]')).sendKeys('foobar.bar');
-    await element(by.css('input[name=serverPort]')).sendKeys('993');
-    await element(by.cssContainingText('.m-button', 'Next')).click();
-    await element(by.css('input[name=username]')).sendKeys('foo');
-    await element(by.css('input[name=password]')).sendKeys('secret');
-    await element(by.cssContainingText('.m-button', 'Connect')).click();
-    await browser.wait(EC.presenceOf(element(by.cssContainingText('.m-title__text', 'foobar'))), 5 * 1000);
+    await element(by.cssContainingText('.m-provider-button', 'Email')).click();
+    const newFormElement = element(by.css('.m-new-identity__email-form'));
+    await newFormElement.element(by.css('input[name=identifier]')).sendKeys('foobar');
+    await newFormElement.element(by.css('input[name=inserverHostname]')).sendKeys('foobar.bar');
+    await newFormElement.element(by.css('input[name=inserverPort]')).sendKeys('993');
+    await newFormElement.element(by.css('input[name=inusername]')).sendKeys('foo');
+    await newFormElement.element(by.css('input[name=inpassword]')).sendKeys('secret');
+    await newFormElement.element(by.cssContainingText('.m-button', 'Save')).click();
+    const identityElement = element(by.cssContainingText('.s-settings-identities__identity', 'foobar'));
+    await browser.wait(EC.presenceOf(identityElement), 5 * 1000);
+    expect(newFormElement.isPresent()).toEqual(false);
 
     debugger;
-    await element(by.cssContainingText('.m-button', 'Edit')).click();
-    expect(element(by.css('input[name=identifier]')).getAttribute('disabled')).toEqual('true');
-    await element(by.cssContainingText('.m-button', 'Next')).click();
-    await element(by.css('input[name=serverHostname]')).sendKeys(' edit');
-    // XXX: force scroll due to call-to-action
-    await browser.executeScript('window.scrollTo(0, document.body.scrollHeight);');
-    await element(by.cssContainingText('.m-button', 'Save')).click();
-    await browser.wait(EC.presenceOf(element(by.cssContainingText('.m-title__text', 'foobar'))), 5 * 1000);
-    expect(element(by.css('input[name=identifier]')).isPresent()).toBe(false);
+    await identityElement.element(by.cssContainingText('.m-button', 'Edit')).click();
+    expect(identityElement.element(by.css('input[name=identifier]')).getAttribute('disabled')).toEqual('true');
+    await identityElement.element(by.css('input[name=inserverHostname]')).sendKeys(' edit');
+    await identityElement.element(by.cssContainingText('.m-button', 'Save')).click();
+    await browser.wait(EC.presenceOf(identityElement), 5 * 1000);
+    expect(identityElement.element(by.css('input[name=identifier]')).isPresent()).toBe(false);
 
-    await element(by.cssContainingText('.m-button', 'Delete')).click();
+    await identityElement.element(by.cssContainingText('.m-button', 'Delete')).click();
     await element(by.cssContainingText('.m-button', 'Yes I\'m sure')).click();
-    await browser.wait(EC.stalenessOf(element(by.cssContainingText('.m-title__text', 'foobar'))), 5 * 1000);
+    await browser.wait(EC.stalenessOf(identityElement), 5 * 1000);
+    expect(identityElement.isPresent()).toEqual(false);
+  });
+
+  it('crud oauth gmail', async () => {
+    await crudOAuth({ providerName: 'gmail' });
+  });
+
+  it('crud oauth twitter', async () => {
+    await crudOAuth({ providerName: 'twitter' });
   });
 });

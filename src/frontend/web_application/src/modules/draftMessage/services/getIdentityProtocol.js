@@ -1,0 +1,8 @@
+const IDENTITY_PROTOCOLS = {
+  email: 'email',
+  smtp: 'email',
+  imap: 'email',
+  twitter: 'twitter',
+};
+
+export const getIdentityProtocol = identity => IDENTITY_PROTOCOLS[identity.protocol];

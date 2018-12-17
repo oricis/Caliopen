@@ -22,6 +22,6 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /go/src/github.com/CaliOpen/Caliopen/src/backend/caliopen_rest /usr/local/bin/caliopen_rest
 
 WORKDIR  "/etc/caliopen"
-ENTRYPOINT ["caliopen_rest", "serve", "-c" ,"apiv2", "--configpath" ,"/etc/caliopen"]
+ENTRYPOINT ["caliopen_rest", "serve", "-c" ,"apiv2", "--configpath" ,"/etc/caliopen", "-p", "/caliopen_rest.pid"]
 
-EXPOSE 31415
+EXPOSE 6544

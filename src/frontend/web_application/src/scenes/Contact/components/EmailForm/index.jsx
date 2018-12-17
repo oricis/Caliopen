@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { Trans, withI18n } from 'lingui-react';
+import { Trans, withI18n } from '@lingui/react';
 import renderReduxField from '../../../../services/renderReduxField';
 import { Button, Icon, FieldErrors, TextFieldGroup as TextFieldGroupBase, SelectFieldGroup as SelectFieldGroupBase, Fieldset, Legend, FormGrid, FormRow, FormColumn } from '../../../../components';
 import './style.scss';
@@ -30,9 +30,9 @@ class EmailForm extends PureComponent {
   initTranslations() {
     const { i18n } = this.props;
     this.addressTypes = {
-      work: i18n._('contact.email_type.work', { defaults: 'Professional' }),
-      home: i18n._('contact.email_type.home', { defaults: 'Personal' }),
-      other: i18n._('contact.email_type.other', { defaults: 'Other' }),
+      work: i18n._('contact.email_type.work', null, { defaults: 'Professional' }),
+      home: i18n._('contact.email_type.home', null, { defaults: 'Personal' }),
+      other: i18n._('contact.email_type.other', null, { defaults: 'Other' }),
     };
   }
 
@@ -58,7 +58,7 @@ class EmailForm extends PureComponent {
               <Field
                 component={SelectFieldGroup}
                 name="type"
-                label={i18n._('contact.email_form.type.label', { defaults: 'Type' })}
+                label={i18n._('contact.email_form.type.label', null, { defaults: 'Type' })}
                 showLabelforSr
                 options={addressTypeOptions}
               />
@@ -68,7 +68,7 @@ class EmailForm extends PureComponent {
                 component={TextFieldGroup}
                 name="address"
                 type="email"
-                label={i18n._('contact.email_form.address.label', { defaults: 'Address' })}
+                label={i18n._('contact.email_form.address.label', null, { defaults: 'Address' })}
                 showLabelforSr
                 required
               />

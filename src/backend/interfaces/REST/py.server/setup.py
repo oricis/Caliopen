@@ -18,6 +18,7 @@ with open(os.path.join(*([here] + name.split('.') + ['__init__.py']))) as v_file
 requires = [
     'pyramid',
     'pyramid_jinja2',
+    'redis==2.10.6',    # Enforce this version, version >= 3.0.0 break setex
     'pyramid_kvs',
     'waitress',
     'cornice==1.2.1',

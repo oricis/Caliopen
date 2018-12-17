@@ -1,6 +1,6 @@
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { withI18n } from 'lingui-react';
+import { withI18n } from '@lingui/react';
 import { formValues } from 'redux-form';
 import Presenter from './presenter';
 

@@ -25,8 +25,8 @@ class PresentationForm extends PureComponent {
   initTranslations() {
     const { i18n } = this.props;
     this.i18n = {
-      rich_text: i18n._('settings.message.display_format.options.rich_text', { defaults: 'Rich text' }),
-      plain_text: i18n._('settings.message.display_format.options.plain_text', { defaults: 'Plain text' }),
+      rich_text: i18n._('settings.message.display_format.options.rich_text', null, { defaults: 'Rich text' }),
+      plain_text: i18n._('settings.message.display_format.options.plain_text', null, { defaults: 'Plain text' }),
     };
   }
 
@@ -42,7 +42,7 @@ class PresentationForm extends PureComponent {
             <Field
               component={SelectFieldGroup}
               name="message_display_format"
-              label={i18n._('settings.message.display_format.label', { defaults: 'Display' })}
+              label={i18n._('settings.message.display_format.label', null, { defaults: 'Display' })}
               options={displayFormatOptions}
               expanded
             />

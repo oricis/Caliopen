@@ -1,0 +1,19 @@
+@import '../../../../styles/common';
+@import '../../../../styles/object/o-clickable';
+
+.m-provider-button {
+  @include o-clickable;
+  width: 100%;
+  height: 100%;
+  min-height: $co-component__height--large;
+  border: 1px solid $co-color__fg__border--low;
+  background-color: $co-color__fg__back--low ;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: $co-color__fg__text;
+  // FIXWME
+  font-size: 20px;
+  font-weight: unset;
+  line-height: 20px;
+  white-space: nowrap;
+}

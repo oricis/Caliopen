@@ -14,6 +14,7 @@ type APIStorage interface {
 	ContactStorage
 	DevicesStorage
 	IdentityStorage
+	KeysStorage
 	MessageStorage
 	TagsStorage
 	UserNameStorage
@@ -23,7 +24,7 @@ type APIStorage interface {
 type APIIndex interface {
 	MessageIndex
 	ContactIndex
-	RecipientsSuggest(user_id, query_string string) (suggests []RecipientSuggestion, err error)
+	RecipientsSuggest(user *UserInfo, query_string string) (suggests []RecipientSuggestion, err error)
 	Search(search IndexSearch) (result *IndexResult, err error)
 }
 
@@ -36,4 +37,8 @@ type APICache interface {
 	GetResetPasswordSession(user_id string) (*Pass_reset_session, error)
 	SetResetPasswordSession(user_id, reset_token string) (*Pass_reset_session, error)
 	DeleteResetPasswordSession(user_id string) error
+	// Oauth session handling
+	SetOauthSession(key string, session *OauthSession) error
+	GetOauthSession(key string) (*OauthSession, error)
+	DeleteOauthSession(user_id string) error
 }

@@ -7,24 +7,20 @@
 package imap_worker
 
 import (
-	broker "github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 )
 
 type (
 	WorkerConfig struct {
-		Workers          uint8       `mapstructure:"workers"`
+		Hostname         string      `mapstructure:"hostname"`
 		NatsQueue        string      `mapstructure:"nats_queue"`
 		NatsTopicFetcher string      `mapstructure:"nats_topic_fetcher"`
 		NatsTopicSender  string      `mapstructure:"nats_topic_sender"`
 		NatsUrl          string      `mapstructure:"nats_url"`
 		StoreName        string      `mapstructure:"store_name"`
+		Workers          uint8       `mapstructure:"workers"`
 		StoreConfig      StoreConfig `mapstructure:"store_settings"`
-		LDAConfig        broker.LDAConfig
-	}
-
-	IndexConfig struct {
-		Urls []string `mapstructure:"urls"`
+		LDAConfig        LDAConfig   `mapstructure:"LDAConfig"`
 	}
 )
 

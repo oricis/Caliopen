@@ -7,6 +7,7 @@ package caliopen_smtp
 import (
 	"bytes"
 	"crypto/tls"
+	"errors"
 	"fmt"
 	broker "github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
@@ -21,7 +22,7 @@ import (
 )
 
 type submitter struct {
-	config          broker.LDAConfig
+	config          LDAConfig
 	workersCountMux sync.Mutex
 	runningWorkers  int
 	submitChan      chan *broker.SmtpEmail
@@ -102,22 +103,47 @@ func (lda *Lda) OutboundWorker() {
 			raw.WriteString((&outcoming.EmailMessage.Email.Raw).String())
 
 			// send via local or remote MTA, accordingly
-			if outcoming.RemoteCredentials != nil {
-				server := strings.Split(outcoming.RemoteCredentials.Host, ":")
+			if outcoming.MTAparams != nil {
+				server := strings.Split(outcoming.MTAparams.Host, ":")
+				host := server[0]
 				port, _ := strconv.Atoi(server[1])
 				var dialErr error
-				smtp_remote_sender, dialErr = gomail.NewDialer(
-					server[0],
-					port,
-					outcoming.RemoteCredentials.User,
-					outcoming.RemoteCredentials.Password,
-				).Dial()
+				var remoteDialer *gomail.Dialer
+				switch outcoming.MTAparams.AuthType {
+				case Oauth1:
+					dialErr = errors.New("oauth1 mechanism not implemented")
+				case Oauth2:
+					remoteDialer = &gomail.Dialer{
+						Host: host,
+						Port: port,
+						SSL:  false,
+						Auth: &Xoauth2Client{
+							Username: outcoming.MTAparams.User,
+							Token:    outcoming.MTAparams.Password,
+						},
+					}
+				case LoginPassword:
+					remoteDialer = &gomail.Dialer{
+						Host:     host,
+						Port:     port,
+						Username: outcoming.MTAparams.User,
+						Password: outcoming.MTAparams.Password,
+						SSL:      port == 465,
+					}
+				default:
+					dialErr = fmt.Errorf("unknown auth mechanism <%s>", outcoming.MTAparams.AuthType)
+				}
+
+				if dialErr == nil {
+					smtp_remote_sender, dialErr = remoteDialer.Dial()
+				}
 				if dialErr != nil {
 					err = fmt.Errorf("outbound: unable to connect to remote MTA with error : %s", dialErr)
 				} else {
 					err = smtp_remote_sender.Send(from, to, &raw)
 				}
 			} else {
+				// no MTA params means submitter has to go through the configured local MTA
 				if !open {
 					var dialErr error
 					if smtp_sender, dialErr = d.Dial(); dialErr != nil {
@@ -131,7 +157,7 @@ func (lda *Lda) OutboundWorker() {
 				}
 			}
 
-			var ack DeliveryAck
+			var ack broker.EmailDeliveryAck
 			if err != nil {
 				log.WithError(err).Warn("outbound: unable to send to MTA")
 				ack.Err = true
@@ -156,36 +182,3 @@ func (lda *Lda) OutboundWorker() {
 	}
 }
 
-func (c *smtpSender) Send(from string, to []string, msg io.WriterTo) error {
-	if err := c.Mail(from); err != nil {
-		if err == io.EOF {
-			// This is probably due to a timeout, so reconnect and try again.
-			sc, derr := c.d.Dial()
-			if derr == nil {
-				if s, ok := sc.(*smtpSender); ok {
-					*c = *s
-					return c.Send(from, to, msg)
-				}
-			}
-		}
-		return err
-	}
-
-	for _, addr := range to {
-		if err := c.Rcpt(addr); err != nil {
-			return err
-		}
-	}
-
-	w, err := c.Data()
-	if err != nil {
-		return err
-	}
-
-	if _, err = msg.WriteTo(w); err != nil {
-		w.Close()
-		return err
-	}
-
-	return w.Close()
-}

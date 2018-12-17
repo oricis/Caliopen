@@ -1,3 +1,4 @@
+// @deprecated, routes & tabs are not managed by redux anymore
 import { createSelector } from 'reselect';
 import { matchPath } from 'react-router-dom';
 

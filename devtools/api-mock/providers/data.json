@@ -1,0 +1,23 @@
+[{
+		"infos": {
+			"client_id": "",
+			"client_secret": "",
+			"imapserver": "imap.gmail.com:993",
+			"smtpserver": "smtp.gmail.com:465"
+		},
+		"name": "gmail",
+		"protocol": "email",
+		"Capabilities": null,
+		"FetchItems": null
+	},
+	{
+		"infos": {
+			"consumer_key": "",
+			"consumer_secret": ""
+		},
+		"name": "twitter",
+		"protocol": "twitter",
+		"Capabilities": null,
+		"FetchItems": null
+	}
+]

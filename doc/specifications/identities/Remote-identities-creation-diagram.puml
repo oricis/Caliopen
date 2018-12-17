@@ -1,0 +1,73 @@
+@startuml
+actor "Browser window" as user
+participant "webapp" as client
+database "Backend" as backend
+user --> client: click\n« add remote account »
+client -> backend: ""GET /providers""
+backend -> client: providers list with additional infos\n(url, data to pre-fill form, etc.)
+hnote right user: UI : « choose a provider »
+group Gmail
+user --> client: click « signin with Gmail »
+client -> backend: ""GET /api/v2/providers/gmail""
+backend -> client: ""200 OK"" with Oauth params in payload
+client -> user: [popup] redirect to gmail auth page\nwith provided auth params
+create boundary Gmail
+activate user
+user -> Gmail: (gmail domain) login & authorize Caliopen
+Gmail --> Gmail: authorize
+Gmail -> user: Gmail redirect to our redirect_uri with authorization code
+user -> backend: ""GET /api/v2/providers/gmail/callback""
+activate backend
+backend -> Gmail: validate token info
+Gmail -> backend: OK with authorization code
+backend -> user: ""200 OK"" Thanks for authorizing Caliopen !\nYour request is being processed.\nYou can safely close this popup.
+deactivate user
+backend -> Gmail: ""GET"" with authorization secrets
+Gmail -> backend: token + secret for user
+deactivate backend
+backend --> backend: create remote identity with token credentials
+client -> backend: ""GET /identities/remotes""
+backend -> client: []remote identities with newly created included if ok
+hnote right user: UI : « Success ! »
+client --> user: display identity created
+end
+group Twitter
+user --> client: click « signin with Twitter »
+client -> backend: ""GET /api/v2/providers/twitter""
+create boundary Twitter
+backend -> Twitter: request auth parameters
+Twitter -> backend: auth params
+backend -> client: ""200 OK"" with Oauth params in payload
+client -> user: [popup] redirect to Twitter auth page\nwith provided auth params
+activate user
+user -> Twitter: (Twitter domain) login & authorize Caliopen
+Twitter --> Twitter: authorize
+Twitter -> user: Twitter redirect to our redirect_uri with authorization code
+user -> backend: ""GET /api/v2/providers/twitter/callback""
+activate backend
+backend -> Twitter: validate token info
+Twitter -> backend: OK with authorization code
+backend -> user: ""200 OK"" Thanks for authorizing Caliopen !\nYour request is being processed.\nYou can safely close this popup.
+deactivate user
+backend -> Twitter: ""GET"" with authorization secrets
+Twitter -> backend: token + secret for user
+deactivate backend
+backend --> backend: create remote identity with token credentials
+client -> backend: ""GET /identities/remotes""
+backend -> client: []remote identities with newly created included if ok
+hnote right user: UI : « Success ! »
+client --> user: display identity created
+end
+
+== backend has credentials and account settings ==
+hnote left client: UI : « your remote account\nis created.\nTrying to connect… »
+create participant provider
+... async  ...
+group account connexion testing
+backend -> provider: impersonate user to endpoint API
+provider -> backend: ""OK""
+backend -> provider: ""bye""
+backend o-->o client: notify success
+end
+hnote left client: UI : « your remote account\nis connected ! »
+@enduml

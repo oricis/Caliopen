@@ -1,0 +1,24 @@
+@import '../../../../../../styles/common';
+@import '../../../../../../styles/object/o-navigation';
+
+.m-tab {
+  &__icon {
+    margin-right: $co-component__spacing;
+
+    &::before {
+      display: inline-block;
+      vertical-align: middle;
+      width: $co-component__height/1.5;
+      height: $co-component__height/1.5;
+      border-radius: $co-component__height / 3;
+      line-height: $co-component__height / 1.5;
+      text-align: center;
+    }
+  }
+
+  @each $name, $color in $privacy-palette {
+    &--#{$name} {
+      border-top: 2px solid $color;
+    }
+  }
+}

@@ -1,23 +1,38 @@
-$co-site-width: 1380px;
-$co-header__height: 3.25rem !default; // 52px
+// do not use rem, this allow more content for the same width by
+// changing font-size for breakpoints in the root element (e.g 88% for large screen)
+$co-site-width: 1200px;
+$co-header__height: 3rem !default; // 48px
 $co-brand-width: 10rem;
 $co-pi-width: (
   graph: 15rem,
   ratings: 17rem,
   mini-ratings: 1rem,
 );
+$co-pi-height: (
+  progressbar: .25rem,
+);
 
-$co-margin: 1.5rem;
 $co-radius: .2rem;
+
+// TODO refactor
+$co-margin: 1.5rem; //24px
+$co-margin_: (
+  xsmall:  .625rem,   // 10px
+  small:   1rem,     // 16px
+  medium:  1.5rem,   // 24px
+  large:   2.625rem, // 42px
+  xlarge:  5rem,     // 80px
+);
 
 $co-font__size: 1rem;
 $co-font__size--xsmall: .75rem;
-$co-font__size--small: .9rem;
+$co-font__size--small: .875rem;
 $co-font__size--large: 1.5rem;
 
 $co-font__line-height: 1.4rem;
 
 $co-component__height: 2.625rem;
+$co-component__height--large: 3.5rem;
 $co-component__spacing: .5rem;
 
 $co-form__width: (

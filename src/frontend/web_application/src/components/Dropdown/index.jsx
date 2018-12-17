@@ -62,7 +62,7 @@ class Dropdown extends Component {
     alignRight: false,
     children: null,
     className: null,
-    closeOnClick: null,
+    closeOnClick: CLOSE_ON_CLICK_EXCEPT_SELF,
     closeOnScroll: false,
     position: 'bottom',
     isMenu: false,

@@ -1,0 +1,28 @@
+.m-protocol-switch {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: stretch;
+  width: 100%;
+  margin: 1rem 0;
+  font-size: 0.875rem;
+}
+
+.m-protocol-switch__bar {
+  flex-grow: 1;
+  height: 0.25rem;
+  margin: 0.375rem 1rem 0.375rem 0;
+  background-color: #c8e9f9;
+}
+
+.ugly {
+  .m-protocol-switch__bar {
+    background-color: #edccd4;
+  }
+}
+
+.super {
+  .m-protocol-switch__bar {
+    background-color: #0cbe8e;
+  }
+}

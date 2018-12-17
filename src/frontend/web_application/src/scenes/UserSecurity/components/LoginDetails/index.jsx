@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withI18n, Trans } from 'lingui-react';
+import { withI18n, Trans } from '@lingui/react';
 // import { Button } from '../../../../components/';
 import { TextBlock, TextFieldGroup } from '../../../../components';
 import './style.scss';
@@ -29,7 +29,7 @@ class LoginDetails extends Component {
         <TextFieldGroup
           className="m-login-details__input"
           value={user && user.name}
-          label={i18n._('login.details.label', { defaults: 'Login:' })}
+          label={i18n._('login.details.label', null, { defaults: 'Login:' })}
           showLabelforSr
           disabled
         />

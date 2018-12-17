@@ -4,45 +4,41 @@ import { v1 as uuidV1 } from 'uuid';
 import classnames from 'classnames';
 import Label from '../Label';
 import FieldGroup from '../FieldGroup';
+import Textarea from '../Textarea';
 
 import './style.scss';
 
 class TextareaFieldGroup extends PureComponent {
   static propTypes = {
     label: PropTypes.node.isRequired,
-    expanded: PropTypes.bool,
+    showLabelForSR: PropTypes.bool,
     errors: PropTypes.arrayOf(PropTypes.node),
     onChange: PropTypes.func,
     className: PropTypes.string,
+    inputProps: PropTypes.shape({}),
   };
 
   static defaultProps = {
-    expanded: true,
+    showLabelForSR: false,
     errors: [],
     onChange: str => str,
     className: undefined,
+    inputProps: {},
   };
 
   render() {
     const {
-      label, expanded, errors, onChange, className, ...props
+      label, errors, onChange, className, inputProps, showLabelForSR,
     } = this.props;
     const id = uuidV1();
-    const textareaClassName = classnames(
-      'm-textarea-field-group__textarea',
-      {
-        'm-textarea-field-group--expanded__textarea': expanded,
-      }
-    );
 
     return (
       <FieldGroup className={classnames('m-textarea-field-group', className)} errors={errors} >
-        <Label htmlFor={id} className="m-textarea-field-group__label">{label}</Label>
-        <textarea
+        <Label htmlFor={id} className={classnames('m-textarea-field-group__label', { 'sr-only': showLabelForSR })}>{label}</Label>
+        <Textarea
           id={id}
-          className={textareaClassName}
           onChange={onChange}
-          {...props}
+          {...inputProps}
         />
       </FieldGroup>
     );

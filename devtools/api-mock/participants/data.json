@@ -11,6 +11,18 @@
   "protocol": "email",
   "source": "contact"
 }, {
+  "address": "@bender",
+  "contact_id": "92d3727a-eefc-4537-b879-85f1c9d197bb",
+  "label": "@Bender",
+  "protocol": "twitter",
+  "source": "contact"
+}, {
+  "address": "@zoidberg",
+  "contact_id": "0ba2e346-e4f8-4c45-9adc-eeb1d42fuie0",
+  "label": "@Zoidberg",
+  "protocol": "twitter",
+  "source": "contact"
+}, {
   "address": "leela@john.doe",
   "contact_id": "19c3ui42-e3ba-46e7-984f-4c3e8de11c05",
   "label": "Leela",

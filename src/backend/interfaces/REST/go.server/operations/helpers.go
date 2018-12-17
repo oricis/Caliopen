@@ -50,9 +50,9 @@ func GetImportanceLevel(ctx *gin.Context) (il [2]int8) {
 // "urn:uuid:6ba7b810-9dad-11d1-80b4-00c04fd430c8"
 // Output string is always in "6ba7b810-9dad-11d1-80b4-00c04fd430c8" format.
 func NormalizeUUIDstring(uuid_str string) (string, error) {
-	uuid, err := uuid.FromString(uuid_str)
+	id, err := uuid.FromString(uuid_str)
 	if err != nil {
 		return "", err
 	}
-	return uuid.String(), nil
+	return id.String(), nil
 }

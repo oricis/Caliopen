@@ -1,12 +1,7 @@
+/* eslint-disable */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import OffCanvas from './components/OffCanvas';
-import Header from './components/Header';
-import Navigation from './components/Navigation';
-import NavigationAlt from './components/NavigationAlt';
-import NotificationCenter from './components/NotificationCenter';
-import CallToAction from './components/CallToAction';
-import BackgroundImage from './components/BackgroundImage';
 
 import './style.scss';
 
@@ -37,7 +32,7 @@ class PageContainer extends Component {
             <section>
               <div
                 className="l-body__footer-alpha"
-                dangerouslySetInnerHTML={{ __html: i18n._('alpha.footer.feedback', { defaults: 'Tell us if something went wrong at <a href="https://feedback.caliopen.org/">https://feedback.caliopen.org/</a>.' }) }}
+                dangerouslySetInnerHTML={{ __html: i18n._('alpha.footer.feedback', null, { defaults: 'Tell us if something went wrong at <a href="https://feedback.caliopen.org/">https://feedback.caliopen.org/</a>.' }) }}
               />
             </section>
             <CallToAction />

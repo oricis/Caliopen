@@ -14,19 +14,18 @@
 	"message_id": "11111111-267d-4d9c-97ee-d0fc59c64202",
 	"participants": [{
 		"address": "test@caliopen.local",
-		"contact_ids": ["1039cdcc-1f6f-4b5d-9c8a-5d7c711f357f"],
 		"label": "foo",
 		"protocol": "email",
 		"type": "Cc"
 	}, {
 		"address": "john@caliopen.local",
 		"contact_ids": ["c-john-01"],
-		"label": "Jaune john",
+		"label": "Jaune",
 		"protocol": "email",
 		"type": "From"
 	}, {
 		"address": "zoidberg@planet-express.tld",
-		"contact_ids": ["0ba2e346-e4f8-4c45-9adc-eeb1d42f07e0"],
+		"contact_ids": ["0ba2e346-e4f8-4c45-9adc-eeb1d42fuie0"],
 		"label": "zoidberg",
 		"protocol": "email",
 		"type": "To"
@@ -34,7 +33,7 @@
 	"privacy_features": {},
 	"raw_msg_id": "aaaaaaaa-267d-4d9c-97ee-d0fc59c64202",
 	"tags": ["robot", "INBOX"],
-	"type": "email",
+	"protocol": "email",
 	"pi": { "technic": 30, "context": 25, "comportment": 25, "version": 1 },
 	"user_id": ""
 },
@@ -54,19 +53,18 @@
 	"message_id": "11111111-267d-4d9c-97ee-d0fc59c64201",
 	"participants": [{
 		"address": "test@caliopen.local",
-		"contact_ids": ["1039cdcc-1f6f-4b5d-9c8a-5d7c711f357f"],
 		"label": "foo",
 		"protocol": "email",
 		"type": "To"
 	}, {
 		"address": "john@caliopen.local",
 		"contact_ids": ["c-john-01"],
-		"label": "Jaune john",
+		"label": "Jaune",
 		"protocol": "email",
 		"type": "Cc"
 	}, {
 		"address": "zoidberg@planet-express.tld",
-		"contact_ids": ["0ba2e346-e4f8-4c45-9adc-eeb1d42f07e0"],
+		"contact_ids": ["0ba2e346-e4f8-4c45-9adc-eeb1d42fuie0"],
 		"label": "zoidberg",
 		"protocol": "email",
 		"type": "From"
@@ -75,7 +73,7 @@
 	"raw_msg_id": "aaaaaaaa-267d-4d9c-97ee-d0fc59c64201",
 	"subject": "It's okay, Bender. I like cooking too",
 	"tags": ["robot", "IMPORTANT"],
-	"type": "email",
+	"protocol": "email",
 	"pi": { "technic": 50, "context": 45, "comportment": 25, "version": 1 },
 	"user_id": ""
 },
@@ -96,12 +94,12 @@
 	"participants": [{
 		"address": "john@caliopen.local",
 		"contact_ids": ["c-john-01"],
-		"label": "foo",
+		"label": "Jaune",
 		"protocol": "email",
 		"type": "To"
 	}, {
 		"address": "zoidberg@planet-express.tld",
-		"contact_ids": ["0ba2e346-e4f8-4c45-9adc-eeb1d42f07e0"],
+		"contact_ids": ["0ba2e346-e4f8-4c45-9adc-eeb1d42fuie0"],
 		"label": "zoidberg",
 		"protocol": "email",
 		"type": "To"
@@ -116,7 +114,7 @@
 	"raw_msg_id": "bbbbbbbbb-267d-4d9c-97ee-d0fc59c64201",
 	"subject": "Shut up and take my money",
 	"tags": ["INBOX", "SPAM"],
-	"type": "email",
+	"protocol": "email",
 	"pi": { "technic": 40, "context": 15, "comportment": 45, "version": 1 }
 },
 {
@@ -136,12 +134,11 @@
 	"participants": [{
 		"address": "john@caliopen.local",
 		"contact_ids": ["c-john-01"],
-		"label": "foo",
+		"label": "Jaune",
 		"protocol": "email",
 		"type": "To"
 	}, {
 		"address": "removeme@caliopen.local",
-		"contact_ids": ["0ba2e346-e4f8-4c45-9adc-eeb1d42f07e0"],
 		"label": "remove message",
 		"protocol": "email",
 		"type": "From"
@@ -149,7 +146,7 @@
 	"privacy_features": {},
 	"raw_msg_id": "bbbbbbbbb-267d-4d9c-97ee-d0fc59c64201",
 	"subject": "remove message one by one",
-	"type": "email",
+	"protocol": "email",
 	"pi": { "technic": 50, "context": 45, "comportment": 25, "version": 1 }
 },
 {
@@ -169,12 +166,11 @@
 	"participants": [{
 		"address": "john@caliopen.local",
 		"contact_ids": ["c-john-01"],
-		"label": "foo",
+		"label": "Jaune",
 		"protocol": "email",
 		"type": "From"
 	}, {
 		"address": "removeme@caliopen.local",
-		"contact_ids": ["0ba2e346-e4f8-4c45-9adc-eeb1d42f07e0"],
 		"label": "remove message",
 		"protocol": "email",
 		"type": "To"
@@ -182,7 +178,7 @@
 	"privacy_features": {},
 	"raw_msg_id": "bbbbbbbbb-267d-4d9c-97ee-d0fc59c64201",
 	"subject": "remove message one by one",
-	"type": "email",
+	"protocol": "email",
 	"pi": { "technic": 50, "context": 45, "comportment": 25, "version": 1 }
 },
 {
@@ -202,20 +198,19 @@
 	"participants": [{
 		"address": "john@caliopen.local",
 		"contact_ids": ["c-john-01"],
-		"label": "foo",
+		"label": "Jaune",
 		"protocol": "email",
 		"type": "To"
 	}, {
 		"address": "removeme@caliopen.local",
-		"contact_ids": ["0ba2e346-e4f8-4c45-9adc-eeb1d42f07e0"],
 		"label": "remove message",
 		"protocol": "email",
 		"type": "From"
 	}],
 	"privacy_features": {},
 	"raw_msg_id": "bbbbbbbbb-267d-4d9c-97ee-d0fc59c64201",
-	"subject": "remove message one by one",
-	"type": "email",
+	"subject": "remove messages",
+	"protocol": "email",
 	"pi": { "technic": 50, "context": 45, "comportment": 25, "version": 1 }
 },
 {
@@ -235,12 +230,11 @@
 	"participants": [{
 		"address": "john@caliopen.local",
 		"contact_ids": ["c-john-01"],
-		"label": "foo",
+		"label": "Jaune",
 		"protocol": "email",
 		"type": "From"
 	}, {
 		"address": "removeme@caliopen.local",
-		"contact_ids": ["0ba2e346-e4f8-4c45-9adc-eeb1d42f07e0"],
 		"label": "remove message",
 		"protocol": "email",
 		"type": "To"
@@ -248,12 +242,66 @@
 	"privacy_features": {},
 	"raw_msg_id": "bbbbbbbbb-267d-4d9c-97ee-d0fc59c64201",
 	"subject": "remove message one by one",
-	"type": "email",
+	"protocol": "email",
 	"pi": { "technic": 50, "context": 45, "comportment": 25, "version": 1 }
 },
 {
     "attachment": [],
-    "discussion_id": "37e376ce-8be4-453c-a3bf-86eefaff1940",
+    "discussion_id": "b1256c1e-7b65-4fe2-8960-a7d6c0c4a051",
+    "message_id": "74488b21-318c-4c60-be21-36cea07cfde2",
+    "is_answered": true,
+    "is_draft": false,
+    "is_received": true,
+    "importance_level": 0,
+    "privacy_features": {},
+    "raw_msg_id": "1ac9a18b-2453-45e7-b778-528043de4373",
+    "subject": "Ils sont fous ces romains.",
+    "protocol": "twitter",
+    "pi": {
+        "technic": 30,
+        "context": 10,
+        "comportment": 1,
+        "version": 1
+    },
+    "participants": [
+        {
+            "address": "john@caliopen.local",
+            "contact_ids": [
+                "c-john-01"
+            ],
+            "label": "foo",
+            "protocol": "email",
+            "type": "From"
+        },
+        {
+            "address": "panoramix@caliopen.local",
+            "contacts_ids": [
+                "fedd1cc7-2db3-442f-a42a-24e21e98ff52"
+            ],
+            "protocol": "email",
+            "label": "Panoramix",
+            "type": "To"
+        },
+        {
+            "address": "asterix@caliopen.local",
+            "contacts_ids": [
+                "2c8fb086-86da-4a87-9abc-668b73578f49"
+            ],
+            "protocol": "email",
+            "label": "Astérix",
+            "type": "To"
+        }
+    ],
+    "user_identities": ["aaaa-bbbb-cccc-ddd1"],
+    "body": "Ils sont fous, ces gaulois.\n",
+    "excerpt": "Ils sont fous, ces gaulois.",
+    "date": "0042-09-08T14:55:00+00:00",
+    "date_insert": "0042-09-08T15:00:00+00:00",
+    "date_sort": "0042-09-08T15:00:00+00:00"
+},
+{
+    "attachment": [],
+    "discussion_id": "b1256c1e-7b65-4fe2-8960-a7d6c0c4a051",
     "message_id": "74488b21-318c-4c60-be21-36cea07cfde2",
     "is_answered": true,
     "is_draft": false,
@@ -266,7 +314,7 @@
     "pi": {
         "technic": 30,
         "context": 10,
-        "comportement": 1,
+        "comportment": 1,
         "version": 1
     },
     "participants": [
@@ -307,7 +355,7 @@
 },
 {
     "attachment": [],
-    "discussion_id": "37e376ce-8be4-453c-a3bf-86eefaff1940",
+    "discussion_id": "b1256c1e-7b65-4fe2-8960-a7d6c0c4a051",
     "message_id": "0bf58db0-b664-49e1-ade3-4f4e2424aa86",
     "is_answered": true,
     "is_draft": false,
@@ -316,11 +364,11 @@
     "privacy_features": {},
     "raw_msg_id": "ebcdb6b2-ffac-4360-a9e7-cb44a091bc06",
     "subject": "Ils sont fous ces romains.",
-    "type": "email",
+    "protocol": "email",
     "pi": {
         "technic": 30,
         "context": 10,
-        "comportement": 1,
+        "comportment": 1,
         "version": 1
     },
     "participants": [
@@ -338,7 +386,7 @@
             "contact_ids": [
                 "c-john-01"
             ],
-            "label": "foo",
+            "label": "Jaune",
             "protocol": "email",
             "type": "To"
         },
@@ -361,7 +409,7 @@
 },
 {
     "attachment": [],
-    "discussion_id": "37e376ce-8be4-453c-a3bf-86eefaff1940",
+    "discussion_id": "b1256c1e-7b65-4fe2-8960-a7d6c0c4a051",
     "message_id": "956e52a5-5d73-4838-8d95-f5006973457c",
     "is_answered": true,
     "is_draft": false,
@@ -370,11 +418,11 @@
     "privacy_features": {},
     "raw_msg_id": "3ca3f788-8ba0-4b96-9f54-b5625d1c1a83",
     "subject": "Ils sont fous ces romains.",
-    "type": "email",
+    "protocol": "email",
     "pi": {
         "technic": 30,
         "context": 10,
-        "comportement": 1,
+        "comportment": 1,
         "version": 1
     },
     "participants": [
@@ -392,7 +440,7 @@
             "contact_ids": [
                 "c-john-01"
             ],
-            "label": "foo",
+            "label": "Jaune",
             "protocol": "email",
             "type": "To"
         },
@@ -415,7 +463,7 @@
 },
 {
     "attachment": [],
-    "discussion_id": "37e376ce-8be4-453c-a3bf-86eefaff1940",
+    "discussion_id": "b1256c1e-7b65-4fe2-8960-a7d6c0c4a051",
     "message_id": "a0da20e1-0829-4f0f-b44a-7417177b4f4e",
     "is_answered": true,
     "is_draft": false,
@@ -424,11 +472,11 @@
     "privacy_features": {},
     "raw_msg_id": "0355031c-2ef7-4683-b75a-8b6b9a13f4f9",
     "subject": "Ils sont fous ces romains.",
-    "type": "email",
+    "protocol": "email",
     "pi": {
         "technic": 30,
         "context": 10,
-        "comportement": 1,
+        "comportment": 1,
         "version": 1
     },
     "participants": [
@@ -446,7 +494,7 @@
             "contact_ids": [
                 "c-john-01"
             ],
-            "label": "foo",
+            "label": "Jaune",
             "protocol": "email",
             "type": "To"
         },
@@ -478,11 +526,11 @@
     "privacy_features": {},
     "raw_msg_id": "6bb23fb9-6947-43b7-9b86-96207decabcd",
     "subject": "Ils sont fous ces romains.",
-    "type": "email",
+    "protocol": "twitter",
     "pi": {
         "technic": 30,
         "context": 10,
-        "comportement": 1,
+        "comportment": 1,
         "version": 1
     },
     "participants": [
@@ -500,7 +548,7 @@
             "contact_ids": [
                 "c-john-01"
             ],
-            "label": "foo",
+            "label": "Jaune",
             "protocol": "email",
             "type": "To"
         },
@@ -559,11 +607,11 @@
     "privacy_features": {},
     "raw_msg_id": "bd29b3cf-7dec-423c-96f3-b1406c483984",
     "subject": "Ils sont fous ces romains.",
-    "type": "email",
+    "protocol": "email",
     "pi": {
         "technic": 30,
         "context": 10,
-        "comportement": 1,
+        "comportment": 1,
         "version": 1
     },
     "participants": [
@@ -581,7 +629,7 @@
             "contact_ids": [
                 "c-john-01"
             ],
-            "label": "foo",
+            "label": "Jaune",
             "protocol": "email",
             "type": "To"
         },
@@ -640,11 +688,11 @@
     "privacy_features": {},
     "raw_msg_id": "dfb61e77-6bb7-45e6-826c-82622b617021",
     "subject": "Ils sont fous ces romains.",
-    "type": "email",
+    "type": "facebook",
     "pi": {
         "technic": 30,
         "context": 10,
-        "comportement": 1,
+        "comportment": 1,
         "version": 1
     },
     "participants": [
@@ -662,7 +710,7 @@
             "contact_ids": [
                 "c-john-01"
             ],
-            "label": "foo",
+            "label": "Jaune",
             "protocol": "email",
             "type": "To"
         },
@@ -721,11 +769,11 @@
     "privacy_features": {},
     "raw_msg_id": "11025bc2-3513-44bf-9228-e73fa7474236",
     "subject": "Ils sont fous ces romains.",
-    "type": "email",
+    "protocol": "email",
     "pi": {
         "technic": 30,
         "context": 10,
-        "comportement": 1,
+        "comportment": 1,
         "version": 1
     },
     "participants": [
@@ -743,7 +791,7 @@
             "contact_ids": [
                 "c-john-01"
             ],
-            "label": "foo",
+            "label": "Jaune",
             "protocol": "email",
             "type": "To"
         },
@@ -802,11 +850,11 @@
     "privacy_features": {},
     "raw_msg_id": "4a1fa14c-be6d-41b3-947b-4eda3718050b",
     "subject": "Ils sont fous ces romains.",
-    "type": "email",
+    "type": "sms",
     "pi": {
         "technic": 30,
         "context": 10,
-        "comportement": 1,
+        "comportment": 1,
         "version": 1
     },
     "participants": [
@@ -824,7 +872,7 @@
             "contact_ids": [
                 "c-john-01"
             ],
-            "label": "foo",
+            "label": "Jaune",
             "protocol": "email",
             "type": "To"
         },
@@ -883,11 +931,11 @@
     "privacy_features": {},
     "raw_msg_id": "fbeb7ad7-b0b4-4508-a7c5-48cba66a3628",
     "subject": "Ils sont fous ces romains.",
-    "type": "email",
+    "type": "facebook",
     "pi": {
-        "technic": 30,
+        "technic": 10,
         "context": 10,
-        "comportement": 1,
+        "comportment": 40,
         "version": 1
     },
     "participants": [
@@ -905,7 +953,7 @@
             "contact_ids": [
                 "c-john-01"
             ],
-            "label": "foo",
+            "label": "Jaune",
             "protocol": "email",
             "type": "To"
         },
@@ -964,11 +1012,11 @@
     "privacy_features": {},
     "raw_msg_id": "16817826-6fd8-4ff8-83b6-5cd93c4402fa",
     "subject": "Ils sont fous ces romains.",
-    "type": "email",
+    "protocol": "twitter",
     "pi": {
         "technic": 30,
         "context": 10,
-        "comportement": 1,
+        "comportment": 1,
         "version": 1
     },
     "participants": [
@@ -986,7 +1034,7 @@
             "contact_ids": [
                 "c-john-01"
             ],
-            "label": "foo",
+            "label": "Jaune",
             "protocol": "email",
             "type": "To"
         },
@@ -1045,11 +1093,11 @@
     "privacy_features": {},
     "raw_msg_id": "731594dd-e94f-4186-ac0d-d1ac5351df5d",
     "subject": "Ils sont fous ces romains.",
-    "type": "email",
+    "protocol": "twitter",
     "pi": {
         "technic": 30,
         "context": 10,
-        "comportement": 1,
+        "comportment": 1,
         "version": 1
     },
     "participants": [
@@ -1067,7 +1115,7 @@
             "contact_ids": [
                 "c-john-01"
             ],
-            "label": "foo",
+            "label": "Jaune",
             "protocol": "email",
             "type": "To"
         },

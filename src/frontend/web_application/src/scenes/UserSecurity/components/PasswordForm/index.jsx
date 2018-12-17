@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withI18n, Trans } from 'lingui-react';
+import { withI18n, Trans } from '@lingui/react';
 import { TextFieldGroup, Button, PasswordStrength, FormGrid, FormColumn, FormRow } from '../../../../components/';
 import './style.scss';
 
@@ -65,7 +65,7 @@ class PasswordForm extends Component {
 
     this.setState((prevState) => {
       const { newPassword } = prevState.formValues;
-      const error = i18n._('password.form.new_password_confirmation.error', { defaults: 'Passwords don\'t match' });
+      const error = i18n._('password.form.new_password_confirmation.error', null, { defaults: 'Passwords don\'t match' });
       const passwordError = newPassword === value ? [] : [error];
 
       return {
@@ -107,8 +107,8 @@ class PasswordForm extends Component {
               name="password"
               type="password"
               onChange={this.handleInputChange}
-              label={i18n._('password.form.current_password.label', { defaults: 'Current password:' })}
-              placeholder={i18n._('password.form.current_password.placeholder', { defaults: 'Enter your current password' })}
+              label={i18n._('password.form.current_password.label', null, { defaults: 'Current password:' })}
+              placeholder={i18n._('password.form.current_password.placeholder', null, { defaults: 'Enter your current password' })}
               required
             />
           </FormColumn>
@@ -124,8 +124,8 @@ class PasswordForm extends Component {
               name="newPassword"
               type="password"
               onChange={this.handleNewPasswordChange}
-              label={i18n._('password.form.new_password.label', { defaults: 'New password:' })}
-              placeholder={i18n._('password.form.new_password.placeholder', { defaults: 'Enter new password' })}
+              label={i18n._('password.form.new_password.label', null, { defaults: 'New password:' })}
+              placeholder={i18n._('password.form.new_password.placeholder', null, { defaults: 'Enter new password' })}
               required
             />
           </FormColumn>
@@ -147,8 +147,8 @@ class PasswordForm extends Component {
               type="password"
               onChange={this.handleConfirmPasswordChange}
               errors={this.state.passwordError}
-              label={i18n._('password.form.new_password_confirmation.label', { defaults: 'New password confirmation:' })}
-              placeholder={i18n._('password.form.new_password_confirmation.placeholder', { defaults: 'Password' })}
+              label={i18n._('password.form.new_password_confirmation.label', null, { defaults: 'New password confirmation:' })}
+              placeholder={i18n._('password.form.new_password_confirmation.placeholder', null, { defaults: 'Password' })}
               required
             />
           </FormColumn>
@@ -160,8 +160,9 @@ class PasswordForm extends Component {
             name="tfa"
             component={TextFieldGroup}
             onChange={this.handleInputChange}
-            label={i18n._('password.form.tfa.label', { defaults: 'TOTP validation code:' })}
-            placeholder={i18n._('password.form.tfa.placeholder', { defaults: 'Enter 2-auth code' })}
+            label={i18n._('password.form.tfa.label', null, { defaults: 'TOTP validation code:' })}
+            placeholder={i18n._('password.form.tfa.placeholder',
+              null, { defaults: 'Enter 2-auth code' })}
             disabled
           />
         </FormColumn>

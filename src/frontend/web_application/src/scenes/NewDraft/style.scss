@@ -1,0 +1,6 @@
+@import '../../styles/common';
+
+.s-new-draft {
+  padding-top: map_get($co-margin_, 'large');
+  background-color: #f6fcff;
+}

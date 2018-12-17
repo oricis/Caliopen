@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Trans, withI18n } from 'lingui-react';
+import { Trans, withI18n } from '@lingui/react';
 import { PageTitle } from '../../components/';
 import './style.scss';
 
@@ -17,13 +17,13 @@ class PageNotFound extends PureComponent {
 
     return (
       <div className="s-page-not-found">
-        <PageTitle title={i18n._('page_not_found.page_title', { defaults: 'Page not found' })} />
+        <PageTitle title={i18n._('page_not_found.page_title', null, { defaults: 'Page not found' })} />
         <h2 className="s-page-not-found__title">
           <Trans id="page_not_found.title">Unicorn not found</Trans>
         </h2>
         <div>
           <Trans className="s-page-not-found__thanks" id="page_not_found.thank_you">Thank you for using</Trans>
-          <pre className="s-page-not-found__ascii" aria-label={i18n._('page_not_found.caliopen-ascii', { defaults: 'Caliopen is draw using ASCIi art' })}>
+          <pre className="s-page-not-found__ascii" aria-label={i18n._('page_not_found.caliopen-ascii', null, { defaults: 'Caliopen is draw using ASCIi art' })}>
             {`
         ▄▀▀▀▀▀▀▄                     █   ▀
   ▄▀▀▀▀▄ ▄████▄ ▌      ▄▀▀▀▀▄ ▄▀▀▀▀▄ █   ▄   ▄▀▀▀▀▄ ▄▀▀▀▀▄ ▄▀▀▀▄ ▄▀▀▀▀▄
@@ -32,7 +32,7 @@ class PageNotFound extends PureComponent {
  ▄▀▄▄▄▄▀▀▄▄▄▄▄▄▀▄                                   █
 `}
           </pre>
-          <pre className="s-page-not-found__ascii-short" aria-label={i18n._('page_not_found.caliopen-ascii-logo', { defaults: 'Logo of Caliopen in ASCIi art' })}>
+          <pre className="s-page-not-found__ascii-short" aria-label={i18n._('page_not_found.caliopen-ascii-logo', null, { defaults: 'Logo of Caliopen in ASCIi art' })}>
             {`
         ▄▀▀▀▀▀▀▄
   ▄▀▀▀▀▄ ▄████▄ ▌

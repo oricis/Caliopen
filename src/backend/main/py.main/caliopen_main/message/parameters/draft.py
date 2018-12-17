@@ -111,10 +111,17 @@ class Draft(NewInboundMessage):
         from_participant = Participant()
         from_participant.address = user_identity.identifier
         from_participant.label = user_identity.display_name
-        from_participant.protocol = "email"
+        from_participant.protocol = user_identity.protocol
         from_participant.type = "From"
         from_participant.contact_ids = [user.contact.contact_id]
         self.participants.append(from_participant)
+
+        # set message's protocol to sender's one
+        if from_participant.protocol in ['email', 'smtp', 'imap']:
+            self.protocol = 'email'
+        else:
+            self.protocol = from_participant.protocol
+
         return from_participant
 
     def _check_discussion_consistency(self, user):

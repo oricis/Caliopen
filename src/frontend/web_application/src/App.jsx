@@ -4,9 +4,9 @@ import { Provider } from 'react-redux';
 import { I18nLoader } from './modules/i18n';
 import { WithSettings } from './modules/settings';
 import { DeviceProvider } from './modules/device';
+import { SwitchWithRoutes, RoutingConsumer } from './modules/routing';
+import RoutingProvider from './modules/routing/components/RoutingProvider';
 import { PageTitle } from './components/';
-import Routes from './routes';
-import I18nProviderLegacy from './components/I18nProvider';
 import { initConfig } from './services/config';
 import { NotificationProvider } from './modules/notification';
 import './app.scss';
@@ -33,16 +33,20 @@ class App extends Component {
 
     return (
       <Provider store={store}>
-        <WithSettings render={({ default_locale: locale }) => (
-          <I18nProviderLegacy>
-            <I18nLoader locale={locale}>
+        <WithSettings render={settings => (
+          <I18nLoader locale={settings.default_locale}>
+            <RoutingProvider settings={settings}>
               <PageTitle />
               <DeviceProvider>
-                <Routes />
+                <RoutingConsumer
+                  render={({ routes }) => (
+                    <SwitchWithRoutes routes={routes} />
+                  )}
+                />
               </DeviceProvider>
               <NotificationProvider />
-            </I18nLoader>
-          </I18nProviderLegacy>
+            </RoutingProvider>
+          </I18nLoader>
         )}
         />
       </Provider>

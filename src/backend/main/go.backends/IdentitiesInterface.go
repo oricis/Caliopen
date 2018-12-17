@@ -17,12 +17,18 @@ type (
 		RetrieveUserIdentity(userId, RemoteId string, withCredentials bool) (*UserIdentity, error)
 		LookupIdentityByIdentifier(string, ...string) ([][2]string, error)
 		LookupIdentityByType(string, ...string) ([][2]string, error)
-		UpdateUserIdentity(userIdentity *UserIdentity, fields map[string]interface{}) error
+		IdentityStorageUpdater
 		DeleteUserIdentity(userIdentity *UserIdentity) error
 		RetrieveRemoteIdentities(userId string, withCredentials bool) ([]*UserIdentity, error)
 		RetrieveAllRemotes(withCredentials bool) (<-chan *UserIdentity, error)
+		UpdateRemoteInfosMap(userId, remoteId string, infos map[string]string) error
+		RetrieveRemoteInfosMap(userId, remoteId string) (infos map[string]string, err error)
 		IsLocalIdentity(userId, identityId string) bool
 		IsRemoteIdentity(userId, identityId string) bool
 		Close()
 	}
 )
+
+type IdentityStorageUpdater interface {
+	UpdateUserIdentity(userIdentity *UserIdentity, fields map[string]interface{}) error
+}
