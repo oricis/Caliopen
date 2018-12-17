@@ -153,7 +153,8 @@ class DraftMessage extends Component {
   getQuickInputPlaceholder = () => {
     const { i18n, draftMessage, availableIdentities } = this.props;
 
-    const [identityId] = draftMessage.user_identities;
+    const [identityId] = draftMessage && draftMessage.user_identities ?
+      draftMessage.user_identities : [];
     const { identifier } = availableIdentities
       .find(identity => identity.identity_id === identityId) || {};
 
