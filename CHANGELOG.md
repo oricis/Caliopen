@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Automatic set read when displaying a message
 - More permissive protocol validation in draft according to identities
 
+### Changed
+
+- Timeline colors
+
 ## [0.13.2] 2018-12-11
 
 ### Added
