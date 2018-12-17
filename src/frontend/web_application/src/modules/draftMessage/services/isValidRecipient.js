@@ -1,2 +1,4 @@
+import { getIdentityProtocol } from './getIdentityProtocol';
+
 export const isValidRecipient = ({ recipient, identity }) =>
-  !identity || recipient.protocol === identity.protocol;
+  !identity || recipient.protocol === getIdentityProtocol(identity);

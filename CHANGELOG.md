@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- participants added from suggestions always define `email` protocol
 - More permissive protocol validation in draft according to identities
 
 ## [0.13.2] 2018-12-11
