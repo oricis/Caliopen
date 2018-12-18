@@ -9,6 +9,7 @@ import './style.scss';
 export const CONTROL_PREFIX = 'toggle';
 const CLOSE_ON_CLICK_ALL = 'all';
 const CLOSE_ON_CLICK_EXCEPT_SELF = 'exceptSelf';
+const DO_NOT_CLOSE = 'doNotClose';
 
 export const withDropdownControl = (WrappedComponent) => {
   const WithDropdownControl = ({ toggleId, className, ...props }) => {
@@ -49,7 +50,7 @@ class Dropdown extends Component {
     alignRight: PropTypes.bool, // force align right
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     className: PropTypes.string,
-    closeOnClick: PropTypes.oneOf([CLOSE_ON_CLICK_ALL, CLOSE_ON_CLICK_EXCEPT_SELF]),
+    closeOnClick: PropTypes.oneOf([CLOSE_ON_CLICK_ALL, CLOSE_ON_CLICK_EXCEPT_SELF, DO_NOT_CLOSE]),
     closeOnScroll: PropTypes.bool, // should Dropdown close on windows scroll ?
     isMenu: PropTypes.bool,
     position: PropTypes.oneOf(['top', 'bottom']),
@@ -83,7 +84,7 @@ class Dropdown extends Component {
     this.dropdownControl = document.getElementById(`${CONTROL_PREFIX}-${this.props.id}`);
     this.toggle(this.props.show);
 
-    if (this.props.closeOnClick) {
+    if (this.props.closeOnClick !== DO_NOT_CLOSE) {
       this.unsubscribeClickEvent = addEventListener('click', (ev) => {
         const { target } = ev;
 
@@ -126,7 +127,7 @@ class Dropdown extends Component {
   }
 
   componentWillUnmount() {
-    if (this.props.closeOnClick) {
+    if (this.unsubscribeClickEvent) {
       this.unsubscribeClickEvent();
     }
     this.unsubscribeResizeEvent();
