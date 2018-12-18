@@ -166,7 +166,6 @@ const routes = {
   },
   'DELETE /v1/messages/:message_id': {
     action: actions.delete,
-    selector: selectors.byId,
     status: 204,
   },
   'POST /v2/messages/:message_id/actions': {

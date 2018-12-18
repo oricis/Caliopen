@@ -36,7 +36,6 @@ describe('Remote Identity Settings', () => {
   });
 
   it('crud remote email', async () => {
-    debugger;
     await element(by.cssContainingText('.m-provider-button', 'Email')).click();
     const newFormElement = element(by.css('.m-new-identity__email-form'));
     await newFormElement.element(by.css('input[name=identifier]')).sendKeys('foobar');
@@ -49,7 +48,6 @@ describe('Remote Identity Settings', () => {
     await browser.wait(EC.presenceOf(identityElement), 5 * 1000);
     expect(newFormElement.isPresent()).toEqual(false);
 
-    debugger;
     await identityElement.element(by.cssContainingText('.m-button', 'Edit')).click();
     expect(identityElement.element(by.css('input[name=identifier]')).getAttribute('disabled')).toEqual('true');
     await identityElement.element(by.css('input[name=inserverHostname]')).sendKeys(' edit');
