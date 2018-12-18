@@ -60,6 +60,7 @@ const mapStateToProps = createSelector([
   const canEditRecipients = messages.some(message => !message.is_draft) === false;
 
   return {
+    key: draftMessage && draftMessage.message_id,
     draftMessage,
     isFetching: isRequestingDraft || isIdentitiesFetching,
     isDeletingDraft,
