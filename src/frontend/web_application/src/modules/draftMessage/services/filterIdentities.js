@@ -65,5 +65,5 @@ export const filterIdentities = ({
   const [contact] = participantsContacts;
   const availableProtocols = getAvailableProtocolsForTheContact({ contact });
 
-  return identities.filter(identity => availableProtocols.includes(identity.protocol));
+  return identities.filter(identity => availableProtocols.includes(getIdentityProtocol(identity)));
 };
