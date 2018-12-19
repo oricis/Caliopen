@@ -2,7 +2,6 @@ import os
 import re
 
 from setuptools import setup, find_packages
-from setuptools.command.install import install as _install
 
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
@@ -42,7 +41,7 @@ extras_require = {
 
 setup(name=name,
       version=version,
-      description='Caliopen tag package. All stuff related to the message tagger',
+      description='Caliopen tag package. All stuff related to message tagging',
       long_description=README + '\n\n' + CHANGES,
       classifiers=["Programming Language :: Python", ],
       author='Caliopen contributors',
@@ -55,5 +54,6 @@ setup(name=name,
       extras_require=extras_require,
       install_requires=requires,
       tests_require=requires,
-      dependency_links=["https://github.com/facebookresearch/fastText/archive/master.zip#egg=fastText-0.8.22"],
+      dependency_links=["https://github.com/facebookresearch/fastText/archive/"
+                        "master.zip#egg=fastText-0.8.22"],
       )

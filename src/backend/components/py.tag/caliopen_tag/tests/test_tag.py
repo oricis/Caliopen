@@ -4,6 +4,8 @@ import unittest
 import os
 
 from caliopen_storage.config import Configuration
+# from mailbox import Message
+from caliopen_tag.taggers.tagger import MessageTagger, prepare_msg
 
 if 'CALIOPEN_BASEDIR' in os.environ:
     conf_file = '{}/src/backend/configs/caliopen.yaml.template'. \
@@ -12,9 +14,6 @@ else:
     conf_file = '../../../../configs/caliopen.yaml.template'
 
 Configuration.load(conf_file, 'global')
-
-from mailbox import Message
-from caliopen_tag.taggers.tagger import MessageTagger, prepare_msg
 
 
 class TestPredictTagger(unittest.TestCase):
@@ -44,4 +43,5 @@ class TestPredictTagger(unittest.TestCase):
                               <br>
                               <p>Voici le contenu de mon message .</p>
                               </body></html>""")
-        self.assertEqual(text, "bonjour m. dupont , voici le contenu de mon message .")
+        self.assertEqual(text, "bonjour m. dupont , "
+                               "voici le contenu de mon message .")
