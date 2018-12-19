@@ -16,7 +16,6 @@ describe('Delete message', () => {
   const clickBtnInModal = btnText => element(by.cssContainingText('.m-modal button', btnText)).click();
 
   it('Delete message one by one', async () => {
-    debugger;
     const discussion1Selector = by.cssContainingText(
       '.s-discussion-item__message_subject',
       'remove message one by one'
@@ -31,14 +30,14 @@ describe('Delete message', () => {
     };
 
     // await filter('All');
-    await browser.wait(EC.presenceOf($('.s-discussion-list')), 5 * 1000);
+    await browser.wait(EC.presenceOf($('.s-timeline')), 5 * 1000);
     await element(discussion1Selector).click();
     await browser.wait(EC.presenceOf($('article')), 5 * 1000);
     await deleteAMessage(message1ToDel);
     await browser.wait(EC.presenceOf($('article')), 5 * 1000);
     expect(element(by.cssContainingText('article', message1ToDel)).isPresent()).toBe(false);
     await deleteAMessage(message2ToDel);
-    await browser.wait(EC.presenceOf($('.s-discussion-list')), 5 * 1000);
+    await browser.wait(EC.presenceOf($('.s-timeline')), 5 * 1000);
   });
 
   xit('Delete all messages of a collection', async () => {

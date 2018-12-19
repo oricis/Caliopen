@@ -8,6 +8,7 @@ const actions = {
 };
 
 const twitterPopupUrl = 'https://api.twitter.com/oauth/authorize?oauth_token=<token>';
+const oauthUrlCallbackHost = ''; // should be hardcoded but it can be localhost:4000 or test-frontend:4000 according to current test env
 
 const selectors = {
   all: () => state => state.providers,
@@ -23,7 +24,7 @@ const selectors = {
       return {
         ...result,
         oauth_callback_uri: `/api/v2/providers/${providerName}/callback`,
-        oauth_request_url: `http://localhost:4000/api/oauth-mock/${providerName}`,
+        oauth_request_url: `${oauthUrlCallbackHost}/api/oauth-mock/${providerName}`,
       };
     }
   ),
