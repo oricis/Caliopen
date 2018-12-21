@@ -36,7 +36,7 @@ class ModelManager(object):
             epoch=15,
             lr=0.1,
             word_n_grams=2,
-            min_count=40,
+            min_count=400,
             dim=100,
             loss="softmax",
             thread=12,
@@ -93,12 +93,13 @@ class ModelManager(object):
         log.info('Training file is ready: ' + self.tempfilename)
         pass
 
-    def _train_tagging_model(self, output):
+    def _train_tagging_model(self, output, quantization=False):
         """Train a tagging model using an annotated file and save it to output.
 
         Pre-processing of the input file must have been done prior to training.
         Training file should be utf-8.
-        The model is quantized to reduce memory usage.
+        The model can be quantized to reduce memory usage
+        (but quantization is quite expensive).
         """
         log.info('Start training model.')
         new_model = fastText.train_supervised(input=self.tempfilename,
@@ -106,15 +107,16 @@ class ModelManager(object):
                                               lr=self.lr,
                                               wordNgrams=1,
                                               # self.wordNgrams,
-                                              # minCount=self.minCount,
+                                              minCount=self.minCount,
                                               dim=self.dim,
                                               loss=self.loss,
                                               thread=self.thread,
                                               neg=self.neg)
         log.info('Training model done.')
-        log.info('Start quantization.')
-        new_model.quantize(thread=self.thread)
-        log.info('Quantization done.')
+        if quantization:
+            log.info('Start quantization.')
+            new_model.quantize(thread=self.thread, retrain=False)
+            log.info('Quantization done.')
         new_model.save_model(resources_path + "models/" + output)
         log.info(
             'Model saved at {}.'.format(resources_path + "models/" + output)
