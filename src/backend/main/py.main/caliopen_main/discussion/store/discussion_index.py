@@ -54,7 +54,7 @@ class DiscussionIndexManager(object):
                 order={'last_message': 'desc'}, size=size, shard_size=size)
         search.aggs.bucket('discussions', agg) \
             .metric('last_message', 'max', field='date_sort')
-        result = search.execute()
+        result = search.source(exclude=["*"]).execute()
         if hasattr(result, 'aggregations'):
             # Something found
             buckets = result.aggregations.discussions.buckets
@@ -74,6 +74,8 @@ class DiscussionIndexManager(object):
         search = self._prepare_search() \
             .filter("match", discussion_id=discussion_id) \
             .filter("range", importance_level={'gte': min_il, 'lte': max_il})
+        search.aggs.bucket("discussion_id", A('terms', field='discussion_id'))\
+            .bucket("unread", "filter", term={"is_unread": True})
 
         if not include_draft:
             search = search.filter("match", is_draft=False)
