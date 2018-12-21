@@ -2,7 +2,7 @@
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
 .m-action-bar {
-  @include flex-grid-row;
+  @include flex-grid-row($size: expanded);
   background: $co-color__fg__back;
   line-height: $co-component__height;
 

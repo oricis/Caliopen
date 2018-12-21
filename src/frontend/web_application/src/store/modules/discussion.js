@@ -5,6 +5,7 @@ export const REQUEST_DISCUSSIONS_FAIL = 'co/discussion/REQUEST_DISCUSSIONS_FAIL'
 export const INVALIDATE_DISCUSSIONS = 'co/discussion/INVALIDATE_DISCUSSIONS';
 export const REMOVE_DISCUSSION_FROM_COLLECTION = 'co/discussion/REMOVE_DISCUSSION_FROM_COLLECTION';
 export const LOAD_MORE_DISCUSSIONS = 'co/discussion/LOAD_MORE_DISCUSSIONS';
+export const FILTER_IMPORTANCE = 'co/discussion/FILTER_IMPORTANCE';
 export const REQUEST_DISCUSSION = 'co/discussion/REQUEST_DISCUSSION';
 export const REQUEST_DISCUSSION_SUCCESS = 'co/discussion/REQUEST_DISCUSSION_SUCCESS';
 export const REQUEST_DISCUSSION_FAIL = 'co/discussion/REQUEST_DISCUSSION_FAIL';
@@ -29,6 +30,13 @@ export function loadMoreDiscussions() {
   return {
     type: LOAD_MORE_DISCUSSIONS,
     payload: {},
+  };
+}
+
+export function filterImportance({ min, max }) {
+  return {
+    type: FILTER_IMPORTANCE,
+    payload: { min, max },
   };
 }
 
@@ -112,6 +120,10 @@ const initialState = {
   didInvalidate: false,
   discussionsById: {},
   discussions: [],
+  importanceRange: {
+    min: 0,
+    max: 10,
+  },
   total: 0,
 };
 
@@ -155,6 +167,14 @@ export default function reducer(state = initialState, action) {
         discussions: discussionIdsReducer(state.discussions, action),
         discussionsById: discussionsByIdReducer(state.discussionsById, action),
         total: state.total - 1,
+      };
+    case FILTER_IMPORTANCE:
+      return {
+        ...state,
+        importanceRange: {
+          min: action.payload.min,
+          max: action.payload.max,
+        },
       };
     default:
       return state;

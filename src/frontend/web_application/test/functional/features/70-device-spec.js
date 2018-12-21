@@ -45,7 +45,6 @@ describe('Device', () => {
 
   describe('Revoke on a unverified device', () => {
     it('Hides the button except itself', async () => {
-      debugger;
       await signin(); // create default
       await clearKeypairInLocalStorage({ save: true });
       await signin();

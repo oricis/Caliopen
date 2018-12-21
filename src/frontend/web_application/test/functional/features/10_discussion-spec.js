@@ -24,7 +24,6 @@ describe('Discussions', () => {
 
   describe('Thread', () => {
     it('Render and listed contacts describe the thread', async () => {
-      debugger;
       // await filter('All');
       await browser.wait(EC.presenceOf($('.s-timeline .s-discussion-item')), 5 * 1000);
       element(by.cssContainingText(

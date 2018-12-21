@@ -6,10 +6,26 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.14.0] 2018-12-19
+
+### Added
+
+- special group user contact in contact-book
+- Toggle show spam
+- Placeholder when loading Timeline
+
 ### Fixed
 
+- Timeline responsiveness (dates & action bar)
+- Display last protocol used for a discussion in the timeline
+- Automatic set read when displaying a message
 - participants added from suggestions always define `email` protocol
 - More permissive protocol validation in draft according to identities
+
+### Changed
+
+- Timeline colors
+
 
 ## [0.13.2] 2018-12-11
 

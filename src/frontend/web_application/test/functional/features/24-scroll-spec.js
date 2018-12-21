@@ -19,7 +19,6 @@ describe('Scroll on Timeline and Discussion', () => {
   });
 
   it('Reaches targets and goes back home', async () => {
-    debugger;
     // await filter('All');
     await browser.wait(EC.presenceOf($('.s-timeline .s-discussion-item')), 5 * 1000);
     await element(by.cssContainingText(

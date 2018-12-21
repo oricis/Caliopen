@@ -20,7 +20,7 @@ describe('Create new contact', () => {
     await browser.wait(EC.presenceOf($('.s-contact .m-contact-profile-form')), 1000);
     await element(by.css('.m-contact-profile-form__input input[name="given_name"]')).sendKeys(name);
     await element(by.cssContainingText('.s-contact__action', 'Validate')).click();
-    await browser.wait(EC.presenceOf($('.s-contact .s-contact-main-title')), 1000);
+    await browser.wait(EC.stalenessOf($('.m-action-bar__loading')), 1000);
     expect(element(by.css('.s-contact-main-title__name')).getText()).toEqual(name);
   });
 });

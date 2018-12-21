@@ -102,6 +102,9 @@ class RecipientList extends Component {
   };
 
   handleSearchInputFocus = () => {
+    if (this.state.searchOpened) {
+      return;
+    }
     this.setState({ searchOpened: true });
     this.unsubscribeInputBlur = addEventListener('click', (ev) => {
       if (ev.target === this.searchInputRef) {
@@ -325,7 +328,7 @@ class RecipientList extends Component {
             show={this.state.searchTerms ?
               (searchResults.length > 0 && this.state.searchOpened) : false
             }
-            // closeOnClickExceptRefs={[this.searchInputRef, this.recipientListRef]}
+            closeOnClick="doNotClose"
             isMenu
           >
             <VerticalMenu>

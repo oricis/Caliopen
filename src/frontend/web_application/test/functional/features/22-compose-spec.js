@@ -1,6 +1,6 @@
 const userUtil = require('../utils/user-util');
 const { home } = require('../utils/navigation');
-const { filter } = require('../utils/timeline');
+// const { filter } = require('../utils/timeline');
 
 describe('Compose new message', () => {
   const EC = protractor.ExpectedConditions;
@@ -15,7 +15,6 @@ describe('Compose new message', () => {
 
   describe('Navigation between drafts', () => {
     it('Creates a new draft', async () => {
-      debugger;
       const text1 = 'Compose creates a new draft';
       const writeButtonSelector = by.cssContainingText('.m-action-btns__btn', 'Compose');
 
@@ -25,17 +24,17 @@ describe('Compose new message', () => {
         .filter(item => item.getText().then(text => text === 'Compose'));
       expect(items.length).toEqual(1);
       console.log('write msg');
-      const draftBodyElement1 = element(by.css('.m-discussion-textarea__body'));
+      const draftBodyElement1 = element(by.css('.m-draft-advanced__body .m-textarea'));
       await draftBodyElement1.sendKeys(text1);
       await element(writeButtonSelector).click();
       await browser.wait(EC.presenceOf($('.s-new-draft')), 1000);
-      await expect(element(by.css('.m-discussion-textarea__body')).getText()).not.toEqual(text1);
+      await expect(draftBodyElement1.getText()).not.toEqual(text1);
       const items2 = await element.all(by.css('.m-navbar-item .m-item-link'))
         .filter(item => item.getText().then(text => text === 'Compose'));
       expect(items2.length).toEqual(2);
       await items2[0].click();
       await browser.wait(EC.presenceOf($('.s-new-draft')), 1000);
-      expect(element(by.css('.m-discussion-textarea__body')).getText()).toEqual(text1);
+      expect(draftBodyElement1.getText()).toEqual(text1);
     });
   });
 
@@ -49,14 +48,15 @@ describe('Compose new message', () => {
       await browser.wait(EC.presenceOf($('.s-new-draft')), 1000);
       expect(element(by.cssContainingText('.m-navbar-item', 'Compose')).isPresent()).toEqual(true);
       console.log('write msg');
-      const draftBodyElement1 = element(by.css('.m-discussion-textarea__body'));
+      const draftBodyElement1 = element(by.css('.m-draft-advanced__body .m-textarea'));
       await draftBodyElement1.sendKeys(text1);
-      await element(by.cssContainingText('button', 'Save')).click();
-      await browser.wait(EC.presenceOf($('.m-discussion-textarea__body')), 3 * 1000);
-      expect(element.all(by.css('.m-discussion-textarea__body .m-recipient-list__recipient')).count())
+      // await element(by.cssContainingText('button', 'Save')).click();
+      // XXX: save button will be back soon; wait for autosave
+      await browser.sleep(6 * 1000);
+      await browser.wait(EC.presenceOf(draftBodyElement1), 3 * 1000);
+      expect(element.all(by.css('.m-recipient-list__recipient')).count())
         .toEqual(0);
-      const draftBodyElement2 = element(by.css('.m-discussion-textarea__body'));
-      expect(draftBodyElement2.getText()).toEqual(text1);
+      expect(draftBodyElement1.getText()).toEqual(text1);
       await home();
       // await filter('All');
       await browser.wait(EC.presenceOf($('.s-timeline .s-discussion-item')), 3 * 1000);
@@ -77,10 +77,10 @@ describe('Compose new message', () => {
       const results = await element.all(by.css('.m-recipient-list__search-result'));
       await results[0].click();
       console.info('write msg');
-      const draftBodyElement1 = element(by.css('.m-discussion-textarea__body'));
+      const draftBodyElement1 = element(by.css('.m-draft-advanced__body .m-textarea'));
       await draftBodyElement1.sendKeys(text1);
-      await element(by.cssContainingText('button', 'Save')).click();
-      await browser.wait(EC.presenceOf($('.m-discussion-textarea__body')), 3 * 1000);
+      // await element(by.cssContainingText('button', 'Save')).click();
+      await browser.wait(EC.presenceOf(draftBodyElement1), 3 * 1000);
       const items = await element.all(by.css('.m-recipient-list__recipient'));
       expect(items.length).toEqual(1);
       expect(items[0].getText()).toContain('bender@caliopen.local');
@@ -121,12 +121,16 @@ describe('Compose new message', () => {
       const searchInputElement = element(by.css('.m-recipient-list__search-input'));
       await searchInputElement.sendKeys(searchTerm);
       await browser.wait(EC.presenceOf($('.m-recipient-list__search-result')), 3 * 1000);
-      expect(element(dropdownSelector).isDisplayed()).toEqual(true);
+      const t1 = await element(dropdownSelector).isDisplayed();
+      expect(t1).toEqual(true);
       await element(by.css('.m-recipient-list__search-input')).click();
-      expect(element(dropdownSelector).isDisplayed()).toEqual(true);
-      await element(by.cssContainingText('.s-new-draft__author', 'You')).click();
-      expect(element(dropdownSelector).isDisplayed()).toEqual(false);
-      expect(element(by.cssContainingText('.m-recipient-list__recipient', searchTerm)).isDisplayed()).toEqual(true);
+      const t2 = await element(dropdownSelector).isDisplayed();
+      expect(t2).toEqual(true);
+      await element(by.cssContainingText('.s-new-draft', 'From')).click();
+      const t3 = await element(dropdownSelector).isDisplayed();
+      expect(t3).toEqual(false);
+      await browser.sleep(1 * 1000);
+      expect(element(by.cssContainingText('.m-recipient-list__recipient', searchTerm)).isPresent()).toEqual(true);
     });
 
     it('Can use keyboard arrows to select search result', async () => {
@@ -152,7 +156,7 @@ describe('Compose new message', () => {
       await searchInputElement.sendKeys(protractor.Key.ARROW_UP, protractor.Key.ENTER);
       const items4 = await element.all(by.css('.m-recipient-list__recipient'));
       expect(items4.length).toEqual(1);
-      expect(items4[0].getText()).toContain('zoidberg@caliopen.local');
+      expect(items4[0].getText()).toContain('zoidberg@planet-express.tld');
     });
   });
 });

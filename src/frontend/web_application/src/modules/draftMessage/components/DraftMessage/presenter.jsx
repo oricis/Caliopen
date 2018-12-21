@@ -17,6 +17,8 @@ import './draft-message-advanced.scss';
 import './draft-message-placeholder.scss';
 import './toggle-advanced-draft-button.scss';
 
+const PROTOCOL_EMAIL = 'email';
+
 @withI18n()
 @withNotification()
 @withScrollTarget()
@@ -479,7 +481,7 @@ class DraftMessage extends Component {
         return false;
       }
 
-      return currIdentity.protocol === 'email';
+      return getIdentityProtocol(currIdentity) === PROTOCOL_EMAIL;
     };
 
     const hasSubject = isSubjectSupported({ draft: this.state.draftMessage });
