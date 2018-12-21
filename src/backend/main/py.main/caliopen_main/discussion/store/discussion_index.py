@@ -108,16 +108,16 @@ class DiscussionIndexManager(object):
         msg = IndexedMessage.get(message_id, using=self.proxy, index=self.index)
         return str(msg.discussion_id) == str(discussion_id)
 
-    def get_by_id(self, discussion_id):
+    def get_by_id(self, discussion_id, min_il=0, max_il=100):
         """Return a single discussion by discussion_id"""
 
         result = self._prepare_search() \
             .filter("match", discussion_id=discussion_id) \
             .execute()
-        if not result.hits:
+        if not result.hits or len(result.hits) < 1:
             return None
 
-        message = self.get_last_message(discussion_id, 0, 100, True)
+        message = self.get_last_message(discussion_id, min_il, max_il, True)
         discussion = DiscussionIndex(discussion_id)
         discussion.total_count = result.hits.total
         discussion.last_message = message

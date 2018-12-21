@@ -117,6 +117,17 @@ class MainView(object):
         responses = self.build_responses(user, discussions)
         return {'discussions': list(responses), 'total': total}
 
+    def get_one(self, user, discussion_id, min_il=0, max_il=100):
+        discussion_index = DIM(user).get_by_id(discussion_id, min_il, max_il)
+        try:
+            discussion_core = Discussion.get(user, discussion_index.discussion_id)
+        except NotFound:
+            raise NotFound
+        if discussion_core:
+            return build_discussion(discussion_core, discussion_index)
+        else:
+            raise NotFound
+
 
 class Discussion(BaseUserCore):
     """Discussion core object."""
