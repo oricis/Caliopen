@@ -107,7 +107,7 @@ class Device(BaseUserCore, MixinCoreRelation, MixinCoreNested):
                 for obj in v:
                     log.debug('Processing object %r' % obj.to_native())
                     # XXX check only one is_primary per relation using it
-                    new_core = core._relations[k].create(user, **core)
+                    new_core = core._relations[k].create(user, **obj)
                     related_cores.setdefault(k, []).append(new_core.to_dict())
                     log.debug('Created related core %r' % new_core)
         return core
