@@ -8,8 +8,10 @@ import datetime
 import pytz
 
 from caliopen_storage.exception import NotFound
-from caliopen_storage.core import BaseUserCore
 from caliopen_storage.parameters import ReturnCoreObject
+
+from caliopen_main.common.core import BaseUserCore
+from caliopen_main.common.helpers.strings import unicode_truncate
 
 from ..store.discussion import (DiscussionListLookup as ModelListLookup,
      DiscussionThreadLookup as ModelThreadLookup,
@@ -19,7 +21,6 @@ from ..store.discussion_index import DiscussionIndexManager as DIM
 
 from caliopen_main.discussion.parameters import Discussion as DiscussionParam
 from caliopen_main.message.parameters.participant import Participant
-from caliopen_main.common.helpers.strings import unicode_truncate
 
 log = logging.getLogger(__name__)
 

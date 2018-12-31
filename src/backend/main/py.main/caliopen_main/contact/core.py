@@ -13,10 +13,11 @@ from .store import (Contact as ModelContact,
                     Organization, Email, IM, PostalAddress,
                     Phone, SocialIdentity)
 from .store.contact_index import IndexedContact
-from caliopen_storage.core import BaseCore, BaseUserCore
+from caliopen_storage.core import BaseCore
 from caliopen_storage.exception import NotFound
 from caliopen_storage.core.mixin import MixinCoreRelation, MixinCoreNested
 from caliopen_main.pi.objects import PIModel
+from caliopen_main.common.core import BaseUserCore
 
 log = logging.getLogger(__name__)
 
