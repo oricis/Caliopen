@@ -50,9 +50,9 @@ class DeviceConnectionLog(BaseModel):
     """Log a device connection."""
 
     user_id = columns.UUID(primary_key=True)
-    device_id = columns.UUID(primary_key=True)
+    resource_id = columns.UUID(primary_key=True)
     date_insert = columns.DateTime(primary_key=True,
                                    default=datetime.datetime.now(tz=pytz.utc))
-    ip_address = columns.Text(required=True)
+    ip_address = columns.Text()
     type = columns.Text()       # Connection type (login/logout)
     country = columns.Text()    # Geoip detected country
