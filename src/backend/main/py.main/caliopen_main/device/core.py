@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """Caliopen device core classes."""
 from __future__ import absolute_import, print_function, unicode_literals
-from datetime import datetime
-import time
+
 import logging
 import uuid
 
@@ -133,3 +132,7 @@ class Device(BaseUserCore, MixinCoreRelation, MixinCoreNested):
         if not self.check_locations(ipaddr):
             raise Exception("Device IP Address not in allowed locations")
         self._log_action(ipaddr, 'login')
+
+    def logout(self, ipaddr):
+        """Logout action for a device."""
+        self._log_action(ipaddr, "logout")
