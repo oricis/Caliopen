@@ -92,11 +92,6 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
         'social_identities': {'value': 'name', 'type': 'social'},
     }
 
-    @property
-    def user(self):
-        from caliopen_main.user.core import User
-        return User.get(self.user_id)
-
     @classmethod
     def _compute_title(cls, contact):
         elmts = []

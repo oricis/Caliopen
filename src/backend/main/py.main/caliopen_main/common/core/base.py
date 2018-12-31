@@ -7,6 +7,17 @@ from caliopen_storage.exception import NotFound
 class BaseUserCore(BaseCore):
     """Used by objects related to only one user (most core)."""
 
+    _user = None
+
+    @property
+    def user(self):
+        """Return user related to this object."""
+        from caliopen_main.user.core import User
+
+        if not self._user:
+            self._user = User.get(self.user_id)
+        return self._user
+
     @classmethod
     def get(cls, user, obj_id):
         """Get a core object belong to user, with model related id."""
