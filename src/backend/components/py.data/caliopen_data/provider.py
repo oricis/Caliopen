@@ -56,9 +56,6 @@ class FileDataProvider(DataProvider):
         with open(self._filename, 'r') as f:
             return f.read().split('\n')
 
-    def _format_item(self, item):
-        return item.lower()
-
 
 class ESProvider(DataProvider):
     """Data provider reading from an elasticsearch query."""
