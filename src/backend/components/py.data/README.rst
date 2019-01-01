@@ -44,8 +44,7 @@ class ESQuery(ESProvider):
 provider = ESQuery(Configuration('global').configuration)
 
 
-query = dsl.Search()
-query.aggs.bucket('tags', 'terms', field='participants.protocol')
+query = dsl.Search().filter('term', body_plain="think")
 
 provider.prepare(query, index=None, doc_type='indexed_message')
 for item in provider.next():
