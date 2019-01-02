@@ -19,23 +19,9 @@ Configuration.load(conf_file, 'global')
 class TestPredictTagger(unittest.TestCase):
     """Test tagger."""
 
-    def test_tagger_load(self):
-        qualifier = MessageTagger()
-        self.assertEqual(len(qualifier.process("coucou\n")), 5)
-        self.assertEqual(qualifier.process("coucou\n")[0][0], "others")
-
-    def test_tagger_load_cat2(self):
-        qualifier = MessageTagger("cat2", 2)
-        self.assertEqual(len(qualifier.process("coucou\n")), 2)
-        self.assertEqual(qualifier.process("coucou\n")[0][0], "others")
-
     def test_tagger_load_fail_file_not_found(self):
         with self.assertRaises(ValueError):
-            MessageTagger("cat3")
-
-    def test_tagger_load_fail_wrong_file_format(self):
-        with self.assertRaises(ValueError):
-            MessageTagger("cat4")
+            MessageTagger("random_cat")
 
     def test_prepare_msg(self):
         text = prepare_msg("""<html><body>
