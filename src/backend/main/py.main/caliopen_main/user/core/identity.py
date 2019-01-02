@@ -3,7 +3,9 @@
 
 from __future__ import absolute_import, print_function, unicode_literals
 
-from caliopen_storage.core import BaseCore, BaseUserCore
+from caliopen_storage.core import BaseCore
+from caliopen_main.common.core import BaseUserCore
+
 from ..store import (UserIdentity as ModelUserIdentity,
                      IdentityLookup as ModelIdentityLookup,
                      IdentityTypeLookup as ModelIdentityTypeLookup)

@@ -77,6 +77,7 @@ class AuthenticationAPI(Api):
         if in_device:
             try:
                 device = Device.get(user, in_device['device_id'])
+                log.info("Found device %s" % device.device_id)
                 # Found a device, check if signature public key have X and Y
                 key = get_device_sig_key(user, device)
                 if not key:
@@ -96,6 +97,7 @@ class AuthenticationAPI(Api):
                 # we must declare a new device
                 device = Device.create_from_parameter(user, in_device,
                                                       self.request.headers)
+                log.info("Created device %s" % device.device_id)
                 key = get_device_sig_key(user, device)
                 if not key:
                     log.error('No signature key found for device %r'
@@ -103,6 +105,10 @@ class AuthenticationAPI(Api):
 
         else:
             raise ValidationError(detail='No device informations')
+        try:
+            device.login(self.request.headers.get('X-Forwarded-For'))
+        except Exception as exc:
+            log.exception('Device login failed: {0}'.format(exc))
 
         access_token = create_token()
         refresh_token = create_token(80)

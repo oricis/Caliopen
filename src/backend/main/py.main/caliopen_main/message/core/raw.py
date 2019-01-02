@@ -12,7 +12,9 @@ import urlparse
 from minio import Minio
 from minio.error import ResponseError
 
-from caliopen_storage.core import BaseUserCore, BaseCore
+from caliopen_storage.core import BaseCore
+from caliopen_main.common.core import BaseUserCore
+
 from caliopen_storage.exception import NotFound
 from caliopen_storage.config import Configuration
 
