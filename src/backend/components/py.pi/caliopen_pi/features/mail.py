@@ -32,6 +32,7 @@ class InboundMailFeature(object):
         'message_signature_type': None,
         'message_signer': None,
         'message_encrypted': False,
+        'message_encryption_method': None,
         'message_encryption_infos': None,
         'mail_agent': None,
         'spam_score': 0,
@@ -134,7 +135,8 @@ class InboundMailFeature(object):
         encrypted_parts = [x for x in self.message.attachments
                            if 'pgp-encrypt' in x.content_type]
         is_encrypted = True if encrypted_parts else False
-        return {'message_encrypted': is_encrypted}
+        return {'message_encrypted': is_encrypted,
+                'message_encryption_method': 'pgp'}
 
     def _get_features(self):
         """Extract privacy features."""
