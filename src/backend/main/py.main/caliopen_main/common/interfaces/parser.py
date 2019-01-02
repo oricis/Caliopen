@@ -28,7 +28,7 @@ class IParticipantParser(zope.interface.Interface):
 class IMessageParser(zope.interface.Interface):
     """Interface for all message parsers."""
 
-    message_type = zope.interface.Attribute('Type of message')
+    message_protocol = zope.interface.Attribute('Type of message')
 
     raw = zope.interface.Attribute('Raw message')
 
