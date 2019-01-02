@@ -30,7 +30,11 @@ class AuthenticatedUser(object):
 
     def __init__(self, request):
         self.request = request
+        self.user_id = None
+        self.device_id = None
+        self.shard_id = None
         self._check_user()
+        self._load_user()
 
     def _check_user(self):
         if 'Authorization' not in self.request.headers:
@@ -65,9 +69,11 @@ class AuthenticatedUser(object):
 
         if self.request.headers.get('X-Caliopen-Device-Signature', None):
             valid = self._validate_signature(self.request, device_id, infos)
-            log.info('Signature verification result %r' % valid)
+            log.info('Signature verification for device %s: %r' %
+                     (device_id, valid))
 
         self.user_id = user_id
+        self.device_id = device_id
         self.shard_id = infos['shard_id']
         self.access_token = token
         self._user = None
@@ -106,7 +112,8 @@ class AuthenticatedUser(object):
         if sign_header:
             data = '{}{}{}'.format(request.method, request.path_qs, '')
             try:
-                ecdsasign = EcdsaSignature.load(base64.decodestring(sign_header))
+                b64_header = base64.decodestring(sign_header)
+                ecdsasign = EcdsaSignature.load(b64_header)
                 signature = ecdsasign['r'].contents + ecdsasign['s'].contents
                 vk = ecdsa.VerifyingKey.from_public_point(point, crv,
                                                           hashfunc=hashfunc)

@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 """Caliopen device core classes."""
 from __future__ import absolute_import, print_function, unicode_literals
+
 import logging
 import uuid
 
 from .store import Device as ModelDevice
 from .store import DeviceLocation as ModelDeviceLocation
+from .store import DeviceConnectionLog as ModelDeviceLog
 
-from caliopen_storage.core import BaseUserCore
 from caliopen_storage.core.mixin import MixinCoreRelation, MixinCoreNested
+from caliopen_main.common.core import BaseUserCore
 from caliopen_main.common.core import PublicKey, BaseUserRelatedCore
 from caliopen_main.common.parameters import NewPublicKey
 from caliopen_main.device.parameters import NewDevice
@@ -26,6 +28,13 @@ class DeviceLocation(BaseUserRelatedCore):
     _pkey_name = 'address'
 
 
+class DeviceLog(BaseUserRelatedCore):
+    """Locations defined for a device to restrict access."""
+
+    _model_class = ModelDeviceLog
+    _pkey_name = 'timestamp'
+
+
 class Device(BaseUserCore, MixinCoreRelation, MixinCoreNested):
     """User device core class."""
 
@@ -34,7 +43,7 @@ class Device(BaseUserCore, MixinCoreRelation, MixinCoreNested):
 
     _relations = {
         'public_keys': PublicKey,
-        'locations': ModelDeviceLocation,
+        'locations': DeviceLocation,
     }
 
     @classmethod
@@ -98,8 +107,32 @@ class Device(BaseUserCore, MixinCoreRelation, MixinCoreNested):
                 for obj in v:
                     log.debug('Processing object %r' % obj.to_native())
                     # XXX check only one is_primary per relation using it
-                    new_core = cls._relations[k].create(user,
-                                                        **obj)
+                    new_core = core._relations[k].create(user, **obj)
                     related_cores.setdefault(k, []).append(new_core.to_dict())
                     log.debug('Created related core %r' % new_core)
         return core
+
+    def check_locations(self, ipaddr):
+        """Check if the location of device is in related authorized ips."""
+        if self.locations:
+            for loc in self.locations:
+                log.info("Testing cidr {0} with ip {1}".
+                         format(loc.address, ipaddr))
+        return True
+
+    def _log_action(self, ipaddr, action):
+        DeviceLog.create(self.user, self.device_id,
+                         ipaddr=ipaddr,
+                         type=action)
+
+    def login(self, ipaddr):
+        """Login action for a device."""
+        log.info("Logging device {0} for user {1}".format(self.device_id,
+                                                          self.user_id))
+        if not self.check_locations(ipaddr):
+            raise Exception("Device IP Address not in allowed locations")
+        self._log_action(ipaddr, 'login')
+
+    def logout(self, ipaddr):
+        """Logout action for a device."""
+        self._log_action(ipaddr, "logout")

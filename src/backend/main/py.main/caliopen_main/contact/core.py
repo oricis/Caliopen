@@ -13,10 +13,11 @@ from .store import (Contact as ModelContact,
                     Organization, Email, IM, PostalAddress,
                     Phone, SocialIdentity)
 from .store.contact_index import IndexedContact
-from caliopen_storage.core import BaseCore, BaseUserCore
+from caliopen_storage.core import BaseCore
 from caliopen_storage.exception import NotFound
 from caliopen_storage.core.mixin import MixinCoreRelation, MixinCoreNested
 from caliopen_main.pi.objects import PIModel
+from caliopen_main.common.core import BaseUserCore
 
 log = logging.getLogger(__name__)
 
@@ -90,11 +91,6 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
         'phones': {'value': 'number', 'type': 'phone'},
         'social_identities': {'value': 'name', 'type': 'social'},
     }
-
-    @property
-    def user(self):
-        from caliopen_main.user.core import User
-        return User.get(self.user_id)
 
     @classmethod
     def _compute_title(cls, contact):
