@@ -122,10 +122,7 @@ class MainView(object):
         discussion_index = DIM(user).get_by_id(discussion_id, min_il, max_il)
         if not discussion_index:
             raise NotFound
-        try:
-            discussion_core = Discussion.get(user, discussion_index.discussion_id)
-        except NotFound:
-            raise NotFound
+        discussion_core = Discussion.get(user, discussion_index.discussion_id)
         if discussion_core:
             return build_discussion(discussion_core, discussion_index)
         else:

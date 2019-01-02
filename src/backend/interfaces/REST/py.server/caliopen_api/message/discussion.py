@@ -36,7 +36,7 @@ class Discussion(Api):
     @view(renderer='json', permission='authenticated')
     def get(self):
         discussion_id = self.request.swagger_data['discussion_id']
-        if not discussion_id or discussion_id == "":
+        if not discussion_id:
             raise HTTPBadRequest
         try:
             il_range = self.request.authenticated_userid._get_il_range()
