@@ -7,9 +7,9 @@ import logging
 import pgpy
 
 from caliopen_main.pi.parameters import PIParameter
-from .spam import SpamScorer
-from .ingress_path import get_ingress_features
-from .importance_level import compute_inbound as compute_inbound_importance
+from .helpers.spam import SpamScorer
+from .helpers.ingress_path import get_ingress_features
+from .helpers.importance_level import compute_importance
 
 log = logging.getLogger(__name__)
 
@@ -218,6 +218,6 @@ class InboundMailFeature(object):
         """
         features = self._get_features()
         message.pi = self._compute_pi(participants, features)
-        il = compute_inbound_importance(user, message, features, participants)
+        il = compute_importance(user, message, features, participants)
         message.privacy_features = features
         message.importance_level = il

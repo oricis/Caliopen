@@ -5,7 +5,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 
 from caliopen_main.pi.parameters import PIParameter
-from .histogram import ParticipantHistogram
+from .helpers.histogram import ParticipantHistogram
 from .types import unmarshall_features
 
 
