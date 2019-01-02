@@ -13,6 +13,7 @@ FEATURES_0 = {'technic': [{'mail_emitter_mx_reputation': {'type': 'string'}},
                           {'message_signed': {'type': 'bool'}},
                           {'message_signature_type': {'type': 'string'}},
                           {'message_encrypted': {'type': 'bool'}},
+                          {'message_encryption_method': {'type': 'string'}},
                           {'message_encryption_infos': {'type': 'string'}},
                           {'is_spam': {'type': 'bool'}},
                           {'spam_score': {'max': 100,
@@ -54,6 +55,10 @@ def check_feature(name, value):
 
     elif feature['type'] == 'bool':
         return True if value in (True, False) else False
+    elif feature['type'] == 'string':
+        return True
+    log.error('Invalid feature type %s, fail silently for the moment' %
+              feature['type'])
 
 
 def marshall_feature(name, value):
@@ -65,6 +70,8 @@ def marshall_feature(name, value):
         return int(value)
     elif feature['type'] == 'bool':
         return True if value.lower().startswith('t') else False
+    elif feature['type'] == 'string':
+        return value
 
 
 def marshall_features(features):
