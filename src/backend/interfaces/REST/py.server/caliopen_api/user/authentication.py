@@ -34,7 +34,7 @@ class AuthenticatedUser(object):
         self.device_id = None
         self.shard_id = None
         self._check_user()
-        self._load_user()
+        # self._load_user()
 
     def _check_user(self):
         if 'Authorization' not in self.request.headers:
