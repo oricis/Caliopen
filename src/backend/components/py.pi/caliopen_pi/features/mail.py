@@ -10,6 +10,7 @@ from caliopen_main.pi.parameters import PIParameter
 from .helpers.spam import SpamScorer
 from .helpers.ingress_path import get_ingress_features
 from .helpers.importance_level import compute_importance
+from caliopen_main.common.helpers import init_features
 
 log = logging.getLogger(__name__)
 
@@ -24,31 +25,11 @@ TLS_VERSION_PI = {
 class InboundMailFeature(object):
     """Process a parsed mail message and extract available privacy features."""
 
-    _features = {
-        'mail_emitter_mx_reputation': None,
-        'mail_emitter_certificate': None,
-        'transport_signed': False,
-        'message_signed': False,
-        'message_signature_type': None,
-        'message_signer': None,
-        'message_encrypted': False,
-        'message_encryption_method': None,
-        'message_encryption_infos': None,
-        'mail_agent': None,
-        'spam_score': 0,
-        'spam_method': None,
-        'is_spam': False,
-        'ingress_socket_version': None,
-        'ingress_cipher': None,
-        'ingress_server': None,
-        'nb_external_hops': 0,
-        'is_internal': False,
-    }
-
     def __init__(self, message, config):
         """Get a ``MailMessage`` instance and extract privacy features."""
         self.message = message
         self.config = config
+        self._features = init_features('message')
 
     def is_blacklist_mx(self, mx):
         """MX is blacklisted."""
