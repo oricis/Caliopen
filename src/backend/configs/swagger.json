@@ -1250,7 +1250,7 @@
                         "type": "string"
                       }
                     },
-                    "type": {
+                    "protocol": {
                       "type": "string"
                     },
                     "user_id": {
@@ -1432,7 +1432,7 @@
                     "type": "string"
                   }
                 },
-                "type": {
+                "protocol": {
                   "type": "string"
                 },
                 "user_id": {
@@ -1806,7 +1806,7 @@
                     "type": "string"
                   }
                 },
-                "type": {
+                "protocol": {
                   "type": "string"
                 },
                 "user_id": {
@@ -9959,6 +9959,10 @@
                 },
                 "subject": {
                   "type": "string"
+                },
+                "privacy_features": {
+                  "type": "object",
+                  "properties": {}
                 }
               },
               "required": [
@@ -10313,7 +10317,7 @@
                           "type": "string"
                         }
                       },
-                      "type": {
+                      "protocol": {
                         "type": "string"
                       },
                       "user_id": {
@@ -10578,7 +10582,7 @@
                         "type": "string"
                       }
                     },
-                    "type": {
+                    "protocol": {
                       "type": "string"
                     },
                     "user_id": {
@@ -10760,7 +10764,7 @@
                     "type": "string"
                   }
                 },
-                "type": {
+                "protocol": {
                   "type": "string"
                 },
                 "user_id": {
@@ -11193,7 +11197,7 @@
                     "type": "string"
                   }
                 },
-                "type": {
+                "protocol": {
                   "type": "string"
                 },
                 "user_id": {
@@ -11690,7 +11694,7 @@
                     "type": "string"
                   }
                 },
-                "type": {
+                "protocol": {
                   "type": "string"
                 },
                 "user_id": {
@@ -11879,7 +11883,7 @@
                     "type": "string"
                   }
                 },
-                "type": {
+                "protocol": {
                   "type": "string"
                 },
                 "user_id": {
