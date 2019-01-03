@@ -129,6 +129,7 @@ class Message(ObjectIndexable):
                 "participants",
                 "subject",
                 "user_identities",
+                "privacy_features",
             ]
             for key, value in params.items():
                 if key not in allowed_properties:
@@ -141,8 +142,7 @@ class Message(ObjectIndexable):
                 draft_param.message_id = uuid.uuid4()
             draft_param.validate_consistency(user, True)
         except Exception as exc:
-            log.warn("draft_param error")
-            log.warn(exc)
+            log.warn("create_draft error %r" % exc)
             raise exc
 
         message = Message(user)
