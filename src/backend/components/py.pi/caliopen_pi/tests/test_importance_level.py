@@ -13,7 +13,7 @@ else:
 
 Configuration.load(conf_file, 'global')
 
-from caliopen_pi.features.importance_level import compute_inbound
+from caliopen_pi.features.helpers.importance_level import compute_inbound
 
 
 class MockPI(object):
