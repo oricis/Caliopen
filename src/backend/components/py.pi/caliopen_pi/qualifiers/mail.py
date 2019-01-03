@@ -17,7 +17,7 @@ from caliopen_main.discussion.core import (DiscussionThreadLookup,
 from caliopen_main.message.parsers.mail import MailMessage
 from caliopen_main.discussion.core import Discussion
 
-from ..features.types import unmarshall_features
+from caliopen_main.common.helpers import marshal_features
 from ..features import InboundMailFeature
 
 log = logging.getLogger(__name__)
@@ -161,7 +161,7 @@ class UserMessageQualifier(object):
             self.create_lookups(lookup_sequence, new_message)
         # Format features
         new_message.privacy_features = \
-            unmarshall_features(new_message.privacy_features)
+            marshal_features(new_message.privacy_features)
         try:
             new_message.validate()
         except Exception as exc:

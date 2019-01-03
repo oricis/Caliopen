@@ -61,8 +61,8 @@ def check_feature(name, value):
               feature['type'])
 
 
-def marshall_feature(name, value):
-    """Marshall a feature to it's type representation."""
+def unmarshal_feature(name, value):
+    """Unmarshal a feature to it's type representation."""
     if not check_feature(name, value):
         raise ValueError('Invalid value {} for feature {}'.format(value, name))
     feature = FEATURES_0[name]
@@ -74,12 +74,12 @@ def marshall_feature(name, value):
         return value
 
 
-def marshall_features(features):
-    """Marshall a dict of features for suitable output."""
+def unmarshal_features(features):
+    """Unmarshal a dict of features for suitable output."""
     res = {}
     for name, value in features.items():
         try:
-            new_value = marshall_feature(name, value)
+            new_value = unmarshal_feature(name, value)
             res[name] = new_value
         except ValueError:
             log.warn('Feature {} with {} do not marshall'.format(name, value))
@@ -87,7 +87,7 @@ def marshall_features(features):
     return res
 
 
-def unmarshall_features(features):
+def marshal_features(features):
     """Unmarshall a dict of features suitable for storage."""
     res = {}
     for k, v in features.items():

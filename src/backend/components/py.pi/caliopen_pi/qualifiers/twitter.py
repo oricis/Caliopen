@@ -13,7 +13,7 @@ from caliopen_main.discussion.core import (DiscussionThreadLookup,
                                            DiscussionGlobalLookup)
 from caliopen_storage.exception import NotFound
 
-from ..features.types import unmarshall_features
+from caliopen_main.common.helpers import marshal_features
 
 log = logging.getLogger(__name__)
 
@@ -132,7 +132,7 @@ class UserDMQualifier(object):
             self.create_lookups(lookup_sequence, new_message)
         # Format features
         new_message.privacy_features = \
-            unmarshall_features(new_message.privacy_features)
+            marshal_features(new_message.privacy_features)
         try:
             new_message.validate()
         except Exception as exc:

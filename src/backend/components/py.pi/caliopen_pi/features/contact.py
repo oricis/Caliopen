@@ -6,8 +6,7 @@ import logging
 
 from caliopen_main.pi.parameters import PIParameter
 from .helpers.histogram import ParticipantHistogram
-from .types import unmarshall_features
-
+from caliopen_main.common.helpers import marshal_features
 
 log = logging.getLogger(__name__)
 
@@ -107,4 +106,4 @@ class ContactFeature(object):
         log.info('Contact {0} have features {1}'.
                  format(contact.contact_id, features))
         pi = self._compute_pi(contact, features)
-        return pi, unmarshall_features(features)
+        return pi, marshal_features(features)
