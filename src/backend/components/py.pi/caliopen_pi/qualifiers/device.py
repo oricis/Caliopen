@@ -5,8 +5,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 from caliopen_storage.config import Configuration
 
-from caliopen_main.common.helpers import marshal_features
-from ..features import DeviceFeature
+from ..features import DeviceFeature, marshal_features
 
 
 log = logging.getLogger(__name__)

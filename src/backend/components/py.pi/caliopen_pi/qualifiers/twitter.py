@@ -13,7 +13,7 @@ from caliopen_main.discussion.core import (DiscussionThreadLookup,
                                            DiscussionGlobalLookup)
 from caliopen_storage.exception import NotFound
 
-from caliopen_main.common.helpers import marshal_features
+from ..features import marshal_features
 
 log = logging.getLogger(__name__)
 

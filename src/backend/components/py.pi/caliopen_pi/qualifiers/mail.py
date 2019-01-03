@@ -17,8 +17,7 @@ from caliopen_main.discussion.core import (DiscussionThreadLookup,
 from caliopen_main.message.parsers.mail import MailMessage
 from caliopen_main.discussion.core import Discussion
 
-from caliopen_main.common.helpers import marshal_features
-from ..features import InboundMailFeature
+from ..features import InboundMailFeature, marshal_features
 
 log = logging.getLogger(__name__)
 

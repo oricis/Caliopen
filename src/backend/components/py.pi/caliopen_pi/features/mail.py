@@ -10,7 +10,7 @@ from caliopen_main.pi.parameters import PIParameter
 from .helpers.spam import SpamScorer
 from .helpers.ingress_path import get_ingress_features
 from .helpers.importance_level import compute_importance
-from caliopen_main.common.helpers import init_features
+from .types import init_features
 
 log = logging.getLogger(__name__)
 

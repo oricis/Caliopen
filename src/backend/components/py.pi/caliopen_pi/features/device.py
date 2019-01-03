@@ -8,7 +8,7 @@ import logging
 from user_agents import parse as parse_ua
 import geoip2.database as geoip
 
-from caliopen_main.common.helpers import init_features
+from .types import init_features
 
 log = logging.getLogger(__name__)
 

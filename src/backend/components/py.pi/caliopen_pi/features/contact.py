@@ -6,7 +6,7 @@ import logging
 
 from caliopen_main.pi.parameters import PIParameter
 from .helpers.histogram import ParticipantHistogram
-from caliopen_main.common.helpers import init_features, marshal_features
+from .types import init_features, marshal_features
 
 log = logging.getLogger(__name__)
 
