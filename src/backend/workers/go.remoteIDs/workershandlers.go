@@ -21,9 +21,9 @@ func (p *Poller) addWorkerFor(idkey string) error {
 	switch entry.remoteProtocol {
 	case "twitter":
 		natsMsg := BrokerOrder{
-			Order:    "add_worker",
-			UserId:   entry.userID.String(),
-			RemoteId: entry.remoteID.String(),
+			Order:      "add_worker",
+			UserId:     entry.userID.String(),
+			IdentityId: entry.remoteID.String(),
 		}
 		j, e := json.Marshal(natsMsg)
 		if e != nil {
@@ -46,9 +46,9 @@ func (p *Poller) removeWorkerFor(idkey string) error {
 	switch entry.remoteProtocol {
 	case "twitter":
 		natsMsg := BrokerOrder{
-			Order:    "remove_worker",
-			UserId:   entry.userID.String(),
-			RemoteId: entry.remoteID.String(),
+			Order:      "remove_worker",
+			UserId:     entry.userID.String(),
+			IdentityId: entry.remoteID.String(),
 		}
 		j, e := json.Marshal(natsMsg)
 		if e != nil {
@@ -71,9 +71,9 @@ func (p *Poller) updateWorkerFor(idkey string) error {
 	switch entry.remoteProtocol {
 	case "twitter":
 		natsMsg := BrokerOrder{
-			Order:    "reload_worker",
-			UserId:   entry.userID.String(),
-			RemoteId: entry.remoteID.String(),
+			Order:      "reload_worker",
+			UserId:     entry.userID.String(),
+			IdentityId: entry.remoteID.String(),
 		}
 		j, e := json.Marshal(natsMsg)
 		if e != nil {
