@@ -46,6 +46,11 @@ class NewMessage(Model):
     protocol = StringType(choices=MESSAGE_PROTOCOLS, required=False)
     user_identities = ListType(UUIDType(), default=lambda: [])
 
+    @property
+    def external_msg_id(self):
+        return self.external_references.message_id if self.external_references \
+            else None
+
     class Options:
         serialize_when_none = False
 

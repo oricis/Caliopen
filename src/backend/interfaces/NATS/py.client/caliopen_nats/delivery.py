@@ -10,7 +10,7 @@ from caliopen_storage.exception import NotFound
 from caliopen_main.message.core import RawMessage
 from caliopen_main.message.objects.message import Message
 from caliopen_main.message.store.message import \
-    MessageExternalRefLookup
+    MessageExternalRefLookup, ModelMessageExternalRefLookup
 from caliopen_pi.qualifiers import UserMessageQualifier, UserDMQualifier
 
 log = logging.getLogger(__name__)
@@ -35,7 +35,31 @@ class UserMessageDelivery(object):
         qualifier = UserMessageQualifier(self.user, self.identity)
         message = qualifier.process_inbound(raw)
 
-        # store and index message
+        # before storing a new message,
+        # check if this external message has been already imported
+        external_refs = ModelMessageExternalRefLookup.filter(
+            user_id=self.user.user_id,
+            external_msg_id=message.external_msg_id)
+        if external_refs:
+            # message already imported, update it with identity_id if needed
+            for external_ref in external_refs:
+                obj = Message(user=self.user,
+                              message_id=external_ref.message_id)
+                if str(external_ref.identity_id) != self.identity.identity_id:
+                    obj.get_db()
+                    obj.unmarshall_db()
+                    obj.user_identities.append(self.identity.identity_id)
+                    obj.marshall_db()
+                    obj.save_db()
+                    obj.marshall_index()
+                    obj.save_index()
+                    MessageExternalRefLookup.create(self.user,
+                                external_msg_id=external_ref.external_msg_id,
+                                identity_id=self.identity.identity_id,
+                                message_id=external_ref.message_id)
+            raise Exception("message already imported for this user")
+
+        # store and index new message
         obj = Message(user=self.user)
         obj.unmarshall_dict(message.to_native())
         obj.user_id = uuid.UUID(self.user.user_id)
@@ -77,6 +101,30 @@ class UserTwitterDMDelivery(object):
 
         qualifier = UserDMQualifier(self.user, self.identity)
         message = qualifier.process_inbound(raw)
+
+        # before storing a new message,
+        # check if this external message has been already imported
+        external_refs = ModelMessageExternalRefLookup.filter(
+            user_id=self.user.user_id,
+            external_msg_id=message.external_msg_id)
+        if external_refs:
+            # message already imported, update it with identity_id if needed
+            for external_ref in external_refs:
+                obj = Message(user=self.user,
+                              message_id=external_ref.message_id)
+                if str(external_ref.identity_id) != self.identity.identity_id:
+                    obj.get_db()
+                    obj.unmarshall_db()
+                    obj.user_identities.append(self.identity.identity_id)
+                    obj.marshall_db()
+                    obj.save_db()
+                    obj.marshall_index()
+                    obj.save_index()
+                    MessageExternalRefLookup.create(self.user,
+                                                    external_msg_id=external_ref.external_msg_id,
+                                                    identity_id=self.identity.identity_id,
+                                                    message_id=external_ref.message_id)
+            raise Exception("message already imported for this user")
 
         # store and index message
         obj = Message(self.user)

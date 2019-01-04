@@ -121,9 +121,9 @@ class Message(ObjectIndexable):
     def user_identity(self):
         """
         return first user_identity
-        because we handle only one identity for now
         """
-        return self.user_identities[0]
+        return self.user_identities[0] if len(self.user_identities) > 0 \
+            else None
 
     @classmethod
     def create_draft(cls, user, **params):

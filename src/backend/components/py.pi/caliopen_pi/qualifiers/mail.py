@@ -13,6 +13,7 @@ from caliopen_main.contact.core import Contact
 from caliopen_main.discussion.core import (DiscussionThreadLookup,
                                            DiscussionListLookup,
                                            DiscussionGlobalLookup)
+
 # XXX use a message formatter registry not directly mail format
 from caliopen_main.message.parsers.mail import MailMessage
 from caliopen_main.discussion.core import Discussion
