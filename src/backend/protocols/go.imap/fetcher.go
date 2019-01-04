@@ -96,7 +96,7 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPorder) error {
 		name:        "INBOX",
 		uidValidity: uint32(uidvalidity),
 	}
-	go f.syncMails(userIdentity, box, mails)
+	go f.syncMails(userIdentity, &box, mails)
 
 	// 3. forward mails to lda as they come on mails chan
 	errs := []error{}
@@ -106,7 +106,7 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPorder) error {
 			// do not forward seen message, we already have it
 			continue
 		}
-		err := f.Lda.deliverMail(mail, order.UserId)
+		err := f.Lda.deliverMail(mail, order.UserId, userIdentity.Id.String())
 		errs = append(errs, err)
 		if err == nil {
 			box.lastSeenUid = mail.ImapUid
@@ -176,7 +176,7 @@ func (f *Fetcher) FetchRemoteToLocal(order IMAPorder) error {
 	// 3. forward mails to lda
 	errs := make([]error, len(mails))
 	for mail := range mails {
-		err := f.Lda.deliverMail(mail, order.UserId)
+		err := f.Lda.deliverMail(mail, order.UserId, order.RemoteId)
 		errs = append(errs, err)
 	}
 
@@ -223,7 +223,7 @@ func (f *Fetcher) fetchMails(userIdentity *UserIdentity, box imapBox, ch chan *E
 
 // fetchSyncMails reads last sync state for remote identity,
 // fetches new messages accordingly, and returns well-formed Emails for lda.
-func (f *Fetcher) syncMails(userIdentity *UserIdentity, box imapBox, ch chan *Email) (err error) {
+func (f *Fetcher) syncMails(userIdentity *UserIdentity, box *imapBox, ch chan *Email) (err error) {
 	// Don't forget to close chan before leaving
 	defer close(ch)
 	if userIdentity.Infos["authtype"] == Oauth2 {
@@ -253,7 +253,7 @@ func (f *Fetcher) syncMails(userIdentity *UserIdentity, box imapBox, ch chan *Em
 
 	// read new messages coming from imap chan and write to lda chan with added custom headers
 	for msg := range newMessages {
-		xHeaders := buildXheaders(tlsConn, userIdentity, box, msg, provider)
+		xHeaders := buildXheaders(tlsConn, userIdentity, *box, msg, provider)
 		mail, err := MarshalImap(msg, xHeaders)
 		if err != nil {
 			//todo
