@@ -239,16 +239,14 @@ func (worker *AccountWorker) PollDM() {
 	log.Infof("[AccountWorker %s] PollDM %d events retrieved", worker.userAccount.remoteID.String(), len(DMs.Events))
 	for _, event := range DMs.Events {
 		if worker.dmNotSeen(event) {
-			if worker.isDMUnique(event.ID) {
-				//lookup sender & recipient's screen_names because there are not embedded in event object
-				(*event.Message).SenderScreenName = worker.getAccountName(event.Message.SenderID)
-				(*event.Message).Target.RecipientScreenName = worker.getAccountName(event.Message.Target.RecipientID)
-				err = worker.broker.ProcessInDM(worker.userAccount.userID, worker.userAccount.remoteID, &event, true)
-				if err != nil {
-					// something went wrong, forget this DM
-					log.WithError(err).Warnf("[AccountWorker %s] ProcessInDM failed for event : %+v", worker.userAccount.remoteID.String(), event)
-					continue
-				}
+			//lookup sender & recipient's screen_names because there are not embedded in event object
+			(*event.Message).SenderScreenName = worker.getAccountName(event.Message.SenderID)
+			(*event.Message).Target.RecipientScreenName = worker.getAccountName(event.Message.Target.RecipientID)
+			err = worker.broker.ProcessInDM(worker.userAccount.userID, worker.userAccount.remoteID, &event, true)
+			if err != nil {
+				// something went wrong, forget this DM
+				log.WithError(err).Warnf("[AccountWorker %s] ProcessInDM failed for event : %+v", worker.userAccount.remoteID.String(), event)
+				continue
 			}
 			worker.lastDMseen = event.ID
 			// update sync status in db
@@ -356,7 +354,7 @@ func (worker *AccountWorker) getAccountName(accountID string) (accountName strin
 // isDMUnique returns true if Twitter Direct Message id is not found within user's messages index
 // if seeking fails for any reason, true is returned anyway to allow duplication
 func (worker *AccountWorker) isDMUnique(dmID string) bool {
-	messageID, err := worker.broker.Store.SeekMessageByExternalRef(worker.userAccount.userID.String(), dmID, worker.userAccount.remoteID.String())
+	messageID, err := worker.broker.Store.SeekMessageByExternalRef(worker.userAccount.userID.String(), dmID, "")
 	if err != nil || bytes.Equal(messageID.Bytes(), EmptyUUID.Bytes()) {
 		return true
 	}
