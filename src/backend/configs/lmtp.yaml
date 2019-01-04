@@ -17,7 +17,7 @@ AppConfig:
     max_clients: 1000
   #submit is the MTA to connect to for final delivery (postfix for example)
   submit_address: smtp
-  submit_port: 10025
+  submit_port: 2500
   submit_user:
   submit_password:
   submit_workers: 2                                      # number of concurrent connexions to submit MTA
@@ -59,7 +59,7 @@ LDAConfig:
   log_received_mails: true
 
   # outbound
-  out_topic: outboundSMTP                                # NATS topic to listen to
+  out_topic: outboundIMAP                                # NATS topic to listen to
   nats_listeners: 2                                      # number of concurrent nats listeners
 
   # notifications
