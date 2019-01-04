@@ -23,6 +23,7 @@ type LDAStore interface {
 	SetDeliveredStatus(raw_msg_id string, delivered bool) error
 	UpdateMessage(msg *Message, fields map[string]interface{}) error // 'fields' are the struct fields names that have been modified
 	CreateThreadLookup(user_id, discussion_id UUID, external_msg_id string) error
+	SeekMessageByExternalRef(userID, externalMessageID, identityID string) (UUID, error)
 
 	LookupContactsByIdentifier(user_id, address string) (contact_ids []string, err error)
 
@@ -42,4 +43,5 @@ type LDAIndex interface {
 	Close()
 	CreateMessage(user *UserInfo, msg *Message) error
 	UpdateMessage(user *UserInfo, msg *Message, fields map[string]interface{}) error
+	SeekMessageByExternalRef(userID, messageID string) (bool, error)
 }
