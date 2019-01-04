@@ -108,12 +108,26 @@ func (b *EmailBroker) MarshalEmail(msg *Message) (em *EmailMessage, err error) {
 
 	//TODO: In-Reply-To header
 	m.SetHeader("Subject", msg.Subject)
-	messages.SanitizeMessageBodies(msg)
-	if msg.Body_html != "" {
-		m.AddAlternative("text/html", msg.Body_html)
-	}
-	if msg.Body_plain != "" {
-		m.AddAlternative("text/plain", msg.Body_plain)
+
+	// Handle if message is encrypted or not
+	features := *msg.Privacy_features
+	crypt_method, ok := features["message_encryption_method"]
+	log.Info("features ", msg.Privacy_features)
+	if !ok {
+		messages.SanitizeMessageBodies(msg)
+		if msg.Body_html != "" {
+			m.AddAlternative("text/html", msg.Body_html)
+		}
+		if msg.Body_plain != "" {
+			m.AddAlternative("text/plain", msg.Body_plain)
+		}
+	} else {
+		if crypt_method == "pgp" {
+			log.Info("Sending PGP message")
+			m.SetBody("application/pgp-encrypted", msg.Body_plain)
+		} else {
+			log.Warn("Unknown encryption method ", crypt_method)
+		}
 	}
 
 	for _, attachment := range msg.Attachments {
