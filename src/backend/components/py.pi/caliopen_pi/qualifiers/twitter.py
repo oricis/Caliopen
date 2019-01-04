@@ -29,8 +29,9 @@ class UserDMQualifier(object):
         'list': DiscussionListLookup,
     }
 
-    def __init__(self, user):
+    def __init__(self, user, identity):
         self.user = user
+        self.identity = identity
 
     def _get_tags(self, message):
         """Evaluate user rules to get all tags for a mail."""

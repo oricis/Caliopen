@@ -5,7 +5,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 import json
 
-from caliopen_main.user.core import User
+from caliopen_main.user.core import User, UserIdentity
 from caliopen_main.contact.objects import Contact
 
 from caliopen_nats.delivery import UserMessageDelivery, UserTwitterDMDelivery
@@ -36,9 +36,10 @@ class InboundEmail(BaseHandler):
         nats_success = {
             'message': 'OK : inbound email message proceeded'
         }
-        user = User.get(payload['user_id'])
-        deliver = UserMessageDelivery(user)
         try:
+            user = User.get(payload['user_id'])
+            identity = UserIdentity.get(user, payload['identity_id'])
+            deliver = UserMessageDelivery(user, identity)
             new_message = deliver.process_raw(payload['message_id'])
             nats_success['message_id'] = str(new_message.message_id)
             self.natsConn.publish(msg.reply, json.dumps(nats_success))
@@ -74,9 +75,10 @@ class InboundTwitter(BaseHandler):
         nats_success = {
             'message': 'OK : inbound twitter message proceeded'
         }
-        user = User.get(payload['user_id'])
-        deliver = UserTwitterDMDelivery(user)
         try:
+            user = User.get(payload['user_id'])
+            identity = UserIdentity.get(user, payload['identity_id'])
+            deliver = UserTwitterDMDelivery(user, identity)
             new_message = deliver.process_raw(payload['message_id'])
             nats_success['message_id'] = str(new_message.message_id)
             self.natsConn.publish(msg.reply, json.dumps(nats_success))
