@@ -52,6 +52,17 @@ func (b *EmailBroker) MarshalEmail(msg *Message) (em *EmailMessage, err error) {
 		},
 		Message: msg,
 	}
+	// sha256 internal message id to form external message id
+	hasher := sha256.New()
+	hasher.Write(em.Message.Message_id.Bytes())
+	sha := base64.URLEncoding.EncodeToString(hasher.Sum(nil))
+	messageId := sha + "@" + b.Config.PrimaryMailHost // should be the default domain in case there are multiple 'from' addresses
+
+	em.Message.Date = time.Now()
+
+	// Assign computed values
+	em.Message.Date_sort = em.Message.Date
+	em.Message.External_references.Message_id = messageId
 
 	m := gomail.NewMessage()
 	addr_fields := newAddressesFields()
@@ -82,18 +93,9 @@ func (b *EmailBroker) MarshalEmail(msg *Message) (em *EmailMessage, err error) {
 		}
 	}
 
-	em.Message.Date = time.Now()
-	em.Message.Date_sort = em.Message.Date
 	m.SetHeader("Date", em.Message.Date.Format(time.RFC1123Z))
-
-	// sha256 internal message id to form external message id
-	hasher := sha256.New()
-	hasher.Write(em.Message.Message_id.Bytes())
-	sha := base64.URLEncoding.EncodeToString(hasher.Sum(nil))
-	messageId := sha + "@" + b.Config.PrimaryMailHost // should be the default domain in case there are multiple 'from' addresses
 	m.SetHeader("Message-ID", "<"+messageId+">")
-
-	em.Message.External_references.Message_id = messageId
+	m.SetHeader("X-Mailer", "Caliopen-"+b.Config.AppVersion)
 
 	if msg.External_references.Parent_id != "" {
 		m.SetHeader("In-Reply-To", "<"+msg.External_references.Parent_id+">")
@@ -104,15 +106,12 @@ func (b *EmailBroker) MarshalEmail(msg *Message) (em *EmailMessage, err error) {
 		m.SetHeader("References", strings.Join(ref, " "))
 	}
 
-	m.SetHeader("X-Mailer", "Caliopen-"+b.Config.AppVersion)
-
 	//TODO: In-Reply-To header
 	m.SetHeader("Subject", msg.Subject)
 
 	// Handle if message is encrypted or not
 	features := *msg.Privacy_features
 	crypt_method, ok := features["message_encryption_method"]
-	log.Info("features ", msg.Privacy_features)
 	if !ok {
 		messages.SanitizeMessageBodies(msg)
 		if msg.Body_html != "" {
