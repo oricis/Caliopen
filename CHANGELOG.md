@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- When an user authenticate we issue a device.login event
+
+### Fixed
+
+- Existing device are found better, lead to less untrusted device for user
+
+### Changed
+
+- Rework how privacy features are declared and managed
+
 ## [0.14.0] 2018-12-19
 
 ### Added
