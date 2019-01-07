@@ -5,8 +5,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 from caliopen_storage.config import Configuration
 
-from ..features.types import unmarshall_features
-from ..features import DeviceFeature
+from ..features import DeviceFeature, marshal_features
 
 
 log = logging.getLogger(__name__)
@@ -24,6 +23,6 @@ class NewDeviceQualifier(object):
         """Process a device to qualify it."""
         extractor = DeviceFeature(self.user, self.conf)
         pi, features = extractor.process(device)
-        device.privacy_features = unmarshall_features(features)
+        device.privacy_features = marshal_features(features)
         device.pi = pi
         return True

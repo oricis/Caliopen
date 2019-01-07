@@ -5,6 +5,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 
 from pyramid.response import Response
+from pyramid.httpexceptions import HTTPNoContent
 from caliopen_main.user.objects.settings import Settings as ObjectSettings
 from cornice.resource import resource, view
 
@@ -33,7 +34,9 @@ class SettingsAPI(Api):
         """Return user settings."""
         objects = ObjectSettings.list_db(self.user)
         settings = [x.marshall_dict() for x in objects]
-        return settings[0]
+        if settings:
+            return settings[0]
+        raise HTTPNoContent()
 
     @view(renderer='json', permission='authenticated')
     def patch(self):

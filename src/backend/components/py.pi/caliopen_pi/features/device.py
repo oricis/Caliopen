@@ -8,6 +8,7 @@ import logging
 from user_agents import parse as parse_ua
 import geoip2.database as geoip
 
+from .types import init_features
 
 log = logging.getLogger(__name__)
 
@@ -35,17 +36,11 @@ class GeoipReader(Singleton):
 class DeviceFeature(object):
     """Compute feature for a device."""
 
-    _features = {'browser_family': None,
-                 'browser_version': None,
-                 'os_family': None,
-                 'device_family': None,
-                 'device_type': None,
-                 'detected_country': None}
-
     def __init__(self, user, conf=None):
         """Instanciate a new qualifier for an user."""
         self.user = user
         self.conf = conf
+        self._features = init_features('device')
 
     def process(self, device):
         """Process a device to compute it's privacy features and PI."""

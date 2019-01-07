@@ -15,6 +15,7 @@ from ..base import Api
 from ..base.exception import (ResourceNotFound,
                               MergePatchError)
 from pyramid.httpexceptions import HTTPServerError, HTTPMovedPermanently
+from caliopen_pi.features import marshal_features
 
 log = logging.getLogger(__name__)
 
@@ -34,6 +35,9 @@ class Message(Api):
     @view(renderer='json', permission='authenticated')
     def collection_post(self):
         data = self.request.json
+        if 'privacy_features' in data:
+            features = marshal_features(data['privacy_features'])
+            data['privacy_features'] = features
         # ^ json payload should have been validated by swagger module
         try:
             message = ObjectMessage.create_draft(user=self.user, **data)
@@ -72,6 +76,13 @@ class Message(Api):
         """
         message_id = self.request.swagger_data["message_id"]
         patch = self.request.json
+        if 'privacy_features' in patch:
+            features = marshal_features(patch['privacy_features'])
+            patch['privacy_features'] = features
+        if 'privacy_features' in patch.get('current_state', {}):
+            current = patch['current_state']['privacy_features']
+            features = marshal_features(current)
+            patch['current_state']['privacy_features'] = features
 
         message = ObjectMessage(user=self.user, message_id=message_id)
         try:
