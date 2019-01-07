@@ -1,11 +1,15 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from '@lingui/react';
-import { withSettings } from '../../modules/settings';
-import { ManageEntityTags, getTagLabel, getCleanedTagCollection } from '../../modules/tags';
+import { Trans, withI18n } from '@lingui/react';
+import { Switch, Route } from 'react-router-dom';
 import { ContactAvatarLetter } from '../../modules/avatar';
-import { withPush } from '../../modules/routing';
 import { getAveragePI } from '../../modules/pi';
+import { withPush } from '../../modules/routing';
+import { ScrollDetector } from '../../modules/scroll';
+import { withSettings } from '../../modules/settings';
+import { withCloseTab, withCurrentTab } from '../../modules/tab';
+import { ManageEntityTags, getTagLabel, getCleanedTagCollection, withTags } from '../../modules/tags';
+import { withNotification } from '../../modules/userNotify';
 import fetchLocation from '../../services/api-location';
 import { formatName } from '../../services/contact';
 import ContactProfileForm from './components/ContactProfileForm';
@@ -33,6 +37,11 @@ import './style.scss';
 import './contact-action-bar.scss';
 import './contact-main-title.scss';
 
+@withI18n()
+@withNotification()
+@withTags()
+@withCloseTab()
+@withCurrentTab()
 @withPush()
 @withSettings()
 class Contact extends Component {

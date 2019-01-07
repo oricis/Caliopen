@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
-import { Trans } from '@lingui/react';
+import { Trans, withI18n } from '@lingui/react';
 import classnames from 'classnames';
 import { withScrollTarget } from '../../../../modules/scroll';
 import { withPush } from '../../../../modules/routing/hoc/withPush';
@@ -15,6 +15,7 @@ import { getAveragePI, getPiClass } from '../../../../modules/pi/services/pi';
 
 import './style.scss';
 
+@withI18n()
 @withScrollTarget()
 @withPush()
 class MailMessage extends Component {

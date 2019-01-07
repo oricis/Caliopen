@@ -65,9 +65,4 @@ export default compose(
     enableReinitialize: true,
   }),
   formValues({ birthday: 'info.birthday' }),
-  withI18n(),
-  withNotification(),
-  withTags(),
-  withCloseTab(),
-  withCurrentTab(),
 )(Presenter);

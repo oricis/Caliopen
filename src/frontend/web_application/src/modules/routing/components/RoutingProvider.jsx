@@ -60,9 +60,13 @@ class RoutingProvider extends Component {
   }
 
   // TODO: refactor
-  //  route initialization can be done by scene via root App component
-  // it is not easy, a route injection method here cannot be used because it will re-render and so
-  // the component it self which injects the routes
+  //    route initialization can be done by scene via root App component.
+  //    it is not easy, a route injection method here cannot be used because it will re-render and
+  //    so the component it self which injects the routes
+  // TODO: refactor
+  //    may be change the tab config to a render func because it a bit spaghetti to have tab
+  //    component far away in layout. historycally a tab can be rendered diffently in sidebar on
+  //    mobile or in the navbar on large screens
   initializeRoutes = () => {
     const { i18n } = this.props;
     this.setState({
