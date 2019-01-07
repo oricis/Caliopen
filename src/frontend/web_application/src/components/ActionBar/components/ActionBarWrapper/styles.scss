@@ -1,0 +1,13 @@
+@import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+// XXX: may be move to a layout component (do not forget that it can be recursive)
+.m-action-bar-wrapper {
+  background-color: $co-color__fg__back;
+  &--sticky {
+    position: fixed;
+    top: 41px;
+    right: 0;
+    left: 0;
+  }
+}

@@ -2,8 +2,6 @@
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
 .s-contact-action-bar {
-  &__action-btn {
-    margin-left: map_get($co-margin_, 'xsmall');
-    color: #0e97c3;
-  }
+  padding-right: map_get($co-margin_, 'xsmall');
+  text-align: right;
 }

@@ -8,21 +8,21 @@ class ActionBar extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
-    isFetching: PropTypes.bool,
+    isLoading: PropTypes.bool,
     actionsNode: PropTypes.node,
     hr: PropTypes.bool,
   };
   static defaultProps = {
     children: null,
     className: undefined,
-    isFetching: false,
+    isLoading: false,
     hr: true,
     actionsNode: null,
   };
 
   render() {
     const {
-      className, isFetching, actionsNode, hr, children,
+      className, isLoading, actionsNode, hr, children,
     } = this.props;
 
     return (
@@ -31,11 +31,9 @@ class ActionBar extends PureComponent {
           'm-action-bar--hr': hr,
         })}
       >
-        {isFetching && (
-          <div className="m-action-bar__loading">
-            <Spinner isLoading={isFetching} display="inline" />
-          </div>
-        )}
+        <div className={classnames('m-action-bar__loading', { 'm-action-bar__loading--is-loading': isLoading })}>
+          <Spinner isLoading display="inline" />
+        </div>
         {actionsNode && (
           <div className="m-action-bar__actions">
             {actionsNode}
@@ -48,3 +46,5 @@ class ActionBar extends PureComponent {
 }
 
 export default ActionBar;
+export { default as ActionBarButton } from './components/ActionBarButton';
+export { default as ActionBarWrapper } from './components/ActionBarWrapper';

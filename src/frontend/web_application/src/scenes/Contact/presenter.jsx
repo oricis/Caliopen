@@ -9,7 +9,7 @@ import { getAveragePI } from '../../modules/pi';
 import fetchLocation from '../../services/api-location';
 import { formatName } from '../../services/contact';
 import ContactProfileForm from './components/ContactProfileForm';
-import { ActionBar, Badge, Button, Confirm, Icon, Modal, PageTitle, PlaceholderBlock, Spinner, TextBlock, TextList, TextItem, Title } from '../../components';
+import { ActionBarWrapper, ActionBar, ActionBarButton, Badge, Button, Confirm, Icon, Modal, PageTitle, PlaceholderBlock, Spinner, TextBlock, TextList, TextItem, Title } from '../../components';
 import FormCollection from './components/FormCollection';
 import EmailForm from './components/EmailForm';
 import PhoneForm from './components/PhoneForm';
@@ -210,54 +210,64 @@ class Contact extends Component {
     const hasActivity = submitting || this.state.isFetching || this.state.isSaving;
 
     return (
-      <ActionBar
-        className="s-contact-action-bar"
-        isFetching={hasActivity}
-        actionsNode={(
-          <Fragment>
-            <Trans id="contact.action-bar.label">Contact:</Trans>
-            {!contactIsUser && contactId && (
-              <Confirm
-                onConfirm={this.handleDelete}
-                title={(<Trans id="contact.confirm-delete.title">Delete the contact</Trans>)}
-                content={(<Trans id="contact.confirm-delete.content">The deletion is permanent, are you sure you want to delete this contact ?</Trans>)}
-                render={confirm => (
-                  <Button
-                    className="s-contact-action-bar__action-btn"
-                    onClick={confirm}
+      <ScrollDetector
+        offset={136}
+        render={isSticky => (
+          <ActionBarWrapper isSticky={isSticky}>
+            <ActionBar
+              hr={false}
+              isLoading={hasActivity}
+              actionsNode={(
+                <div className="s-contact-action-bar">
+                  <Trans id="contact.action-bar.label">Contact:</Trans>
+                  {!contactIsUser && contactId && (
+                    <Confirm
+                      onConfirm={this.handleDelete}
+                      title={(<Trans id="contact.confirm-delete.title">Delete the contact</Trans>)}
+                      content={(<Trans id="contact.confirm-delete.content">The deletion is permanent, are you sure you want to delete this contact ?</Trans>)}
+                      render={confirm => (
+                        <ActionBarButton
+                          onClick={confirm}
+                          display="inline"
+                          icon={this.state.isDeleting ? (<Spinner isLoading display="inline" />) : 'trash'}
+                          noDecoration
+                        >
+                          <Trans id="contact.action.delete_contact">Delete</Trans>
+                        </ActionBarButton>
+                      )}
+                    />
+                  )}
+                  {!this.state.editMode && (
+                    <ActionBarButton
+                      onClick={this.handleClickEditContact}
+                      display="inline"
+                      noDecoration
+                      icon="list-ul"
+                    >
+                      <Trans id="contact.action.edit_contact">Edit contact</Trans>
+                    </ActionBarButton>
+                  )}
+                  <ActionBarButton
+                    onClick={this.handleOpenTags}
                     display="inline"
-                    icon={this.state.isDeleting ? (<Spinner isLoading display="inline" />) : 'trash'}
                     noDecoration
+                    icon="tag"
                   >
-                    <Trans id="contact.action.delete_contact">Delete</Trans>
-                  </Button>
-                )}
-              />
-            )}
-            {!this.state.editMode && (
-              <Button
-                className="s-contact-action-bar__action-btn"
-                onClick={this.toggleEditMode}
-                display="inline"
-                noDecoration
-                icon="list-ul"
-              >
-                <Trans id="contact.action.edit_contact">Edit contact</Trans>
-              </Button>
-            )}
-            <Button
-              className="s-contact-action-bar__action-btn"
-              onClick={this.handleOpenTags}
-              display="inline"
-              noDecoration
-              icon="tag"
-            >
-              <Trans id="contact.action.edit_tags">Edit tags</Trans>
-            </Button>
-            {this.renderTagsModal()}
-            {/* <Button onClick={this.handleDelete}><Trans>Add to favorites</Trans></Button>
-            <Button onClick={this.handleDelete}><Trans>New discussion</Trans></Button> */}
-          </Fragment>
+                    <Trans id="contact.action.edit_tags">Edit tags</Trans>
+                  </ActionBarButton>
+                  {this.renderTagsModal()}
+                  {/*
+                    <ActionBarButton onClick={this.handleDelete}>
+                      <Trans>Add to favorites</Trans>
+                    </ActionBarButton>
+                    <ActionBarButton onClick={this.handleDelete}>
+                      <Trans>New discussion</Trans>
+                    </ActionBarButton>
+                  */}
+                </div>
+              )}
+            />
+          </ActionBarWrapper>
         )}
       />
     );
