@@ -198,26 +198,33 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *EmailDeliveryAck) error {
 	for _, attachment := range ack.EmailMessage.Message.Attachments {
 		b.Store.DeleteAttachment(attachment.URL)
 	}
-
 	// get new references for embedded attachments
 	ack.EmailMessage.Message.Attachments = []Attachment{}
 	for part := range ack.EmailMessage.Email_json.MimeRoot.Parts.Walk() {
 		if part.Is_attachment {
-			disposition, dparams, err := mime.ParseMediaType(part.Headers["Content-Disposition"][0])
-			if err == nil {
-				is_inline := false
-				if disposition == "inline" {
-					is_inline = true
+			is_inline := false
+			filename := ""
+			size := 0
+			header, ok := part.Headers["Content-Disposition"]
+			if ok {
+				disposition, dparams, err := mime.ParseMediaType(header[0])
+				if err == nil {
+					filename = dparams["filename"]
+					size, _ = strconv.Atoi(dparams["size"])
+					if disposition == "inline" {
+						is_inline = true
+					}
 				}
-				size, _ := strconv.Atoi(dparams["size"])
-				ack.EmailMessage.Message.Attachments = append(ack.EmailMessage.Message.Attachments, Attachment{
-					ContentType:  part.ContentType,
-					FileName:     dparams["filename"],
-					IsInline:     is_inline,
-					Size:         size,
-					MimeBoundary: part.Boundary,
-				})
 			}
+
+			ack.EmailMessage.Message.Attachments = append(ack.EmailMessage.Message.Attachments, Attachment{
+				ContentType:  part.ContentType,
+				FileName:     filename,
+				IsInline:     is_inline,
+				Size:         size,
+				MimeBoundary: part.Boundary,
+			})
+
 		}
 	}
 	// Retrieve user informations
