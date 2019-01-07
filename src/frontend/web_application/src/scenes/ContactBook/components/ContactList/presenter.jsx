@@ -11,6 +11,8 @@ import { getFirstLetter, formatName, getContactTitle } from '../../../../service
 import './style.scss';
 
 const ALPHA = '#abcdefghijklmnopqrstuvwxyz';
+const MODE_ASSOCIATION = 'association';
+const MODE_CONTACT_BOOK = 'contact-book';
 
 @withTags()
 class ContactList extends PureComponent {
@@ -21,8 +23,10 @@ class ContactList extends PureComponent {
     tags: PropTypes.arrayOf(PropTypes.string),
     contactDisplayOrder: PropTypes.string.isRequired,
     contactDisplayFormat: PropTypes.string.isRequired,
-    onSelectEntity: PropTypes.func.isRequired,
+    onSelectEntity: PropTypes.func,
+    onClickContact: PropTypes.func,
     sortDir: PropTypes.string,
+    mode: PropTypes.string,
   };
   static defaultProps = {
     contacts: [],
@@ -30,6 +34,9 @@ class ContactList extends PureComponent {
     tags: [],
     selectedContactsIds: [],
     sortDir: DEFAULT_SORT_DIR,
+    mode: MODE_CONTACT_BOOK,
+    onSelectEntity: () => {},
+    onClickContact: undefined,
   };
 
   getNavLetter = () => {
@@ -94,7 +101,7 @@ class ContactList extends PureComponent {
   render() {
     const {
       contacts, userContact, contactDisplayOrder, contactDisplayFormat: format, onSelectEntity,
-      selectedContactsIds, tags,
+      selectedContactsIds, tags, mode, onClickContact,
     } = this.props;
 
     if (!contacts.length) {
@@ -132,6 +139,8 @@ class ContactList extends PureComponent {
                 contact={userContact}
                 tags={tags}
                 selectDisabled
+                onClickContact={onClickContact}
+                mode={mode}
               />
             </div>
           )}
@@ -145,8 +154,11 @@ class ContactList extends PureComponent {
                     className="m-contact-list__contact"
                     contact={contact}
                     onSelectEntity={onSelectEntity}
+                    onClickContact={onClickContact}
                     isContactSelected={selectedContactsIds.includes(contact.contact_id)}
                     tags={tags}
+                    selectDisabled={mode === MODE_ASSOCIATION}
+                    mode={mode}
                   />
                 ))}
               </div>

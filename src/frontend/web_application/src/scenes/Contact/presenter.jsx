@@ -70,20 +70,9 @@ class Contact extends Component {
 
   state = {
     isTagModalOpen: false,
-    editMode: false,
-    isFetching: false,
+    isFetching: this.props.contactId && true,
     isSaving: false,
   };
-
-  componentWillMount() {
-    if (!this.props.contactId) {
-      this.setState({
-        editMode: true,
-      });
-    } else {
-      this.setState({ isFetching: true });
-    }
-  }
 
   componentDidMount() {
     const { contactId, requestContact } = this.props;
@@ -106,15 +95,11 @@ class Contact extends Component {
     }));
   }
 
-  toggleEditMode = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      editMode: !prevState.editMode,
-    }), () => {
-      if (!this.state.editMode) {
-        this.props.reset();
-      }
-    });
+  handleClickEditContact = () => {
+    const { push, contactId, reset } = this.props;
+
+    reset();
+    push(`/contacts/${contactId}/edit`);
   }
 
   handleCancel = () => {
@@ -123,7 +108,7 @@ class Contact extends Component {
       closeTab(currentTab);
     }
 
-    return this.toggleEditMode();
+    return this.props.push(`/contacts/${contactId}`);
   }
 
   handleDelete = () => {
@@ -141,7 +126,6 @@ class Contact extends Component {
   createOrUpdateAction = async ({ contact, original }) => {
     const {
       updateContact, requestContact, createContact,
-      push, closeTab, currentTab,
     } = this.props;
     if (contact.contact_id) {
       await updateContact({ contact, original });
@@ -153,23 +137,32 @@ class Contact extends Component {
     const { location } = resultAction.payload.data;
     const { data: contactCreated } = await fetchLocation(location);
 
-    push(`/contacts/${contactCreated.contact_id}`);
-    closeTab(currentTab);
-
     return contactCreated;
   };
 
-  handleSubmit = (ev) => {
+  handleSubmit = async (ev) => {
     const {
       i18n, handleSubmit, contactId, notifyError, contact: original,
+      push, closeTab, currentTab,
     } = this.props;
     this.setState({ isSaving: true });
-    handleSubmit(ev)
-      .then(contact => this.createOrUpdateAction({ contact, original }))
-      .then(() => contactId && this.toggleEditMode(), () => {
-        notifyError({ message: i18n._('contact.feedback.unable_to_save', null, { defaults: 'Unable to save the contact' }) });
-      })
-      .then(() => this.setState({ isSaving: false }));
+
+    const contact = await handleSubmit(ev);
+    try {
+      const contactUpToDate = await this.createOrUpdateAction({ contact, original });
+      this.setState({ isSaving: false });
+
+      if (contactId) {
+        push(`/contacts/${contactId}`);
+
+        return;
+      }
+
+      push(`/contacts/${contactUpToDate.contact_id}`);
+      closeTab(currentTab);
+    } catch (err) {
+      notifyError({ message: i18n._('contact.feedback.unable_to_save', null, { defaults: 'Unable to save the contact' }) });
+    }
   }
 
   handleTagsChange = async ({ tags }) => {
@@ -532,22 +525,30 @@ class Contact extends Component {
         {this.renderActionBar()}
 
         {this.renderTags()}
-        {this.state.editMode ? this.renderEditMode() : (
-          <Fragment>
-            <div className="s-contact__main-title s-contact-main-title">
-              {this.renderMainTitle()}
-            </div>
-            <div className="s-contact__contact-details">
-              {this.renderContactDetails()}
-            </div>
-            <div className="s-contact__keys">
-              {this.renderKeys()}
-            </div>
-            {/* <div className="s-contact__last-messages">
-              {this.renderLastMessages()}
-            </div> */}
-          </Fragment>
-        )}
+        <Switch>
+          <Route
+            path={/.*\/edit/}
+            render={() => this.renderEditMode()}
+          />
+          <Route
+            render={() => (
+              <Fragment>
+                <div className="s-contact__main-title s-contact-main-title">
+                  {this.renderMainTitle()}
+                </div>
+                <div className="s-contact__contact-details">
+                  {this.renderContactDetails()}
+                </div>
+                <div className="s-contact__keys">
+                  {this.renderKeys()}
+                </div>
+                {/* <div className="s-contact__last-messages">
+                  {this.renderLastMessages()}
+                </div> */}
+              </Fragment>
+            )}
+          />
+        </Switch>
       </div>
     );
   }

@@ -7,6 +7,7 @@ import { Trans, withI18n } from '@lingui/react';
 import { ActionBarWrapper, ActionBar, ActionBarButton, Badge, Modal } from '../../components';
 import MessageList from './components/MessageList';
 import ReplyExcerpt from './components/ReplyExcerpt';
+import AddParticipantsToContactBook from './components/AddParticipantsToContactBook';
 import { withCloseTab } from '../../modules/tab';
 import { ManageEntityTags } from '../../modules/tags';
 import { DraftMessage } from '../../modules/draftMessage';
@@ -35,6 +36,7 @@ class Discussion extends Component {
     didInvalidate: PropTypes.bool.isRequired,
     hasMore: PropTypes.bool.isRequired,
     location: PropTypes.shape({}).isRequired,
+    lastMessage: PropTypes.shape({}),
     messages: PropTypes.arrayOf(PropTypes.shape({})),
     canBeClosed: PropTypes.bool.isRequired,
     onMessageReply: PropTypes.func.isRequired,
@@ -52,6 +54,7 @@ class Discussion extends Component {
 
   static defaultProps = {
     discussion: undefined,
+    lastMessage: undefined,
     messages: [],
     user: undefined,
   };
