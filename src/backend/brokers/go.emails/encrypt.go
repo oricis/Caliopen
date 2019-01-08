@@ -12,14 +12,33 @@ import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/emersion/go-message"
+	"math/rand"
 	"net/mail"
 	"strings"
 	"time"
 )
 
-// TODO
+var boundaryChars = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+:=?")
+
+func RandomString(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = boundaryChars[rand.Intn(len(boundaryChars))]
+	}
+	return string(b)
+}
+
+// Return a MIME boudary as specified in RFC 1341 (7.2.1)
+//
+// boundary := 0*69<bchars> bcharsnospace
+//
+// bchars := bcharsnospace / " "
+//
+// bcharsnospace :=    DIGIT / ALPHA / "'" / "(" / ")" / "+"  /
+// "_"
+//                / "," / "-" / "." / "/" / ":" / "=" / "?"
 func (b *EmailBroker) NewBoundary() string {
-	return "abcdef"
+	return RandomString(42)
 }
 
 func (b *EmailBroker) NewMessageId(uuid []byte) string {
@@ -70,7 +89,7 @@ func formatAddress(participant Participant) *mail.Address {
 	return addr
 }
 
-// Create mail.Address listes indexed by participant type
+// Create mail.Address list indexed by participant type
 func formatAddressList(msg *Message) map[string][]string {
 	// Create address headers
 	addr_fields := newAddressesFields()
