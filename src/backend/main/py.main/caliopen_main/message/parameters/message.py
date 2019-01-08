@@ -2,6 +2,8 @@
 """Caliopen parameters for message related classes."""
 from __future__ import absolute_import, print_function, unicode_literals
 
+import hashlib
+
 from schematics.models import Model
 from schematics.types import (StringType, DateTimeType,
                               IntType, UUIDType, BooleanType)
@@ -47,6 +49,14 @@ class NewMessage(Model):
     class Options:
         serialize_when_none = False
 
+    @property
+    def hash_participants(self):
+        """Create an hash from participants addresses for global lookup."""
+        addresses = [x.address for x in self.participants]
+        addresses = list(set(addresses))
+        addresses.sort()
+        return hashlib.sha256(''.join(addresses)).hexdigest()
+
 
 class NewInboundMessage(NewMessage):
     body_html = StringType()
@@ -63,7 +73,7 @@ class Message(NewInboundMessage):
     date_delete = DateTimeType(serialized_format=helpers.RFC3339Milli,
                                tzd=u'utc')
     date_sort = DateTimeType(serialized_format=helpers.RFC3339Milli,
-                               tzd=u'utc')
+                             tzd=u'utc')
 
     class Options:
         roles = {'default': blacklist('user_id', 'date_delete')}

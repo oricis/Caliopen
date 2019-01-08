@@ -16,7 +16,6 @@ from mailbox import Message
 from email.header import decode_header
 import datetime
 import pytz
-import hashlib
 
 from email.utils import parsedate_tz, mktime_tz, getaddresses
 
@@ -255,14 +254,6 @@ class MailMessage(object):
         return participants
 
     @property
-    def hash_participants(self):
-        """Create an hash from participants addresses for global lookup."""
-        addresses = [x.address for x in self.participants]
-        addresses = list(set(addresses))
-        addresses.sort()
-        return hashlib.sha256(''.join(addresses)).hexdigest()
-
-    @property
     def attachments(self):
         """Extract parts which we consider as attachments."""
         if not self.mail.is_multipart():
@@ -282,27 +273,6 @@ class MailMessage(object):
         lists_ids = [address[1] for address in lists_addr] \
             if lists_addr else []
         return {'lists': lists_ids}
-
-    def lookup_discussion_sequence(self, *args, **kwargs):
-        """Return list of lookup type, value from a mail message."""
-        seq = []
-
-        # list lookup first
-        for list_id in self.extra_parameters.get('lists', []):
-            seq.append(('list', list_id))
-
-        seq.append(('global', self.hash_participants))
-
-        # try to link message to external thread's root message-id
-        if len(self.external_references["ancestors_ids"]) > 0:
-            seq.append(("thread",
-                        self.external_references["ancestors_ids"][0]))
-        elif self.external_references["parent_id"]:
-            seq.append(("thread", self.external_references["parent_id"]))
-        elif self.external_references["message_id"]:
-            seq.append(("thread", self.external_references["message_id"]))
-
-        return seq
 
     # Others parameters specific for mail message
 
