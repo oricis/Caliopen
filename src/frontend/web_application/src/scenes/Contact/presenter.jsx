@@ -452,7 +452,7 @@ class Contact extends Component {
       <div className="s-contact__form">
         <form onSubmit={this.handleSubmit} method="post">
           <Title hr><Trans id="contact.edit_contact.title">Edit the contact</Trans></Title>
-          <ContactProfileForm form={form} isNew={!contact} />
+          <ContactProfileForm form={form} isNew={!contact.contact_id} />
           <div>
             <Title hr><Trans id="contact.contact-details.title">Contact details</Trans></Title>
             <FormCollection component={(<EmailForm />)} propertyName="emails" showAdd={false} />
@@ -537,6 +537,10 @@ class Contact extends Component {
         <Switch>
           <Route
             path={/.*\/edit/}
+            render={() => this.renderEditMode()}
+          />
+          <Route
+            path="/new-contact"
             render={() => this.renderEditMode()}
           />
           <Route

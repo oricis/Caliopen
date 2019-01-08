@@ -63,6 +63,7 @@ class AddParticipantsToContactBook extends Component {
               >
                 <Link
                   button
+                  expanded
                   to={`/contact-association/${participant.protocol}/${participant.address}?label=${participant.label}`}
                   title={i18n._('message.action.add-to-contacts', null, { defaults: 'Add to contact book' })}
                 >

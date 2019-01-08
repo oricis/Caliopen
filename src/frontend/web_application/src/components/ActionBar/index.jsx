@@ -32,7 +32,7 @@ class ActionBar extends PureComponent {
         })}
       >
         <div className={classnames('m-action-bar__loading', { 'm-action-bar__loading--is-loading': isLoading })}>
-          <Spinner isLoading display="inline" />
+          <Spinner isLoading={isLoading} display="inline" />
         </div>
         {actionsNode && (
           <div className="m-action-bar__actions">
