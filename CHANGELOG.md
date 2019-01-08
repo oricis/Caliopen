@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Existing device are found better, lead to less untrusted device for user
+- Click on contact's title "input" submits the form
 
 ### Changed
 
