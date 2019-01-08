@@ -52,7 +52,12 @@ class NewMessage(Model):
     @property
     def hash_participants(self):
         """Create an hash from participants addresses for global lookup."""
-        addresses = [x.address for x in self.participants]
+        addresses = []
+        for participant in self.participants:
+            if participant.contact_ids:
+                addresses.append(participant.contact_ids[0])
+            else:
+                addresses.append(participant.address.lower())
         addresses = list(set(addresses))
         addresses.sort()
         return hashlib.sha256(''.join(addresses)).hexdigest()
