@@ -1,10 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 // unable to use @lingui/macro due to a miss-interpolated value in Plural component
 import { Trans, Plural, withI18n } from '@lingui/react';
 import ContactList from './components/ContactList';
-import { PageTitle, Spinner, Button, ActionBar, Checkbox, SidebarLayout, NavList, NavItem, Confirm, Modal } from '../../components';
+import { PageTitle, Spinner, Button, ActionBarWrapper, ActionBar, Checkbox, SidebarLayout, NavList, NavItem, Confirm, Modal } from '../../components';
 import { withPush } from '../../modules/routing';
+import { ScrollDetector } from '../../modules/scroll';
 import { withTags, TagsForm, getCleanedTagCollection, getTagNamesInCommon } from '../../modules/tags';
 import TagList from './components/TagList';
 import ImportContactButton from './components/ImportContactButton';
@@ -211,81 +213,87 @@ class ContactBook extends Component {
     const totalCount = contacts.length;
 
     return (
-      <ActionBar
-        className="s-contact-book-menu"
-        isFetching={isFetching}
-        actionsNode={(
-          <Fragment>
-            {count > 0 && (
-              <Fragment>
-                <span className="s-contact-book-menu__label">
-                  <Trans
-                    id="contact-book.contacts.selected"
-                    values={{ count, totalCount }}
-                    defaults="{count, plural, one {#/{totalCount} selected contact:} other {#/{totalCount} selected contacts:}}"
-                  />
-                </span>
-                <Confirm
-                  onConfirm={this.handleDeleteContacts}
-                  title={(
-                    <Plural
-                      id="contact-book.confirm-delete.title"
-                      value={count}
-                      one="Delete contact"
-                      other="Delete contacts"
+      <ScrollDetector
+        offset={136}
+        render={isSticky => (
+          <ActionBarWrapper isSticky={isSticky}>
+            <ActionBar
+              isLoading={isFetching}
+              actionsNode={(
+                <div className="s-contact-book-menu">
+                  {count > 0 && (
+                    <Fragment>
+                      <span className="s-contact-book-menu__label">
+                        <Trans
+                          id="contact-book.contacts.selected"
+                          values={{ count, totalCount }}
+                          defaults="{count, plural, one {#/{totalCount} selected contact:} other {#/{totalCount} selected contacts:}}"
+                        />
+                      </span>
+                      <Confirm
+                        onConfirm={this.handleDeleteContacts}
+                        title={(
+                          <Plural
+                            id="contact-book.confirm-delete.title"
+                            value={count}
+                            one="Delete contact"
+                            other="Delete contacts"
+                          />
+                        )}
+                        content={(
+                          <Plural
+                            id="contact-book.confirm-delete.content"
+                            value={count}
+                            one="The deletion is permanent, are you sure you want to delete this contact?"
+                            other="The deletion is permanent, are you sure you want to delete these contacts?"
+                          />
+                        )}
+                        render={confirm => (
+                          <Button
+                            className="s-contact-book-menu__action-btn"
+                            display="inline"
+                            noDecoration
+                            icon={this.state.isDeleting ? (<Spinner isLoading display="inline" />) : 'trash'}
+                            onClick={confirm}
+                            disabled={this.state.isDeleting}
+                          >
+                            <Trans id="contact-book.action.delete">Delete</Trans>
+                          </Button>
+                        )}
+                      />
+                      <Button
+                        className="s-contact-book-menu__action-btn"
+                        display="inline"
+                        noDecoration
+                        icon="tag"
+                        onClick={this.handleOpenTags}
+                      >
+                        <Trans id="contact-book.action.manage-tags">Manage tags</Trans>
+                      </Button>
+                      {this.state.isTagModalOpen && this.renderTagsModal()}
+                      {/* <Button
+                        className="s-contact-book-menu__action-btn"
+                        display="inline"
+                        noDecoration
+                        icon="share"
+                        >
+                        <Trans id="contact-book.action.start-discussion">Start discussion</Trans>
+                      </Button> */}
+                    </Fragment>
+                  )}
+                  <div className={classnames('s-contact-book-menu__select-all', { 's-contact-book-menu__select-all--label-hidden': count > 0 })}>
+                    <Checkbox
+                      checked={count > 0 && count === totalCount}
+                      indeterminate={count > 0 && count < totalCount}
+                      onChange={this.handleSelectAllEntitiesChange}
+                      label={<Trans id="contact-book.action.select-all">Select all contacts</Trans>}
+                      showLabelforSr={count > 0}
                     />
-                  )}
-                  content={(
-                    <Plural
-                      id="contact-book.confirm-delete.content"
-                      value={count}
-                      one="The deletion is permanent, are you sure you want to delete this contact?"
-                      other="The deletion is permanent, are you sure you want to delete these contacts?"
-                    />
-                  )}
-                  render={confirm => (
-                    <Button
-                      className="s-contact-book-menu__action-btn"
-                      display="inline"
-                      noDecoration
-                      icon={this.state.isDeleting ? (<Spinner isLoading display="inline" />) : 'trash'}
-                      onClick={confirm}
-                      disabled={this.state.isDeleting}
-                    >
-                      <Trans id="contact-book.action.delete">Delete</Trans>
-                    </Button>
-                  )}
-                />
-                <Button
-                  className="s-contact-book-menu__action-btn"
-                  display="inline"
-                  noDecoration
-                  icon="tag"
-                  onClick={this.handleOpenTags}
-                >
-                  <Trans id="contact-book.action.manage-tags">Manage tags</Trans>
-                </Button>
-                {this.state.isTagModalOpen && this.renderTagsModal()}
-                {/* <Button
-                  className="s-contact-book-menu__action-btn"
-                  display="inline"
-                  noDecoration
-                  icon="share"
-                  >
-                  <Trans id="contact-book.action.start-discussion">Start discussion</Trans>
-                </Button> */}
-              </Fragment>
-            )}
-            <div className="s-contact-book-menu__select-all">
-              <Checkbox
-                checked={count > 0 && count === totalCount}
-                indeterminate={count > 0 && count < totalCount}
-                onChange={this.handleSelectAllEntitiesChange}
-                label={<Trans id="contact-book.action.select-all">Select all contacts</Trans>}
-                showLabelforSr={count > 0}
-              />
-            </div>
-          </Fragment>
+                  </div>
+                </div>
+              )}
+            />
+          </ActionBarWrapper>
         )}
       />
     );

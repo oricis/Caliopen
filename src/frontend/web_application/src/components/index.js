@@ -1,4 +1,4 @@
-export { default as ActionBar } from './ActionBar';
+export { default as ActionBar, ActionBarButton, ActionBarWrapper } from './ActionBar';
 export { default as AppLoader } from './AppLoader';
 export { default as Badge } from './Badge';
 export { default as Button } from './Button';

@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import classNames from 'classnames';
+import { withI18n } from '@lingui/react';
 import { withScrollTarget } from '../../../../modules/scroll';
 import { isMessageFromUser, getAuthor, isUserRecipient, getRecipientsExceptUser, getRecipients } from '../../../../services/message';
 import { getAveragePI, getPiClass } from '../../../../modules/pi';
@@ -19,14 +20,14 @@ const PROTOCOL_ICONS = {
   default: 'comment',
 };
 
+@withI18n()
 @withScrollTarget()
 class InstantMessage extends PureComponent {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
-    onMessageRead: PropTypes.func.isRequired,
-    forwardRef: PropTypes.func.isRequired,
-    i18n: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
     // XXX: No UI for that
+    // onMessageRead: PropTypes.func.isRequired,
     // onMessageUnread: PropTypes.func.isRequired,
     // onDeleteMessage: PropTypes.func.isRequired,
     user: PropTypes.shape({}).isRequired,

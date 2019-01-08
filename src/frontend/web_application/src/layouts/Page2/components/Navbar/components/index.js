@@ -1,6 +1,7 @@
 export { default as ApplicationTab } from './ApplicationTab';
-export { default as DiscussionTab } from './DiscussionTab';
+export { default as ContactAssociationTab } from './ContactAssociationTab';
 export { default as ContactTab } from './ContactTab';
+export { default as DiscussionTab } from './DiscussionTab';
 export { default as ItemLink } from './ItemLink';
 export { default as ItemButton } from './ItemButton';
 export { default as SearchTab } from './SearchTab';

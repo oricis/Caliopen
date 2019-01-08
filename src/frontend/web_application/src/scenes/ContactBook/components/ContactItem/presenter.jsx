@@ -1,10 +1,10 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Trans, withI18n } from '@lingui/react';
 import { ContactAvatarLetter, SIZE_MEDIUM } from '../../../../modules/avatar';
 import { getCleanedTagCollection, getTagLabel } from '../../../../modules/tags';
-import { Link, TextBlock, Icon, Checkbox, Badge, PlaceholderBlock } from '../../../../components/';
+import { Button, Link, TextBlock, Icon, Checkbox, Badge, PlaceholderBlock } from '../../../../components/';
 import { formatName } from '../../../../services/contact';
 import './style.scss';
 
@@ -79,6 +79,7 @@ class ContactItem extends PureComponent {
     contactDisplayFormat: PropTypes.string.isRequired,
     className: PropTypes.string,
     onSelectEntity: PropTypes.func,
+    onClickContact: PropTypes.func,
     isContactSelected: PropTypes.bool,
     selectDisabled: PropTypes.bool,
     i18n: PropTypes.shape({}).isRequired,
@@ -88,6 +89,7 @@ class ContactItem extends PureComponent {
     contact: undefined,
     className: undefined,
     onSelectEntity: () => {},
+    onClickContact: undefined,
     isContactSelected: false,
     selectDisabled: false,
   };
@@ -97,6 +99,12 @@ class ContactItem extends PureComponent {
     const { checked } = ev.target;
 
     onSelectEntity(checked ? 'add' : 'remove', contact.contact_id);
+  }
+
+  handleClickContact = () => {
+    const { contact, onClickContact } = this.props;
+
+    onClickContact({ contact });
   }
 
   renderPlaceholder() {
@@ -133,6 +141,16 @@ class ContactItem extends PureComponent {
     ));
   }
 
+  renderClickable(props) {
+    const { contact, onClickContact } = this.props;
+
+    return onClickContact ? (
+      <Button noDecoration onClick={this.handleClickContact} {...props} />
+    ) : (
+      <Link noDecoration to={`/contacts/${contact.contact_id}`} {...props} />
+    );
+  }
+
   render() {
     const {
       contact, contactDisplayFormat: format, className, isContactSelected, selectDisabled,
@@ -147,26 +165,31 @@ class ContactItem extends PureComponent {
 
     return (
       <div className={classnames('m-contact-item', className)}>
-        <Link noDecoration to={`/contacts/${contact.contact_id}`} className="m-contact-item__title">
-          <div className="m-contact-item__avatar">
-            <ContactAvatarLetter
-              isRound
-              contact={contact}
-              size={SIZE_MEDIUM}
-              contactDisplayFormat={format}
-            />
-          </div>
-          <div className="m-contact-item__contact">
-            <TextBlock className="m-contact-item__name">
-              {contact.name_prefix && (<span className="m-contact-item__contact-prefix">{contact.name_prefix}</span>)}
-              <span className="m-contact-item__contact-title">{contactTitle}</span>
-              {contact.name_suffix && (<span className="m-contact-item__contact-suffix">, {contact.name_suffix}</span>)}
-            </TextBlock>
-            <div className="m-contact-item__tags">
-              {this.renderTags()}
-            </div>
-          </div>
-        </Link>
+        {this.renderClickable({
+          className: 'm-contact-item__title',
+          children: (
+            <Fragment>
+              <div className="m-contact-item__avatar">
+                <ContactAvatarLetter
+                  isRound
+                  contact={contact}
+                  size={SIZE_MEDIUM}
+                  contactDisplayFormat={format}
+                />
+              </div>
+              <div className="m-contact-item__contact">
+                <TextBlock className="m-contact-item__name">
+                  {contact.name_prefix && (<span className="m-contact-item__contact-prefix">{contact.name_prefix}</span>)}
+                  <span className="m-contact-item__contact-title">{contactTitle}</span>
+                  {contact.name_suffix && (<span className="m-contact-item__contact-suffix">, {contact.name_suffix}</span>)}
+                </TextBlock>
+                <div className="m-contact-item__tags">
+                  {this.renderTags()}
+                </div>
+              </div>
+            </Fragment>
+          ),
+        })}
         <div className="m-contact-item__info">
           {mainAddresses.map(address => (
             <TextBlock key={address.identifier}>

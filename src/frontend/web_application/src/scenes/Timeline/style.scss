@@ -2,13 +2,7 @@
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
 .s-timeline {
-  $baseName: &;
   background-color: white;
-
-  &__action-bar {
-    margin: 0 auto;
-    background-color: white;
-  }
 
   &__discussion-list {
     background-color: lightgrey;
@@ -26,23 +20,5 @@
   &__new-msg {
     background-color: $co-color__fg__back;
     text-align: center;
-  }
-
-  &__action-bar-wrapper {
-    // XXX: may be move to a layout component (do not forget that it can be recursive)
-    &--sticky {
-      position: fixed;
-      top: 41px;
-      right: 0;
-      left: 0;
-      background-color: white;
-
-      @include breakpoint(medium) {
-        #{$baseName}__action-bar {
-          max-width: $co-site-width;
-          padding: 0 40px;
-        }
-      }
-    }
   }
 }

@@ -1,12 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import throttle from 'lodash.throttle';
 import isEqual from 'lodash.isequal';
 import { Trans } from '@lingui/react';
 import { MessageNotifications } from '../../modules/notification';
 import { ScrollDetector } from '../../modules/scroll';
-import { Button, InfiniteScroll, ActionBar, CheckboxFieldGroup, PlaceholderBlock, TextBlock } from '../../components';
+import { Button, InfiniteScroll, ActionBarWrapper, ActionBar, CheckboxFieldGroup, PlaceholderBlock, TextBlock } from '../../components';
 import DiscussionItem from './components/DiscussionItem';
 import { withSettings } from '../../modules/settings';
 
@@ -204,53 +203,60 @@ class Timeline extends Component {
     );
   }
 
-  render() {
-    const { hasMore, isFetching, importanceRange } = this.props;
+  renderActionBar() {
+    const { isFetching, importanceRange } = this.props;
     const hasSpam = isEqual(importanceRange, FILTER_RANGE_ALL);
     // const nbSelectedDiscussions = this.state.selectedDiscussions.length;
 
     return (
+      <ScrollDetector
+        offset={136}
+        render={isSticky => (
+          <ActionBarWrapper isSticky={isSticky}>
+            <ActionBar
+              hr={false}
+              isLoading={isFetching}
+              actionsNode={(
+                <div className="s-timeline-action-bar">
+                  <TextBlock>
+                    <CheckboxFieldGroup
+                      className="s-timeline-action-bar__filters"
+                      displaySwitch
+                      showTextLabel
+                      label={(<Trans id="timeline.action.display-spam">Show spam</Trans>)}
+                      onChange={this.handleToggleShowSpam}
+                      checked={hasSpam}
+                    />
+                  </TextBlock>
+                  {/*  <DiscussionSelector
+                    count={nbSelectedDiscussions}
+                    checked={nbSelectedDiscussions > 0
+                        && nbSelectedDiscussions === discussions.length}
+                        totalCount={discussions.length}
+                        onSelectAllDiscussions={this.onSelectAllDiscussions}
+                        onEditTags={this.handleOpenTags}
+                        onDeleteDiscussions={this.handleDeleteDiscussions}
+                        isDeleting={this.state.isDeleting}
+                        indeterminate={nbSelectedDiscussions > 0
+                            && nbSelectedDiscussions < discussions.length}
+                          />
+                  */}
+                </div>
+              )}
+            />
+          </ActionBarWrapper>
+        )}
+      />
+    );
+  }
+
+  render() {
+    const { hasMore } = this.props;
+
+    return (
       <Fragment>
         <section className="s-timeline">
-          <ScrollDetector
-            offset={136}
-            render={isSticky => (
-              <div className={classnames('s-timeline__action-bar-wrapper', { 's-timeline__action-bar-wrapper--sticky': isSticky })}>
-                <ActionBar
-                  className={classnames('s-timeline__action-bar')}
-                  hr={false}
-                  isFetching={isFetching}
-                  actionsNode={!isFetching && (
-                    <div className="s-timeline-action-bar">
-                      <TextBlock>
-                        <CheckboxFieldGroup
-                          className="s-timeline-action-bar__filter"
-                          displaySwitch
-                          showTextLabel
-                          label={(<Trans id="timeline.action.display-spam">Show spam</Trans>)}
-                          onChange={this.handleToggleShowSpam}
-                          checked={hasSpam}
-                        />
-                      </TextBlock>
-                    </div>
-                  )}
-                />
-              </div>
-            )}
-          />
-          {/*  <DiscussionSelector
-            count={nbSelectedDiscussions}
-            checked={nbSelectedDiscussions > 0
-                && nbSelectedDiscussions === discussions.length}
-                totalCount={discussions.length}
-                onSelectAllDiscussions={this.onSelectAllDiscussions}
-                onEditTags={this.handleOpenTags}
-                onDeleteDiscussions={this.handleDeleteDiscussions}
-                isDeleting={this.state.isDeleting}
-                indeterminate={nbSelectedDiscussions > 0
-                    && nbSelectedDiscussions < discussions.length}
-                  />
-                  */}
+          {this.renderActionBar()}
           <InfiniteScroll onReachBottom={this.loadMore}>
             <Fragment>
               {this.renderNotifications()}
