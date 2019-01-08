@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 - Rework how privacy features are declared and managed
+- Change how a discussion hash is build, take contact_id as better key
 
 ## [0.14.0] 2018-12-19
 
