@@ -50,7 +50,7 @@ class AddParticipantsToContactBook extends Component {
           noDecoration
           className={classnames(className)}
           toggleId={`message_${message.message_id}`}
-          title={i18n._('message.action.add-participant-to-contacts', null, { default: 'Add participant to contact book' })}
+          title={i18n._('message.action.add-participant-to-contacts', null, { defaults: 'Add a participant to the contact book' })}
         >
           <Icon type="address-book" /> <Icon type="plus" />
         </DropdownControl>

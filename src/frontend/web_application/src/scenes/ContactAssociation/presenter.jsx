@@ -118,7 +118,7 @@ class ContactAssociation extends Component {
 
     return (
       <div className="s-contact-association">
-        <PageTitle title={i18n._('header.menu.contacts', null, { defaults: 'Contact association' })} />
+        <PageTitle title={i18n._('header.menu.contact-association', null, { defaults: 'Contact association' })} />
         {this.renderActionBar()}
         {this.renderContacts()}
       </div>
