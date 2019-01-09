@@ -51,8 +51,4 @@ class Message(BaseModel, IndexedModelMixin):
     user_identities = columns.List(columns.UUID)
 
 
-class MessageExternalRefLookup(BaseUserCore):
-    """Lookup message by external message-id"""
 
-    _model_class = ModelMessageExternalRefLookup
-    _pkey_name = 'external_msg_id'

@@ -7,10 +7,9 @@ import uuid
 import datetime
 import pytz
 from caliopen_storage.exception import NotFound
-from caliopen_main.message.core import RawMessage
+from caliopen_main.message.core import RawMessage, MessageExternalRefLookup
 from caliopen_main.message.objects.message import Message
-from caliopen_main.message.store.message import \
-    MessageExternalRefLookup, ModelMessageExternalRefLookup
+from caliopen_main.message.store.message import ModelMessageExternalRefLookup
 from caliopen_pi.qualifiers import UserMessageQualifier, UserDMQualifier
 
 log = logging.getLogger(__name__)
