@@ -42,7 +42,7 @@ class Message(Api):
         try:
             message = ObjectMessage.create_draft(user=self.user, **data)
         except Exception as exc:
-            log.warn(exc)
+            log.exception(exc)
             raise MergePatchError(error=exc)
 
         message_url = self.request.route_path('message',
