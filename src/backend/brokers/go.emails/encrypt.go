@@ -26,6 +26,8 @@ func RandomString(n int) string {
 	return string(b)
 }
 
+// NewBoundary return a mail boundary according to RFC format
+//
 // Return a MIME boudary as specified in RFC 1341 (7.2.1)
 //
 // boundary := 0*69<bchars> bcharsnospace
