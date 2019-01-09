@@ -231,9 +231,11 @@ func (pk *PublicKey) UnmarshalPGPEntity(label string, entity *openpgp.Entity, co
 	}
 	var identityFound = false
 	var identityName string
+	emailsInKey := []string{}
 	for name, identity := range entity.Identities {
 		if identity.Name != "" {
 			emailFound := ExtractEmailAddrFromString(identity.Name)
+			emailsInKey = append(emailsInKey, emailFound)
 			if _, ok := emails[emailFound]; ok {
 				identityFound = true
 				identityName = name
@@ -344,6 +346,8 @@ func (pk *PublicKey) UnmarshalPGPEntity(label string, entity *openpgp.Entity, co
 		log.Warn("unsupported public key")
 	}
 
+	// embed emails found in key to ease later lookup
+	pk.Emails = emailsInKey
 	return nil
 }
 
