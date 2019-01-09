@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 - Move link external accounts to user menu
+- smaller font for desktop
 
 ## [0.15.0] 2019-01-15
 

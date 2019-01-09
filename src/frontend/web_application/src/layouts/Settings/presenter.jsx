@@ -36,8 +36,8 @@ class Settings extends PureComponent {
 
     return (
       <div className="l-settings">
-        <MenuBar className="l-settings__menu-bar" navLinks={navLinks} />
-        <div className="l-settings__panel">{children}</div>
+        <MenuBar navLinks={navLinks} />
+        <div>{children}</div>
       </div>
     );
   }

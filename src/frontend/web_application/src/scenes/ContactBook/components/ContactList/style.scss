@@ -8,16 +8,14 @@ $m-contact-list__nav-alpha-color--active: #9a9a9a;
   &__nav {
     display: flex;
     justify-content: space-between;
-    margin-top: 35px; // fixed height
+    margin-top: 2rem; // fixed height
     margin-right: map_get($co-margin_, 'xsmall');
     margin-left: map_get($co-margin_, 'xsmall');
   }
 
   &__alpha-letter {
     color: $m-contact-list__nav-alpha-color;
-    font-size: 15px;
     font-weight: 400;
-    line-height: 13px;
     text-decoration: none;
     text-transform: capitalize;
 
@@ -28,7 +26,7 @@ $m-contact-list__nav-alpha-color--active: #9a9a9a;
   }
 
   &__list {
-    margin-bottom: 35px;
+    margin-bottom: 2.25rem;
   }
 
   &__alpha-title {
