@@ -23,6 +23,8 @@ class PublicKey(BaseModel):
     date_update = columns.DateTime()
     expire_date = columns.DateTime()
 
+    emails = columns.List(columns.Text())
+
     key = columns.Text()
     fingerprint = columns.Text()
     size = columns.VarInt()

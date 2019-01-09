@@ -28,6 +28,7 @@ type PublicKey struct {
 	Curve        string    `cql:"crv"              json:"crv,omitempty"                                             patch:"system"`
 	DateInsert   time.Time `cql:"date_insert"      json:"date_insert,omitempty"         formatter:"RFC3339Milli"    patch:"system"`
 	DateUpdate   time.Time `cql:"date_update"      json:"date_update,omitempty"         formatter:"RFC3339Milli"    patch:"system"`
+	Emails       []string  `cql:"emails"           json:"emails"                                                    patch:"system"`
 	ExpireDate   time.Time `cql:"expire_date"      json:"expire_date,omitempty"         formatter:"RFC3339Milli"    patch:"system"`
 	Fingerprint  string    `cql:"fingerprint"      json:"fingerprint,omitempty"                                     patch:"system"`
 	Key          string    `cql:"key"              json:"key,omitempty"                                             patch:"system"`
@@ -74,6 +75,12 @@ func (pk *PublicKey) UnmarshalCQLMap(input map[string]interface{}) {
 	}
 	if dateUpdate, ok := input["date_update"].(time.Time); ok {
 		pk.DateUpdate = dateUpdate
+	}
+	if emails, ok := input["emails"]; ok && emails != nil {
+		pk.Emails = []string{}
+		for _, email := range emails.([]string) {
+			pk.Emails = append(pk.Emails, email)
+		}
 	}
 	if expireDate, ok := input["expire_date"].(time.Time); ok {
 		pk.ExpireDate = expireDate
@@ -128,6 +135,12 @@ func (pk *PublicKey) UnmarshalMap(input map[string]interface{}) error {
 	}
 	if dateUpdate, ok := input["date_update"]; ok {
 		pk.DateUpdate, _ = time.Parse(time.RFC3339Nano, dateUpdate.(string))
+	}
+	if emails, ok := input["emails"]; ok && emails != nil {
+		pk.Emails = []string{}
+		for _, email := range emails.([]string) {
+			pk.Emails = append(pk.Emails, email)
+		}
 	}
 	if expireDate, ok := input["expire_date"]; ok {
 		pk.ExpireDate, _ = time.Parse(time.RFC3339Nano, expireDate.(string))
