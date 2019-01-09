@@ -104,7 +104,7 @@ class ContactList extends PureComponent {
       selectedContactsIds, tags, mode, onClickContact,
     } = this.props;
 
-    if (!contacts.length) {
+    if (!contacts.length && !userContact) {
       return this.renderPlaceholder();
     }
 
