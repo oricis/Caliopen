@@ -120,9 +120,7 @@ func formatBody(msg *Message, mainHeader message.Header) (bytes.Buffer, error) {
 	entityVersion := &message.Entity{Header: part1, Body: part1Body}
 	entityBody := &message.Entity{Header: part2, Body: part2Body}
 
-	entities := make([]*message.Entity, 2)
-	entities[0] = entityVersion
-	entities[1] = entityBody
+	entities := []*message.Entity{entityVersion, entityBody}
 
 	mp, err := message.NewMultipart(mainHeader, entities)
 	if err != nil {
