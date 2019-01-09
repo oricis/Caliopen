@@ -73,7 +73,7 @@ func (cb *CassandraBackend) SetMessageUnread(user_id, message_id string, status 
 func (cb *CassandraBackend) SeekMessageByExternalRef(userID, externalMessageID, identityID string) (messageID UUID, err error) {
 	result := map[string]interface{}{}
 	if identityID == "" {
-		err = cb.SessionQuery(`SELECT message_id FROM message_external_ref_lookup WHERE user_id = ? AND external_msg_id = ?`, userID, externalMessageID).MapScan(result)
+		err = cb.SessionQuery(`SELECT message_id FROM message_external_ref_lookup WHERE user_id = ? AND external_msg_id = ? LIMIT 1"`, userID, externalMessageID).MapScan(result)
 	} else {
 		err = cb.SessionQuery(`SELECT message_id FROM message_external_ref_lookup WHERE user_id = ? AND external_msg_id = ? AND identity_id = ?`, userID, externalMessageID, identityID).MapScan(result)
 	}
