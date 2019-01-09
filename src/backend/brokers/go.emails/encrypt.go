@@ -7,8 +7,6 @@ package email_broker
 
 import (
 	"bytes"
-	"crypto/sha256"
-	"encoding/base64"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/emersion/go-message"
@@ -39,15 +37,6 @@ func RandomString(n int) string {
 //                / "," / "-" / "." / "/" / ":" / "=" / "?"
 func (b *EmailBroker) NewBoundary() string {
 	return RandomString(42)
-}
-
-func (b *EmailBroker) NewMessageId(uuid []byte) string {
-	// sha256 internal message id to form external message id
-	hasher := sha256.New()
-	hasher.Write(uuid)
-	sha := base64.URLEncoding.EncodeToString(hasher.Sum(nil))
-	messageId := sha + "@" + b.Config.PrimaryMailHost // should be the default domain in case there are multiple 'from' addresses
-	return messageId
 }
 
 //Marshal an encrypted email

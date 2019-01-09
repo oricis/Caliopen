@@ -39,6 +39,16 @@ func newAddressesFields() (af map[string][]string) {
 	return
 }
 
+//  NewMessageId returns a valid Message-Id
+func (b *EmailBroker) NewMessageId(uuid []byte) string {
+	// sha256 internal message id to form external message id
+	hasher := sha256.New()
+	hasher.Write(uuid)
+	sha := base64.URLEncoding.EncodeToString(hasher.Sum(nil))
+	messageId := sha + "@" + b.Config.PrimaryMailHost // should be the default domain in case there are multiple 'from' addresses
+	return messageId
+}
+
 // build a 'ready to send' email from a Caliopen message model
 // conforms to
 // RFC822 / RFC2822 / RFC5322 (internet message format)
@@ -52,12 +62,8 @@ func (b *EmailBroker) MarshalEmail(msg *Message) (em *EmailMessage, err error) {
 		},
 		Message: msg,
 	}
-	// sha256 internal message id to form external message id
-	hasher := sha256.New()
-	hasher.Write(em.Message.Message_id.Bytes())
-	sha := base64.URLEncoding.EncodeToString(hasher.Sum(nil))
-	messageId := sha + "@" + b.Config.PrimaryMailHost // should be the default domain in case there are multiple 'from' addresses
 
+	messageId := b.NewMessageId(msg.Message_id.Bytes())
 	em.Message.Date = time.Now()
 
 	// Assign computed values
