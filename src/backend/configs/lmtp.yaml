@@ -59,7 +59,7 @@ LDAConfig:
   log_received_mails: true
 
   # outbound
-  out_topic: outboundIMAP                                # NATS topic to listen to
+  out_topic: outboundSMTP                                # NATS topic to listen to
   nats_listeners: 2                                      # number of concurrent nats listeners
 
   # notifications
