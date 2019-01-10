@@ -163,7 +163,7 @@ All **nats** modes may be used by services : asynchronous/synchronous, publish/
 }
 ```
 ###### function `DMmsgHandler`:
-- role: subscriber
+- role: subscriber/emitter
 - mode: `publish/subscribe`
 - topic: `twitter_dm`
 - queue: `twitterworkers`
@@ -175,6 +175,18 @@ All **nats** modes may be used by services : asynchronous/synchronous, publish/
   	"order":      "xxxxxxx",
   	"remote_id":  "xxxxxxx",
   	"user_id":    "xxxxxxx"
+}
+```
+- topic: `identitiesWorker`
+- orders emitted: `"update_interval"`
+- payload:
+```json
+{
+    "identity_id":    "xxxxxxx",
+  	"order":          "update_interval",
+  	"poll_intervall": "xxxxxxx",
+  	"protocol":       "twitter",
+  	"user_id":        "xxxxxxx"
 }
 ```
 ###### function `processInDM` :
@@ -194,7 +206,7 @@ All **nats** modes may be used by services : asynchronous/synchronous, publish/
 ---
 #### imap-bridge
 ###### function `natsMsgHandler`:
-- role: subscriber
+- role: subscriber/emitter
 - mode: `publish/subscribe`
 - topic: `IMAPfetcher`
 - queue: `IMAPworkers`
@@ -205,6 +217,18 @@ All **nats** modes may be used by services : asynchronous/synchronous, publish/
   	"order":      "xxxxxxx",
   	"remote_id":  "xxxxxxx",
   	"user_id":    "xxxxxxx"
+}
+```
+- topic: `identitiesWorker`
+- orders emitted: `"update_interval"`
+- payload:
+```json
+{
+    "identity_id":    "xxxxxxx",
+  	"order":          "update_interval",
+  	"poll_intervall": "xxxxxxx",
+  	"protocol":       "imap",
+  	"user_id":        "xxxxxxx"
 }
 ```
 ###### function `natsMsgHandler`:
