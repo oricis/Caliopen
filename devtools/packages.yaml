@@ -84,8 +84,8 @@ packages:
         dependencies:
           go: "^1.7"
       -
-          name: idpoller
-          build_target: github.com/CaliOpen/Caliopen/src/backend/workers/go.remoteIDs/cmd/idpoller
+          name: identities-worker
+          build_target: github.com/CaliOpen/Caliopen/src/backend/workers/go.remoteIDs/cmd/identities-worker
           path: src/backend/workers/go.remoteIDs
           description: daemon that trigger polling operations.
           dependencies:

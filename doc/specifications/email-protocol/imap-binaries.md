@@ -101,41 +101,41 @@ Invoke _imapctl_ without any command or flags to print help message.
 
   Relaunch it each time you want to sync or add the command to your cron.
 
-## idpoller
+## identities-worker
 
 A daemon that loads remote identities from cassandra and schedule jobs accordingly.
-It needs a config file. A default one is at `src/backend/configs/idpoller.yaml`
+It needs a config file. A default one is at `src/backend/configs/identities-worker.yaml`
 
 ### how it works :
 
-_idpoller_ periodically finds 'active' remote identities in cassandra and schedule jobs accordingly in an internal cron table. "Jobs" consist of sending messages on nats queue to trigger _imapworker_ actions.
+_identities-worker_ periodically finds 'active' remote identities in cassandra and schedule jobs accordingly in an internal cron table. "Jobs" consist of sending messages on nats queue to trigger _imapworker_ actions.
 
-How often _idpoller_ scans remote identity table in cassandra is define within configuration file in 'scan_interval' setting. Default is 15 minutes.
+How often _identities-worker_ scans remote identity table in cassandra is define within configuration file in 'scan_interval' setting. Default is 15 minutes.
 
-_idpoller_ schedules a recurring job for each 'active' remote identity according to the `infos.pollinterval` value in remote_identity table. Default to 15 minutes if the value is missing.
+_identities-worker_ schedules a recurring job for each 'active' remote identity according to the `infos.pollinterval` value in remote_identity table. Default to 15 minutes if the value is missing.
 
-**NB** : _idpoller_ schedules the sending of messages on nats queue. If no subscriber listen to the queue, no action will be triggered.
+**NB** : _identities-worker_ schedules the sending of messages on nats queue. If no subscriber listen to the queue, no action will be triggered.
 
 ### dependencies
 
-_idpoller_'s dependencies will be installed with Caliopen's stack. If you checked-out `feature/worker/imap-poller` into your current stack, run `govendor sync` to ensure all required dependencies.
+_identities-worker_'s dependencies will be installed with Caliopen's stack. If you checked-out `feature/worker/imap-poller` into your current stack, run `govendor sync` to ensure all required dependencies.
 
 ### launching
 
 ```shell
-cd src/backend/workers/go.remoteIDs/cmd/idpoller
+cd src/backend/workers/go.remoteIDs/cmd/identities-worker
 go run main.go start
 # if binary has been build :
-idpoller start
+identities-worker start
 ```
 
 ### building
 
 ```shell
-go build github.com/CaliOpen/Caliopen/src/backend/workers/go.remoteIDs/cmd/idpoller
+go build github.com/CaliOpen/Caliopen/src/backend/workers/go.remoteIDs/cmd/identities-worker
 ```
 
 ### using
 
-Start _idpoller_ once with the rest of the stack and keep it running as a daemon.
-If you need help : `go run main.go` or `idpoller` without any command will prompt available commands and flags.
+Start _identities-worker_ once with the rest of the stack and keep it running as a daemon.
+If you need help : `go run main.go` or `identities-worker` without any command will prompt available commands and flags.

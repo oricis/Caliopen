@@ -22,18 +22,18 @@ var (
 	cmdConfig     poller.PollerConfig
 	startCmd      = &cobra.Command{
 		Use:   "start",
-		Short: "Starts remote identities poller daemon",
+		Short: "Starts remote identities worker daemon",
 		Run:   start,
 	}
 )
 
 func init() {
 	startCmd.PersistentFlags().StringVarP(&configFile, "config", "c",
-		"idpoller", "Name of the configuration file, without extension. (YAML, TOML, JSON… allowed)")
+		"identities-worker", "Name of the configuration file, without extension. (YAML, TOML, JSON… allowed)")
 	startCmd.PersistentFlags().StringVarP(&configPath, "configpath", "",
 		"../../../../configs/", "Main config file path.")
 	startCmd.PersistentFlags().StringVarP(&pidFile, "pid-file", "p",
-		"/var/run/caliopen_idpoller.pid", "Path to the pid file")
+		"/var/run/caliopen_identities-worker.pid", "Path to the pid file")
 
 	RootCmd.AddCommand(startCmd)
 	signalChannel = make(chan os.Signal, 1)
@@ -87,10 +87,10 @@ func start(cmd *cobra.Command, args []string) {
 
 	poll, err := poller.NewPoller(cmdConfig)
 	if err != nil {
-		log.WithError(err).Fatal("can't start poller")
+		log.WithError(err).Fatal("can't start identities-worker")
 	}
 
 	go poll.Start()
-	log.Info("poller started")
+	log.Info("worker started")
 	sigHandler(poll)
 }

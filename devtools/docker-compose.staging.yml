@@ -181,7 +181,7 @@ services:
       - cassandra:cassandra
       - nats:nats
     volumes:
-      - ../src/backend/configs/idpoller.yaml:/etc/caliopen/idpoller.yaml
+      - ../src/backend/configs/identities-worker.yaml:/etc/caliopen/identities-worker.yaml
 
 
   # Postfix : a complete smpt server that act as the Caliopen's MTA

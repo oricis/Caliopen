@@ -25,5 +25,5 @@ spec:
         configMap:
           name: caliopen-config
           items:
-          - key: idpoller.yaml
-            path: idpoller.yaml
+          - key: identities-worker.yaml
+            path: identities-worker.yaml

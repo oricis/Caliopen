@@ -14,7 +14,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/CaliOpen/Caliopen/src/backend/workers/go.remoteIDs/cmd/idpoller/cli_cmds"
+	"github.com/CaliOpen/Caliopen/src/backend/workers/go.remoteIDs/cmd/identities-worker/cli_cmds"
 	"os"
 )
 

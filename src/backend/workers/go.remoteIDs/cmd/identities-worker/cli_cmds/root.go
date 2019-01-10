@@ -26,9 +26,9 @@ var (
 	verbose    bool
 	version    bool
 	RootCmd    = &cobra.Command{
-		Use:   "idpoller",
-		Short: "Remote Identities poller",
-		Long:  `idpoller is a daemon to monitor users's remote identities polls and send NATS messages accordingly`,
+		Use:   "identities-worker",
+		Short: "Remote Identities worker",
+		Long:  `identities-worker is a daemon to monitor users's remote identities events and send NATS messages accordingly`,
 		Run:   nil,
 	}
 )
@@ -42,7 +42,7 @@ func init() {
 		"print out the version of this program")
 	RootCmd.Run = func(cmd *cobra.Command, args []string) {
 		if version {
-			log.Infof("idpoller version %s", __version__)
+			log.Infof("identities-worker version %s", __version__)
 		}
 		if len(args) == 0 {
 			cmd.Help()
@@ -61,10 +61,10 @@ func init() {
 
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "Print the version number of idpoller",
-	Long:  `All software has versions. This is idpoller's'`,
+	Short: "Print the version number of identities-worker",
+	Long:  `All software has versions. This is identities-worker's'`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Infof("idpoller version %s", __version__)
+		log.Infof("identites-worker version %s", __version__)
 	},
 }
 

@@ -189,16 +189,16 @@ pipeline:
       - . devtools/drone/files_changed.sh
       - . devtools/drone/build_images.sh
 
-  build-idpoller-develop:
+  build-identities-worker-develop:
     group: build2
     image: public-registry.caliopen.org/caliopen_drone_docker
     privileged: true
     secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD, DOCKER_REGISTRY]
     environment:
-      - PLUGIN_DOCKERFILE=src/backend/Dockerfile.identity-poller
+      - PLUGIN_DOCKERFILE=src/backend/Dockerfile.identities-worker
       - PLUGIN_CONTEXT=/srv/caliopen/src/backend
-      - PLUGIN_REPO=registry.caliopen.org/caliopen_identity_poller
-      - PROG=workers/go.remoteIDs/cmd/idpoller
+      - PLUGIN_REPO=registry.caliopen.org/caliopen_identities_worker
+      - PROG=workers/go.remoteIDs/cmd/identities-worker
       - BASE_DIR=src/backend
       - LANG=go
     when:
@@ -345,12 +345,12 @@ pipeline:
       - latest
       - ${DRONE_TAG##release-}
 
-  build-idpoller-release:
+  build-identities-worker-release:
     group: release2
     image: plugins/docker
-    dockerfile: src/backend/Dockerfile.identity-poller
+    dockerfile: src/backend/Dockerfile.identities-worker
     context: /srv/caliopen/src/backend
-    repo: registry.caliopen.org/caliopen_identity_poller
+    repo: registry.caliopen.org/caliopen_identities-worker
     secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD, DOCKER_REGISTRY ]
     when:
       ref: [ "refs/tags/release-*" ]

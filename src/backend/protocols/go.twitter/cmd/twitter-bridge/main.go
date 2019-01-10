@@ -2,12 +2,11 @@
 // Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
 // license (AGPL) that can be found in the LICENSE file.
 
-
 package main
 
 import (
 	"fmt"
-	"github.com/CaliOpen/Caliopen/src/backend/protocols/go.twitter/cmd/twitterworker/cli_cmds"
+	"github.com/CaliOpen/Caliopen/src/backend/protocols/go.twitter/cmd/twitter-bridge/cli_cmds"
 	"os"
 )
 

@@ -8,7 +8,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/CaliOpen/Caliopen/src/backend/protocols/go.imap/cmd/imapworker/cli_cmds"
+	"github.com/CaliOpen/Caliopen/src/backend/protocols/go.imap/cmd/imap-bridge/cli_cmds"
 	"os"
 )
 

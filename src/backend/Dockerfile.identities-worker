@@ -11,7 +11,7 @@ WORKDIR /go/src/github.com/CaliOpen/Caliopen/src/backend
 # Fetch dependencies needed for Caliopen GO apps
 RUN govendor sync -v
 
-RUN CGO_ENABLED=0 GOOS=linux go install -a -ldflags '-extldflags "-static"' github.com/CaliOpen/Caliopen/src/backend/workers/go.remoteIDs/cmd/idpoller
+RUN CGO_ENABLED=0 GOOS=linux go install -a -ldflags '-extldflags "-static"' github.com/CaliOpen/Caliopen/src/backend/workers/go.remoteIDs/cmd/identities-worker
 
 FROM scratch
 MAINTAINER Caliopen
@@ -19,7 +19,7 @@ MAINTAINER Caliopen
 # Add CA certificates
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
-COPY --from=builder /go/bin/idpoller /usr/local/bin/idpoller
+COPY --from=builder /go/bin/identities-worker /usr/local/bin/identities-worker
 
 WORKDIR "/etc/caliopen"
-ENTRYPOINT [ "idpoller", "start", "-c", "idpoller", "--configpath", "/etc/caliopen", "-p", "/idpoller.pid"]
+ENTRYPOINT [ "identities-worker", "start", "-c", "identities-worker", "--configpath", "/etc/caliopen", "-p", "/identities-worker.pid"]

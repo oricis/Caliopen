@@ -5,7 +5,7 @@
 you need local resolution of service name used by munikube. Edit your /etc/hosts and add this line :
 
 ```
-127.0.0.1	cassandra elasticsearch redis nats minio vault apiv1 api broker idpoller imapworker
+127.0.0.1	cassandra elasticsearch redis nats minio vault apiv1 api broker identities-worker imapworker
 ```
 
 ### Go development
@@ -24,7 +24,7 @@ cd src/backend/configs
 go run ../protocols/go.smtp/cmd/caliopen_lmtpd/main.go serve -c lmtp -p lmtp.pid
 ```
 
-Apply same principle for `idpoller` and `imapworker`
+Apply same principle for `identities-worker` and `imapworker`
 
 ### Python development
 

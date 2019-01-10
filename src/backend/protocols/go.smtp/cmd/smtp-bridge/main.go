@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/CaliOpen/Caliopen/src/backend/protocols/go.smtp/cmd/caliopen_lmtpd/cli_cmds"
+	"github.com/CaliOpen/Caliopen/src/backend/protocols/go.smtp/cmd/smtp-bridge/cli_cmds"
 	"os"
 )
 

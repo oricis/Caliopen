@@ -12,7 +12,7 @@ store_settings:
   consistency_level: 1
 #messaging system
 nats_url: nats://nats:4222
-nats_queue : IDpoller
+nats_queue : IDsWorker
 nats_topics:                                    # NATS topics to work with
   id_cache: idCache                             # receiving orders to update poller's cache
   imap: IMAPfetcher                             # emitting orders for IMAP operations
