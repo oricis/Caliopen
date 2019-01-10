@@ -22,11 +22,11 @@ log = logging.getLogger(__name__)
 def import_email(email, import_path, format, contact_probability,
                  **kwargs):
     """Import emails for an user."""
-    from caliopen_main.user.core import User
+    from caliopen_main.user.core import User, UserIdentity
     from caliopen_main.contact.core import Contact, ContactLookup
     from caliopen_main.message.parsers.mail import MailMessage
     from caliopen_main.contact.parameters import NewContact, NewEmail
-    from caliopen_nats.delivery import UserMessageDelivery
+    from caliopen_nats.delivery import UserMailDelivery
     from caliopen_main.message.core import RawMessage
     from caliopen_storage.config import Configuration
 
@@ -95,6 +95,11 @@ def import_email(email, import_path, format, contact_probability,
                     Contact.create(user, contact_param)
         log.info('No contact associated to raw {} '.format(raw.raw_msg_id))
 
-        processor = UserMessageDelivery(user)
-        obj_message = processor.process_raw(raw.raw_msg_id)
-        log.info('Created message {}'.format(obj_message.message_id))
+        processor = UserMailDelivery(user,
+                        user.local_identities[0])  # assume one local identity
+        try:
+            obj_message = processor.process_raw(raw.raw_msg_id)
+        except Exception as exc:
+            log.exception(exc)
+        else:
+            log.info('Created message {}'.format(obj_message.message_id))
