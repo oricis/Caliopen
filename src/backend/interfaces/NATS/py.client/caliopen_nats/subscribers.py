@@ -8,7 +8,7 @@ import json
 from caliopen_main.user.core import User, UserIdentity
 from caliopen_main.contact.objects import Contact
 
-from caliopen_nats.delivery import UserMessageDelivery, UserTwitterDMDelivery
+from caliopen_nats.delivery import UserMailDelivery, UserTwitterDMDelivery
 from caliopen_pi.qualifiers import ContactMessageQualifier
 from caliopen_pgp.keys import ContactPublicKeyManager
 from caliopen_main.common.core import PublicKey
@@ -39,7 +39,7 @@ class InboundEmail(BaseHandler):
         try:
             user = User.get(payload['user_id'])
             identity = UserIdentity.get(user, payload['identity_id'])
-            deliver = UserMessageDelivery(user, identity)
+            deliver = UserMailDelivery(user, identity)
             new_message = deliver.process_raw(payload['message_id'])
             nats_success['message_id'] = str(new_message.message_id)
             self.natsConn.publish(msg.reply, json.dumps(nats_success))
