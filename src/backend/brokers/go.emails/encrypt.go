@@ -11,14 +11,13 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/emersion/go-message"
 	"math/rand"
-	"net/mail"
 	"strings"
 	"time"
 )
 
 var boundaryChars = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+:=?")
 
-func RandomString(n int) string {
+func randomString(n int) string {
 	b := make([]rune, n)
 	for i := range b {
 		b[i] = boundaryChars[rand.Intn(len(boundaryChars))]
@@ -38,11 +37,11 @@ func RandomString(n int) string {
 // "_"
 //                / "," / "-" / "." / "/" / ":" / "=" / "?"
 func (b *EmailBroker) NewBoundary() string {
-	return RandomString(42)
+	return randomString(42)
 }
 
 //Marshal an encrypted email
-func (b *EmailBroker) MarshalEncryptedEmail(msg *Message, em *EmailMessage) (err error) {
+func (b *EmailBroker) MarshalEncryptedEmail(msg *Message, em *EmailMessage, addresses map[string][]string) (err error) {
 
 	mainHeader := make(message.Header)
 	params := map[string]string{"boundary": b.NewBoundary(), "protocol": "application/pgp-encrypted"}
@@ -51,8 +50,7 @@ func (b *EmailBroker) MarshalEncryptedEmail(msg *Message, em *EmailMessage) (err
 	mainHeader.SetContentType("multipart/encrypted", params)
 	mainHeader.Set("X-Mailer", "Caliopen-"+b.Config.AppVersion)
 
-	addr_fields := formatAddressList(msg)
-	for field, addrs := range addr_fields {
+	for field, addrs := range addresses {
 		if len(addrs) > 0 {
 			mainHeader.Set(field, strings.Join(addrs, ","))
 		}
@@ -72,34 +70,6 @@ func (b *EmailBroker) MarshalEncryptedEmail(msg *Message, em *EmailMessage) (err
 	json_rep, _ := EmailToJsonRep(em.Email.Raw.String())
 	em.Email_json = &json_rep
 	return
-}
-
-// Format a participant into a mail.Address
-func formatAddress(participant Participant) *mail.Address {
-	addr := &mail.Address{Name: participant.Label, Address: participant.Address}
-	return addr
-}
-
-// Create mail.Address list indexed by participant type
-func formatAddressList(msg *Message) map[string][]string {
-	// Create address headers
-	addr_fields := newAddressesFields()
-	for _, participant := range msg.Participants {
-		address := formatAddress(participant)
-		switch participant.Type {
-		case ParticipantFrom:
-			addr_fields["From"] = append(addr_fields["From"], address.String())
-		case ParticipantReplyTo:
-			addr_fields["Reply-To"] = append(addr_fields["Reply-To"], address.String())
-		case ParticipantTo:
-			addr_fields["To"] = append(addr_fields["To"], address.String())
-		case ParticipantCC:
-			addr_fields["Cc"] = append(addr_fields["Cc"], address.String())
-		case ParticipantSender:
-			addr_fields["Sender"] = append(addr_fields["Sender"], address.String())
-		}
-	}
-	return addr_fields
 }
 
 func formatBody(msg *Message, mainHeader message.Header) (bytes.Buffer, error) {
