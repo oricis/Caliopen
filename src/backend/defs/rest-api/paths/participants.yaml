@@ -40,3 +40,43 @@ participants_suggest:
         schema:
           "$ref": "../objects/Error.yaml"
 
+participants_discussion:
+  post:
+    description: Returns discussion related to a list of participants
+    tags:
+    - participants
+    security:
+    - basicAuth: []
+    parameters:
+    - name: participants
+      in: body
+      schema:
+        properties:
+          sources:
+            type: array
+            items:
+              "$ref": "../objects/Participant.yaml"
+      required: true
+    produces:
+    - application/json
+    responses:
+      '200':
+        description: Computed discussion information
+        schema:
+          type: object
+          properties:
+            hash:
+              type: string
+              description: participants informations hash for discussion lookup
+            discussion_id:
+              type: string
+              description: id of existing discussion for given participants
+      '400':
+        description: malform request
+        schema:
+          type: object
+          "$ref": "../objects/Error.yaml"
+      '401':
+        description: Unauthorized access
+        schema:
+          "$ref": "../objects/Error.yaml"

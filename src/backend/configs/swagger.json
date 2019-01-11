@@ -13964,6 +13964,137 @@
         }
       }
     },
+    "/v1/participants/discussion": {
+      "post": {
+        "description": "Returns discussion related to a list of participants",
+        "tags": [
+          "participants"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "participants",
+            "in": "body",
+            "schema": {
+              "properties": {
+                "sources": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "address": {
+                        "type": "string"
+                      },
+                      "contact_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "label": {
+                        "type": "string"
+                      },
+                      "protocol": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "To",
+                          "Cc",
+                          "Bcc",
+                          "From",
+                          "Reply-To",
+                          "Sender"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "address",
+                      "type",
+                      "protocol"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            },
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Computed discussion information",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "hash": {
+                  "type": "string",
+                  "description": "participants informations hash for discussion lookup"
+                },
+                "discussion_id": {
+                  "type": "string",
+                  "description": "id of existing discussion for given participants"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "malform request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v2/search": {
       "get": {
         "description": "Simple API to execute full-text searches within user's indexes. A more complexe API will be available with a POST verb.",
