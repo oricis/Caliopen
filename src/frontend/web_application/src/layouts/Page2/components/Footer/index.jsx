@@ -26,7 +26,7 @@ class Footer extends PureComponent {
         </div> */}
 
         <div className="l-footer__logo"><Brand className="l-footer__brand" theme="low" /></div>
-        <div className="l-footer__release">{version} Be good.</div>
+        <div className="l-footer__release">{version} - Be good. - <a href="/privacy-policy.html" target="_blank">Privacy Policy</a></div>
       </div>
     );
   }
