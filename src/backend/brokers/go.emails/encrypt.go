@@ -25,23 +25,18 @@ func randomString(n int) string {
 	return string(b)
 }
 
-// NewBoundary return a mail boundary according to RFC format
-//
-// Return a MIME boudary as specified in RFC 1341 (7.2.1)
+// NewBoundary return a mail boundary according to RFC 1341 (7.2.1).
 //
 // boundary := 0*69<bchars> bcharsnospace
-//
 // bchars := bcharsnospace / " "
-//
-// bcharsnospace :=    DIGIT / ALPHA / "'" / "(" / ")" / "+"  /
-// "_"
+// bcharsnospace :=    DIGIT / ALPHA / "'" / "(" / ")" / "+"  / "_"
 //                / "," / "-" / "." / "/" / ":" / "=" / "?"
 func (b *EmailBroker) NewBoundary() string {
 	return randomString(42)
 }
 
-//Marshal an encrypted email
-func (b *EmailBroker) MarshalEncryptedEmail(msg *Message, em *EmailMessage, addresses map[string][]string) (err error) {
+// MarshalEncryptedEmail build an encrypted PGP/MIME email according to RFC 3156.
+func (b *EmailBroker) MarshalPGPEmail(msg *Message, em *EmailMessage, addresses map[string][]string) (err error) {
 
 	mainHeader := make(message.Header)
 	params := map[string]string{"boundary": b.NewBoundary(), "protocol": "application/pgp-encrypted"}

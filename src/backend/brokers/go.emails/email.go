@@ -99,7 +99,7 @@ func (b *EmailBroker) MarshalEmail(msg *Message) (em *EmailMessage, err error) {
 	crypt_method, ok := features["message_encryption_method"]
 	if ok {
 		if crypt_method == "pgp" {
-			err := b.MarshalEncryptedEmail(msg, em, addr_fields)
+			err := b.MarshalPGPEmail(msg, em, addr_fields)
 			if err != nil {
 				return &EmailMessage{}, err
 			}
