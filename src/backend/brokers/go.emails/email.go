@@ -73,22 +73,23 @@ func (b *EmailBroker) MarshalEmail(msg *Message) (em *EmailMessage, err error) {
 	m := gomail.NewMessage()
 	addr_fields := newAddressesFields()
 	for _, participant := range msg.Participants {
+		address := m.FormatAddress(participant.Address, participant.Label)
 		switch participant.Type {
 		case ParticipantFrom:
-			addr_fields["From"] = append(addr_fields["From"], m.FormatAddress(participant.Address, participant.Label))
+			addr_fields["From"] = append(addr_fields["From"], address)
 			em.Email.SmtpMailFrom = append(em.Email.SmtpMailFrom, participant.Address) //TODO: handle multisender to conform to RFC5322#3.6.2 (coupled with sender field)
 		case ParticipantReplyTo:
-			addr_fields["Reply-To"] = append(addr_fields["Reply-To"], m.FormatAddress(participant.Address, participant.Label))
+			addr_fields["Reply-To"] = append(addr_fields["Reply-To"], address)
 		case ParticipantTo:
-			addr_fields["To"] = append(addr_fields["To"], m.FormatAddress(participant.Address, participant.Label))
+			addr_fields["To"] = append(addr_fields["To"], address)
 			em.Email.SmtpRcpTo = append(em.Email.SmtpRcpTo, participant.Address)
 		case ParticipantCC:
-			addr_fields["Cc"] = append(addr_fields["Cc"], m.FormatAddress(participant.Address, participant.Label))
+			addr_fields["Cc"] = append(addr_fields["Cc"], address)
 			em.Email.SmtpRcpTo = append(em.Email.SmtpRcpTo, participant.Address)
 		case ParticipantBcc:
 			em.Email.SmtpRcpTo = append(em.Email.SmtpRcpTo, participant.Address)
 		case ParticipantSender:
-			addr_fields["Sender"] = append(addr_fields["Sender"], m.FormatAddress(participant.Address, participant.Label))
+			addr_fields["Sender"] = append(addr_fields["Sender"], address)
 			em.Email.SmtpMailFrom = append(em.Email.SmtpMailFrom, participant.Address) //TODO: handle multisender to conform to RFC5322#3.6.2 (coupled with sender field)
 		}
 	}
