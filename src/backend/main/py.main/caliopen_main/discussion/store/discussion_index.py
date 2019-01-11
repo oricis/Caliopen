@@ -53,8 +53,10 @@ class DiscussionIndexManager(object):
         agg = A('terms', field='discussion_id',
                 order={'last_message': 'desc'}, size=size, shard_size=size)
         search.aggs.bucket('discussions', agg) \
-            .metric('last_message', 'max', field='date_sort')
-        result = search.execute()
+            .metric('last_message', 'max', field='date_sort') \
+            .bucket("unread", "filter", term={"is_unread": True})
+
+        result = search.source(exclude=["*"]).execute()
         if hasattr(result, 'aggregations'):
             # Something found
             buckets = result.aggregations.discussions.buckets
@@ -87,15 +89,17 @@ class DiscussionIndexManager(object):
     def list_discussions(self, limit=10, offset=0, min_pi=0, max_pi=0,
                          min_il=-10, max_il=10):
         """Build a list of limited number of discussions."""
-        list, total = self.__search_ids(limit, offset, min_pi, max_pi, min_il,
-                                        max_il)
+        buckets, total = self.__search_ids(limit, offset, min_pi, max_pi,
+                                           min_il,
+                                           max_il)
         discussions = []
-        for discus in list:
-            message = self.get_last_message(discus['key'],
+        for bucket in buckets:
+            message = self.get_last_message(bucket['key'],
                                             min_il, max_il,
                                             True)
-            discussion = DiscussionIndex(discus['key'])
-            discussion.total_count = discus['doc_count']
+            discussion = DiscussionIndex(bucket['key'])
+            discussion.total_count = bucket['doc_count']
+            discussion.unread_count = bucket['unread']['doc_count']
             discussion.last_message = message
             # XXX build others values from index
             discussions.append(discussion)
@@ -108,17 +112,21 @@ class DiscussionIndexManager(object):
         msg = IndexedMessage.get(message_id, using=self.proxy, index=self.index)
         return str(msg.discussion_id) == str(discussion_id)
 
-    def get_by_id(self, discussion_id):
+    def get_by_id(self, discussion_id, min_il=0, max_il=100):
         """Return a single discussion by discussion_id"""
 
-        result = self._prepare_search() \
-            .filter("match", discussion_id=discussion_id) \
-            .execute()
-        if not result.hits:
+        search = self._prepare_search() \
+            .filter("match", discussion_id=discussion_id)
+        search.aggs.bucket('discussions', A('terms', field='discussion_id')) \
+            .bucket("unread", "filter", term={"is_unread": True})
+        result = search.execute()
+        if not result.hits or len(result.hits) < 1:
             return None
 
-        message = self.get_last_message(discussion_id, 0, 100, True)
+        message = self.get_last_message(discussion_id, min_il, max_il, True)
         discussion = DiscussionIndex(discussion_id)
         discussion.total_count = result.hits.total
         discussion.last_message = message
+        discussion.unread_count = result.aggregations.discussions.buckets[
+            0].unread.doc_count
         return discussion

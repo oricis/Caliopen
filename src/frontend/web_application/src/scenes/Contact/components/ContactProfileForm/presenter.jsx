@@ -21,16 +21,8 @@ class ContactProfileForm extends Component {
   };
 
   state = {
-    isExpanded: false,
+    isExpanded: this.props.isNew,
   };
-
-  componentWillMount() {
-    if (this.props.isNew) {
-      this.setState({
-        isExpanded: true,
-      });
-    }
-  }
 
   toggleExpandForm = () => {
     this.setState(prevState => ({

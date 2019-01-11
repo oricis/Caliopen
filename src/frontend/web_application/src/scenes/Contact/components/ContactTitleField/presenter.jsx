@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { formatName } from '../../../../services/contact';
+import { RawButton } from '../../../../components';
 import './style.scss';
 
 class ContactTitleField extends PureComponent {
@@ -21,12 +22,12 @@ class ContactTitleField extends PureComponent {
     } = this.props;
 
     return (
-      <button
+      <RawButton
         className={classnames(className, 's-contact-title-field')}
         onClick={onClick}
       >
         {formatName({ contact, format })}
-      </button>
+      </RawButton>
     );
   }
 }

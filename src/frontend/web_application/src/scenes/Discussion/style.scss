@@ -6,47 +6,6 @@
   position: relative;
   flex-direction: column;
 
-  &__action-bar--sticky {
-    position: fixed;
-    top: 41px;
-    right: 0;
-    left: 0;
-    background-color: white;
-
-    .s-discussion__header {
-      padding: 0 40px;
-    }
-  }
-
-  &__header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    max-width: $co-site-width;
-    height: $co-component__height;
-    margin: 0 auto;
-    background-color: white;
-    font-size: $co-font__size--small;
-    text-align: right;
-  }
-
-  &__actions {
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
-    align-items: center;
-    justify-content: flex-end;
-  }
-
-  &__action-label {
-    @include breakpoint(small) {
-      display: none;
-    }
-    display: block;
-    color: $co-color__primary--low;
-  }
-
   &__tags {
     display: flex;
     flex-direction: row;
@@ -56,8 +15,6 @@
     display: block;
     margin-left: $co-component__spacing;
   }
-
-  &__action { margin-right: $co-component__spacing; }
 
   &__load-more {
     padding-top: $co-margin;

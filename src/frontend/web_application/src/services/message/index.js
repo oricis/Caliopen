@@ -25,6 +25,9 @@ export const getRecipients = message => message.participants && message.particip
 export const getRecipientsExceptUser = (message, user) => getRecipients(message)
   .filter(participant => !isParticipantUser(participant, user));
 
+export const getParticipantsExceptUser = (message, user) => message.participants &&
+  message.participants.filter(participant => !isParticipantUser(participant, user));
+
 export const isMessageFromUser = (message, user) => {
   const author = getAuthor(message);
 

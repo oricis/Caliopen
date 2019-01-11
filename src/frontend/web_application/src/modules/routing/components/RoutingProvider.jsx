@@ -8,6 +8,7 @@ import Signup from '../../../scenes/Signup';
 import ForgotPassword from '../../../scenes/ForgotPassword';
 import ResetPassword from '../../../scenes/ResetPassword';
 import Contact from '../../../scenes/Contact';
+import ContactAssociation from '../../../scenes/ContactAssociation';
 import AuthPageLayout from '../../../layouts/AuthPage';
 import PageLayout from '../../../layouts/Page2';
 import SettingsLayout from '../../../layouts/Settings';
@@ -31,13 +32,16 @@ import { renderParticipant } from '../../../services/message';
 import { formatName } from '../../../services/contact';
 import AuthenticatedLayout from './AuthenticatedLayout';
 
-const tabMatchSettings = ({ pathname }) => matchPath(pathname, {
+const tabMatchForSettings = ({ pathname }) => matchPath(pathname, {
   path: '/settings/:type',
   exact: true,
   strict: false,
 });
 const tabMatchRoute = ({ pathname, routeConfig }) => matchPath(pathname, routeConfig);
 const tabMatchPathname = ({ pathname, tab }) => pathname === tab.location.pathname;
+const tabMatchForContact = ({ pathname, tab, routeConfig }) =>
+  tabMatchRoute({ pathname, routeConfig }) &&
+  pathname.split('/edit')[0] === tab.location.pathname.split('/edit')[0];
 
 @withI18n()
 class RoutingProvider extends Component {
@@ -56,9 +60,13 @@ class RoutingProvider extends Component {
   }
 
   // TODO: refactor
-  //  route initialization can be done by scene via root App component
-  // it is not easy, a route injection method here cannot be used because it will re-render and so
-  // the component it self which injects the routes
+  //    route initialization can be done by scene via root App component.
+  //    it is not easy, a route injection method here cannot be used because it will re-render and
+  //    so the component it self which injects the routes
+  // TODO: refactor
+  //    may be change the tab config to a render func because it a bit spaghetti to have tab
+  //    component far away in layout. historycally a tab can be rendered diffently in sidebar on
+  //    mobile or in the navbar on large screens
   initializeRoutes = () => {
     const { i18n } = this.props;
     this.setState({
@@ -150,7 +158,24 @@ class RoutingProvider extends Component {
                   },
                 },
                 {
+                  path: '/contact-association/:protocol/:address',
+                  exact: true,
+                  component: ContactAssociation,
+                  app: 'contact',
+                  tab: {
+                    type: 'contact-association',
+                    icon: 'address-book',
+                    renderLabel: ({ label, address }) => i18n._('route.contact-association.label', { label: label || address }, { defaults: 'Associate "{label}"' }),
+                    tabMatch: tabMatchPathname,
+                  },
+                },
+                {
+                  // react-router 4.4 (not yet released - 03/03/19) will support array of strings
+                  // path: ['/contacts/:contactId', '/contacts/:contactId/edit'],
                   path: '/contacts/:contactId',
+                  exact: false,
+                  strict: false,
+                  // ---
                   component: Contact,
                   app: 'contact',
                   tab: {
@@ -161,7 +186,7 @@ class RoutingProvider extends Component {
 
                       return (contact && formatName({ contact, format })) || i18n._('contact.profile.name_not_set', null, { defaults: '(N/A)' });
                     },
-                    tabMatch: tabMatchPathname,
+                    tabMatch: tabMatchForContact,
                   },
                 },
                 {
@@ -242,7 +267,7 @@ class RoutingProvider extends Component {
                         type: 'default',
                         icon: 'cog',
                         renderLabel: () => i18n._('route.settings.label.identities', null, { defaults: 'Security' }),
-                        tabMatch: tabMatchSettings,
+                        tabMatch: tabMatchForSettings,
                       },
                     },
                     {
@@ -252,7 +277,7 @@ class RoutingProvider extends Component {
                         type: 'default',
                         icon: 'cog',
                         renderLabel: () => i18n._('route.settings.label.application', null, { defaults: 'Devices' }),
-                        tabMatch: tabMatchSettings,
+                        tabMatch: tabMatchForSettings,
                       },
                     },
                     {
@@ -262,7 +287,7 @@ class RoutingProvider extends Component {
                         type: 'default',
                         icon: 'cog',
                         renderLabel: () => i18n._('route.settings.label.tags', null, { defaults: 'Tags' }),
-                        tabMatch: tabMatchSettings,
+                        tabMatch: tabMatchForSettings,
                       },
                     },
 
@@ -274,7 +299,7 @@ class RoutingProvider extends Component {
                         type: 'default',
                         icon: 'cog',
                         renderLabel: () => i18n._('route.settings.label.devices', null, { defaults: 'Devices' }),
-                        tabMatch: tabMatchSettings,
+                        tabMatch: tabMatchForSettings,
                       },
                     },
                     {
@@ -284,7 +309,7 @@ class RoutingProvider extends Component {
                         type: 'default',
                         icon: 'cog',
                         renderLabel: () => i18n._('route.settings.label.devices', null, { defaults: 'Devices' }),
-                        tabMatch: tabMatchSettings,
+                        tabMatch: tabMatchForSettings,
                       },
                     },
 

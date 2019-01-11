@@ -2,7 +2,10 @@
 @import '../../styles/vendor/bootstrap_foundation-sites';
 
 .m-action-bar {
-  @include flex-grid-row($size: expanded);
+  position: relative;
+  // XXX: dirty fix: form elements go in front of action-bar when sticky since the position
+  // attribute is also set in @o-form-element-select-wrapper
+  z-index: $l-z-index__action-bar;
   background: $co-color__fg__back;
   line-height: $co-component__height;
 
@@ -11,20 +14,37 @@
   }
 
   &__loading {
-    @include flex-grid-column(shrink);
+    position: absolute;
+    // XXX: see above
+    z-index: $l-z-index__action-bar;
+    width: 0;
+    transition: $co-animation__width-transition;
+    background: $co-color__fg__back;
+    overflow: hidden;
+
+    &--is-loading {
+      width: 100%;
+      padding-left: map_get($co-margin_, 'xsmall');
+    }
   }
 
   &__actions {
-    @include flex-grid-column;
-    display: block;
-    color: #1a5773;
+    color: #1a5773; // XXX
     font-weight: bold;
   }
 
+  &__action-btn {
+    margin-left: map_get($co-margin_, 'xsmall');
+    color: #0e97c3; // XXX
+  }
+
   @include breakpoint(medium) {
-    &__actions {
-      display: inline;
-      text-align: right;
-    }
+    max-width: $co-site-width - (map_get($co-page-container-paddings, 'medium') * 2);
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  @include breakpoint(xlarge) {
+    max-width: $co-site-width - (map_get($co-page-container-paddings, 'xlarge') * 2);
   }
 }

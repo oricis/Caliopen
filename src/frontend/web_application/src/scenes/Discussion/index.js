@@ -7,7 +7,7 @@ import { reply } from '../../modules/draftMessage';
 import { createMessageCollectionStateSelector } from '../../store/selectors/message';
 import { UserSelector } from '../../store/selectors/user';
 import { withTags, updateTagCollection } from '../../modules/tags';
-import { sortMessages } from '../../services/message';
+import { sortMessages, getLastMessage } from '../../services/message';
 import { getUser } from '../../modules/user/actions/getUser';
 import { withPush } from '../../modules/routing/hoc/withPush';
 import Discussion from './presenter';
@@ -31,6 +31,7 @@ const mapStateToProps = createSelector(
         .filter(msg => msg.is_draft === false),
       false
     );
+    const lastMessage = getLastMessage(messages);
 
     return {
       discussionId,
@@ -42,6 +43,7 @@ const mapStateToProps = createSelector(
       didInvalidate,
       hasMore,
       canBeClosed,
+      lastMessage,
     };
   }
 );

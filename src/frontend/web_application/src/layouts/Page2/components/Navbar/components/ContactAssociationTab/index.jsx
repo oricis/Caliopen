@@ -1,7 +1,5 @@
 import React from 'react';
 import classnames from 'classnames';
-import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
 import { Icon } from '../../../../../../components';
 import { getTabUrl } from '../../../../../../modules/tab';
 import Tab from '../Tab';
@@ -9,29 +7,17 @@ import NavbarItem from '../NavbarItem';
 import ItemLink from '../ItemLink';
 import ItemButton from '../ItemButton';
 
-const contactState = state => state.contact;
-const tabSelector = (state, props) => props.tab;
-const routeConfigSelector = (state, props) => props.routeConfig;
-
-const mapStateToProps = createSelector(
-  [contactState, tabSelector, routeConfigSelector],
-  (discussionState, tab, routeConfig) => ({
-    contact: discussionState.contactsById[tab.getMatch({ routeConfig }).params.contactId],
-  })
-);
-
-@connect(mapStateToProps)
-class ContactTab extends Tab {
+class ContactAssociationTab extends Tab {
   render() {
     const {
       className,
       isActive,
       tab,
-      contact,
       routeConfig,
     } = this.props;
 
-    const label = routeConfig.tab.renderLabel({ contact });
+    const { label, address } = tab.getMatch({ routeConfig }).params;
+    const tabLabel = routeConfig.tab.renderLabel({ label, address });
 
     return (
       <NavbarItem
@@ -40,11 +26,11 @@ class ContactTab extends Tab {
         contentChildren={(
           <ItemLink
             to={getTabUrl(tab.location)}
-            title={label}
+            title={tabLabel}
             className="m-tab__content"
           >
-            <Icon type="address-book" className="m-tab__icon" rightSpaced />
-            {label}
+            <Icon type="address-book" className="tab__icon" rightSpaced />
+            {tabLabel}
           </ItemLink>
         )}
         actionChildren={<ItemButton onClick={this.handleRemove} icon="remove" className="m-tab__action" />}
@@ -53,4 +39,4 @@ class ContactTab extends Tab {
   }
 }
 
-export default ContactTab;
+export default ContactAssociationTab;

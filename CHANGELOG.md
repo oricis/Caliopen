@@ -9,10 +9,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - When an user authenticate we issue a device.login event
+- Add a contact from a discussion
 
 ### Fixed
 
 - Existing device are found better, lead to less untrusted device for user
+- Click on contact's title "input" submits the form
+- Empty contact book even when user has a contact (always actually)
+- Route /discussion/{discussion_id} to retrieve one discussion
+- `unread_count` in discussions list
 
 ### Changed
 
