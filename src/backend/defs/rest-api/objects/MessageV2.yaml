@@ -57,6 +57,9 @@ properties:
   pi:
     type: object
     "$ref": PI.yaml
+  pi_message:
+    type: object
+    "$ref": PIMessage.yaml
   raw_msg_id:
     type: string
   subject:

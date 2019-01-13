@@ -1,0 +1,10 @@
+---
+type: object
+properties:
+  content:
+    type: integer
+  transport:
+    type: integer
+  social:
+    type: integer
+additionalProperties: false
