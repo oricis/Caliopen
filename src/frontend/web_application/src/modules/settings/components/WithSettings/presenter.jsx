@@ -11,19 +11,21 @@ class WithSettings extends Component {
     isInvalidated: PropTypes.bool.isRequired,
     didLostAuth: PropTypes.bool.isRequired,
     isFetching: PropTypes.bool.isRequired,
+    networkDisabled: PropTypes.bool,
   };
 
   static defaultProps = {
     settings: undefined,
     synced: false,
+    networkDisabled: false,
   };
 
   componentDidMount() {
     const {
-      settings, requestSettings, isInvalidated, isFetching,
+      settings, requestSettings, isInvalidated, isFetching, networkDisabled,
     } = this.props;
 
-    if ((!settings || isInvalidated) && !isFetching && isAuthenticated()) {
+    if (!networkDisabled && (!settings || isInvalidated) && !isFetching && isAuthenticated()) {
       requestSettings();
     }
   }

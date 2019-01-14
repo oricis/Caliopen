@@ -49,6 +49,12 @@ class Poller {
 
         self.postMessage({ results });
       } catch (err) {
+        if (err.response.status === 401) {
+          this.stop();
+          self.postMessage({ status: 'auth_lost' });
+
+          return;
+        }
         if (err.response.status >= 400) {
           this.stop();
           self.postMessage({ status: 'terminated' });
