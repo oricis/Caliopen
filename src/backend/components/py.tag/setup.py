@@ -20,7 +20,7 @@ requires = [
     'user-agents',
     'geoip2',
     'nltk',
-    'beautifulsoup4',
+    'bs4',
     'fastText==0.8.22',
 ]
 

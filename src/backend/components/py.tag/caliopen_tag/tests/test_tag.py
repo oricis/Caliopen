@@ -1,19 +1,9 @@
-"""Test spam privacy feature extraction."""
+"""Test tagger class"""
 
 import unittest
-import os
 
-from caliopen_storage.config import Configuration
-# from mailbox import Message
-from caliopen_tag.taggers.tagger import MessageTagger, prepare_msg
-
-if 'CALIOPEN_BASEDIR' in os.environ:
-    conf_file = '{}/src/backend/configs/caliopen.yaml.template'. \
-                format(os.environ['CALIOPEN_BASEDIR'])
-else:
-    conf_file = '../../../../configs/caliopen.yaml.template'
-
-Configuration.load(conf_file, 'global')
+from caliopen_tag.taggers.tagger import MessageTagger
+from caliopen_tag.utils import pre_process
 
 
 class TestPredictTagger(unittest.TestCase):
@@ -24,10 +14,10 @@ class TestPredictTagger(unittest.TestCase):
             MessageTagger("random_cat")
 
     def test_prepare_msg(self):
-        text = prepare_msg("""<html><body>
+        text = pre_process("""<html><body>
                               <h1>Bonjour M. Dupont,</h1>
                               <br>
-                              <p>Voici le contenu de mon message .</p>
-                              </body></html>""")
+                              <p>Voici le contenu de mon message.</p>
+                              </body></html>""", html=True)
         self.assertEqual(text, "bonjour m. dupont , "
                                "voici le contenu de mon message .")
