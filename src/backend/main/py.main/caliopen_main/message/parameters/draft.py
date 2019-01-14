@@ -14,7 +14,8 @@ from caliopen_main.discussion.store.discussion_index import \
     DiscussionIndexManager as DIM
 from caliopen_main.message.store import Message as ModelMessage
 from caliopen_main.discussion.core import Discussion
-from caliopen_main.common import errors as err
+from caliopen_main.common.errors import PatchUnprocessable, PatchConflict
+from caliopen_main.common.errors import PatchError
 
 import logging
 
@@ -26,12 +27,12 @@ class Draft(NewInboundMessage):
 
     def validate_uuid(self, user_id):
         if not self.message_id or not isinstance(self.message_id, uuid.UUID):
-            raise err.PatchUnprocessable(
+            raise PatchUnprocessable(
                 message="missing or invalid message_id")
         try:
             ModelMessage.get(user_id=user_id,
                              message_id=self.message_id)
-            raise err.PatchUnprocessable(message="message_id not unique")
+            raise PatchUnprocessable(message="message_id not unique")
         except NotFound:
             pass
 
@@ -50,7 +51,7 @@ class Draft(NewInboundMessage):
             self.validate()
 
         except Exception as exc:
-            log.warn("draft validation failed with error {}".format(exc))
+            log.exception("draft validation failed with error {}".format(exc))
             raise exc
         # copy body to body_plain TODO : manage plain or html depending on user pref.
         if hasattr(self, "body") and self.body is not None:
@@ -69,7 +70,7 @@ class Draft(NewInboundMessage):
             if hasattr(self, 'subject') and self.subject is not None:
                 if p.sub('', self.subject).strip() != p.sub('',
                                                             last_message.subject).strip():
-                    raise err.PatchConflict(message="subject has been changed")
+                    raise PatchConflict(message="subject has been changed")
             else:
                 # no subject property provided :
                 # add subject from context with only one "Re: " prefix
@@ -86,10 +87,10 @@ class Draft(NewInboundMessage):
     def _add_from_participant(self, user):
 
         if 'user_identities' not in self:
-            raise err.PatchUnprocessable
+            raise PatchUnprocessable('Missing user identities')
 
         if len(self['user_identities']) != 1:
-            raise err.PatchUnprocessable
+            raise PatchUnprocessable('Invalid user identities')
 
         user_identity = UserIdentity(user,
                                      identity_id=str(self['user_identities'][0]))
@@ -97,7 +98,7 @@ class Draft(NewInboundMessage):
             user_identity.get_db()
             user_identity.unmarshall_db()
         except NotFound:
-            raise err.PatchUnprocessable(message="identity not found")
+            raise PatchUnprocessable(message="identity not found")
 
         # add 'from' participant with local identity's identifier
         if not hasattr(self, 'participants'):
@@ -139,7 +140,7 @@ class Draft(NewInboundMessage):
                     parent_msg.get_db()
                     parent_msg.unmarshall_db()
                 except NotFound:
-                    raise err.PatchError(message="parent message not found")
+                    raise PatchError(message="parent message not found")
                 self.discussion_id = parent_msg.discussion_id
             else:
                 discussion = Discussion.create_from_message(user, self)
@@ -150,8 +151,7 @@ class Draft(NewInboundMessage):
             d_id = self.discussion_id
             last_message = dim.get_last_message(d_id, -10, 10, True)
             if last_message == {}:
-                raise err.PatchError(
-                    message='No such discussion {}'.format(d_id))
+                raise PatchError(message='No such discussion {}'.format(d_id))
             is_a_reply = (str(last_message.message_id) != str(self.message_id))
             if is_a_reply:
                 # check participants consistency
@@ -160,7 +160,7 @@ class Draft(NewInboundMessage):
                     last_msg_participants = [p['address'] for p in
                                              last_message.participants]
                     if len(participants) != len(last_msg_participants):
-                        raise err.PatchError(
+                        raise PatchError(
                             message="list of participants "
                                     "is not consistent for this discussion")
                     participants.sort()
@@ -168,9 +168,9 @@ class Draft(NewInboundMessage):
 
                     for i, participant in enumerate(participants):
                         if participant != last_msg_participants[i]:
-                            raise err.PatchConflict(
-                                message="list of participants "
-                                        "is not consistent for this discussion")
+                            msg = "list of participants is not consistent " \
+                                "for this discussion"
+                            raise PatchConflict(message=msg)
                 else:
                     self.build_participants_for_reply(user)
 
@@ -180,9 +180,9 @@ class Draft(NewInboundMessage):
                     if not dim.message_belongs_to(
                             discussion_id=self.discussion_id,
                             message_id=self.parent_id):
-                        raise err.PatchConflict(message="provided message "
-                                                        "parent_id does not belong "
-                                                        "to this discussion")
+                        msg = "provided message parent_id does not belong " \
+                            "to this discussion"
+                        raise PatchConflict(message=msg)
                 else:
                     self.parent_id = last_message.parent_id
 

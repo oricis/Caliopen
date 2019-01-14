@@ -6,6 +6,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- When an user authenticate we issue a device.login event
+- Add a contact from a discussion
+- Privacy Policy page available at https://alpha.caliopen.org/privacy-policy.html
+
+### Fixed
+
+- Existing device are found better, lead to less untrusted device for user
+- Click on contact's title "input" submits the form
+- Empty contact book even when user has a contact (always actually)
+- Route /discussion/{discussion_id} to retrieve one discussion
+- `unread_count` in discussions list
+
+### Changed
+
+- Rework how privacy features are declared and managed
+
 ## [0.14.0] 2018-12-19
 
 ### Added

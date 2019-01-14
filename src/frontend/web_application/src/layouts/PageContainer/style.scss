@@ -9,12 +9,12 @@
   padding-left: 0;
 
   @include breakpoint(medium) {
-    padding-right: 4px;
-    padding-left: 4px;
+    padding-right: map_get($co-page-container-paddings, 'medium');
+    padding-left: map_get($co-page-container-paddings, 'medium');
   }
 
   @include breakpoint(xlarge) {
-    padding-right: 40px;
-    padding-left: 40px;
+    padding-right: map_get($co-page-container-paddings, 'xlarge');
+    padding-left: map_get($co-page-container-paddings, 'xlarge');
   }
 }

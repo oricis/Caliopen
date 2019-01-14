@@ -5,9 +5,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 
 from caliopen_main.pi.parameters import PIParameter
-from .histogram import ParticipantHistogram
-from .types import unmarshall_features
-
+from .helpers.histogram import ParticipantHistogram
+from .types import init_features, marshal_features
 
 log = logging.getLogger(__name__)
 
@@ -24,18 +23,10 @@ def pstdev(avg, data):
 class ContactFeature(object):
     """Process a contact to extract its privacy features."""
 
-    _features = {
-        'message_day_total': 0,
-        'message_day_avg': 0,
-        'message_day_pstdev': 0,
-        'public_key_best_size': 0,
-        'address_or_phone': False,
-        'nb_protocols': 0
-    }
-
     def __init__(self, user, conf=None):
         self.user = user
         self.conf = conf
+        self._features = init_features('contact')
 
     def _compute_histogram(self, email):
         """Get an histogram for a contact email and compute basic infos."""
@@ -107,4 +98,4 @@ class ContactFeature(object):
         log.info('Contact {0} have features {1}'.
                  format(contact.contact_id, features))
         pi = self._compute_pi(contact, features)
-        return pi, unmarshall_features(features)
+        return pi, marshal_features(features)

@@ -1,6 +1,10 @@
 // do not use rem, this allow more content for the same width by
 // changing font-size for breakpoints in the root element (e.g 88% for large screen)
 $co-site-width: 1200px;
+$co-page-container-paddings: (
+  medium: 4px,
+  xlarge: 40px,
+);
 $co-header__height: 3rem !default; // 48px
 $co-brand-width: 10rem;
 $co-pi-width: (
@@ -66,6 +70,7 @@ $co-animation__width-transition: width .15s ease-in-out !default;
 
 $l-z-index__navbar-shadow: -1;
 $l-z-index__navbar: 1;
+$l-z-index__action-bar: 1;
 $l-z-index__flash-message: 2;
 $l-z-index__actions-container: 999;
 $l-z-index__header: 1000;

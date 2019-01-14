@@ -1,15 +1,19 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from '@lingui/react';
-import { withSettings } from '../../modules/settings';
-import { ManageEntityTags, getTagLabel, getCleanedTagCollection } from '../../modules/tags';
+import { Trans, withI18n } from '@lingui/react';
+import { Switch, Route } from 'react-router-dom';
 import { ContactAvatarLetter } from '../../modules/avatar';
-import { withPush } from '../../modules/routing';
 import { getAveragePI } from '../../modules/pi';
+import { withPush } from '../../modules/routing';
+import { ScrollDetector } from '../../modules/scroll';
+import { withSettings } from '../../modules/settings';
+import { withCloseTab, withCurrentTab } from '../../modules/tab';
+import { ManageEntityTags, getTagLabel, getCleanedTagCollection, withTags } from '../../modules/tags';
+import { withNotification } from '../../modules/userNotify';
 import fetchLocation from '../../services/api-location';
 import { formatName } from '../../services/contact';
 import ContactProfileForm from './components/ContactProfileForm';
-import { ActionBar, Badge, Button, Confirm, Icon, Modal, PageTitle, PlaceholderBlock, Spinner, TextBlock, TextList, TextItem, Title } from '../../components';
+import { ActionBarWrapper, ActionBar, ActionBarButton, Badge, Button, Confirm, Icon, Modal, PageTitle, PlaceholderBlock, Spinner, TextBlock, TextList, TextItem, Title } from '../../components';
 import FormCollection from './components/FormCollection';
 import EmailForm from './components/EmailForm';
 import PhoneForm from './components/PhoneForm';
@@ -33,6 +37,11 @@ import './style.scss';
 import './contact-action-bar.scss';
 import './contact-main-title.scss';
 
+@withI18n()
+@withNotification()
+@withTags()
+@withCloseTab()
+@withCurrentTab()
 @withPush()
 @withSettings()
 class Contact extends Component {
@@ -70,20 +79,9 @@ class Contact extends Component {
 
   state = {
     isTagModalOpen: false,
-    editMode: false,
-    isFetching: false,
+    isFetching: this.props.contactId && true,
     isSaving: false,
   };
-
-  componentWillMount() {
-    if (!this.props.contactId) {
-      this.setState({
-        editMode: true,
-      });
-    } else {
-      this.setState({ isFetching: true });
-    }
-  }
 
   componentDidMount() {
     const { contactId, requestContact } = this.props;
@@ -106,15 +104,11 @@ class Contact extends Component {
     }));
   }
 
-  toggleEditMode = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      editMode: !prevState.editMode,
-    }), () => {
-      if (!this.state.editMode) {
-        this.props.reset();
-      }
-    });
+  handleClickEditContact = () => {
+    const { push, contactId, reset } = this.props;
+
+    reset();
+    push(`/contacts/${contactId}/edit`);
   }
 
   handleCancel = () => {
@@ -123,7 +117,7 @@ class Contact extends Component {
       closeTab(currentTab);
     }
 
-    return this.toggleEditMode();
+    return this.props.push(`/contacts/${contactId}`);
   }
 
   handleDelete = () => {
@@ -141,7 +135,6 @@ class Contact extends Component {
   createOrUpdateAction = async ({ contact, original }) => {
     const {
       updateContact, requestContact, createContact,
-      push, closeTab, currentTab,
     } = this.props;
     if (contact.contact_id) {
       await updateContact({ contact, original });
@@ -153,23 +146,32 @@ class Contact extends Component {
     const { location } = resultAction.payload.data;
     const { data: contactCreated } = await fetchLocation(location);
 
-    push(`/contacts/${contactCreated.contact_id}`);
-    closeTab(currentTab);
-
     return contactCreated;
   };
 
-  handleSubmit = (ev) => {
+  handleSubmit = async (ev) => {
     const {
       i18n, handleSubmit, contactId, notifyError, contact: original,
+      push, closeTab, currentTab,
     } = this.props;
     this.setState({ isSaving: true });
-    handleSubmit(ev)
-      .then(contact => this.createOrUpdateAction({ contact, original }))
-      .then(() => contactId && this.toggleEditMode(), () => {
-        notifyError({ message: i18n._('contact.feedback.unable_to_save', null, { defaults: 'Unable to save the contact' }) });
-      })
-      .then(() => this.setState({ isSaving: false }));
+
+    const contact = await handleSubmit(ev);
+    try {
+      const contactUpToDate = await this.createOrUpdateAction({ contact, original });
+      this.setState({ isSaving: false });
+
+      if (contactId) {
+        push(`/contacts/${contactId}`);
+
+        return;
+      }
+
+      push(`/contacts/${contactUpToDate.contact_id}`);
+      closeTab(currentTab);
+    } catch (err) {
+      notifyError({ message: i18n._('contact.feedback.unable_to_save', null, { defaults: 'Unable to save the contact' }) });
+    }
   }
 
   handleTagsChange = async ({ tags }) => {
@@ -210,54 +212,64 @@ class Contact extends Component {
     const hasActivity = submitting || this.state.isFetching || this.state.isSaving;
 
     return (
-      <ActionBar
-        className="s-contact-action-bar"
-        isFetching={hasActivity}
-        actionsNode={(
-          <Fragment>
-            <Trans id="contact.action-bar.label">Contact:</Trans>
-            {!contactIsUser && contactId && (
-              <Confirm
-                onConfirm={this.handleDelete}
-                title={(<Trans id="contact.confirm-delete.title">Delete the contact</Trans>)}
-                content={(<Trans id="contact.confirm-delete.content">The deletion is permanent, are you sure you want to delete this contact ?</Trans>)}
-                render={confirm => (
-                  <Button
-                    className="s-contact-action-bar__action-btn"
-                    onClick={confirm}
+      <ScrollDetector
+        offset={136}
+        render={isSticky => (
+          <ActionBarWrapper isSticky={isSticky}>
+            <ActionBar
+              hr={false}
+              isLoading={hasActivity}
+              actionsNode={(
+                <div className="s-contact-action-bar">
+                  <Trans id="contact.action-bar.label">Contact:</Trans>
+                  {!contactIsUser && contactId && (
+                    <Confirm
+                      onConfirm={this.handleDelete}
+                      title={(<Trans id="contact.confirm-delete.title">Delete the contact</Trans>)}
+                      content={(<Trans id="contact.confirm-delete.content">The deletion is permanent, are you sure you want to delete this contact ?</Trans>)}
+                      render={confirm => (
+                        <ActionBarButton
+                          onClick={confirm}
+                          display="inline"
+                          icon={this.state.isDeleting ? (<Spinner isLoading display="inline" />) : 'trash'}
+                          noDecoration
+                        >
+                          <Trans id="contact.action.delete_contact">Delete</Trans>
+                        </ActionBarButton>
+                      )}
+                    />
+                  )}
+                  {!this.state.editMode && (
+                    <ActionBarButton
+                      onClick={this.handleClickEditContact}
+                      display="inline"
+                      noDecoration
+                      icon="list-ul"
+                    >
+                      <Trans id="contact.action.edit_contact">Edit contact</Trans>
+                    </ActionBarButton>
+                  )}
+                  <ActionBarButton
+                    onClick={this.handleOpenTags}
                     display="inline"
-                    icon={this.state.isDeleting ? (<Spinner isLoading display="inline" />) : 'trash'}
                     noDecoration
+                    icon="tag"
                   >
-                    <Trans id="contact.action.delete_contact">Delete</Trans>
-                  </Button>
-                )}
-              />
-            )}
-            {!this.state.editMode && (
-              <Button
-                className="s-contact-action-bar__action-btn"
-                onClick={this.toggleEditMode}
-                display="inline"
-                noDecoration
-                icon="list-ul"
-              >
-                <Trans id="contact.action.edit_contact">Edit contact</Trans>
-              </Button>
-            )}
-            <Button
-              className="s-contact-action-bar__action-btn"
-              onClick={this.handleOpenTags}
-              display="inline"
-              noDecoration
-              icon="tag"
-            >
-              <Trans id="contact.action.edit_tags">Edit tags</Trans>
-            </Button>
-            {this.renderTagsModal()}
-            {/* <Button onClick={this.handleDelete}><Trans>Add to favorites</Trans></Button>
-            <Button onClick={this.handleDelete}><Trans>New discussion</Trans></Button> */}
-          </Fragment>
+                    <Trans id="contact.action.edit_tags">Edit tags</Trans>
+                  </ActionBarButton>
+                  {this.renderTagsModal()}
+                  {/*
+                    <ActionBarButton onClick={this.handleDelete}>
+                      <Trans>Add to favorites</Trans>
+                    </ActionBarButton>
+                    <ActionBarButton onClick={this.handleDelete}>
+                      <Trans>New discussion</Trans>
+                    </ActionBarButton>
+                  */}
+                </div>
+              )}
+            />
+          </ActionBarWrapper>
         )}
       />
     );
@@ -440,7 +452,7 @@ class Contact extends Component {
       <div className="s-contact__form">
         <form onSubmit={this.handleSubmit} method="post">
           <Title hr><Trans id="contact.edit_contact.title">Edit the contact</Trans></Title>
-          <ContactProfileForm form={form} isNew={!contact} />
+          <ContactProfileForm form={form} isNew={!contact.contact_id} />
           <div>
             <Title hr><Trans id="contact.contact-details.title">Contact details</Trans></Title>
             <FormCollection component={(<EmailForm />)} propertyName="emails" showAdd={false} />
@@ -522,22 +534,34 @@ class Contact extends Component {
         {this.renderActionBar()}
 
         {this.renderTags()}
-        {this.state.editMode ? this.renderEditMode() : (
-          <Fragment>
-            <div className="s-contact__main-title s-contact-main-title">
-              {this.renderMainTitle()}
-            </div>
-            <div className="s-contact__contact-details">
-              {this.renderContactDetails()}
-            </div>
-            <div className="s-contact__keys">
-              {this.renderKeys()}
-            </div>
-            {/* <div className="s-contact__last-messages">
-              {this.renderLastMessages()}
-            </div> */}
-          </Fragment>
-        )}
+        <Switch>
+          <Route
+            path={/.*\/edit/}
+            render={() => this.renderEditMode()}
+          />
+          <Route
+            path="/new-contact"
+            render={() => this.renderEditMode()}
+          />
+          <Route
+            render={() => (
+              <Fragment>
+                <div className="s-contact__main-title s-contact-main-title">
+                  {this.renderMainTitle()}
+                </div>
+                <div className="s-contact__contact-details">
+                  {this.renderContactDetails()}
+                </div>
+                <div className="s-contact__keys">
+                  {this.renderKeys()}
+                </div>
+                {/* <div className="s-contact__last-messages">
+                  {this.renderLastMessages()}
+                </div> */}
+              </Fragment>
+            )}
+          />
+        </Switch>
       </div>
     );
   }

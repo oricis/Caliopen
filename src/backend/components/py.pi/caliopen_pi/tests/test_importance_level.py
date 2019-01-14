@@ -13,7 +13,7 @@ else:
 
 Configuration.load(conf_file, 'global')
 
-from caliopen_pi.features.importance_level import compute_inbound
+from caliopen_pi.features.helpers.importance_level import compute_importance
 
 
 class MockPI(object):
@@ -38,33 +38,33 @@ class TestInboundImportanceLevel(unittest.TestCase):
         pi = MockPI(0, 0, 0)
         features = {'is_spam': True, 'spam_score': 100.0}
         message = MockMessage(pi)
-        score = compute_inbound(None, message, features, [])
+        score = compute_importance(None, message, features, [])
         self.assertEqual(score, -5)
 
     def test_half_spam(self):
         pi = MockPI(0, 0, 0)
         features = {'is_spam': True, 'spam_score': 50.0}
         message = MockMessage(pi)
-        score = compute_inbound(None, message, features, [])
+        score = compute_importance(None, message, features, [])
         self.assertEqual(score, -3)
 
     def test_max_pi_context(self):
         pi = MockPI(0, 100, 0)
         features = {}
         message = MockMessage(pi)
-        score = compute_inbound(None, message, features, [])
+        score = compute_importance(None, message, features, [])
         self.assertEqual(score, 1)
 
     def test_max_pi_comportment(self):
         pi = MockPI(0, 0, 100)
         features = {}
         message = MockMessage(pi)
-        score = compute_inbound(None, message, features, [])
+        score = compute_importance(None, message, features, [])
         self.assertEqual(score, 3)
 
     def test_max_pi_context_comportment(self):
         pi = MockPI(0, 100, 100)
         features = {}
         message = MockMessage(pi)
-        score = compute_inbound(None, message, features, [])
+        score = compute_importance(None, message, features, [])
         self.assertEqual(score, 4)

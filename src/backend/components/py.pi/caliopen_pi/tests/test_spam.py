@@ -14,7 +14,7 @@ else:
 Configuration.load(conf_file, 'global')
 
 from mailbox import Message
-from caliopen_pi.features.spam import SpamScorer
+from caliopen_pi.features.helpers.spam import SpamScorer
 
 
 def load_mail(filename):

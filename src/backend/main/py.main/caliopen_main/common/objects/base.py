@@ -7,7 +7,8 @@ import pytz
 from six import add_metaclass
 
 from caliopen_storage.exception import NotFound
-import caliopen_main.common.errors as main_errors
+from caliopen_main.common.errors import PatchConflict, PatchUnprocessable
+from caliopen_main.common.errors import ForbiddenAction
 from caliopen_main.common.interfaces import (IO, storage)
 from elasticsearch import exceptions as ESexceptions
 
@@ -340,7 +341,7 @@ class ObjectUser(ObjectStorable):
         :return: Exception or None
         """
         if patch is None or "current_state" not in patch:
-            raise main_errors.PatchUnprocessable()
+            raise PatchUnprocessable(message='Invalid patch')
 
         patch_current = patch.pop("current_state")
 
@@ -351,21 +352,19 @@ class ObjectUser(ObjectStorable):
             obj_patch_new.unmarshall_json_dict(patch)
         except Exception as exc:
             log.exception(exc)
-            raise main_errors.PatchUnprocessable(message= \
-                "unable to unmarshall patch into object <{}>".format(
-                    exc))
+            raise PatchUnprocessable(message="unmarshall patch "
+                                     "error: %r" % exc)
         try:
             obj_patch_old.unmarshall_json_dict(patch_current)
         except Exception as exc:
             log.exception(exc)
-            raise main_errors.PatchUnprocessable(message= \
-                "unable to unmarshall patch into object <{}>".format(
-                    exc))
+            raise PatchUnprocessable(message="unmarshall current "
+                                     "patch error: %r" % exc)
         self.get_db()
 
         # TODO : manage protected attributes, to prevent patch on them
         if "tags" in patch.keys():
-            raise main_errors.ForbiddenAction(
+            raise ForbiddenAction(
                 message="patching tags through parent object is forbidden")
 
         # check if patch is consistent with db current state
@@ -407,7 +406,7 @@ class ObjectUser(ObjectStorable):
                     self._json_model(d).validate()
                 except Exception as exc:
                     log.exception("document is not valid: {}".format(exc))
-                    raise main_errors.PatchUnprocessable(
+                    raise PatchUnprocessable(
                         message="document is not valid,"
                                 " can't insert it into db: <{}>".format(exc))
 
@@ -416,7 +415,7 @@ class ObjectUser(ObjectStorable):
                 self.update_db()
             except Exception as exc:
                 log.exception(exc)
-                raise main_errors.PatchError(message="Error when updating db")
+                raise PatchError(message="Error when updating db")
 
     def _check_key_consistency(self, current_attr, key, obj_patch_old,
                                patch_current):
@@ -426,7 +425,7 @@ class ObjectUser(ObjectStorable):
         """
 
         if key not in self._attrs.keys():
-            raise main_errors.PatchUnprocessable(
+            raise PatchUnprocessable(
                 message="unknown key in patch")
         old_val = getattr(obj_patch_old, key)
         cur_val = getattr(self, key)
@@ -434,22 +433,22 @@ class ObjectUser(ObjectStorable):
 
         if isinstance(current_attr, types.ListType):
             if not isinstance(cur_val, types.ListType):
-                raise main_errors.PatchConflict(
+                raise PatchConflict(
                     messag=msg.format(0, key))
 
         if key not in patch_current.keys():
             # means patch wants to add the key.
             # Value in db should be null or empty
             if cur_val not in (None, [], {}):
-                raise main_errors.PatchConflict(
+                raise PatchConflict(
                     message=msg.format(0.5, key))
         else:
             if isinstance(current_attr, types.ListType):
                 if old_val == [] and cur_val != []:
-                    raise main_errors.PatchConflict(
+                    raise PatchConflict(
                         message=msg.format(1, key))
                 if cur_val == [] and old_val != []:
-                    raise main_errors.PatchConflict(
+                    raise PatchConflict(
                         message=msg.format(2, key))
                 for old in old_val:
                     for elem in cur_val:
@@ -460,11 +459,11 @@ class ObjectUser(ObjectStorable):
                             if elem == old:
                                 break
                     else:
-                        raise main_errors.PatchConflict(
+                        raise PatchConflict(
                             message=msg.format(3, key))
             elif issubclass(self._attrs[key], types.DictType):
                 if cmp(old_val, cur_val) != 0:
-                    raise main_errors.PatchConflict(
+                    raise PatchConflict(
                         message=msg.format(4, key))
             else:
                 # XXX ugly patch but else compare 2 distinct objects
@@ -474,7 +473,7 @@ class ObjectUser(ObjectStorable):
                     old_val = old_val.marshall_dict()
                     cur_val = cur_val.marshall_dict()
                 if old_val != cur_val:
-                    raise main_errors.PatchConflict(
+                    raise PatchConflict(
                         message=msg.format(5, key))
 
 
