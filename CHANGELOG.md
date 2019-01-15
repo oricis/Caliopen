@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.15.0] 2019-01-15
+
 ### Added
 
 - When an user authenticate we issue a device.login event
