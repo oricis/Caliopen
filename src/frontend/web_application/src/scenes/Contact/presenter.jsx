@@ -418,7 +418,7 @@ class Contact extends Component {
   );
 
   renderEditBar = () => {
-    const { pristine, submitting } = this.props;
+    const { submitting } = this.props;
     const hasActivity = submitting || this.state.isSaving;
 
     return (
@@ -436,7 +436,7 @@ class Contact extends Component {
           responsive="icon-only"
           icon={hasActivity ? (<Spinner isLoading display="inline" />) : 'check'}
           className="s-contact__action"
-          disabled={pristine || hasActivity}
+          disabled={hasActivity}
         >
           <Trans id="contact.action.validate_edit">Validate</Trans>
         </Button>
