@@ -33,8 +33,10 @@ const mapStateToProps = createSelector(
       // TODO: the following key fix this bug: https://github.com/erikras/redux-form/issues/2886#issuecomment-299426767
       key: `contact-${contactId || 'new'}`,
       initialValues: {
+        ...contact,
         ...(protocol ? addAddressToContact(contact, { address, protocol }) : {}),
         ...(
+          label && label.length > 0 &&
           (!contact.given_name || !contact.given_name.length) &&
           (!contact.family_name || !contact.family_name.length) ? { given_name: label } : {}
         ),
