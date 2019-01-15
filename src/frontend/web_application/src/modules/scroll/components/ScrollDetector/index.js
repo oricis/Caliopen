@@ -16,19 +16,24 @@ class ScrollDetector extends Component {
   };
 
   componentDidMount() {
+    this.scrollDetection();
     this.unsubscribeScrollEvent = addEventListener('scroll', throttle(() => {
-      const { offset } = this.props;
-      const scrollSize = window.scrollY || document.documentElement.scrollTop;
-      const isScrollDetected = scrollSize > offset;
-
-      if (this.state.isScrollDetected !== isScrollDetected) {
-        this.setState({ isScrollDetected });
-      }
+      this.scrollDetection();
     }, 10, { leading: true, trailing: true }));
   }
 
   componentWillUnmount() {
     this.unsubscribeScrollEvent();
+  }
+
+  scrollDetection = () => {
+    const { offset } = this.props;
+    const scrollSize = window.scrollY || document.documentElement.scrollTop;
+    const isScrollDetected = scrollSize > offset;
+
+    if (this.state.isScrollDetected !== isScrollDetected) {
+      this.setState({ isScrollDetected });
+    }
   }
 
   render() {

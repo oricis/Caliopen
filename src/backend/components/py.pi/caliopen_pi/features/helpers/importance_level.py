@@ -35,7 +35,7 @@ def get_importance_tags(tags):
     return max_value
 
 
-def compute_inbound(user, message, features, participants):
+def compute_importance(user, message, features, participants):
     """Compute importance level for an inbound message."""
     positive = 0
     negative = 0

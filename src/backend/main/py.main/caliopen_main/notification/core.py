@@ -2,7 +2,9 @@
 """Caliopen device core classes."""
 from __future__ import absolute_import, print_function, unicode_literals
 
-from caliopen_storage.core import BaseUserCore, BaseCore
+from caliopen_storage.core import BaseCore
+from caliopen_main.common.core import BaseUserCore
+
 from .store import Notification as ModelNotification, \
     NotificationTtl as ModelTTLs
 

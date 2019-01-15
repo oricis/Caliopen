@@ -4,17 +4,18 @@ import throttle from 'lodash.throttle';
 import classnames from 'classnames';
 import { withRouter } from 'react-router-dom';
 import { Trans, withI18n } from '@lingui/react';
-import { Badge, Button, Modal } from '../../components';
-import StickyNavBar from '../../layouts/Page/components/Navigation/components/StickyNavBar';
+import { ActionBarWrapper, ActionBar, ActionBarButton, Badge, Modal } from '../../components';
 import MessageList from './components/MessageList';
 import ReplyExcerpt from './components/ReplyExcerpt';
+import AddParticipantsToContactBook from './components/AddParticipantsToContactBook';
 import { withCloseTab } from '../../modules/tab';
 import { ManageEntityTags } from '../../modules/tags';
 import { DraftMessage } from '../../modules/draftMessage';
-import { withScrollManager } from '../../modules/scroll';
+import { ScrollDetector, withScrollManager } from '../../modules/scroll';
 import { addEventListener } from '../../services/event-manager';
 
 import './style.scss';
+import './discussion-action-bar.scss';
 
 const LOAD_MORE_THROTTLE = 1000;
 
@@ -35,6 +36,7 @@ class Discussion extends Component {
     didInvalidate: PropTypes.bool.isRequired,
     hasMore: PropTypes.bool.isRequired,
     location: PropTypes.shape({}).isRequired,
+    lastMessage: PropTypes.shape({}),
     messages: PropTypes.arrayOf(PropTypes.shape({})),
     canBeClosed: PropTypes.bool.isRequired,
     onMessageReply: PropTypes.func.isRequired,
@@ -52,6 +54,7 @@ class Discussion extends Component {
 
   static defaultProps = {
     discussion: undefined,
+    lastMessage: undefined,
     messages: [],
     user: undefined,
   };
@@ -199,7 +202,7 @@ class Discussion extends Component {
 
   renderTags = ({ tags }) => (
     tags && (
-      <ul className="s-discussion__tags">
+      <ul className="s-discussion-action-bar__tags s-discussion-action-bar__action s-discussion__tags">
         {tags.map(tag => (
           <li key={tag.name} className="s-discussion__tag"><Badge>{tag.name}</Badge></li>
         ))}
@@ -233,47 +236,79 @@ class Discussion extends Component {
     );
   }
 
+  renderActionBar() {
+    const { lastMessage, isFetching, discussion } = this.props;
+
+    return (
+      <ScrollDetector
+        offset={136}
+        render={isSticky => (
+          <ActionBarWrapper isSticky={isSticky}>
+            <ActionBar
+              hr={false}
+              isLoading={isFetching}
+              actionsNode={(
+                <div className="s-discussion-action-bar">
+                  {discussion ? this.renderTags(discussion) : null}
+                  <div className="s-discussion-action-bar__actions">
+                    {lastMessage && (<AddParticipantsToContactBook className="s-discussion-action-bar__action" message={lastMessage} />)}
+                    <strong className="s-discussion-action-bar__action-label">
+                      <Trans id="discussion.action.label">Whole discussion</Trans>
+                      :
+                    </strong>
+                    <ActionBarButton
+                      className="s-discussion-action-bar__action"
+                      display="inline"
+                      noDecoration
+                      icon="reply"
+                      onClick={this.handleMessageReply}
+                      responsive="icon-only"
+                    >
+                      <Trans id="discussion.action.reply">Reply</Trans>
+                    </ActionBarButton>
+                    {/*
+                      <ActionBarButton
+                        className="m-message-list__action"
+                        display="inline"
+                        noDecoration
+                        icon="tags"
+                        onClick={this.handleOpenTags}
+                        responsive="icon-only"
+                      >
+                        Tag
+                      </ActionBarButton>
+                      <ActionBarButton
+                        className="m-message-list__action"
+                        display="inline"
+                        noDecoration
+                        icon="trash"
+                        onClick={this.handleDeleteAll}
+                        responsive="icon-only"
+                      >
+                        Delete
+                      </ActionBarButton>
+                    */}
+                  </div>
+                </div>
+              )}
+            />
+          </ActionBarWrapper>
+        )}
+      />
+    );
+  }
+
   render() {
     const {
       discussionId, messages, scrollManager: { scrollToTarget }, isFetching, location,
-      hasMore, user, isUserFetching, discussion,
+      hasMore, user, isUserFetching,
+      // discussion,
     } = this.props;
     const hash = location.hash ? location.hash.slice(1) : null;
 
     return (
       <section id={`discussion-${discussionId}`} className="s-discussion">
-        <StickyNavBar className="s-discussion__action-bar" stickyClassName="s-discussion__action-bar--sticky">
-          <header className="s-discussion__header">
-            {discussion ? this.renderTags(discussion) : null}
-            <div className="s-discussion__actions">
-              <strong className="s-discussion__action-label">
-                <Trans id="discussion.action.label">Whole discussion</Trans>
-                :
-              </strong>
-              <Button className="m-message-list__action" icon="reply" onClick={this.handleMessageReply} responsive="icon-only">
-                <Trans id="discussion.action.reply">Reply</Trans>
-              </Button>
-              {/*
-                <Button
-                  className="m-message-list__action"
-                  icon="tags"
-                  onClick={this.handleOpenTags}
-                  responsive="icon-only"
-                >
-                  Tag
-                </Button>
-                <Button
-                  className="m-message-list__action"
-                  icon="trash"
-                  onClick={this.handleDeleteAll}
-                  responsive="icon-only"
-                >
-                  Delete
-                </Button>
-                */}
-            </div>
-          </header>
-        </StickyNavBar>
+        {this.renderActionBar()}
         {this.renderTagModal()}
         <MessageList
           className="m-message-list"

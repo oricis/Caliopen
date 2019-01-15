@@ -7,9 +7,10 @@ import logging
 import pgpy
 
 from caliopen_main.pi.parameters import PIParameter
-from .spam import SpamScorer
-from .ingress_path import get_ingress_features
-from .importance_level import compute_inbound as compute_inbound_importance
+from .helpers.spam import SpamScorer
+from .helpers.ingress_path import get_ingress_features
+from .helpers.importance_level import compute_importance
+from .types import init_features
 
 log = logging.getLogger(__name__)
 
@@ -24,30 +25,11 @@ TLS_VERSION_PI = {
 class InboundMailFeature(object):
     """Process a parsed mail message and extract available privacy features."""
 
-    _features = {
-        'mail_emitter_mx_reputation': None,
-        'mail_emitter_certificate': None,
-        'transport_signed': False,
-        'message_signed': False,
-        'message_signature_type': None,
-        'message_signer': None,
-        'message_encrypted': False,
-        'message_encryption_infos': None,
-        'mail_agent': None,
-        'spam_score': 0,
-        'spam_method': None,
-        'is_spam': False,
-        'ingress_socket_version': None,
-        'ingress_cipher': None,
-        'ingress_server': None,
-        'nb_external_hops': 0,
-        'is_internal': False,
-    }
-
     def __init__(self, message, config):
         """Get a ``MailMessage`` instance and extract privacy features."""
         self.message = message
         self.config = config
+        self._features = init_features('message')
 
     def is_blacklist_mx(self, mx):
         """MX is blacklisted."""
@@ -134,7 +116,8 @@ class InboundMailFeature(object):
         encrypted_parts = [x for x in self.message.attachments
                            if 'pgp-encrypt' in x.content_type]
         is_encrypted = True if encrypted_parts else False
-        return {'message_encrypted': is_encrypted}
+        return {'message_encrypted': is_encrypted,
+                'message_encryption_method': 'pgp'}
 
     def _get_features(self):
         """Extract privacy features."""
@@ -216,6 +199,6 @@ class InboundMailFeature(object):
         """
         features = self._get_features()
         message.pi = self._compute_pi(participants, features)
-        il = compute_inbound_importance(user, message, features, participants)
+        il = compute_importance(user, message, features, participants)
         message.privacy_features = features
         message.importance_level = il

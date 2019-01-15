@@ -23,6 +23,9 @@ properties:
       "$ref": Participant.yaml
   subject:
     type: string
+  privacy_features:
+    type: object
+    "$ref": PrivacyFeatures.yaml
 required:
   - user_identities
 additionalProperties: false

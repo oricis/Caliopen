@@ -43,7 +43,7 @@ class ContactTab extends Tab {
             title={label}
             className="m-tab__content"
           >
-            <Icon type="address-book" className="tab__icon" rightSpaced />
+            <Icon type="address-book" className="m-tab__icon" rightSpaced />
             {label}
           </ItemLink>
         )}

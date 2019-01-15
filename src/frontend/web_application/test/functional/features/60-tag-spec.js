@@ -81,11 +81,11 @@ describe('Tag', () => {
   it('Manage tags on a contact', async () => {
     await element(by.css('.m-navbar-item .m-link[title="Contacts"]')).click();
     await browser.wait(EC.presenceOf($('.m-contact-list__contact')), 5 * 1000);
-    await element(by.cssContainingText('.m-contact-list__contact', 'Bender Bending Rodriguez')).click();
+    await element(by.cssContainingText('.m-contact-item__title', 'Bender Bending Rodriguez')).click();
     await browser.wait(EC.presenceOf(element(by.cssContainingText('.s-contact-main-title__name', 'Bender Bending Rodriguez'))), 5 * 1000);
     // XXX: may be fix w/ tab scroll
     await browser.executeScript('window.scrollTo(0,0);');
-    await element(by.cssContainingText('.s-contact-action-bar__action-btn', 'Edit tags')).click();
+    await element(by.cssContainingText('.m-action-bar__action-btn', 'Edit tags')).click();
     expect(element(by.cssContainingText('.m-modal', 'Tags')).isPresent()).toEqual(true);
     await element(by.css('.m-modal__close')).click();
   });

@@ -25,7 +25,9 @@ from ..store import (User as ModelUser,
                      ReservedName as ModelReservedName)
 from ..core.identity import UserIdentity, IdentityLookup, IdentityTypeLookup
 
-from caliopen_storage.core import BaseCore, BaseUserCore
+from caliopen_storage.core import BaseCore
+from caliopen_main.common.core import BaseUserCore
+
 from caliopen_main.contact.core import Contact as CoreContact
 from caliopen_main.contact.objects.contact import Contact
 from caliopen_main.pi.objects import PIModel

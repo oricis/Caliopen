@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { RawButton } from '../../../../components';
 import './style.scss';
 
 class ProviderButton extends PureComponent {
@@ -17,9 +18,9 @@ class ProviderButton extends PureComponent {
     const { className, children, ...props } = this.props;
 
     return (
-      <button className={classnames(className, 'm-provider-button')} {...props}>
+      <RawButton className={classnames(className, 'm-provider-button')} {...props}>
         {children}
-      </button>
+      </RawButton>
     );
   }
 }

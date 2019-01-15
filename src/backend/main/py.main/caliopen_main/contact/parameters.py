@@ -3,8 +3,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 from schematics.models import Model
-from schematics.types import (StringType, IntType, URLType,
-                              UUIDType, DateTimeType, BooleanType)
+from schematics.types import StringType, UUIDType, DateTimeType, BooleanType
 from schematics.types.compound import ListType, ModelType, DictType
 from schematics.transforms import blacklist
 
@@ -13,10 +12,10 @@ from caliopen_main.common.parameters.types import InternetAddressType
 from caliopen_main.pi.parameters import PIParameter
 import caliopen_storage.helpers.json as helpers
 
-ORG_TYPES = ['work', 'home']
-ADDRESS_TYPES = ['work', 'home', 'other']
-EMAIL_TYPES = ['work', 'home', 'other']
-IM_TYPES = ['work', 'home', 'other', 'netmeeting']
+ORG_TYPES = ['work', 'home', '']
+ADDRESS_TYPES = ['work', 'home', 'other', '']
+EMAIL_TYPES = ['work', 'home', 'other', '']
+IM_TYPES = ['work', 'home', 'other', 'netmeeting', '']
 
 PHONE_TYPES = ['assistant', 'callback', 'car', 'company_main',
                'fax', 'home', 'home_fax', 'isdn', 'main', 'mobile',
@@ -100,6 +99,7 @@ class PostalAddress(NewPostalAddress):
 
 class NewEmail(Model):
     """Input structure for a new email."""
+
     address = InternetAddressType(required=True)
     is_primary = BooleanType(default=False)
     label = StringType()

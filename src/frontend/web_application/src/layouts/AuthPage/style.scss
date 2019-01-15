@@ -9,12 +9,12 @@ $l-auth-page__header-space: (
 
 .l-auth-page {
   min-height: 100vh;
+  border-top: 8px solid $co-color__primary; // TODO: update border color according to context
   background: $co-color__fg__back;
 
   &__content {
     max-width: map-get($co-form__width, 'xlarge');
     margin: auto;
-    border-top: 8px solid $co-color__primary; // TODO: update border color according to context
   }
 
   &__header {

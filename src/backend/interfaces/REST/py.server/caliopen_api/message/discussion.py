@@ -4,7 +4,8 @@ from cornice.resource import resource, view
 
 from caliopen_main.discussion.core.discussion import MainView
 from ..base import Api
-from pyramid.httpexceptions import HTTPBadRequest, HTTPMovedPermanently
+from caliopen_storage.exception import NotFound
+from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
 
 log = logging.getLogger(__name__)
 
@@ -34,7 +35,20 @@ class Discussion(Api):
 
     @view(renderer='json', permission='authenticated')
     def get(self):
-        log.warn('Deprecated GET /discussion/<id> API')
         discussion_id = self.request.swagger_data['discussion_id']
-        raise HTTPMovedPermanently(
-            location="/v2/messages?discussion_id=" + discussion_id)
+        if not discussion_id:
+            raise HTTPBadRequest
+        try:
+            il_range = self.request.authenticated_userid._get_il_range()
+        except Exception as exc:
+            log.warn(exc)
+            raise HTTPBadRequest
+
+        try:
+            discussion_view = MainView().get_one(self.user, discussion_id,
+                                                 il_range[0],
+                                                 il_range[1])
+        except NotFound:
+            raise HTTPNotFound
+
+        return discussion_view

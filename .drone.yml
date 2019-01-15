@@ -37,6 +37,7 @@ pipeline:
 #######################################################
 
   # test-go:
+  #   pull: true
   #   group: test
   #   image: public-registry.caliopen.org/caliopen_go
   #   environment:
@@ -49,6 +50,7 @@ pipeline:
   #     - . devtools/drone/test_go.sh
 
   test-py:
+    pull: true
     group: test
     image: public-registry.caliopen.org/caliopen_python
     environment:
