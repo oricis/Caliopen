@@ -74,14 +74,6 @@ class TwitterDM(object):
         return {'message_id': self.dm["id"]}
 
     @property
-    def hash_participants(self):
-        """Create an hash from participants addresses for global lookup."""
-        addresses = [x.address.lower() for x in self.participants]
-        addresses = list(set(addresses))
-        addresses.sort()
-        return hashlib.sha256(''.join(addresses)).hexdigest()
-
-    @property
     def attachments(self):
         """TODO"""
         return []
@@ -90,17 +82,6 @@ class TwitterDM(object):
     def extra_parameters(self):
         """TODO"""
         return {}
-
-    def lookup_discussion_sequence(self, *args, **kwargs):
-        """Return list of lookup type, value from a tweet."""
-        seq = list()
-
-        seq.append(('global', self.hash_participants))
-
-        if self.external_references["message_id"]:
-            seq.append(("thread", self.external_references["message_id"]))
-
-        return seq
 
 
 class TwitterParticipant(object):

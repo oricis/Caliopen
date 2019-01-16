@@ -93,6 +93,27 @@ class UserMessageQualifier(object):
             p.contact_ids = [c.contact_id]
         return p, c
 
+    def lookup_discussion_sequence(self, mail, message, *args, **kwargs):
+        """Return list of lookup type, value from a mail message."""
+        seq = []
+
+        # list lookup first
+        for list_id in mail.extra_parameters.get('lists', []):
+            seq.append(('list', list_id))
+
+        seq.append(('global', message.hash_participants))
+
+        # try to link message to external thread's root message-id
+        if len(message.external_references["ancestors_ids"]) > 0:
+            seq.append(("thread",
+                        message.external_references["ancestors_ids"][0]))
+        elif message.external_references["parent_id"]:
+            seq.append(("thread", message.external_references["parent_id"]))
+        elif message.external_references["message_id"]:
+            seq.append(("thread", message.external_references["message_id"]))
+
+        return seq
+
     def process_inbound(self, raw):
         """Process inbound message.
 
@@ -146,7 +167,7 @@ class UserMessageQualifier(object):
             log.debug('Resolved tags {}'.format(new_message.tags))
 
         # lookup by external references
-        lookup_sequence = message.lookup_discussion_sequence()
+        lookup_sequence = self.lookup_discussion_sequence(message, new_message)
         lkp = self.lookup(lookup_sequence)
         log.debug('Lookup with sequence {} give {}'.
                   format(lookup_sequence, lkp))
