@@ -41,6 +41,7 @@ func (es *ElasticSearchBackend) CreateMessage(user *objects.UserInfo, msg *objec
 func (es *ElasticSearchBackend) UpdateMessage(user *objects.UserInfo, msg *objects.Message, fields map[string]interface{}) error {
 	//get json field name for each field to modify
 	jsonFields := map[string]interface{}{}
+
 	for field, value := range fields {
 		jsonField, err := reflections.GetFieldTag(msg, field, "json")
 		if err != nil {
@@ -48,6 +49,16 @@ func (es *ElasticSearchBackend) UpdateMessage(user *objects.UserInfo, msg *objec
 		}
 		split := strings.Split(jsonField, ",")
 		jsonFields[split[0]] = value
+	}
+
+	is_encrypted := false
+	features := *msg.Privacy_features
+	crypt_method, ok := features["message_encryption_method"]
+	if ok && crypt_method != "" {
+		is_encrypted = true
+	}
+	if is_encrypted {
+		jsonFields["body_plain"] = ""
 	}
 
 	update, err := es.Client.Update().Index(user.Shard_id).Type(objects.MessageIndexType).Id(msg.Message_id.String()).

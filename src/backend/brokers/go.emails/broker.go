@@ -15,6 +15,8 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/nats-io/go-nats"
+	"math/rand"
+	"time"
 )
 
 type (
@@ -67,6 +69,9 @@ var (
 
 func Initialize(conf LDAConfig) (broker *EmailBroker, connectors EmailBrokerConnectors, err error) {
 	var e error
+
+	rand.Seed(time.Now().UnixNano())
+
 	broker = &EmailBroker{}
 	broker.Config = conf
 	switch conf.StoreName {
