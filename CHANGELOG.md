@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Move link external accounts to user menu
 - smaller font for desktop
+- Display a progress bar when downloading an attachment
+
+### Fixed
+
+- Unable to download an attachment due to missing request's headers
 
 ## [0.15.0] 2019-01-15
 
