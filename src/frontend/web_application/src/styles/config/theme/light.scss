@@ -33,6 +33,10 @@ $co-color__alert--high:               lighten($co-color__alert, 10%);
 
 $co-color__importance:                #d2bc00;
 
+$co-color__clickable-text:            $co-color__primary;
+$co-color__clickable-text--contrasted: white;
+$co-color__clickable-text--hover:     #505050;
+
 // Privacy
 $co-color__privacy:                   #97b707;
 $co-color__privacy--alt:              #04d02f;
@@ -137,6 +141,7 @@ $caliopen-palette: (
   success: #3adb76,
   warning: #ffae00,
   alert: #e43737,
+  disabled: #ccc,
 );
 
 // XXX: refactor me

@@ -430,6 +430,8 @@ class Contact extends Component {
           responsive="icon-only"
           icon="remove"
           className="s-contact__action"
+          shape="plain"
+          color="disabled"
         >
           <Trans id="contact.action.cancel_edit">Cancel</Trans>
         </Button>
@@ -438,6 +440,7 @@ class Contact extends Component {
           responsive="icon-only"
           icon={hasActivity ? (<Spinner isLoading display="inline" />) : 'check'}
           className="s-contact__action"
+          shape="plain"
           disabled={hasActivity}
         >
           <Trans id="contact.action.validate_edit">Validate</Trans>
