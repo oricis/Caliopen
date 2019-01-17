@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Bad redirection when canceling contact creation
+- Add spaces between buttons in contact edit & contact association pages
 
 ## [0.15.0] 2019-01-15
 

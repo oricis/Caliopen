@@ -2,4 +2,8 @@
 
 .s-contact-association {
   background-color: $co-color__fg__back;
+
+  &__action-bar {
+    padding-right: map_get($co-margin_, 'xsmall');
+  }
 }
