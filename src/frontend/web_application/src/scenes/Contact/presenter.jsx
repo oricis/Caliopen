@@ -115,9 +115,11 @@ class Contact extends Component {
     const { contactId, closeTab, currentTab } = this.props;
     if (!contactId) {
       closeTab(currentTab);
+
+      return;
     }
 
-    return this.props.push(`/contacts/${contactId}`);
+    this.props.push(`/contacts/${contactId}`);
   }
 
   handleDelete = () => {
