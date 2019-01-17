@@ -23,7 +23,6 @@ class Settings extends PureComponent {
     const { i18n, children, location: { pathname } } = this.props;
 
     const navLinks = [
-      { key: 'settings.identities', label: i18n._('settings.identities', null, { defaults: 'External accounts' }), to: '/settings/identities' },
       { key: 'settings.application', label: i18n._('settings.application', null, { defaults: 'Application' }), to: '/settings/application' },
       { key: 'settings.tags', label: i18n._('settings.tags', null, { defaults: 'Tags' }), to: '/settings/tags' },
       { key: 'settings.devices', label: i18n._('settings.devices', null, { defaults: 'Devices' }), to: '/settings/devices' },
