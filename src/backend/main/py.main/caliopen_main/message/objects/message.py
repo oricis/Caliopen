@@ -122,8 +122,7 @@ class Message(ObjectIndexable):
         """
         return first user_identity
         """
-        return self.user_identities[0] if len(self.user_identities) > 0 \
-            else None
+        return self.user_identities[0] if self.user_identities else None
 
     @classmethod
     def create_draft(cls, user, **params):
