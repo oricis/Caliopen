@@ -16,14 +16,12 @@ log = logging.getLogger(__name__)
 
 
 class UserMessageDelivery(object):
-    user = None
-    identity = None
-    qualifier = None
 
     def __init__(self, user, identity):
         """Create a new UserMessageDelivery belong to an user."""
         self.user = user
         self.identity = identity
+        self.qualifier = None
 
     def process_raw(self, raw_msg_id):
         """Process a raw message for an user, ie makes it a rich 'message'."""
