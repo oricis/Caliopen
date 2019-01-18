@@ -43,5 +43,4 @@ type LDAIndex interface {
 	Close()
 	CreateMessage(user *UserInfo, msg *Message) error
 	UpdateMessage(user *UserInfo, msg *Message, fields map[string]interface{}) error
-	SeekMessageByExternalRef(userID, messageID string) (bool, error)
 }
