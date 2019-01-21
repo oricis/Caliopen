@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- BSOD on discussion when contacts not yet loaded
+
 ## [0.15.0] 2019-01-15
 
 ### Added

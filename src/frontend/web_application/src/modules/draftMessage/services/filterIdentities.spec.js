@@ -11,6 +11,7 @@ describe('modules identity - service - filterIdentities', () => {
     { contact_id: 'contact-user', emails: [{ address: 'me@caliopen.local' }], identities: [{ name: 'me', type: 'twitter' }] },
     { contact_id: 'contact-with-all-protocols', emails: [{ address: 'foo@bar.tld' }], identities: [{ name: 'foo', type: 'twitter' }] },
     { contact_id: 'contact-with-email-protocol', emails: [{ address: 'foo2@bar2.tld' }] },
+    { contact_id: 'contact-with-same-email-user', emails: [{ address: 'me@caliopen.local' }] },
   ];
 
   const user = {
@@ -124,6 +125,60 @@ describe('modules identity - service - filterIdentities', () => {
 
     expect(filterIdentities({
       identities, parentMessage, contacts, user,
+    })).toEqual([identities[0], identities[2]]);
+  });
+
+  it('only the message protocol when an unknown participant and one contact', () => {
+    const parentMessage = {
+      participants: [
+        {
+          address: 'simple@participant.tld',
+          protocol: 'email',
+          type: 'To',
+        }, {
+          address: 'foo@bar.tld',
+          contact_ids: ['contact-with-all-protocols'],
+          protocol: 'email',
+          type: 'To',
+        }, {
+          address: 'me@caliopen.local',
+          contact_ids: ['contact-user'],
+          protocol: 'smtp',
+          type: 'From',
+        },
+      ],
+    };
+
+    expect(filterIdentities({
+      identities, parentMessage, contacts, user,
+    })).toEqual([identities[0], identities[2]]);
+  });
+
+  it('contacts not loaded', () => {
+    const parentMessage = {
+      participants: [
+        {
+          address: 'simple@participant.tld',
+          protocol: 'email',
+          type: 'To',
+        }, {
+          address: 'me@caliopen.local',
+          contact_ids: ['contact-with-same-email-user'],
+          label: 'chamal@alpha.caliopen.org',
+          protocol: 'email',
+          type: 'To',
+        }, {
+          address: 'me@caliopen.local',
+          contact_ids: ['contact-user'],
+          label: 'chamal None',
+          protocol: 'smtp',
+          type: 'From',
+        },
+      ],
+    };
+
+    expect(filterIdentities({
+      identities, parentMessage, contacts: [], user,
     })).toEqual([identities[0], identities[2]]);
   });
 });

@@ -55,7 +55,12 @@ export const filterIdentities = ({
   });
 
   // in a discussion 1-to-n we allow to switch identity of the same protocol
-  if (participantsContacts.length === 0 || participantsContacts.length > 1) {
+  if (
+    contacts.length === 0 ||
+    parentMessage.participants.length >= 3 ||
+    participantsContacts.length === 0 ||
+    participantsContacts.length > 1
+  ) {
     return identities.filter(identity =>
       getIdentityProtocol(identity) === getMessageProtocol(parentMessage));
   }
