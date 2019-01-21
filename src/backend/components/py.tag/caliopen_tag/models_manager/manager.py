@@ -22,6 +22,7 @@ class ModelManager(object):
 
     def __init__(
             self,
+            provider,
             cat="cat1",
             use_pre=True,
             epoch=15,
@@ -32,6 +33,12 @@ class ModelManager(object):
             loss="softmax",
             thread=12,
             neg=5):
+        """Initialize a model manager.
+
+        It requires a provider to iterate on for creating the data.
+        All hyperparameters for training the model are optional.
+        """
+        self.provider = provider
         self.cat = cat  # Check cat is available. Use int ?
         self.use_pre = use_pre
         self.epoch = epoch
@@ -56,43 +63,16 @@ class ModelManager(object):
         self._train_tagging_model(output)
         self._remove_tempfile()
 
-    def _write_usenet_data(self, f):
-        usenet_manager = UsenetDataManager({})
-        usenet_manager.prepare(
-            resources_path + usenet_file.format(self.cat)
-        )
-
-        count = 0
-        for item in usenet_manager.next():
-            f.write(item.encode("utf-8") + "\n".encode("utf-8"))
-            count += 1
-        return count
-
-    @staticmethod
-    def _write_elastic_data(f):
-
-        config = Configuration('global').configuration
-        es_manager = ESDataManager(config)
-        query = es_manager.get_query()
-
-        es_manager.prepare(query, index=None, doc_type='indexed_message')
-
-        count = 0
-        for item in es_manager.next():
-            f.write(item.encode("utf-8") + "\n".encode("utf-8"))
-            count += 1
-        return count
-
     def _write_training_data_to_file(self):
         f = NamedTemporaryFile(delete=False, dir=resources_path)
 
-        # Fill the model with usenet base data if self.use_pre == True
-        if self.use_pre:
-            count_usenet = self._write_usenet_data(f)
-            log.info('Wrote ' + str(count_usenet) + " lines from usenet data.")
+        count_lines = 0
 
-        count_es = self._write_elastic_data(f)
-        log.info('Wrote ' + str(count_es) + " lines from elastic data.")
+        for item in self.provider.next():
+            f.write(item.encode("utf-8") + "\n".encode("utf-8"))
+            count_lines += 1
+
+        log.info('Wrote ' + str(count_lines) + " lines from elastic data.")
 
         self.tempfilename = f.name
         f.close()
