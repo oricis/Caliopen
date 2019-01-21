@@ -4,8 +4,6 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 import os
 from tempfile import NamedTemporaryFile
-from .data_manager import UsenetDataManager, ESDataManager
-from caliopen_storage.config import Configuration
 from ..utils import resources_path
 
 import fastText
