@@ -38,12 +38,12 @@
         $color-hover: scale-color($color, $lightness: -50%);
         border-color: transparent;
         background-color: $color;
-        color: $co-color__contrast__text;
+        color: $co-color__clickable-text--contrasted;
 
         &:hover,
         &:focus {
           background-color: $color-hover;
-          color: $co-color__contrast__text--high;
+          color: $co-color__clickable-text--contrasted;
         }
       }
     }
@@ -58,7 +58,6 @@
         &:hover,
         &:focus {
           background-color: transparent;
-          color: $co-color__contrast__text--high;
         }
       }
     }

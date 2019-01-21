@@ -15,6 +15,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Move link external accounts to user menu
 - smaller font for desktop
+- Use white color for plain text buttons
+- Refactor hover and active colors for buttons
+
+### Fixed
+
+- Bad redirection when canceling contact creation
+- Add spaces between buttons in contact edit & contact association pages
 
 ## [0.15.0] 2019-01-15
 
