@@ -28,3 +28,13 @@ class ESDataManager(ESProvider):
         query = query.filter('exists', field='tags')
         query = query.using(self._store).doc_type('indexed_message')
         return query
+
+
+class MultipleSourceDataManager(object):
+    def __init__(self, providers):
+        self.providers = providers
+
+    def next(self):
+        for provider in self.providers:
+            for item in provider.next():
+                yield item
