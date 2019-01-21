@@ -23,7 +23,6 @@ class ModelManager(object):
     def __init__(
             self,
             provider,
-            cat="cat1",
             use_pre=True,
             epoch=15,
             lr=0.1,
@@ -39,7 +38,6 @@ class ModelManager(object):
         All hyperparameters for training the model are optional.
         """
         self.provider = provider
-        self.cat = cat  # Check cat is available. Use int ?
         self.use_pre = use_pre
         self.epoch = epoch
         self.lr = lr
