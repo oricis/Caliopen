@@ -8,10 +8,11 @@
   }
 
   &__tags-title {
-    margin: 20px 0 12px 0;
-    color: #505050;
-    font-size: 18px;
-    line-height: 14px;
+    margin-top: 1.4rem;
+    margin-bottom: 0.8rem;
+    color: $co-color__fg__text--high;
+    font-size: 1.3rem;
+    line-height: 1rem;
   }
 
   &__import {

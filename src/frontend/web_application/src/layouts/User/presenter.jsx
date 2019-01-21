@@ -4,6 +4,8 @@ import { matchPath, withRouter } from 'react-router-dom';
 import { withI18n } from '@lingui/react';
 import MenuBar from '../../components/MenuBar';
 
+import './styles.scss';
+
 @withI18n()
 @withRouter
 class User extends PureComponent {
@@ -22,6 +24,7 @@ class User extends PureComponent {
     const { i18n, children, location: { pathname } } = this.props;
 
     const navLinks = [
+      { key: 'user.identities', label: i18n._('settings.identities', null, { defaults: 'External accounts' }), to: '/user/identities' },
       { key: 'user.profile', label: i18n._('user.profile', null, { defaults: 'Profile' }), to: '/user/profile' },
       // { key: 'user.privacy', label: i18n._('user.privacy', null, { defaults: 'Privacy' }), to:
       // '/user/privacy' },

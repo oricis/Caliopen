@@ -223,6 +223,16 @@ class RoutingProvider extends Component {
                   },
                   routes: [
                     {
+                      path: '/user/identities',
+                      component: RemoteIdentitySettings,
+                      tab: {
+                        type: 'default',
+                        icon: 'user',
+                        renderLabel: () => i18n._('route.settings.label.identities', null, { defaults: 'Security' }),
+                        tabMatch: tabMatchForSettings,
+                      },
+                    },
+                    {
                       path: '/user/profile',
                       component: UserProfile,
                       tab: {
@@ -260,16 +270,6 @@ class RoutingProvider extends Component {
                   component: SettingsLayout,
                   renderLabel: () => i18n._('route.settings.label.default', null, { defaults: 'Settings' }),
                   routes: [
-                    {
-                      path: '/settings/identities',
-                      component: RemoteIdentitySettings,
-                      tab: {
-                        type: 'default',
-                        icon: 'cog',
-                        renderLabel: () => i18n._('route.settings.label.identities', null, { defaults: 'Security' }),
-                        tabMatch: tabMatchForSettings,
-                      },
-                    },
                     {
                       path: '/settings/application',
                       component: ApplicationSettings,

@@ -77,6 +77,17 @@ class UserDMQualifier(object):
         p.protocol = "twitter"
         return p
 
+    def lookup_discussion_sequence(self, message, *args, **kwargs):
+        """Return list of lookup type, value from a tweet."""
+        seq = list()
+
+        seq.append(('global', message.hash_participants))
+
+        if message.external_references["message_id"]:
+            seq.append(("thread", message.external_references["message_id"]))
+
+        return seq
+
     def process_inbound(self, raw):
         """Process inbound message.
 
@@ -118,10 +129,10 @@ class UserDMQualifier(object):
             log.debug('Resolved tags {}'.format(new_message.tags))
 
         # lookup by external references
-        lookup_sequence = message.lookup_discussion_sequence()
+        lookup_sequence = self.lookup_discussion_sequence(new_message)
         lkp = self.lookup(lookup_sequence)
         log.debug('Lookup with sequence {} give {}'.
-              format(lookup_sequence, lkp))
+                  format(lookup_sequence, lkp))
 
         if lkp:
             new_message.discussion_id = lkp.discussion_id

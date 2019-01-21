@@ -43,6 +43,3 @@ class IMessageParser(zope.interface.Interface):
 
     external_references = zope.interface.Attribute('External references')
     extra_parameters = zope.interface.Attribute('Extra parameters')
-
-    def lookup_discussion_sequence(self, *args, **kwargs):
-        """Return list of (lookup_type, lookup_value) for discussion match."""

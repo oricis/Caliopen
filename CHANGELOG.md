@@ -8,12 +8,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
+- handle lost authentication, redirect signin
+
+
+### Changed
+
+- Move link external accounts to user menu
+- smaller font for desktop
+
+## [0.15.0] 2019-01-15
+
+### Added
+
 - When an user authenticate we issue a device.login event
 - Add a contact from a discussion
 - Privacy Policy page available at https://alpha.caliopen.org/privacy-policy.html
 
 ### Fixed
 
+- typos on English catalog (thanks octplane)
 - Existing device are found better, lead to less untrusted device for user
 - Click on contact's title "input" submits the form
 - Empty contact book even when user has a contact (always actually)
@@ -23,6 +36,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 - Rework how privacy features are declared and managed
+- Change how a discussion hash is build, take contact_id as better key
 
 ## [0.14.0] 2018-12-19
 
