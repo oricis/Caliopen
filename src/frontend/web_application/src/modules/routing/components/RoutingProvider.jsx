@@ -135,7 +135,7 @@ class RoutingProvider extends Component {
                   // },
                 },
                 {
-                  path: '/compose/:internalId',
+                  path: '/messages/:messageId',
                   component: NewDraft,
                   app: 'discussion',
                   tab: {

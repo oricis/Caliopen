@@ -14,7 +14,12 @@ export const requestDraft = ({ internalId, hasDiscussion }) =>
     dispatch(requestDraftBase({ internalId }));
 
     if (!hasDiscussion) {
-      const nextDraft = await dispatch(newDraft({ internalId, draft: new Message() }));
+      const nextDraft = await dispatch(newDraft({
+        internalId,
+        // XXX: refactor - this forces the message_id when draft not associated to a discussion
+        //    in case of a discussion, the internalId is the discussion_id
+        draft: new Message({ message_id: internalId }),
+      }));
       dispatch(requestDraftSuccess({ internalId, draft: nextDraft }));
 
       return nextDraft;

@@ -1,9 +1,8 @@
 import { createSelector } from 'reselect';
-import { bindActionCreators, compose } from 'redux';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Presenter from './presenter';
 import { requestDraft } from '../../actions/requestDraft';
-import { withCurrentInternalId } from '../../hoc/withCurrentInternalId';
 import { messagesByIdSelector } from '../../../../store/selectors/message';
 
 const internalIdSelector = (state, ownProps) => ownProps.internalId;
@@ -42,7 +41,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   requestDraft,
 }, dispatch);
 
-export default compose(
-  withCurrentInternalId(),
-  connect(mapStateToProps, mapDispatchToProps)
-)(Presenter);
+export default connect(mapStateToProps, mapDispatchToProps)(Presenter);

@@ -14,7 +14,6 @@ import { withIdentities } from '../../../../modules/identity';
 import { userSelector } from '../../../../modules/user';
 import { getLastMessage } from '../../../../services/message';
 import { withDraftMessage } from './withDraftMessage';
-import { withCurrentInternalId } from '../../hoc/withCurrentInternalId';
 import { filterIdentities } from '../../services/filterIdentities';
 
 import Presenter from './presenter';
@@ -170,7 +169,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 
 export default compose(...[
   withDraftMessage(),
-  withCurrentInternalId(),
   withIdentities({ namespace: 'identHoc' }),
   withContacts(),
   connect(mapStateToProps, mapDispatchToProps),
