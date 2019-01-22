@@ -117,7 +117,7 @@ class InboundMailFeature(object):
                            if 'pgp-encrypt' in x.content_type]
         is_encrypted = True if encrypted_parts else False
         return {'message_encrypted': is_encrypted,
-                'message_encryption_method': 'pgp'}
+                'message_encryption_method': 'pgp' if is_encrypted else ''}
 
     def _get_features(self):
         """Extract privacy features."""
