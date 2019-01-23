@@ -107,8 +107,12 @@ func (cb *CassandraBackend) RetrieveUserIdentity(userId, identityId string, with
 }
 
 func (cb *CassandraBackend) UpdateUserIdentity(userIdentity *UserIdentity, fields map[string]interface{}) (err error) {
+	// immediately prevent upsert
+	if cb.SessionQuery(`SELECT user_id FROM user_identity WHERE user_id = ? AND identity_id = ?`, userIdentity.UserId.String(), userIdentity.Id.String()).Iter().NumRows() == 0 {
+		return errors.New("not found")
+	}
 	//remove Credentials from userIdentity and process this special property apart
-	if cred, ok := fields["Credentials"].(*Credentials); ok {
+	if cred, ok := fields["Credentials"].(*Credentials); ok && cred != nil {
 		(*userIdentity).Credentials = nil
 		delete(fields, "Credentials")
 		err = cb.UpdateCredentials(userIdentity.UserId.String(), userIdentity.Id.String(), *cred)
@@ -134,8 +138,10 @@ func (cb *CassandraBackend) UpdateUserIdentity(userIdentity *UserIdentity, field
 			PartitionKeys: []string{"user_id", "identity_id"},
 		}).WithOptions(gocassa.Options{TableName: "user_identity"})
 
-		err = userIdentityTable.Where(gocassa.Eq("user_id", userIdentity.UserId.String()), gocassa.Eq("identity_id", userIdentity.Id.String())).
-			Update(cassaFields).Run()
+		statement, values := userIdentityTable.Where(gocassa.Eq("user_id", userIdentity.UserId.String()), gocassa.Eq("identity_id", userIdentity.Id.String())).
+			Update(cassaFields).GenerateStatement()
+
+		err := cb.SessionQuery(statement+" IF EXISTS", values...).Exec()
 		if err != nil {
 			return err
 		}
@@ -154,10 +160,11 @@ func (cb *CassandraBackend) UpdateRemoteInfosMap(userId, remoteId string, infos 
 		PartitionKeys: []string{"user_id", "identity_id"},
 	}).WithOptions(gocassa.Options{TableName: "user_identity"})
 
-	return userIdentityTable.Where(gocassa.Eq("user_id", userId), gocassa.Eq("identity_id", remoteId)).
+	statement, values := userIdentityTable.Where(gocassa.Eq("user_id", userId), gocassa.Eq("identity_id", remoteId)).
 		Update(map[string]interface{}{
 			"infos": infos,
-		}).Run()
+		}).GenerateStatement()
+	return cb.SessionQuery(statement+" IF EXISTS", values...).Exec()
 }
 
 // RetrieveRemoteInfos is a convenient way to quickly retrieve infos map without the need of an already created UserIdentity object
@@ -262,12 +269,10 @@ func (cb *CassandraBackend) DeleteUserIdentity(userIdentity *UserIdentity) error
 		}
 	}
 	// delete related rows in relevant lookup tables
-	go func(*CassandraBackend, *UserIdentity) {
-		err := cb.DeleteLookups(userIdentity)
-		if err != nil {
-			log.WithError(err).Error("[CassandraBackend] DeleteUserIdentity: failed to delete lookups")
-		}
-	}(cb, userIdentity)
+	err := cb.DeleteLookups(userIdentity)
+	if err != nil {
+		log.WithError(err).Error("[CassandraBackend] DeleteUserIdentity: failed to delete lookups")
+	}
 	return cb.SessionQuery(`DELETE FROM user_identity WHERE user_id = ? AND identity_id = ?`, userIdentity.UserId, userIdentity.Id).Exec()
 }
 
@@ -377,5 +382,5 @@ func (cb *CassandraBackend) TimestampRemoteLastCheck(userId, remoteId string, t 
 	} else {
 		timestamp = t[0]
 	}
-	return cb.SessionQuery(`UPDATE user_identity SET last_check = ? WHERE user_id = ? AND identity_id = ?`, timestamp, userId, remoteId).Exec()
+	return cb.SessionQuery(`UPDATE user_identity SET last_check = ? WHERE user_id = ? AND identity_id = ? IF EXISTS`, timestamp, userId, remoteId).Exec()
 }
