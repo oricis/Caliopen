@@ -54,7 +54,7 @@ const (
 	dateLastErrorKey  = "lastErrorDate"
 	errorsCountKey    = "errorsCount"
 
-	defaultPollInterval = "2"
+	defaultPollInterval = 10
 )
 
 // NewWorker create a worker dedicated to a specific twitter account.
@@ -191,26 +191,30 @@ func (worker *AccountWorker) PollDM() {
 				if err.Code == 88 {
 					log.Infof("[AccountWorker %s] PollDM : twitter returned rate limit error, slowing down worker for account", worker.userAccount.remoteID)
 					if pollInterval, ok := accountInfos["pollinterval"]; ok {
-						var newInterval string
 						interval, e := strconv.Atoi(pollInterval)
-						if e != nil || interval < 1 {
-							newInterval = defaultPollInterval
+						if e == nil {
+							interval *= 2
+							// prevent boundaries overflow : min = 1 min, max = 3 days
+							if interval < 1 || interval > 3*24*60 {
+								interval = defaultPollInterval
+							}
 						} else {
-							newInterval = strconv.Itoa(interval * 2)
+							interval = defaultPollInterval
 						}
-						accountInfos["pollinterval"] = newInterval
-						worker.broker.Store.UpdateRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String(), accountInfos)
-						order := RemoteIDNatsMessage{
-							IdentityId:   worker.userAccount.remoteID.String(),
-							Order:        "update_interval",
-							PollInterval: newInterval,
-							Protocol:     "twitter",
-							UserId:       worker.userAccount.userID.String(),
-						}
-						jorder, jerr := json.Marshal(order)
-						if jerr == nil {
-							worker.broker.NatsConn.Publish("idCache", jorder)
-						}
+							newInterval := strconv.Itoa(interval)
+							accountInfos["pollinterval"] = newInterval
+							worker.broker.Store.UpdateRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String(), accountInfos)
+							order := RemoteIDNatsMessage{
+								IdentityId: worker.userAccount.remoteID.String(),
+								Order:      "update_interval",
+								OrderParam: newInterval,
+								Protocol:   "twitter",
+								UserId:     worker.userAccount.userID.String(),
+							}
+							jorder, jerr := json.Marshal(order)
+							if jerr == nil {
+								worker.broker.NatsConn.Publish("idCache", jorder)
+							}
 					}
 				}
 				errorsMessages.WriteString(err.Message + " ")

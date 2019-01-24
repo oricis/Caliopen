@@ -40,9 +40,9 @@ type Ack struct {
 
 // message model to send orders to remoteID worker subscriber
 type RemoteIDNatsMessage struct {
-	IdentityId   string
-	Order        string
-	PollInterval string
-	Protocol     string
-	UserId       string
+	IdentityId string
+	Order      string
+	OrderParam string
+	Protocol   string
+	UserId     string
 }
