@@ -8,14 +8,14 @@ package objects
 
 // IMAPfetchOrder is model for message sent on topic 'IMAPfetcher' in NATS's queue 'IMAPworkers'
 type IMAPorder struct {
-	Order    string
-	RemoteId string
-	UserId   string
+	Order    string `json:"order"`
+	RemoteId string `json:"remote_id"`
+	UserId   string `json:"user_id"`
 	// optional fields sent by imapctl
-	Login    string
-	Mailbox  string
-	Password string
-	Server   string
+	Login    string `json:"login"`
+	Mailbox  string `json:"mailbox"`
+	Password string `json:"password"`
+	Server   string `json:"server"`
 }
 
 type BrokerOrder struct {
