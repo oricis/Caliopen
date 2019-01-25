@@ -28,7 +28,7 @@ func ComputePIMessage(message *Message) {
 	}
 
 	// pi.Social
-	known_participants := 0.0
+	known_participants := -1.0 // myself included start at -1
 	for _, participant := range message.Participants {
 		if len(participant.Contact_ids) > 0 {
 			known_participants += 1
@@ -46,8 +46,9 @@ func ComputePIMessage(message *Message) {
 	nbHops, ok := features["nb_external_hops"]
 	if ok {
 		value, err := strconv.Atoi(nbHops)
-		if err != nil && value == 1 {
-			piMessage.Transport += 20
+		if err == nil && value <= 5 {
+			bump := float64((-5 * value) + 25.0)
+			piMessage.Transport += uint32(math.Max(0, bump))
 		}
 	}
 	inCipher, ok := features["ingress_cipher"]
