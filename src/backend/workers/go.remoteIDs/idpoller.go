@@ -24,7 +24,7 @@ type Poller struct {
 	dbh    *DbHandler
 	mqh    *MqHandler
 	sched  *Scheduler
-	wh     *WorkersHandler
+	jobs   *JobsHandler
 }
 
 var poller *Poller
@@ -54,10 +54,16 @@ func InitPoller(config PollerConfig, verboseLog bool) (idpoller *Poller, err err
 		return nil, err
 	}
 
-	poller.wh, err = initWorkersHandler()
+	poller.jobs, err = initJobsHandler()
 	if err != nil {
 		return nil, err
 	}
+
+	/*
+		poller.wh, err = initWorkersHandler()
+		if err != nil {
+			return nil, err
+		}*/
 
 	return poller, nil
 }

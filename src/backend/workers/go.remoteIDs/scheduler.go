@@ -42,14 +42,15 @@ func (s *Scheduler) Start() {
 func (s *Scheduler) AddSyncJobFor(entry cacheEntry) (cacheEntry, error) {
 	var err error
 	cronStr := "@every " + entry.pollInterval + "m"
-	entry.cronId, err = s.MainCron.AddJob(cronStr, syncJob{
-		protocol: entry.remoteProtocol,
-		remoteId: entry.remoteID.String(),
-		userId:   entry.userID.String(),
-	})
+	job, err := buildSyncJob(entry)
 	if err != nil {
-		log.WithError(err).Warn("[AddJobFor] failed to add job to MainCron")
-		return entry, errors.New("[AddJobFor] failed to add job to MainCron")
+		log.WithError(err).Warn("[AddSyncJobFor] failed to build job to MainCron")
+		return entry, errors.New("[AddSyncJobFor] failed to build job to MainCron")
+	}
+	entry.cronId, err = s.MainCron.AddJob(cronStr, job)
+	if err != nil {
+		log.WithError(err).Warn("[AddSyncJobFor] failed to add job to MainCron")
+		return entry, errors.New("[AddSyncJobFor] failed to add job to MainCron")
 	}
 	return entry, nil
 }

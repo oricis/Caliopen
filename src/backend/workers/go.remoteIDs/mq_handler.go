@@ -42,16 +42,20 @@ func (mqh *MqHandler) natsIngressHandler(msg *nats.Msg) {
 	err := json.Unmarshal(msg.Data, &order)
 	if err != nil {
 		log.WithError(err).Warn("unable to unmarshal nats order")
+		return
 	}
 	switch order.Order {
 	case "update_interval":
-		/*
-			idKey := order.UserId + order.IdentityId
-			cacheEntry := p.Cache[idKey]
-			cacheEntry.pollInterval = order.PollInterval
-			p.Cache[idKey] = cacheEntry
-			p.UpdateJobFor(idKey)
-		*/
+		idKey := order.UserId + order.IdentityId
+		if entry, ok := poller.dbh.GetCacheEntry(idKey); ok {
+			entry.pollInterval = order.OrderParam
+			log.Debugf("[natsIngressHandler] update pollIntervall for entry : %+v", entry)
+			poller.dbh.UpdateCacheEntry(entry)
+			_, err := poller.sched.UpdateSyncJobFor(entry)
+			if err != nil {
+				log.WithError(err).Warnf("[natsIngressHandler] failed to updateSyncJobFor %+v", entry)
+			}
+		}
 	case "delete":
 		//TODO
 	case "add":
