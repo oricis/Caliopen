@@ -35,6 +35,7 @@ export const typeAssoc = {
   'expire-soon': 'fa fa-clock-o',
   desktop: 'fa fa-desktop',
   facebook: 'fa fa-facebook',
+  file: 'fa fa-file',
   filter: 'fa fa-filter',
   folder: 'fa fa-folder-open',
   google: 'fa fa-google',
