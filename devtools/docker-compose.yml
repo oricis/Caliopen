@@ -122,11 +122,8 @@ services:
       dockerfile: Dockerfile.go-lmtp
     image: caliopen_lmtpd
     depends_on:
-      - cassandra
-      - elasticsearch
-      - objectstore
-      - nats
-      - inbucket
+      - mqworker
+      - smtp
       - imapworker
     ports:
       - "2525:2525"
@@ -149,6 +146,7 @@ services:
     depends_on:
       - cassandra
       - elasticsearch
+      - objectstore
       - nats
     volumes:
       - ../src/backend/configs:/etc/caliopen
@@ -210,7 +208,7 @@ services:
 
   # Inbucket : a small smtp server to catch all outgoing emails for testing purpose
   # point your browser at localhost:8888
-  inbucket:
+  smtp:
     image: jhillyerd/inbucket
     ports:
       - "8888:9000"
