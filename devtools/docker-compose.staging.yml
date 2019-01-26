@@ -123,7 +123,7 @@ services:
 
   # NATS
   nats:
-    image: nats:0.9.6
+    image: nats:1.4.0
     expose:
       - "4222"
 
