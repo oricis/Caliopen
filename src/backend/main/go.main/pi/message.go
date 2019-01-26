@@ -13,10 +13,9 @@ import (
 )
 
 // ComputePIMessage returns estimated PIMessage values
-func ComputePIMessage(message *Message) {
+func ComputePIMessage(message *Message) *PIMessage {
 	piMessage := &PIMessage{Transport: 0, Social: 0, Content: 0}
 	features := *message.Privacy_features
-	log.Info("PI: Using features ", features)
 	// pi.Content
 	if encrypted, ok := features["messsage_encryption_method"]; ok && encrypted != "" {
 		piMessage.Content += 50
@@ -57,5 +56,5 @@ func ComputePIMessage(message *Message) {
 	}
 	// TODO : normalize
 	log.Info("PI: result ", piMessage)
-	message.PI = piMessage
+	return piMessage
 }

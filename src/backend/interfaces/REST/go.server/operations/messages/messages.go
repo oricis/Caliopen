@@ -102,7 +102,7 @@ func GetMessagesList(ctx *gin.Context) {
 	respBuf.WriteString("\"messages\":[")
 	first := true
 	for _, msg := range list {
-		pi.ComputePIMessage(msg)
+		msg.PI = pi.ComputePIMessage(msg)
 		json_msg, err := msg.MarshalFrontEnd(settings.MessageDisplayFormat)
 		if err == nil {
 			if first {
