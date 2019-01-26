@@ -372,27 +372,24 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 			msg.Participants = append(msg.Participants, p)
 		}
 	}
+	pi := PrivacyIndex{}
 	if i_pi, ok := input["pi"].(map[string]interface{}); ok && i_pi != nil {
-		pi := PrivacyIndex{}
 		pi.Comportment, _ = i_pi["comportment"].(int)
 		pi.Context, _ = i_pi["context"].(int)
 		pi.DateUpdate, _ = i_pi["date_sort"].(time.Time)
 		pi.Technic, _ = i_pi["technic"].(int)
 		pi.Version, _ = i_pi["version"].(int)
-		msg.PrivacyIndex = &pi
-	} else {
-		msg.PrivacyIndex = nil
 	}
+	msg.PrivacyIndex = &pi
+
+	pf := PrivacyFeatures{}
 	if i_pf, ok := input["privacy_features"].(map[string]string); ok && i_pf != nil {
-		pf := PrivacyFeatures{}
 		for k, v := range i_pf {
 			pf[k] = v
 		}
-		msg.Privacy_features = &pf
-
-	} else {
-		msg.Privacy_features = nil
 	}
+	msg.Privacy_features = &pf
+
 	if raw_msg_id, ok := input["raw_msg_id"].(gocql.UUID); ok {
 		msg.Raw_msg_id.UnmarshalBinary(raw_msg_id.Bytes())
 	}
@@ -424,6 +421,7 @@ func (msg *Message) NewEmpty() interface{} {
 	m.External_references = ExternalReferences{}
 	m.UserIdentities = []UUID{}
 	m.Participants = []Participant{}
+	m.Privacy_features = &PrivacyFeatures{}
 	m.Tags = []string{}
 	return m
 }
