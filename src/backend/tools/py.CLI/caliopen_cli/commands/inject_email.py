@@ -18,7 +18,7 @@ def inject_email(recipient, email, **kwargs):
     """Inject an email for an user."""
 
     with open(email) as f:
-        conn = smtplib.SMTP('broker', 2525)
+        conn = smtplib.SMTP('localhost', 2525)
         try:
             conn.sendmail("inject_email@py.cli.caliopen", [recipient],
                           str(f.read()))
