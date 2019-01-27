@@ -2,6 +2,7 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import os
+from io import open
 
 import zope.interface
 from elasticsearch import Elasticsearch
@@ -53,7 +54,7 @@ class FileDataProvider(DataProvider):
     def _execute(self):
         if not self._filename:
             raise ValueError('No prepared file')
-        with open(self._filename, 'r') as f:
+        with open(self._filename, 'r', encoding="utf-8") as f:
             return f.read().split('\n')
 
 

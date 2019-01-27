@@ -10,11 +10,31 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - handle lost authentication, redirect signin
 
-
 ### Changed
 
 - Move link external accounts to user menu
 - smaller font for desktop
+- Use white color for plain text buttons
+- Refactor hover and active colors for buttons
+- Display a progress bar when downloading an attachment
+
+### Fixed
+
+- Bad redirection when canceling contact creation
+- Add spaces between buttons in contact edit & contact association pages
+- Unable to download an attachment due to missing request's headers
+
+## [0.15.2] 2019-01-23
+
+### Fixed
+
+- Many fixes on remote identities workers (imap, twitter) tested on production
+
+## [0.15.1] 2019-01-22
+
+### Fixed
+
+- BSOD on discussion when contacts not yet loaded
 
 ## [0.15.0] 2019-01-15
 

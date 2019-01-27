@@ -12,7 +12,7 @@ class Button extends PureComponent {
     shape: PropTypes.oneOf(['plain', 'hollow']),
     icon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     display: PropTypes.oneOf(['inline', 'inline-block', 'block', 'expanded']),
-    color: PropTypes.oneOf(['success', 'alert', 'secondary', 'active']),
+    color: PropTypes.oneOf(['success', 'alert', 'secondary', 'active', 'disabled']),
     responsive: PropTypes.oneOf(['icon-only', 'text-only']),
     accessKey: PropTypes.string,
     noDecoration: PropTypes.bool,
@@ -60,6 +60,7 @@ class Button extends PureComponent {
           'm-button--alert': color === 'alert',
           'm-button--secondary': color === 'secondary',
           'm-button--success': color === 'success',
+          'm-button--disabled': color === 'disabled',
 
           'm-button--expanded': display === 'expanded',
           'm-button--inline': display === 'inline',

@@ -146,7 +146,7 @@ func syncMailbox(ibox *imapBox, imapClient *client.Client, provider Provider, ch
 
 // fetchMailbox retrieves all messages found within remote mailbox
 // unaware of synchronization
-func fetchMailbox(ibox imapBox, imapClient *client.Client, provider Provider, ch chan *imap.Message) (err error) {
+func fetchMailbox(ibox *imapBox, imapClient *client.Client, provider Provider, ch chan *imap.Message) (err error) {
 
 	mbox, err := imapClient.Select(ibox.name, true)
 	if err != nil {
@@ -195,7 +195,7 @@ func MarshalImap(message *imap.Message, xHeaders ImapFetcherHeaders) (mail *Emai
 
 // buildXheaders builds custom X-Fetched headers
 // with provider specific information
-func buildXheaders(tlsConn *tls.Conn, rId *UserIdentity, box imapBox, message *imap.Message, provider Provider) (xHeaders ImapFetcherHeaders) {
+func buildXheaders(tlsConn *tls.Conn, rId *UserIdentity, box *imapBox, message *imap.Message, provider Provider) (xHeaders ImapFetcherHeaders) {
 	connState := tlsConn.ConnectionState()
 
 	var proto string
@@ -223,13 +223,17 @@ func buildXheaders(tlsConn *tls.Conn, rId *UserIdentity, box imapBox, message *i
 	}
 	switch provider.Name {
 	case "gmail":
-		xHeaders["X-Fetched-"+gmail_msgid] = message.Items[gmail_msgid].(string)
+		if msgid, ok := message.Items[gmail_msgid].(string); ok {
+			xHeaders["X-Fetched-"+gmail_msgid] = msgid
+		}
 		gLabels := strings.Builder{}
 		for i, label := range message.Items[gmail_labels].([]interface{}) {
-			if i == 0 {
-				gLabels.WriteString(label.(string))
-			} else {
-				gLabels.WriteString("\r\n" + label.(string))
+			if label != nil {
+				if i == 0 {
+					gLabels.WriteString(label.(string))
+				} else {
+					gLabels.WriteString("\r\n" + label.(string))
+				}
 			}
 		}
 		if gLabels.Len() > 0 {

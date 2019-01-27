@@ -57,28 +57,34 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPorder) error {
 	}
 
 	// 1.2 check if a sync process is running
-	if syncing, ok := userIdentity.Infos["syncing"]; ok {
-		startDate, _ := time.Parse(time.RFC3339, syncing)
-		if time.Since(startDate)/time.Hour < failuresThreshold {
+	if syncing, ok := userIdentity.Infos["syncing"]; ok && syncing != "" {
+		startDate, e := time.Parse(time.RFC3339, syncing)
+		if e == nil && time.Since(startDate)/time.Hour < failuresThreshold {
 			log.Infof("[SyncRemoteWithLocal] avoiding concurrent sync for <%s>. Syncing in progress since %s", order.RemoteId, userIdentity.Infos["syncing"])
 			return nil
 		}
 	}
 	// save syncing state in db to prevent concurrent sync
 	(*userIdentity).Infos["syncing"] = time.Now().Format(time.RFC3339)
-	f.Store.UpdateUserIdentity(userIdentity, map[string]interface{}{
+	err = f.Store.UpdateUserIdentity(userIdentity, map[string]interface{}{
 		"Infos": userIdentity.Infos,
 	})
+	if err != nil {
+		log.WithError(err).Infof("[SyncRemoteWithLocal] failed to update remote identity <%s> : <%s>", order.UserId, order.RemoteId)
+		return err
+	}
 
 	// 2. sync/fetch with remote IMAP
 	mails := make(chan *Email)
 	lastsync := time.Time{}
-	if userIdentity.Infos["lastsync"] != "" {
+	if ls, ok := userIdentity.Infos["lastsync"]; ok && ls != "" {
 		lastsync, err = time.Parse(time.RFC3339, userIdentity.Infos["lastsync"])
 		if err != nil {
 			log.WithError(err).Warnf("[syncMails] failed to parse lastsync string <%s>", userIdentity.Infos["lastsync"])
 			lastsync = time.Time{}
 		}
+	} else {
+		lastsync = time.Time{}
 	}
 	// Sync INBOX (only INBOX for now)
 	// TODO : sync other mailbox(es) from userIdentity.Infos params or from order
@@ -116,6 +122,7 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPorder) error {
 			close(mails)
 			break
 		}
+
 	}
 
 	for i, err := range errs {
@@ -170,7 +177,7 @@ func (f *Fetcher) FetchRemoteToLocal(order IMAPorder) error {
 
 	// 2. fetch remote messages
 	mails := make(chan *Email, 10)
-	go f.fetchMails(&userIdentity, box, mails)
+	go f.fetchMails(&userIdentity, &box, mails)
 	//TODO errors handling
 
 	// 3. forward mails to lda
@@ -184,7 +191,7 @@ func (f *Fetcher) FetchRemoteToLocal(order IMAPorder) error {
 }
 
 // fetchMails fetches all messages from remote mailbox and returns well-formed Emails for lda.
-func (f *Fetcher) fetchMails(userIdentity *UserIdentity, box imapBox, ch chan *Email) (err error) {
+func (f *Fetcher) fetchMails(userIdentity *UserIdentity, box *imapBox, ch chan *Email) (err error) {
 	if userIdentity.Infos["authtype"] == Oauth2 {
 		err = users.ValidateOauth2Credentials(userIdentity, f, true)
 		if err != nil {

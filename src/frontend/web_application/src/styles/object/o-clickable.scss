@@ -1,7 +1,7 @@
 @mixin o-clickable {
   transition: $co-animation__clickable-transition;
   border-color: $co-color__primary;
-  color: $co-color__primary;
+  color: $co-color__clickable-text;
   font-weight: 700;
   text-decoration: none;
   cursor: pointer;
@@ -10,16 +10,16 @@
     cursor: default;
 
     &:hover {
-      color: $co-color__fg__text;
+      color: $co-color__clickable-text--hover;
     }
   }
 
   &:hover {
-    color: $co-color__fg__text--high;
+    color: $co-color__clickable-text--hover;
   }
 
   &:active {
-    color: $co-color__contrast__text;
+    color: $co-color__clickable-text--contrasted;
   }
 
   @each $name, $color in $caliopen-palette {
@@ -33,7 +33,7 @@
       &:focus {
         &:not(:disabled) {
           background-color: $color-hover;
-          color: $co-color__fg__text--high;
+          color: $co-color__clickable-text--hover;
         }
       }
     }
@@ -65,7 +65,7 @@
   white-space: nowrap;
 
   &:hover {
-    color: $co-color__contrast__text;
+    color: $co-color__clickable-text--hover;
 
     &:not(:disabled) {
       background-color: $co-color__primary;
@@ -89,12 +89,12 @@
 }
 @mixin o-clickable--plain {
   background-color: $co-color__primary;
-  color: $co-color__contrast__text;
+  color: $co-color__clickable-text--contrasted;
 }
 
 
 @mixin o-clickable--active-text {
-  color: $co-color__contrast__text;
+  color: $co-color__clickable-text;
   cursor: default;
 }
 
