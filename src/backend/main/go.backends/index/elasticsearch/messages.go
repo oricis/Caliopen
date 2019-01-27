@@ -33,6 +33,7 @@ func (es *ElasticSearchBackend) CreateMessage(user *objects.UserInfo, msg *objec
 		log.WithError(err).Warn("backend Index: IndexMessage operation failed")
 		return err
 	}
+
 	log.Infof("New msg indexed with id %s", resp.Id)
 	return nil
 

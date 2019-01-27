@@ -112,6 +112,18 @@ class Message(ObjectIndexable):
         msg = RawMessage.get_for_user(self.user_id, self.raw_msg_id)
         return json.loads(msg.json_rep)
 
+    @property
+    def external_msg_id(self):
+        return self.external_references.message_id if self.external_references \
+            else None
+
+    @property
+    def user_identity(self):
+        """
+        return first user_identity
+        """
+        return self.user_identities[0] if self.user_identities else None
+
     @classmethod
     def create_draft(cls, user, **params):
         """

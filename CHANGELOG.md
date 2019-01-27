@@ -65,6 +65,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - special group user contact in contact-book
 - Toggle show spam
 - Placeholder when loading Timeline
+- Messages de-duplication when importing or re-importing from external accounts
 
 ### Fixed
 

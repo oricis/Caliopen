@@ -34,26 +34,26 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err e
 	case EmailProtocol, ImapProtocol:
 		natsTopic = Nats_outIMAP_topicKey
 		order = BrokerOrder{
-			Order:     nats_order,
-			MessageId: msg_id,
-			UserId:    user_id,
-			RemoteId: draft.UserIdentities[0].String(), // handle one identity only for now
+			Order:      nats_order,
+			MessageId:  msg_id,
+			UserId:     user_id,
+			IdentityId: draft.UserIdentities[0].String(), // handle one identity only for now
 		}
 	case SmtpProtocol:
 		natsTopic = Nats_outSMTP_topicKey
 		order = BrokerOrder{
-			Order:     nats_order,
-			MessageId: msg_id,
-			UserId:    user_id,
-			RemoteId: draft.UserIdentities[0].String(), // handle one identity only for now
+			Order:      nats_order,
+			MessageId:  msg_id,
+			UserId:     user_id,
+			IdentityId: draft.UserIdentities[0].String(), // handle one identity only for now
 		}
 	case TwitterProtocol:
 		natsTopic = Nats_outTwitter_topicKey
 		order = BrokerOrder{
-			Order:     nats_order,
-			MessageId: msg_id,
-			UserId:    user_id,
-			RemoteId:  draft.UserIdentities[0].String(), // handle one identity for now
+			Order:      nats_order,
+			MessageId:  msg_id,
+			UserId:     user_id,
+			IdentityId: draft.UserIdentities[0].String(), // handle one identity for now
 		}
 	default:
 		return nil, fmt.Errorf("[SendDraft] no handler for <%s> protocol", protocol)

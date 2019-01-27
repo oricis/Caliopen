@@ -13,6 +13,7 @@ from caliopen_main.contact.core import Contact
 from caliopen_main.discussion.core import (DiscussionThreadLookup,
                                            DiscussionListLookup,
                                            DiscussionGlobalLookup)
+
 # XXX use a message formatter registry not directly mail format
 from caliopen_main.message.parsers.mail import MailMessage
 from caliopen_main.discussion.core import Discussion
@@ -39,9 +40,10 @@ class UserMessageQualifier(object):
         'list': DiscussionListLookup,
     }
 
-    def __init__(self, user):
+    def __init__(self, user, identity):
         """Create a new instance of an user message qualifier."""
         self.user = user
+        self.identity = identity
 
     def _get_tags(self, message):
         """Evaluate user rules to get all tags for a mail."""

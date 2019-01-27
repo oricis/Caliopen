@@ -26,15 +26,15 @@ func (w *Worker) WorkerMsgHandler(msg *nats.Msg) {
 	switch message.Order {
 	case "reload_worker":
 		//TODO: order to force refreshing cache data for an account
-		log.Infof("received reload_worker order for remote twitter ID %s", message.RemoteId)
+		log.Infof("received reload_worker order for remote twitter ID %s", message.IdentityId)
 	case "add_worker":
-		log.Infof("received add_worker order for remote twitter ID %s", message.RemoteId)
-		accountWorker := w.getOrCreateWorker(message.UserId, message.RemoteId)
+		log.Infof("received add_worker order for remote twitter ID %s", message.IdentityId)
+		accountWorker := w.getOrCreateWorker(message.UserId, message.IdentityId)
 		if accountWorker == nil {
-			log.WithError(err).Warnf("[WorkerMsgHandler] failed to create new worker for remote %s (user %s)", message.RemoteId, message.UserId)
+			log.WithError(err).Warnf("[WorkerMsgHandler] failed to create new worker for remote %s (user %s)", message.IdentityId, message.UserId)
 		}
 	case "remove_worker":
-		log.Infof("received remove_worker order for remote twitter ID %s", message.RemoteId)
+		log.Infof("received remove_worker order for remote twitter ID %s", message.IdentityId)
 	}
 }
 
@@ -48,27 +48,27 @@ func (w *Worker) DMmsgHandler(msg *nats.Msg) {
 	}
 	switch message.Order {
 	case "sync":
-		log.Infof("received sync order for remote twitter ID %s", message.RemoteId)
-		if accountWorker := w.getOrCreateWorker(message.UserId, message.RemoteId); accountWorker != nil {
+		log.Infof("received sync order for remote twitter ID %s", message.IdentityId)
+		if accountWorker := w.getOrCreateWorker(message.UserId, message.IdentityId); accountWorker != nil {
 			select {
 			case accountWorker.WorkerDesk <- PollDM:
-				log.Infof("[DMmsgHandler] ordering to pollDM for remote %s (user %s)", message.RemoteId, message.UserId)
+				log.Infof("[DMmsgHandler] ordering to pollDM for remote %s (user %s)", message.IdentityId, message.UserId)
 			case <-time.After(30 * time.Second):
-				log.Warnf("[DMmsgHandler] worker's desk is full for remote %s (user %s)", message.RemoteId, message.UserId)
+				log.Warnf("[DMmsgHandler] worker's desk is full for remote %s (user %s)", message.IdentityId, message.UserId)
 			}
 		} else {
-			log.Warnf("[DMmsgHandler] failed to get a worker for remote %s (user %s)", message.RemoteId, message.UserId)
+			log.Warnf("[DMmsgHandler] failed to get a worker for remote %s (user %s)", message.IdentityId, message.UserId)
 			w.natsReplyError(msg, errors.New("[DMmsgHandler] failed to get a worker"))
 		}
 	case "deliver":
-		if accountWorker := w.getOrCreateWorker(message.UserId, message.RemoteId); accountWorker != nil {
+		if accountWorker := w.getOrCreateWorker(message.UserId, message.IdentityId); accountWorker != nil {
 			com := twitter_broker.NatsCom{
 				Order: message,
 				Ack:   make(chan *DeliveryAck),
 			}
 			select {
 			case accountWorker.broker.Connectors.Egress <- com:
-				log.Infof("[DMmsgHandler] sending DM for remote %s (user %s)", message.RemoteId, message.UserId)
+				log.Infof("[DMmsgHandler] sending DM for remote %s (user %s)", message.IdentityId, message.UserId)
 				// non-blocking wait for delivery ack
 				go func(com twitter_broker.NatsCom) {
 					select {
@@ -88,7 +88,7 @@ func (w *Worker) DMmsgHandler(msg *nats.Msg) {
 					}
 				}(com)
 			case <-time.After(30 * time.Second):
-				log.Warnf("[DMmsgHandler] worker's Egress connectors is full for remote %s (user %s)", message.RemoteId, message.UserId)
+				log.Warnf("[DMmsgHandler] worker's Egress connectors is full for remote %s (user %s)", message.IdentityId, message.UserId)
 				w.natsReplyError(msg, errors.New("[DMmsgHandler] failed to get a worker"))
 			}
 		} else {
