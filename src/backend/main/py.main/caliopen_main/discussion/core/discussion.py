@@ -170,6 +170,14 @@ class Discussion(BaseUserCore):
             return None
         return cls.get(user, lookup.discussion_id)
 
+    @classmethod
+    def by_hash(cls, user, hash):
+        try:
+            lookup = DiscussionGlobalLookup.get(user, hash)
+        except NotFound:
+            return None
+        return cls.get(user, lookup.discussion_id)
+
 
 class ReturnDiscussion(ReturnCoreObject):
     _core_class = Discussion

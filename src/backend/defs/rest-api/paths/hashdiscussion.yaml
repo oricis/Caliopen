@@ -1,0 +1,38 @@
+---
+hashdiscussion:
+  post:
+    description: Returns the hash of a discussion for a list of participants
+    tags:
+    - compute
+    security:
+    - basicAuth: []
+    parameters:
+    - name: participants
+      in: body
+      type: array
+      items:
+        "$ref": "../objects/Participant.yaml"
+      required: true
+    produces:
+    - application/json
+    responses:
+      '200':
+        description: Computed discussion information
+        schema:
+          type: object
+          properties:
+            hash:
+              type: string
+              description: participants informations hash for discussion lookup
+            discussion_id:
+              type: string
+              description: id of existing discussion for given participants
+      '400':
+        description: malform request
+        schema:
+          type: object
+          "$ref": "../objects/Error.yaml"
+      '401':
+        description: Unauthorized access
+        schema:
+          "$ref": "../objects/Error.yaml"
