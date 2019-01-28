@@ -34,13 +34,14 @@ message_queue:
 object_store:
     db_size_limit: 1048576
     service: s3
-    endpoint: minio.dev.caliopen.org:9090
+    endpoint: objectstore:9090
     access_key: CALIOPEN_ACCESS_KEY_
     secret_key: CALIOPEN_SECRET_KEY_BE_GOOD_AND_LIVE_OLD
     location: eu-fr-localhost
     buckets:
         raw_messages: caliopen-raw-messages
         temporary_attachments: caliopen-tmp-attachments
+        learn_models: learn-models
 
 system:
     max_users: 2000
