@@ -22,24 +22,22 @@ class MessageItem extends Component {
     className: PropTypes.string,
     message: PropTypes.shape({}).isRequired,
     settings: PropTypes.shape({}).isRequired,
-    isMessageFromUser: PropTypes.bool.isRequired,
     userTags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    onSelectMessage: PropTypes.func,
+    onToggleSelectMessage: PropTypes.func.isRequired,
     isMessageSelected: PropTypes.bool,
-    isDeleting: PropTypes.bool.isRequired,
+    isDeleting: PropTypes.bool,
   };
 
   static defaultProps = {
     className: undefined,
-    onSelectMessage: str => str,
     isMessageSelected: false,
+    isDeleting: false,
   };
 
-  onCheckboxChange = (ev) => {
-    const { message, onSelectMessage } = this.props;
-    const { checked } = ev.target;
+  onCheckboxChange = () => {
+    const { message, onToggleSelectMessage } = this.props;
 
-    onSelectMessage(checked ? 'add' : 'remove', message.message_id);
+    onToggleSelectMessage({ message });
   }
 
   renderAuthor = () => {
@@ -53,18 +51,14 @@ class MessageItem extends Component {
   }
 
   renderDate = () => {
-    const { message, settings: { default_locale: locale }, isMessageFromUser } = this.props;
-    const hasDate = (isMessageFromUser && message.date)
-      || (!isMessageFromUser && message.date_insert);
-    const msgDate = isMessageFromUser && !message.is_draft ? message.date : message.date_insert;
+    const { message, settings: { default_locale: locale } } = this.props;
 
-
-    return hasDate && (
+    return (
       <TextBlock>
         {this.renderType()}
         {' '}
         <Moment locale={locale} element={MessageDate}>
-          {msgDate}
+          {message.date_sort}
         </Moment>
       </TextBlock>
     );
@@ -120,7 +114,7 @@ class MessageItem extends Component {
   renderType = () => {
     const { i18n, message } = this.props;
     const typeTranslations = {
-      email: i18n._('message-list.message.protocol.email', { defaults: 'email' }),
+      email: i18n._('message-list.message.protocol.email', null, { defaults: 'email' }),
     };
 
     const messageType = message.type && typeTranslations[message.type];
@@ -176,7 +170,7 @@ class MessageItem extends Component {
         </div>
         <div className="s-message-item__col-select">
           <Checkbox
-            label={i18n._('message-list.action.select_single_message', { defaults: 'Select/deselect this message' })}
+            label={i18n._('message-list.action.select_single_message', null, { defaults: 'Select/deselect this message' })}
             onChange={this.onCheckboxChange}
             id={message.message_id}
             checked={isMessageSelected}
