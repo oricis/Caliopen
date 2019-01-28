@@ -103,6 +103,20 @@ services:
       - .:/srv/caliopen/src/backend/devtools
       - ../src/backend/configs:/etc/caliopen
 
+    # Caliopen cli tool
+  clia:
+    build:
+      context: ../src/backend
+      dockerfile: Dockerfile.cli-ia
+    image: caliopen_clia
+    depends_on:
+      - cassandra
+      - elasticsearch
+      - objectstore
+    volumes:
+      - .:/srv/caliopen/src/backend/devtools
+      - ../src/backend/configs:/etc/caliopen
+
   # Caliopen frontend
   frontend:
     build:
