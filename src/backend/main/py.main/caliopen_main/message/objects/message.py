@@ -170,7 +170,8 @@ class Message(ObjectIndexable):
         # forbid multiple protocol
         for participant in message.participants:
             if participant.protocol != message.protocol:
-                raise Exception("multiple protocols not implemented")
+                log.warning("Different protocols detected {0} and {1}".
+                            format(participant.protocol, message.protocol))
 
         message.date = message.date_sort = message.date_insert = \
             datetime.datetime.now(tz=pytz.utc)
