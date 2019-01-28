@@ -173,7 +173,7 @@ class Timeline extends Component {
   renderPlaceholder = () => (
     <ul className="s-timeline__discussion-list">
       {[1, 2, 3, 4, 5].map(n => (
-        <PlaceholderBlock key={n} className="s-timeline__discussion-item-placeholder" />
+        <PlaceholderBlock key={n} className="s-timeline__discussion" />
       ))}
     </ul>
   );
@@ -191,6 +191,7 @@ class Timeline extends Component {
         {discussions.map(discussion => (
           <DiscussionItem
             key={discussion.discussion_id}
+            className="s-timeline__discussion"
             user={user}
             discussion={discussion}
             onSelectDiscussion={this.onSelectDiscussion}
