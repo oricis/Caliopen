@@ -260,7 +260,7 @@ func (f *Fetcher) syncMails(userIdentity *UserIdentity, box *imapBox, ch chan *E
 
 	// read new messages coming from imap chan and write to lda chan with added custom headers
 	for msg := range newMessages {
-		xHeaders := buildXheaders(tlsConn, userIdentity, *box, msg, provider)
+		xHeaders := buildXheaders(tlsConn, userIdentity, box, msg, provider)
 		mail, err := MarshalImap(msg, xHeaders)
 		if err != nil {
 			//todo
