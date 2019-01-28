@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { ActionBarWrapper, ActionBar } from '../../components';
 import { ScrollDetector } from '../../modules/scroll';
-import MessageList from '../Discussion/components/MessageList';
 import { withCurrentView } from './withCurrentView';
+import MessageItem from './components/MessageItem';
+import './style.scss';
 
 @withCurrentView()
 class View extends Component {
@@ -43,12 +44,16 @@ class View extends Component {
   }
 
   render() {
-    const { className, messages, isFetching } = this.props;
+    const { className, messages } = this.props;
 
     return (
       <div className={classnames(className)}>
         {this.renderActionBar()}
-        <MessageList isFetching={isFetching} messages={messages} />
+        <div>
+          {messages.map(message => (
+            <MessageItem key={message.message_id} message={message} className="s-view__message" />
+          ))}
+        </div>
       </div>
     );
   }
