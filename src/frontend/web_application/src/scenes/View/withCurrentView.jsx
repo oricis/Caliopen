@@ -22,7 +22,8 @@ const mapStateToProps = createSelector(
     isFetching: viewState && viewState.isFetching,
     messages: Object.keys(messagesById)
       .map(messageId => messagesById[messageId])
-      .filter(message => view.has({ message })),
+      .filter(message => view.has({ message }))
+      .sort((a, b) => ((new Date(a.date_sort)) - (new Date(b.date_sort))) * -1),
   })
 );
 
