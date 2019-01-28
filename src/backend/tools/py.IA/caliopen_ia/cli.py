@@ -4,9 +4,11 @@ Command Line Interface (CLI) for caliopen project
 
 """
 import click
+
 from minio import Minio
 from minio.error import BucketAlreadyOwnedByYou, BucketAlreadyExists
 from caliopen_tag.models_manager import ModelManager, ESDataManager
+import elasticsearch_dsl as dsl
 
 
 class Config(object):
@@ -35,9 +37,10 @@ def save_object_store(config, input_file, dest):
     except Exception as exc:
         raise exc
     try:
-        resp = minioClient.fput_object(bucket, dest, input_file)
+        resp = client.fput_object(bucket, dest, input_file)
+        click.echo('Put file {0}: {1}'.format(input_file, resp))
     except Exception as exc:
-        log.exception('Unable to save file in object store %r' % exc)
+        click.echo('Unable to save file in object store %r' % exc)
         raise exc
 
 
@@ -60,5 +63,10 @@ def train(config, model, index, output):
                format(model, index))
     if model == 'tagger':
         provider = ESDataManager(config)
+        provider.prepare(provider.get_query(),
+                         index=None,
+                         doc_type='indexed_message')
         model = ModelManager(provider)
         model.get_new_model(output)
+    else:
+        click.echo('Unknow model {0}'.format(model))
