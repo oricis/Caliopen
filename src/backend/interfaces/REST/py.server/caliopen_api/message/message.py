@@ -28,11 +28,6 @@ class Message(Api):
         self.user = request.authenticated_userid
 
     @view(renderer='json', permission='authenticated')
-    def collection_get(self):
-        log.warn('Deprecated GET /messages API')
-        raise HTTPMovedPermanently(location="/V2/messages")
-
-    @view(renderer='json', permission='authenticated')
     def collection_post(self):
         data = self.request.json
         if 'privacy_features' in data:
@@ -52,14 +47,6 @@ class Message(Api):
 
         self.request.response.location = message_url.encode('utf-8')
         return {'location': message_url}
-
-    @view(renderer='json', permission='authenticated')
-    def get(self):
-        log.warn('Deprecated GET /messages/<id> API')
-        message_id = self.request.swagger_data["message_id"]
-        message_url = self.request.route_path('message', message_id=message_id)
-        message_url = message_url.replace("/v1/", "/v2/")
-        raise HTTPMovedPermanently(location=message_url)
 
     @view(renderer='json', permission='authenticated')
     def patch(self):
