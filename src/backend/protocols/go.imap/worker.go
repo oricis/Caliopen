@@ -14,16 +14,24 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/nats-io/go-nats"
+	"sync"
+	"time"
 )
 
 type Worker struct {
-	Config   WorkerConfig
-	Id       uint8
-	Lda      *Lda
-	NatsConn *nats.Conn
-	NatsSubs []*nats.Subscription
-	Store    backends.LDAStore
+	Config    WorkerConfig
+	Id        uint8
+	Lda       *Lda
+	NatsConn  *nats.Conn
+	NatsSubs  []*nats.Subscription
+	Store     backends.LDAStore
+	HaltGroup *sync.WaitGroup
 }
+
+const (
+	noPendingJobErr = "no pending job"
+	pollThrottling  = 30 * time.Second
+)
 
 // NewWorker loads config, checks for errors then returns a worker ready to start.
 func NewWorker(config WorkerConfig, id uint8) (worker *Worker, err error) {
@@ -31,7 +39,7 @@ func NewWorker(config WorkerConfig, id uint8) (worker *Worker, err error) {
 	w := Worker{
 		Config:   config,
 		Id:       id,
-		NatsSubs: make([]*nats.Subscription, 2),
+		NatsSubs: make([]*nats.Subscription, 1),
 	}
 	//copy relevant config to LDAConfig
 	w.Config.LDAConfig.StoreName = w.Config.StoreName
@@ -84,34 +92,55 @@ func NewWorker(config WorkerConfig, id uint8) (worker *Worker, err error) {
 		}
 	}
 
-	// init Sender
 	return &w, nil
 }
 
 func (worker *Worker) Start() error {
 	var err error
-	(*worker).NatsSubs[0], err = worker.NatsConn.QueueSubscribe(worker.Config.NatsTopicFetcher, worker.Config.NatsQueue, worker.natsMsgHandler)
-	if err != nil {
-		return err
-	}
-	(*worker).NatsSubs[1], err = worker.NatsConn.QueueSubscribe(worker.Config.NatsTopicSender, worker.Config.NatsQueue, worker.natsMsgHandler)
+	(*worker).NatsSubs[0], err = worker.NatsConn.QueueSubscribe(worker.Config.NatsTopicSender, worker.Config.NatsQueue, worker.natsMsgHandler)
 	if err != nil {
 		return err
 	}
 	worker.NatsConn.Flush()
 	log.Infof("IMAP worker %d started", worker.Id)
+
+	// start throttled jobs polling
+	for {
+		start := time.Now()
+		requestOrder := []byte(`{"worker":"imap","order":"need_job"}`)
+		log.Infof("IMAP worker %d is requesting jobs to idpoller", worker.Id)
+		resp, err := worker.NatsConn.Request(worker.Config.NatsTopicPoller, requestOrder, time.Minute)
+		if err != nil {
+			log.WithError(err).Warnf("[worker %d] failed to request pending jobs on nats", worker.Id)
+		} else {
+			worker.natsMsgHandler(resp)
+		}
+		// check for interrupt after job is finished
+		if worker.HaltGroup != nil {
+			worker.Stop()
+			break
+		}
+		elapsed := time.Now().Sub(start)
+		if elapsed < pollThrottling {
+			time.Sleep(pollThrottling - elapsed)
+		}
+	}
 	return nil
 }
 
+func (worker *Worker) Halt(wg *sync.WaitGroup) {
+
+}
+
 func (worker *Worker) Stop() {
-	log.Infof("stopping IMAP worker %d", worker.Id)
-	// check for pending jobs
-	// TODO
-	// properly close all connexions
+	for _, sub := range worker.NatsSubs {
+		sub.Unsubscribe()
+	}
 	worker.NatsConn.Close()
 	worker.Store.Close()
 	worker.Lda.broker.Store.Close()
 	worker.Lda.broker.NatsConn.Close()
+	worker.HaltGroup.Done()
 	log.Infof("worker %d stopped", worker.Id)
 }
 
@@ -124,20 +153,22 @@ func (worker *Worker) natsMsgHandler(msg *nats.Msg) {
 		return
 	}
 	switch message.Order {
-	case "sync": // simplest order sent by local agent to initiate a sync op for a stored remote identity
+	case noPendingJobErr:
+		return
+	case "sync": // simplest order to initiate a sync op for a stored remote identity
 		fetcher := Fetcher{
 			Hostname: worker.Config.Hostname,
 			Store:    worker.Store,
 			Lda:      worker.Lda,
 		}
-		go fetcher.SyncRemoteWithLocal(message)
+		fetcher.SyncRemoteWithLocal(message)
 	case "fullfetch": // order sent by imapctl to initiate a fetch op for an user
 		fetcher := Fetcher{
 			Hostname: worker.Config.Hostname,
 			Store:    worker.Store,
 			Lda:      worker.Lda,
 		}
-		go fetcher.FetchRemoteToLocal(message)
+		fetcher.FetchRemoteToLocal(message)
 	case "deliver": // order sent by api2 to send a draft via remote SMTP/IMAP
 		sender := Sender{
 			NatsConn:      worker.NatsConn,
