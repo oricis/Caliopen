@@ -44,12 +44,12 @@ const (
 // updates last sync data for identity in db.
 func (f *Fetcher) SyncRemoteWithLocal(order IMAPorder) error {
 
-	log.Infof("[Fetcher] will fetch mails for remote %s", order.RemoteId)
+	log.Infof("[Fetcher] will fetch mails for remote %s", order.IdentityId)
 
 	// 1. retrieve infos from db
-	userIdentity, err := f.Store.RetrieveUserIdentity(order.UserId, order.RemoteId, true)
+	userIdentity, err := f.Store.RetrieveUserIdentity(order.UserId, order.IdentityId, true)
 	if err != nil {
-		log.WithError(err).Infof("[SyncRemoteWithLocal] failed to retrieve remote identity <%s> : <%s>", order.UserId, order.RemoteId)
+		log.WithError(err).Infof("[SyncRemoteWithLocal] failed to retrieve remote identity <%s> : <%s>", order.UserId, order.IdentityId)
 		return err
 	}
 	if order.Password != "" {
@@ -59,8 +59,8 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPorder) error {
 	// 1.2 check if a sync process is running
 	if syncing, ok := userIdentity.Infos["syncing"]; ok && syncing != "" {
 		startDate, e := time.Parse(time.RFC3339, syncing)
-		if e == nil && time.Since(startDate)/time.Hour < failuresThreshold {
-			log.Infof("[SyncRemoteWithLocal] avoiding concurrent sync for <%s>. Syncing in progress since %s", order.RemoteId, userIdentity.Infos["syncing"])
+		if e == nil && time.Since(startDate)/time.Hour < syncingTimeout {
+			log.Infof("[SyncRemoteWithLocal] avoiding concurrent sync for <%s>. Syncing in progress since %s", order.IdentityId, userIdentity.Infos["syncing"])
 			return nil
 		}
 	}
@@ -70,7 +70,7 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPorder) error {
 		"Infos": userIdentity.Infos,
 	})
 	if err != nil {
-		log.WithError(err).Infof("[SyncRemoteWithLocal] failed to update remote identity <%s> : <%s>", order.UserId, order.RemoteId)
+		log.WithError(err).Infof("[SyncRemoteWithLocal] failed to update remote identity <%s> : <%s>", order.UserId, order.IdentityId)
 		return err
 	}
 
@@ -117,8 +117,8 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPorder) error {
 		if err == nil {
 			box.lastSeenUid = mail.ImapUid
 		}
-		if time.Since(syncTimeout)/time.Hour > failuresThreshold {
-			errs = append(errs, errors.New("[Fetcher] sync timeout, aborting for "+order.RemoteId))
+		if time.Since(syncTimeout)/time.Hour > syncingTimeout {
+			errs = append(errs, errors.New("[Fetcher] sync timeout, aborting for "+order.IdentityId))
 			close(mails)
 			break
 		}
@@ -153,7 +153,7 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPorder) error {
 		return err
 	}
 
-	log.Infof("[Fetcher] all done for %s : %d new mail(s) fetched", order.RemoteId, len(errs))
+	log.Infof("[Fetcher] all done for %s : %d new mail(s) fetched", order.IdentityId, len(errs))
 	return nil
 }
 
@@ -183,7 +183,7 @@ func (f *Fetcher) FetchRemoteToLocal(order IMAPorder) error {
 	// 3. forward mails to lda
 	errs := make([]error, len(mails))
 	for mail := range mails {
-		err := f.Lda.deliverMail(mail, order.UserId, order.RemoteId)
+		err := f.Lda.deliverMail(mail, order.UserId, order.IdentityId)
 		errs = append(errs, err)
 	}
 
