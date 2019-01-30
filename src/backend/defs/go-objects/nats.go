@@ -18,13 +18,6 @@ type IMAPorder struct {
 	Server   string `json:"server"`
 }
 
-type BrokerOrder struct {
-	MessageId  string `json:"message_id"`
-	Order      string `json:"order"`
-	IdentityId string `json:"identity_id"`
-	UserId     string `json:"user_id"`
-}
-
 // DeliveryAck holds reply from nats when using request/reply system for messages
 type DeliveryAck struct {
 	Err      bool   `json:"error"`
@@ -38,11 +31,25 @@ type Ack struct {
 	Response string `json:"message,omitempty"`
 }
 
-// message model to send orders to remoteID worker subscriber
+// model for job request sent by workers to idpoller
+type WorkerRequest struct {
+	Worker string `json:"worker"`
+	Order  string `json:"order"`
+}
+
+// model to send messages to idpoller
 type RemoteIDNatsMessage struct {
-	IdentityId string
-	Order      string
-	OrderParam string
-	Protocol   string
-	UserId     string
+	IdentityId string `json:"identity_id"`
+	Order      string `json:"order"`
+	OrderParam string `json:"order_param"`
+	Protocol   string `json:"protocol"`
+	UserId     string `json:"user_id"`
+}
+
+// model for orders sent to workers
+type BrokerOrder struct {
+	MessageId  string `json:"message_id"`
+	Order      string `json:"order"`
+	IdentityId string `json:"identity_id"`
+	UserId     string `json:"user_id"`
 }

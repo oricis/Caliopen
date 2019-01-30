@@ -13,8 +13,10 @@ import (
 )
 
 type MqHandler struct {
-	natsConn *nats.Conn
-	natsSub  *nats.Subscription
+	natsConn          *nats.Conn
+	natsSubIdentities *nats.Subscription
+	natsSubImap       *nats.Subscription
+	natsSubTwitter    *nats.Subscription
 }
 
 func initMqHandler() (*MqHandler, error) {
@@ -25,23 +27,39 @@ func initMqHandler() (*MqHandler, error) {
 		return handler, errors.New("[initMqHandler] failed to init NATS connection")
 	}
 	handler.natsConn = natsConn
-	sub, err := handler.natsConn.QueueSubscribe(poller.Config.NatsTopics["id_cache"], poller.Config.NatsQueue, handler.natsIngressHandler)
+	sub, err := handler.natsConn.QueueSubscribe(poller.Config.NatsTopics["id_cache"], poller.Config.NatsQueue, handler.natsIdentitiesHandler)
 	if err != nil {
-		log.WithError(err).Warn("[initMqHandler] : initialization of NATS subscription failed")
+		log.WithError(err).Warnf("[initMqHandler] : initialization of NATS subscription failed for topic id_cache")
 		handler.natsConn = nil
 		return handler, errors.New("[initMqHandler] failed to init NATS subscription")
 	}
-	handler.natsSub = sub
+	handler.natsSubIdentities = sub
+
+	sub, err = handler.natsConn.QueueSubscribe(poller.Config.NatsTopics[imapWorker], poller.Config.NatsQueue, handler.natsImapHandler)
+	if err != nil {
+		log.WithError(err).Warnf("[initMqHandler] : initialization of NATS subscription failed for topic imap")
+		handler.natsConn = nil
+		return handler, errors.New("[initMqHandler] failed to init NATS subscription")
+	}
+	handler.natsSubImap = sub
+
+	sub, err = handler.natsConn.QueueSubscribe(poller.Config.NatsTopics[twitterWorker], poller.Config.NatsQueue, handler.natsTwitterHandler)
+	if err != nil {
+		log.WithError(err).Warnf("[initMqHandler] : initialization of NATS subscription failed for topic twitter")
+		handler.natsConn = nil
+		return handler, errors.New("[initMqHandler] failed to init NATS subscription")
+	}
+	handler.natsSubTwitter = sub
 	return handler, nil
 }
 
-// natsIngressHandler handles nats messages received by poller from external components
-func (mqh *MqHandler) natsIngressHandler(msg *nats.Msg) {
+// natsIdentitiesHandler handles nats messages received by poller on id_cache topic
+func (mqh *MqHandler) natsIdentitiesHandler(msg *nats.Msg) {
 
 	var order RemoteIDNatsMessage
 	err := json.Unmarshal(msg.Data, &order)
 	if err != nil {
-		log.WithError(err).Warn("unable to unmarshal nats order")
+		log.WithError(err).Warn("[natsIdentitiesHandler] unable to unmarshal nats order")
 		return
 	}
 	switch order.Order {
@@ -65,74 +83,71 @@ func (mqh *MqHandler) natsIngressHandler(msg *nats.Msg) {
 	}
 }
 
-func (mqh *MqHandler) EmitOrder(order []byte, topic string) error {
-	err := mqh.natsConn.Publish(topic, order)
+func (mqh *MqHandler) natsImapHandler(msg *nats.Msg) {
+	var req WorkerRequest
+	err := json.Unmarshal(msg.Data, &req)
 	if err != nil {
-		log.WithError(err).Warnf("[EmitOrder] failed to publish this nats message : %s", order)
-		return errors.New("[EmitOrder] failed to publish nats message")
-	}
-	return nil
-}
-
-// RequestFor publishes message on relevant nats queue to spawn a new protocol worker
-// and handles response
-func (mqh *MqHandler) RequestFor(idkey string) error {
-	return nil
-}
-
-/*
-// CancelFor publishes message on relevant nats queue directed at relevant worker
-func (mqh *MqHandler) CancelFor(idkey string) error {
-	var entry cacheEntry
-	var ok bool
-	if entry, ok = p.Cache[idkey]; !ok {
-		return errors.New("cache entry not found")
-	}
-	switch entry.remoteProtocol {
-	case "twitter":
-		natsMsg := BrokerOrder{
-			Order:    "remove_worker",
-			UserId:   entry.userID.String(),
-			RemoteId: entry.remoteID.String(),
-		}
-		j, e := json.Marshal(natsMsg)
+		log.WithError(err).Warn("[natsImapHandler] unable to unmarshal nats request")
+		e := mqh.natsConn.Publish(msg.Reply, []byte(`{"order":"error : unable to unmarshal request"}`))
 		if e != nil {
-			log.WithError(e).Warn("[addWorkerFor] failed to marshal nats message")
-			return e
+			log.WithError(e).Warn("[natsImapHandler] failed to publish reply on nats")
 		}
-		return p.NatsConn.Publish(p.Config.NatsTopics["twitter_worker"], j)
-
 	}
-	return nil
-}
 
-// UpdateWorkerFor publishes message on nats queue directed at relevant worker
-func (mqh *MqHandler) UpdateWorkerFor(idkey string) error {
-	var entry cacheEntry
-	var ok bool
-	if entry, ok = p.Cache[idkey]; !ok {
-		return errors.New("cache entry not found")
-	}
-	switch entry.remoteProtocol {
-	case "twitter":
-		natsMsg := BrokerOrder{
-			Order:    "reload_worker",
-			UserId:   entry.userID.String(),
-			RemoteId: entry.remoteID.String(),
-		}
-		j, e := json.Marshal(natsMsg)
+	// ensure request is coming from the right entity for this handler
+	if req.Worker != imapWorker {
+		e := mqh.natsConn.Publish(msg.Reply, []byte(`{"order":"error : worker and topic mismatch"}`))
 		if e != nil {
-			log.WithError(e).Warn("[addWorkerFor] failed to marshal nats message")
-			return e
+			log.WithError(e).Warn("[natsImapHandler] failed to publish reply on nats")
 		}
-		return p.NatsConn.Publish(p.Config.NatsTopics["twitter_worker"], j)
-
 	}
-	return nil
+	switch req.Order {
+	case "need_job":
+		job, err := poller.jobs.ConsumePendingJobFor(imapWorker)
+		if err != nil {
+			if err.Error() == noPendingJobErr {
+				e := mqh.natsConn.Publish(msg.Reply, []byte(`{"order":"no pending job"}`))
+				if e != nil {
+					log.WithError(e).Warn("[natsImapHandler] failed to publish reply on nats")
+				}
+			} else {
+				log.WithError(err).Warn("[natsImapHandler] failed to get a job for worker")
+				e := mqh.natsConn.Publish(msg.Reply, []byte(`{"order":"error"}`))
+				if e != nil {
+					log.WithError(e).Warn("[natsImapHandler] failed to publish reply on nats")
+				}
+			}
+		} else {
+			reply, err := json.Marshal(job)
+			if err != nil {
+				log.WithError(err).Warn("[natsImapHandler] failed to json Marshal job : %+v", job)
+				e := mqh.natsConn.Publish(msg.Reply, []byte(`{"order":"error"}`))
+				if e != nil {
+					log.WithError(e).Warn("[natsImapHandler] failed to publish reply on nats")
+				}
+			}
+			// forwarding job to worker
+			err = mqh.natsConn.Publish(msg.Reply, reply)
+			if err != nil {
+				log.WithError(err).Warn("[natsImapHandler] failed to publish reply on nats")
+			}
+		}
+	default:
+		log.Warnf("[natsImapHandler] received unknown order : %s", req.Order)
+		e := mqh.natsConn.Publish(msg.Reply, []byte(`{"order":"error : unknown order"}`))
+		if e != nil {
+			log.WithError(e).Warn("[natsImapHandler] failed to publish reply on nats")
+		}
+	}
 }
 
-*/
+func (mqh *MqHandler) natsTwitterHandler(msg *nats.Msg) {
+
+}
+
 func (mqh *MqHandler) Stop() {
-	mqh.natsSub.Unsubscribe()
+	mqh.natsSubIdentities.Unsubscribe()
+	mqh.natsSubImap.Unsubscribe()
+	mqh.natsSubTwitter.Unsubscribe()
 	mqh.natsConn.Close()
 }

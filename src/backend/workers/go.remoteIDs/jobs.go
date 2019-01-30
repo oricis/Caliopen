@@ -55,7 +55,7 @@ func (jh *JobsHandler) ConsumePendingJobFor(worker string) (Job, error) {
 	jh.jobsMux.Lock()
 	defer jh.jobsMux.Unlock()
 	if len(jh.jobsSequence[worker]) == 0 {
-		return Job{}, errors.New("no pending job")
+		return Job{}, errors.New(noPendingJobErr)
 	}
 	// get most ancient job for worker
 	job := jh.pendingJobs[worker][jh.jobsSequence[worker][0]]

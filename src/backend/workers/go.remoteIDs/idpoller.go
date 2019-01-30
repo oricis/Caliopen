@@ -19,6 +19,12 @@ type PollerConfig struct {
 	NatsTopics      map[string]string `mapstructure:"nats_topics"`
 }
 
+const (
+	imapWorker      = "imap"
+	twitterWorker   = "twitter"
+	noPendingJobErr = "no pending job"
+)
+
 type Poller struct {
 	Config PollerConfig
 	dbh    *DbHandler
