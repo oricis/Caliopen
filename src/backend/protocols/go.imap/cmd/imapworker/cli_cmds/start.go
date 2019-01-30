@@ -14,7 +14,9 @@ import (
 	"github.com/spf13/viper"
 	"os"
 	"os/signal"
+	"sync"
 	"syscall"
+	"time"
 )
 
 var (
@@ -30,6 +32,10 @@ var (
 		Short: "Starts IMAP worker(s)",
 		Run:   start,
 	}
+)
+
+const (
+	shutdownTimeout = 3 // minutes to wait before forcing shutdown
 )
 
 func init() {
@@ -59,13 +65,27 @@ func sigHandler(workers []*imapWorker.Worker) {
 				log.Info("Configuration is reloaded")
 			}
 			// TODO: reinitialize
-		} else if sig == syscall.SIGTERM || sig == syscall.SIGQUIT || sig == syscall.SIGINT {
-			log.Info("Shutdown signal caught")
-			for _, w := range workers {
-				w.Stop()
+		} else if sig == syscall.SIGTERM || sig == syscall.SIGQUIT || sig == syscall.SIGINT || sig == syscall.SIGKILL {
+			log.Infof("Shutdown signal caught. Gracefully halting %d workers with 3 minutes timemout…", len(workers))
+			wg := new(sync.WaitGroup)
+			wg.Add(len(workers))
+			for i := range workers {
+				workers[i].HaltGroup = wg
 			}
-			log.Info("Shutdown completed, exiting")
-			os.Exit(0)
+			// timeout mechanism to avoid infinite wait
+			c := make(chan struct{})
+			go func() {
+				defer close(c)
+				wg.Wait()
+			}()
+			select {
+			case <-c:
+				log.Info("Shutdown completed, exiting")
+				os.Exit(0)
+			case <-time.After(shutdownTimeout * time.Minute):
+				log.Warn("Shutdown timeout, force exiting")
+				os.Exit(0)
+			}
 		} else {
 			os.Exit(0)
 		}
