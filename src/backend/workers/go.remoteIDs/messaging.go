@@ -35,7 +35,7 @@ func initMqHandler() (*MqHandler, error) {
 	}
 	handler.natsSubIdentities = sub
 
-	sub, err = handler.natsConn.QueueSubscribe(poller.Config.NatsTopics[imapWorker], poller.Config.NatsQueue, handler.natsImapHandler)
+	sub, err = handler.natsConn.QueueSubscribe(poller.Config.NatsTopics["imap"], poller.Config.NatsQueue, handler.natsImapHandler)
 	if err != nil {
 		log.WithError(err).Warnf("[initMqHandler] : initialization of NATS subscription failed for topic imap")
 		handler.natsConn = nil
@@ -43,7 +43,7 @@ func initMqHandler() (*MqHandler, error) {
 	}
 	handler.natsSubImap = sub
 
-	sub, err = handler.natsConn.QueueSubscribe(poller.Config.NatsTopics[twitterWorker], poller.Config.NatsQueue, handler.natsTwitterHandler)
+	sub, err = handler.natsConn.QueueSubscribe(poller.Config.NatsTopics["twitter"], poller.Config.NatsQueue, handler.natsTwitterHandler)
 	if err != nil {
 		log.WithError(err).Warnf("[initMqHandler] : initialization of NATS subscription failed for topic twitter")
 		handler.natsConn = nil
@@ -118,6 +118,7 @@ func (mqh *MqHandler) natsImapHandler(msg *nats.Msg) {
 				}
 			}
 		} else {
+			log.Debugf("[natsImapHandler] replying to %s with job : %+v", msg.Reply, job)
 			reply, err := json.Marshal(job)
 			if err != nil {
 				log.WithError(err).Warn("[natsImapHandler] failed to json Marshal job : %+v", job)

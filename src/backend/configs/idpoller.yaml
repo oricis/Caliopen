@@ -16,5 +16,5 @@ nats_url: nats://nats:4222
 nats_queue : IDpoller
 nats_topics:                                 # NATS topics to work with
   id_cache: idCache                          # receiving orders to update poller's cache
-  imap: IMAPjobs                             # receiving requests for IMAP jobs
-  twitter: TWITTERjobs                       # receiving requests for Twitter jobs
+  imap: imapJobs                             # receiving requests for IMAP jobs
+  twitter: TwitterJobs                       # receiving requests for Twitter jobs
