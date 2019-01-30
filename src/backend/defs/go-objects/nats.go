@@ -6,18 +6,6 @@
 
 package objects
 
-// IMAPfetchOrder is model for message sent on topic 'IMAPfetcher' in NATS's queue 'IMAPworkers'
-type IMAPorder struct {
-	Order    string `json:"order"`
-	RemoteId string `json:"remote_id"`
-	UserId   string `json:"user_id"`
-	// optional fields sent by imapctl
-	Login    string `json:"login"`
-	Mailbox  string `json:"mailbox"`
-	Password string `json:"password"`
-	Server   string `json:"server"`
-}
-
 // DeliveryAck holds reply from nats when using request/reply system for messages
 type DeliveryAck struct {
 	Err      bool   `json:"error"`
@@ -52,4 +40,16 @@ type BrokerOrder struct {
 	Order      string `json:"order"`
 	IdentityId string `json:"identity_id"`
 	UserId     string `json:"user_id"`
+}
+
+// IMAPorder is a BrokerOrder variant for imap
+type IMAPorder struct {
+	Order      string `json:"order"`
+	IdentityId string `json:"identity_id"`
+	UserId     string `json:"user_id"`
+	// optional fields sent by imapctl
+	Login    string `json:"login"`
+	Mailbox  string `json:"mailbox"`
+	Password string `json:"password"`
+	Server   string `json:"server"`
 }

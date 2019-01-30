@@ -36,7 +36,7 @@ func initJobsHandler() (*JobsHandler, error) {
 // pending jobs are ordered in a FIFO list per each worker.
 func (jh *JobsHandler) AddPendingJob(job Job) {
 	jh.jobsMux.Lock()
-	key := sha256.Sum256([]byte(job.Order.UserId + job.Order.RemoteId + job.Order.Order))
+	key := sha256.Sum256([]byte(job.Order.UserId + job.Order.IdentityId + job.Order.Order))
 	if _, ok := jh.pendingJobs[job.Worker]; !ok {
 		jh.pendingJobs[job.Worker] = make(map[[32]byte]Job)
 	}
@@ -89,9 +89,9 @@ func buildSyncJob(entry cacheEntry) (Job, error) {
 		return Job{}, fmt.Errorf("unhandled remote protocol : %s", entry.remoteProtocol)
 	}
 	job.Order = BrokerOrder{
-		Order:    "sync",
-		UserId:   entry.userID.String(),
-		RemoteId: entry.remoteID.String(),
+		Order:      "sync",
+		UserId:     entry.userID.String(),
+		IdentityId: entry.remoteID.String(),
 	}
 	log.Debugf("new job built : %+v", job)
 	return job, nil

@@ -53,7 +53,7 @@ func initMqHandler() (*MqHandler, error) {
 	return handler, nil
 }
 
-// natsIdentitiesHandler handles nats messages received by poller on id_cache topic
+// natsIdentitiesHandler handles nats messages received by idpoller on id_cache topic
 func (mqh *MqHandler) natsIdentitiesHandler(msg *nats.Msg) {
 
 	var order RemoteIDNatsMessage
@@ -119,7 +119,7 @@ func (mqh *MqHandler) natsImapHandler(msg *nats.Msg) {
 			}
 		} else {
 			log.Debugf("[natsImapHandler] replying to %s with job : %+v", msg.Reply, job)
-			reply, err := json.Marshal(job)
+			reply, err := json.Marshal(job.Order)
 			if err != nil {
 				log.WithError(err).Warn("[natsImapHandler] failed to json Marshal job : %+v", job)
 				e := mqh.natsConn.Publish(msg.Reply, []byte(`{"order":"error"}`))
