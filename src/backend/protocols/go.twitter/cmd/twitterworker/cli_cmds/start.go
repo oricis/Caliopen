@@ -69,7 +69,7 @@ func start(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	worker, err := twd.InitAndStartWorker(conf)
+	worker, err := twd.InitAndStartWorker(conf, verbose)
 	if err != nil {
 		log.WithError(err).Fatal("failed to init and start worker")
 	}

@@ -201,20 +201,20 @@ func (worker *AccountWorker) PollDM() {
 						} else {
 							interval = defaultPollInterval
 						}
-							newInterval := strconv.Itoa(interval)
-							accountInfos["pollinterval"] = newInterval
-							worker.broker.Store.UpdateRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String(), accountInfos)
-							order := RemoteIDNatsMessage{
-								IdentityId: worker.userAccount.remoteID.String(),
-								Order:      "update_interval",
-								OrderParam: newInterval,
-								Protocol:   "twitter",
-								UserId:     worker.userAccount.userID.String(),
-							}
-							jorder, jerr := json.Marshal(order)
-							if jerr == nil {
-								worker.broker.NatsConn.Publish("idCache", jorder)
-							}
+						newInterval := strconv.Itoa(interval)
+						accountInfos["pollinterval"] = newInterval
+						worker.broker.Store.UpdateRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String(), accountInfos)
+						order := RemoteIDNatsMessage{
+							IdentityId: worker.userAccount.remoteID.String(),
+							Order:      "update_interval",
+							OrderParam: newInterval,
+							Protocol:   "twitter",
+							UserId:     worker.userAccount.userID.String(),
+						}
+						jorder, jerr := json.Marshal(order)
+						if jerr == nil {
+							worker.broker.NatsConn.Publish("idCache", jorder)
+						}
 					}
 				}
 				errorsMessages.WriteString(err.Message + " ")

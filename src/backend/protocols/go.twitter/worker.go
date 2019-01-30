@@ -33,7 +33,13 @@ type (
 	}
 )
 
-func InitAndStartWorker(conf WorkerConfig) (worker *Worker, err error) {
+const failuresThreshold = 48 // how many hours to wait before disabling a faulty remote.
+
+func InitAndStartWorker(conf WorkerConfig, verboseLog bool) (worker *Worker, err error) {
+
+	if verboseLog {
+		log.SetLevel(log.DebugLevel)
+	}
 
 	worker = &Worker{
 		WorkersGuard:   new(sync.RWMutex),
