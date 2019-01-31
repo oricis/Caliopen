@@ -1,16 +1,17 @@
+workers: 10
 twitter_app_key:
 twitter_app_secret:
 BrokerConfig:
   #messaging system
   nats_url: nats://nats:4222
   nats_queue: Twitterworkers                             # NATS group queue for workers
-  nats_topic_worker: twitter_worker                      # NATS topic to listen to orders for handling workers (add, update, delete)
+  nats_topic_poller: twitterJobs                         # NATS topic on which to request job from idpoller
   nats_topic_direct_message: twitter_dm                  # NATS topic to listen to orders for handling DMs (fetch, send)
   #storage facility
   store_name: cassandra                                  # backend to store raw emails and messages (inbound & outbound)
   store_settings:
     hosts: # many allowed
-    - cassandra
+      - cassandra
     keyspace: caliopen
     consistency_level: 1
     raw_size_limit: 1048576                                 # max size in bytes for objects in db. Use S3 interface if larger.
@@ -34,7 +35,7 @@ BrokerConfig:
     index_name: elasticsearch                              # backend to index messages (inbound & outbound)
     index_settings:
       urls: # many allowed
-      - http://elasticsearch:9200
+        - http://elasticsearch:9200
     #messaging system
     in_topic: inboundTwitter
     # notifications

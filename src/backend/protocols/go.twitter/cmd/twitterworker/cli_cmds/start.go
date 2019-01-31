@@ -20,14 +20,21 @@ import (
 	"github.com/spf13/viper"
 	"os"
 	"os/signal"
+	"sync"
 	"syscall"
+	"time"
+)
+
+const (
+	shutdownTimeout = 3 // minutes to wait before forcing shutdown
 )
 
 var (
-	configPath    string
-	configFile    string
-	pidFile       string
-	signalChannel chan os.Signal
+	configPath     string
+	configFile     string
+	pidFile        string
+	signalChannel  chan os.Signal
+	twitterWorkers []*twd.Worker
 
 	startCmd = &cobra.Command{
 		Use:   "start",
@@ -69,14 +76,19 @@ func start(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	worker, err := twd.InitAndStartWorker(conf, verbose)
-	if err != nil {
-		log.WithError(err).Fatal("failed to init and start worker")
+	// init and start worker(s)
+	var i uint8
+	twitterWorkers = make([]*twd.Worker, conf.Workers)
+	for i = 0; i < conf.Workers; i++ {
+		log.Infof("Initializing Twitter worker %d", i)
+		twitterWorkers[i], err = twd.InitWorker(conf, verbose, i)
+		if err != nil {
+			log.WithError(err).Fatal("failed to init worker")
+		}
+		go twitterWorkers[i].Start()
 	}
-
-	log.Info("Twitter worker started")
 	// listening mode, waiting for nats orders to add/update workers or os sig to shutdown
-	sigHandler(worker)
+	sigHandler(twitterWorkers)
 
 }
 
@@ -102,18 +114,34 @@ func readConfig(config *twd.WorkerConfig) error {
 
 	return nil
 }
-func sigHandler(worker *twd.Worker) {
+func sigHandler(workers []*twd.Worker) {
 	signal.Notify(signalChannel, syscall.SIGHUP, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGINT, syscall.SIGKILL)
 
 	for sig := range signalChannel {
 
 		if sig == syscall.SIGHUP {
 			// TODO: handle SIGHUP
-		} else if sig == syscall.SIGTERM || sig == syscall.SIGQUIT || sig == syscall.SIGINT {
-			log.Info("Shutdown signal caught")
-			worker.Stop()
-			log.Info("Shutdown completed, exiting")
-			os.Exit(0)
+		} else if sig == syscall.SIGTERM || sig == syscall.SIGQUIT || sig == syscall.SIGINT || sig == syscall.SIGKILL {
+			log.Infof("Shutdown signal caught. Gracefully halting %d workers within 3 minutes timeframe…", len(workers))
+			wg := new(sync.WaitGroup)
+			wg.Add(len(workers))
+			for i := range workers {
+				workers[i].HaltGroup = wg
+			}
+			// timeout mechanism to avoid infinite wait
+			c := make(chan struct{})
+			go func() {
+				defer close(c)
+				wg.Wait()
+			}()
+			select {
+			case <-c:
+				log.Info("Shutdown completed, exiting")
+				os.Exit(0)
+			case <-time.After(shutdownTimeout * time.Minute):
+				log.Warn("Shutdown timeout, force exiting")
+				os.Exit(0)
+			}
 		} else {
 			os.Exit(0)
 		}

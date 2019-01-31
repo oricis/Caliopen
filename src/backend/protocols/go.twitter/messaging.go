@@ -15,7 +15,7 @@ import (
 	"time"
 )
 
-// WorkerMsgHandler handles messages coming on topic dedicated to workers management
+// WorkerMsgHandler handles message coming from idpoller
 func (w *Worker) WorkerMsgHandler(msg *nats.Msg) {
 	message := BrokerOrder{}
 	err := json.Unmarshal(msg.Data, &message)
@@ -24,6 +24,21 @@ func (w *Worker) WorkerMsgHandler(msg *nats.Msg) {
 		return
 	}
 	switch message.Order {
+	case noPendingJobErr:
+		return
+	case "sync":
+		log.Infof("received sync order for remote twitter ID %s", message.IdentityId)
+		if accountWorker := w.getOrCreateWorker(message.UserId, message.IdentityId); accountWorker != nil {
+			select {
+			case accountWorker.WorkerDesk <- PollDM:
+				log.Infof("[DMmsgHandler] ordering to pollDM for remote %s (user %s)", message.IdentityId, message.UserId)
+			case <-time.After(30 * time.Second):
+				log.Warnf("[DMmsgHandler] worker's desk is full for remote %s (user %s)", message.IdentityId, message.UserId)
+			}
+		} else {
+			log.Warnf("[DMmsgHandler] failed to get a worker for remote %s (user %s)", message.IdentityId, message.UserId)
+			w.natsReplyError(msg, errors.New("[DMmsgHandler] failed to get a worker"))
+		}
 	case "reload_worker":
 		//TODO: order to force refreshing cache data for an account
 		log.Infof("received reload_worker order for remote twitter ID %s", message.IdentityId)
@@ -47,19 +62,6 @@ func (w *Worker) DMmsgHandler(msg *nats.Msg) {
 		return
 	}
 	switch message.Order {
-	case "sync":
-		log.Infof("received sync order for remote twitter ID %s", message.IdentityId)
-		if accountWorker := w.getOrCreateWorker(message.UserId, message.IdentityId); accountWorker != nil {
-			select {
-			case accountWorker.WorkerDesk <- PollDM:
-				log.Infof("[DMmsgHandler] ordering to pollDM for remote %s (user %s)", message.IdentityId, message.UserId)
-			case <-time.After(30 * time.Second):
-				log.Warnf("[DMmsgHandler] worker's desk is full for remote %s (user %s)", message.IdentityId, message.UserId)
-			}
-		} else {
-			log.Warnf("[DMmsgHandler] failed to get a worker for remote %s (user %s)", message.IdentityId, message.UserId)
-			w.natsReplyError(msg, errors.New("[DMmsgHandler] failed to get a worker"))
-		}
 	case "deliver":
 		if accountWorker := w.getOrCreateWorker(message.UserId, message.IdentityId); accountWorker != nil {
 			com := twitter_broker.NatsCom{
