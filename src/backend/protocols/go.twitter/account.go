@@ -189,6 +189,7 @@ func (worker *AccountHandler) PollDM() {
 			errorsMessages := new(strings.Builder)
 			for _, err := range e.Errors {
 				if err.Code == 88 {
+					var interval int
 					log.Infof("[AccountHandler %s] PollDM : twitter returned rate limit error, slowing down worker for account", worker.userAccount.remoteID)
 					if pollInterval, ok := accountInfos["pollinterval"]; ok {
 						interval, e := strconv.Atoi(pollInterval)
@@ -201,19 +202,27 @@ func (worker *AccountHandler) PollDM() {
 						} else {
 							interval = defaultPollInterval
 						}
-						newInterval := strconv.Itoa(interval)
-						accountInfos["pollinterval"] = newInterval
-						worker.broker.Store.UpdateRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String(), accountInfos)
-						order := RemoteIDNatsMessage{
-							IdentityId: worker.userAccount.remoteID.String(),
-							Order:      "update_interval",
-							OrderParam: newInterval,
-							Protocol:   "twitter",
-							UserId:     worker.userAccount.userID.String(),
-						}
-						jorder, jerr := json.Marshal(order)
-						if jerr == nil {
-							worker.broker.NatsConn.Publish("idCache", jorder)
+					} else {
+						interval = defaultPollInterval
+					}
+					newInterval := strconv.Itoa(interval)
+					accountInfos["pollinterval"] = newInterval
+					e := worker.broker.Store.UpdateRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String(), accountInfos)
+					if e != nil {
+						log.WithError(e).Warnf("[AccountHandler %s] PollDM : failed to updateRemoteInfosMap with new poll interval")
+					}
+					order := RemoteIDNatsMessage{
+						IdentityId: worker.userAccount.remoteID.String(),
+						Order:      "update_interval",
+						OrderParam: newInterval,
+						Protocol:   "twitter",
+						UserId:     worker.userAccount.userID.String(),
+					}
+					jorder, jerr := json.Marshal(order)
+					if jerr == nil {
+						e := worker.broker.NatsConn.Publish(worker.broker.Config.NatsTopicPoller, jorder)
+						if e != nil {
+							log.WithError(e).Warnf("[AccountHandler %s] PollDM : failed to publish new poll interval to idpoller")
 						}
 					}
 				}
