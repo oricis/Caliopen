@@ -65,12 +65,6 @@ func InitPoller(config PollerConfig, verboseLog bool) (idpoller *Poller, err err
 		return nil, err
 	}
 
-	/*
-		poller.wh, err = initWorkersHandler()
-		if err != nil {
-			return nil, err
-		}*/
-
 	return poller, nil
 }
 

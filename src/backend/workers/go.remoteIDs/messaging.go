@@ -143,7 +143,62 @@ func (mqh *MqHandler) natsImapHandler(msg *nats.Msg) {
 }
 
 func (mqh *MqHandler) natsTwitterHandler(msg *nats.Msg) {
+	var req WorkerRequest
+	err := json.Unmarshal(msg.Data, &req)
+	if err != nil {
+		log.WithError(err).Warn("[natsTwitterHandler] unable to unmarshal nats request")
+		e := mqh.natsConn.Publish(msg.Reply, []byte(`{"order":"error : unable to unmarshal request"}`))
+		if e != nil {
+			log.WithError(e).Warn("[natsTwitterHandler] failed to publish reply on nats")
+		}
+	}
 
+	// ensure request is coming from the right entity for this handler
+	if req.Worker != twitterWorker {
+		e := mqh.natsConn.Publish(msg.Reply, []byte(`{"order":"error : worker and topic mismatch"}`))
+		if e != nil {
+			log.WithError(e).Warn("[natsTwitterHandler] failed to publish reply on nats")
+		}
+	}
+	switch req.Order {
+	case "need_job":
+		job, err := poller.jobs.ConsumePendingJobFor(twitterWorker)
+		if err != nil {
+			if err.Error() == noPendingJobErr {
+				e := mqh.natsConn.Publish(msg.Reply, []byte(`{"order":"no pending job"}`))
+				if e != nil {
+					log.WithError(e).Warn("[natsTwitterHandler] failed to publish reply on nats")
+				}
+			} else {
+				log.WithError(err).Warn("[natsTwitterHandler] failed to get a job for worker")
+				e := mqh.natsConn.Publish(msg.Reply, []byte(`{"order":"error"}`))
+				if e != nil {
+					log.WithError(e).Warn("[natsTwitterHandler] failed to publish reply on nats")
+				}
+			}
+		} else {
+			log.Debugf("[natsTwitterHandler] replying to %s with job : %+v", msg.Reply, job)
+			reply, err := json.Marshal(job.Order)
+			if err != nil {
+				log.WithError(err).Warn("[natsTwitterHandler] failed to json Marshal job : %+v", job)
+				e := mqh.natsConn.Publish(msg.Reply, []byte(`{"order":"error"}`))
+				if e != nil {
+					log.WithError(e).Warn("[natsTwitterHandler] failed to publish reply on nats")
+				}
+			}
+			// forwarding job to worker
+			err = mqh.natsConn.Publish(msg.Reply, reply)
+			if err != nil {
+				log.WithError(err).Warn("[natsTwitterHandler] failed to publish reply on nats")
+			}
+		}
+	default:
+		log.Warnf("[natsTwitterHandler] received unknown order : %s", req.Order)
+		e := mqh.natsConn.Publish(msg.Reply, []byte(`{"order":"error : unknown order"}`))
+		if e != nil {
+			log.WithError(e).Warn("[natsTwitterHandler] failed to publish reply on nats")
+		}
+	}
 }
 
 func (mqh *MqHandler) Stop() {
