@@ -13,6 +13,7 @@ type APIStorage interface {
 	CredentialsStorage
 	ContactStorage
 	DevicesStorage
+	DiscussionStorage
 	IdentityStorage
 	KeysStorage
 	MessageStorage
