@@ -104,11 +104,11 @@ services:
       - ../src/backend/configs:/etc/caliopen
 
     # Caliopen cli tool
-  clia:
+  climl:
     build:
       context: ../src/backend
-      dockerfile: Dockerfile.cli-ia
-    image: caliopen_clia
+      dockerfile: Dockerfile.cli-ml
+    image: caliopen_climl
     depends_on:
       - cassandra
       - elasticsearch

@@ -1,4 +1,4 @@
-# This file creates a container that runs a Caliopen CLI tool
+# This file creates a container that runs a Caliopen CLI tool for machine learning tasks
 # Important:
 # Author: Caliopen
 # Date: 2018-07-20
@@ -38,7 +38,7 @@ WORKDIR /srv/caliopen/src/backend/tools/py.CLI
 RUN pip install -e .
 
 ## Container specific installation part
-WORKDIR /srv/caliopen/src/backend/tools/py.IA
+WORKDIR /srv/caliopen/src/backend/tools/py.ML
 RUN pip install -e .
 RUN pip install ipython
 
