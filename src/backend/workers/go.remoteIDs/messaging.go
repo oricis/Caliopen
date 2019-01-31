@@ -94,14 +94,7 @@ func (mqh *MqHandler) natsImapHandler(msg *nats.Msg) {
 		}
 	}
 
-	// ensure request is coming from the right entity for this handler
-	if req.Worker != imapWorker {
-		e := mqh.natsConn.Publish(msg.Reply, []byte(`{"order":"error : worker and topic mismatch"}`))
-		if e != nil {
-			log.WithError(e).Warn("[natsImapHandler] failed to publish reply on nats")
-		}
-	}
-	switch req.Order {
+	switch req.Order.Order {
 	case "need_job":
 		job, err := poller.jobs.ConsumePendingJobFor(imapWorker)
 		if err != nil {
@@ -153,14 +146,7 @@ func (mqh *MqHandler) natsTwitterHandler(msg *nats.Msg) {
 		}
 	}
 
-	// ensure request is coming from the right entity for this handler
-	if req.Worker != twitterWorker {
-		e := mqh.natsConn.Publish(msg.Reply, []byte(`{"order":"error : worker and topic mismatch"}`))
-		if e != nil {
-			log.WithError(e).Warn("[natsTwitterHandler] failed to publish reply on nats")
-		}
-	}
-	switch req.Order {
+	switch req.Order.Order {
 	case "need_job":
 		job, err := poller.jobs.ConsumePendingJobFor(twitterWorker)
 		if err != nil {

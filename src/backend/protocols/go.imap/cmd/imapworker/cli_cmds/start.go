@@ -7,11 +7,13 @@
 package cmd
 
 import (
+	"crypto/rand"
 	"fmt"
 	imapWorker "github.com/CaliOpen/Caliopen/src/backend/protocols/go.imap"
 	log "github.com/Sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"io"
 	"os"
 	"os/signal"
 	"sync"
@@ -117,7 +119,7 @@ func start(cmd *cobra.Command, args []string) {
 	imapWorkers = make([]*imapWorker.Worker, cmdConfig.Workers)
 	for i = 0; i < cmdConfig.Workers; i++ {
 		log.Infof("initializing IMAP worker %d", i)
-		imapWorkers[i], err = imapWorker.NewWorker(imapWorker.WorkerConfig(cmdConfig), i)
+		imapWorkers[i], err = imapWorker.NewWorker(imapWorker.WorkerConfig(cmdConfig), randomIdentifier())
 		if err != nil {
 			log.WithError(err).Fatal("Failed to init IMAP Worker")
 		}
@@ -150,4 +152,13 @@ func readConfig(config *CmdConfig) error {
 
 	config.LDAConfig.AppVersion = __version__
 	return nil
+}
+
+func randomIdentifier() string {
+	var buf [4]byte
+	_, err := io.ReadFull(rand.Reader, buf[:])
+	if err != nil {
+		panic(err)
+	}
+	return fmt.Sprintf("%x", buf[:])
 }

@@ -21,8 +21,8 @@ type Ack struct {
 
 // model for job request sent by workers to idpoller
 type WorkerRequest struct {
-	Worker string `json:"worker"`
-	Order  string `json:"order"`
+	Worker string      `json:"worker"`
+	Order  BrokerOrder `json:"order"`
 }
 
 // model to send messages to idpoller

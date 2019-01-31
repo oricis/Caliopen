@@ -2,6 +2,7 @@ package twitterworker
 
 import (
 	"errors"
+	"fmt"
 	broker "github.com/CaliOpen/Caliopen/src/backend/brokers/go.twitter"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
@@ -20,7 +21,7 @@ type (
 		AccountHandlers map[string]*AccountHandler // one worker per active Twitter account
 		HaltGroup       *sync.WaitGroup
 		Index           backends.LDAIndex
-		Id              uint8
+		Id              string
 		NatsConn        *nats.Conn
 		NatsSubs        []*nats.Subscription
 		Notifier        *Notifications.Notifier
@@ -41,9 +42,10 @@ const (
 	failuresThreshold = 72 // how many hours to wait before disabling a faulty remote.
 	noPendingJobErr   = "no pending job"
 	pollThrottling    = 30 * time.Second
+	needJobOrderStr   = `{"worker":"%s","order":{"order":"need_job"}}`
 )
 
-func InitWorker(conf WorkerConfig, verboseLog bool, id uint8) (worker *Worker, err error) {
+func InitWorker(conf WorkerConfig, verboseLog bool, id string) (worker *Worker, err error) {
 
 	if verboseLog {
 		log.SetLevel(log.DebugLevel)
@@ -160,16 +162,16 @@ func InitWorker(conf WorkerConfig, verboseLog bool, id uint8) (worker *Worker, e
 }
 
 func (worker *Worker) Start() {
-	log.Infof("Twitter worker %d started", worker.Id)
+	log.Infof("Twitter worker %s started", worker.Id)
 
 	// start throttled jobs polling
 	for {
 		start := time.Now()
-		requestOrder := []byte(`{"worker":"twitter","order":"need_job"}`)
-		log.Infof("Twitter worker %d is requesting jobs to idpoller", worker.Id)
+		requestOrder := []byte(fmt.Sprintf(needJobOrderStr, worker.Id))
+		log.Infof("Twitter worker %s is requesting jobs to idpoller", worker.Id)
 		resp, err := worker.NatsConn.Request(worker.Conf.BrokerConfig.NatsTopicPoller, requestOrder, 30*time.Second)
 		if err != nil {
-			log.WithError(err).Warnf("[worker %d] failed to request pending jobs on nats", worker.Id)
+			log.WithError(err).Warnf("[worker %s] failed to request pending jobs on nats", worker.Id)
 		} else {
 			worker.WorkerMsgHandler(resp)
 		}
@@ -196,7 +198,7 @@ func (worker *Worker) Stop() {
 	worker.Store.Close()
 	worker.Index.Close()
 	worker.HaltGroup.Done()
-	log.Infof("worker %d stopped", worker.Id)
+	log.Infof("worker %s stopped", worker.Id)
 }
 
 // getOrCreateWorker returns a pointer to a worker already in cache

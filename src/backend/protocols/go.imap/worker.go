@@ -8,6 +8,7 @@ package imap_worker
 
 import (
 	"encoding/json"
+	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/store/cassandra"
@@ -20,7 +21,7 @@ import (
 
 type Worker struct {
 	Config    WorkerConfig
-	Id        uint8
+	Id        string
 	Lda       *Lda
 	NatsConn  *nats.Conn
 	NatsSubs  []*nats.Subscription
@@ -31,10 +32,11 @@ type Worker struct {
 const (
 	noPendingJobErr = "no pending job"
 	pollThrottling  = 30 * time.Second
+	needJobOrderStr = `{"worker":"%s","order":{"order":"need_job"}}`
 )
 
 // NewWorker loads config, checks for errors then returns a worker ready to start.
-func NewWorker(config WorkerConfig, id uint8) (worker *Worker, err error) {
+func NewWorker(config WorkerConfig, id string) (worker *Worker, err error) {
 
 	w := Worker{
 		Config:   config,
@@ -102,16 +104,16 @@ func (worker *Worker) Start() error {
 		return err
 	}
 	worker.NatsConn.Flush()
-	log.Infof("IMAP worker %d started", worker.Id)
+	log.Infof("IMAP worker %s started", worker.Id)
 
 	// start throttled jobs polling
 	for {
 		start := time.Now()
-		requestOrder := []byte(`{"worker":"imap","order":"need_job"}`)
-		log.Infof("IMAP worker %d is requesting jobs to idpoller", worker.Id)
+		requestOrder := []byte(fmt.Sprintf(needJobOrderStr, worker.Id))
+		log.Infof("IMAP worker %s is requesting jobs to idpoller", worker.Id)
 		resp, err := worker.NatsConn.Request(worker.Config.NatsTopicPoller, requestOrder, time.Minute)
 		if err != nil {
-			log.WithError(err).Warnf("[worker %d] failed to request pending jobs on nats", worker.Id)
+			log.WithError(err).Warnf("[worker %s] failed to request pending jobs on nats", worker.Id)
 		} else {
 			worker.natsMsgHandler(resp)
 		}
@@ -141,7 +143,7 @@ func (worker *Worker) Stop() {
 	worker.Lda.broker.Store.Close()
 	worker.Lda.broker.NatsConn.Close()
 	worker.HaltGroup.Done()
-	log.Infof("worker %d stopped", worker.Id)
+	log.Infof("worker %s stopped", worker.Id)
 }
 
 // MsgHandler parses message and launches appropriate goroutine to handle requested operations

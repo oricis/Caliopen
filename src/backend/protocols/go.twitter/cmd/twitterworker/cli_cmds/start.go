@@ -13,11 +13,13 @@
 package cmd
 
 import (
+	"crypto/rand"
 	"fmt"
 	twd "github.com/CaliOpen/Caliopen/src/backend/protocols/go.twitter"
 	log "github.com/Sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"io"
 	"os"
 	"os/signal"
 	"sync"
@@ -81,7 +83,7 @@ func start(cmd *cobra.Command, args []string) {
 	twitterWorkers = make([]*twd.Worker, conf.Workers)
 	for i = 0; i < conf.Workers; i++ {
 		log.Infof("Initializing Twitter worker %d", i)
-		twitterWorkers[i], err = twd.InitWorker(conf, verbose, i)
+		twitterWorkers[i], err = twd.InitWorker(conf, verbose, randomIdentifier())
 		if err != nil {
 			log.WithError(err).Fatal("failed to init worker")
 		}
@@ -146,4 +148,13 @@ func sigHandler(workers []*twd.Worker) {
 			os.Exit(0)
 		}
 	}
+}
+
+func randomIdentifier() string {
+	var buf [4]byte
+	_, err := io.ReadFull(rand.Reader, buf[:])
+	if err != nil {
+		panic(err)
+	}
+	return fmt.Sprintf("%x", buf[:])
 }
