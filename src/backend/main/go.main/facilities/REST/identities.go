@@ -7,10 +7,12 @@ package REST
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/pi"
+	log "github.com/Sirupsen/logrus"
 	"github.com/bitly/go-simplejson"
 	"github.com/satori/go.uuid"
 )
@@ -119,7 +121,23 @@ func (rest *RESTfacility) CreateUserIdentity(identity *UserIdentity) CaliopenErr
 		return WrapCaliopenErr(err, DbCaliopenErr, "[CreateUserIdentity] CreateUserIdentity failed to create identity in store")
 	}
 
-	//TODO: emit nats message to IDpoller if it's a remote identity
+	// emit nats message to idpoller to start polling asap
+	if identity.Type == RemoteIdentity {
+		order := RemoteIDNatsMessage{
+			IdentityId: identity.Id.String(),
+			Order:      "add",
+			OrderParam: identity.Infos["pollinterval"],
+			Protocol:   identity.Protocol,
+			UserId:     identity.UserId.String(),
+		}
+		jorder, jerr := json.Marshal(order)
+		if jerr == nil {
+			e := rest.nats_conn.Publish(rest.natsTopics["idpoller_topic"], jorder)
+			if e != nil {
+				log.WithError(e).Warnf("[CreateUserIdentity] failed to publish 'add' order to idpoller")
+			}
+		}
+	}
 
 	return nil
 }
@@ -189,7 +207,7 @@ func (rest *RESTfacility) PatchUserIdentity(patch []byte, userId, identityId str
 }
 
 func (rest *RESTfacility) DeleteUserIdentity(userId, identityId string) CaliopenError {
-	remoteID, err1 := rest.RetrieveUserIdentity(userId, identityId, false)
+	userIdentity, err1 := rest.RetrieveUserIdentity(userId, identityId, false)
 	if err1 != nil {
 		if err1.Error() == "not found" {
 			return WrapCaliopenErr(err1, NotFoundCaliopenErr, "remote identity not found")
@@ -198,10 +216,26 @@ func (rest *RESTfacility) DeleteUserIdentity(userId, identityId string) Caliopen
 		}
 	}
 
-	//TODO: emit nats message to IDpoller & workers
-	err2 := rest.store.DeleteUserIdentity(remoteID)
+	err2 := rest.store.DeleteUserIdentity(userIdentity)
 	if err2 != nil {
 		return WrapCaliopenErrf(err2, DbCaliopenErr, "[RESTfacility DeleteUserIdentity failed to delete in store")
+	}
+
+	// send nats message to idpoller to stop polling
+	if userIdentity.Type == RemoteIdentity {
+		order := RemoteIDNatsMessage{
+			IdentityId: userIdentity.Id.String(),
+			Order:      "delete",
+			Protocol:   "twitter",
+			UserId:     userIdentity.UserId.String(),
+		}
+		jorder, jerr := json.Marshal(order)
+		if jerr == nil {
+			e := rest.nats_conn.Publish(rest.natsTopics["idpoller_topic"], jorder)
+			if e != nil {
+				log.WithError(e).Warnf("[saveErrorState] failed to publish delete order to idpoller")
+			}
+		}
 	}
 
 	return nil

@@ -7,7 +7,7 @@ ApiConfig:
     backend_name: cassandra
     backend_settings:
       hosts:
-      - cassandra
+        - cassandra
       keyspace: caliopen
       consistency_level: 1
       raw_size_limit: 1048576                                # max size in bytes for objects in db. Use S3 interface if larger.
@@ -29,14 +29,15 @@ ApiConfig:
     index_name: elasticsearch
     index_settings:
       hosts:
-      - http://elasticsearch:9200
+        - http://elasticsearch:9200
   NatsConfig:
     url: nats://nats:4222
     outSMTP_topic: outboundSMTP       # topic's name for "send" draft order via SMTP
     outIMAP_topic: outboundIMAP       # topic's name for "send" draft order via remote SMTP+IMAP
     outTWITTER_topic: twitter_dm      # topics's name for "send" draft order via TWITTER
     contacts_topic: contactAction     # topic's name to post messages regarding contacts' events
-    keys_topic: keyAction             # topic-s name to post messages regarding public key events
+    keys_topic: keyAction             # topic's name to post messages regarding public key events
+    idpoller_topic: idCache           # topic's name to post messages to idpoller regarding identities management
   swaggerSpec: ./swagger.json #absolute path or relative path to go.server bin
   RedisConfig:
     host: redis:6379
@@ -47,22 +48,22 @@ ApiConfig:
     admin_username: admin                                   # username on whose behalf notifiers will act. This admin user must have been created before by other means.
     templates_path: "../defs/notifiers/templates/"          # path to yaml/j2 templates directory, WITH trailing slash please.
   Providers:                                                # temporary supported providers list for remote identities before moving this data into store facility
-  - name: gmail
-    protocol: email
-    infos:
-      client_id:
-      client_secret:
-      imapserver: imap.gmail.com:993
-      smtpserver: smtp.gmail.com:587
-  - name: twitter
-    protocol: twitter
-    infos:
-      consumer_key:
-      consumer_secret:
+    - name: gmail
+      protocol: email
+      infos:
+        client_id:
+        client_secret:
+        imapserver: imap.gmail.com:993
+        smtpserver: smtp.gmail.com:587
+    - name: twitter
+      protocol: twitter
+      infos:
+        consumer_key:
+        consumer_secret:
 ProxyConfig:
   listen_interface: 0.0.0.0
   port: 31415
   routes:
-  - /api/v2/: localhost:6544
-  - /: apiv1:6543         # route "/" catch all other requests
+    - /api/v2/: localhost:6544
+    - /: apiv1:6543         # route "/" catch all other requests
 
