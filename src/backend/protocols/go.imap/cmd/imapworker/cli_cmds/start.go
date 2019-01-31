@@ -66,7 +66,7 @@ func sigHandler(workers []*imapWorker.Worker) {
 			}
 			// TODO: reinitialize
 		} else if sig == syscall.SIGTERM || sig == syscall.SIGQUIT || sig == syscall.SIGINT || sig == syscall.SIGKILL {
-			log.Infof("Shutdown signal caught. Gracefully halting %d workers with 3 minutes timemout…", len(workers))
+			log.Infof("Shutdown signal caught. Gracefully halting %d workers within 3 minutes timeframe…", len(workers))
 			wg := new(sync.WaitGroup)
 			wg.Add(len(workers))
 			for i := range workers {
