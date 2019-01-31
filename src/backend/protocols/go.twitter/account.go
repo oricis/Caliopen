@@ -410,7 +410,30 @@ func (worker *AccountHandler) saveErrorState(infos map[string]string, err string
 
 	// check failuresThreshold
 	if lastDate.Sub(firstDate)/time.Hour > failuresThreshold {
-		// TODO : disable remote identity and send nats message to identities_worker
+		// disable remote identity
+		err := worker.broker.Store.UpdateUserIdentity(&UserIdentity{
+			UserId: worker.userAccount.userID,
+			Id:     worker.userAccount.remoteID,
+		}, map[string]interface{}{
+			"Status": "inactive",
+		})
+		if err != nil {
+			log.WithError(err).Warnf("[saveErrorState] failed to deactivate remote identity %s for user %s", worker.userAccount.userID, worker.userAccount.remoteID)
+		}
+		// send nats message to idpoller to stop polling
+		order := RemoteIDNatsMessage{
+			IdentityId: worker.userAccount.remoteID.String(),
+			Order:      "delete",
+			Protocol:   "twitter",
+			UserId:     worker.userAccount.userID.String(),
+		}
+		jorder, jerr := json.Marshal(order)
+		if jerr == nil {
+			e := worker.broker.NatsConn.Publish(worker.broker.Config.NatsTopicPoller, jorder)
+			if e != nil {
+				log.WithError(e).Warnf("[saveErrorState] failed to publish delete order to idpoller")
+			}
+		}
 	}
 
 	// udpate UserIdentity in db
