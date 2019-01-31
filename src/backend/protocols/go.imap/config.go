@@ -12,15 +12,16 @@ import (
 
 type (
 	WorkerConfig struct {
-		Hostname        string      `mapstructure:"hostname"`
-		NatsQueue       string      `mapstructure:"nats_queue"`
-		NatsTopicPoller string      `mapstructure:"nats_topic_poller"`
-		NatsTopicSender string      `mapstructure:"nats_topic_sender"`
-		NatsUrl         string      `mapstructure:"nats_url"`
-		StoreName       string      `mapstructure:"store_name"`
-		Workers         uint8       `mapstructure:"workers"`
-		StoreConfig     StoreConfig `mapstructure:"store_settings"`
-		LDAConfig       LDAConfig   `mapstructure:"LDAConfig"`
+		Hostname             string      `mapstructure:"hostname"`
+		NatsQueue            string      `mapstructure:"nats_queue"`
+		NatsTopicPoller      string      `mapstructure:"nats_topic_poller"`
+		NatsTopicPollerCache string      `mapstructure:"nats_topic_poller_cache"`
+		NatsTopicSender      string      `mapstructure:"nats_topic_sender"`
+		NatsUrl              string      `mapstructure:"nats_url"`
+		StoreName            string      `mapstructure:"store_name"`
+		Workers              uint8       `mapstructure:"workers"`
+		StoreConfig          StoreConfig `mapstructure:"store_settings"`
+		LDAConfig            LDAConfig   `mapstructure:"LDAConfig"`
 	}
 )
 

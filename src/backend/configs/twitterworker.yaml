@@ -6,6 +6,7 @@ BrokerConfig:
   nats_url: nats://nats:4222
   nats_queue: Twitterworkers                             # NATS group queue for workers
   nats_topic_poller: twitterJobs                         # NATS topic on which to request job from idpoller
+  nats_topic_poller_cache: idCache                       # NATS topic to send orders to idpoller regarding identities management
   nats_topic_direct_message: twitter_dm                  # NATS topic to listen to orders for handling DMs (fetch, send)
   #storage facility
   store_name: cassandra                                  # backend to store raw emails and messages (inbound & outbound)

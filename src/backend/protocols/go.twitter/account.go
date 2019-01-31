@@ -220,7 +220,7 @@ func (worker *AccountHandler) PollDM() {
 					}
 					jorder, jerr := json.Marshal(order)
 					if jerr == nil {
-						e := worker.broker.NatsConn.Publish(worker.broker.Config.NatsTopicPoller, jorder)
+						e := worker.broker.NatsConn.Publish(worker.broker.Config.NatsTopicPollerCache, jorder)
 						if e != nil {
 							log.WithError(e).Warnf("[AccountHandler %s] PollDM : failed to publish new poll interval to idpoller")
 						}
@@ -418,7 +418,7 @@ func (worker *AccountHandler) saveErrorState(infos map[string]string, err string
 			"Status": "inactive",
 		})
 		if err != nil {
-			log.WithError(err).Warnf("[saveErrorState] failed to deactivate remote identity %s for user %s", worker.userAccount.userID, worker.userAccount.remoteID)
+			log.WithError(err).Warnf("[saveErrorState] failed to deactivate remote identity %s for user %s", worker.userAccount.remoteID, worker.userAccount.userID)
 		}
 		// send nats message to idpoller to stop polling
 		order := RemoteIDNatsMessage{
@@ -429,7 +429,7 @@ func (worker *AccountHandler) saveErrorState(infos map[string]string, err string
 		}
 		jorder, jerr := json.Marshal(order)
 		if jerr == nil {
-			e := worker.broker.NatsConn.Publish(worker.broker.Config.NatsTopicPoller, jorder)
+			e := worker.broker.NatsConn.Publish(worker.broker.Config.NatsTopicPollerCache, jorder)
 			if e != nil {
 				log.WithError(e).Warnf("[saveErrorState] failed to publish delete order to idpoller")
 			}

@@ -27,15 +27,16 @@ type (
 	}
 
 	BrokerConfig struct {
-		IndexConfig     IndexConfig `mapstructure:"index_settings"`
-		IndexName       string      `mapstructure:"index_name"`
-		NatsQueue       string      `mapstructure:"nats_queue"`
-		NatsURL         string      `mapstructure:"nats_url"`
-		NatsTopicPoller string      `mapstructure:"nats_topic_poller"`
-		NatsTopicDMs    string      `mapstructure:"nats_topic_direct_message"`
-		StoreConfig     StoreConfig `mapstructure:"store_settings"`
-		StoreName       string      `mapstructure:"store_name"`
-		LDAConfig       LDAConfig   `mapstructure:"LDAConfig"`
+		IndexConfig          IndexConfig `mapstructure:"index_settings"`
+		IndexName            string      `mapstructure:"index_name"`
+		NatsQueue            string      `mapstructure:"nats_queue"`
+		NatsURL              string      `mapstructure:"nats_url"`
+		NatsTopicPoller      string      `mapstructure:"nats_topic_poller"`
+		NatsTopicPollerCache string      `mapstructure:"nats_topic_poller_cache"`
+		NatsTopicDMs         string      `mapstructure:"nats_topic_direct_message"`
+		StoreConfig          StoreConfig `mapstructure:"store_settings"`
+		StoreName            string      `mapstructure:"store_name"`
+		LDAConfig            LDAConfig   `mapstructure:"LDAConfig"`
 	}
 
 	TwitterBrokerConnectors struct {

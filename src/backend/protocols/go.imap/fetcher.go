@@ -7,6 +7,7 @@
 package imap_worker
 
 import (
+	"encoding/json"
 	"errors"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
@@ -326,10 +327,26 @@ func (f *Fetcher) handleFetchFailure(userIdentity *UserIdentity, err CaliopenErr
 
 func (f *Fetcher) disableRemoteIdentity(userIdentity *UserIdentity) {
 	(*userIdentity).Status = "inactive"
-	f.Store.UpdateUserIdentity(userIdentity, map[string]interface{}{
+	err := f.Store.UpdateUserIdentity(userIdentity, map[string]interface{}{
 		"Status": "inactive",
 	})
-	f.emitNotification()
+	if err != nil {
+		log.WithError(err).Warnf("[disableRemoteIdentity] failed to deactivate remote identity %s for user %s", userIdentity.Id, userIdentity.Id)
+	}
+	// send nats message to idpoller to stop polling
+	order := RemoteIDNatsMessage{
+		IdentityId: userIdentity.Id.String(),
+		Order:      "delete",
+		Protocol:   "email",
+		UserId:     userIdentity.UserId.String(),
+	}
+	jorder, jerr := json.Marshal(order)
+	if jerr == nil {
+		e := f.Lda.broker.NatsConn.Publish(f.Lda.Config.NatsTopicPollerCache, jorder)
+		if e != nil {
+			log.WithError(e).Warnf("[saveErrorState] failed to publish delete order to idpoller")
+		}
+	}
 }
 
 func (f Fetcher) emitNotification() {
