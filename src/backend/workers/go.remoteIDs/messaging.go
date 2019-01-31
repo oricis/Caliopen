@@ -10,6 +10,8 @@ import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/nats-io/go-nats"
+	"github.com/satori/go.uuid"
+	"strconv"
 )
 
 type MqHandler struct {
@@ -18,6 +20,8 @@ type MqHandler struct {
 	natsSubImap       *nats.Subscription
 	natsSubTwitter    *nats.Subscription
 }
+
+const defaultInterval = "15"
 
 func initMqHandler() (*MqHandler, error) {
 	handler := new(MqHandler)
@@ -67,7 +71,7 @@ func (mqh *MqHandler) natsIdentitiesHandler(msg *nats.Msg) {
 		idKey := order.UserId + order.IdentityId
 		if entry, ok := poller.dbh.GetCacheEntry(idKey); ok {
 			entry.pollInterval = order.OrderParam
-			log.Debugf("[natsIngressHandler] update pollIntervall for entry : %+v", entry)
+			log.Debugf("[natsIdentitiesHandler] updating pollIntervall for entry : %+v", entry)
 			poller.dbh.UpdateCacheEntry(entry)
 			_, err := poller.sched.UpdateSyncJobFor(entry)
 			if err != nil {
@@ -75,9 +79,32 @@ func (mqh *MqHandler) natsIdentitiesHandler(msg *nats.Msg) {
 			}
 		}
 	case "delete":
-		//TODO
+		idKey := order.UserId + order.IdentityId
+		if entry, ok := poller.dbh.GetCacheEntry(idKey); ok {
+			log.Debugf("[natsIdentitiesHandler] deleting cache entry : %+s", idKey)
+			poller.dbh.RemoveCacheEntry(idKey)
+			poller.sched.RemoveJobFor(entry)
+		}
 	case "add":
-		//TODO
+		idKey := order.UserId + order.IdentityId
+		var pollInterval string
+		// prevent boundaries overflow : min = 1 min, max = 3 days
+		if interval, err := strconv.Atoi(order.OrderParam); err == nil && interval > 0 && interval < 3*24*60 {
+			pollInterval = order.OrderParam
+		} else {
+			pollInterval = defaultInterval
+		}
+		entry := cacheEntry{
+			iDkey:          idKey,
+			pollInterval:   pollInterval,
+			remoteID:       UUID(uuid.FromStringOrNil(order.IdentityId)),
+			remoteProtocol: order.Protocol,
+			userID:         UUID(uuid.FromStringOrNil(order.UserId)),
+		}
+		entry, err := poller.sched.AddSyncJobFor(entry)
+		if err == nil {
+			poller.dbh.UpdateCacheEntry(entry)
+		}
 	default:
 		log.Warnf("no handler for order '%s' on topic '%s'", order.Order, msg.Subject)
 	}
