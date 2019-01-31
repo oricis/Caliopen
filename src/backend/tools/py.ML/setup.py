@@ -7,7 +7,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
-name = "caliopen_ia"
+name = "caliopen_climl"
 
 version_file = os.path.join(*([here] + name.split('.') + ['__init__.py']))
 with open(version_file) as v_file:
@@ -25,20 +25,20 @@ if (os.path.isfile('./requirements.deps')):
 setup(name=name,
       namespace_packages=[name],
       version=version,
-      description='Caliopen CLI interface for IA/ML tasks`',
+      description='Caliopen CLI interface for Machine Learning tasks`',
       long_description=README + '\n\n' + CHANGES,
       classifiers=["Programming Language :: Python",
                    "Topic :: Shell"],
       author='Caliopen Contributors',
       author_email='',
       url='https://github.com/Caliopen',
-      keywords='caliopen ia',
+      keywords='caliopen machine learning CLI',
       packages=find_packages(),
       include_package_data=True,
       zip_safe=False,
       install_requires=requires,
       tests_require=requires,
-      test_suite="caliopen_ia.cli.tests",
+      test_suite="caliopen_climl.cli.tests",
       entry_points={
-          'console_scripts': 'caliopia = caliopen_ia.cli:cli',
+          'console_scripts': 'caliopml = caliopen_climl.cli:cli',
       })
