@@ -15,8 +15,10 @@ COPY . /srv/caliopen/src/backend
 RUN pip install git+https://github.com/facebookresearch/fastText.git
 
 # Download nltk data
-RUN mkdir /usr/share/nltk_data/
-RUN wget -O /usr/share/nltk_data/punkt.zip https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/tokenizers/punkt.zip 
+RUN mkdir -p /usr/share/nltk_data/tokenizers
+WORKDIR /usr/share/nltk_data/tokenizers
+RUN wget -O punkt.zip https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/packages/tokenizers/punkt.zip
+RUN unzip punkt.zip
 
 
 # Install Caliopen base packages
@@ -43,4 +45,4 @@ RUN pip install -e .
 RUN pip install ipython
 
 WORKDIR /srv/caliopen/src/backend
-ENTRYPOINT ["caliopen", "-f", "/etc/caliopen/caliopen.yaml"]
+ENTRYPOINT ["caliopml", "--config", "/etc/caliopen/caliopen.yaml"]
