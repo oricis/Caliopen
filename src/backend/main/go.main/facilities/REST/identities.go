@@ -132,7 +132,7 @@ func (rest *RESTfacility) CreateUserIdentity(identity *UserIdentity) CaliopenErr
 		}
 		jorder, jerr := json.Marshal(order)
 		if jerr == nil {
-			e := rest.nats_conn.Publish(rest.natsTopics["idpoller_topic"], jorder)
+			e := rest.nats_conn.Publish(rest.natsTopics[Nats_IdPoller_topicKey], jorder)
 			if e != nil {
 				log.WithError(e).Warnf("[CreateUserIdentity] failed to publish 'add' order to idpoller")
 			}
@@ -231,7 +231,7 @@ func (rest *RESTfacility) DeleteUserIdentity(userId, identityId string) Caliopen
 		}
 		jorder, jerr := json.Marshal(order)
 		if jerr == nil {
-			e := rest.nats_conn.Publish(rest.natsTopics["idpoller_topic"], jorder)
+			e := rest.nats_conn.Publish(rest.natsTopics[Nats_IdPoller_topicKey], jorder)
 			if e != nil {
 				log.WithError(e).Warnf("[saveErrorState] failed to publish delete order to idpoller")
 			}
