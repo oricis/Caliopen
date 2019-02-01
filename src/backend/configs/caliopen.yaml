@@ -57,7 +57,7 @@ message_queue:
 object_store:
     db_size_limit: 1048576
     service: s3
-    endpoint: minio:9090
+    endpoint: objectstore:9090
     access_key: CALIOPEN_ACCESS_KEY_
     secret_key: CALIOPEN_SECRET_KEY_BE_GOOD_AND_LIVE_OLD
     location: eu-fr-localhost

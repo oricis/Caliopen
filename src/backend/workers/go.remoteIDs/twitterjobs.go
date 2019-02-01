@@ -6,8 +6,8 @@ package go_remoteIDs
 
 import (
 	"encoding/json"
-	"github.com/Sirupsen/logrus"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/Sirupsen/logrus"
 )
 
 type twitterJob struct {
@@ -19,9 +19,9 @@ type twitterJob struct {
 
 func (j twitterJob) Run() {
 	msg, err := json.Marshal(BrokerOrder{
-		Order:    "sync",
-		UserId:   j.userId,
-		RemoteId: j.remoteId,
+		Order:      "sync",
+		UserId:     j.userId,
+		IdentityId: j.remoteId,
 	})
 	if err != nil {
 		logrus.WithError(err).Fatal("unable to marshal natsOrder")

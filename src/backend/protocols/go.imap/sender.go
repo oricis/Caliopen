@@ -39,7 +39,7 @@ func (s *Sender) SendDraft(msg *nats.Msg) {
 		s.natsReplyError(msg, err)
 		return
 	}
-	userIdentity, err := s.Store.RetrieveUserIdentity(order.UserId, order.RemoteId, true)
+	userIdentity, err := s.Store.RetrieveUserIdentity(order.UserId, order.IdentityId, true)
 	if err != nil {
 		s.natsReplyError(msg, err)
 		return

@@ -10,15 +10,15 @@ import (
 )
 
 // GetUsersForLocalMailRecipients is part of LDABackend interface implementation
-// return a list of local users' ids found for the given email addresses list
-func (cb *CassandraBackend) GetUsersForLocalMailRecipients(rcpts []string) (userIds []UUID, err error) {
+// return a list of tuples ([user_id, identity_id]) of **local** users found for the given email addresses
+func (cb *CassandraBackend) GetUsersForLocalMailRecipients(rcpts []string) (userIds [][]UUID, err error) {
+	userIds = [][]UUID{}
 	for _, rcpt := range rcpts {
 		identities, err := cb.LookupIdentityByIdentifier(rcpt)
 		if err == nil {
 			for _, identity := range identities {
 				if cb.IsLocalIdentity(identity[0], identity[1]) {
-					uid := UUID(uuid.FromStringOrNil(identity[0]))
-					userIds = append(userIds, uid)
+					userIds = append(userIds, []UUID{UUID(uuid.FromStringOrNil(identity[0])), UUID(uuid.FromStringOrNil(identity[1]))})
 				}
 			}
 		}
