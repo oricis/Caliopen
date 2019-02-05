@@ -20,7 +20,7 @@ func (cb *CassandraBackend) CreateDiscussion(discussion Discussion) error {
 		PartitionKeys: []string{"user_id", "discussion_id"},
 	}).WithOptions(gocassa.Options{TableName: "discussion"})
 
-	// save contact
+	// save discussion
 	err := discussionT.Set(discussion).Run()
 	if err != nil {
 		return fmt.Errorf("[CassandraBackend] CreateDiscussion: %s", err)
@@ -97,15 +97,15 @@ func (cb *CassandraBackend) GetOrCreateDiscussion(user_id UUID, participants []P
 	discussion = new(Discussion)
 	hash, err := cb.GetDiscussionHashByParticipants(user_id, participants)
 	if err != nil {
-		return discussion, err
+		return
 	}
 	lookup, err := cb.GetDiscussionGlobalLookup(user_id, hash)
 	if err != nil {
-		return discussion, err
+		return
 	}
 	if lookup != nil {
 		discussion, err = cb.GetDiscussion(user_id, lookup.DiscussionId)
-		return discussion, err
+		return
 	} else {
 		discussion.MarshallNew()
 		err = cb.CreateDiscussion(*discussion)
