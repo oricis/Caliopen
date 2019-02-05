@@ -6,6 +6,7 @@ export { default as RoutingConsumer } from './components/RoutingConsumer';
 // export { default as RoutingProvider } from './components/RoutingProvider';
 export * from './hoc/withPush';
 export * from './hoc/withReplace';
+export * from './hoc/withRouteParams';
 export * from './hoc/withSearchParams';
 export * from './services/url';
 export * from './services/findTabbableRouteConfig';

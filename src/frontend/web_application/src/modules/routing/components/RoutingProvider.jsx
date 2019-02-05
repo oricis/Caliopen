@@ -28,6 +28,7 @@ import ContactBook from '../../../scenes/ContactBook';
 import PageNotFound from '../../../scenes/PageNotFound';
 import DevicesSettings from '../../../scenes/DevicesSettings';
 import NewDeviceInfo from '../../../scenes/NewDeviceInfo';
+import View from '../../../scenes/View';
 import { renderParticipant } from '../../../services/message';
 import { formatName } from '../../../services/contact';
 import AuthenticatedLayout from './AuthenticatedLayout';
@@ -135,7 +136,7 @@ class RoutingProvider extends Component {
                   // },
                 },
                 {
-                  path: '/compose/:internalId',
+                  path: '/messages/:messageId',
                   component: NewDraft,
                   app: 'discussion',
                   tab: {
@@ -325,7 +326,18 @@ class RoutingProvider extends Component {
                     //   tabMatch: tabMatchRoute,
                     // },
                     // },
+
                   ],
+                },
+                {
+                  path: '/views/:viewId',
+                  component: View,
+                  tab: {
+                    type: 'application',
+                    icon: 'file',
+                    renderLabel: () => i18n._('route.draft.label', null, { defaults: 'Drafts' }),
+                    tabMatch: tabMatchPathname,
+                  },
                 },
                 {
                   component: PageNotFound,

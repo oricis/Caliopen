@@ -8,8 +8,8 @@
     background-color: lightgrey;
   }
 
-  &__discussion-item-placeholder {
-    margin: 0.125rem 0; // XXX refactor duplicated from DiscussionItem
+  &__discussion {
+    border-top: 2px solid $co-color__fg__border--higher;
   }
 
   &__load-more {

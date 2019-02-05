@@ -326,6 +326,7 @@ class Discussion extends Component {
         />
         <div className={classnames('s-discussion__reply', { 's-discussion__reply--open': this.state.isDraftFocus })}>
           <DraftMessage
+            internalId={discussionId}
             scrollToMe={hash === 'reply' ? scrollToTarget : undefined}
             onFocus={this.handleFocusDraft}
             draftFormRef={(node) => { this.replyFormRef = node; }}

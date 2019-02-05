@@ -1,12 +1,16 @@
+@import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
 .m-message-list {
-  &__spinner {
-    display: block;
-    text-align: center;
+  &__placeholder {
+    height: $co-component__height--large;
+    margin-bottom: map_get($co-margin_, small);
   }
 
   &__load-more {
     text-align: center;
 
+    // FIXME
     & .m-button {
       margin: 4px 0 3px 0;
     }
