@@ -96,7 +96,7 @@ class ModelManager(object):
             log.info('Start quantization.')
             new_model.quantize(thread=self.thread, retrain=False)
             log.info('Quantization done.')
-        new_model.save_model(resources_path + "models/" + output + ".bin")
+        new_model.save_model('{}/{}.bin'.format(resources_path, output))
         log.info(
             'Model saved at {}.'.format(resources_path + "models/" + output)
         )
