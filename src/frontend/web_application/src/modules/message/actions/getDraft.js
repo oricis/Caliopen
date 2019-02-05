@@ -1,9 +1,9 @@
 import { tryCatchAxiosAction } from '../../../services/api-client';
 import { requestDraft } from '../../../store/modules/message';
-import { draftSelector } from '../selectors/draftSelector';
+import { discussionDraftSelector } from '../../discussion';
 
 export const getDraft = ({ discussionId }) => async (dispatch, getState) => {
-  let draft = draftSelector(getState(), { discussionId });
+  let draft = discussionDraftSelector(getState(), { discussionId });
 
   if (draft) {
     return draft;

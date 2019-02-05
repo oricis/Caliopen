@@ -49,7 +49,8 @@ class DraftMessage extends Component {
     draftFormRef: PropTypes.func,
     onFocus: PropTypes.func,
     isFetching: PropTypes.bool,
-    hasDiscussion: PropTypes.bool,
+    // required in redux selector and withDraftMessage …
+    hasDiscussion: PropTypes.bool.isRequired,
   };
   static defaultProps = {
     className: undefined,
@@ -64,7 +65,6 @@ class DraftMessage extends Component {
     onSent: () => {},
     onDeleteMessageSuccessfull: () => {},
     isFetching: true,
-    hasDiscussion: false,
   };
 
   static genererateStateFromProps(props, prevState) {
@@ -77,7 +77,7 @@ class DraftMessage extends Component {
     }
 
     const recipients = getRecipients(draftMessage);
-    const identityId = draftMessage.user_identities[0] || '';
+    const identityId = (draftMessage.user_identities && draftMessage.user_identities[0]) || '';
 
     const currIdentity = availableIdentities.find(identity => identity.identity_id === identityId);
 

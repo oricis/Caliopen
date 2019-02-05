@@ -1,4 +1,4 @@
-export const sortMessages = (messages, reversed) => messages.sort((a, b) => {
+export const sortMessages = (messages, reversed = false) => messages.sort((a, b) => {
   if (reversed) {
     return new Date(b.date_sort) - new Date(a.date_sort);
   }

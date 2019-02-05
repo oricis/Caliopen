@@ -14,13 +14,13 @@ import Discussion from './presenter';
 
 const getDiscussionIdFromProps = props => props.match.params.discussionId;
 const discussionIdSelector = (state, ownProps) => getDiscussionIdFromProps(ownProps);
-const discussionSelector = state => state.discussion;
+const discussionStateSelector = state => state.discussion;
 
 const messageByIdSelector = state => state.message.messagesById;
 const messageCollectionStateSelector = createMessageCollectionStateSelector(() => 'discussion', discussionIdSelector);
 
 const mapStateToProps = createSelector(
-  [messageByIdSelector, discussionSelector,
+  [messageByIdSelector, discussionStateSelector,
     discussionIdSelector, UserSelector, messageCollectionStateSelector],
   (messagesById, discussionState, discussionId, userState, {
     didInvalidate, messageIds, hasMore, isFetching,

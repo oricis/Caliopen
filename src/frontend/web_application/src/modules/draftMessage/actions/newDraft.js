@@ -4,9 +4,14 @@ import { createDraft } from '../../../store/modules/draft-message';
 
 export const newDraft = ({ internalId, draft }) =>
   async (dispatch) => {
-    const parentMessage = draft.parent_id ?
-      await dispatch(getMessage({ messageId: draft.parent_id })) :
-      undefined;
+    let parentMessage;
+    try {
+      parentMessage = draft.parent_id ?
+        await dispatch(getMessage({ messageId: draft.parent_id })) :
+        undefined;
+    } catch (err) {
+      // no parentMessage
+    }
     const localIdentity = await dispatch(getDefaultIdentity({ parentMessage }));
     const nextDraft = {
       ...draft,
