@@ -36,7 +36,7 @@ func Actions(ctx *gin.Context) {
 	if err := ctx.BindJSON(&actions); err == nil {
 		switch actions.Actions[0] {
 		case "send":
-			updated_msg, err := caliopen.Facilities.RESTfacility.SendDraft(user_id, msg_id)
+			updated_msg, err := caliopen.Facilities.RESTfacility.SendDraft(user_info, msg_id)
 			if err != nil {
 				e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
 				http_middleware.ServeError(ctx.Writer, ctx.Request, e)
