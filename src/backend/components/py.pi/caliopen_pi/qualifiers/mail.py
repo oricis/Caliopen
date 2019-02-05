@@ -93,6 +93,9 @@ class UserMessageQualifier(object):
         c = Contact.lookup(self.user, participant.address)
         if c:
             p.contact_ids = [c.contact_id]
+        else:
+            if p.address == self.identity.identifier:
+                p.contact_ids = [self.user.contact_id]
         return p, c
 
     def lookup_discussion_sequence(self, mail, message, *args, **kwargs):
