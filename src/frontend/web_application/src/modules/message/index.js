@@ -8,3 +8,4 @@ export * from './actions/requestDiscussion';
 export * from './actions/requestMessages';
 export * from './actions/setMessageRead';
 export * from './models/Message';
+export * from './models/Participant';

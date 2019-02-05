@@ -23,9 +23,9 @@ class MailMessage extends Component {
     message: PropTypes.shape({
       message_id: PropTypes.string,
     }).isRequired,
-    onMessageRead: PropTypes.func.isRequired,
-    onMessageUnread: PropTypes.func.isRequired,
-    onMessageDelete: PropTypes.func.isRequired,
+    onMessageRead: PropTypes.func,
+    onMessageUnread: PropTypes.func,
+    onMessageDelete: PropTypes.func,
     onOpenTags: PropTypes.func.isRequired,
     onReply: PropTypes.func.isRequired,
     user: PropTypes.shape({}).isRequired,
@@ -34,7 +34,15 @@ class MailMessage extends Component {
     settings: PropTypes.shape({ default_locale: PropTypes.string.isRequired }).isRequired,
     i18n: PropTypes.shape({}).isRequired,
     scrollTarget: PropTypes.shape({ forwardRef: PropTypes.func }).isRequired,
+    noInteractions: PropTypes.bool,
   };
+
+  static defaultProps = {
+    onMessageRead: () => {},
+    onMessageUnread: () => {},
+    onMessageDelete: () => {},
+    noInteractions: false,
+  }
 
   handleMessageDelete = () => {
     const { message, onMessageDelete } = this.props;
@@ -77,6 +85,7 @@ class MailMessage extends Component {
   render() {
     const {
       message, scrollTarget: { forwardRef }, onOpenTags, user, settings: { default_locale: locale },
+      noInteractions,
     } = this.props;
     const pi = getAveragePI(message.pi);
     const author = getAuthor(message);
@@ -122,37 +131,39 @@ class MailMessage extends Component {
             </div>
           </div>
         </div>
-        <footer className="s-mail-message__actions">
-          <Button className="m-message-action-container__action" onClick={this.handleReply} icon="reply" responsive="icon-only">
-            <Trans id="message-list.message.action.reply">Reply</Trans>
-          </Button>
-          <Button onClick={onOpenTags} className="m-message-actions-container__action" icon="tags" responsive="icon-only">
-            <Trans id="message-list.message.action.tags">Tags</Trans>
-          </Button>
-          <Confirm
-            className="s-mail-message-__action-confirm"
-            onConfirm={this.handleMessageDelete}
-            title={(<Trans id="message-list.message.confirm-delete.title">Delete a message</Trans>)}
-            content={(<Trans id="message-list.message.confirm-delete.content">The deletion is permanent, are you sure you want to delete this message ?</Trans>)}
-            render={confirm => (
-              <Button
-                className="m-message-action-container__action"
-                onClick={confirm}
-                icon="trash"
-                responsive="icon-only"
-              >
-                <Trans id="message-list.message.action.delete">Delete</Trans>
-              </Button>
-            )}
-          />
-          <Button className="m-message-action-container__action" onClick={this.handleToggleMarkAsRead} responsive="icon-only">
-            {message.is_unread ? (
-              <Trans id="message-list.message.action.mark_as_read">Mark as read</Trans>
-            ) : (
-              <Trans id="message-list.message.action.mark_as_unread">Mark as unread</Trans>
-            )}
-          </Button>
-        </footer>
+        {!noInteractions && (
+          <footer className="s-mail-message__actions">
+            <Button className="m-message-action-container__action" onClick={this.handleReply} icon="reply" responsive="icon-only">
+              <Trans id="message-list.message.action.reply">Reply</Trans>
+            </Button>
+            <Button onClick={onOpenTags} className="m-message-actions-container__action" icon="tags" responsive="icon-only">
+              <Trans id="message-list.message.action.tags">Tags</Trans>
+            </Button>
+            <Confirm
+              className="s-mail-message-__action-confirm"
+              onConfirm={this.handleMessageDelete}
+              title={(<Trans id="message-list.message.confirm-delete.title">Delete a message</Trans>)}
+              content={(<Trans id="message-list.message.confirm-delete.content">The deletion is permanent, are you sure you want to delete this message ?</Trans>)}
+              render={confirm => (
+                <Button
+                  className="m-message-action-container__action"
+                  onClick={confirm}
+                  icon="trash"
+                  responsive="icon-only"
+                >
+                  <Trans id="message-list.message.action.delete">Delete</Trans>
+                </Button>
+              )}
+            />
+            <Button className="m-message-action-container__action" onClick={this.handleToggleMarkAsRead} responsive="icon-only">
+              {message.is_unread ? (
+                <Trans id="message-list.message.action.mark_as_read">Mark as read</Trans>
+              ) : (
+                <Trans id="message-list.message.action.mark_as_unread">Mark as unread</Trans>
+              )}
+            </Button>
+          </footer>
+        )}
       </article>
     );
   }

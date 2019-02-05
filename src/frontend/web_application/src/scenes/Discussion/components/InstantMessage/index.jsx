@@ -27,9 +27,10 @@ class InstantMessage extends PureComponent {
     message: PropTypes.shape({}).isRequired,
     i18n: PropTypes.shape({}).isRequired,
     // XXX: No UI for that
-    // onMessageRead: PropTypes.func.isRequired,
-    // onMessageUnread: PropTypes.func.isRequired,
-    // onDeleteMessage: PropTypes.func.isRequired,
+    // onMessageRead: PropTypes.func,
+    // onMessageUnread: PropTypes.func,
+    // onDeleteMessage: PropTypes.func,
+    // noInteractions: PropTypes.bool,
     user: PropTypes.shape({}).isRequired,
     scrollTarget: PropTypes.shape({ forwardRef: PropTypes.func }).isRequired,
   };
