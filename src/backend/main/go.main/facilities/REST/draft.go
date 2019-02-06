@@ -37,7 +37,7 @@ func (rest *RESTfacility) SendDraft(user_info *UserInfo, msg_id string) (msg *Me
 
 	// Update message with the computed discussion
 	fields := make(map[string]interface{})
-	fields["discussion_id"] = discussion.Discussion_id
+	fields["Discussion_id"] = discussion.Discussion_id
 
 	err = rest.store.UpdateMessage(draft, fields)
 	if err != nil {
