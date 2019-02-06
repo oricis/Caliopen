@@ -1,4 +1,4 @@
-import { getAngles, getAveragePI, PI_PROPERTIES } from './';
+import { getAngles, getAveragePI, getAveragePIMessage, PI_PROPERTIES } from './';
 
 describe('MultidimensionalPi > services > pi', () => {
   describe('getAngles', () => {
@@ -7,13 +7,29 @@ describe('MultidimensionalPi > services > pi', () => {
     });
   });
   describe('getAveragePI', () => {
-    it('gives a basic avarage value', () => {
+    it('gives a basic average value', () => {
       expect(getAveragePI({
         comportment: 5,
         technic: 10,
         context: 15,
         rab: 20,
         version: 1,
+      })).toEqual((5 + 10 + 15) / 3);
+    });
+  });
+
+  describe('getAveragePIMessage', () => {
+    it('gives a basic average PIMessage value ', () => {
+      expect(getAveragePIMessage({
+        message: {
+          pi_message: {
+            content: 5,
+            transport: 10,
+            social: 15,
+            rab: 20,
+            version: 1,
+          },
+        },
       })).toEqual((5 + 10 + 15) / 3);
     });
   });

@@ -1,79 +1,90 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Trans, i18nMark } from '@lingui/react';
+import { Trans, i18nMark, withI18n } from '@lingui/react';
 import classnames from 'classnames';
-import { getAveragePI, getPiClass, PI_LEVEL_DISABLED, PI_LEVEL_UGLY, PI_LEVEL_BAD, PI_LEVEL_GOOD, PI_LEVEL_SUPER } from '../../../../modules/pi';
+import { Icon, TextBlock } from '../../../../components';
+import { getAveragePIMessage, getPiClass, PI_LEVEL_DISABLED, PI_LEVEL_UGLY, PI_LEVEL_BAD, PI_LEVEL_GOOD, PI_LEVEL_SUPER } from '../../../../modules/pi';
 
 import sealedEnvelope from './assets/sealed-envelope.png';
 import postalCard from './assets/postal-card.png';
 
 import './style.scss';
 
+@withI18n()
 class MessagePi extends PureComponent {
   static propTypes = {
-    pi: PropTypes.shape({}),
+    i18n: PropTypes.shape({}).isRequired,
+    message: PropTypes.shape({}).isRequired,
     illustrate: PropTypes.bool,
     describe: PropTypes.bool,
   };
 
   static defaultProps = {
-    pi: undefined,
     illustrate: false,
     describe: false,
   };
 
-  // FIXME: Ugly implenentation.
-  getPiQualities = ({ pi }) => {
-    /* eslint-disable no-nested-ternary */
-    // XXX: temp stuff waiting for actual spec
-    const labelFor = aspect => getPiClass(aspect);
-    const iconFor = (aspect) => {
-      if (Number.isNaN(aspect)) return 'fa-question';
-
-      return aspect <= 33 ? 'fa-times' : aspect <= 66 ? 'fa-warning' : 'fa-check';
-    };
-    /* eslint-enable no-nested-ternary */
-    const { technic, context, comportment } = pi ||
-      { technic: NaN, context: NaN, comportment: NaN };
-
-    return {
-      technic: { label: labelFor(technic), icon: iconFor(technic) },
-      context: { label: labelFor(context), icon: iconFor(context) },
-      comportment: { label: labelFor(comportment), icon: iconFor(comportment) },
-    };
-  }
-
-  getPiImg = ({ pi }) => {
-    const piAggregate = getAveragePI(pi);
-
-    // FIXME : add real disabled image.
-    if (Number.isNaN(piAggregate)) return 'disabled';
-
-    return piAggregate <= 50 ? postalCard : sealedEnvelope;
+  static getIndexIconType = (aspect) => {
+    switch (true) {
+      case Number.isNaN(aspect):
+        return 'question';
+      case aspect <= 33:
+        return 'times';
+      case aspect <= 66:
+        return 'warning';
+      default:
+        return 'check';
+    }
   };
 
-  strongSrc = '';
-  weakSrc = '';
+  renderIllustrationImg = () => {
+    const { message, i18n } = this.props;
+    const piAggregate = getAveragePIMessage({ message });
+
+    switch (true) {
+      case Number.isNaN(piAggregate):
+        return null;
+      case piAggregate <= 50:
+        return (
+          <img
+            src={postalCard}
+            alt={i18n._('message.img.postal-card', null, { defaults: 'This message is like a postal card' })}
+          />
+        );
+      default:
+        return (
+          <img
+            src={sealedEnvelope}
+            alt={i18n._('message.img.sealed-envelope', null, { defaults: 'This message is like a sealed envelop' })}
+          />
+        );
+    }
+  };
 
   renderIllustration() {
-    const { pi } = this.props;
-    const piQualities = this.getPiQualities({ pi });
+    const { message } = this.props;
 
     return (
       <div className="m-message-pi__illustration">
-        <img src={this.getPiImg({ pi })} alt="" />
+        {this.renderIllustrationImg()}
         <ul className="m-message-pi__types">
-          <li className={piQualities.comportment.label}>
-            <i className={`fa ${piQualities.comportment.icon}`} />
-            <Trans id="message.pi.comportment">Sender</Trans>
+          <li className={getPiClass(message.pi_message.social)}>
+            <TextBlock inline>
+              <Icon type={this.constructor.getIndexIconType(message.pi_message.social)} />
+              <Trans id="message.pi.comportment">Sender</Trans>
+            </TextBlock>
           </li>
-          <li className={piQualities.context.label}>
-            <i className={`fa ${piQualities.context.icon}`} />
-            <Trans id="message.pi.context">Departure</Trans>
+          <li className={getPiClass(message.pi_message.content)}>
+            <TextBlock inline>
+              <Icon type={this.constructor.getIndexIconType(message.pi_message.content)} />
+              <Trans id="message.pi.context">Departure</Trans>
+            </TextBlock>
           </li>
-          <li className={piQualities.technic.label}>
-            <i className={`fa ${piQualities.technic.icon}`} />
-            <Trans id="message.pi.technic">Travel</Trans>
+          <li className={getPiClass(message.pi_message.transport)}>
+            <TextBlock inline>
+              <Icon type={this.constructor.getIndexIconType(message.pi_message.transport)} />
+              <Trans id="message.pi.technic">Travel</Trans>
+            </TextBlock>
           </li>
         </ul>
       </div>
@@ -102,10 +113,10 @@ class MessagePi extends PureComponent {
   };
 
   render() {
-    const { illustrate, describe, pi } = this.props;
-    const piAggregate = getAveragePI(pi);
+    const { illustrate, describe, message } = this.props;
+    const piAggregate = getAveragePIMessage({ message });
     const piClass = getPiClass(piAggregate);
-    const piValue = piAggregate ? Math.round(piAggregate) : '?';
+    const piValue = Number.isFinite(piAggregate) ? Math.round(piAggregate) : '?';
     const progressMeterStyle = piAggregate ? {
       width: `${piAggregate}%`,
     } : {};
@@ -131,7 +142,7 @@ class MessagePi extends PureComponent {
             <span className="m-message-pi__numeric-value">{piValue}</span>
           </div>
         </div>
-        {describe ? this.renderDescription(piAggregate) : null}
+        {describe && this.renderDescription(piAggregate)}
       </div>
     );
   }

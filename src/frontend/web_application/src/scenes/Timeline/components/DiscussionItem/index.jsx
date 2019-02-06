@@ -76,6 +76,8 @@ class DiscussionItem extends PureComponent {
       excerpt, discussion_id: discussionId, total_count: total, date_update: date,
       last_message_id: lastMessageId, unread_count: unreadCount, pi, protocol,
     } = this.props.discussion;
+
+    // XXX: discussion does not support pi_message yet
     const piAggregate = getAveragePI(pi);
 
     // const { isDeleting, isDiscussionSelected, i18n } = this.props;

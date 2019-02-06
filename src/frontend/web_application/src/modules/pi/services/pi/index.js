@@ -1,4 +1,5 @@
 export const PI_PROPERTIES = ['comportment', 'technic', 'context'];
+export const PI_MESSAGE_PROPERTIES = ['content', 'transport', 'social'];
 export const PI_LEVEL_DISABLED = 'disabled-pi';
 export const PI_LEVEL_UGLY = 'ugly';
 export const PI_LEVEL_BAD = 'bad';
@@ -23,10 +24,11 @@ export const getAngles = () => {
   return 360 / piLength;
 };
 
-export const getAveragePI = (pi) => {
-  const piProps = PI_PROPERTIES;
-
+export const getAveragePI = (pi, piProps = PI_PROPERTIES) => {
   if (!pi) return NaN;
 
   return Math.round((piProps.reduce((acc, name) => acc + pi[name] || 0, 0)) / piProps.length);
 };
+
+export const getAveragePIMessage = ({ message }) =>
+  getAveragePI(message.pi_message, PI_MESSAGE_PROPERTIES);

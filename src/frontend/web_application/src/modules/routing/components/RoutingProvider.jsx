@@ -18,7 +18,8 @@ import NewDraft from '../../../scenes/NewDraft';
 import SearchResults from '../../../scenes/SearchResults';
 import UserProfile from '../../../scenes/UserProfile';
 import UserSecurity from '../../../scenes/UserSecurity';
-import UserPrivacy from '../../../scenes/UserPrivacy';
+// XXX: UserPrivacy not used yet
+// import UserPrivacy from '../../../scenes/UserPrivacy';
 import RemoteIdentitySettings from '../../../scenes/RemoteIdentitySettings';
 // import SettingsSignatures from '../../../scenes/SettingsSignatures';
 import ApplicationSettings from '../../../scenes/ApplicationSettings';
@@ -243,16 +244,18 @@ class RoutingProvider extends Component {
                         tabMatch: tabMatchRoute,
                       },
                     },
-                    {
-                      path: '/user/privacy',
-                      component: UserPrivacy,
-                      tab: {
-                        type: 'default',
-                        icon: 'user',
-                        renderLabel: () => i18n._('route.user.label.privacy', null, { defaults: 'Privacy' }),
-                        tabMatch: tabMatchRoute,
-                      },
-                    },
+                    // XXX: unused
+                    // {
+                    //   path: '/user/privacy',
+                    //   component: UserPrivacy,
+                    //   tab: {
+                    //     type: 'default',
+                    //     icon: 'user',
+                    //     renderLabel: () => i18n._('route.user.label.privacy', null, { defaults:
+                    //     'Privacy' }),
+                    //     tabMatch: tabMatchRoute,
+                    //   },
+                    // },
                     {
                       path: '/user/security',
                       component: UserSecurity,

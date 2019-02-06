@@ -11,7 +11,7 @@ import MessageAttachments from '../MessageAttachments';
 import MessageRecipients from '../MessageRecipients';
 import MessagePi from '../MessagePi';
 import { getAuthor } from '../../../../services/message';
-import { getAveragePI, getPiClass } from '../../../../modules/pi/services/pi';
+import { getAveragePIMessage, getPiClass } from '../../../../modules/pi/services/pi';
 
 import './style.scss';
 
@@ -78,7 +78,7 @@ class MailMessage extends Component {
     const {
       message, scrollTarget: { forwardRef }, onOpenTags, user, settings: { default_locale: locale },
     } = this.props;
-    const pi = getAveragePI(message.pi);
+    const pi = getAveragePIMessage({ message });
     const author = getAuthor(message);
 
     return (
@@ -98,7 +98,7 @@ class MailMessage extends Component {
             </div>
           </div>
           <aside className="s-mail-message__info">
-            <MessagePi pi={message.pi} illustrate describe />
+            <MessagePi message={message} illustrate describe />
             <div className="s-mail-message__participants">
               <div className="s-mail-message__participants-from">
                 <span className="direction"><Trans id="message.from">From:</Trans></span> {author.label}
