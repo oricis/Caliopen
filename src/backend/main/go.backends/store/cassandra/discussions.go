@@ -6,10 +6,12 @@ package store
 
 import (
 	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocassa/gocassa"
+	"github.com/gocql/gocql"
 	"sort"
 	"strings"
 )
@@ -87,7 +89,7 @@ func (cb *CassandraBackend) GetDiscussionHashByParticipants(user_id UUID, partic
 	sort.Strings(parts)
 	h := sha256.New()
 	h.Write([]byte(strings.Join(parts, "")))
-	hash := string(h.Sum(nil))
+	hash := hex.EncodeToString(h.Sum(nil))
 	log.Info("Computed hash for parts ", parts, " is ", hash)
 	return hash, nil
 }
@@ -100,7 +102,7 @@ func (cb *CassandraBackend) GetOrCreateDiscussion(user_id UUID, participants []P
 		return
 	}
 	lookup, err := cb.GetDiscussionGlobalLookup(user_id, hash)
-	if err != nil {
+	if err != nil && err != gocql.ErrNotFound {
 		return
 	}
 	if lookup != nil {
