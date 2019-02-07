@@ -1,14 +1,8 @@
-"""
-Command Line Interface (CLI) for caliopen project
-
-
-"""
+"""Command Line Interface (CLI) for caliopen machine learning tasks."""
 import click
 
-from minio import Minio
-from minio.error import BucketAlreadyOwnedByYou, BucketAlreadyExists
 from caliopen_tag.models_manager import ModelManager, ESDataManager
-import elasticsearch_dsl as dsl
+from caliopen_data import save_file
 
 
 class Config(object):
@@ -17,31 +11,8 @@ class Config(object):
     def __init__(self, filename):
         from caliopen_storage.config import Configuration
         from caliopen_storage.helpers.connection import connect_storage
-        self.conf = Configuration.load(filename, 'global')
+        self.conf = Configuration.load(filename, 'global').configuration
         connect_storage()
-
-
-def save_object_store(config, input_file, dest):
-    """Save an input file as dest on object store."""
-    bucket = config['buckets']['learn_models']
-    client = Minio(config["endpoint"],
-                   access_key=config["access_key"],
-                   secret_key=config["secret_key"],
-                   secure=False)
-    try:
-        client.make_bucket(bucket, config['location'])
-    except BucketAlreadyOwnedByYou:
-        pass
-    except BucketAlreadyExists:
-        pass
-    except Exception as exc:
-        raise exc
-    try:
-        resp = client.fput_object(bucket, dest, input_file)
-        click.echo('Put file {0}: {1}'.format(input_file, resp))
-    except Exception as exc:
-        click.echo('Unable to save file in object store %r' % exc)
-        raise exc
 
 
 @click.group()
@@ -66,7 +37,8 @@ def train(config, model, index, output):
         provider.prepare(provider.get_query(),
                          index=None,
                          doc_type='indexed_message')
-        model = ModelManager(provider)
-        model.get_new_model(output)
+        manager = ModelManager(provider)
+        result_file = manager.get_new_model(output)
+        save_file(config, result_file, model)
     else:
         click.echo('Unknow model {0}'.format(model))
