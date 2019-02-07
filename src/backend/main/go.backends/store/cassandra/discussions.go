@@ -6,7 +6,6 @@ package store
 
 import (
 	"crypto/sha256"
-	"encoding/hex"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
@@ -87,11 +86,9 @@ func (cb *CassandraBackend) GetDiscussionHashByParticipants(user_id UUID, partic
 		}
 	}
 	sort.Strings(parts)
-	h := sha256.New()
-	h.Write([]byte(strings.Join(parts, "")))
-	hash := hex.EncodeToString(h.Sum(nil))
-	log.Info("Computed hash for parts ", parts, " is ", hash)
-	return hash, nil
+	hash := sha256.Sum256([]byte(strings.Join(parts, "")))
+	log.Debug("Computed hash for parts ", fmt.Sprintf("%x", hash))
+	return fmt.Sprintf("%x", hash), nil
 }
 
 // GetOrCreateDiscussion will get an existing discussion for the list of given participants or create a new one
@@ -107,10 +104,22 @@ func (cb *CassandraBackend) GetOrCreateDiscussion(user_id UUID, participants []P
 	}
 	if lookup != nil {
 		discussion, err = cb.GetDiscussion(user_id, lookup.DiscussionId)
+		if err == nil {
+			log.Debug("Found existing discussion ", discussion.Discussion_id)
+		}
 		return
 	} else {
-		discussion.MarshallNew()
+		discussion.MarshallNew(user_id)
 		err = cb.CreateDiscussion(*discussion)
+		if err != nil {
+			return
+		}
+		err = cb.CreateDiscussionGlobalLookup(user_id, hash, discussion.Discussion_id)
+		if err != nil {
+			return
+		}
+		log.Debug("Create a new discussion ", discussion.Discussion_id)
+
 	}
 	return
 }
