@@ -154,7 +154,7 @@ func randomIdentifier() string {
 	var buf [4]byte
 	_, err := io.ReadFull(rand.Reader, buf[:])
 	if err != nil {
-		panic(err)
+		return "00000000"
 	}
 	return fmt.Sprintf("%x", buf[:])
 }
