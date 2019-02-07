@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { withI18n } from '@lingui/react';
 import { withScrollTarget } from '../../../../modules/scroll';
 import { isMessageFromUser, getAuthor, isUserRecipient, getRecipientsExceptUser, getRecipients } from '../../../../services/message';
-import { getAveragePI, getPiClass } from '../../../../modules/pi';
+import { getAveragePIMessage, getPiClass } from '../../../../modules/pi';
 import { AuthorAvatarLetter } from '../../../../modules/avatar';
 import { Icon } from '../../../../components';
 import MessagePi from '../MessagePi';
@@ -76,7 +76,7 @@ class InstantMessage extends PureComponent {
   render() {
     const { message, scrollTarget: { forwardRef } } = this.props;
     const author = getAuthor(message);
-    const pi = getAveragePI(message.pi);
+    const pi = getAveragePIMessage({ message });
 
     return (
       <article className={this.getClassNames(pi, message)} ref={forwardRef}>
@@ -90,7 +90,7 @@ class InstantMessage extends PureComponent {
             <span className="m-instant-message__participants__from">{author.label}</span>
             <span className="m-instant-message__participants__to">{this.getRecipientsString(true)}<Icon type="caret-down" title={this.getRecipientsString(false)} /></span>
           </div>
-          <MessagePi illustrate={false} describe={false} pi={message.pi} />
+          <MessagePi illustrate={false} describe={false} message={message} />
         </aside>
         <div className="m-instant-message__content">{message.body}</div>
       </article>

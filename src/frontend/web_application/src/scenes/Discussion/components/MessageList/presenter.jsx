@@ -4,7 +4,7 @@ import { Trans } from '@lingui/react';
 import { Button, PlaceholderBlock } from '../../../../components';
 import Message from '../../components/Message';
 import ProtocolSwitch from '../../components/ProtocolSwitch';
-import { getAveragePI } from '../../../../modules/pi';
+import { getAveragePIMessage } from '../../../../modules/pi';
 import { withSettings } from '../../../../modules/settings';
 
 import './style.scss';
@@ -71,7 +71,7 @@ class MessageList extends Component {
         && this.findMessageBefore(message).protocol !== message.protocol) {
         messageList.push(<ProtocolSwitch
           newProtocol={message.protocol}
-          pi={getAveragePI(message.pi)}
+          pi={getAveragePIMessage({ message })}
           date={message.date}
           key={`switch-${message.message_id}`}
           settings={settings}

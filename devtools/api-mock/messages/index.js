@@ -80,6 +80,7 @@ const reducer = {
       date_insert: Date.now(),
       date_sort: Date.now(),
       pi: { technic: 50, context: 45, comportment: 25, version: 1 },
+      pi_message: { transport: 50, content: 45, social: 25 },
       participants: reduceParticipants(body),
     },
   ]),
