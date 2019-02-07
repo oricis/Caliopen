@@ -130,10 +130,6 @@ func (worker *Worker) Start() error {
 	return nil
 }
 
-func (worker *Worker) Halt(wg *sync.WaitGroup) {
-
-}
-
 func (worker *Worker) Stop() {
 	for _, sub := range worker.NatsSubs {
 		sub.Unsubscribe()
