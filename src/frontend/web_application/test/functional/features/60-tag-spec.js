@@ -80,8 +80,9 @@ describe('Tag', () => {
 
   it('Manage tags on a contact', async () => {
     await element(by.css('.m-navbar-item .m-link[title="Contacts"]')).click();
-    await browser.wait(EC.presenceOf($('.m-contact-list__contact')), 5 * 1000);
-    await element(by.cssContainingText('.m-contact-item__title', 'Bender Bending Rodriguez')).click();
+    const contactItemElement = element(by.cssContainingText('.m-contact-item__title', 'Bender Bending Rodriguez'));
+    await browser.wait(EC.presenceOf(contactItemElement), 5 * 1000);
+    await contactItemElement.click();
     await browser.wait(EC.presenceOf(element(by.cssContainingText('.s-contact-main-title__name', 'Bender Bending Rodriguez'))), 5 * 1000);
     // XXX: may be fix w/ tab scroll
     await browser.executeScript('window.scrollTo(0,0);');
