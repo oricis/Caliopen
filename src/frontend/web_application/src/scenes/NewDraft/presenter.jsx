@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom';
 import { DraftMessage } from '../../modules/draftMessage';
 import { withPush, withRouteParams } from '../../modules/routing';
 import { withCloseTab } from '../../modules/tab';
+import DraftDiscussion from './components/DraftDiscussion';
 import './style.scss';
 
 @withPush()
@@ -33,11 +34,17 @@ class NewDraft extends Component {
     return (
       <div className="s-new-draft">
         <DraftMessage
+          className="s-new-draft__form"
           key={routeParams.messageId}
           internalId={routeParams.messageId}
           hasDiscussion={false}
           onDeleteMessageSuccessfull={closeTab}
           onSent={this.handleSent}
+        />
+        <DraftDiscussion
+          className="s-new-draft__discussion"
+          // used in withDraftMessage
+          messageId={routeParams.messageId}
         />
       </div>
     );

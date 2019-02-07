@@ -1,5 +1,6 @@
 import { requestMessage } from '../../../store/modules/message';
 import { messagesByIdSelector } from '../../../store/selectors/message';
+import { tryCatchAxiosAction } from '../../../services/api-client';
 
 export const getMessage = ({ messageId }) => async (dispatch, getState) => {
   const message = messagesByIdSelector(getState())[messageId];
@@ -8,7 +9,7 @@ export const getMessage = ({ messageId }) => async (dispatch, getState) => {
     return message;
   }
 
-  await dispatch(requestMessage({ messageId }));
+  await tryCatchAxiosAction(() => dispatch(requestMessage(messageId)));
 
   return messagesByIdSelector(getState())[messageId];
 };

@@ -165,6 +165,7 @@
   "device.verify.title": "Vérifier votre appareil",
   "devices.feedback.unverified_device": "Vous êtes connecté avec un appareil non-vérifié.",
   "devices.feedback.unverified_device_more": "Pour respecter les règles de sécurité et de confidentialité, l'historique de vos conversations ne sera pas entièrement disponible.<0/> Merci de le vérifier cet appareil depuis un connu et vérifié.",
+  "discussion-draft.last-messages": "Derniers messages avec {participants}",
   "discussion.action.label": "Discussion complète ",
   "discussion.action.reply": "Répondre",
   "draft-message.action.send": "Envoyer",
@@ -224,6 +225,7 @@
   "message-list.action.copy-to": "Copier à",
   "message-list.action.delete": "Supprimer",
   "message-list.action.reply": "Répondre",
+  "message-list.action.select_all": "Selectionner/déselectionner tous les messages",
   "message-list.action.select_all_discussions": "Tout sélectionner",
   "message-list.action.select_all_messages": "Selectionner/déselectionner tous les messages",
   "message-list.action.select_single_message": "Selectionner/déselectionner ce message",
@@ -249,6 +251,7 @@
   "message-list.message.to": "À :",
   "message-list.message.to-me-nb": "{0, plural, =0 {Pour : Vous} =1 {Pour : Vous et 1 autre personne} other {Pour : Vous et # autres personnes}}",
   "message-list.message.to-nb": "{1, plural, =0 {Pour :} =1 {Pour : {0}} other {Pour : # personnes}}",
+  "message-list.selected": "{count, plural, one {#/{totalCount} message :} other {#/{totalCount} messages :}}",
   "message-list.today": "Aujourd'hui",
   "message.action.add-participant-to-contacts": "Ajouter un contact au carnet d'adresses",
   "message.action.add-to-contacts": "Ajouter au carnet d'adresse",
@@ -411,6 +414,7 @@
   "route.contact-association.label": "Associer \"{label}\"",
   "route.contact-book.label": "Contacts",
   "route.discussion.label": "Discussion ...",
+  "route.draft.label": "Brouillons",
   "route.new-contact.label": "Nouveau contact",
   "route.search-results.label": "Resultats pour : {term}",
   "route.settings.label.application": "Application",
@@ -609,5 +613,6 @@
   "user.security": "Sécurité",
   "user.security.section_password.title": "Mot de passe",
   "user.security.section_pgpkeys.title": "Clés privées PGP",
-  "user.security.section_tfa.title": "Authentification à deux facteurs"
+  "user.security.section_tfa.title": "Authentification à deux facteurs",
+  "view.draft.label": "Brouillons"
 }

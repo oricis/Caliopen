@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - handle lost authentication, redirect signin
 - A simple view with draft messages
+- Display the discussion related to the selected participants of a draft
 
 ### Changed
 

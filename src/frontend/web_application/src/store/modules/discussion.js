@@ -9,6 +9,9 @@ export const FILTER_IMPORTANCE = 'co/discussion/FILTER_IMPORTANCE';
 export const REQUEST_DISCUSSION = 'co/discussion/REQUEST_DISCUSSION';
 export const REQUEST_DISCUSSION_SUCCESS = 'co/discussion/REQUEST_DISCUSSION_SUCCESS';
 export const REQUEST_DISCUSSION_FAIL = 'co/discussion/REQUEST_DISCUSSION_FAIL';
+export const REQUEST_DISCUSSION_BY_PARTICIPANTS = 'co/discussion/REQUEST_DISCUSSION_BY_PARTICIPANTS';
+export const REQUEST_DISCUSSION_BY_PARTICIPANTS_SUCCESS = 'co/discussion/REQUEST_DISCUSSION_BY_PARTICIPANTS_SUCCESS';
+export const REQUEST_DISCUSSION_BY_PARTICIPANTS_FAIL = 'co/discussion/REQUEST_DISCUSSION_BY_PARTICIPANTS_FAIL';
 export const UPDATE_DISCUSSION = 'co/discussion/UPDATE_DISCUSSION';
 export const REMOVE_DISCUSSION = 'co/discussion/REMOVE_DISCUSSION';
 
@@ -46,6 +49,20 @@ export function requestDiscussion({ discussionId }) {
     payload: {
       request: {
         url: `/api/v1/discussions/${discussionId}`,
+      },
+    },
+  };
+}
+
+export function requestDiscussionByParticipants({ internalHash, participants }) {
+  return {
+    type: REQUEST_DISCUSSION_BY_PARTICIPANTS,
+    payload: {
+      internalHash,
+      request: {
+        method: 'post',
+        url: '/api/v1/participants/discussion',
+        data: participants,
       },
     },
   };
@@ -107,6 +124,22 @@ function discussionIdsReducer(state = [], action = {}) {
   }
 }
 
+const hashInitialState = {
+  discussionId: undefined,
+};
+
+function discussionByParticipantsHashReducer(state = hashInitialState, action) {
+  switch (action.type) {
+    case REQUEST_DISCUSSION_BY_PARTICIPANTS_SUCCESS:
+      return {
+        discussionId: action.payload.data.discussion_id,
+      };
+    case REQUEST_DISCUSSION_BY_PARTICIPANTS:
+    default:
+      return state;
+  }
+}
+
 export function getNextOffset(state) {
   return state.discussions.length;
 }
@@ -120,6 +153,7 @@ const initialState = {
   didInvalidate: false,
   discussionsById: {},
   discussions: [],
+  discussionByParticipantsHash: {},
   importanceRange: {
     min: 0,
     max: 10,
@@ -174,6 +208,29 @@ export default function reducer(state = initialState, action) {
         importanceRange: {
           min: action.payload.min,
           max: action.payload.max,
+        },
+      };
+    case REQUEST_DISCUSSION_BY_PARTICIPANTS:
+      return {
+        ...state,
+        discussionByParticipantsHash: {
+          ...state.discussionByParticipantsHash,
+          [action.payload.internalHash]: discussionByParticipantsHashReducer(
+            state.discussionByParticipantsHash[action.payload.internalHash],
+            action
+          ),
+        },
+      };
+    case REQUEST_DISCUSSION_BY_PARTICIPANTS_SUCCESS:
+    case REQUEST_DISCUSSION_BY_PARTICIPANTS_FAIL:
+      return {
+        ...state,
+        discussionByParticipantsHash: {
+          ...state.discussionByParticipantsHash,
+          [action.meta.previousAction.payload.internalHash]: discussionByParticipantsHashReducer(
+            state.discussionByParticipantsHash[action.meta.previousAction.payload.internalHash],
+            action
+          ),
         },
       };
     default:

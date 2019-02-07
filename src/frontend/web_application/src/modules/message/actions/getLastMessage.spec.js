@@ -36,6 +36,13 @@ describe('message module - actions - getLastMessage', () => {
     const now = new Date();
     const store = mockStore({
       message: {
+        messagesCollections: {
+          discussion: {
+            '02': {
+              messages: ['a', 'b'],
+            },
+          },
+        },
         messagesById: {
           a: {
             message_id: 'a',
@@ -64,6 +71,13 @@ describe('message module - actions - getLastMessage', () => {
     const now = new Date();
     const store = mockStore({
       message: {
+        messagesCollections: {
+          discussion: {
+            '02': {
+              messages: ['a', 'b'],
+            },
+          },
+        },
         messagesById: {
           a: {
             message_id: 'a',
@@ -98,6 +112,13 @@ describe('message module - actions - getLastMessage', () => {
     const now = new Date();
     const store = mockStore({
       message: {
+        messagesCollections: {
+          discussion: {
+            '02': {
+              messages: ['a', 'b'],
+            },
+          },
+        },
         messagesById: {
           a: {
             message_id: 'a',

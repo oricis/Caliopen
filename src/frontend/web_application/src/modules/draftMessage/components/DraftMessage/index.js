@@ -30,7 +30,13 @@ const draftSelector = (state, {
     draftMessage, isRequestingDraft, isDeletingDraft, original,
   });
 
-const messageCollectionStateSelector = createMessageCollectionStateSelector(() => 'discussion', internalIdSelector);
+const discussionIdSelector = (state, ownProps) => {
+  const { internalId, hasDiscussion } = ownProps;
+
+  return hasDiscussion ? internalId : undefined;
+};
+
+const messageCollectionStateSelector = createMessageCollectionStateSelector(() => 'discussion', discussionIdSelector);
 const sentMessagesSelector = createSelector(
   [messageCollectionStateSelector],
   ({ messages }) => messages.filter(item => item.is_draft !== true)

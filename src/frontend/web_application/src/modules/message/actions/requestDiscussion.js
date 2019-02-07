@@ -1,8 +1,8 @@
 import { tryCatchAxiosAction } from '../../../services/api-client';
 import { requestDiscussion as requestDiscussionBase } from '../../../store/modules/discussion';
 import { requestMessages as requestMessagesBase } from '../../../store/modules/message';
-import { discussionSelector, discussionIdSelector } from '../selectors/discussionSelector';
 import { createMessageCollectionStateSelector } from '../../../store/selectors/message';
+import { discussionSelector, discussionIdSelector } from '../../discussion';
 
 const messageCollectionSelector = createMessageCollectionStateSelector(() => 'discussion', discussionIdSelector);
 

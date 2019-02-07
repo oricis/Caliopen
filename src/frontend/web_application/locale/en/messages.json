@@ -165,6 +165,7 @@
   "device.verify.title": "Verify you device",
   "devices.feedback.unverified_device": "You are connected on an unverified device.",
   "devices.feedback.unverified_device_more": "To respect privacy and security rules, your discussions history will not fully appear<0/> Please verify this device from a trusted one.",
+  "discussion-draft.last-messages": "Last messages with {participants}",
   "discussion.action.label": "Whole discussion",
   "discussion.action.reply": "Reply",
   "draft-message.action.send": "Send",
@@ -224,6 +225,7 @@
   "message-list.action.copy-to": "Copy to",
   "message-list.action.delete": "Delete",
   "message-list.action.reply": "Reply",
+  "message-list.action.select_all": "Select/deselect all messages",
   "message-list.action.select_all_discussions": "Select/deselect all discussions",
   "message-list.action.select_all_messages": "Select/deselect all messages",
   "message-list.action.select_single_message": "Select/deselect this message",
@@ -249,6 +251,7 @@
   "message-list.message.to": "To:",
   "message-list.message.to-me-nb": "{0, plural, =0 {To: You} =1 {To: You and 1 other person} other {To: You and # other persons}}",
   "message-list.message.to-nb": "{1, plural, =0 {To:} =1 {To: {0}} other {To: # persons}}",
+  "message-list.selected": "{count, plural, one {#/{totalCount} message:} other {#/{totalCount} messages:}}",
   "message-list.today": "Today",
   "message.action.add-participant-to-contacts": "Add a participant to the contact book",
   "message.action.add-to-contacts": "Add to contact book",
@@ -412,6 +415,7 @@
   "route.contact-association.label": "Associate \"{label}\"",
   "route.contact-book.label": "Contacts",
   "route.discussion.label": "Discussion  ...",
+  "route.draft.label": "Drafts",
   "route.new-contact.label": "New contact",
   "route.search-results.label": "Results for: {term}",
   "route.settings.label.application": "Application",
@@ -610,5 +614,6 @@
   "user.security": "Security",
   "user.security.section_password.title": "Password",
   "user.security.section_pgpkeys.title": "PGP private keys",
-  "user.security.section_tfa.title": "Two-factor authentication"
+  "user.security.section_tfa.title": "Two-factor authentication",
+  "view.draft.label": "Drafts"
 }

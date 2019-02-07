@@ -44,6 +44,7 @@ class DiscussionItem extends PureComponent {
     onSelectDiscussion(checked ? 'add' : 'remove', discussion.discussion_id);
   };
 
+  // participants except user
   buildParticipantsLabels = ({ participants }) =>
     participants
       .filter(participant => !(participant.contact_ids && participant.contact_ids.some(contactId =>

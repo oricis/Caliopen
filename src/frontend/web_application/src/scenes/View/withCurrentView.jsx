@@ -13,10 +13,10 @@ const withViewModel = () => C =>
 
 const viewModelSelector = (state, { view }) => view;
 
-const viewSelector = createSelector([viewModelSelector, getModuleStateSelector({ moduleName: 'view' })], (viewModel, { viewById }) => viewById[viewModel.id]);
+const viewSelector = createSelector([viewModelSelector, getModuleStateSelector('view')], (viewModel, { viewById }) => viewById[viewModel.id]);
 
 const mapStateToProps = createSelector(
-  [viewModelSelector, getModuleStateSelector({ moduleName: 'message' }), viewSelector],
+  [viewModelSelector, getModuleStateSelector('message'), viewSelector],
   (view, { messagesById }, viewState) => ({
     view,
     isFetching: viewState && viewState.isFetching,
