@@ -1,7 +1,7 @@
 from nltk.tokenize import word_tokenize
 from bs4 import BeautifulSoup
 
-resources_path = "/path/to/resources/"
+resources_path = "/var/tmp/"
 
 
 def pre_process(text, html=False):

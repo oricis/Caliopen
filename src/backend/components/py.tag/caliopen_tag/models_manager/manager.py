@@ -9,7 +9,6 @@ from ..utils import resources_path
 import fastText
 
 log = logging.getLogger(__name__)
-usenet_file = "usenet_data_{}.txt"
 
 
 class ModelManager(object):
@@ -56,8 +55,9 @@ class ModelManager(object):
         Finally it removes the temporary file.
         """
         self._write_training_data_to_file()
-        self._train_tagging_model(output)
+        result_file = self._train_tagging_model(output)
         self._remove_tempfile()
+        return result_file
 
     def _write_training_data_to_file(self):
         f = NamedTemporaryFile(delete=False, dir=resources_path)
@@ -96,10 +96,10 @@ class ModelManager(object):
             log.info('Start quantization.')
             new_model.quantize(thread=self.thread, retrain=False)
             log.info('Quantization done.')
-        new_model.save_model(resources_path + "models/" + output + ".bin")
-        log.info(
-            'Model saved at {}.'.format(resources_path + "models/" + output)
-        )
+        model_file = '{}/{}.bin'.format(resources_path, output)
+        new_model.save_model(model_file)
+        log.info('Model saved at {}.'.format(model_file))
+        return model_file
 
     def _remove_tempfile(self):
         os.remove(self.tempfilename)

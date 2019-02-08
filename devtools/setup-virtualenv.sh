@@ -6,7 +6,7 @@ CALIOPEN_BACKEND_DIR=${CALIOPEN_BASE_DIR}/src/backend
 cd ${CALIOPEN_BASE_DIR}
 if [[ -d ".venv" ]]; then
     echo "Virtual environment exist, drop it first"
-    exit 1
+    # exit 1
 fi
 
 virtualenv --python=python2.7 .venv
@@ -21,7 +21,10 @@ fi
 # Force installation of regex using pip
 pip install regex
 
-COMPONENTS="main/py.storage components/py.pgp components/py.pi main/py.main interfaces/REST/py.server tools/py.doc interfaces/NATS/py.client tools/py.CLI tools/py.doc"
+# Install github version of fasttext not pip version really too old
+pip install git+https://github.com/facebookresearch/fastText.git
+
+COMPONENTS="main/py.storage components/py.pgp components/py.pi components/py.data components/py.tag main/py.main interfaces/REST/py.server tools/py.doc interfaces/NATS/py.client tools/py.CLI tools/py.ML"
 
 for comp in ${COMPONENTS}:
 do

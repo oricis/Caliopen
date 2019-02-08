@@ -63,10 +63,6 @@ class ESProvider(DataProvider):
 
     zope.interface.implements(IDataProvider)
 
-    def __init__(self, config):
-        """Create a new FileDataProvider."""
-        super(ESProvider, self).__init__(config)
-
     def _connect_store(self):
         config = self.config.get('elasticsearch')
         return Elasticsearch(config['url'])
