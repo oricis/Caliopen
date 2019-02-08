@@ -51,7 +51,7 @@ type (
 		GetMessagesList(filter IndexSearch) (messages []*Message, totalFound int64, err error)
 		GetMessagesRange(filter IndexSearch) (messages []*Message, totalFound int64, err error)
 		GetMessage(user *UserInfo, message_id string) (message *Message, err error)
-		SendDraft(user_id, msg_id string) (msg *Message, err error)
+		SendDraft(user *UserInfo, msg_id string) (msg *Message, err error)
 		SetMessageUnread(user *UserInfo, message_id string, status bool) error
 		GetRawMessage(raw_message_id string) (message []byte, err error)
 		//attachments

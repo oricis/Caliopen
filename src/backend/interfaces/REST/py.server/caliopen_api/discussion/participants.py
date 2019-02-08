@@ -31,6 +31,6 @@ class ParticipantDiscussion(Api):
         msg.participants = parts
         hashed = msg.hash_participants
         discussion = Discussion.by_hash(self.user, hashed)
-        did = discussion.discussion_id if discussion else None
+        did = discussion.discussion_id if discussion else ""
         return {'hash': hashed,
                 'discussion_id': did}

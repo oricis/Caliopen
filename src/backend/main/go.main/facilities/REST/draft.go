@@ -14,10 +14,10 @@ import (
 	"time"
 )
 
-func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err error) {
+func (rest *RESTfacility) SendDraft(user_info *UserInfo, msg_id string) (msg *Message, err error) {
 	const nats_order = "deliver"
 	var order BrokerOrder
-	draft, draftErr := rest.store.RetrieveMessage(user_id, msg_id)
+	draft, draftErr := rest.store.RetrieveMessage(user_info.User_id, msg_id)
 	if draftErr != nil {
 		log.WithError(draftErr).Info("[SendDraft] failed to retrieve draft from store")
 		return nil, errors.New("draft not found")
@@ -28,6 +28,28 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err e
 		log.WithError(resolvErr).Info("[SendDraft] failed to resolve sender's protocol")
 		return nil, errors.New("unknown protocol for sender")
 	}
+	// Associate to an existing discussion or create a new one
+	discussion, err := rest.store.GetOrCreateDiscussion(draft.User_id, draft.Participants)
+	if err != nil {
+		log.WithError(err).Error("[SendDraft] failed to associate to a discussion")
+		return nil, err
+	}
+
+	// Update message with the computed discussion
+	fields := make(map[string]interface{})
+	fields["Discussion_id"] = discussion.Discussion_id
+
+	err = rest.store.UpdateMessage(draft, fields)
+	if err != nil {
+		log.WithError(err).Warn("[SendDraft] Store.UpdateMessage operation failed")
+		return nil, err
+	}
+
+	err = rest.index.UpdateMessage(user_info, draft, fields)
+	if err != nil {
+		log.WithError(err).Warn("[SendDraft] Index.UpdateMessage operation failed")
+		return nil, err
+	}
 
 	var natsTopic string
 	switch protocol {
@@ -36,7 +58,7 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err e
 		order = BrokerOrder{
 			Order:      nats_order,
 			MessageId:  msg_id,
-			UserId:     user_id,
+			UserId:     user_info.User_id,
 			IdentityId: draft.UserIdentities[0].String(), // handle one identity only for now
 		}
 	case SmtpProtocol:
@@ -44,7 +66,7 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err e
 		order = BrokerOrder{
 			Order:      nats_order,
 			MessageId:  msg_id,
-			UserId:     user_id,
+			UserId:     user_info.User_id,
 			IdentityId: draft.UserIdentities[0].String(), // handle one identity only for now
 		}
 	case TwitterProtocol:
@@ -52,7 +74,7 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err e
 		order = BrokerOrder{
 			Order:      nats_order,
 			MessageId:  msg_id,
-			UserId:     user_id,
+			UserId:     user_info.User_id,
 			IdentityId: draft.UserIdentities[0].String(), // handle one identity for now
 		}
 	default:
@@ -83,7 +105,7 @@ func (rest *RESTfacility) SendDraft(user_id, msg_id string) (msg *Message, err e
 		log.Warn("[RESTfacility]: SendDraft error (3)")
 		return nil, errors.New(reply.Response)
 	}
-	msg, err = rest.store.RetrieveMessage(user_id, msg_id)
+	msg, err = rest.store.RetrieveMessage(user_info.User_id, msg_id)
 	if err != nil {
 		return nil, err
 	}
