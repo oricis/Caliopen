@@ -36,18 +36,18 @@ pipeline:
 ##          TEST ON MASTER OR DEVELOP PR             ##
 #######################################################
 
-  # test-go:
-  #   pull: true
-  #   group: test
-  #   image: public-registry.caliopen.org/caliopen_go
-  #   environment:
-  #     - BASE_DIR=src/backend
-  #   when:
-  #     branch: [ develop, master ]
-  #     event: [ pull_request ]
-  #   commands:
-  #     - . devtools/drone/files_changed.sh
-  #     - . devtools/drone/test_go.sh
+  test-go:
+    pull: true
+    group: test
+    image: public-registry.caliopen.org/caliopen_go
+    environment:
+      - BASE_DIR=src/backend
+    when:
+      branch: [ develop, master ]
+      event: [ pull_request ]
+    commands:
+      - . devtools/drone/files_changed.sh
+      - . devtools/drone/test_go.sh
 
   test-py:
     pull: true
