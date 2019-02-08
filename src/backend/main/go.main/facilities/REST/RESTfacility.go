@@ -108,6 +108,7 @@ func NewRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility
 		Nats_Contacts_topicKey:   config.NatsConfig.Contacts_topic,
 		Nats_outTwitter_topicKey: config.NatsConfig.OutTWITTER_topic,
 		Nats_Keys_topicKey:       config.NatsConfig.Keys_topic,
+		Nats_IdPoller_topicKey:   config.NatsConfig.IdPoller_topic,
 	}
 	switch config.RESTstoreConfig.BackendName {
 	case "cassandra":

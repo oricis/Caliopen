@@ -1,88 +1,98 @@
-/*
- * // Copyleft (ɔ) 2018 The Caliopen contributors.
- * // Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
- * // license (AGPL) that can be found in the LICENSE file.
- */
+// Copyleft (ɔ) 2019 The Caliopen contributors.
+// Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
+// license (AGPL) that can be found in the LICENSE file.
 
 package go_remoteIDs
 
 import (
+	"crypto/sha256"
+	"errors"
+	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
+	"sync"
 )
 
-// AddJobFor parses remote identity data to build appropriate job and adds it to MainCron
-func (p *Poller) AddJobFor(idkey string) (err error) {
-	p.cacheMux.Lock()
-	defer p.cacheMux.Unlock()
-	if entry, ok := p.Cache[idkey]; ok {
-		switch entry.remoteProtocol {
-		case EmailProtocol, ImapProtocol:
-			cronStr := "@every " + entry.pollInterval + "m"
-			entry.cronId, err = p.MainCron.AddJob(cronStr, imapJob{
-				remoteId:  entry.remoteID.String(),
-				natsTopic: p.Config.NatsTopics["imap"],
-				poller:    p,
-				userId:    entry.userID.String(),
-			})
-			if err != nil {
-				log.WithError(err).Warn("[AddJobFor] failed to add job to MainCron")
-				return
-			}
-			p.Cache[idkey] = entry
-		case TwitterProtocol:
-			cronStr := "@every " + entry.pollInterval + "m"
-			entry.cronId, err = p.MainCron.AddJob(cronStr, twitterJob{
-				remoteId:  entry.remoteID.String(),
-				natsTopic: p.Config.NatsTopics["twitter_dm"],
-				poller:    p,
-				userId:    entry.userID.String(),
-			})
-			if err != nil {
-				log.WithError(err).Warn("[AddJobFor] failed to add job to MainCron")
-				return
-			}
-			p.Cache[idkey] = entry
-			p.addWorkerFor(idkey)
-		default:
-			log.WithError(err).Warnf("[AddJobFor] unknow Remote Identity protocol <%s>", entry.remoteProtocol)
-			return
-		}
-		return
-	} else {
-		log.WithError(err).Warnf("[AddJobFor] failed to retrieve cache key <%s>", idkey)
-		return
-	}
+type JobsHandler struct {
+	pendingJobs  map[string]map[[32]byte]Job // pattern is [worker][job-hash]job
+	jobsSequence map[string][][32]byte       // pattern is [worker][]job-hash <- FIFO ordered
+	jobsMux      *sync.Mutex
 }
 
-// RemoveJobFor removes remote identity's job from being run in the future
-func (p *Poller) RemoveJobFor(idkey string) (err error) {
-	p.cacheMux.Lock()
-	defer p.cacheMux.Unlock()
-	if entry, ok := p.Cache[idkey]; ok {
-		p.MainCron.Remove(entry.cronId)
-		switch entry.remoteProtocol {
-		case TwitterProtocol:
-			p.removeWorkerFor(idkey)
-		}
-		return
-	} else {
-		log.WithError(err).Warnf("[RemoveJobFor] failed to retrieve cache key <%s>", idkey)
-		return
-	}
-	return
+type Job struct {
+	Worker string // protocol worker like email, twitter, etc. as defined in idpoller's config
+	Order  BrokerOrder
 }
 
-// UpdateJobFor removes remote identity's job and re-schedule it with new pollinterval
-func (p *Poller) UpdateJobFor(idkey string) (err error) {
-	err = p.RemoveJobFor(idkey)
-	if err != nil {
-		return
+func initJobsHandler() (*JobsHandler, error) {
+	return &JobsHandler{
+		map[string]map[[32]byte]Job{},
+		map[string][][32]byte{},
+		&sync.Mutex{},
+	}, nil
+}
+
+// AddPendingJob adds a job to _pending_ map only if job's hash does not already exists for job's worker.
+// pending jobs are ordered in a FIFO list per each worker.
+func (jh *JobsHandler) AddPendingJob(job Job) {
+	jh.jobsMux.Lock()
+	key := sha256.Sum256([]byte(job.Order.UserId + job.Order.IdentityId + job.Order.Order))
+	if _, ok := jh.pendingJobs[job.Worker]; !ok {
+		jh.pendingJobs[job.Worker] = make(map[[32]byte]Job)
 	}
-	err = p.AddJobFor(idkey)
-	if err != nil {
-		return
+	if _, ok := jh.pendingJobs[job.Worker][key]; !ok {
+		jh.pendingJobs[job.Worker][key] = job
+		jh.jobsSequence[job.Worker] = append(jh.jobsSequence[job.Worker], key)
 	}
-	p.updateWorkerFor(idkey)
-	return
+	log.Debugf("pending jobs list : %+v\n", jh.pendingJobs)
+	log.Debugf("jobs sequence list : %+v\n", jh.jobsSequence)
+	log.Infof("[jobsHandler] jobs for workers <%s> updated : %d job(s) pending", job.Worker, len(jh.jobsSequence[job.Worker]))
+	jh.jobsMux.Unlock()
+}
+
+// ConsumePendingJobFor returns first-in pending job for worker and removes it from lists
+// returns error if no pending job
+func (jh *JobsHandler) ConsumePendingJobFor(worker string) (Job, error) {
+	jh.jobsMux.Lock()
+	defer jh.jobsMux.Unlock()
+	if len(jh.jobsSequence[worker]) == 0 {
+		return Job{}, errors.New(noPendingJobErr)
+	}
+	// get most ancient job for worker
+	job := jh.pendingJobs[worker][jh.jobsSequence[worker][0]]
+	// remove job from pending queue
+	delete(jh.pendingJobs[worker], jh.jobsSequence[worker][0])
+	// truncate jobsSequence list
+	jh.jobsSequence[worker] = jh.jobsSequence[worker][1:]
+
+	log.Infof("[jobsHandler] 1 <%s> job consumed  : %d job(s) pending", job.Worker, len(jh.jobsSequence[job.Worker]))
+	log.Debugf("pending jobs list : %+v", jh.pendingJobs)
+	log.Debugf("jobs sequence list : %+v", jh.jobsSequence)
+	return job, nil
+}
+
+// Run implements cron.Job interface to add job to relevant worker's list
+func (j Job) Run() {
+	poller.jobs.AddPendingJob(j)
+}
+
+func buildSyncJob(entry cacheEntry) (Job, error) {
+	var job Job
+
+	// need a switch to avoid copying remote protocol directly into worker's name because of legacy deprecated protocol name 'imap'
+	switch entry.remoteProtocol {
+	case "email", "imap":
+		job.Worker = imapWorker
+	case "twitter":
+		job.Worker = twitterWorker
+	default:
+		return Job{}, fmt.Errorf("unhandled remote protocol : %s", entry.remoteProtocol)
+	}
+	job.Order = BrokerOrder{
+		Order:      "sync",
+		UserId:     entry.userID.String(),
+		IdentityId: entry.remoteID.String(),
+	}
+	log.Debugf("new job built : %+v", job)
+	return job, nil
 }

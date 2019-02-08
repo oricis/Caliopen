@@ -2,6 +2,7 @@ package twitterworker
 
 import (
 	"errors"
+	"fmt"
 	broker "github.com/CaliOpen/Caliopen/src/backend/brokers/go.twitter"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
@@ -12,33 +13,49 @@ import (
 	"github.com/gocql/gocql"
 	"github.com/nats-io/go-nats"
 	"sync"
+	"time"
 )
 
 type (
 	Worker struct {
-		AccountWorkers map[string]*AccountWorker // one worker per active Twitter account
-		Index          backends.LDAIndex
-		NatsConn       *nats.Conn
-		NatsSubs       []*nats.Subscription
-		Notifier       *Notifications.Notifier
-		Store          backends.LDAStore
-		WorkersGuard   *sync.RWMutex
-		Conf           WorkerConfig
+		AccountHandlers map[string]*AccountHandler // one worker per active Twitter account
+		HaltGroup       *sync.WaitGroup
+		Index           backends.LDAIndex
+		Id              string
+		NatsConn        *nats.Conn
+		NatsSubs        []*nats.Subscription
+		Notifier        *Notifications.Notifier
+		Store           backends.LDAStore
+		WorkersGuard    *sync.RWMutex
+		Conf            WorkerConfig
 	}
 
 	WorkerConfig struct {
+		Workers          uint8               `mapstructure:"workers"`
 		TwitterAppKey    string              `mapstructure:"twitter_app_key"`
 		TwitterAppSecret string              `mapstructure:"twitter_app_secret"`
 		BrokerConfig     broker.BrokerConfig `mapstructure:"BrokerConfig"`
 	}
 )
 
-func InitAndStartWorker(conf WorkerConfig) (worker *Worker, err error) {
+const (
+	failuresThreshold = 72 // how many hours to wait before disabling a faulty remote.
+	noPendingJobErr   = "no pending job"
+	pollThrottling    = 30 * time.Second
+	needJobOrderStr   = `{"worker":"%s","order":{"order":"need_job"}}`
+)
+
+func InitWorker(conf WorkerConfig, verboseLog bool, id string) (worker *Worker, err error) {
+
+	if verboseLog {
+		log.SetLevel(log.DebugLevel)
+	}
 
 	worker = &Worker{
-		WorkersGuard:   new(sync.RWMutex),
-		AccountWorkers: map[string]*AccountWorker{},
-		Conf:           conf,
+		AccountHandlers: map[string]*AccountHandler{},
+		Conf:            conf,
+		Id:              id,
+		WorkersGuard:    new(sync.RWMutex),
 	}
 
 	// init Store
@@ -89,7 +106,7 @@ func InitAndStartWorker(conf WorkerConfig) (worker *Worker, err error) {
 		i, e := index.InitializeElasticSearchIndex(c)
 		if e != nil {
 			err = e
-			log.WithError(err).Warnf("[EmailBroker] initialization of %s backend failed", conf.BrokerConfig.IndexName)
+			log.WithError(err).Warnf("[TwitterBroker] initialization of %s backend failed", conf.BrokerConfig.IndexName)
 			return
 		}
 
@@ -102,7 +119,7 @@ func InitAndStartWorker(conf WorkerConfig) (worker *Worker, err error) {
 
 	worker.NatsConn, err = nats.Connect(conf.BrokerConfig.NatsURL)
 	if err != nil {
-		log.WithError(err).Warn("[EmailBroker] initalization of NATS connexion failed")
+		log.WithError(err).Warn("[TwitterBroker] initalization of NATS connexion failed")
 		return
 	}
 	caliopenConfig := CaliopenConfig{
@@ -131,46 +148,71 @@ func InitAndStartWorker(conf WorkerConfig) (worker *Worker, err error) {
 	if err != nil {
 		log.WithError(err).Fatal("[TwitterWorker] initialization of NATS connexion failed")
 	}
-	worker.NatsSubs = make([]*nats.Subscription, 2)
-	worker.NatsSubs[0], err = worker.NatsConn.QueueSubscribe(conf.BrokerConfig.NatsTopicWorkers, conf.BrokerConfig.NatsQueue, worker.WorkerMsgHandler)
+	worker.NatsSubs = make([]*nats.Subscription, 1)
+	worker.NatsSubs[0], err = worker.NatsConn.QueueSubscribe(conf.BrokerConfig.NatsTopicDMs, conf.BrokerConfig.NatsQueue, worker.DMmsgHandler)
+	if err != nil {
+		log.WithError(err).Fatal("[TwitterWorker] initialization of NATS fetcher subscription failed")
+	}
+	err = worker.NatsConn.Flush()
 	if err != nil {
 		log.WithError(err).Fatal("[TwitterWorker] initialization of NATS fetcher subscription failed")
 	}
 
-	worker.NatsSubs[1], err = worker.NatsConn.QueueSubscribe(conf.BrokerConfig.NatsTopicDMs, conf.BrokerConfig.NatsQueue, worker.DMmsgHandler)
-	if err != nil {
-		log.WithError(err).Fatal("[TwitterWorker] initialization of NATS fetcher subscription failed")
+	return worker, nil
+}
+
+func (worker *Worker) Start() {
+	log.Infof("Twitter worker %s started", worker.Id)
+
+	// start throttled jobs polling
+	for {
+		start := time.Now()
+		requestOrder := []byte(fmt.Sprintf(needJobOrderStr, worker.Id))
+		log.Infof("Twitter worker %s is requesting jobs to idpoller", worker.Id)
+		resp, err := worker.NatsConn.Request(worker.Conf.BrokerConfig.NatsTopicPoller, requestOrder, 30*time.Second)
+		if err != nil {
+			log.WithError(err).Warnf("[worker %s] failed to request pending jobs on nats", worker.Id)
+		} else {
+			worker.WorkerMsgHandler(resp)
+		}
+		// check for interrupt after job is finished
+		if worker.HaltGroup != nil {
+			worker.Stop()
+			break
+		}
+		elapsed := time.Now().Sub(start)
+		if elapsed < pollThrottling {
+			time.Sleep(pollThrottling - elapsed)
+		}
 	}
-
-	worker.NatsConn.Flush()
-
-	// init Notifier
-
-	return
 }
 
 func (worker *Worker) Stop() {
-	for _, w := range worker.AccountWorkers {
+	for _, w := range worker.AccountHandlers {
 		w.WorkerDesk <- Stop
 	}
 	for _, sub := range worker.NatsSubs {
 		sub.Unsubscribe()
 	}
 	worker.NatsConn.Close()
+	worker.Store.Close()
+	worker.Index.Close()
+	worker.HaltGroup.Done()
+	log.Infof("worker %s stopped", worker.Id)
 }
 
 // getOrCreateWorker returns a pointer to a worker already in cache
 // or tries to create a new worker for the remote identity if not.
 // returns nil if get or create failed.
-func (w *Worker) getOrCreateWorker(userId, remoteId string) *AccountWorker {
-	if accountWorker, ok := w.AccountWorkers[userId+remoteId]; ok {
+func (w *Worker) getOrCreateWorker(userId, remoteId string) *AccountHandler {
+	if accountWorker, ok := w.AccountHandlers[userId+remoteId]; ok {
 		return accountWorker
 	} else {
 		log.Infof("[getOrCreateWorker] failed to retrieve registered worker for remote %s (user %s). Trying to add one.", remoteId, userId)
 		if userId == "" || remoteId == "" {
 			return nil
 		}
-		accountWorker, err := NewAccountWorker(userId, remoteId, *w)
+		accountWorker, err := NewAccountHandler(userId, remoteId, *w)
 		if err != nil {
 			log.WithError(err).Warnf("[getOrCreateWorker] failed to create new worker for remote %s (user %s)", remoteId, userId)
 			return nil
@@ -182,21 +224,21 @@ func (w *Worker) getOrCreateWorker(userId, remoteId string) *AccountWorker {
 	}
 }
 
-func (w *Worker) RegisterWorker(accountWorker *AccountWorker) {
+func (w *Worker) RegisterWorker(accountWorker *AccountHandler) {
 	workerKey := accountWorker.userAccount.userID.String() + accountWorker.userAccount.remoteID.String()
 	// do not register same broker twice
-	if registeredWorker, ok := w.AccountWorkers[workerKey]; ok {
-		w.RemoveAccountWorker(registeredWorker)
+	if registeredWorker, ok := w.AccountHandlers[workerKey]; ok {
+		w.RemoveAccountHandler(registeredWorker)
 	}
 	w.WorkersGuard.Lock()
-	w.AccountWorkers[workerKey] = accountWorker
+	w.AccountHandlers[workerKey] = accountWorker
 	w.WorkersGuard.Unlock()
 }
 
-func (w *Worker) RemoveAccountWorker(accountWorker *AccountWorker) {
+func (w *Worker) RemoveAccountHandler(accountWorker *AccountHandler) {
 	workerKey := accountWorker.userAccount.userID.String() + accountWorker.userAccount.remoteID.String()
 	w.WorkersGuard.Lock()
 	accountWorker.Stop()
-	delete(w.AccountWorkers, workerKey)
+	delete(w.AccountHandlers, workerKey)
 	w.WorkersGuard.Unlock()
 }

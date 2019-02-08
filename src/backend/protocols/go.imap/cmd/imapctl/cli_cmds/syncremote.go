@@ -69,19 +69,19 @@ func syncRemote(cmd *cobra.Command, args []string) {
 	defer nc.Close()
 
 	msg, err := json.Marshal(IMAPorder{
-		Login:    id.Login,
-		Mailbox:  id.Mailbox,
-		Order:    "sync",
-		Password: id.Password,
-		RemoteId: id.RemoteId,
-		Server:   id.Server,
-		UserId:   user.UserId.String(),
+		Login:      id.Login,
+		Mailbox:    id.Mailbox,
+		Order:      "sync",
+		Password:   id.Password,
+		IdentityId: id.RemoteId,
+		Server:     id.Server,
+		UserId:     user.UserId.String(),
 	})
 	if err != nil {
 		logrus.WithError(err).Fatal("unable to marshal natsOrder")
 	}
 
-	nc.Publish(cmdConfig.NatsTopicFetcher, msg)
+	nc.Publish(cmdConfig.NatsTopicSender, msg)
 	nc.Flush()
 
 	if err := nc.LastError(); err != nil {

@@ -1,14 +1,12 @@
-/*
- * // Copyleft (ɔ) 2018 The Caliopen contributors.
- * // Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
- * // license (AGPL) that can be found in the LICENSE file.
- */
+// Copyleft (ɔ) 2019 The Caliopen contributors.
+// Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
+// license (AGPL) that can be found in the LICENSE file.
 
 package cmd
 
 import (
 	"fmt"
-	poller "github.com/CaliOpen/Caliopen/src/backend/workers/go.remoteIDs"
+	idpoller "github.com/CaliOpen/Caliopen/src/backend/workers/go.remoteIDs"
 	log "github.com/Sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"os"
@@ -19,7 +17,7 @@ import (
 var (
 	pidFile       string
 	signalChannel chan os.Signal // for trapping SIG_HUP
-	cmdConfig     poller.PollerConfig
+	cmdConfig     idpoller.PollerConfig
 	startCmd      = &cobra.Command{
 		Use:   "start",
 		Short: "Starts remote identities poller daemon",
@@ -37,10 +35,10 @@ func init() {
 
 	RootCmd.AddCommand(startCmd)
 	signalChannel = make(chan os.Signal, 1)
-	config = poller.PollerConfig{}
+	config = idpoller.PollerConfig{}
 }
 
-func sigHandler(p *poller.Poller) {
+func sigHandler(p *idpoller.Poller) {
 	// handle SIGHUP for reloading the configuration while running
 	signal.Notify(signalChannel, syscall.SIGHUP, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGINT, syscall.SIGKILL)
 
@@ -85,7 +83,7 @@ func start(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	poll, err := poller.NewPoller(cmdConfig)
+	poll, err := idpoller.InitPoller(cmdConfig, verbose)
 	if err != nil {
 		log.WithError(err).Fatal("can't start poller")
 	}
