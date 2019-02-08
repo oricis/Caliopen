@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Refactor hover and active colors for buttons
 - Display a progress bar when downloading an attachment
 - New calcul for Privacy Index
+- Take A Tour has been moved in the new menu «Help & Info»
 
 ### Fixed
 

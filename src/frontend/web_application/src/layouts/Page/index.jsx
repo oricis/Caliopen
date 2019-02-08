@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Brand, Link } from '../../components/';
+import { Trans } from '@lingui/react';
+import { Brand, Link, Button, withDropdownControl, Dropdown, VerticalMenu, VerticalMenuItem, Icon } from '../../components/';
 import { BackgroundImage } from '../../modules/pi';
 import { TabProvider } from '../../modules/tab';
 import { PageActions } from '../../modules/control';
@@ -16,10 +17,20 @@ import './style.scss';
 import './header.scss';
 import './navbar.scss';
 
+const DropdownControl = withDropdownControl(Button);
+
 // eslint-disable-next-line react/prefer-stateless-function
 class Page extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
+  };
+
+  state = {
+    isDropdownHelpOpen: false,
+  };
+
+  handleDropdownToggle = (isDropdownHelpOpen) => {
+    this.setState({ isDropdownHelpOpen });
   };
 
   render() {
@@ -41,7 +52,42 @@ class Page extends Component {
               {/* <div className="l-header__notif-menu"><Button href="#"><Icon type="bell"
               /></Button></div> */}
               <div className="l-header__take-a-tour">
-                <TakeATour />
+                <DropdownControl toggleId="co-help-menu" icon="info-circle" display="inline-block">
+                  <Trans id="header.help.menu">Help & info</Trans>
+                  <Icon type={this.state.isDropdownHelpOpen ? 'caret-up' : 'caret-down'} />
+                </DropdownControl>
+                <Dropdown
+                  id="co-help-menu"
+                  alignRight
+                  isMenu
+                  hasTriangle
+                  closeOnClick="all"
+                  onToggle={this.handleDropdownToggle}
+                >
+                  <VerticalMenu>
+                    <VerticalMenuItem><TakeATour /></VerticalMenuItem>
+                    <VerticalMenuItem>
+                      <Link button expanded href="https://github.com/CaliOpen/Caliopen/blob/master/CHANGELOG.md" target="_blank">
+                        <Trans id="header.help.last-changes">Last changes</Trans>
+                      </Link>
+                    </VerticalMenuItem>
+                    <VerticalMenuItem>
+                      <Link button expanded href="https://feedback.caliopen.org/t/questions-frequemment-posees-frequently-asked-questions/162" target="_blank">
+                        <Trans id="header.help.faq">FAQ [fr]</Trans>
+                      </Link>
+                    </VerticalMenuItem>
+                    <VerticalMenuItem>
+                      <Link button expanded href="https://feedback.caliopen.org" target="_blank">
+                        <Trans id="header.help.feedback">Feedback</Trans>
+                      </Link>
+                    </VerticalMenuItem>
+                    <VerticalMenuItem>
+                      <Link button expanded href="/privacy-policy.html" target="_blank">
+                        <Trans id="header.help.privacy-policy">Privacy Policy</Trans>
+                      </Link>
+                    </VerticalMenuItem>
+                  </VerticalMenu>
+                </Dropdown>
               </div>
               <div className="l-header__user-menu">
                 <UserMenu />
