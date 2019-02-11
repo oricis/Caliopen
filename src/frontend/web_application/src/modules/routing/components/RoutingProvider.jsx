@@ -10,7 +10,7 @@ import ResetPassword from '../../../scenes/ResetPassword';
 import Contact from '../../../scenes/Contact';
 import ContactAssociation from '../../../scenes/ContactAssociation';
 import AuthPageLayout from '../../../layouts/AuthPage';
-import PageLayout from '../../../layouts/Page2';
+import PageLayout from '../../../layouts/Page';
 import SettingsLayout from '../../../layouts/Settings';
 import UserLayout from '../../../layouts/User';
 import Timeline from '../../../scenes/Timeline';

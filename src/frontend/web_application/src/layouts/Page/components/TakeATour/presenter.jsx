@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/macro'; // eslint-disable-line import/no-extraneous-dependencies
 import Tour from './components/Tour';
-import { Button } from '../../../../components/';
+import { Button, Link } from '../../../../components/';
+import './style.scss';
 
 class TakeATour extends Component {
   static propTypes = {
@@ -35,7 +36,22 @@ class TakeATour extends Component {
         content: (
           <div>
             <h2><Trans id="take-a-tour.step.intro.title">Welcome!</Trans></h2>
-            <div dangerouslySetInnerHTML={{ __html: i18n._('take-a-tour.step.intro.content', null, { defaults: '<p>With using  Caliopen, you can access to all of your private messages (Email, and more to come) through a single login.</p><p>Now, take a look at our main features, such as unified message management, intuitive search and more!</p>' }) }} />
+            <div>
+              <Trans id="take-a-tour.step.intro.content">
+                <p>
+                  With using  Caliopen, you can access to all of your private messages (Email, and
+                  more to come) through a single login.
+                </p>
+                <p>
+                  Now, take a look at our main features, such as unified message management,
+                  intuitive search and more!
+                </p>
+                <p>
+                  The first time, the timeline might look a bit empty, you can easily
+                  <Link to="/user/identities">add a provider</Link>
+                </p>
+              </Trans>
+            </div>
           </div>
         ),
         position: 'center',
@@ -45,7 +61,14 @@ class TakeATour extends Component {
         content: (
           <div>
             <h2><Trans id="take-a-tour.step.search.title">Intuitive search</Trans></h2>
-            <div dangerouslySetInnerHTML={{ __html: i18n._('take-a-tour.step.search.content', null, { defaults: '<p>Every search can include filters. All of the unencrypted data can be searched.</p><p>Here you can search everything in your messages and contacts.</p>' }) }} />
+            <div>
+              <Trans id="take-a-tour.step.search.content">
+                <p>
+                  Every search can include filters. All of the unencrypted data can be searched.
+                </p>
+                <p>Here you can search everything in your messages and contacts.</p>
+              </Trans>
+            </div>
           </div>
         ),
       },
@@ -54,7 +77,13 @@ class TakeATour extends Component {
         content: (
           <div>
             <h2><Trans id="take-a-tour.step.user-menu.title">Account menu</Trans></h2>
-            <div dangerouslySetInnerHTML={{ __html: i18n._('take-a-tour.step.user-menu.content', null, { defaults: '<p>Keep up-to-date your account information and manage your settings from here!</p><p>Customize your application in your settings.</p>' }) }} />
+            <div>
+              <Trans id="take-a-tour.step.user-menu.content">
+                <p>Keep up-to-date your account information and manage your settings from here!</p>
+                <p>Customize your application in your settings.</p>
+                <p>And connect providers like Gmail or Twitter.</p>
+              </Trans>
+            </div>
           </div>
         ),
         position: 'bottom',
@@ -64,15 +93,19 @@ class TakeATour extends Component {
         content: (
           <div>
             <h2><Trans id="take-a-tour.step.call-to-action.title">Create quickly</Trans></h2>
-            <div dangerouslySetInnerHTML={{ __html: i18n._('take-a-tour.step.call-to-action.content', { defaults: '<p>Create on the fly a new message.</p>' }) }} />
+            <div>
+              <Trans id="take-a-tour.step.call-to-action.content">
+                <p>Create a new message on the fly.</p>
+              </Trans>
+            </div>
           </div>
         ),
       },
     ];
 
     return (
-      <Button onClick={this.handleToggleTour} icon="question-circle" display="expanded" className="m-take-a-tour__icon">
-        <span className="show-for-sr"><Trans id="take-a-tour.action.toggle">Take a tour</Trans></span>
+      <Button onClick={this.handleToggleTour} icon="question-circle" display="expanded" className="m-take-a-tour">
+        <Trans id="take-a-tour.action.toggle">Take a tour</Trans>
         <Tour
           isOpen={this.state.isTourActive}
           step={this.state.tourStep}
