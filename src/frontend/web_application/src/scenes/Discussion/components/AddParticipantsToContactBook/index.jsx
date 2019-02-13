@@ -2,9 +2,11 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withI18n } from '@lingui/react';
-import { ActionBarButton, Link, Icon, Dropdown, withDropdownControl, VerticalMenu, VerticalMenuItem } from '../../../../components';
+import { ActionBarButton, Link, Icon, Dropdown, withDropdownControl, VerticalMenu, VerticalMenuItem, TextBlock } from '../../../../components';
 import { getParticipantsExceptUser } from '../../../../services/message';
 import { withUser } from '../../../../modules/user';
+
+import './add-participants-dropdown.scss';
 
 const DropdownControl = withDropdownControl(ActionBarButton);
 
@@ -54,7 +56,7 @@ class AddParticipantsToContactBook extends Component {
         >
           <Icon type="address-book" /> <Icon type="plus" />
         </DropdownControl>
-        <Dropdown isMenu id={`message_${message.message_id}`}>
+        <Dropdown isMenu id={`message_${message.message_id}`} className="m-add-participants-dropdown">
           <VerticalMenu>
             {participants.map(participant => (
               <VerticalMenuItem
@@ -67,7 +69,7 @@ class AddParticipantsToContactBook extends Component {
                   to={`/contact-association/${participant.protocol}/${participant.address}?label=${participant.label}`}
                   title={i18n._('message.action.add-to-contacts', null, { defaults: 'Add to contact book' })}
                 >
-                  {participant.label}
+                  <TextBlock inline className="m-add-participants-dropdown__label">{participant.label}</TextBlock>
                   {' '}
                   <Icon type="address-book" /> <Icon type="plus" />
                 </Link>

@@ -1,4 +1,6 @@
-export const getOffset = (alignRight, position, control, dropdown) => {
+// XXX: should be named getDropdownStyle
+// XXX: refactor without the `window` coupling to make it testable
+export const getOffset = (alignRight, dropdownPosition, control, dropdown) => {
   const controlRect = control.length
     ? control[0].getBoundingClientRect()
     : control.getBoundingClientRect();
@@ -10,7 +12,7 @@ export const getOffset = (alignRight, position, control, dropdown) => {
   const winY = window.pageYOffset;
   const winX = window.pageXOffset;
   const winWidth = window.innerWidth;
-  // const winHeight = window.innerHeight;
+  const winHeight = window.innerHeight;
 
   const alignRightOffset = controlRect.width - dropdownRect.width;
   const initTop = (controlRect.top + winY) - (dropdownRect.top + winY);
@@ -18,14 +20,32 @@ export const getOffset = (alignRight, position, control, dropdown) => {
 
   const isAlignRight = alignRight && (initLeft + alignRightOffset >= 0);
   const isTouchingRight = (initLeft + controlRect.width + dropdownRect.width) >= (winWidth + winX);
-
-
-  const offsetY = position === 'top' ? (initTop - dropdownRect.height) : (initTop + controlRect.height);
   const offsetX = isAlignRight || isTouchingRight ? (initLeft + alignRightOffset) : initLeft;
+  const offsetY = dropdownPosition === 'top' ? (initTop - dropdownRect.height) : (initTop + controlRect.height);
+
+  let position = 'absolute';
+  let height;
+  let width;
+  let top = offsetY;
+  let left = offsetX;
+
+  if (dropdownRect.height > winHeight) {
+    position = 'fixed';
+    height = winHeight - 42;
+    top = 42;
+  }
+
+  if (dropdownRect.width > winWidth) {
+    left = 0;
+    width = '100%';
+  }
 
   const offset = {
-    left: offsetX,
-    top: offsetY,
+    left,
+    top,
+    position,
+    height,
+    width,
   };
 
   return offset;

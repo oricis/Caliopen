@@ -72,12 +72,14 @@ class Dropdown extends Component {
     dropdownRef: () => {},
   };
 
+  static defaultDropdownStyle = {
+    top: undefined,
+    left: undefined,
+  };
+
   state = {
     isOpen: false,
-    offset: {
-      top: null,
-      left: null,
-    },
+    dropdownStyle: this.constructor.defaultDropdownStyle,
   };
 
   componentDidMount() {
@@ -138,36 +140,33 @@ class Dropdown extends Component {
     this.setState((prevState) => {
       // update offset only if prevState.isOpen is false
       // otherwise return prevState.offset
-      const newOffset = prevState.isOpen ? prevState.offset : this.updateOffset();
+      const newStyle = prevState.isOpen ? prevState.dropdownStyle : this.updateDropdownStyle();
 
       if (isVisible !== prevState.isOpen) { this.props.onToggle(isVisible); }
 
       return {
         isOpen: isVisible !== prevState.isOpen && isVisible,
-        offset: isVisible ? newOffset : { top: null, left: null },
+        dropdownStyle: isVisible ? newStyle : this.constructor.defaultDropdownStyle,
       };
     });
   }
 
-  updateOffset = () => {
+  updateDropdownStyle = () => {
     const { alignRight, position } = this.props;
     const control = this.dropdownControl;
     const { dropdown } = this;
 
-    // if no dropdownControl declared, return empty offset
-    // otherwise, return new offset
-    return control ? getOffset(alignRight, position, control, dropdown) : { top: null, left: null };
+    // if no dropdownControl declared, return empty dropdownStyle
+    // otherwise, return new dropdownStyle
+    return control ?
+      getOffset(alignRight, position, control, dropdown) :
+      this.constructor.defaultDropdownStyle;
   }
 
   render() {
     const {
       id, className, children, isMenu, dropdownRef,
     } = this.props;
-
-    const dropdownOffset = {
-      top: this.dropdownControl ? this.state.offset.top || 0 : null,
-      left: this.dropdownControl ? this.state.offset.left || 0 : null,
-    };
 
     const dropdownProps = {
       id,
@@ -179,7 +178,7 @@ class Dropdown extends Component {
       ),
       tabIndex: 0,
       role: 'presentation',
-      style: dropdownOffset,
+      style: this.state.dropdownStyle,
     };
 
     return (

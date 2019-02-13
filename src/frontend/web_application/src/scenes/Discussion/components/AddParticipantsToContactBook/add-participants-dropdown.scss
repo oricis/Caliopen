@@ -1,0 +1,14 @@
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+@import '../../../../styles/common';
+
+.m-add-participants-dropdown {
+  &__label {
+    vertical-align: middle;
+  }
+
+  @include breakpoint(small only) {
+    &__label {
+      max-width: 87%;
+    }
+  }
+}

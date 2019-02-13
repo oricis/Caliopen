@@ -4,6 +4,7 @@
 .m-dropdown {
   position: absolute;
   visibility: hidden;
+  overflow-y: scroll;
 
   &--is-open {
     z-index: $l-z-index__actions-container;
