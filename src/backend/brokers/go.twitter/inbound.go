@@ -57,6 +57,9 @@ func (broker *TwitterBroker) ProcessInDM(userID, remoteID UUID, dm *twitter.Dire
 		return errors.New("[ProcessInDM] failed to parse inbound ack on NATS")
 	}
 	if err, ok := (*nats_ack)["error"]; ok {
+		if err == DuplicateMessage {
+			return nil
+		}
 		log.WithError(errors.New(err.(string))).Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
 		return errors.New("[ProcessInDM] inbound delivery failed")
 	}

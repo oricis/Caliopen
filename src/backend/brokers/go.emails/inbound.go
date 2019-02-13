@@ -211,6 +211,9 @@ func (b *EmailBroker) processInbound(rcptsIds [][]UUID, in *SmtpEmail, raw_only 
 					return
 				}
 				if err, ok := (*nats_ack)["error"]; ok {
+					if err == DuplicateMessage {
+						return
+					}
 					log.WithError(errors.New(err.(string))).Warnf("[EmailBroker] inbound delivery failed for user %s", rcptId[0].String())
 					log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
 					multierror.Append(errs, errors.New(err.(string)))

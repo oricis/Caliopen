@@ -14,6 +14,7 @@ from caliopen_pi.qualifiers import UserMessageQualifier, UserDMQualifier
 
 log = logging.getLogger(__name__)
 
+DUPLICATE_MESSAGE_EXC = "message already imported for this user"
 
 class UserMessageDelivery(object):
 
@@ -53,7 +54,7 @@ class UserMessageDelivery(object):
                                                     external_msg_id=external_ref.external_msg_id,
                                                     identity_id=self.identity.identity_id,
                                                     message_id=external_ref.message_id)
-            raise Exception("message already imported for this user")
+            raise Exception(DUPLICATE_MESSAGE_EXC)
 
         # store and index Message
         obj = Message(user=self.user)
