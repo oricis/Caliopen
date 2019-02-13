@@ -61,7 +61,7 @@ class UserDMQualifier(BaseQualifier):
 
         participants = []
         for p in message.participants:
-            participant, contact = self.get_participant(p)
+            participant, contact = self.get_participant(message, p)
             new_message.participants.append(participant)
             participants.append(participant)
         if not participants:
