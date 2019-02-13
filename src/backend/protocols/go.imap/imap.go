@@ -227,12 +227,14 @@ func buildXheaders(tlsConn *tls.Conn, rId *UserIdentity, box *imapBox, message *
 			xHeaders["X-Fetched-"+gmail_msgid] = msgid
 		}
 		gLabels := strings.Builder{}
-		for i, label := range message.Items[gmail_labels].([]interface{}) {
-			if label != nil {
-				if i == 0 {
-					gLabels.WriteString(label.(string))
-				} else {
-					gLabels.WriteString("\r\n" + label.(string))
+		if labels, ok := message.Items[gmail_labels]; ok && labels != nil {
+			for i, label := range labels.([]interface{}) {
+				if label != nil {
+					if i == 0 {
+						gLabels.WriteString(label.(string))
+					} else {
+						gLabels.WriteString("\r\n" + label.(string))
+					}
 				}
 			}
 		}
