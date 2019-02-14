@@ -27,11 +27,15 @@ func ComputePIMessage(message *Message) *PIMessage {
 	}
 
 	// pi.Social
-	known_participants := -1.0 // myself included start at -1
+	known_participants := 0.0
 	for _, participant := range message.Participants {
 		if len(participant.Contact_ids) > 0 {
 			known_participants += 1
 		}
+	}
+	if known_participants > 1 {
+		// user contact is included
+		known_participants -= 1
 	}
 	ratio := known_participants / float64(len(message.Participants)) * 100
 	piMessage.Social += uint32(math.Min(80, ratio))
