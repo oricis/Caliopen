@@ -143,6 +143,7 @@ func GetMessage(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
+	msg.PI = pi.ComputePIMessage(msg)
 	msg_json, err := msg.MarshalFrontEnd(settings.MessageDisplayFormat)
 	if err != nil {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())
