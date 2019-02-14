@@ -33,7 +33,7 @@ describe('component Dropdown', () => {
       <Dropdown id="foo" show>bar</Dropdown>
     );
 
-    expect(comp.state().offset.top).toEqual(null);
-    expect(comp.state().offset.left).toEqual(null);
+    expect(comp.state().dropdownStyle.top).toEqual(undefined);
+    expect(comp.state().dropdownStyle.left).toEqual(undefined);
   });
 });

@@ -69,12 +69,9 @@ $co-animation__margin-transition: margin .15s, padding .15s ease !default;
 $co-animation__width-transition: width .15s ease-in-out !default;
 
 $l-z-index__navbar-shadow: -1;
-$l-z-index__navbar: 1;
+$l-z-index__dropdown: 1;
 $l-z-index__action-bar: 1;
 $l-z-index__flash-message: 2;
-$l-z-index__actions-container: 999;
-$l-z-index__header: 1000;
-$l-z-index__modal-overlay: 1010;
-$l-z-index__dropdown: 1020;
-$l-z-index__slider-ticks: 1031;
-$l-z-index__slider-handles: 1032;
+$l-z-index__navbar: 10;
+$l-z-index__modal-overlay: 20;
+$l-z-index__dropdown--first-layer: 30;

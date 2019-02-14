@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import throttle from 'lodash.throttle';
-import { getOffset } from './services/getOffset';
+import { getDropdownStyle } from './services/getDropdownStyle';
 import { addEventListener } from '../../services/event-manager';
 import './style.scss';
 
@@ -159,7 +159,9 @@ class Dropdown extends Component {
     // if no dropdownControl declared, return empty dropdownStyle
     // otherwise, return new dropdownStyle
     return control ?
-      getOffset(alignRight, position, control, dropdown) :
+      getDropdownStyle({
+        alignRight, position, control, dropdown,
+      }) :
       this.constructor.defaultDropdownStyle;
   }
 
