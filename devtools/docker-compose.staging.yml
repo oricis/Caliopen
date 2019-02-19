@@ -105,7 +105,7 @@ services:
     ports:
       - "127.0.0.1:4000:4000"
     environment:
-      CALIOPEN_API_HOSTNAME: proxy-api
+      CALIOPEN_API_HOSTNAME: proxyapi
 
   # Broker
   lmtpd:
@@ -147,6 +147,9 @@ services:
       - store:/export
     command:
       server --address :9090 -C /etc/caliopen/minio /export
+    environment:
+      - MINIO_ACCESS_KEY=CALIOPEN_ACCESS_KEY_
+      - MINIO_SECRET_KEY=CALIOPEN_SECRET_KEY_BE_GOOD_AND_LIVE_OLD
 
   # Worker for remote identities
   imapworker:
