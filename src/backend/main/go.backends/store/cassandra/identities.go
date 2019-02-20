@@ -49,6 +49,7 @@ func (cb *CassandraBackend) CreateUserIdentity(userIdentity *UserIdentity) Calio
 	var count int
 	err := cb.SessionQuery(`SELECT count(*) from user_identity WHERE user_id = ? AND identity_id = ?`, userIdentity.UserId, userIdentity.Id).Scan(&count)
 	if err != nil {
+		log.WithError(err).Errorf("[CassandraBackend] SELECT fails for user_id=%s, identity_id=%s", userIdentity.UserId.String(), userIdentity.Id.String())
 		return WrapCaliopenErrf(err, DbCaliopenErr, "[CassandraBackend] CreateUserIdentity fails : <%s>", err.Error())
 	}
 	if count != 0 {
@@ -62,6 +63,7 @@ func (cb *CassandraBackend) CreateUserIdentity(userIdentity *UserIdentity) Calio
 	// create user identity
 	err = userIdentityTable.Set(userIdentity).Run()
 	if err != nil {
+		log.WithError(err).Errorf("[CassandraBackend] set fails for %+v", userIdentity)
 		return WrapCaliopenErrf(err, DbCaliopenErr, "[CassandraBackend] CreateUserIdentity fails : %s", err.Error())
 	}
 
@@ -75,6 +77,7 @@ func (cb *CassandraBackend) CreateUserIdentity(userIdentity *UserIdentity) Calio
 	if cred != nil {
 		err = cb.CreateCredentials(userIdentity, *cred)
 		if err != nil {
+			log.WithError(err).Errorf("[CassandraBackend] create credentials failed for %+v", *cred)
 			return WrapCaliopenErr(err, DbCaliopenErr, "[CassandraBackend) CreateUserIdentity failed to createCredentials")
 		}
 	}
@@ -107,7 +110,7 @@ func (cb *CassandraBackend) RetrieveUserIdentity(userId, identityId string, with
 }
 
 func (cb *CassandraBackend) UpdateUserIdentity(userIdentity *UserIdentity, fields map[string]interface{}) (err error) {
-	// immediately prevent upsert
+	// check if identity exists before executing UPDATE because `IF EXISTS` statement not supported by scylladb as of february 2019
 	if cb.SessionQuery(`SELECT user_id FROM user_identity WHERE user_id = ? AND identity_id = ?`, userIdentity.UserId.String(), userIdentity.Id.String()).Iter().NumRows() == 0 {
 		return errors.New("not found")
 	}
@@ -138,11 +141,11 @@ func (cb *CassandraBackend) UpdateUserIdentity(userIdentity *UserIdentity, field
 			PartitionKeys: []string{"user_id", "identity_id"},
 		}).WithOptions(gocassa.Options{TableName: "user_identity"})
 
-		statement, values := userIdentityTable.Where(gocassa.Eq("user_id", userIdentity.UserId.String()), gocassa.Eq("identity_id", userIdentity.Id.String())).
-			Update(cassaFields).GenerateStatement()
+		err = userIdentityTable.Where(gocassa.Eq("user_id", userIdentity.UserId.String()), gocassa.Eq("identity_id", userIdentity.Id.String())).
+			Update(cassaFields).Run()
 
-		err := cb.SessionQuery(statement+" IF EXISTS", values...).Exec()
 		if err != nil {
+			log.WithError(err).Errorf("[CassandraBackend]UpdateUserIdentity failed to UPDATE with fields %+v", cassaFields)
 			return err
 		}
 
@@ -156,15 +159,18 @@ func (cb *CassandraBackend) UpdateUserIdentity(userIdentity *UserIdentity, field
 
 // UpdateRemoteInfos is a convenient way to quickly update infos map without the need of an already created UserIdentity object
 func (cb *CassandraBackend) UpdateRemoteInfosMap(userId, remoteId string, infos map[string]string) error {
+	// check if identity exists before executing UPDATE because `IF EXISTS` statement not supported by scylladb as of february 2019
+	if cb.SessionQuery(`SELECT user_id FROM user_identity WHERE user_id = ? AND identity_id = ?`, userId, remoteId).Iter().NumRows() == 0 {
+		return errors.New("not found")
+	}
 	userIdentityTable := cb.IKeyspace.Table("user_identity", &UserIdentity{}, gocassa.Keys{
 		PartitionKeys: []string{"user_id", "identity_id"},
 	}).WithOptions(gocassa.Options{TableName: "user_identity"})
 
-	statement, values := userIdentityTable.Where(gocassa.Eq("user_id", userId), gocassa.Eq("identity_id", remoteId)).
+	return userIdentityTable.Where(gocassa.Eq("user_id", userId), gocassa.Eq("identity_id", remoteId)).
 		Update(map[string]interface{}{
 			"infos": infos,
-		}).GenerateStatement()
-	return cb.SessionQuery(statement+" IF EXISTS", values...).Exec()
+		}).Run()
 }
 
 // RetrieveRemoteInfos is a convenient way to quickly retrieve infos map without the need of an already created UserIdentity object
@@ -376,11 +382,15 @@ func (cb *CassandraBackend) IsRemoteIdentity(userId, identityId string) bool {
 // TimestampRemoteLastCheck writes timestamp to user_identity.last_check property.
 // If no time is provided defaults to time.Now()
 func (cb *CassandraBackend) TimestampRemoteLastCheck(userId, remoteId string, t ...time.Time) error {
+	// check if identity exists before executing UPDATE because `IF EXISTS` statement not supported by scylladb as of february 2019
+	if cb.SessionQuery(`SELECT user_id FROM user_identity WHERE user_id = ? AND identity_id = ?`, userId, remoteId).Iter().NumRows() == 0 {
+		return errors.New("not found")
+	}
 	var timestamp time.Time
 	if len(t) < 1 {
 		timestamp = time.Now()
 	} else {
 		timestamp = t[0]
 	}
-	return cb.SessionQuery(`UPDATE user_identity SET last_check = ? WHERE user_id = ? AND identity_id = ? IF EXISTS`, timestamp, userId, remoteId).Exec()
+	return cb.SessionQuery(`UPDATE user_identity SET last_check = ? WHERE user_id = ? AND identity_id = ?`, timestamp, userId, remoteId).Exec()
 }
