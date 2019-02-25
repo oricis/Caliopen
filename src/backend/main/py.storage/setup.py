@@ -21,6 +21,7 @@ requires = [
     'cassandra-driver==3.4.1',
     'schematics',
     'simplejson',
+    'jsonschema == 2.6.0',
     ]
 
 extras_require = {
