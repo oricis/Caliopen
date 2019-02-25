@@ -22,6 +22,7 @@ class AskPassphraseForm extends Component {
       <form className="m-AskPassphrase" onSubmit={onSubmit}>
         <label htmlFor={`ask-passphrase-${fingerprint}`}>{fingerprint}</label>
         <input type="password" id={`ask-passphrase-${fingerprint}`} />
+        <button type="submit">Ok</button>
       </form>
     );
   }

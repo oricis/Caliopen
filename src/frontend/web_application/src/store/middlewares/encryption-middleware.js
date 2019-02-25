@@ -105,16 +105,19 @@ const encryptMessageAction = async (store, dispatch, action) => {
   return action;
 };
 
-const extractMessagesFromAction = ({ payload }) => {
-  if (payload.draft) {
-    return [payload.draft];
+const extractMessagesFromAction = ({ payload, type }) => {
+  switch (type) {
+    case MESSAGE_REQUEST_DRAFT_SUCCESS:
+    case DRAFT_REQUEST_DRAFT_SUCCESS:
+      return [payload.draft];
+    case REQUEST_MESSAGE_SUCCESS:
+      return [payload.data];
+    case REQUEST_MESSAGES_SUCCESS:
+    case FETCH_MESSAGES_SUCCESS:
+      return payload.data.messages;
+    default:
+      return [];
   }
-
-  if (payload.data && payload.data.messages) {
-    return payload.data.messages;
-  }
-
-  return [];
 };
 
 const getKeyPassphrase = (state, fingerprint) => {

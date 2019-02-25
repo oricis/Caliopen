@@ -1,0 +1,39 @@
+@import '../../../../styles/common';
+
+.m-encryption-locked_message {
+  position: relative;
+  margin: $co-margin;
+  // vertical padding here is meant to avoid margin fusion
+  padding: 1px 0;
+  background: no-repeat top left url('../../assets/fake-text.svg');
+
+  &__message {
+    position: relative;
+    z-index: 1;
+    margin: $co-margin 6rem $co-margin 4rem;
+    padding: map_get($co-margin_, 'xsmall');
+    border-radius: 3rem;
+    background-color: transparentize($co-color__fg__back, 0.2);
+    overflow: hidden;
+  }
+
+  &__icon {
+    vertical-align: middle;
+    float: left;
+    width: 2.5rem;
+    margin: 1rem - map_get($co-margin_, 'xsmall');
+    margin-right: 1rem;
+    padding: .375rem .125rem;
+    border-radius: 1.25rem;
+    background-color: $co-color__primary;
+    color: $co-color__contrast__text;
+    font-size: 1.75rem;
+    text-align: center;
+  }
+
+  &__status {
+    &--error {
+      color: $co-color__alert;
+    }
+  }
+}

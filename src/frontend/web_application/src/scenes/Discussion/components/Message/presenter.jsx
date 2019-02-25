@@ -20,6 +20,8 @@ class Message extends Component {
     updateTagCollection: PropTypes.func,
     i18n: PropTypes.shape({}).isRequired,
     noInteractions: PropTypes.bool,
+    isLocked: PropTypes.bool.isRequired,
+    encryptionStatus: PropTypes.shape({}),
   };
 
   static defaultProps = {
@@ -30,6 +32,7 @@ class Message extends Component {
     onMessageUnread: () => {},
     onReply: () => {},
     updateTagCollection: () => {},
+    encryptionStatus: undefined,
   };
 
   state = {

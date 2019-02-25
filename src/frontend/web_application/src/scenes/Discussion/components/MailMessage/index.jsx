@@ -10,6 +10,7 @@ import { Badge, Button, Confirm, Icon, TextBlock } from '../../../../components'
 import MessageAttachments from '../MessageAttachments';
 import MessageRecipients from '../MessageRecipients';
 import MessagePi from '../MessagePi';
+import { LockedMessage } from '../../../../modules/encryption';
 import { getAuthor } from '../../../../services/message';
 import { getAveragePIMessage, getPiClass } from '../../../../modules/pi/services/pi';
 
@@ -36,6 +37,8 @@ class MailMessage extends Component {
     i18n: PropTypes.shape({}).isRequired,
     scrollTarget: PropTypes.shape({ forwardRef: PropTypes.func }).isRequired,
     noInteractions: PropTypes.bool,
+    isLocked: PropTypes.bool.isRequired,
+    encryptionStatus: PropTypes.shape({}),
   };
 
   static defaultProps = {
@@ -66,6 +69,26 @@ class MailMessage extends Component {
     onReply({ message });
     push({ hash: 'reply' });
   }
+
+  renderBody = () => {
+    const { message, isLocked, encryptionStatus } = this.props;
+
+    if (!isLocked) {
+      if (!message.body_is_plain) {
+        return (
+          <div className="s-mail-message__content" dangerouslySetInnerHTML={{ __html: message.body }} />
+        );
+      }
+
+      return (
+        <pre className="s-mail-message__content">{isLocked ? 'message chiffré' : message.body}</pre>
+      );
+    }
+
+    return (
+      <LockedMessage encryptionStatus={encryptionStatus} />
+    );
+  };
 
   renderTags = ({ tags }) => {
     const { i18n, tags: allTags } = this.props;
@@ -129,12 +152,7 @@ class MailMessage extends Component {
         </aside>
         <div className="s-mail-message__container">
           <h2 className="s-mail-message__subject"><TextBlock nowrap={false}>{message.subject}</TextBlock></h2>
-          {!message.body_is_plain ? (
-            <TextBlock nowrap={false} className="s-mail-message__content" dangerouslySetInnerHTML={{ __html: message.body }} />
-          ) : (
-            <TextBlock nowrap={false}><pre className="s-mail-message__content">{message.body}</pre></TextBlock>
-          )
-          }
+          { this.renderBody() }
           <div className="m-message__attachments">
             <MessageAttachments message={message} />
           </div>
