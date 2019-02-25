@@ -14,7 +14,6 @@ import { withIdentities } from '../../../../modules/identity';
 import { userSelector } from '../../../../modules/user';
 import { getLastMessage } from '../../../../services/message';
 import { withDraftMessage } from './withDraftMessage';
-import { withCurrentInternalId } from '../../hoc/withCurrentInternalId';
 import { filterIdentities } from '../../services/filterIdentities';
 
 import Presenter from './presenter';
@@ -31,7 +30,13 @@ const draftSelector = (state, {
     draftMessage, isRequestingDraft, isDeletingDraft, original,
   });
 
-const messageCollectionStateSelector = createMessageCollectionStateSelector(() => 'discussion', internalIdSelector);
+const discussionIdSelector = (state, ownProps) => {
+  const { internalId, hasDiscussion } = ownProps;
+
+  return hasDiscussion ? internalId : undefined;
+};
+
+const messageCollectionStateSelector = createMessageCollectionStateSelector(() => 'discussion', discussionIdSelector);
 const sentMessagesSelector = createSelector(
   [messageCollectionStateSelector],
   ({ messages }) => messages.filter(item => item.is_draft !== true)
@@ -170,7 +175,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 
 export default compose(...[
   withDraftMessage(),
-  withCurrentInternalId(),
   withIdentities({ namespace: 'identHoc' }),
   withContacts(),
   connect(mapStateToProps, mapDispatchToProps),

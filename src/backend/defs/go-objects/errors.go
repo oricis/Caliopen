@@ -84,4 +84,6 @@ const (
 	ForbiddenCaliopenErr
 	NotImplementedCaliopenErr
 	WrongCredentialsErr
+
+	DuplicateMessage = "message already imported for this user" // error message sent by delivery.py via nats
 )

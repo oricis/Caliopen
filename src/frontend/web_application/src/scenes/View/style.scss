@@ -1,0 +1,7 @@
+@import '../../styles/common';
+
+.s-view {
+  &__message {
+    border-top: 2px solid $co-color__fg__border--higher;
+  }
+}

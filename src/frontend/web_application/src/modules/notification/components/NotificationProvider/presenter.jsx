@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { getNextNotifications } from '../../services/getNextNotifications';
 import MessageNotifier from '../MessageNotifier';
 import { getConfig } from '../../../device/services/storage';
+import { signout } from '../../../routing';
 
 class NotificationProvider extends Component {
   static propTypes = {
@@ -85,6 +86,10 @@ class NotificationProvider extends Component {
     switch (status) {
       case 'terminated':
         this.stopWorker();
+        break;
+      case 'auth_lost':
+        this.stopWorker();
+        signout({ withRedirect: true });
         break;
       default:
         break;

@@ -115,10 +115,28 @@
 			"versionExact": "v1"
 		},
 		{
+			"checksumSHA1": "lyRS2uliigRHMWOJ29mqp1R/SrI=",
+			"path": "github.com/emersion/go-message",
+			"revision": "63ac8399c1e4c07ca2a233b0fa6d205694c7bdbe",
+			"revisionTime": "2018-09-28T09:20:03Z"
+		},
+		{
+			"checksumSHA1": "bhmH93s2Kh2GMDG4YyzmV2S3za0=",
+			"path": "github.com/emersion/go-message/charset",
+			"revision": "63ac8399c1e4c07ca2a233b0fa6d205694c7bdbe",
+			"revisionTime": "2018-09-28T09:20:03Z"
+		},
+		{
 			"checksumSHA1": "VGdrJ5SV27dfTYVafzkH03uotLA=",
 			"path": "github.com/emersion/go-sasl",
 			"revision": "7e096a0a6197b89989e8cc31016daa67c8c62051",
 			"revisionTime": "2016-11-16T18:30:48Z"
+		},
+		{
+			"checksumSHA1": "BX9blgbaHp0hnLTAxqNwVZgWra4=",
+			"path": "github.com/emersion/go-textwrapper",
+			"revision": "d0e65e56babe3f687ff94c1d764ca0e6aa7723ee",
+			"revisionTime": "2016-06-06T18:21:33Z"
 		},
 		{
 			"checksumSHA1": "x2Km0Qy3WgJJnV19Zv25VwTJcBM=",

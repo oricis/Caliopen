@@ -14,6 +14,12 @@ import (
 	"time"
 )
 
+type PIMessage struct {
+	Transport uint32 `json:"transport"`
+	Social    uint32 `json:"social"`
+	Content   uint32 `json:"content"`
+}
+
 type Message struct {
 	Attachments         []Attachment       `cql:"attachments"              json:"attachments,omitempty"       `
 	Body_html           string             `cql:"body_html"                json:"body_html"         `
@@ -34,6 +40,7 @@ type Message struct {
 	Message_id          UUID               `cql:"message_id"               json:"message_id,omitempty"                                      formatter:"rfc4122"`
 	Parent_id           UUID               `cql:"parent_id"                json:"parent_id,omitempty"        `
 	Participants        []Participant      `cql:"participants"             json:"participants"     `
+	PI                  *PIMessage         `cql:"-"                        json:"pi_message,omitempty"`
 	Privacy_features    *PrivacyFeatures   `cql:"privacy_features"         json:"privacy_features,omitempty" `
 	PrivacyIndex        *PrivacyIndex      `cql:"pi"                       json:"pi,omitempty"`
 	Raw_msg_id          UUID               `cql:"raw_msg_id"               json:"raw_msg_id,omitempty"                                      formatter:"rfc4122"`
@@ -372,27 +379,24 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 			msg.Participants = append(msg.Participants, p)
 		}
 	}
+	pi := PrivacyIndex{}
 	if i_pi, ok := input["pi"].(map[string]interface{}); ok && i_pi != nil {
-		pi := PrivacyIndex{}
 		pi.Comportment, _ = i_pi["comportment"].(int)
 		pi.Context, _ = i_pi["context"].(int)
 		pi.DateUpdate, _ = i_pi["date_sort"].(time.Time)
 		pi.Technic, _ = i_pi["technic"].(int)
 		pi.Version, _ = i_pi["version"].(int)
-		msg.PrivacyIndex = &pi
-	} else {
-		msg.PrivacyIndex = nil
 	}
+	msg.PrivacyIndex = &pi
+
+	pf := PrivacyFeatures{}
 	if i_pf, ok := input["privacy_features"].(map[string]string); ok && i_pf != nil {
-		pf := PrivacyFeatures{}
 		for k, v := range i_pf {
 			pf[k] = v
 		}
-		msg.Privacy_features = &pf
-
-	} else {
-		msg.Privacy_features = nil
 	}
+	msg.Privacy_features = &pf
+
 	if raw_msg_id, ok := input["raw_msg_id"].(gocql.UUID); ok {
 		msg.Raw_msg_id.UnmarshalBinary(raw_msg_id.Bytes())
 	}
@@ -424,6 +428,7 @@ func (msg *Message) NewEmpty() interface{} {
 	m.External_references = ExternalReferences{}
 	m.UserIdentities = []UUID{}
 	m.Participants = []Participant{}
+	m.Privacy_features = &PrivacyFeatures{}
 	m.Tags = []string{}
 	return m
 }

@@ -8,11 +8,11 @@ volumes:
     driver: local
 services:
   # Proxy API
-  proxy-api:
+  proxyapi:
     image: nginx
-    links:
-      - apiv2:apiv2
-      - apiv1:apiv1
+    depends_on:
+      - apiv1
+      - apiv2
     expose:
       - "31415"
     volumes:
@@ -20,12 +20,12 @@ services:
   # Caliopen APIv2
   apiv2:
     image: public-registry.caliopen.org/caliopen_apiv2:develop
-    links:
-      - redis:redis
-      - cassandra:cassandra
-      - nats:nats
-      - elasticsearch:es
-      - object-store:minio
+    depends_on:
+      - redis
+      - cassandra
+      - nats
+      - elasticsearch
+      - objectstore
     expose:
       - "6544"
     volumes:
@@ -35,10 +35,10 @@ services:
   # Caliopen APIv1
   apiv1:
     image: public-registry.caliopen.org/caliopen_apiv1:develop
-    links:
-      - redis:redis
-      - cassandra:cassandra
-      - elasticsearch:es
+    depends_on:
+      - redis
+      - cassandra
+      - elasticsearch
     expose:
       - "6543"
     volumes:
@@ -74,7 +74,7 @@ services:
   #
   # Used to index mail content and ensure great research performances.
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.4.1
+    image: elasticsearch:5-alpine
     expose:
       - "9200"
     environment:
@@ -87,10 +87,10 @@ services:
   # Caliopen cli tool
   cli:
     image: public-registry.caliopen.org/caliopen_cli:develop
-    links:
-      - cassandra:cassandra
-      - elasticsearch:es
-      - lmtpd:lmtpd
+    depends_on:
+      - cassandra
+      - elasticsearch
+      - lmtpd
     environment:
       CQLENG_ALLOW_SCHEMA_MANAGEMENT: 1
     volumes:
@@ -100,22 +100,22 @@ services:
   # Caliopen frontend
   frontend:
     image: public-registry.caliopen.org/caliopen_frontend:develop
-    links:
-      - proxy-api:proxy-api
+    depends_on:
+      - proxyapi
     ports:
       - "127.0.0.1:4000:4000"
     environment:
-      CALIOPEN_API_HOSTNAME: proxy-api
+      CALIOPEN_API_HOSTNAME: proxyapi
 
   # Broker
   lmtpd:
     image: public-registry.caliopen.org/caliopen_lmtpd:develop
-    links:
-      - cassandra:cassandra
-      - elasticsearch:es
-      - object-store:minio
-      - nats:nats
-      - mq-worker:mc
+    depends_on:
+      - cassandra
+      - elasticsearch
+      - objectstore
+      - nats
+      - mqworker
     ports:
       - "127.0.0.1:2525:2525"
     volumes:
@@ -123,23 +123,23 @@ services:
 
   # NATS
   nats:
-    image: nats:0.9.6
+    image: nats:1.4.0
     expose:
       - "4222"
 
   # NATS Message Handler
-  mq-worker:
+  mqworker:
     image: public-registry.caliopen.org/caliopen_mq_worker:develop
-    links:
-      - cassandra:cassandra
-      - elasticsearch:es
-      - nats:nats
+    depends_on:
+      - cassandra
+      - elasticsearch
+      - nats
     volumes:
       - ../src/backend/configs/caliopen.yaml:/etc/caliopen/caliopen.yaml
 
   # object storage
-  object-store:
-    image: minio/minio
+  objectstore:
+    image: minio/minio:latest
     expose:
       - "9090"
     volumes:
@@ -147,39 +147,42 @@ services:
       - store:/export
     command:
       server --address :9090 -C /etc/caliopen/minio /export
+    environment:
+      - MINIO_ACCESS_KEY=CALIOPEN_ACCESS_KEY_
+      - MINIO_SECRET_KEY=CALIOPEN_SECRET_KEY_BE_GOOD_AND_LIVE_OLD
 
   # Worker for remote identities
-  imap-worker:
+  imapworker:
     image: public-registry.caliopen.org/caliopen_imap_worker:develop
-    links:
-      - cassandra:cassandra
-      - object-store:minio
-      - elasticsearch:es
-      - nats:nats
+    depends_on:
+      - cassandra
+      - objectstore
+      - elasticsearch
+      - nats
     volumes:
       - ../src/backend/configs/imapworker.yaml:/etc/caliopen/imapworker.yaml
     environment:
       - MINIO_ACCESS_KEY=CALIOPEN_ACCESS_KEY_
       - MINIO_SECRET_KEY=CALIOPEN_SECRET_KEY_BE_GOOD_AND_LIVE_OLD
 
-  twitter-worker:
+  twitterworker:
     image: public-registry.caliopen.org/caliopen_twitter_worker:develop
-    links:
-    - cassandra:cassandra
-    - object-store:minio
-    - elasticsearch:elasticsearch
-    - nats:nats
+    depends_on:
+    - cassandra
+    - objectstore
+    - elasticsearch
+    - nats
     volumes:
     - ../src/backend/configs/twitterworker.yaml:/etc/caliopen/twitterworker.yaml
 
   # Poller for remote identities
-  identity-poller:
+  identitypoller:
     image: public-registry.caliopen.org/caliopen_identity_poller:develop
-    links:
-      - imap-worker:imap-worker
-      - twitter-worker:twitter-worker
-      - cassandra:cassandra
-      - nats:nats
+    depends_on:
+      - imapworker
+      - twitterworker
+      - cassandra
+      - nats
     volumes:
       - ../src/backend/configs/idpoller.yaml:/etc/caliopen/idpoller.yaml
 

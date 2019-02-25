@@ -7,6 +7,7 @@
 package store
 
 import (
+	"errors"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/gocassa/gocassa"
 )
@@ -41,16 +42,20 @@ func (cb *CassandraBackend) UpdateCredentials(userId, identityId string, cred Cr
 		return cb.Vault.UpdateCredentials(userId, identityId, cred, false)
 	}
 
+	// check if identity exists before executing UPDATE because `IF EXISTS` statement not supported by scylladb as of february 2019
+	if cb.SessionQuery(`SELECT user_id FROM user_identity WHERE user_id = ? AND identity_id = ?`, userId, identityId).Iter().NumRows() == 0 {
+		return errors.New("not found")
+	}
+
 	userIdentityTable := cb.IKeyspace.Table("user_identity", &UserIdentity{}, gocassa.Keys{
 		PartitionKeys: []string{"user_id", "identity_id"},
 	}).WithOptions(gocassa.Options{TableName: "user_identity"})
 
-	statement, values := userIdentityTable.Where(gocassa.Eq("user_id", userId), gocassa.Eq("identity_id", identityId)).
+	return userIdentityTable.Where(gocassa.Eq("user_id", userId), gocassa.Eq("identity_id", identityId)).
 		Update(map[string]interface{}{
 			"credentials": cred,
-		}).GenerateStatement()
+		}).Run()
 
-	return cb.Session.Query(statement+" IF EXISTS", values...).Exec()
 }
 
 func (cb *CassandraBackend) DeleteCredentials(userId, identityId string) error {

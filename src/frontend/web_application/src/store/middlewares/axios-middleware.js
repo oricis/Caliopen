@@ -1,6 +1,7 @@
 import axiosMiddleware from 'redux-axios-middleware';
 import { createNotification, NOTIFICATION_TYPE_ERROR } from 'react-redux-notify';
 import getClient from '../../services/api-client';
+import { signout } from '../../modules/routing';
 
 export default axiosMiddleware(getClient(), {
   returnRejectedPromiseOnError: true,
@@ -25,18 +26,8 @@ export default axiosMiddleware(getClient(), {
           item__message: 'l-notification-center__notification-item-message',
         };
         if (error.response && error.response.status === 401) {
-          const notification = {
-            // FIXME: trad 'auth.feedback.deauth'
-            message: 'You are not authenticated anymore. Please reconnect.',
-            type: NOTIFICATION_TYPE_ERROR,
-            duration: 0,
-            canDismiss: true,
-            customStyles,
-          };
-
-          if (!getState().notifications.find(({ message }) => message === notification.message)) {
-            dispatch(createNotification(notification));
-          }
+          signout({ withRedirect: true });
+          throw error;
         }
 
         if (error.response && error.response.status >= 500) {

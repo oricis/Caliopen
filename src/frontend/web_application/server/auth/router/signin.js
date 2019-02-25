@@ -24,8 +24,13 @@ const createLoginRouting = (router) => {
 
   router.get('/signout', (req, res) => {
     res.clearCookie(COOKIE_NAME);
+    const redirect = (() => {
+      const parts = req.originalUrl.split('redirect=');
+
+      return parts.length > 1 ? `?redirect=${parts[parts.length - 1]}` : '';
+    })();
     // XXX: render a temporary confirmation on next rendering
-    res.redirect('signin');
+    res.redirect(`/auth/signin${redirect}`);
   });
 };
 

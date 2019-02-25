@@ -440,6 +440,10 @@ class User(BaseCore):
                 log.error('Unexpected exception {}'.format(exc))
             return False
 
+    @property
+    def local_identities(self):
+        return IdentityTypeLookup.find(type='local', user_id=self.user_id)
+
     @classmethod
     def validate_recovery_email(cls, email):
         """

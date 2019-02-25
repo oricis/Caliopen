@@ -51,7 +51,7 @@ type (
 		GetMessagesList(filter IndexSearch) (messages []*Message, totalFound int64, err error)
 		GetMessagesRange(filter IndexSearch) (messages []*Message, totalFound int64, err error)
 		GetMessage(user *UserInfo, message_id string) (message *Message, err error)
-		SendDraft(user_id, msg_id string) (msg *Message, err error)
+		SendDraft(user *UserInfo, msg_id string) (msg *Message, err error)
 		SetMessageUnread(user *UserInfo, message_id string, status bool) error
 		GetRawMessage(raw_message_id string) (message []byte, err error)
 		//attachments
@@ -108,6 +108,7 @@ func NewRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility
 		Nats_Contacts_topicKey:   config.NatsConfig.Contacts_topic,
 		Nats_outTwitter_topicKey: config.NatsConfig.OutTWITTER_topic,
 		Nats_Keys_topicKey:       config.NatsConfig.Keys_topic,
+		Nats_IdPoller_topicKey:   config.NatsConfig.IdPoller_topic,
 	}
 	switch config.RESTstoreConfig.BackendName {
 	case "cassandra":

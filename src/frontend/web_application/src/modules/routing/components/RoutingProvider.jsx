@@ -10,7 +10,7 @@ import ResetPassword from '../../../scenes/ResetPassword';
 import Contact from '../../../scenes/Contact';
 import ContactAssociation from '../../../scenes/ContactAssociation';
 import AuthPageLayout from '../../../layouts/AuthPage';
-import PageLayout from '../../../layouts/Page2';
+import PageLayout from '../../../layouts/Page';
 import SettingsLayout from '../../../layouts/Settings';
 import UserLayout from '../../../layouts/User';
 import Timeline from '../../../scenes/Timeline';
@@ -18,7 +18,8 @@ import NewDraft from '../../../scenes/NewDraft';
 import SearchResults from '../../../scenes/SearchResults';
 import UserProfile from '../../../scenes/UserProfile';
 import UserSecurity from '../../../scenes/UserSecurity';
-import UserPrivacy from '../../../scenes/UserPrivacy';
+// XXX: UserPrivacy not used yet
+// import UserPrivacy from '../../../scenes/UserPrivacy';
 import RemoteIdentitySettings from '../../../scenes/RemoteIdentitySettings';
 // import SettingsSignatures from '../../../scenes/SettingsSignatures';
 import ApplicationSettings from '../../../scenes/ApplicationSettings';
@@ -28,6 +29,7 @@ import ContactBook from '../../../scenes/ContactBook';
 import PageNotFound from '../../../scenes/PageNotFound';
 import DevicesSettings from '../../../scenes/DevicesSettings';
 import NewDeviceInfo from '../../../scenes/NewDeviceInfo';
+import View from '../../../scenes/View';
 import { renderParticipant } from '../../../services/message';
 import { formatName } from '../../../services/contact';
 import AuthenticatedLayout from './AuthenticatedLayout';
@@ -135,7 +137,7 @@ class RoutingProvider extends Component {
                   // },
                 },
                 {
-                  path: '/compose/:internalId',
+                  path: '/messages/:messageId',
                   component: NewDraft,
                   app: 'discussion',
                   tab: {
@@ -223,6 +225,16 @@ class RoutingProvider extends Component {
                   },
                   routes: [
                     {
+                      path: '/user/identities',
+                      component: RemoteIdentitySettings,
+                      tab: {
+                        type: 'default',
+                        icon: 'user',
+                        renderLabel: () => i18n._('route.settings.label.identities', null, { defaults: 'Security' }),
+                        tabMatch: tabMatchForSettings,
+                      },
+                    },
+                    {
                       path: '/user/profile',
                       component: UserProfile,
                       tab: {
@@ -232,16 +244,18 @@ class RoutingProvider extends Component {
                         tabMatch: tabMatchRoute,
                       },
                     },
-                    {
-                      path: '/user/privacy',
-                      component: UserPrivacy,
-                      tab: {
-                        type: 'default',
-                        icon: 'user',
-                        renderLabel: () => i18n._('route.user.label.privacy', null, { defaults: 'Privacy' }),
-                        tabMatch: tabMatchRoute,
-                      },
-                    },
+                    // XXX: unused
+                    // {
+                    //   path: '/user/privacy',
+                    //   component: UserPrivacy,
+                    //   tab: {
+                    //     type: 'default',
+                    //     icon: 'user',
+                    //     renderLabel: () => i18n._('route.user.label.privacy', null, { defaults:
+                    //     'Privacy' }),
+                    //     tabMatch: tabMatchRoute,
+                    //   },
+                    // },
                     {
                       path: '/user/security',
                       component: UserSecurity,
@@ -260,16 +274,6 @@ class RoutingProvider extends Component {
                   component: SettingsLayout,
                   renderLabel: () => i18n._('route.settings.label.default', null, { defaults: 'Settings' }),
                   routes: [
-                    {
-                      path: '/settings/identities',
-                      component: RemoteIdentitySettings,
-                      tab: {
-                        type: 'default',
-                        icon: 'cog',
-                        renderLabel: () => i18n._('route.settings.label.identities', null, { defaults: 'Security' }),
-                        tabMatch: tabMatchForSettings,
-                      },
-                    },
                     {
                       path: '/settings/application',
                       component: ApplicationSettings,
@@ -325,7 +329,18 @@ class RoutingProvider extends Component {
                     //   tabMatch: tabMatchRoute,
                     // },
                     // },
+
                   ],
+                },
+                {
+                  path: '/views/:viewId',
+                  component: View,
+                  tab: {
+                    type: 'application',
+                    icon: 'file',
+                    renderLabel: () => i18n._('route.draft.label', null, { defaults: 'Drafts' }),
+                    tabMatch: tabMatchPathname,
+                  },
                 },
                 {
                   component: PageNotFound,

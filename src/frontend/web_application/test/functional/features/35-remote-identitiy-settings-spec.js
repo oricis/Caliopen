@@ -31,8 +31,8 @@ describe('Remote Identity Settings', () => {
 
   beforeAll(async () => {
     await userUtil.signin();
-    await userUtil.showSettings('External accounts');
-    await browser.wait(EC.presenceOf($('.l-settings')), 5 * 1000);
+    await userUtil.showAccount('External accounts');
+    await browser.wait(EC.presenceOf($('.s-settings-identities')), 5 * 1000);
   });
 
   it('crud remote email', async () => {

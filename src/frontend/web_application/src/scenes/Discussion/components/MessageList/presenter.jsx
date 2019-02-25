@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
-import { Button, Spinner } from '../../../../components';
+import { Button, PlaceholderBlock } from '../../../../components';
 import Message from '../../components/Message';
 import ProtocolSwitch from '../../components/ProtocolSwitch';
-import { getAveragePI } from '../../../../modules/pi';
+import { getAveragePIMessage } from '../../../../modules/pi';
 import { withSettings } from '../../../../modules/settings';
 
 import './style.scss';
@@ -21,7 +21,6 @@ class MessageList extends Component {
     onMessageUnread: PropTypes.func.isRequired,
     onMessageDelete: PropTypes.func.isRequired,
     user: PropTypes.shape({}),
-    isUserFetching: PropTypes.bool.isRequired,
     hash: PropTypes.string,
     settings: PropTypes.shape({}).isRequired,
   };
@@ -41,13 +40,20 @@ class MessageList extends Component {
     return messages[index];
   }
 
+  renderPlaceholder = () => (
+    <div className="m-message-list">
+      {[1, 2, 3].map(n => (
+        <PlaceholderBlock key={n} className="m-message-list__placeholder" />
+      ))}
+    </div>
+  );
+
   renderLoadMore() {
     const {
-      hasMore, loadMore, isFetching, isUserFetching, user,
+      hasMore, loadMore, isFetching,
     } = this.props;
-    const waitingForUser = !user || isUserFetching;
 
-    return (loadMore && !(isFetching || waitingForUser) && hasMore) && (
+    return (loadMore && !(isFetching && hasMore)) && (
       <Button shape="hollow" onClick={loadMore}><Trans id="general.action.load_more">Load more</Trans></Button>
     );
   }
@@ -65,7 +71,7 @@ class MessageList extends Component {
         && this.findMessageBefore(message).protocol !== message.protocol) {
         messageList.push(<ProtocolSwitch
           newProtocol={message.protocol}
-          pi={getAveragePI(message.pi)}
+          pi={getAveragePIMessage({ message })}
           date={message.date}
           key={`switch-${message.message_id}`}
           settings={settings}
@@ -89,17 +95,19 @@ class MessageList extends Component {
 
   render() {
     const {
-      isFetching, isUserFetching, user,
+      isFetching, messages,
     } = this.props;
-    const waitingForUser = !user || isUserFetching;
+
+    if (isFetching && messages.length === 0) {
+      return this.renderPlaceholder();
+    }
 
     return (
       <div className="m-message-list">
-        <Spinner className="m-message-list__spinner" isLoading={isFetching || waitingForUser} />
         <div className="m-message-list__load-more">
           {this.renderLoadMore()}
         </div>
-        {waitingForUser ? null : this.renderList()}
+        {this.renderList()}
       </div>
     );
   }

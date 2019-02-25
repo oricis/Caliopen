@@ -40,11 +40,12 @@ func (lda *Lda) shutdown() error {
 	return nil
 }
 
-func (lda *Lda) deliverMail(mail *Email, userId string) (err error) {
+func (lda *Lda) deliverMail(mail *Email, userId, identityID string) (err error) {
 	emailMsg := &EmailMessage{
 		Email: mail,
 		Message: &Message{
-			User_id: UUID(uuid.FromStringOrNil(userId)),
+			User_id:        UUID(uuid.FromStringOrNil(userId)),
+			UserIdentities: []UUID{UUID(uuid.FromStringOrNil(identityID))},
 		},
 	}
 	incoming := &broker.SmtpEmail{

@@ -49,6 +49,20 @@ pipeline:
   #     - . devtools/drone/files_changed.sh
   #     - . devtools/drone/test_go.sh
 
+  test-go:
+    group: test
+    pull: true
+    image: public-registry.caliopen.org/caliopen_go
+    environment:
+      - BASE_DIR=/go/src/github.com/CaliOpen/Caliopen/src/backend
+    when:
+      branch: [ develop ]
+      event: [ pull_request ]
+    commands:
+      - cp -r /srv/caliopen/src/backend/* $${BASE_DIR}
+      - cd $${BASE_DIR} && govendor sync -v
+      - go test ./...
+
   test-py:
     pull: true
     group: test

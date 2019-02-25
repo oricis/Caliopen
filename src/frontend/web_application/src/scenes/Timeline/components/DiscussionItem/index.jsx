@@ -12,6 +12,7 @@ import './style.scss';
 // @withI18n()
 class DiscussionItem extends PureComponent {
   static propTypes = {
+    className: PropTypes.string,
     discussion: PropTypes.shape({
       excerpt: PropTypes.string.isRequired,
       discussion_id: PropTypes.string.isRequired,
@@ -32,6 +33,10 @@ class DiscussionItem extends PureComponent {
     settings: PropTypes.shape({ default_locale: PropTypes.string.isRequired }).isRequired,
   };
 
+  static defaultProps = {
+    className: undefined,
+  };
+
   onCheckboxChange = (ev) => {
     const { discussion, onSelectDiscussion } = this.props;
     const { checked } = ev.target;
@@ -39,6 +44,7 @@ class DiscussionItem extends PureComponent {
     onSelectDiscussion(checked ? 'add' : 'remove', discussion.discussion_id);
   };
 
+  // participants except user
   buildParticipantsLabels = ({ participants }) =>
     participants
       .filter(participant => !(participant.contact_ids && participant.contact_ids.some(contactId =>
@@ -66,11 +72,13 @@ class DiscussionItem extends PureComponent {
   );
 
   render() {
-    const { settings } = this.props;
+    const { settings, className } = this.props;
     const {
       excerpt, discussion_id: discussionId, total_count: total, date_update: date,
       last_message_id: lastMessageId, unread_count: unreadCount, pi, protocol,
     } = this.props.discussion;
+
+    // XXX: discussion does not support pi_message yet
     const piAggregate = getAveragePI(pi);
 
     // const { isDeleting, isDiscussionSelected, i18n } = this.props;
@@ -83,7 +91,12 @@ class DiscussionItem extends PureComponent {
         id={`discussion-${discussionId}`}
         data-nb-messages={total}
         data-date={date}
-        className={classnames('s-discussion-item', { 's-discussion-item--is-unread': unreadCount > 0 }, `s-discussion-item--${getPiClass(piAggregate)}`)}
+        className={classnames(
+          className,
+          's-discussion-item',
+          { 's-discussion-item--is-unread': unreadCount > 0 },
+          `s-discussion-item--${getPiClass(piAggregate)}`
+        )}
       >
         <ParticipantsIconLetter labels={labels} />
         <a className="s-discussion-item__participants">{labels.join(', ')}</a>

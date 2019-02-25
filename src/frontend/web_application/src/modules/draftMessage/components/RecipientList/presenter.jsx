@@ -9,6 +9,7 @@ import protocolsConfig, { ASSOC_PROTOCOL_ICON } from '../../../../services/proto
 import { addEventListener } from '../../../../services/event-manager';
 import Recipient from '../Recipient';
 import { isValidRecipient } from '../../services/isValidRecipient';
+import { Participant } from '../../../message';
 import './style.scss';
 
 export const KEY = {
@@ -21,20 +22,6 @@ export const KEY = {
   UP: 38,
   DOWN: 40,
 };
-
-const makeParticipant = ({
-  address,
-  protocol,
-  label,
-  contact_ids: contactIds,
-  type = 'To',
-}) => ({
-  address,
-  protocol,
-  label,
-  contact_ids: contactIds,
-  type,
-});
 
 class RecipientList extends Component {
   static propTypes = {
@@ -188,7 +175,7 @@ class RecipientList extends Component {
   makeAddKnownParticipant(identity) {
     return () => {
       const { address, protocol, label } = identity;
-      this.addParticipant(makeParticipant({
+      this.addParticipant(new Participant({
         address,
         label: label || address,
         contact_ids: identity.contact_id ? [identity.contact_id] : [],
@@ -212,7 +199,7 @@ class RecipientList extends Component {
       return previous;
     });
 
-    this.addParticipant(makeParticipant({
+    this.addParticipant(new Participant({
       address,
       protocol,
       label: address,

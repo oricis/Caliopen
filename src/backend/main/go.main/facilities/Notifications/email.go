@@ -89,10 +89,10 @@ func (notif *Notifier) SendEmailAdminToUser(user *User, email *Message) error {
 	const nats_order = "deliver"
 
 	order := BrokerOrder{
-		Order:     nats_order,
-		MessageId: email.Message_id.String(),
-		UserId:    notif.admin.UserId.String(),
-		RemoteId:  notif.adminLocalID.Id.String(),
+		Order:      nats_order,
+		MessageId:  email.Message_id.String(),
+		UserId:     notif.admin.UserId.String(),
+		IdentityId: notif.adminLocalID.Id.String(),
 	}
 	natsMessage, e := json.Marshal(order)
 	if e != nil {

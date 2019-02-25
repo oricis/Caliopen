@@ -1,6 +1,12 @@
 @import '../../styles/common';
 
 .s-new-draft {
-  padding-top: map_get($co-margin_, 'large');
-  background-color: #f6fcff;
+  &__form {
+    padding-top: map_get($co-margin_, 'large');
+    background-color: #f6fcff;
+  }
+
+  &__discussion {
+    margin-top: map_get($co-margin_, 'large');
+  }
 }

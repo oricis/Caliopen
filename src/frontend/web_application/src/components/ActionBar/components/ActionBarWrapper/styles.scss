@@ -6,7 +6,8 @@
   background-color: $co-color__fg__back;
   &--sticky {
     position: fixed;
-    top: 41px;
+    // height of the related tab-bar above
+    top: $co-component__height;
     right: 0;
     left: 0;
     z-index: $l-z-index__action-bar;

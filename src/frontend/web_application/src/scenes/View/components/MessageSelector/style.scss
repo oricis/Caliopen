@@ -1,0 +1,14 @@
+@import '../../../../styles/common';
+
+.m-message-selector {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  max-width: $co-site-width;
+  height: $co-component__height;
+  margin: 0 auto;
+
+  &__checkbox {
+    margin: auto $co-component__spacing;
+  }
+}

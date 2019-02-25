@@ -1,49 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
-import { DraftMessage, withCurrentInternalId } from '../../modules/draftMessage';
-import { withReplace, withPush } from '../../modules/routing';
+import { Redirect } from 'react-router-dom';
+import { DraftMessage } from '../../modules/draftMessage';
+import { withPush, withRouteParams } from '../../modules/routing';
 import { withCloseTab } from '../../modules/tab';
+import DraftDiscussion from './components/DraftDiscussion';
 import './style.scss';
 
-@withReplace()
 @withPush()
-@withCurrentInternalId()
+@withRouteParams()
 @withCloseTab()
 class NewDraft extends Component {
   static propTypes = {
-    internalId: PropTypes.string,
     closeTab: PropTypes.func.isRequired,
-    replace: PropTypes.func.isRequired,
     push: PropTypes.func.isRequired,
+    routeParams: PropTypes.shape({}).isRequired,
   };
-
-  static defaultProps = {
-    internalId: undefined,
-  };
-
-  componentDidMount() {
-    return this.eventuallyRedirect(this.props);
-  }
-
-  componentDidUpdate() {
-    return this.eventuallyRedirect(this.props);
-  }
-
-  eventuallyRedirect = (props) => {
-    const {
-      internalId,
-      replace,
-    } = props;
-
-    if (!internalId) {
-      const newPathname = `/compose/${uuidv4()}`;
-
-      return replace(newPathname);
-    }
-
-    return undefined;
-  }
 
   handleSent = ({ message }) => {
     const { push } = this.props;
@@ -52,18 +25,26 @@ class NewDraft extends Component {
   }
 
   render() {
-    const { internalId, closeTab } = this.props;
+    const { routeParams, closeTab } = this.props;
 
-    if (!internalId) {
-      return null;
+    if (!routeParams.messageId) {
+      return <Redirect to={`/messages/${uuidv4()}`} />;
     }
 
     return (
       <div className="s-new-draft">
         <DraftMessage
+          className="s-new-draft__form"
+          key={routeParams.messageId}
+          internalId={routeParams.messageId}
           hasDiscussion={false}
           onDeleteMessageSuccessfull={closeTab}
           onSent={this.handleSent}
+        />
+        <DraftDiscussion
+          className="s-new-draft__discussion"
+          // used in withDraftMessage
+          messageId={routeParams.messageId}
         />
       </div>
     );

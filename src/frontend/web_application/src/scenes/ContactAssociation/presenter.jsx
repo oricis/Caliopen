@@ -71,19 +71,20 @@ class ContactAssociation extends Component {
 
     return (
       <ActionBar
-        className="s-contact-book-menu"
         hr={false}
         isLoading={isFetching}
         actionsNode={(
-          <Button
-            className="s-contact-book-menu__action-btn"
-            display="inline"
-            noDecoration
-            icon="plus"
-            onClick={this.handleClickNewContact}
-          >
-            <Trans id="contact-association.action.add-new-contact">Add new contact</Trans>
-          </Button>
+          <div className="s-contact-book-menu s-contact-association__action-bar">
+            <Button
+              className="s-contact-book-menu__action-btn"
+              display="inline"
+              noDecoration
+              icon="plus"
+              onClick={this.handleClickNewContact}
+            >
+              <Trans id="contact-association.action.add-new-contact">Add new contact</Trans>
+            </Button>
+          </div>
         )}
       />
     );

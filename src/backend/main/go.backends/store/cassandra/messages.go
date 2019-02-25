@@ -9,6 +9,7 @@ import (
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/gocassa/gocassa"
+	"github.com/gocql/gocql"
 	"gopkg.in/oleiade/reflections.v1"
 )
 
@@ -22,7 +23,6 @@ func (cb *CassandraBackend) CreateMessage(msg *Message) error {
 }
 
 func (cb *CassandraBackend) RetrieveMessage(user_id, msg_id string) (msg *Message, err error) {
-
 	msg = new(Message).NewEmpty().(*Message) // correctly initialize nested values
 	m := map[string]interface{}{}
 	q := cb.SessionQuery(`SELECT * FROM message WHERE user_id = ? and message_id = ?`, user_id, msg_id)
@@ -66,4 +66,19 @@ func (cb *CassandraBackend) DeleteMessage(msg *Message) error {
 func (cb *CassandraBackend) SetMessageUnread(user_id, message_id string, status bool) (err error) {
 	q := cb.SessionQuery(`UPDATE message SET is_unread= ? WHERE message_id = ? AND user_id = ?`, status, message_id, user_id)
 	return q.Exec()
+}
+
+// SeekMessageByExternalRef return first message found in cassandra's message_external_ref_lookup table, if any.
+// if identityID param is an empty string, `identity_id` key will be ignored in cql request
+func (cb *CassandraBackend) SeekMessageByExternalRef(userID, externalMessageID, identityID string) (messageID UUID, err error) {
+	result := map[string]interface{}{}
+	if identityID == "" {
+		err = cb.SessionQuery(`SELECT message_id FROM message_external_ref_lookup WHERE user_id = ? AND external_msg_id = ? LIMIT 1"`, userID, externalMessageID).MapScan(result)
+	} else {
+		err = cb.SessionQuery(`SELECT message_id FROM message_external_ref_lookup WHERE user_id = ? AND external_msg_id = ? AND identity_id = ?`, userID, externalMessageID, identityID).MapScan(result)
+	}
+	if err != nil || result["message_id"] == nil {
+		return EmptyUUID, err
+	}
+	return UUID(result["message_id"].(gocql.UUID)), err
 }

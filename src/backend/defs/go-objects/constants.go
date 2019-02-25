@@ -40,6 +40,7 @@ const (
 	Nats_outIMAP_topicKey    = "outIMAP_topic"
 	Nats_outTwitter_topicKey = "outTWITTER_topic"
 	Nats_Keys_topicKey       = "keys_topic"
+	Nats_IdPoller_topicKey   = "idpoller_topic"
 
 	//participant types
 	ParticipantBcc     = "Bcc"

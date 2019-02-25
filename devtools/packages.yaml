@@ -54,6 +54,25 @@ packages:
           path: src/backend/components/py.pgp
           dependencies:
             python: "^2.7"
+      -
+          name: caliopen_data
+          description: Caliopen data utilities
+          path: src/backend/components/py.data
+          dependencies:
+            python: "^2.7"
+      -
+          name: caliopen_tag
+          description: Caliopen message tagging model
+          path: src/backend/components/py.tag
+          dependencies:
+            python: "^2.7"
+      -
+          name: caliopen_climl
+          description: Caliopen Command Line Interface (CLI) tool for ML models
+          path: src/backend/tools/py.ML
+          dependencies:
+            python: "^2.7"
+
   golang:
       -
           name: caliopen_rest

@@ -84,7 +84,7 @@ func fullFetch(cmd *cobra.Command, args []string) {
 		logrus.WithError(err).Fatal("unable to marshal natsOrder")
 	}
 
-	nc.Publish(cmdConfig.NatsTopicFetcher, msg)
+	nc.Publish(cmdConfig.NatsTopicSender, msg)
 	nc.Flush()
 
 	if err := nc.LastError(); err != nil {

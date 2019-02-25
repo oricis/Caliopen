@@ -17,7 +17,7 @@ AppConfig:
     max_clients: 1000
   #submit is the MTA to connect to for final delivery (postfix for example)
   submit_address: smtp
-  submit_port: 10025
+  submit_port: 2500
   submit_user:
   submit_password:
   submit_workers: 2                                      # number of concurrent connexions to submit MTA
@@ -36,7 +36,7 @@ LDAConfig:
     raw_size_limit: 1048576                              # max size in bytes for objects in db. Use S3 interface if larger.
     object_store: s3
     object_store_settings:
-      endpoint: minio:9090
+      endpoint: objectstore:9090
       access_key: CALIOPEN_ACCESS_KEY_                     # Access key of 5 to 20 characters in length
       secret_key: CALIOPEN_SECRET_KEY_BE_GOOD_AND_LIVE_OLD # Secret key of 8 to 40 characters in length
       location: eu-fr-localhost                            # S3 region.

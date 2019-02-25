@@ -11,19 +11,25 @@ import MailMessage from '../MailMessage';
 class Message extends Component {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
-    onMessageRead: PropTypes.func.isRequired,
-    onMessageUnread: PropTypes.func.isRequired,
+    onMessageRead: PropTypes.func,
+    onMessageUnread: PropTypes.func,
     onMessageDelete: PropTypes.func,
-    onReply: PropTypes.func.isRequired,
+    onReply: PropTypes.func,
     scrollToMe: PropTypes.func,
     user: PropTypes.shape({}).isRequired,
-    updateTagCollection: PropTypes.func.isRequired,
+    updateTagCollection: PropTypes.func,
     i18n: PropTypes.shape({}).isRequired,
+    noInteractions: PropTypes.bool,
   };
 
   static defaultProps = {
     scrollToMe: undefined,
     onMessageDelete: undefined,
+    noInteractions: false,
+    onMessageRead: () => {},
+    onMessageUnread: () => {},
+    onReply: () => {},
+    updateTagCollection: () => {},
   };
 
   state = {
@@ -99,6 +105,8 @@ class Message extends Component {
 
 
   render() {
+    const { noInteractions } = this.props;
+
     const commonProps = {
       onTagsChange: this.handleTagsChange,
       onOpenTags: this.handleOpenTags,
@@ -106,6 +114,7 @@ class Message extends Component {
       onDeleteMessage: this.handleDeleteMessage,
       ...this.props,
     };
+
 
     return (
       <VisibilitySensor
@@ -121,7 +130,7 @@ class Message extends Component {
               :
               <InstantMessage {...commonProps} />
           }
-          {this.renderTagsModal()}
+          {!noInteractions && this.renderTagsModal()}
         </Fragment>
       </VisibilitySensor>
     );

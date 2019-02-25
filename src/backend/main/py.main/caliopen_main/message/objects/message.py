@@ -11,7 +11,6 @@ import datetime
 import pytz
 import json
 import copy
-import hashlib
 
 from caliopen_storage.config import Configuration
 from caliopen_storage.exception import NotFound
@@ -29,32 +28,10 @@ from schematics.types import UUIDType
 from caliopen_main.message.parameters.participant import \
     Participant as IndexedParticipant
 from caliopen_main.common import errors as err
-from caliopen_main.discussion.core import Discussion, DiscussionGlobalLookup
 
 import logging
 
 log = logging.getLogger(__name__)
-
-
-def find_or_create_discussion(user, params):
-    """Find a related discussion or create a new one."""
-    addresses = [x['address'] for x in params.get('participants', [])]
-    addresses = list(set(addresses))
-    addresses.sort()
-    hashed = hashlib.sha256(''.join(addresses)).hexdigest()
-    try:
-        lookup = DiscussionGlobalLookup.get(user, hashed)
-        log.info('Found existing discussion {0}'.
-                 format(lookup.discussion_id))
-        return lookup.discussion_id
-    except NotFound:
-        # Create a new discussion
-        discussion_id = uuid.uuid4()
-        log.info('Creating new discussion {0}'.format(discussion_id))
-        Discussion.create(user=user, discussion_id=discussion_id)
-        DiscussionGlobalLookup.create(user=user, hashed=hashed,
-                                      discussion_id=discussion_id)
-        return discussion_id
 
 
 class Message(ObjectIndexable):
@@ -112,6 +89,19 @@ class Message(ObjectIndexable):
         msg = RawMessage.get_for_user(self.user_id, self.raw_msg_id)
         return json.loads(msg.json_rep)
 
+    @property
+    def external_msg_id(self):
+        if self.external_references:
+            return self.external_references.message_id
+        return None
+
+    @property
+    def user_identity(self):
+        """
+        return first user_identity
+        """
+        return self.user_identities[0] if self.user_identities else None
+
     @classmethod
     def create_draft(cls, user, **params):
         """
@@ -163,7 +153,7 @@ class Message(ObjectIndexable):
 
         message.date = message.date_sort = message.date_insert = \
             datetime.datetime.now(tz=pytz.utc)
-        message.discussion_id = find_or_create_discussion(user, draft_param)
+
         try:
             message.marshall_db()
             message.save_db()
@@ -243,10 +233,6 @@ class Message(ObjectIndexable):
             for participant in self_dict['participants']:
                 indexed = IndexedParticipant(participant)
                 draft_param.participants.append(indexed)
-        if 'participants' in params and self.participants:
-            # Participants change, discussion_id must change
-            discussion_id = find_or_create_discussion(user, params)
-            self.discussion_id = discussion_id
 
         if "user_identities" not in params and self.user_identities:
             draft_param.user_identities = self_dict["user_identities"]

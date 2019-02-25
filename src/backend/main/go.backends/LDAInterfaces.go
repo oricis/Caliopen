@@ -14,7 +14,7 @@ import (
 type LDAStore interface {
 	Close()
 	RetrieveMessage(user_id, msg_id string) (msg *Message, err error)
-	GetUsersForLocalMailRecipients([]string) ([]UUID, error) // returns a list of user Ids for each recipients. No deduplicate.
+	GetUsersForLocalMailRecipients([]string) ([][]UUID, error) // returns a list of tuples ([user_id, identity_id]) of **local** users found for given recipients list. No deduplicate.
 	GetSettings(user_id string) (settings *Settings, err error)
 	CreateMessage(msg *Message) error
 
@@ -23,6 +23,7 @@ type LDAStore interface {
 	SetDeliveredStatus(raw_msg_id string, delivered bool) error
 	UpdateMessage(msg *Message, fields map[string]interface{}) error // 'fields' are the struct fields names that have been modified
 	CreateThreadLookup(user_id, discussion_id UUID, external_msg_id string) error
+	SeekMessageByExternalRef(userID, externalMessageID, identityID string) (UUID, error)
 
 	LookupContactsByIdentifier(user_id, address string) (contact_ids []string, err error)
 

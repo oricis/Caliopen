@@ -33,6 +33,7 @@ func (es *ElasticSearchBackend) CreateMessage(user *objects.UserInfo, msg *objec
 		log.WithError(err).Warn("backend Index: IndexMessage operation failed")
 		return err
 	}
+
 	log.Infof("New msg indexed with id %s", resp.Id)
 	return nil
 
@@ -41,6 +42,7 @@ func (es *ElasticSearchBackend) CreateMessage(user *objects.UserInfo, msg *objec
 func (es *ElasticSearchBackend) UpdateMessage(user *objects.UserInfo, msg *objects.Message, fields map[string]interface{}) error {
 	//get json field name for each field to modify
 	jsonFields := map[string]interface{}{}
+
 	for field, value := range fields {
 		jsonField, err := reflections.GetFieldTag(msg, field, "json")
 		if err != nil {

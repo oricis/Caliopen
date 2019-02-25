@@ -12,6 +12,10 @@ properties:
   date_update:
     type: string
     format: date-time
+  emails:
+    type: array
+    items:
+      type: string
   expire_date:
     type: string
     format: date-time

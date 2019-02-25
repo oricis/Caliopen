@@ -85,6 +85,9 @@ class TabProvider extends Component {
       new Tab({
         location: this.normalizeLocation({ pathname: '/contacts' }),
       }),
+      new Tab({
+        location: this.normalizeLocation({ pathname: '/views/draft' }),
+      }),
     ];
     const { location } = this.props;
 

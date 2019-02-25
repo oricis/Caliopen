@@ -24,9 +24,9 @@ import (
 	"time"
 )
 
-const(
-	natsMessageTmpl  = "{\"order\":\"%s\",\"user_id\":\"%s\",\"remote_id\":\"%s\",\"message_id\": \"%s\"}"
-	natsOrderRaw     = "process_raw"
+const (
+	natsMessageTmpl = "{\"order\":\"%s\",\"user_id\":\"%s\",\"identity_id\":\"%s\",\"message_id\": \"%s\"}"
+	natsOrderRaw    = "process_raw"
 )
 
 func (b *EmailBroker) startIncomingSmtpAgents() error {
@@ -141,7 +141,7 @@ func (b *EmailBroker) processInboundIMAP(in *SmtpEmail) {
 		in.EmailMessage.Message != nil &&
 		in.EmailMessage.Message.User_id.String() != EmptyUUID.String() {
 		//TODO : check if user exists
-		b.processInbound([]UUID{in.EmailMessage.Message.User_id}, in, true, resp)
+		b.processInbound([][]UUID{{in.EmailMessage.Message.User_id, in.EmailMessage.Message.UserIdentities[0]}}, in, true, resp)
 	} else {
 		resp.Response = "missing user recipient for ingress IMAP message"
 		resp.Err = true
@@ -151,7 +151,7 @@ func (b *EmailBroker) processInboundIMAP(in *SmtpEmail) {
 
 // stores raw email + json + message and sends an order on NATS topic for next composant to process it
 // if raw_only is true, only stores the raw email with its json representation but do not unmarshal to our message model
-func (b *EmailBroker) processInbound(rcptsIds []UUID, in *SmtpEmail, raw_only bool, resp *EmailDeliveryAck) {
+func (b *EmailBroker) processInbound(rcptsIds [][]UUID, in *SmtpEmail, raw_only bool, resp *EmailDeliveryAck) {
 	// do not forget to send back ack
 	defer func(r *EmailDeliveryAck) {
 		in.Response <- r
@@ -185,19 +185,19 @@ func (b *EmailBroker) processInbound(rcptsIds []UUID, in *SmtpEmail, raw_only bo
 	}
 	wg := new(sync.WaitGroup)
 	wg.Add(len(rcptsIds))
-	for _, rcptId := range rcptsIds {
-		go func(rcptId UUID, errs *multierror.Error) {
+	for _, rcptId := range rcptsIds { // rcptsId is a tuple [user_id, identity_id]
+		go func(rcptId []UUID, errs *multierror.Error) {
 			defer wg.Done()
-			natsMessage := fmt.Sprintf(natsMessageTmpl, natsOrderRaw, rcptId.String(), "", m.Raw_msg_id.String())
+			natsMessage := fmt.Sprintf(natsMessageTmpl, natsOrderRaw, rcptId[0].String(), rcptId[1].String(), m.Raw_msg_id.String())
 			// XXX manage timeout correctly
 			resp, err := b.NatsConn.Request(b.Config.InTopic, []byte(natsMessage), 10*time.Second)
 			if err != nil {
 				if b.NatsConn.LastError() != nil {
-					log.WithError(b.NatsConn.LastError()).Warnf("[EmailBroker] failed to publish inbound request on NATS for user %s", rcptId.String())
+					log.WithError(b.NatsConn.LastError()).Warnf("[EmailBroker] failed to publish inbound request on NATS for user %s", rcptId[0].String())
 					log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
 					multierror.Append(errs, b.NatsConn.LastError())
 				} else {
-					log.WithError(err).Warnf("[EmailBroker] failed to publish inbound request on NATS for user %s", rcptId.String())
+					log.WithError(err).Warnf("[EmailBroker] failed to publish inbound request on NATS for user %s", rcptId[0].String())
 					log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
 					multierror.Append(errs, err)
 				}
@@ -205,13 +205,16 @@ func (b *EmailBroker) processInbound(rcptsIds []UUID, in *SmtpEmail, raw_only bo
 				nats_ack := new(map[string]interface{})
 				err := json.Unmarshal(resp.Data, &nats_ack)
 				if err != nil {
-					log.WithError(err).Warnf("[EmailBroker] failed to parse inbound ack on NATS for user %s", rcptId.String())
+					log.WithError(err).Warnf("[EmailBroker] failed to parse inbound ack on NATS for user %s", rcptId[0].String())
 					log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
 					multierror.Append(errs, err)
 					return
 				}
 				if err, ok := (*nats_ack)["error"]; ok {
-					log.WithError(errors.New(err.(string))).Warnf("[EmailBroker] inbound delivery failed for user %s", rcptId.String())
+					if err == DuplicateMessage {
+						return
+					}
+					log.WithError(errors.New(err.(string))).Warnf("[EmailBroker] inbound delivery failed for user %s", rcptId[0].String())
 					log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
 					multierror.Append(errs, errors.New(err.(string)))
 					return
@@ -219,7 +222,7 @@ func (b *EmailBroker) processInbound(rcptsIds []UUID, in *SmtpEmail, raw_only bo
 
 				//nats delivery OK
 				if b.Config.LogReceivedMails {
-					log.Infof("EmailBroker : NATS inbound request successfully handled for user %s : %s", rcptId.String(), (*nats_ack)["message"])
+					log.Infof("EmailBroker : NATS inbound request successfully handled for user %s : %s", rcptId[0].String(), (*nats_ack)["message"])
 				}
 
 				notif := Notification{
@@ -227,7 +230,7 @@ func (b *EmailBroker) processInbound(rcptsIds []UUID, in *SmtpEmail, raw_only bo
 					Type:    EventNotif,
 					TTLcode: LongLived,
 					User: &User{
-						UserId: rcptId,
+						UserId: rcptId[0],
 					},
 					NotifId: UUID(uuid.NewV1()),
 					Body:    `{"emailReceived": "` + (*nats_ack)["message_id"].(string) + `"}`,

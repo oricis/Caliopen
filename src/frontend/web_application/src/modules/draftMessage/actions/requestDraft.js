@@ -1,7 +1,7 @@
-import { draftSelector } from '../selectors/draft';
 import { requestDraft as requestDraftBase, requestDraftSuccess } from '../../../store/modules/draft-message';
 import { newDraft } from './newDraft';
-import { getDraft, getLastMessage, Message } from '../../message';
+import { getDraft, getMessage, getLastMessage, Message } from '../../message';
+import { draftSelector } from '../../draftMessage';
 
 export const requestDraft = ({ internalId, hasDiscussion }) =>
   async (dispatch, getState) => {
@@ -14,10 +14,22 @@ export const requestDraft = ({ internalId, hasDiscussion }) =>
     dispatch(requestDraftBase({ internalId }));
 
     if (!hasDiscussion) {
-      const nextDraft = await dispatch(newDraft({ internalId, draft: new Message() }));
-      dispatch(requestDraftSuccess({ internalId, draft: nextDraft }));
+      try {
+        const message = await dispatch(getMessage({ messageId: internalId }));
+        dispatch(requestDraftSuccess({ internalId, draft: message }));
 
-      return nextDraft;
+        return message;
+      } catch (err) {
+        const nextDraft = await dispatch(newDraft({
+          internalId,
+          // XXX: refactor - this forces the message_id when draft not associated to a discussion
+          //    in case of a discussion, the internalId is the discussion_id
+          draft: new Message({ message_id: internalId }),
+        }));
+        dispatch(requestDraftSuccess({ internalId, draft: nextDraft }));
+
+        return nextDraft;
+      }
     }
 
     draft = await dispatch(getDraft({ discussionId: internalId }));

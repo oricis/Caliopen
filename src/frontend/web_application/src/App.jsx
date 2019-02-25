@@ -33,21 +33,23 @@ class App extends Component {
 
     return (
       <Provider store={store}>
-        <WithSettings render={settings => (
-          <I18nLoader locale={settings.default_locale}>
-            <RoutingProvider settings={settings}>
-              <PageTitle />
-              <DeviceProvider>
-                <RoutingConsumer
-                  render={({ routes }) => (
-                    <SwitchWithRoutes routes={routes} />
-                  )}
-                />
-              </DeviceProvider>
-              <NotificationProvider />
-            </RoutingProvider>
-          </I18nLoader>
-        )}
+        <WithSettings
+          networkDisabled
+          render={settings => (
+            <I18nLoader locale={settings.default_locale}>
+              <RoutingProvider settings={settings}>
+                <PageTitle />
+                <DeviceProvider>
+                  <RoutingConsumer
+                    render={({ routes }) => (
+                      <SwitchWithRoutes routes={routes} />
+                    )}
+                  />
+                </DeviceProvider>
+                <NotificationProvider />
+              </RoutingProvider>
+            </I18nLoader>
+          )}
         />
       </Provider>
     );

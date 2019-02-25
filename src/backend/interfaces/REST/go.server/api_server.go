@@ -86,6 +86,7 @@ type (
 		OutTWITTER_topic string `mapstructure:"outTWITTER_topic"`
 		Contacts_topic   string `mapstructure:"contacts_topic"`
 		Keys_topic       string `mapstructure:"keys_topic"`
+		IdPoller_topic   string `mapstructure:"idpoller_topic"`
 	}
 
 	NotifierConfig struct {
@@ -132,6 +133,7 @@ func (server *REST_API) initialize(config APIConfig) error {
 			OutTWITTER_topic: config.NatsConfig.OutTWITTER_topic,
 			Contacts_topic:   config.NatsConfig.Contacts_topic,
 			Keys_topic:       config.NatsConfig.Keys_topic,
+			IdPoller_topic:   config.NatsConfig.IdPoller_topic,
 		},
 		NotifierConfig: obj.NotifierConfig{
 			AdminUsername: config.NotifierConfig.AdminUsername,

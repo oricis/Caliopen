@@ -39,6 +39,16 @@ func newAddressesFields() (af map[string][]string) {
 	return
 }
 
+//  NewMessageId returns a valid Message-Id
+func (b *EmailBroker) NewMessageId(uuid []byte) string {
+	// sha256 internal message id to form external message id
+	hasher := sha256.New()
+	hasher.Write(uuid)
+	sha := base64.URLEncoding.EncodeToString(hasher.Sum(nil))
+	messageId := sha + "@" + b.Config.PrimaryMailHost // should be the default domain in case there are multiple 'from' addresses
+	return messageId
+}
+
 // build a 'ready to send' email from a Caliopen message model
 // conforms to
 // RFC822 / RFC2822 / RFC5322 (internet message format)
@@ -53,26 +63,47 @@ func (b *EmailBroker) MarshalEmail(msg *Message) (em *EmailMessage, err error) {
 		Message: msg,
 	}
 
+	messageId := b.NewMessageId(msg.Message_id.Bytes())
+	em.Message.Date = time.Now()
+
+	// Assign computed values
+	em.Message.Date_sort = em.Message.Date
+	em.Message.External_references.Message_id = messageId
+
 	m := gomail.NewMessage()
 	addr_fields := newAddressesFields()
 	for _, participant := range msg.Participants {
+		address := m.FormatAddress(participant.Address, participant.Label)
 		switch participant.Type {
 		case ParticipantFrom:
-			addr_fields["From"] = append(addr_fields["From"], m.FormatAddress(participant.Address, participant.Label))
+			addr_fields["From"] = append(addr_fields["From"], address)
 			em.Email.SmtpMailFrom = append(em.Email.SmtpMailFrom, participant.Address) //TODO: handle multisender to conform to RFC5322#3.6.2 (coupled with sender field)
 		case ParticipantReplyTo:
-			addr_fields["Reply-To"] = append(addr_fields["Reply-To"], m.FormatAddress(participant.Address, participant.Label))
+			addr_fields["Reply-To"] = append(addr_fields["Reply-To"], address)
 		case ParticipantTo:
-			addr_fields["To"] = append(addr_fields["To"], m.FormatAddress(participant.Address, participant.Label))
+			addr_fields["To"] = append(addr_fields["To"], address)
 			em.Email.SmtpRcpTo = append(em.Email.SmtpRcpTo, participant.Address)
 		case ParticipantCC:
-			addr_fields["Cc"] = append(addr_fields["Cc"], m.FormatAddress(participant.Address, participant.Label))
+			addr_fields["Cc"] = append(addr_fields["Cc"], address)
 			em.Email.SmtpRcpTo = append(em.Email.SmtpRcpTo, participant.Address)
 		case ParticipantBcc:
 			em.Email.SmtpRcpTo = append(em.Email.SmtpRcpTo, participant.Address)
 		case ParticipantSender:
-			addr_fields["Sender"] = append(addr_fields["Sender"], m.FormatAddress(participant.Address, participant.Label))
+			addr_fields["Sender"] = append(addr_fields["Sender"], address)
 			em.Email.SmtpMailFrom = append(em.Email.SmtpMailFrom, participant.Address) //TODO: handle multisender to conform to RFC5322#3.6.2 (coupled with sender field)
+		}
+	}
+
+	// Handle if message is encrypted or not
+	features := *msg.Privacy_features
+	crypt_method, ok := features["message_encryption_method"]
+	if ok {
+		if crypt_method == "pgp" {
+			err := b.MarshalPGPEmail(msg, em, addr_fields)
+			if err != nil {
+				return &EmailMessage{}, err
+			}
+			return em, nil
 		}
 	}
 
@@ -82,18 +113,9 @@ func (b *EmailBroker) MarshalEmail(msg *Message) (em *EmailMessage, err error) {
 		}
 	}
 
-	em.Message.Date = time.Now()
-	em.Message.Date_sort = em.Message.Date
 	m.SetHeader("Date", em.Message.Date.Format(time.RFC1123Z))
-
-	// sha256 internal message id to form external message id
-	hasher := sha256.New()
-	hasher.Write(em.Message.Message_id.Bytes())
-	sha := base64.URLEncoding.EncodeToString(hasher.Sum(nil))
-	messageId := sha + "@" + b.Config.PrimaryMailHost // should be the default domain in case there are multiple 'from' addresses
 	m.SetHeader("Message-ID", "<"+messageId+">")
-
-	em.Message.External_references.Message_id = messageId
+	m.SetHeader("X-Mailer", "Caliopen-"+b.Config.AppVersion)
 
 	if msg.External_references.Parent_id != "" {
 		m.SetHeader("In-Reply-To", "<"+msg.External_references.Parent_id+">")
@@ -104,10 +126,9 @@ func (b *EmailBroker) MarshalEmail(msg *Message) (em *EmailMessage, err error) {
 		m.SetHeader("References", strings.Join(ref, " "))
 	}
 
-	m.SetHeader("X-Mailer", "Caliopen-"+b.Config.AppVersion)
-
 	//TODO: In-Reply-To header
 	m.SetHeader("Subject", msg.Subject)
+
 	messages.SanitizeMessageBodies(msg)
 	if msg.Body_html != "" {
 		m.AddAlternative("text/html", msg.Body_html)
@@ -184,26 +205,33 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *EmailDeliveryAck) error {
 	for _, attachment := range ack.EmailMessage.Message.Attachments {
 		b.Store.DeleteAttachment(attachment.URL)
 	}
-
 	// get new references for embedded attachments
 	ack.EmailMessage.Message.Attachments = []Attachment{}
 	for part := range ack.EmailMessage.Email_json.MimeRoot.Parts.Walk() {
 		if part.Is_attachment {
-			disposition, dparams, err := mime.ParseMediaType(part.Headers["Content-Disposition"][0])
-			if err == nil {
-				is_inline := false
-				if disposition == "inline" {
-					is_inline = true
+			is_inline := false
+			filename := ""
+			size := 0
+			header, ok := part.Headers["Content-Disposition"]
+			if ok {
+				disposition, dparams, err := mime.ParseMediaType(header[0])
+				if err == nil {
+					filename = dparams["filename"]
+					size, _ = strconv.Atoi(dparams["size"])
+					if disposition == "inline" {
+						is_inline = true
+					}
 				}
-				size, _ := strconv.Atoi(dparams["size"])
-				ack.EmailMessage.Message.Attachments = append(ack.EmailMessage.Message.Attachments, Attachment{
-					ContentType:  part.ContentType,
-					FileName:     dparams["filename"],
-					IsInline:     is_inline,
-					Size:         size,
-					MimeBoundary: part.Boundary,
-				})
 			}
+
+			ack.EmailMessage.Message.Attachments = append(ack.EmailMessage.Message.Attachments, Attachment{
+				ContentType:  part.ContentType,
+				FileName:     filename,
+				IsInline:     is_inline,
+				Size:         size,
+				MimeBoundary: part.Boundary,
+			})
+
 		}
 	}
 	// Retrieve user informations

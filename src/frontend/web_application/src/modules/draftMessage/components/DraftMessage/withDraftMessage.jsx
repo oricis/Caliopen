@@ -2,14 +2,21 @@ import React from 'react';
 import WithDraftMessage from '../WithDraftMessage';
 
 export const withDraftMessage = () => (WrappedComp) => {
-  const C = ({ hasDiscussion, ...props }) => (
+  const C = ({ internalId, hasDiscussion, ...props }) => (
     <WithDraftMessage
+      internalId={internalId}
       hasDiscussion={hasDiscussion}
       render={({
         requestDraft, draftMessage, isRequestingDraft, isDeletingDraft, original,
       }) => {
         const draftMessageProps = {
-          hasDiscussion, requestDraft, draftMessage, isRequestingDraft, isDeletingDraft, original,
+          internalId,
+          hasDiscussion,
+          requestDraft,
+          draftMessage,
+          isRequestingDraft,
+          isDeletingDraft,
+          original,
         };
 
         return (

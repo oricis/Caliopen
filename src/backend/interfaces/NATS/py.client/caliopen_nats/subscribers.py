@@ -5,10 +5,10 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 import json
 
-from caliopen_main.user.core import User
+from caliopen_main.user.core import User, UserIdentity
 from caliopen_main.contact.objects import Contact
 
-from caliopen_nats.delivery import UserMessageDelivery, UserTwitterDMDelivery
+from caliopen_nats.delivery import UserMailDelivery, UserTwitterDMDelivery
 from caliopen_pi.qualifiers import ContactMessageQualifier
 from caliopen_pgp.keys import ContactPublicKeyManager
 from caliopen_main.common.core import PublicKey
@@ -36,13 +36,15 @@ class InboundEmail(BaseHandler):
         nats_success = {
             'message': 'OK : inbound email message proceeded'
         }
-        user = User.get(payload['user_id'])
-        deliver = UserMessageDelivery(user)
         try:
+            user = User.get(payload['user_id'])
+            identity = UserIdentity.get(user, payload['identity_id'])
+            deliver = UserMailDelivery(user, identity)
             new_message = deliver.process_raw(payload['message_id'])
             nats_success['message_id'] = str(new_message.message_id)
             self.natsConn.publish(msg.reply, json.dumps(nats_success))
         except Exception as exc:
+            # TODO: handle abort exception and report it as special case
             log.error("deliver process failed : {}".format(exc))
             nats_error['error'] = str(exc.message)
             self.natsConn.publish(msg.reply, json.dumps(nats_error))
@@ -74,13 +76,15 @@ class InboundTwitter(BaseHandler):
         nats_success = {
             'message': 'OK : inbound twitter message proceeded'
         }
-        user = User.get(payload['user_id'])
-        deliver = UserTwitterDMDelivery(user)
         try:
+            user = User.get(payload['user_id'])
+            identity = UserIdentity.get(user, payload['identity_id'])
+            deliver = UserTwitterDMDelivery(user, identity)
             new_message = deliver.process_raw(payload['message_id'])
             nats_success['message_id'] = str(new_message.message_id)
             self.natsConn.publish(msg.reply, json.dumps(nats_success))
         except Exception as exc:
+            # TODO: handle abort exception and report it as special case
             log.error("deliver process failed : {}".format(exc))
             nats_error['error'] = str(exc.message)
             self.natsConn.publish(msg.reply, json.dumps(nats_error))

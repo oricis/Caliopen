@@ -18,7 +18,7 @@ import (
 )
 
 const (
-	natsMessageTmpl  = "{\"order\":\"%s\",\"user_id\":\"%s\",\"remote_id\":\"%s\",\"message_id\": \"%s\"}"
+	natsMessageTmpl  = "{\"order\":\"%s\",\"user_id\":\"%s\",\"identity_id\":\"%s\",\"message_id\": \"%s\"}"
 	natsOrderRaw     = "process_raw"
 	NatsError        = "nats error"
 	lastSeenInfosKey = "lastseendm"
@@ -57,21 +57,13 @@ func (broker *TwitterBroker) ProcessInDM(userID, remoteID UUID, dm *twitter.Dire
 		return errors.New("[ProcessInDM] failed to parse inbound ack on NATS")
 	}
 	if err, ok := (*nats_ack)["error"]; ok {
+		if err == DuplicateMessage {
+			return nil
+		}
 		log.WithError(errors.New(err.(string))).Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
 		return errors.New("[ProcessInDM] inbound delivery failed")
 	}
-
-	// nats delivery OK
-	// update sync status in db
-	// TODO: algorithm to shorten pollinterval after new DM has been received
-	infos, err := broker.Store.RetrieveRemoteInfosMap(userID.String(), remoteID.String())
-	if err != nil {
-		return err
-	}
-	infos[lastSeenInfosKey] = dm.ID
-	infos[lastSyncInfosKey] = time.Now().Format(time.RFC3339)
-	err = broker.Store.UpdateRemoteInfosMap(userID.String(), remoteID.String(), infos)
-	// notify user
+	// nats delivery OK, notify user
 	notif := Notification{
 		Emitter: "twitterBroker",
 		Type:    EventNotif,
@@ -84,7 +76,7 @@ func (broker *TwitterBroker) ProcessInDM(userID, remoteID UUID, dm *twitter.Dire
 	}
 	go broker.Notifier.ByNotifQueue(&notif)
 	// update raw_message table to set raw_message.delivered=true
-	broker.Store.SetDeliveredStatus(rawID.String(), true)
+	go broker.Store.SetDeliveredStatus(rawID.String(), true)
 	return nil
 
 }

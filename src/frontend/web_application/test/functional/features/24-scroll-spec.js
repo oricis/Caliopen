@@ -29,6 +29,7 @@ describe('Scroll on Timeline and Discussion', () => {
     const scrollYD = await browser.executeScript(() => window.scrollY);
     expect(scrollYD).toBeGreaterThan(0);
 
+    await browser.executeScript('window.scrollTo(0,0);');
     await clickReply('Rien du tout !');
     const scrollYR = await browser.executeScript(() => window.scrollY);
     expect(scrollYR).toBeGreaterThan(scrollYD);

@@ -9,11 +9,11 @@ volumes:
 
 services:
   # Proxy API
-  proxy-api:
+  proxyapi:
     image: nginx
-    links:
-      - apiv2:apiv2
-      - apiv1:apiv1
+    depends_on:
+      - apiv2
+      - apiv1
     ports:
       - "31415:31415"
     volumes:
@@ -25,12 +25,12 @@ services:
       dockerfile: Dockerfile.go-api
     image: caliopen_apiv2
     ## this very bad config for a public machine
-    links:
-      - redis:redis
-      - cassandra:cassandra
-      - elasticsearch:elasticsearch
-      - nats:nats
-      - object-store:minio
+    depends_on:
+      - redis
+      - cassandra
+      - elasticsearch
+      - nats
+      - objectstore
     ports:
       - "6544:6544"
     volumes:
@@ -41,10 +41,10 @@ services:
       context: ../src/backend
       dockerfile: Dockerfile.py-api
     image: caliopen_apiv1
-    links:
-      - redis:redis
-      - cassandra:cassandra
-      - elasticsearch:elasticsearch
+    depends_on:
+      - redis
+      - cassandra
+      - elasticsearch
     ports:
       - "6543:6543"
     volumes:
@@ -78,7 +78,7 @@ services:
   #
   # Used to index mail content and ensure great research performances.
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.4.1
+    image: elasticsearch:5-alpine
     ports:
       - "9200:9200"
     environment:
@@ -94,12 +94,25 @@ services:
       context: ../src/backend
       dockerfile: Dockerfile.cli
     image: caliopen_cli
-    links:
-      - cassandra:cassandra
-      - elasticsearch:elasticsearch
-      - lmtpd:lmtpd
+    depends_on:
+      - cassandra
+      - elasticsearch
     environment:
       CQLENG_ALLOW_SCHEMA_MANAGEMENT: 1
+    volumes:
+      - .:/srv/caliopen/src/backend/devtools
+      - ../src/backend/configs:/etc/caliopen
+
+    # Caliopen cli tool
+  climl:
+    build:
+      context: ../src/backend
+      dockerfile: Dockerfile.cli-ml
+    image: caliopen_climl
+    depends_on:
+      - cassandra
+      - elasticsearch
+      - objectstore
     volumes:
       - .:/srv/caliopen/src/backend/devtools
       - ../src/backend/configs:/etc/caliopen
@@ -111,10 +124,10 @@ services:
     image: caliopen_frontend
     ports:
       - "4000:4000"
-    links:
-      - proxy-api:proxy-api
+    depends_on:
+      - proxyapi
     environment:
-      CALIOPEN_API_HOSTNAME: proxy-api
+      CALIOPEN_API_HOSTNAME: proxyapi
 
   # Broker
   lmtpd:
@@ -122,12 +135,10 @@ services:
       context: ../src/backend
       dockerfile: Dockerfile.go-lmtp
     image: caliopen_lmtpd
-    links:
-      - cassandra:cassandra
-      - elasticsearch:elasticsearch
-      - object-store:minio
-      - nats:nats
-      - inbucket:smtp
+    depends_on:
+      - mqworker
+      - smtp
+      - imapworker
     ports:
       - "2525:2525"
     volumes:
@@ -135,26 +146,28 @@ services:
 
   # NATS
   nats:
-    image: nats:0.9.6
+    image: nats:1.4.0
     ports:
       - "4222:4222"
+      - "8222:8222"
 
   # NATS Message Handler
-  mq_worker:
+  mqworker:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.mq-worker
     image: caliopen_mq_worker
-    links:
-      - cassandra:cassandra
-      - elasticsearch:elasticsearch
-      - nats:nats
+    depends_on:
+      - cassandra
+      - elasticsearch
+      - objectstore
+      - nats
     volumes:
       - ../src/backend/configs:/etc/caliopen
 
   # object storage
-  object-store:
-    image: minio/minio
+  objectstore:
+    image: minio/minio:latest
     ports:
       - "9090:9090"
     volumes:
@@ -167,49 +180,57 @@ services:
       - MINIO_SECRET_KEY=CALIOPEN_SECRET_KEY_BE_GOOD_AND_LIVE_OLD
 
   # Worker for remote identities
-  imap_worker:
+  imapworker:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.imap-worker
     image: caliopen_imap_worker
-    links:
-      - cassandra:cassandra
-      - object-store:minio
-      - elasticsearch:elasticsearch
-      - nats:nats
+    depends_on:
+      - cassandra
+      - objectstore
+      - elasticsearch
+      - nats
     volumes:
       - ../src/backend/configs:/etc/caliopen
 
-  twitter_worker:
+  twitterworker:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.twitter-worker
     image: caliopen_twitter_worker
-    links:
-    - cassandra:cassandra
-    - object-store:minio
-    - elasticsearch:elasticsearch
-    - nats:nats
+    depends_on:
+    - cassandra
+    - objectstore
+    - elasticsearch
+    - nats
     volumes:
     - ../src/backend/configs:/etc/caliopen
 
   # Poller for remote identities
-  identity_poller:
+  identitypoller:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.identity-poller
     image: caliopen_identity_poller
-    links:
-      - imap_worker:imapworker
-      - mq_worker:mqworker
-      - nats:nats
-      - twitter_worker:twitterworker
+    depends_on:
+      - imapworker
+      - mqworker
+      - nats
+      - twitterworker
     volumes:
       - ../src/backend/configs:/etc/caliopen
 
   # Inbucket : a small smtp server to catch all outgoing emails for testing purpose
   # point your browser at localhost:8888
-  inbucket:
+  smtp:
     image: jhillyerd/inbucket
     ports:
       - "8888:9000"
+      - "2500:2500"
+
+  kibana:
+    image: kibana:5
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch

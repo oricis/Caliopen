@@ -1,9 +1,10 @@
-workers: 2                                             # number of concurrent workers
+workers: 10                                             # number of concurrent workers
 hostname: localhost
 #messaging system
 nats_url: nats://nats:4222
 nats_queue: IMAPworkers                                # NATS group queue for workers
-nats_topic_fetcher: IMAPfetcher                        # NATS topic to listen to actions to execute
+nats_topic_poller: imapJobs                            # NATS topic on which to request job from idpoller
+nats_topic_poller_cache: idCache                       # NATS topic to send orders to idpoller regarding identities management
 nats_topic_sender: outboundIMAP                        # NATS topic to listen to actions to execute
 #storage facility
 store_name: cassandra                                  # backend to store raw emails and messages (inbound & outbound)
@@ -15,7 +16,7 @@ store_settings:
   raw_size_limit: 1048576                                 # max size in bytes for objects in db. Use S3 interface if larger.
   object_store: s3
   object_store_settings:
-    endpoint: minio:9090
+    endpoint: objectstore:9090
     access_key: CALIOPEN_ACCESS_KEY_                     # Access key of 5 to 20 characters in length
     secret_key: CALIOPEN_SECRET_KEY_BE_GOOD_AND_LIVE_OLD # Secret key of 8 to 40 characters in length
     location: eu-fr-localhost                            # S3 region.

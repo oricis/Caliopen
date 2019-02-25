@@ -1,0 +1,142 @@
+@import '../../../../styles/common';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+$s-message-item__pi-width: 7px;
+
+.s-message-item {
+  @include flex-grid-row($size: expand);
+  position: relative;
+  align-items: center;
+  min-height: $co-component__height;
+  padding-top: $co-component__spacing;
+  padding-bottom: $co-component__spacing;
+  background-color: $co-color__fg__back--low;
+  font-size: $co-font__size--small;
+
+  &::before {
+    display: block;
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: $s-message-item__pi-width;
+    background: map-get($privacy-palette, 'disabled');
+  }
+
+  &--pi-ugly {
+    &::before {
+      background: map-get($privacy-palette, 'ugly');
+    }
+  }
+
+  &--pi-bad {
+    &::before {
+      background: map-get($privacy-palette, 'bad');
+    }
+  }
+
+  &--pi-good {
+    &::before {
+      background: map-get($privacy-palette, 'good');
+    }
+  }
+
+  &--pi-super {
+    &::before {
+      background: map-get($privacy-palette, 'super');
+    }
+  }
+
+  &--draft,
+  &--unread {
+    position: relative;
+    background-color: $co-color__fg__back;
+  }
+
+  &--is-selected {
+    background-color: $co-color__bg__back--high;
+  }
+
+  &__col-avatar {
+    @include flex-grid-column(shrink);
+    margin-left: $s-message-item__pi-width;
+  }
+
+  &__col-content {
+    @include flex-grid-size;
+    min-width: 0; // https://github.com/zurb/foundation-sites/pull/8511
+  }
+
+  &__col-date {
+    @include flex-grid-column(shrink);
+    color: $co-color__fg__text--higher;
+    text-align: right;
+  }
+
+  &__col-select {
+    display: none;
+    @include flex-grid-column(shrink);
+    margin-left: auto;
+  }
+
+  &__content {
+    @include flex-grid-row;
+    align-items: center;
+    min-height: $co-component__height;
+    color: $co-color__fg__text--higher;
+    font-weight: 400;
+
+    &--draft { font-style: italic; }
+  }
+
+  &__author {
+    @include flex-grid-size(12);
+    color: $co-color__primary--lower;
+    font-weight: 600;
+  }
+
+  &__title {
+    @include flex-grid-size;
+    margin-right: $co-component__spacing;
+  }
+
+  &__subject { color: $co-color__fg__text--low; }
+  &__file {
+    @include flex-grid-column(shrink);
+  }
+
+  &__tags {
+    @include flex-grid-size(shrink);
+  }
+
+  &__tag {
+    display: inline-block;
+    margin-right: $co-component__spacing / 2;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  @include breakpoint(medium) {
+    padding-top: 0;
+    padding-bottom: 0;
+
+    &__col-select {
+      display: flex;
+    }
+
+    &__col-content {
+      @include flex-grid-size;
+    }
+
+    &__author {
+      @include flex-grid-size(2);
+      min-width: 220px;
+    }
+
+    &__tags {
+      @include flex-grid-size(shrink);
+    }
+  }
+}

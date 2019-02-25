@@ -6,6 +6,38 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Handle lost authentication, redirect signin
+- A simple view with draft messages
+- Display the discussion related to the selected participants of a draft
+- Compute an experimental different PI structure for message entity
+- A caliopen_data python package for caliopen data manipulation
+- A machine learning model for message automatic tagging
+- Create an RFC 3156 compatible mime structure for PGP encrypted sent email
+- Add an API route to find if a discussion exist for a list of participants
+- Ignore already imported message
+
+### Changed
+
+- Move link external accounts to user menu
+- Smaller font for desktop
+- Use white color for plain text buttons
+- Refactor hover and active colors for buttons
+- Display a progress bar when downloading an attachment
+- New calcul for Privacy Index
+- Take A Tour has been moved in the new menu «Help & Info»
+- Display related emails for a PGP public key
+- Compute related discussion only when the message is sent
+- Better discussion match if any participant is a known contact
+- Reworked deeply job dispatching logic for protocol workers
+
+### Fixed
+
+- Bad redirection when canceling contact creation
+- Add spaces between buttons in contact edit & contact association pages
+- Unable to download an attachment due to missing request's headers
+
 ## [0.15.2] 2019-01-23
 
 ### Fixed
@@ -38,6 +70,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 - Rework how privacy features are declared and managed
+- Change how a discussion hash is build, take contact_id as better key
 
 ## [0.14.0] 2018-12-19
 
@@ -46,6 +79,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - special group user contact in contact-book
 - Toggle show spam
 - Placeholder when loading Timeline
+- Messages de-duplication when importing or re-importing from external accounts
 
 ### Fixed
 

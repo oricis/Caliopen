@@ -10,6 +10,7 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/pi"
 	"github.com/gin-gonic/gin"
 	swgErr "github.com/go-openapi/errors"
 	"github.com/satori/go.uuid"
@@ -69,11 +70,11 @@ func GetMessagesList(ctx *gin.Context) {
 
 	filter := IndexSearch{
 		Shard_id: shard_id,
-		User_id: user_UUID,
-		Terms:   map[string][]string(query_values),
-		Limit:   limit,
-		Offset:  offset,
-		ILrange: operations.GetImportanceLevel(ctx),
+		User_id:  user_UUID,
+		Terms:    map[string][]string(query_values),
+		Limit:    limit,
+		Offset:   offset,
+		ILrange:  operations.GetImportanceLevel(ctx),
 	}
 	var list []*Message
 	var totalFound int64
@@ -101,6 +102,7 @@ func GetMessagesList(ctx *gin.Context) {
 	respBuf.WriteString("\"messages\":[")
 	first := true
 	for _, msg := range list {
+		msg.PI = pi.ComputePIMessage(msg)
 		json_msg, err := msg.MarshalFrontEnd(settings.MessageDisplayFormat)
 		if err == nil {
 			if first {
@@ -141,6 +143,7 @@ func GetMessage(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
+	msg.PI = pi.ComputePIMessage(msg)
 	msg_json, err := msg.MarshalFrontEnd(settings.MessageDisplayFormat)
 	if err != nil {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())
