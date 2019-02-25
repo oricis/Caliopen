@@ -8,19 +8,29 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- handle lost authentication, redirect signin
+- Handle lost authentication, redirect signin
 - A simple view with draft messages
 - Display the discussion related to the selected participants of a draft
+- Compute an experimental different PI structure for message entity
+- A caliopen_data python package for caliopen data manipulation
+- A machine learning model for message automatic tagging
+- Create an RFC 3156 compatible mime structure for PGP encrypted sent email
+- Add an API route to find if a discussion exist for a list of participants
+- Ignore already imported message
 
 ### Changed
 
 - Move link external accounts to user menu
-- smaller font for desktop
+- Smaller font for desktop
 - Use white color for plain text buttons
 - Refactor hover and active colors for buttons
 - Display a progress bar when downloading an attachment
 - New calcul for Privacy Index
 - Take A Tour has been moved in the new menu «Help & Info»
+- Display related emails for a PGP public key
+- Compute related discussion only when the message is sent
+- Better discussion match if any participant is a known contact
+- Reworked deeply job dispatching logic for protocol workers
 
 ### Fixed
 
