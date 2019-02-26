@@ -21,6 +21,7 @@ const mapStateToProps = (state, { message }) => createSelector(
       isLocked: isMessageEncrypted(message) &&
         (!encryptionStatus || (encryptionStatus && encryptionStatus.status !== 'decrypted')),
       encryptionStatus,
+      message: (encryptionStatus && encryptionStatus.decryptedMessage) || message,
     };
   }
 );

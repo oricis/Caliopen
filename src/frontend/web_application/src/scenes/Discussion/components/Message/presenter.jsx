@@ -40,9 +40,9 @@ class Message extends Component {
   };
 
   onVisibilityChange = (isVisible) => {
-    const { message, onMessageRead } = this.props;
+    const { isLocked, message, onMessageRead } = this.props;
 
-    if (isVisible && message.is_unread) {
+    if (!isLocked && isVisible && message.is_unread) {
       onMessageRead({ message });
     }
   }

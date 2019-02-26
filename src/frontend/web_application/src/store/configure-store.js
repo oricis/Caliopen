@@ -2,6 +2,7 @@ import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './reducer';
 import axiosMiddleware from './middlewares/axios-middleware';
 import encryptionMiddleware from './middlewares/encryption-middleware';
+import decryptionMiddleware from './middlewares/decryption-middleware';
 import contactMiddleware from './middlewares/contacts-middleware';
 import deviceMiddleware from './middlewares/device-middleware';
 import discussionMiddleware from './middlewares/discussions-middleware';
@@ -15,6 +16,7 @@ import thunkMiddleware from './middlewares/thunk-middleware';
 const middlewares = [
   encryptionMiddleware,
   axiosMiddleware,
+  decryptionMiddleware,
   contactMiddleware,
   deviceMiddleware,
   discussionMiddleware,
