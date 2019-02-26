@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import Presenter from './presenter';
 
 describe('component Device VerifyDevice', () => {
@@ -10,7 +10,7 @@ describe('component Device VerifyDevice', () => {
       onVerifyDevice: jest.fn(),
     };
 
-    const comp = shallow(
+    const comp = mount(
       <Presenter {...props} />
     );
 

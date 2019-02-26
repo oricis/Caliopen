@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Icon from '../Icon';
@@ -17,6 +17,7 @@ class Button extends PureComponent {
     accessKey: PropTypes.string,
     noDecoration: PropTypes.bool,
     disabled: PropTypes.bool,
+    innerRef: PropTypes.shape({}),
   };
   static defaultProps = {
     className: undefined,
@@ -29,6 +30,7 @@ class Button extends PureComponent {
     accessKey: null,
     noDecoration: false,
     disabled: false,
+    innerRef: undefined,
   };
 
   renderIcon({ className }) {
@@ -47,7 +49,7 @@ class Button extends PureComponent {
 
   render() {
     const {
-      children, className, icon, display, color, shape, responsive, noDecoration, ...props
+      children, className, icon, display, color, shape, responsive, noDecoration, innerRef, ...props
     } = this.props;
 
     const buttonProps = {
@@ -81,15 +83,15 @@ class Button extends PureComponent {
 
     if (icon) {
       return (
-        <RawButton {...buttonProps}>
+        <RawButton {...buttonProps} ref={innerRef}>
           {this.renderIcon({ icon, className: 'm-button__icon' })}
           {children && <span className="m-button__text">{children}</span>}
         </RawButton>
       );
     }
 
-    return <RawButton {...buttonProps}>{children}</RawButton>;
+    return <RawButton onMouse {...buttonProps} ref={innerRef}>{children}</RawButton>;
   }
 }
 
-export default Button;
+export default forwardRef((props, ref) => (<Button {...props} innerRef={ref} />));

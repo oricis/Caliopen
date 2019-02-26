@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
 import UserInfo from '../UserInfo';
@@ -25,6 +25,8 @@ class Presenter extends Component {
     this.props.getUser();
   }
 
+  dropdownControlRef = createRef();
+
   handleDropdownToggle = (isDropdownOpen) => {
     this.setState({ isDropdownOpen });
   };
@@ -34,17 +36,18 @@ class Presenter extends Component {
 
     return (
       <div className="m-user-menu">
-        <DropdownControl toggleId="co-user-menu" icon="user" display="inline-block">
+        <DropdownControl ref={this.dropdownControlRef} icon="user" display="inline-block">
           <span className="m-user-menu__button-label">{user && user.name}</span>&nbsp;
           <Icon type={this.state.isDropdownOpen ? 'caret-up' : 'caret-down'} />
         </DropdownControl>
         <Dropdown
-          id="co-user-menu"
+          dropdownControlRef={this.dropdownControlRef}
           alignRight
           isMenu
           hasTriangle
           closeOnClick="all"
           onToggle={this.handleDropdownToggle}
+          displayFirstLayer
         >
           <VerticalMenu>
             <VerticalMenuItem>

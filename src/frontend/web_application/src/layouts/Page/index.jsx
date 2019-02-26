@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Trans } from '@lingui/react';
@@ -29,6 +29,8 @@ class Page extends Component {
     isDropdownHelpOpen: false,
   };
 
+  dropdownControlRef = createRef();
+
   handleDropdownToggle = (isDropdownHelpOpen) => {
     this.setState({ isDropdownHelpOpen });
   };
@@ -52,17 +54,22 @@ class Page extends Component {
               {/* <div className="l-header__notif-menu"><Button href="#"><Icon type="bell"
               /></Button></div> */}
               <div className="l-header__take-a-tour">
-                <DropdownControl toggleId="co-help-menu" icon="info-circle" display="inline-block">
+                <DropdownControl
+                  ref={this.dropdownControlRef}
+                  icon="info-circle"
+                  display="inline-block"
+                >
                   <span className="l-header__button-label"><Trans id="header.help.menu">Help & info</Trans></span>
                   <Icon type={this.state.isDropdownHelpOpen ? 'caret-up' : 'caret-down'} />
                 </DropdownControl>
                 <Dropdown
-                  id="co-help-menu"
+                  dropdownControlRef={this.dropdownControlRef}
                   alignRight
                   isMenu
                   hasTriangle
                   closeOnClick="all"
                   onToggle={this.handleDropdownToggle}
+                  displayFirstLayer
                 >
                   <VerticalMenu>
                     <VerticalMenuItem><TakeATour /></VerticalMenuItem>

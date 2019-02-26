@@ -272,8 +272,8 @@ class RecipientList extends Component {
   }
 
   render() {
+    // useful ?
     const componentId = uuidV1();
-    const dropdownId = uuidV1();
     const {
       searchResults, className, identity, recipients,
     } = this.props;
@@ -311,7 +311,6 @@ class RecipientList extends Component {
             onBlur={this.handleSearchInputBlur}
           />
           <Dropdown
-            id={dropdownId}
             show={this.state.searchTerms ?
               (searchResults.length > 0 && this.state.searchOpened) : false
             }

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment, createRef } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withI18n } from '@lingui/react';
@@ -37,8 +37,10 @@ class AddParticipantsToContactBook extends Component {
       .filter(participant => !participant.contact_ids);
   }
 
+  dropdownControlRef = createRef();
+
   render() {
-    const { message, i18n, className } = this.props;
+    const { i18n, className } = this.props;
     const participants = this.getUnknownParticipants();
 
     if (participants.length === 0) {
@@ -48,15 +50,19 @@ class AddParticipantsToContactBook extends Component {
     return (
       <Fragment>
         <DropdownControl
+          ref={this.dropdownControlRef}
           display="inline"
           noDecoration
           className={classnames(className)}
-          toggleId={`message_${message.message_id}`}
           title={i18n._('message.action.add-participant-to-contacts', null, { defaults: 'Add a participant to the contact book' })}
         >
           <Icon type="address-book" /> <Icon type="plus" />
         </DropdownControl>
-        <Dropdown isMenu id={`message_${message.message_id}`} className="m-add-participants-dropdown">
+        <Dropdown
+          dropdownControlRef={this.dropdownControlRef}
+          isMenu
+          className="m-add-participants-dropdown"
+        >
           <VerticalMenu>
             {participants.map(participant => (
               <VerticalMenuItem

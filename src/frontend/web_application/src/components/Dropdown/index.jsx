@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, forwardRef, createRef, Element } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import throttle from 'lodash.throttle';
@@ -12,51 +12,39 @@ const CLOSE_ON_CLICK_EXCEPT_SELF = 'exceptSelf';
 const DO_NOT_CLOSE = 'doNotClose';
 
 export const withDropdownControl = (WrappedComponent) => {
-  const WithDropdownControl = ({ toggleId, className, ...props }) => {
-    const triggerClassName = classnames(
-      'm-dropdown__trigger',
-      className,
-    );
-    const id = `${CONTROL_PREFIX}-${toggleId}`;
+  const WithDropdownControl = ({ toggleId, ...props }, ref) => {
+    if (!ref) {
+      throw new Error(`a ref is mandatory for a dropdown controller created with "${WrappedComponent.displayName || WrappedComponent.name || 'Component'}"`);
+    }
 
     return (
       <WrappedComponent
-        id={id}
-        className={triggerClassName}
         role="button"
         tabIndex="0"
+        ref={ref}
         {...props}
       />
     );
   };
 
-  WithDropdownControl.propTypes = {
-    className: PropTypes.string,
-    toggleId: PropTypes.string.isRequired,
-  };
-  WithDropdownControl.defaultProps = {
-    className: null,
-  };
   WithDropdownControl.displayName = `WithDropdownControl(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
 
-  return WithDropdownControl;
+  return forwardRef(WithDropdownControl);
 };
-
 
 class Dropdown extends Component {
   static propTypes = {
-    // XXX: refactor id to ref
-    id: PropTypes.string.isRequired,
     alignRight: PropTypes.bool, // force align right
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     className: PropTypes.string,
     closeOnClick: PropTypes.oneOf([CLOSE_ON_CLICK_ALL, CLOSE_ON_CLICK_EXCEPT_SELF, DO_NOT_CLOSE]),
     closeOnScroll: PropTypes.bool, // should Dropdown close on windows scroll ?
     isMenu: PropTypes.bool,
-    position: PropTypes.oneOf(['top', 'bottom']),
     onToggle: PropTypes.func,
-    dropdownRef: PropTypes.func,
+    innerRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+    dropdownControlRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     show: PropTypes.bool,
+    displayFirstLayer: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -65,34 +53,43 @@ class Dropdown extends Component {
     className: null,
     closeOnClick: CLOSE_ON_CLICK_EXCEPT_SELF,
     closeOnScroll: false,
-    position: 'bottom',
     isMenu: false,
     onToggle: str => str,
     show: false,
-    dropdownRef: () => {},
+    innerRef: undefined,
+    dropdownControlRef: undefined,
+    displayFirstLayer: false,
   };
 
   static defaultDropdownStyle = {
-    top: undefined,
-    left: undefined,
+    // force postion in order to have the correct width when calc position
+    top: 0,
+    left: 0,
   };
+
+  constructor(props) {
+    super(props);
+    this.dropdownRef = props.innerRef || createRef();
+  }
 
   state = {
     isOpen: false,
     dropdownStyle: this.constructor.defaultDropdownStyle,
   };
 
+
   componentDidMount() {
-    this.dropdownControl = document.getElementById(`${CONTROL_PREFIX}-${this.props.id}`);
+    const { dropdownControlRef } = this.props;
     this.toggle(this.props.show);
 
     if (this.props.closeOnClick !== DO_NOT_CLOSE) {
       this.unsubscribeClickEvent = addEventListener('click', (ev) => {
         const { target } = ev;
 
-        const dropdownClick = this.dropdown === target || this.dropdown.contains(target);
-        const controlClick = this.dropdownControl &&
-          (this.dropdownControl === target || this.dropdownControl.contains(target));
+        const dropdownClick = this.dropdownRef.current === target ||
+          this.dropdownRef.current.contains(target);
+        const controlClick = dropdownControlRef &&
+          (dropdownControlRef.current === target || dropdownControlRef.current.contains(target));
 
         if (controlClick) {
           this.toggle(!this.state.isOpen);
@@ -152,22 +149,22 @@ class Dropdown extends Component {
   }
 
   updateDropdownStyle = () => {
-    const { alignRight, position } = this.props;
-    const control = this.dropdownControl;
-    const { dropdown } = this;
+    const { alignRight, dropdownControlRef } = this.props;
 
     // if no dropdownControl declared, return empty dropdownStyle
     // otherwise, return new dropdownStyle
-    return control ?
+    return dropdownControlRef ?
       getDropdownStyle({
-        alignRight, position, control, dropdown,
+        alignRight,
+        controlElement: dropdownControlRef.current,
+        dropdownElement: this.dropdownRef.current,
       }) :
       this.constructor.defaultDropdownStyle;
   }
 
   render() {
     const {
-      id, className, children, isMenu, dropdownRef,
+      id, className, children, isMenu, displayFirstLayer,
     } = this.props;
 
     const dropdownProps = {
@@ -176,6 +173,7 @@ class Dropdown extends Component {
         'm-dropdown',
         { 'm-dropdown--is-open': this.state.isOpen },
         { 'm-dropdown--is-menu': isMenu },
+        { 'm-dropdown--display-first-layer': displayFirstLayer },
         className,
       ),
       tabIndex: 0,
@@ -184,11 +182,11 @@ class Dropdown extends Component {
     };
 
     return (
-      <div ref={(node) => { this.dropdown = node; dropdownRef(node); }} {...dropdownProps}>
+      <div ref={this.dropdownRef} {...dropdownProps}>
         {children}
       </div>
     );
   }
 }
 
-export default Dropdown;
+export default forwardRef((props, ref) => <Dropdown {...props} innerRef={ref} />);
