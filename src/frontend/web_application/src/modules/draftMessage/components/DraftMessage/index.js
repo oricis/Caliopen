@@ -87,7 +87,7 @@ const mapStateToProps = createSelector([
 const onEditDraft = ({ internalId, draft, message }) => dispatch =>
   dispatch(saveDraft({ internalId, draft, message }, { withThrottle: true }));
 
-const onSaveDraft = ({ internalId, draft, message }) => async dispatch =>
+const onSaveDraft = ({ internalId, draft, message }) => dispatch =>
   dispatch(saveDraft({ internalId, draft, message }, { force: true }));
 
 const onDeleteMessage = ({ message, internalId }) => async (dispatch) => {

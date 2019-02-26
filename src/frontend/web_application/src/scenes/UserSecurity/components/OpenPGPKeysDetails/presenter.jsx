@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
 import { Icon, Button } from '../../../../components/';
-import { getPrimaryKeysByFingerprint, saveKey } from '../../../../services/openpgp-keychain-repository';
+import { getPrimaryKeysByFingerprint, saveKey, deleteKey } from '../../../../services/openpgp-keychain-repository';
 import { generateKey } from '../../../../services/encryption';
 import OpenPGPKey from '../OpenPGPKey';
 import OpenPGPKeyForm from '../OpenPGPKeyForm';
@@ -55,6 +55,8 @@ class OpenPGPKeysDetails extends Component {
     return error;
   }
 
+  handleDeleteKey = ({ fingerprint }) => deleteKey(fingerprint);
+
   generateAndSaveKeys = async () => {
     const options = {
       userIds: this.getUserEmails(),
@@ -68,22 +70,19 @@ class OpenPGPKeysDetails extends Component {
     return error;
   }
 
-  renderPrivateKey = (keyPair, key) => {
-    const { onDeleteKey } = this.props;
+  renderPrivateKey = (keyPair, key) => (
+    <OpenPGPKey
+      key={key}
+      className="m-account-openpgp__keys"
+      publicKeyArmored={keyPair.publicKeyArmored}
+      privateKeyArmored={keyPair.privateKeyArmored}
+      editMode={this.state.editMode}
+      onDeleteKey={this.handleDeleteKey}
+    >
+      <Icon type="key" />
+    </OpenPGPKey>
+  );
 
-    return (
-      <OpenPGPKey
-        key={key}
-        className="m-account-openpgp__keys"
-        publicKeyArmored={keyPair.publicKeyArmored}
-        privateKeyArmored={keyPair.privateKeyArmored}
-        editMode={this.state.editMode}
-        onDeleteKey={onDeleteKey}
-      >
-        <Icon type="key" />
-      </OpenPGPKey>
-    );
-  }
 
   render() {
     const {
