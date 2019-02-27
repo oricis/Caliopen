@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Better responsiveness on small screens for timeline & discussion & logo
+- Better responsiveness on small screens for dropdowns
 - inversion en/fr for some translations
 
 ## [0.16.0] 2019-02-25
