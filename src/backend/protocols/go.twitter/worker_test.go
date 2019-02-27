@@ -90,29 +90,27 @@ func TestWorker_StartAndStop(t *testing.T) {
 	wg := new(sync.WaitGroup)
 	wg.Add(1)
 	go w.Start(time.Second)
-	go func(wg *sync.WaitGroup) {
-		count := 0
-		_, err := w.NatsConn.Subscribe("twitterJobs", func(msg *nats.Msg) {
-			var req WorkerRequest
-			err := json.Unmarshal(msg.Data, &req)
-			if err != nil {
-				t.Errorf("unable to unmarshal worker's request : %s", err)
-				return
-			}
-			if req.Order.Order != "need_job" {
-				t.Errorf("expected to receive order 'need_job', got %s", req.Order.Order)
-			}
-			count++
-			w.NatsConn.Publish(msg.Reply, []byte(`{"order":"no pending job"}`))
-			if count == 3 {
-				wg.Done()
-				return
-			}
-		})
+	count := 0
+	_, err = w.NatsConn.Subscribe("twitterJobs", func(msg *nats.Msg) {
+		var req WorkerRequest
+		err := json.Unmarshal(msg.Data, &req)
 		if err != nil {
-			t.Error(err)
+			t.Errorf("unable to unmarshal worker's request : %s", err)
+			return
 		}
-	}(wg)
+		if req.Order.Order != "need_job" {
+			t.Errorf("expected to receive order 'need_job', got %s", req.Order.Order)
+		}
+		count++
+		w.NatsConn.Publish(msg.Reply, []byte(`{"order":"no pending job"}`))
+		if count == 3 {
+			wg.Done()
+			return
+		}
+	})
+	if err != nil {
+		t.Error(err)
+	}
 	go func() {
 		wg.Wait()
 		close(c)
@@ -132,7 +130,7 @@ func TestWorker_StartAndStop(t *testing.T) {
 			}
 		}
 		return
-	case <-time.After(40 * time.Second):
+	case <-time.After(5 * time.Second):
 		t.Error("timeout waiting for twitter worker to send requests on nats")
 	}
 }

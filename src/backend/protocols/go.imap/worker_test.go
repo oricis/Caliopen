@@ -99,30 +99,28 @@ func TestWorker_StartAndStop(t *testing.T) {
 	c := make(chan struct{})
 	wg := new(sync.WaitGroup)
 	wg.Add(1)
-	requestsReceived := 0
 	go w.Start(time.Second)
-	go func(wg *sync.WaitGroup, count int) {
-		_, err := w.NatsConn.Subscribe("imapJobs", func(msg *nats.Msg) {
-			var req WorkerRequest
-			err := json.Unmarshal(msg.Data, &req)
-			if err != nil {
-				t.Errorf("unable to unmarshal worker's request : %s", err)
-				return
-			}
-			if req.Order.Order != "need_job" {
-				t.Errorf("expected to receive order 'need_job', got %s", req.Order.Order)
-			}
-			w.NatsConn.Publish(msg.Reply, []byte(`{"order":"no pending job"}`))
-			count++
-			if count == 3 {
-				wg.Done()
-				return
-			}
-		})
+	count := 0
+	_, err = w.NatsConn.Subscribe("imapJobs", func(msg *nats.Msg) {
+		var req WorkerRequest
+		err := json.Unmarshal(msg.Data, &req)
 		if err != nil {
-			t.Error(err)
+			t.Errorf("unable to unmarshal worker's request : %s", err)
+			return
 		}
-	}(wg, requestsReceived)
+		if req.Order.Order != "need_job" {
+			t.Errorf("expected to receive order 'need_job', got %s", req.Order.Order)
+		}
+		w.NatsConn.Publish(msg.Reply, []byte(`{"order":"no pending job"}`))
+		count++
+		if count == 3 {
+			wg.Done()
+			return
+		}
+	})
+	if err != nil {
+		t.Error(err)
+	}
 	go func() {
 		wg.Wait()
 		close(c)
