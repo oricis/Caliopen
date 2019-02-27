@@ -81,7 +81,7 @@ class MailMessage extends Component {
       }
 
       return (
-        <pre className="s-mail-message__content">{isLocked ? 'message chiffré' : message.body}</pre>
+        <pre className="s-mail-message__content">{message.body}</pre>
       );
     }
 
