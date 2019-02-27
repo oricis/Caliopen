@@ -165,14 +165,14 @@ func (worker *Worker) natsMsgHandler(msg *nats.Msg) {
 			Lda:      worker.Lda,
 			Store:    worker.Store,
 		}
-		go syncRemoteWithLocal(&fetcher, message)
+		syncRemoteWithLocal(&fetcher, message)
 	case "fullfetch": // order sent by imapctl to initiate a fetch op for an user
 		fetcher := Fetcher{
 			Hostname: worker.Config.Hostname,
 			Lda:      worker.Lda,
 			Store:    worker.Store,
 		}
-		go fetchRemoteToLocal(&fetcher, message)
+		fetchRemoteToLocal(&fetcher, message)
 	case "deliver": // order sent by api2 to send a draft via remote SMTP/IMAP
 		sender := Sender{
 			Hostname:      worker.Config.Hostname,
@@ -182,7 +182,7 @@ func (worker *Worker) natsMsgHandler(msg *nats.Msg) {
 			OutSMTPtopic:  worker.Config.LDAConfig.OutTopic,
 			Store:         worker.Store,
 		}
-		go sendDraft(&sender, msg)
+		sendDraft(&sender, msg)
 	case "test":
 		log.Info("Order « test » received")
 	}
