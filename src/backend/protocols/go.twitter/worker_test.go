@@ -89,9 +89,9 @@ func TestWorker_StartAndStop(t *testing.T) {
 	c := make(chan struct{})
 	wg := new(sync.WaitGroup)
 	wg.Add(1)
-	requestsReceived := 0
 	go w.Start(time.Second)
-	go func(wg *sync.WaitGroup, count int) {
+	go func(wg *sync.WaitGroup) {
+		count := 0
 		_, err := w.NatsConn.Subscribe("twitterJobs", func(msg *nats.Msg) {
 			var req WorkerRequest
 			err := json.Unmarshal(msg.Data, &req)
@@ -102,8 +102,8 @@ func TestWorker_StartAndStop(t *testing.T) {
 			if req.Order.Order != "need_job" {
 				t.Errorf("expected to receive order 'need_job', got %s", req.Order.Order)
 			}
-			w.NatsConn.Publish(msg.Reply, []byte(`{"order":"no pending job"}`))
 			count++
+			w.NatsConn.Publish(msg.Reply, []byte(`{"order":"no pending job"}`))
 			if count == 3 {
 				wg.Done()
 				return
@@ -112,7 +112,7 @@ func TestWorker_StartAndStop(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
-	}(wg, requestsReceived)
+	}(wg)
 	go func() {
 		wg.Wait()
 		close(c)
@@ -132,8 +132,8 @@ func TestWorker_StartAndStop(t *testing.T) {
 			}
 		}
 		return
-	case <-time.After(30 * time.Second):
-		t.Error("timeout waiting for worker to send requests on nats")
+	case <-time.After(10 * time.Second):
+		t.Error("timeout waiting for twitter worker to send requests on nats")
 	}
 }
 
