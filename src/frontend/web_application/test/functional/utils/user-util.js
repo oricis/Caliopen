@@ -15,9 +15,9 @@ module.exports = {
   signout: () => { browser.get('/auth/signout'); },
   showAccount: async (pageName) => {
     const userMenu = element(by.css('.l-header__user-menu'));
-    userMenu.element(by.css('.m-dropdown__trigger')).click();
+    userMenu.element(by.css('.m-button')).click();
     userMenu.element(by.cssContainingText('.m-link', 'Account')).click();
-    userMenu.element(by.css('.m-dropdown__trigger')).click();
+    userMenu.element(by.css('.m-button')).click();
 
     const result = await browser.wait(EC.urlContains('user/profile'), 5 * 1000);
 
@@ -27,7 +27,7 @@ module.exports = {
 
     return result;
   },
-  showSettings: (pageName = null) => element(by.css('.m-user-menu .m-dropdown__trigger')).click()
+  showSettings: (pageName = null) => element(by.css('.m-user-menu .m-button')).click()
     .then(() => element(by.cssContainingText('.m-user-menu .m-link', 'Settings')).click())
     .then(() => {
       if (!pageName) {
