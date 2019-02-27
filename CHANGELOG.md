@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+- Test for imap worker, twitter worker and identities worker
+
 ### Fixed
 
 - Better responsiveness on small screens for timeline & discussion & logo
