@@ -219,10 +219,6 @@ class Message(ObjectIndexable):
         if "message_id" not in params and self.message_id:
             draft_param.message_id = UUIDType().to_native(self.message_id)
 
-        if "discussion_id" not in params and self.discussion_id:
-            discussion_id = UUIDType().to_native(self.discussion_id)
-            draft_param.discussion_id = discussion_id
-
         if "parent_id" not in params and self.parent_id:
             draft_param.parent_id = UUIDType().to_native(self.parent_id)
 
@@ -253,8 +249,7 @@ class Message(ObjectIndexable):
         # remove empty UUIDs from current state if any
         if "parent_id" in current_state and current_state["parent_id"] == "":
             del (current_state["parent_id"])
-        if "discussion_id" in current_state and \
-                current_state["discussion_id"] == "":
+        if "discussion_id" in current_state:
             del (current_state["discussion_id"])
 
         # handle body key mapping to body_plain or body_html
