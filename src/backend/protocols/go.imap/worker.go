@@ -110,7 +110,7 @@ func (worker *Worker) Start(throttling ...time.Duration) error {
 		return err
 	}
 	worker.NatsConn.Flush()
-	log.Infof("IMAP worker %s started", worker.Id)
+	log.Infof("IMAP worker %s starting with %d sec throttling", worker.Id, throttle/time.Second)
 
 	// start throttled jobs polling
 	for {

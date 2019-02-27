@@ -162,7 +162,6 @@ func InitWorker(conf WorkerConfig, verboseLog bool, id string) (worker *Worker, 
 }
 
 func (worker *Worker) Start(throttling ...time.Duration) {
-	log.Infof("Twitter worker %s started", worker.Id)
 	var throttle time.Duration
 	if len(throttling) == 1 && throttling[0] != 0 {
 		throttle = throttling[0]
@@ -170,6 +169,7 @@ func (worker *Worker) Start(throttling ...time.Duration) {
 		throttle = pollThrottling
 	}
 	// start throttled jobs polling
+	log.Infof("Twitter worker %s starting with %d sec throttling", worker.Id, throttle/time.Second)
 	for {
 		start := time.Now()
 		requestOrder := []byte(fmt.Sprintf(needJobOrderStr, worker.Id))
