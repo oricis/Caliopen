@@ -132,7 +132,7 @@ func TestWorker_StartAndStop(t *testing.T) {
 			}
 		}
 		return
-	case <-time.After(10 * time.Second):
+	case <-time.After(40 * time.Second):
 		t.Error("timeout waiting for twitter worker to send requests on nats")
 	}
 }

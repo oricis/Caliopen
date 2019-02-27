@@ -174,7 +174,7 @@ func (worker *Worker) Start(throttling ...time.Duration) {
 		start := time.Now()
 		requestOrder := []byte(fmt.Sprintf(needJobOrderStr, worker.Id))
 		log.Infof("Twitter worker %s is requesting jobs to idpoller", worker.Id)
-		resp, err := worker.NatsConn.Request(worker.Conf.BrokerConfig.NatsTopicPoller, requestOrder, 30*time.Second)
+		resp, err := worker.NatsConn.Request(worker.Conf.BrokerConfig.NatsTopicPoller, requestOrder, time.Minute)
 		if err != nil {
 			log.WithError(err).Warnf("[worker %s] failed to request pending jobs on nats", worker.Id)
 		} else {
