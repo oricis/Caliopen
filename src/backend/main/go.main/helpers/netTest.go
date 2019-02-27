@@ -1,0 +1,87 @@
+// Copyleft (ɔ) 2019 The Caliopen contributors.
+// Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
+// license (AGPL) that can be found in the LICENSE file.
+
+package helpers
+
+import (
+	"crypto/rsa"
+	"crypto/tls"
+	"encoding/hex"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"math/big"
+	"net"
+	"time"
+)
+
+// netTest provides mocked network structs and interfaces to run tests which need networking
+
+var (
+	tlsConfig          *tls.Config
+	testRSACertificate = fromHex("3082024b308201b4a003020102020900e8f09d3fe25beaa6300d06092a864886f70d01010b0500301f310b3009060355040a1302476f3110300e06035504031307476f20526f6f74301e170d3136303130313030303030305a170d3235303130313030303030305a301a310b3009060355040a1302476f310b300906035504031302476f30819f300d06092a864886f70d010101050003818d0030818902818100db467d932e12270648bc062821ab7ec4b6a25dfe1e5245887a3647a5080d92425bc281c0be97799840fb4f6d14fd2b138bc2a52e67d8d4099ed62238b74a0b74732bc234f1d193e596d9747bf3589f6c613cc0b041d4d92b2b2423775b1c3bbd755dce2054cfa163871d1e24c4f31d1a508baab61443ed97a77562f414c852d70203010001a38193308190300e0603551d0f0101ff0404030205a0301d0603551d250416301406082b0601050507030106082b06010505070302300c0603551d130101ff0402300030190603551d0e041204109f91161f43433e49a6de6db680d79f60301b0603551d230414301280104813494d137e1631bba301d5acab6e7b30190603551d1104123010820e6578616d706c652e676f6c616e67300d06092a864886f70d01010b0500038181009d30cc402b5b50a061cbbae55358e1ed8328a9581aa938a495a1ac315a1a84663d43d32dd90bf297dfd320643892243a00bccf9c7db74020015faad3166109a276fd13c3cce10c5ceeb18782f16c04ed73bbb343778d0c1cf10fa1d8408361c94c722b9daedb4606064df4c1b33ec0d1bd42d4dbfe3d1360845c21d33be9fae7")
+	testRSAPrivateKey  = &rsa.PrivateKey{
+		PublicKey: rsa.PublicKey{
+			N: bigFromString("153980389784927331788354528594524332344709972855165340650588877572729725338415474372475094155672066328274535240275856844648695200875763869073572078279316458648124537905600131008790701752441155668003033945258023841165089852359980273279085783159654751552359397986180318708491098942831252291841441726305535546071"),
+			E: 65537,
+		},
+		D: bigFromString("7746362285745539358014631136245887418412633787074173796862711588221766398229333338511838891484974940633857861775630560092874987828057333663969469797013996401149696897591265769095952887917296740109742927689053276850469671231961384712725169432413343763989564437170644270643461665184965150423819594083121075825"),
+		Primes: []*big.Int{
+			bigFromString("13299275414352936908236095374926261633419699590839189494995965049151460173257838079863316944311313904000258169883815802963543635820059341150014695560313417"),
+			bigFromString("11578103692682951732111718237224894755352163854919244905974423810539077224889290605729035287537520656160688625383765857517518932447378594964220731750802463"),
+		},
+	}
+)
+
+func init() {
+	tlsConfig = &tls.Config{
+		Time:               func() time.Time { return time.Unix(0, 0) },
+		Rand:               zeroSource{},
+		Certificates:       make([]tls.Certificate, 1),
+		InsecureSkipVerify: true,
+		MinVersion:         tls.VersionSSL30,
+		MaxVersion:         tls.VersionTLS12,
+		CipherSuites:       allCipherSuites(),
+	}
+	tlsConfig.Certificates[0].Certificate = [][]byte{testRSACertificate}
+	tlsConfig.Certificates[0].PrivateKey = testRSAPrivateKey
+	tlsConfig.BuildNameToCertificate()
+}
+
+// GetTlsConn returns a tls Conn suitable fo tests
+func GetTestTlsConn() *tls.Conn {
+	_, serverConn := net.Pipe()
+	return tls.Server(serverConn, tlsConfig.Clone())
+}
+
+// zeroSource is an io.Reader that returns an unlimited number of zero bytes.
+type zeroSource struct{}
+
+func (zeroSource) Read(b []byte) (n int, err error) {
+	for i := range b {
+		b[i] = 0
+	}
+
+	return len(b), nil
+}
+
+func fromHex(s string) []byte {
+	b, _ := hex.DecodeString(s)
+	return b
+}
+
+func bigFromString(s string) *big.Int {
+	ret := new(big.Int)
+	ret.SetString(s, 10)
+	return ret
+}
+
+func allCipherSuites() []uint16 {
+	ids := make([]uint16, len(TlsSuites))
+	var i int
+	for id := range TlsSuites {
+		ids[i] = id
+		i++
+	}
+
+	return ids
+}
