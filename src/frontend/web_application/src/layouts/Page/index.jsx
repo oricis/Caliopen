@@ -47,13 +47,13 @@ class Page extends Component {
             </PageContainer>
           </div> */}
           <div className="l-header">
-            <PageContainer>
-              <Link to="/"><Brand className="l-header__brand" /></Link>
+            <PageContainer className="l-header__container">
+              <Link to="/"className="l-header__brand-link"><Brand className="l-header__brand" responsive /></Link>
               {/* <div className="l-header__notif-menu"><Button href="#"><Icon type="bell"
               /></Button></div> */}
               <div className="l-header__take-a-tour">
                 <DropdownControl toggleId="co-help-menu" icon="info-circle" display="inline-block">
-                  <Trans id="header.help.menu">Help & info</Trans>
+                  <span className="l-header__button-label"><Trans id="header.help.menu">Help & info</Trans></span>
                   <Icon type={this.state.isDropdownHelpOpen ? 'caret-up' : 'caret-down'} />
                 </DropdownControl>
                 <Dropdown
