@@ -311,6 +311,7 @@ class RecipientList extends Component {
             onBlur={this.handleSearchInputBlur}
           />
           <Dropdown
+            className="m-recipient-list__dropdown"
             show={this.state.searchTerms ?
               (searchResults.length > 0 && this.state.searchOpened) : false
             }

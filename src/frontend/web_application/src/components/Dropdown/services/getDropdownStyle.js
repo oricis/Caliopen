@@ -1,5 +1,6 @@
 const HEADER__HEIGHT = 42;
 
+// FIXME: how to calc when there is no controlElement?
 export const getDropdownStyle = ({
   alignRight = false, controlElement, dropdownElement, win = window,
 }) => {
