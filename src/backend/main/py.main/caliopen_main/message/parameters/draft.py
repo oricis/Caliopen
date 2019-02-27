@@ -10,12 +10,8 @@ from caliopen_main.message.parameters.participant import Participant
 from caliopen_main.message.parameters.external_references import \
     ExternalReferences
 from caliopen_storage.exception import NotFound
-from caliopen_main.discussion.store.discussion_index import \
-    DiscussionIndexManager as DIM
 from caliopen_main.message.store import Message as ModelMessage
-from caliopen_main.discussion.core import Discussion
-from caliopen_main.common.errors import PatchUnprocessable, PatchConflict
-from caliopen_main.common.errors import PatchError
+from caliopen_main.common.errors import PatchUnprocessable
 
 import logging
 
@@ -53,36 +49,17 @@ class Draft(NewInboundMessage):
         except Exception as exc:
             log.exception("draft validation failed with error {}".format(exc))
             raise exc
-        # copy body to body_plain TODO : manage plain or html depending on user pref.
+        # copy body to body_plain TODO : manage plain or html switch user pref
         if hasattr(self, "body") and self.body is not None:
             self.body_plain = self.body
         else:
             self.body = self.body_plain = ""
-        # check discussion consistency and get last message from discussion
-        last_message = self._check_discussion_consistency(user)
-        if last_message is not None:
-            # check subject consistency
-            # (https://www.wikiwand.com/en/List_of_email_subject_abbreviations)
-            # for now, we use standard prefix «Re: » (RFC5322#section-3.6.5)
-            p = re.compile(
-                '([\[\(] *)?(RE?S?|FYI|RIF|I|FS|VB|RV|ENC|ODP|PD|YNT|ILT|SV|VS|VL|AW|WG|ΑΠ|ΣΧΕΤ|ΠΡΘ|תגובה|הועבר|主题|转发|FWD?) *([-:;)\]][ :;\])-]*|$)|\]+ *$',
-                re.IGNORECASE)
-            if hasattr(self, 'subject') and self.subject is not None:
-                if p.sub('', self.subject).strip() != p.sub('',
-                                                            last_message.subject).strip():
-                    raise PatchConflict(message="subject has been changed")
-            else:
-                # no subject property provided :
-                # add subject from context with only one "Re: " prefix
-                self.subject = "Re: " + p.sub('', last_message.subject).strip()
 
-                # TODO: prevent modification of protected attributes
-                # below attributes should not be editable by patch:
-                # - tags
-        else:
-            # fill <from> field consistently
-            # based on current user's selected identity
-            self._add_from_participant(user)
+        # fill <from> field consistently
+        # based on current user's selected identity
+        self._add_from_participant(user)
+        if self.parent_id:
+            self._update_external_references(self, user)
 
     def _add_from_participant(self, user):
 
@@ -124,103 +101,6 @@ class Draft(NewInboundMessage):
             self.protocol = from_participant.protocol
 
         return from_participant
-
-    def _check_discussion_consistency(self, user):
-        from caliopen_main.message.objects.message import Message
-        new_discussion = False
-        if not hasattr(self, 'discussion_id') or self.discussion_id == "" \
-                or self.discussion_id is None:
-            # no discussion_id provided. Try to find one with draft's parent_id
-            # or create new discussion
-            if hasattr(self, 'parent_id') \
-                    and self.parent_id is not None \
-                    and self.parent_id != "":
-                parent_msg = Message(user, message_id=self.parent_id)
-                try:
-                    parent_msg.get_db()
-                    parent_msg.unmarshall_db()
-                except NotFound:
-                    raise PatchError(message="parent message not found")
-                self.discussion_id = parent_msg.discussion_id
-            else:
-                discussion = Discussion.create_from_message(user, self)
-                self.discussion_id = discussion.discussion_id
-                new_discussion = True
-        if not new_discussion:
-            dim = DIM(user)
-            d_id = self.discussion_id
-            last_message = dim.get_last_message(d_id, -10, 10, True)
-            if last_message == {}:
-                raise PatchError(message='No such discussion {}'.format(d_id))
-            is_a_reply = (str(last_message.message_id) != str(self.message_id))
-            if is_a_reply:
-                # check participants consistency
-                if hasattr(self, "participants") and len(self.participants) > 0:
-                    participants = [p['address'] for p in self.participants]
-                    last_msg_participants = [p['address'] for p in
-                                             last_message.participants]
-                    if len(participants) != len(last_msg_participants):
-                        raise PatchError(
-                            message="list of participants "
-                                    "is not consistent for this discussion")
-                    participants.sort()
-                    last_msg_participants.sort()
-
-                    for i, participant in enumerate(participants):
-                        if participant != last_msg_participants[i]:
-                            msg = "list of participants is not consistent " \
-                                "for this discussion"
-                            raise PatchConflict(message=msg)
-                else:
-                    self.build_participants_for_reply(user)
-
-                # check parent_id consistency
-                if 'parent_id' in self and self.parent_id != "" \
-                        and self.parent_id is not None:
-                    if not dim.message_belongs_to(
-                            discussion_id=self.discussion_id,
-                            message_id=self.parent_id):
-                        msg = "provided message parent_id does not belong " \
-                            "to this discussion"
-                        raise PatchConflict(message=msg)
-                else:
-                    self.parent_id = last_message.parent_id
-
-                self.update_external_references(user)
-
-            else:
-                last_message = None
-        else:
-            last_message = None
-
-        return last_message
-
-    def build_participants_for_reply(self, user):
-        """
-        build participants list from last message in discussion.
-        - former 'From' recipients are replaced by 'To' recipients
-        - provided identity is used to fill the new 'From' participant
-        - new sender is removed from former recipients
-        """
-        dim = DIM(user)
-        d_id = self.discussion_id
-        last_message = dim.get_last_message(d_id, -10, 10, False)
-        for i, participant in enumerate(last_message["participants"]):
-            if re.match("from", participant['type'], re.IGNORECASE):
-                participant["type"] = "To"
-                self.participants.append(participant)
-            else:
-                self.participants.append(participant)
-
-        # add sender
-        # and remove it from previous recipients
-        sender = self._add_from_participant(user)
-        for i, participant in enumerate(self.participants):
-            if participant['address'] == sender.address:
-                if re.match("to", participant['type'], re.IGNORECASE) or \
-                        re.match("cc", participant['type'], re.IGNORECASE) or \
-                        re.match("bcc", participant['type'], re.IGNORECASE):
-                    self.participants.pop(i)
 
     def update_external_references(self, user):
         """
