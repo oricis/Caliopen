@@ -37,11 +37,11 @@ class LockedMessage extends PureComponent {
 
   render() {
     return (
-      <div className="m-encryption-locked_message">
-        <div className="m-encryption-locked_message__message">
-          <Icon type="lock" className="m-encryption-locked_message__icon" />
+      <div className="m-encryption-locked-message">
+        <div className="m-encryption-locked-message__message">
+          <Icon type="lock" className="m-encryption-locked-message__icon" />
           <Trans id="encryption.locked-message.primary-text">Le contenu de ce message est chiffré.</Trans><br />
-          <span className="m-encryption-locked_message__status m-encryption-locked_message__status--error">{this.renderStatusText()}</span>
+          <span className="m-encryption-locked-message__status m-encryption-locked-message__status--error">{this.renderStatusText()}</span>
         </div>
       </div>
     );
