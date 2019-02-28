@@ -55,7 +55,7 @@ class OpenPGPKeysDetails extends Component {
     return error;
   }
 
-  handleDeleteKey = ({ fingerprint }) => deleteKey(fingerprint);
+  handleDeleteKey = async ({ fingerprint }) => deleteKey(fingerprint);
 
   generateAndSaveKeys = async () => {
     const options = {

@@ -1,28 +1,87 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Trans, withI18n } from '@lingui/react';
+import classNames from 'classnames';
+import { FieldErrors } from '../../../../components';
 import { setPassphrase } from '../../../../store/modules/encryption';
+
+import './style.scss';
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onSubmit: passphrase =>
     dispatch(setPassphrase({ passphrase, fingerprint: ownProps.fingerprint })),
 });
 
-@connect(null, mapDispatchToProps)
+const mapStateToProps = (state, ownProps) => ({
+  error: state.encryption.privateKeysByFingerprint[ownProps.fingerprint].error,
+});
+
+@withI18n()
+@connect(mapStateToProps, mapDispatchToProps)
 class AskPassphraseForm extends Component {
   static propTypes = {
+    numberMessages: PropTypes.number.isRequired,
     fingerprint: PropTypes.string.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    className: PropTypes.string,
+    error: PropTypes.string,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
+  static defaultProps = {
+    className: '',
+    error: undefined,
+  }
+
+  state = {
+    passphrase: '',
+  };
+
+  getErrorId = (message) => {
+    const { i18n } = this.props;
+
+    switch (message) {
+      case 'Incorrect key passphrase':
+        return i18n._('encryption.ask-passphrase.error.invalid-passphrase', null, 'Invalid passphrase');
+      default:
+        return i18n._('encrytion.ask-passphrase.error.unknown', null, 'Unknown error');
+    }
+  }
+
+  handleChange = event => this.setState({ passphrase: event.target.value });
+
+  handleSubmit = (event) => {
+    const { onSubmit } = this.props;
+
+    onSubmit(this.state.passphrase);
+    event.preventDefault();
+  }
+
   render() {
-    const { fingerprint, onSubmit } = this.props;
+    const {
+      error, className, fingerprint, numberMessages,
+    } = this.props;
 
     return (
-      <form className="m-AskPassphrase" onSubmit={onSubmit}>
+      <form className={classNames(className, 'm-ask-passphrase')} onSubmit={this.handleSubmit}>
+        <Trans id="encryption.ask-passphrase.explain">
+          Please enter passphrase for key {`${fingerprint}`} to unlock {`${numberMessages}`} messages.
+        </Trans>
+        {
+          error &&
+            <FieldErrors errors={[this.getErrorId(error)]} />
+        }
         <label htmlFor={`ask-passphrase-${fingerprint}`}>{fingerprint}</label>
-        <input type="password" id={`ask-passphrase-${fingerprint}`} />
-        <button type="submit">Ok</button>
+        <input
+          type="password"
+          value={this.state.passphrase}
+          onChange={this.handleChange}
+          id={`ask-passphrase-${fingerprint}`}
+        />
+        <button type="submit">
+          <Trans id="encryption.ask-passphrase.validate">Validate</Trans>
+        </button>
       </form>
     );
   }

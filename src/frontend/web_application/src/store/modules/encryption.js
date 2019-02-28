@@ -1,5 +1,6 @@
 export const ASK_PASSPHRASE = 'co/encryption/ASK_PASSPHRASE';
 export const SET_PASSPHRASE = 'co/encryption/SET_PASSPHRASE';
+export const SET_PASSPHRASE_SUCCESS = 'co/encryption/SET_PASSPHRASE_SUCCESS';
 export const RESET_PASSPHRASE = 'co/encryption/RESET_PASSPHRASE';
 export const NEED_PASSPHRASE = 'co/encryption/NEED_PASSPHRASE';
 export const NEED_PRIVATEKEY = 'co/encryption/NEED_PRIVATEKEY';
@@ -10,11 +11,12 @@ export const DECRYPT_MESSAGE = 'co/encryption/DECRYPT_MESSAGE';
 export const DECRYPT_MESSAGE_SUCCESS = 'co/encryption/DECRYPT_MESSAGE_SUCCESS';
 export const DECRYPT_MESSAGE_FAIL = 'co/encryption/DECRYPT_MESSAGE_FAIL';
 
-export function askPassphrase({ fingerprint }) {
+export function askPassphrase({ fingerprint, error }) {
   return {
     type: ASK_PASSPHRASE,
     payload: {
       fingerprint,
+      error,
     },
   };
 }
@@ -28,6 +30,16 @@ export function setPassphrase({ fingerprint, passphrase }) {
     },
   };
 }
+
+export function setPassphraseSuccess({ fingerprint }) {
+  return {
+    type: SET_PASSPHRASE_SUCCESS,
+    payload: {
+      fingerprint,
+    },
+  };
+}
+
 
 export function resetPassphrase({ fingerprint }) {
   return {
@@ -120,6 +132,7 @@ export default function reducer(state = initialState, action) {
           [action.payload.fingerprint]: {
             status: 'ask',
             passphrase: undefined,
+            error: action.payload.error,
           },
         },
       };
@@ -131,6 +144,7 @@ export default function reducer(state = initialState, action) {
           [action.payload.fingerprint]: {
             status: 'ok',
             passphrase: action.payload.passphrase,
+            error: undefined,
           },
         },
       };

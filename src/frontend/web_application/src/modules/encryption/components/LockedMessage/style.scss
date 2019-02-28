@@ -9,7 +9,6 @@
 
   &__message {
     position: relative;
-    z-index: 1;
     margin: $co-margin 6rem $co-margin 4rem;
     padding: map_get($co-margin_, 'xsmall');
     border-radius: 3rem;
@@ -33,7 +32,7 @@
 
   &__status {
     &--error {
-      color: $co-color__alert;
+      color: map_get($caliopen-palette, 'alert');
     }
   }
 }

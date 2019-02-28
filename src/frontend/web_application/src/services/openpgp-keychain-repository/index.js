@@ -76,7 +76,7 @@ export async function saveKey(publicKeyArmored, privateKeyArmored) {
 }
 
 export async function deleteKey(fingerprint) {
-  const keyring = await getKeyring();
+  const keyring = await loadKeyring();
 
   keyring.removeKeysForId(fingerprint);
   const error = await keyring.store();

@@ -1,7 +1,7 @@
 // Renaming REQUEST_DRAFT_SUCCESS actions for disambiguation.
 import { decryptDraftSuccess, REQUEST_DRAFT_SUCCESS as DRAFT_REQUEST_DRAFT_SUCCESS } from '../modules/draft-message';
 import { FETCH_MESSAGES_SUCCESS, REQUEST_MESSAGE_SUCCESS, REQUEST_MESSAGES_SUCCESS, REQUEST_DRAFT_SUCCESS as MESSAGE_REQUEST_DRAFT_SUCCESS } from '../modules/message';
-import { askPassphrase, needPassphrase, needPrivateKey, decryptMessage as decryptMessageStart, decryptMessageSuccess, decryptMessageFail, SET_PASSPHRASE } from '../modules/encryption';
+import { askPassphrase, needPassphrase, setPassphraseSuccess, resetPassphrase, needPrivateKey, decryptMessage as decryptMessageStart, decryptMessageSuccess, decryptMessageFail, SET_PASSPHRASE, SET_PASSPHRASE_SUCCESS } from '../modules/encryption';
 import { getKeysForMessage } from '../../services/openpgp-keychain-repository';
 import { isMessageEncrypted, decryptMessage } from '../../services/encryption';
 
@@ -28,6 +28,7 @@ const getKeyPassphrase = (state, fingerprint) => {
     privateKeysByFingerprint[fingerprint].passphrase;
 };
 
+// XXX refactor this ASAP
 const decryptMessageAction = async (state, dispatch, message) => {
   if (!isMessageEncrypted(message)) {
     return message;
@@ -50,7 +51,16 @@ const decryptMessageAction = async (state, dispatch, message) => {
 
       if (usableKey) {
         passphrase = getKeyPassphrase(state, usableKey.getFingerprint());
-        await usableKey.decrypt(passphrase);
+        try {
+          await usableKey.decrypt(passphrase);
+        } catch (e) {
+          dispatch(askPassphrase({
+            fingerprint: usableKey.getFingerprint(),
+            error: e.message,
+          }));
+
+          return message;
+        }
       }
     }
 
@@ -84,13 +94,18 @@ const findMessagesEncryptedWithKey = (state, fingerprint) => {
   const { messageEncryptionStatusById } = state.encryption;
 
   return Object.values(messageEncryptionStatusById)
-    .filter(messageEntry => fingerprint === messageEntry.keyFingerprint);
+    .filter(messageEntry => messageEntry.keyFingerprint &&
+      Object.values(messageEntry.keyFingerprint).includes(fingerprint));
 };
 
 const setPassphraseAction = (state, dispatch, action) => {
-  const messages = findMessagesEncryptedWithKey(state, action.payload.fingerprint);
+  const { fingerprint } = action.payload;
+  const messages = findMessagesEncryptedWithKey(state, fingerprint)
+    .map(message => message.encryptedMessage);
 
   decryptMessagesAction(state, dispatch, messages);
+  // discard passphrase after 20 minutes
+  setTimeout(() => dispatch(resetPassphrase({ fingerprint })), 12000000);
 };
 
 export default store => next => async (action) => {
@@ -109,12 +124,13 @@ export default store => next => async (action) => {
 
       return next(action);
     case SET_PASSPHRASE:
-      store.dispatch(action);
+      next(action);
+
+      return store.dispatch(setPassphraseSuccess({ fingerprint: action.payload.fingerprint }));
+    case SET_PASSPHRASE_SUCCESS:
       setPassphraseAction(store.getState(), store.dispatch, action);
-      // decrypt message
-      // init setTimeout to reset key
-      // forward passphrase to redux.
-      break;
+
+      return next(action);
     default:
       break;
   }

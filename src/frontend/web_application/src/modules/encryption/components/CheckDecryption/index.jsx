@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'redux';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { Trans } from '@lingui/react';
-import { AskPassphraseForm } from '../AskPassphraseForm';
+import AskPassphraseForm from '../AskPassphraseForm';
+
+import './style.scss';
 
 const messageEncryptionStatusSelector = state => state.encryption.messageEncryptionStatusById;
 const lockedMessagesSelector = messagesIds => createSelector(
@@ -15,7 +17,7 @@ const lockedMessagesSelector = messagesIds => createSelector(
       if (messageStatus && messageStatus.status === 'need_passphrase') {
         return {
           ...acc,
-          [messageStatus.fingerprint]: acc[messageStatus.fingerprint] + 1,
+          [messageStatus.keyFingerprint]: (acc[messageStatus.keyFingerprint] || 0) + 1,
         };
       }
 
@@ -35,8 +37,8 @@ class CheckDecryption extends Component {
     // message is mandatory for mapStateToProps calculation.
     // eslint-disable-next-line react/no-unused-prop-types
     messages: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    lockedMessagesByKey: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    keyLessMessages: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    lockedMessagesByKey: PropTypes.shape({}).isRequired,
+    keyLessMessages: PropTypes.number.isRequired,
   };
 
   render() {
@@ -49,6 +51,7 @@ class CheckDecryption extends Component {
             fingerprint={fingerprint}
             numberMessages={numberMessages}
             key={fingerprint}
+            className="m-check-decryption-panel"
           />
         ))}
         {(keyLessMessages > 0) && (
