@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Trans, withI18n } from '@lingui/react';
 import classNames from 'classnames';
-import { FieldErrors } from '../../../../components';
+import { FieldErrors, TextFieldGroup, Button, FormGrid, FormRow, FormColumn } from '../../../../components/';
 import { setPassphrase } from '../../../../store/modules/encryption';
 
 import './style.scss';
@@ -64,25 +64,36 @@ class AskPassphraseForm extends Component {
     } = this.props;
 
     return (
-      <form className={classNames(className, 'm-ask-passphrase')} onSubmit={this.handleSubmit}>
-        <Trans id="encryption.ask-passphrase.explain">
-          Please enter passphrase for key {`${fingerprint}`} to unlock {`${numberMessages}`} messages.
-        </Trans>
-        {
-          error &&
-            <FieldErrors errors={[this.getErrorId(error)]} />
-        }
-        <label htmlFor={`ask-passphrase-${fingerprint}`}>{fingerprint}</label>
-        <input
-          type="password"
-          value={this.state.passphrase}
-          onChange={this.handleChange}
-          id={`ask-passphrase-${fingerprint}`}
-        />
-        <button type="submit">
-          <Trans id="encryption.ask-passphrase.validate">Validate</Trans>
-        </button>
-      </form>
+      <FormGrid className={classNames(className, 'm-ask-passphrase')}>
+        <form onSubmit={this.handleSubmit}>
+          <Trans id="encryption.ask-passphrase.explain" values={{ fingerprint, numberMessages }}>
+            Please enter passphrase for key {`${fingerprint}`} to unlock {`${numberMessages}`} messages.
+          </Trans>
+          {
+            error &&
+              <FormRow>
+                <FormColumn>
+                  <FieldErrors errors={[this.getErrorId(error)]} />
+                </FormColumn>
+              </FormRow>
+          }
+          <FormRow>
+            <FormColumn>
+              <TextFieldGroup
+                type="password"
+                name={`passphrase-${fingerprint}`}
+                value={this.state.passphrase}
+                onChange={this.handleChange}
+              />
+            </FormColumn>
+            <FormColumn>
+              <Button type="submit" shape="plain">
+                <Trans id="encryption.ask-passphrase.validate">Validate</Trans>
+              </Button>
+            </FormColumn>
+          </FormRow>
+        </form>
+      </FormGrid>
     );
   }
 }

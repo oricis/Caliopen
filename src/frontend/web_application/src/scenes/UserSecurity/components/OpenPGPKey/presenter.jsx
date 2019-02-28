@@ -9,7 +9,7 @@ import './style.scss';
 
 async function generateStateFromProps({ props, getKeyFromASCII, keyStatuses }) {
   const publicKey = await getKeyFromASCII(props.publicKeyArmored);
-  const { primaryKey: { fingerprint, created, algorithm } } = publicKey;
+  const { primaryKey: { created, algorithm } } = publicKey;
   const { user: { userId: { userid: userId } } } = await publicKey.getPrimaryUser();
   const { expirationTime } = await publicKey.getExpirationTime();
   const { bits: bitSize } = await publicKey.primaryKey.getAlgorithmInfo();
@@ -17,7 +17,7 @@ async function generateStateFromProps({ props, getKeyFromASCII, keyStatuses }) {
   return {
     isLoading: false,
     openpgpKey: {
-      fingerprint,
+      fingerprint: publicKey.getFingerprint(),
       created,
       algorithm,
       userId,

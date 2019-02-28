@@ -29,8 +29,9 @@ class LockedMessage extends PureComponent {
       case 'need_privatekey':
         return <Trans id="encryption.locked-message.status.need_privatekey">No available private key can decrypt this message.</Trans>;
       case 'error':
-      default:
         return <Trans id="encryption.locked-message.status.error">Error while trying to decrypt.</Trans>;
+      default:
+        return <Trans id="encryption.locked-message.status.no-detail">Error while trying to decrypt.</Trans>;
     }
   };
 

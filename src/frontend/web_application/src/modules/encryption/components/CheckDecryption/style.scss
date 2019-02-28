@@ -1,4 +1,5 @@
 @import '../../../../styles/common';
+@import '../../../../styles/util/breakpoint';
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
 $fa-font-path: '../../../../../node_modules/font-awesome/fonts';
 @import 'font-awesome';
@@ -27,9 +28,16 @@ $fa-font-path: '../../../../../node_modules/font-awesome/fonts';
     text-align: center;
   }
 
-  max-width: $co-site-width;
   padding: map_get($co-margin_, 'small');
   border-top: map_get($co-margin_, 'xsmall') solid $co-color__primary;
   background-color: $co-color__fg__back;
   overflow: hidden;
+
+  @include breakpoint(medium) {
+    max-width: $co-site-width - map_get($co-page-container-paddings, 'medium') * 2;
+  }
+
+  @include breakpoint(xlarge) {
+    max-width: $co-site-width - map_get($co-page-container-paddings, 'xlarge') * 2;
+  }
 }

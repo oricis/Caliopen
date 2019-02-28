@@ -25,11 +25,7 @@ class OpenPGPKeysDetails extends Component {
   };
 
   componentDidMount() {
-    getPrimaryKeysByFingerprint()
-      .then(keys => this.setState({
-        ...this.state,
-        keys,
-      }));
+    this.updateKeyState({});
   }
 
   getPrivateKeys = () => Object.values(this.state.keys || {});
@@ -43,6 +39,15 @@ class OpenPGPKeysDetails extends Component {
     return null;
   }
 
+  updateKeyState = newState =>
+    getPrimaryKeysByFingerprint()
+      .then(keys => this.setState({
+        ...this.state,
+        ...newState,
+        keys,
+      }));
+
+
   handleClickEditMode = () => {
     this.setState(prevState => ({
       editMode: !prevState.editMode,
@@ -51,21 +56,29 @@ class OpenPGPKeysDetails extends Component {
 
   importKeys = async ({ publicKeyArmored, privateKeyArmored }) => {
     const error = await saveKey(publicKeyArmored, privateKeyArmored);
+    const newState = error ? {} : { importForm: {} };
+    this.updateKeyState(newState);
 
     return error;
   }
 
-  handleDeleteKey = async ({ fingerprint }) => deleteKey(fingerprint);
+  handleDeleteKey = async ({ fingerprint }) => {
+    await deleteKey(fingerprint);
 
-  generateAndSaveKeys = async () => {
+    this.updateKeyState({});
+  };
+
+  generateAndSaveKeys = async (generateForm) => {
     const options = {
-      userIds: this.getUserEmails(),
+      passphrase: generateForm.passphrase,
+      userIds: generateForm.email,
       numbits: 4096,
     };
 
     const { privateKeyArmored, publicKeyArmored } = await generateKey(options);
-
     const error = await saveKey(publicKeyArmored, privateKeyArmored);
+    const newState = error ? {} : { importForm: {} };
+    this.updateKeyState(newState);
 
     return error;
   }

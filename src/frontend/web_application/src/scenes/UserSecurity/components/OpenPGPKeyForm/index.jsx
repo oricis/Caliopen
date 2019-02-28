@@ -115,9 +115,16 @@ class OpenPGPKeyForm extends Component {
     }));
   }
 
-  handleImportSubmit = (event) => {
+  handleImportSubmit = async (event) => {
     event.preventDefault();
-    this.props.onImport(this.state.importForm);
+    const error = await this.props.onImport(this.state.importForm);
+
+    if (!error) {
+      this.setState({
+        ...this.state,
+        importForm: this.props.importForm,
+      });
+    }
   }
 
   handleCancelForm = () => {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { Trans } from '@lingui/react';
+// import { Trans } from '@lingui/react';
 import AskPassphraseForm from '../AskPassphraseForm';
 
 import './style.scss';
@@ -42,7 +42,7 @@ class CheckDecryption extends Component {
   };
 
   render() {
-    const { lockedMessagesByKey, keyLessMessages } = this.props;
+    const { lockedMessagesByKey } = this.props;
 
     return (
       <section className="m-check-decryption">
@@ -54,11 +54,14 @@ class CheckDecryption extends Component {
             className="m-check-decryption-panel"
           />
         ))}
-        {(keyLessMessages > 0) && (
-          <div className="m-check-decryption__missing-key">
-            <Trans id="encryption.messages.missing-key">{`${keyLessMessages}`} cannot be decrypted with available secret keys.</Trans>
+        { // TODO re-enable when dismiss ok.
+          /* (keyLessMessages > 0) && (
+          <div className="m-check-decryption__missing-key m-check-decryption-panel">
+            <Trans id="encryption.messages.missing-key" values={{ keyLessMessages }}>
+              {`${keyLessMessages}`} messages cannot be decrypted with available secret keys.
+            </Trans>
           </div>
-        )}
+        ) */}
       </section>
     );
   }

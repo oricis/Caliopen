@@ -46,6 +46,7 @@ class MailMessage extends Component {
     onMessageUnread: () => {},
     onMessageDelete: () => {},
     noInteractions: false,
+    encryptionStatus: {},
   }
 
   handleMessageDelete = () => {
@@ -109,7 +110,7 @@ class MailMessage extends Component {
   render() {
     const {
       message, scrollTarget: { forwardRef }, onOpenTags, user, settings: { default_locale: locale },
-      noInteractions,
+      noInteractions, encryptionStatus,
     } = this.props;
     const pi = getAveragePIMessage({ message });
     const piType = getPiClass(pi);
@@ -153,9 +154,11 @@ class MailMessage extends Component {
         <div className="s-mail-message__container">
           <h2 className="s-mail-message__subject"><TextBlock nowrap={false}>{message.subject}</TextBlock></h2>
           { this.renderBody() }
-          <div className="m-message__attachments">
-            <MessageAttachments message={message} />
-          </div>
+          {// Do not display attachments if message is encrypted.
+            !encryptionStatus &&
+              <div className="m-message__attachments">
+                <MessageAttachments message={message} />
+              </div>}
         </div>
         {!noInteractions && (
           <footer className="s-mail-message__actions">
