@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+- new feature : when user adds an external identity, it's added to its contact's card
 - Test for imap worker, twitter worker and identities worker
 
 ### Fixed
