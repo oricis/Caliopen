@@ -2,14 +2,16 @@
 
 .m-encryption-locked-message {
   position: relative;
-  margin: $co-margin;
+  margin: $co-margin $co-margin $co-margin 6.5rem;
+
   // vertical padding here is meant to avoid margin fusion
   padding: 1px 0;
-  background: no-repeat top left url('../../assets/fake-text.svg');
+  background: no-repeat top left / 95% url('../../assets/fake-text.svg');
 
   &__message {
     position: relative;
-    margin: $co-margin 6rem $co-margin 4rem;
+    width: 70%;
+    margin: $co-margin auto;
     padding: map_get($co-margin_, 'xsmall');
     border-radius: 3rem;
     background-color: transparentize($co-color__fg__back, 0.2);
