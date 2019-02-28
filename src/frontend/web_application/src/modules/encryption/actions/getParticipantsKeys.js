@@ -1,7 +1,7 @@
 import { getParticipantsAddresses, getParticipantsContactIds, getRecipients } from '../../../services/message';
 import { requestParticipantsForDiscussionId } from '../../../modules/discussion';
 import { filterKeysByAddress, checkEachAddressHasKey, getStoredKeys } from '../services/keyring/remoteKeys';
-import fetchRemoteKeys from '../actions/fetchRemoteKeys';
+import fetchRemoteKeys from './fetchRemoteKeys';
 
 export const getParticipantsKeys = async (state, dispatch,
   { participants, discussion_id: discussionId }) => {
@@ -15,7 +15,7 @@ export const getParticipantsKeys = async (state, dispatch,
   const allAddresses = getParticipantsAddresses({ participants: actualParticipants });
 
   const { keys: cachedKeys, missingKeysContactIds } = getStoredKeys(state, allContactIds);
-  const fetchedKeys = await fetchRemoteKeys(dispatch, missingKeysContactIds);
+  const fetchedKeys = await fetchRemoteKeys(dispatch, missingKeysContactIds) || [];
 
   // filter out unnecessary public keys.
   const filteredKeys = filterKeysByAddress(

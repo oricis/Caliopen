@@ -3,7 +3,7 @@ import { encryptMessage as encryptMessageStart, encryptMessageSuccess } from '..
 import { requestRemoteIdentity } from '../modules/remote-identity';
 import { tryCatchAxiosAction } from '../../services/api-client';
 import { getKeysForEmail, PUBLIC_KEY } from '../../services/openpgp-keychain-repository';
-import { getParticipantsKeys } from '../../modules/encryption/services/keyring/remoteKeys';
+import { getParticipantsKeys } from '../../modules/encryption';
 import { identitiesSelector } from '../selectors/identities';
 import { encryptMessage } from '../../services/encryption';
 import { getAuthor } from '../../services/message';
