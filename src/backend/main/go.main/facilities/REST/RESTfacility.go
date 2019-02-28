@@ -28,6 +28,7 @@ type (
 		CreateContact(contact *Contact) error
 		RetrieveContacts(filter IndexSearch) (contacts []*Contact, totalFound int64, err error)
 		RetrieveContact(userID, contactID string) (*Contact, error)
+		RetrieveUserContact(userID string) (*Contact, error)
 		UpdateContact(user *UserInfo, contact, oldContact *Contact, update map[string]interface{}) error
 		PatchContact(user *UserInfo, patch []byte, contactID string) error
 		DeleteContact(userID, contactID string) error

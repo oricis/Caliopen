@@ -72,7 +72,7 @@ type (
 
 	Parts []Part
 
-	// emails model embedded in contact
+	// email address embedded in contact
 	EmailContact struct {
 		Address   string `cql:"address"     json:"address,omitempty"      patch:"user"`
 		EmailId   UUID   `cql:"email_id"    json:"email_id,omitempty"     patch:"system"`
@@ -136,7 +136,7 @@ func (ec *EmailContact) UnmarshalMap(input map[string]interface{}) error {
 	ec.Address, _ = input["address"].(string)
 	if email_id, ok := input["email_id"].(string); ok {
 		if id, err := uuid.FromString(email_id); err == nil {
-			ec.EmailId.UnmarshalBinary(id.Bytes())
+			_ = ec.EmailId.UnmarshalBinary(id.Bytes())
 		}
 	}
 	ec.IsPrimary, _ = input["is_primary"].(bool)
@@ -148,8 +148,8 @@ func (ec *EmailContact) UnmarshalMap(input map[string]interface{}) error {
 // MarshallNew must be a variadic func to implement NewMarshaller interface,
 // but EmailContact does not need params to marshal a well-formed EmailContact: ...interface{} is ignored
 func (ec *EmailContact) MarshallNew(...interface{}) {
-	if len(ec.EmailId) == 0 || (bytes.Equal(ec.EmailId.Bytes(), EmptyUUID.Bytes())) {
-		ec.EmailId.UnmarshalBinary(uuid.NewV4().Bytes())
+	if len(ec.EmailId.Bytes()) == 0 || (bytes.Equal(ec.EmailId.Bytes(), EmptyUUID.Bytes())) {
+		_ = ec.EmailId.UnmarshalBinary(uuid.NewV4().Bytes())
 	}
 }
 
