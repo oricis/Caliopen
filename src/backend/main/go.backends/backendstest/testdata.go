@@ -1,6 +1,6 @@
-// Copyleft (ɔ) 2019 The Mailden contributors.
-// Use of this source code is governed by a GNU GENERAL PUBLIC
-// license (GPL) that can be found in the LICENSE file.
+// Copyleft (ɔ) 2019 The Caliopen contributors.
+// Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
+// license (AGPL) that can be found in the LICENSE file.
 
 // Package backendstest provides utilities and interfaces for mocking backends interfaces
 package backendstest
@@ -18,7 +18,28 @@ const (
 )
 
 var (
-	localIdentities = map[string]*UserIdentity{
+	Users = map[string]*User{
+		DevIdoireUserId: {
+			ContactId:     UUID(uuid.FromStringOrNil("63ab7904-c416-4f1a-9652-3de82e4fd1f1")),
+			FamilyName:    "Tomme",
+			GivenName:     "Emma",
+			Name:          "emma",
+			RecoveryEmail: "emma@recovery-caliopen.local",
+			ShardId:       "4faae137-5938-42d3-bf1a-8e1a4e1868e1",
+			UserId:        UUID(uuid.FromStringOrNil(EmmaTommeUserId)),
+		},
+		EmmaTommeUserId: {
+			ContactId:     UUID(uuid.FromStringOrNil("5f0baee8-1278-43eb-9931-01b7383b419b")),
+			FamilyName:    "Idoire",
+			GivenName:     "Dev",
+			Name:          "dev",
+			RecoveryEmail: "dev@recovery-caliopen.local",
+			ShardId:       "4faae137-5938-42d3-bf1a-8e1a4e1868e1",
+			UserId:        UUID(uuid.FromStringOrNil(DevIdoireUserId)),
+		},
+	}
+
+	LocalIdentities = map[string]*UserIdentity{
 		DevIdoireUserId + "3fc38dde-1f11-42c0-a489-361d13caebac": {
 			DisplayName: "Dev Idoire",
 			Id:          UUID(uuid.FromStringOrNil("3fc38dde-1f11-42c0-a489-361d13caebac")),
@@ -75,7 +96,7 @@ var (
 		},
 	}
 
-	remoteIdentities = map[string]*UserIdentity{
+	RemoteIdentities = map[string]*UserIdentity{
 		DevIdoireUserId + "7e356efb-d24c-493a-b558-e58c7ad20ac3": {
 			DisplayName: "Dev Idoire email remote",
 			Id:          UUID(uuid.FromStringOrNil("7e356efb-d24c-493a-b558-e58c7ad20ac3")),
@@ -161,7 +182,42 @@ var (
 		},
 	}
 
-	messages = map[string]*Message{
+	Contacts = map[string]*Contact{
+		DevIdoireUserId + "5f0baee8-1278-43eb-9931-01b7383b419b": {
+			ContactId: UUID(uuid.FromStringOrNil("5f0baee8-1278-43eb-9931-01b7383b419b")),
+			Emails: []EmailContact{
+				{
+					Address:   "dev@recovery-caliopen.local",
+					EmailId:   UUID(uuid.FromStringOrNil("64f782ef-721a-487a-a68a-d0a37707d463")),
+					IsPrimary: false,
+					Label:     "dev@recovery-caliopen.local",
+					Type:      "other",
+				},
+			},
+			FamilyName: "Idoire",
+			GivenName:  "Dev",
+			Title:      "Dev Idoire",
+			UserId:     UUID(uuid.FromStringOrNil(DevIdoireUserId)),
+		},
+		EmmaTommeUserId + "63ab7904-c416-4f1a-9652-3de82e4fd1f1": {
+			ContactId: UUID(uuid.FromStringOrNil("63ab7904-c416-4f1a-9652-3de82e4fd1f1")),
+			Emails: []EmailContact{
+				{
+					Address:   "emma@recovery-caliopen.local",
+					EmailId:   UUID(uuid.FromStringOrNil("444d71f6-324c-4733-88a2-77ca28ea6d2d")),
+					IsPrimary: false,
+					Label:     "emma@recovery-caliopen.local",
+					Type:      "other",
+				},
+			},
+			FamilyName: "Tomme",
+			GivenName:  "Emma",
+			Title:      "Emma Tomme",
+			UserId:     UUID(uuid.FromStringOrNil(EmmaTommeUserId)),
+		},
+	}
+
+	Msgs = map[string]*Message{
 		EmmaTommeUserId + "b26e5ba4-34cc-42bb-9b70-5279648134f8": {
 			Body_plain:     "email's body plain",
 			Is_draft:       false,
@@ -173,21 +229,3 @@ var (
 		},
 	}
 )
-
-func LocalsCount() int {
-	return len(localIdentities)
-}
-
-func RemotesCount() int {
-	return len(remoteIdentities)
-}
-
-func ActiveRemotesCount() int {
-	var c int
-	for _, remote := range remoteIdentities {
-		if remote.Status == "active" {
-			c += 1
-		}
-	}
-	return c
-}

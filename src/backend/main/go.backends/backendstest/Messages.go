@@ -12,7 +12,7 @@ import (
 type MessagesBackend map[string]*Message
 
 func GetMessagesBackend() MessagesBackend {
-	return MessagesBackend(messages)
+	return MessagesBackend(Msgs)
 }
 
 func (mb MessagesBackend) RetrieveMessage(userId, msgId string) (msg *Message, err error) {
