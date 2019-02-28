@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
 import { Icon, Button } from '../../../../components/';
+import { getPrimaryKeysByFingerprint, saveKey, deleteKey } from '../../../../services/openpgp-keychain-repository';
+import { generateKey } from '../../../../services/encryption';
 import OpenPGPKey from '../OpenPGPKey';
 import OpenPGPKeyForm from '../OpenPGPKeyForm';
 import './style.scss';
@@ -9,30 +11,42 @@ import './style.scss';
 class OpenPGPKeysDetails extends Component {
   static propTypes = {
     user: PropTypes.shape({}).isRequired,
-    privateKeys: PropTypes.arrayOf(PropTypes.shape({})),
-    importForm: PropTypes.shape({}),
     isLoading: PropTypes.bool,
-    onDeleteKey: PropTypes.func.isRequired,
-    onImportKey: PropTypes.func.isRequired,
-    onGenerateKey: PropTypes.func.isRequired,
-    prefetch: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    privateKeys: null,
-    importForm: null,
     isLoading: false,
   }
 
   state = {
+    importForm: {},
     editMode: false,
+    keys: undefined,
   };
 
   componentDidMount() {
-    if (this.props.prefetch) {
-      this.props.prefetch();
-    }
+    this.updateKeyState({});
   }
+
+  getPrivateKeys = () => Object.values(this.state.keys || {});
+  getUserEmails = () => {
+    const { user: { contact, title } } = this.props;
+
+    if (contact) {
+      return contact.emails.map(({ address }) => ({ name: title, email: address }));
+    }
+
+    return null;
+  }
+
+  updateKeyState = newState =>
+    getPrimaryKeysByFingerprint()
+      .then(keys => this.setState({
+        ...this.state,
+        ...newState,
+        keys,
+      }));
+
 
   handleClickEditMode = () => {
     this.setState(prevState => ({
@@ -40,46 +54,68 @@ class OpenPGPKeysDetails extends Component {
     }));
   }
 
-  renderPrivateKey = (keyPair, key) => {
-    const { onDeleteKey } = this.props;
+  importKeys = async ({ publicKeyArmored, privateKeyArmored }) => {
+    const error = await saveKey(publicKeyArmored, privateKeyArmored);
+    const newState = error ? {} : { importForm: {} };
+    this.updateKeyState(newState);
 
-    return (
-      <OpenPGPKey
-        key={key}
-        className="m-account-openpgp__keys"
-        publicKeyArmored={keyPair.publicKeyArmored}
-        privateKeyArmored={keyPair.privateKeyArmored}
-        editMode={this.state.editMode}
-        onDeleteKey={onDeleteKey}
-      >
-        <Icon type="key" />
-      </OpenPGPKey>
-    );
+    return error;
   }
+
+  handleDeleteKey = async ({ fingerprint }) => {
+    await deleteKey(fingerprint);
+
+    this.updateKeyState({});
+  };
+
+  generateAndSaveKeys = async (generateForm) => {
+    const options = {
+      passphrase: generateForm.passphrase,
+      userIds: generateForm.email,
+      numbits: 4096,
+    };
+
+    const { privateKeyArmored, publicKeyArmored } = await generateKey(options);
+    const error = await saveKey(publicKeyArmored, privateKeyArmored);
+    const newState = error ? {} : { importForm: {} };
+    this.updateKeyState(newState);
+
+    return error;
+  }
+
+  renderPrivateKey = (keyPair, key) => (
+    <OpenPGPKey
+      key={key}
+      className="m-account-openpgp__keys"
+      publicKeyArmored={keyPair.publicKeyArmored}
+      privateKeyArmored={keyPair.privateKeyArmored}
+      editMode={this.state.editMode}
+      onDeleteKey={this.handleDeleteKey}
+    >
+      <Icon type="key" />
+    </OpenPGPKey>
+  );
+
 
   render() {
     const {
       isLoading,
-      importForm,
-      privateKeys,
       user,
-      onImportKey,
-      onGenerateKey,
     } = this.props;
 
     const activeButtonProp = this.state.editMode ? { color: 'active' } : {};
 
     return (
       <div className="m-account-openpgp">
-        {privateKeys.map(this.renderPrivateKey)}
+        {this.getPrivateKeys().map(this.renderPrivateKey)}
         {this.state.editMode ? (
           <div>
             <OpenPGPKeyForm
               className="m-account-openpgp__form"
               emails={user.contact.emails}
-              onImport={onImportKey}
-              onGenerate={onGenerateKey}
-              importForm={importForm}
+              onImport={this.importKeys}
+              onGenerate={this.generateAndSaveKeys}
+              importForm={this.state.importForm}
               isLoading={isLoading}
               cancel={this.handleClickEditMode}
             />

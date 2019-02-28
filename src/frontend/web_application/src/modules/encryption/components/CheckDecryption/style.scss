@@ -1,0 +1,43 @@
+@import '../../../../styles/common';
+@import '../../../../styles/util/breakpoint';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+$fa-font-path: '../../../../../node_modules/font-awesome/fonts';
+@import 'font-awesome';
+
+.m-check-decryption {
+  position: fixed;
+  bottom: 0;
+  z-index: 1;
+  width: 100%;
+}
+
+.m-check-decryption-panel {
+  &::before {
+    @include fa-icon;
+    content: $fa-var-lock;
+    vertical-align: middle;
+    float: left;
+    width: 2.5rem;
+    margin: 1rem - map_get($co-margin_, 'xsmall');
+    margin-right: 1rem;
+    padding: .375rem .125rem;
+    border-radius: 1.25rem;
+    background-color: $co-color__primary;
+    color: $co-color__contrast__text;
+    font-size: 1.75rem;
+    text-align: center;
+  }
+
+  padding: map_get($co-margin_, 'small');
+  border-top: map_get($co-margin_, 'xsmall') solid $co-color__primary;
+  background-color: $co-color__fg__back;
+  overflow: hidden;
+
+  @include breakpoint(medium) {
+    max-width: $co-site-width - map_get($co-page-container-paddings, 'medium') * 2;
+  }
+
+  @include breakpoint(xlarge) {
+    max-width: $co-site-width - map_get($co-page-container-paddings, 'xlarge') * 2;
+  }
+}

@@ -10,7 +10,6 @@ import importanceLevelReducer from './modules/importance-level';
 import localIdentityReducer from './modules/local-identity';
 import messageReducer from './modules/message';
 import notificationReducer from './modules/notification';
-import openPGPKeychainReducer from './modules/openpgp-keychain';
 import participantSuggestionsReducer from './modules/participant-suggestions';
 import providerReducer from './modules/provider';
 import remoteIdentityReducer from './modules/remote-identity';
@@ -20,6 +19,7 @@ import tagReducer from './modules/tag';
 import userReducer from './modules/user';
 import publicKeyReducer from './modules/public-key';
 import viewReducer from './modules/view';
+import encryptionReducer from './modules/encryption';
 
 const reducer = combineReducers({
   notifications: notifyReducer,
@@ -32,7 +32,6 @@ const reducer = combineReducers({
   localIdentity: localIdentityReducer,
   message: messageReducer,
   notification: notificationReducer,
-  openPGPKeychain: openPGPKeychainReducer,
   participantSuggestions: participantSuggestionsReducer,
   provider: providerReducer,
   remoteIdentity: remoteIdentityReducer,
@@ -43,6 +42,7 @@ const reducer = combineReducers({
   form: formReducer,
   publicKey: publicKeyReducer,
   view: viewReducer,
+  encryption: encryptionReducer,
 });
 
 export default reducer;
