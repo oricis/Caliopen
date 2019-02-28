@@ -16,6 +16,7 @@ type (
 		UpdateUser(user *User, fields map[string]interface{}) error // 'fields' are the struct fields names that have been modified
 		UserByRecoveryEmail(email string) (user *User, err error)
 		DeleteUser(user_id string) error
+		GetShardForUser(userID string) string
 	}
 	UserNameStorage interface {
 		UsernameIsAvailable(username string) (bool, error)

@@ -73,3 +73,13 @@ func (cb *CassandraBackend) UserByRecoveryEmail(email string) (user *User, err e
 func (cb *CassandraBackend) DeleteUser(user_id string) error {
 	return cb.SessionQuery(`UPDATE user SET date_delete = ? WHERE user_id = ?`, time.Now(), user_id).Exec()
 }
+
+// GetShardForUser returns user's shard_id or empty string if error
+func (cb *CassandraBackend) GetShardForUser(userID string) string {
+	var shardID string
+	err := cb.SessionQuery(`SELECT shard_id FROM user WHERE user_id = ?`, userID).Scan(&shardID)
+	if err != nil {
+		return ""
+	}
+	return shardID
+}

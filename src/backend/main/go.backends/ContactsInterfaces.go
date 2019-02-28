@@ -12,7 +12,8 @@ import (
 
 type ContactStorage interface {
 	CreateContact(contact *Contact) error
-	RetrieveContact(user_id, contact_id string) (contact *Contact, err error)
+	RetrieveContact(userID, contactID string) (contact *Contact, err error)
+	RetrieveUserContactId(userID string) string
 	UpdateContact(contact, oldContact *Contact, fields map[string]interface{}) error
 	DeleteContact(contact *Contact) error
 	ContactExists(userId, contactId string) bool
