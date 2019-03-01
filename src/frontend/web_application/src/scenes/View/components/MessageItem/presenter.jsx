@@ -43,6 +43,10 @@ class MessageItem extends Component {
   renderAuthor = () => {
     const author = getAuthor(this.props.message);
 
+    if (!author) {
+      return null;
+    }
+
     return (
       <TextBlock className="s-message-item__author" title={renderParticipant(author)}>
         {renderParticipant(author)}
