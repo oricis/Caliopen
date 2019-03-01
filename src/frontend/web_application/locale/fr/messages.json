@@ -579,7 +579,7 @@
   "take-a-tour.step.intro.title": "Bienvenue!",
   "take-a-tour.step.search.content": "<0>Chaque recherche peut inclure des filtres. Toutes les données non chiffrées peuvent être recherchées.</0><1>Ici, vous pouvez rechercher tout ce qui se trouve dans vos messages et vos contacts.</1>",
   "take-a-tour.step.search.title": "Recherche intuitive",
-  "take-a-tour.step.user-menu.content": "<0>Mettez à jour les informations de votre compte.</1><2>Personnalisez votre application dans vos paramètres.</2>",
+  "take-a-tour.step.user-menu.content": "<0>Mettez à jour les informations de votre compte.</0><1>Personnalisez votre application dans vos paramètres.</1><2>Et connectez des applications comme GMail ou Twitter</2>",
   "take-a-tour.step.user-menu.title": "Menu utilisateur",
   "timeline-filter.label": "Filtre des messages",
   "timeline-filter.options.all": "Tous",
