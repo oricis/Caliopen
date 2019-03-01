@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Fix chronological order of messages in discussion scene
 - Better responsiveness on small screens for timeline & discussion & logo
 - inversion en/fr for some translations
 
