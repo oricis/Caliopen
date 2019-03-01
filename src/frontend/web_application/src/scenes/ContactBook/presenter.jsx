@@ -6,7 +6,7 @@ import { Trans, Plural, withI18n } from '@lingui/react';
 import ContactList from './components/ContactList';
 import { PageTitle, Spinner, Button, ActionBarWrapper, ActionBar, Checkbox, SidebarLayout, NavList, NavItem, Confirm, Modal } from '../../components';
 import { withPush } from '../../modules/routing';
-import { ScrollDetector } from '../../modules/scroll';
+import { withScrollManager, ScrollDetector } from '../../modules/scroll';
 import { withTags, TagsForm, getCleanedTagCollection, getTagNamesInCommon } from '../../modules/tags';
 import TagList from './components/TagList';
 import ImportContactButton from './components/ImportContactButton';
@@ -33,6 +33,7 @@ function getFilteredContacts(contactList, tag) {
 @withTagSearched()
 @withPush()
 @withI18n()
+@withScrollManager()
 class ContactBook extends Component {
   static propTypes = {
     push: PropTypes.func.isRequired,
