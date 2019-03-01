@@ -42,6 +42,11 @@
     line-height: $co-component__height;
   }
 
+  &__dropdown {
+    // dirty fix when dropdown has no controller then getDropdownStyle() can not be used correctly
+    margin-top: $co-component__height;
+  }
+
   &__search-result {
     @include flex-grid-row;
     min-height: $co-component__height;

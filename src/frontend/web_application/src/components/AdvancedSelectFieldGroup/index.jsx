@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, forwardRef, createRef } from 'react';
 import PropTypes from 'prop-types';
 import { v1 as uuidV1 } from 'uuid';
 import classnames from 'classnames';
@@ -14,7 +14,9 @@ import './style.scss';
 const propTypeOption = PropTypes.oneOfType([PropTypes.string, PropTypes.number]);
 const alphaNumPropType = PropTypes.oneOfType([PropTypes.string, PropTypes.number]);
 
-const DropdownControl = withDropdownControl(props => (<div {...props} />));
+const DropdownControl = withDropdownControl(forwardRef((props, ref) => (
+  <div ref={ref} {...props} />
+)));
 
 class AdvancedSelectFieldGroup extends PureComponent {
   static propTypes = {
@@ -47,6 +49,8 @@ class AdvancedSelectFieldGroup extends PureComponent {
     decorated: true,
     inline: false,
   };
+
+  dropdownControlRef = createRef();
 
   createHandleClick = value => () => {
     const { name, onChange } = this.props;
@@ -93,27 +97,27 @@ class AdvancedSelectFieldGroup extends PureComponent {
         <Label htmlFor={id} className={labelClassName}>{label}</Label>
         <div className={selectWrapperClassName} aria-hidden="true">
           <DropdownControl
-            toggleId={`dropdown_${id}`}
             className={inputClassName}
+            ref={this.dropdownControlRef}
           >
             {this.renderSelected(selectedOpt)}
           </DropdownControl>
-          <Dropdown id={`dropdown_${id}`} isMenu closeOnClick="all">
-            <VerticalMenu>
-              {options.map(option => (
-                <VerticalMenuItem key={option.value}>
-                  <Button
-                    onClick={this.createHandleClick(option.value)}
-                    display="expanded"
-                    className="m-advanced-select-field-group__option-button"
-                  >
-                    {option.advancedlabel}
-                  </Button>
-                </VerticalMenuItem>
-              ))}
-            </VerticalMenu>
-          </Dropdown>
         </div>
+        <Dropdown dropdownControlRef={this.dropdownControlRef} isMenu closeOnClick="all">
+          <VerticalMenu>
+            {options.map(option => (
+              <VerticalMenuItem key={option.value}>
+                <Button
+                  onClick={this.createHandleClick(option.value)}
+                  display="expanded"
+                  className="m-advanced-select-field-group__option-button"
+                >
+                  {option.advancedlabel}
+                </Button>
+              </VerticalMenuItem>
+            ))}
+          </VerticalMenu>
+        </Dropdown>
         <select
           onChange={onChange}
           className="show-for-sr"

@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { v1 as uuidV1 } from 'uuid';
 import PiGraph from '../PiGraph';
 import Ratings from '../Ratings';
 import { Button, Dropdown, withDropdownControl } from '../../../../components/';
@@ -15,13 +14,13 @@ const MultidimensionalPi = ({
   pi, displayAveragePi, className, mini,
 }) => {
   const gridWidth = PI_MAX * 2;
-  const id = uuidV1();
+  const dropdownControlRef = createRef();
 
   return (
     <div className={classnames('m-multidimensional-pi', className)}>
       {mini ? (
         <div className="m-multidimensional-pi__mini-pi">
-          <DropdownControl display="inline" toggleId={id} className="m-multidimensional-pi__toggle-mini-pi">
+          <DropdownControl ref={dropdownControlRef} display="inline" className="m-multidimensional-pi__toggle-mini-pi">
             <Ratings
               pi={pi}
               piMax={PI_MAX}
@@ -30,7 +29,7 @@ const MultidimensionalPi = ({
           </DropdownControl>
 
           <Dropdown
-            id={id}
+            dropdownControlRef={dropdownControlRef}
             className="m-multidimensional-pi__mini-graph"
             position="bottom"
             closeOnClick="all"
