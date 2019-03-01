@@ -9,6 +9,8 @@ from caliopen_main.user.objects.identity import UserIdentity
 from caliopen_main.message.parameters.participant import Participant
 from caliopen_main.message.parameters.external_references import \
     ExternalReferences
+from caliopen_main.discussion.store.discussion_index import \
+    DiscussionIndexManager as DIM
 from caliopen_storage.exception import NotFound
 from caliopen_main.message.store import Message as ModelMessage
 from caliopen_main.common.errors import PatchUnprocessable
@@ -58,8 +60,11 @@ class Draft(NewInboundMessage):
         # fill <from> field consistently
         # based on current user's selected identity
         self._add_from_participant(user)
+        # Build participants from discussion_id
+        self._build_participants_for_reply(user)
+        self.discussion_id = None
         if self.parent_id:
-            self._update_external_references(self, user)
+            self._update_external_references(user)
 
     def _add_from_participant(self, user):
 
@@ -102,7 +107,37 @@ class Draft(NewInboundMessage):
 
         return from_participant
 
-    def update_external_references(self, user):
+    def _build_participants_for_reply(self, user):
+        """
+        Build participants list from last message in discussion.
+
+        - former 'From' recipients are replaced by 'To' recipients
+        - provided identity is used to fill the new 'From' participant
+        - new sender is removed from former recipients
+        """
+        if not self.discussion_id:
+            return
+        dim = DIM(user)
+        d_id = self.discussion_id
+        last_message = dim.get_last_message(d_id, -10, 10, False)
+        for i, participant in enumerate(last_message["participants"]):
+            if re.match("from", participant['type'], re.IGNORECASE):
+                participant["type"] = "To"
+                self.participants.append(participant)
+            else:
+                self.participants.append(participant)
+
+        # add sender
+        # and remove it from previous recipients
+        sender = self._add_from_participant(user)
+        for i, participant in enumerate(self.participants):
+            if participant['address'] == sender.address:
+                if re.match("to", participant['type'], re.IGNORECASE) or \
+                        re.match("cc", participant['type'], re.IGNORECASE) or \
+                        re.match("bcc", participant['type'], re.IGNORECASE):
+                    self.participants.pop(i)
+
+    def _update_external_references(self, user):
         """
         copy externals references from current draft's ancestor
         and change parent_id to reflect new message's hierarchy
