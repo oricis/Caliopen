@@ -11,9 +11,10 @@ module.exports = () => {
   const app = express();
 
   //-------
+  // assets always public
+  applyAssets(app);
   applySecurity(app);
   applyAuth(app);
-  applyAssets(app);
   applyAPI(app);
   applyExpressReact(app);
 
