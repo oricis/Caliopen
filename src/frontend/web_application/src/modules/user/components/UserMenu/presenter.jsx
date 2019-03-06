@@ -1,16 +1,22 @@
 import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from '@lingui/react';
+import { Trans, withI18n } from '@lingui/react';
 import UserInfo from '../UserInfo';
 import { Link, Button, Icon, Dropdown, withDropdownControl, VerticalMenu, VerticalMenuItem, Separator } from '../../../../components/';
+import { withNotification } from '../../../../modules/userNotify';
 import './style.scss';
+import './next-feature-button.scss';
 
 const DropdownControl = withDropdownControl(Button);
 
+@withI18n()
+@withNotification()
 class Presenter extends Component {
   static propTypes = {
     user: PropTypes.shape({}),
     getUser: PropTypes.func.isRequired,
+    notifyInfo: PropTypes.func.isRequired,
+    i18n: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
@@ -30,6 +36,14 @@ class Presenter extends Component {
   handleDropdownToggle = (isDropdownOpen) => {
     this.setState({ isDropdownOpen });
   };
+
+  handleClickNewFeature = () => {
+    const { notifyInfo, i18n } = this.props;
+
+    notifyInfo({
+      message: i18n._('next-feature.generic', null, { defaults: 'This feature is not available for now but is planned to be added to Caliopen.' }),
+    });
+  }
 
   render() {
     const { user } = this.props;
@@ -62,6 +76,12 @@ class Presenter extends Component {
             </VerticalMenuItem>
             <VerticalMenuItem>
               <Link to="/settings/application" expanded button><Trans id="header.menu.settings">Settings</Trans></Link>
+            </VerticalMenuItem>
+            <VerticalMenuItem>
+              <Button className="m-next-feature-button" display="expanded" onClick={this.handleClickNewFeature}><Trans id="header.menu.agenda">Agenda</Trans></Button>
+            </VerticalMenuItem>
+            <VerticalMenuItem>
+              <Button className="m-next-feature-button" display="expanded" onClick={this.handleClickNewFeature}><Trans id="header.menu.files">Files</Trans></Button>
             </VerticalMenuItem>
             <VerticalMenuItem>
               {user && (
