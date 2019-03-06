@@ -4,7 +4,7 @@ import throttle from 'lodash.throttle';
 import isEqual from 'lodash.isequal';
 import { Trans } from '@lingui/react';
 import { MessageNotifications } from '../../modules/notification';
-import { ScrollDetector } from '../../modules/scroll';
+import { withScrollManager, ScrollDetector } from '../../modules/scroll';
 import { Button, InfiniteScroll, ActionBarWrapper, ActionBar, CheckboxFieldGroup, PlaceholderBlock, TextBlock } from '../../components';
 import DiscussionItem from './components/DiscussionItem';
 import { withSettings } from '../../modules/settings';
@@ -20,6 +20,7 @@ const FILTER_RANGE_DEFAULT = { min: 0, max: 10 };
 const FILTER_RANGE_ALL = { min: -10, max: 10 };
 
 @withSettings()
+@withScrollManager()
 class Timeline extends Component {
   static propTypes = {
     user: PropTypes.shape({}),

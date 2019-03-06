@@ -20,7 +20,7 @@ class ContactList extends PureComponent {
     contacts: PropTypes.arrayOf(PropTypes.shape({})),
     userContact: PropTypes.shape({}),
     selectedContactsIds: PropTypes.arrayOf(PropTypes.string),
-    tags: PropTypes.arrayOf(PropTypes.string),
+    tags: PropTypes.arrayOf(PropTypes.shape({})),
     contactDisplayOrder: PropTypes.string.isRequired,
     contactDisplayFormat: PropTypes.string.isRequired,
     onSelectEntity: PropTypes.func,

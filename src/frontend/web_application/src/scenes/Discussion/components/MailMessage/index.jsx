@@ -77,12 +77,12 @@ class MailMessage extends Component {
     if (!isLocked) {
       if (!message.body_is_plain) {
         return (
-          <div className="s-mail-message__content" dangerouslySetInnerHTML={{ __html: message.body }} />
+          <TextBlock nowrap={false} className="s-mail-message__content" dangerouslySetInnerHTML={{ __html: message.body }} />
         );
       }
 
       return (
-        <pre className="s-mail-message__content">{message.body}</pre>
+        <TextBlock nowrap={false}><pre className="s-mail-message__content">{message.body}</pre></TextBlock>
       );
     }
 
