@@ -117,6 +117,7 @@ class Message(ObjectIndexable):
                 "message_id",
                 "parent_id",
                 "participants",
+                "discussion_id",
                 "subject",
                 "user_identities",
                 "privacy_features",

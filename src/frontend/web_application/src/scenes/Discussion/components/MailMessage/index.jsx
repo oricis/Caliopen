@@ -10,6 +10,7 @@ import { Badge, Button, Confirm, Icon, TextBlock } from '../../../../components'
 import MessageAttachments from '../MessageAttachments';
 import MessageRecipients from '../MessageRecipients';
 import MessagePi from '../MessagePi';
+import { LockedMessage } from '../../../../modules/encryption';
 import { getAuthor } from '../../../../services/message';
 import { getAveragePIMessage, getPiClass } from '../../../../modules/pi/services/pi';
 
@@ -36,6 +37,8 @@ class MailMessage extends Component {
     i18n: PropTypes.shape({}).isRequired,
     scrollTarget: PropTypes.shape({ forwardRef: PropTypes.func }).isRequired,
     noInteractions: PropTypes.bool,
+    isLocked: PropTypes.bool.isRequired,
+    encryptionStatus: PropTypes.shape({}),
   };
 
   static defaultProps = {
@@ -43,6 +46,7 @@ class MailMessage extends Component {
     onMessageUnread: () => {},
     onMessageDelete: () => {},
     noInteractions: false,
+    encryptionStatus: {},
   }
 
   handleMessageDelete = () => {
@@ -67,6 +71,26 @@ class MailMessage extends Component {
     push({ hash: 'reply' });
   }
 
+  renderBody = () => {
+    const { message, isLocked, encryptionStatus } = this.props;
+
+    if (!isLocked) {
+      if (!message.body_is_plain) {
+        return (
+          <TextBlock nowrap={false} className="s-mail-message__content" dangerouslySetInnerHTML={{ __html: message.body }} />
+        );
+      }
+
+      return (
+        <TextBlock nowrap={false}><pre className="s-mail-message__content">{message.body}</pre></TextBlock>
+      );
+    }
+
+    return (
+      <LockedMessage encryptionStatus={encryptionStatus} />
+    );
+  };
+
   renderTags = ({ tags }) => {
     const { i18n, tags: allTags } = this.props;
 
@@ -86,7 +110,7 @@ class MailMessage extends Component {
   render() {
     const {
       message, scrollTarget: { forwardRef }, onOpenTags, user, settings: { default_locale: locale },
-      noInteractions,
+      noInteractions, encryptionStatus,
     } = this.props;
     const pi = getAveragePIMessage({ message });
     const piType = getPiClass(pi);
@@ -129,15 +153,12 @@ class MailMessage extends Component {
         </aside>
         <div className="s-mail-message__container">
           <h2 className="s-mail-message__subject"><TextBlock nowrap={false}>{message.subject}</TextBlock></h2>
-          {!message.body_is_plain ? (
-            <TextBlock nowrap={false} className="s-mail-message__content" dangerouslySetInnerHTML={{ __html: message.body }} />
-          ) : (
-            <TextBlock nowrap={false}><pre className="s-mail-message__content">{message.body}</pre></TextBlock>
-          )
-          }
-          <div className="m-message__attachments">
-            <MessageAttachments message={message} />
-          </div>
+          { this.renderBody() }
+          {// Do not display attachments if message is encrypted.
+            !encryptionStatus &&
+              <div className="m-message__attachments">
+                <MessageAttachments message={message} />
+              </div>}
         </div>
         {!noInteractions && (
           <footer className="s-mail-message__actions">

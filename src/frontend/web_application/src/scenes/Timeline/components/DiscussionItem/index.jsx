@@ -20,7 +20,7 @@ class DiscussionItem extends PureComponent {
       date_update: PropTypes.string.isRequired,
       last_message_id: PropTypes.string.isRequired,
       unread_count: PropTypes.number.isRequired,
-      pi: PropTypes.shape({}).isRequired,
+      pi: PropTypes.shape({}),
       protocol: PropTypes.string,
     }).isRequired,
     // i18n: PropTypes.shape({}).isRequired,

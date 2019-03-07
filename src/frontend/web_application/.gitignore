@@ -22,3 +22,4 @@ cordova/plugins
 
 # lingui
 locale/_build
+locale/**/*.js

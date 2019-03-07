@@ -4,7 +4,7 @@ import Presenter from './index';
 import Button from '../Button';
 
 describe('component Confirm', () => {
-  it('render', () => {
+  xit('render', () => {
     const handleConfirm = jest.fn();
     const comp = shallow(<Presenter
       onConfirm={handleConfirm}

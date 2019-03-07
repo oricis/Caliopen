@@ -1,34 +1,85 @@
-import { getLocalstorage } from '../localStorage';
+export const [PUBLIC_KEY, PRIVATE_KEY] = ['public', 'private'];
 
-const NAMESPACE = 'openpgp';
+const getKeyring = async () => {
+  const { Keyring } = await import(/* webpackChunkName: "openpgp" */ 'openpgp');
 
-export function getPrimaryKeysByFingerprint() {
-  const ls = getLocalstorage();
+  return new Keyring();
+};
 
-  return ls.findAll(NAMESPACE)
-    .reduce((prev, { id, value }) => {
-      const fingerprint = id.replace('publicKeyArmored.', '')
-        .replace('privateKeyArmored.', '');
-      const keyType = id.replace(`.${fingerprint}`, '');
+const loadKeyring = async () => {
+  const keyring = await getKeyring();
 
-      return {
-        ...prev,
-        [fingerprint]: {
-          ...prev[fingerprint],
-          [keyType]: value,
-        },
-      };
-    }, {});
+  await keyring.load();
+
+  return keyring;
+};
+
+const getKeyIdsForMessage = async ({ body }) => {
+  const openpgp = await import(/* webpackChunkName: "openpgp" */ 'openpgp');
+  const encryptedMessage = await openpgp.message.readArmored(body);
+  const keyIds = encryptedMessage.getEncryptionKeyIds();
+
+  return keyIds;
+};
+
+export const getKeysForMessage = async (message) => {
+  const keyring = await loadKeyring();
+  const keyIds = await getKeyIdsForMessage(message);
+
+  return keyIds.reduce((acc, keyId) => {
+    const keys = keyring.privateKeys.getForId(keyId.toHex(), true);
+
+    return keys ? [...acc, keys] : acc;
+  }, []);
+};
+
+export async function getPrimaryKeysByFingerprint() {
+  const keyring = await loadKeyring();
+
+  return keyring.getAllKeys().reduce((acc, key) => {
+    const fingerprint = key.getFingerprint();
+    const keyType = key.isPublic() ? 'publicKeyArmored' : 'privateKeyArmored';
+
+    return {
+      ...acc,
+      [fingerprint]: {
+        ...acc[fingerprint],
+        [keyType]: key.armor(),
+      },
+    };
+  }, {});
 }
 
-export function saveKey(fingerprint, publicKeyArmored, privateKeyArmored) {
-  const ls = getLocalstorage();
-  ls.save(NAMESPACE, `publicKeyArmored.${fingerprint}`, publicKeyArmored);
-  ls.save(NAMESPACE, `privateKeyArmored.${fingerprint}`, privateKeyArmored);
+export async function getKeysForEmail(email, keyType = PUBLIC_KEY) {
+  const keyring = await loadKeyring();
+
+  if (keyType === PUBLIC_KEY) {
+    return keyring.publicKeys.getForAddress(email);
+  }
+
+  if (keyType === PRIVATE_KEY) {
+    return keyring.privateKeys.getForAddress(email);
+  }
+
+  throw new Error('keyType must be either PUBLIC_KEY or PRIVATE_KEY');
 }
 
-export function deleteKey(fingerprint) {
-  const ls = getLocalstorage();
-  ls.remove(NAMESPACE, `publicKeyArmored.${fingerprint}`);
-  ls.remove(NAMESPACE, `privateKeyArmored.${fingerprint}`);
+export async function saveKey(publicKeyArmored, privateKeyArmored) {
+  const keyring = await loadKeyring();
+
+  await keyring.publicKeys.importKey(publicKeyArmored);
+  await keyring.privateKeys.importKey(privateKeyArmored);
+
+  const error = await keyring.store();
+
+  return error;
+}
+
+export async function deleteKey(fingerprint) {
+  const keyring = await loadKeyring();
+
+  keyring.removeKeysForId(fingerprint);
+  const error = await keyring.store();
+
+  return error;
 }

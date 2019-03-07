@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
-import { v1 as uuidV1 } from 'uuid';
 import { Trans } from '@lingui/react';
 import isequal from 'lodash.isequal';
 import { Button, Icon, DropdownMenu, VerticalMenu, VerticalMenuItem } from '../../../../components';
@@ -43,7 +42,7 @@ class TagsForm extends Component {
   componentDidMount() {
     this.unsubscribeClickEvent = addEventListener('click', (ev) => {
       const { target } = ev;
-      if (target !== this.dropdownElement && target !== this.inpputSearchElement) {
+      if (target !== this.dropdownElement.current && target !== this.inpputSearchElement) {
         this.setState({ foundTags: [] });
       }
     });
@@ -61,6 +60,7 @@ class TagsForm extends Component {
 
     return userTags.filter(tag => !tags.has(tag));
   }
+  dropdownElement = createRef();
 
   updateTags = async () => {
     const { updateTags } = this.props;
@@ -140,7 +140,6 @@ class TagsForm extends Component {
 
   render() {
     const { i18n } = this.props;
-    const dropdownId = uuidV1();
 
     return (
       <div className="m-tags-form">
@@ -161,10 +160,9 @@ class TagsForm extends Component {
             onSubmit={this.handleAddNewTag}
           />
           <DropdownMenu
-            id={dropdownId}
             show={this.state.foundTags.length > 0}
             className="m-tags-form__dropdown"
-            dropdownRef={(el) => { this.dropdownElement = el; }}
+            ref={this.dropdownElement}
           >
             <VerticalMenu>
               {this.state.foundTags.map(tag => (

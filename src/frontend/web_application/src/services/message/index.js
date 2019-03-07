@@ -1,4 +1,5 @@
-export const sortMessages = (messages, reversed = false) => messages.sort((a, b) => {
+// Array.prototype.sort() is destructive, hence we need a copy of messages array.
+export const sortMessages = (messages, reversed = false) => [...messages].sort((a, b) => {
   if (reversed) {
     return new Date(b.date_sort) - new Date(a.date_sort);
   }
@@ -36,3 +37,17 @@ export const isMessageFromUser = (message, user) => {
 
 export const isUserRecipient = (message, user) => getRecipients(message)
   .some(recipient => isParticipantUser(recipient, user));
+
+export const getParticipantsContactIds = ({ participants }) => participants
+  .reduce((acc, participant) => {
+    const { contact_ids: contactIds } = participant;
+    if (contactIds && contactIds.length > 0) {
+      return [...acc, ...contactIds];
+    }
+
+    throw new Error(`No contact for participant ${participant.label}, cannot encrypt`);
+  }, []);
+
+export const getParticipantsAddresses = ({ participants }) => participants
+  .map(participant => participant.address);
+
