@@ -27,6 +27,17 @@ type Sender struct {
 	Store         backends.LDAStore
 }
 
+// unexported vars to help override funcs in tests
+var (
+	sendDraft = func(s *Sender, msg *nats.Msg) {
+		s.SendDraft(msg)
+	}
+
+	uploadSentMessageToRemote = func(s *Sender, userIdentity *UserIdentity, msg *Message) error {
+		return s.UploadSentMessageToRemote(userIdentity, msg)
+	}
+)
+
 func (s *Sender) SendDraft(msg *nats.Msg) {
 	var order BrokerOrder
 	err := json.Unmarshal(msg.Data, &order)
@@ -89,18 +100,18 @@ func (s *Sender) SendDraft(msg *nats.Msg) {
 			s.natsReplyError(msg, fmt.Errorf("[IMAPworker]SendDraft failed to retrieve sent message : %s", err))
 			return
 		}
-		err = s.UploadSentMessageToRemote(userIdentity, sentMsg)
+		err = uploadSentMessageToRemote(s, userIdentity, sentMsg)
 		if err != nil {
 			s.natsReplyError(msg, fmt.Errorf("[IMAPworker]SendDraft failed to upload sent email to remote IMAP account : %s", err))
 			return
 		}
 	}
 	//4. respond to caller
-	s.NatsConn.Publish(msg.Reply, smtpReply.Data)
+	_ = s.NatsConn.Publish(msg.Reply, smtpReply.Data)
 }
 
 func (s *Sender) natsReplyError(msg *nats.Msg, err error) {
-	log.WithError(err).Warnf("IMAPworker [outbound] : error when processing incoming nats message : %s", *msg)
+	log.WithError(err).Warnf("IMAPworker [outbound] : error when processing incoming nats message : %+v", *msg)
 
 	ack := DeliveryAck{
 		Err:      true,

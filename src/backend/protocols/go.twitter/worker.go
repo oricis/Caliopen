@@ -161,15 +161,20 @@ func InitWorker(conf WorkerConfig, verboseLog bool, id string) (worker *Worker, 
 	return worker, nil
 }
 
-func (worker *Worker) Start() {
-	log.Infof("Twitter worker %s started", worker.Id)
-
+func (worker *Worker) Start(throttling ...time.Duration) {
+	var throttle time.Duration
+	if len(throttling) == 1 && throttling[0] != 0 {
+		throttle = throttling[0]
+	} else {
+		throttle = pollThrottling
+	}
 	// start throttled jobs polling
+	log.Infof("Twitter worker %s starting with %d sec throttling", worker.Id, throttle/time.Second)
 	for {
 		start := time.Now()
 		requestOrder := []byte(fmt.Sprintf(needJobOrderStr, worker.Id))
 		log.Infof("Twitter worker %s is requesting jobs to idpoller", worker.Id)
-		resp, err := worker.NatsConn.Request(worker.Conf.BrokerConfig.NatsTopicPoller, requestOrder, 30*time.Second)
+		resp, err := worker.NatsConn.Request(worker.Conf.BrokerConfig.NatsTopicPoller, requestOrder, time.Minute)
 		if err != nil {
 			log.WithError(err).Warnf("[worker %s] failed to request pending jobs on nats", worker.Id)
 		} else {
@@ -177,17 +182,17 @@ func (worker *Worker) Start() {
 		}
 		// check for interrupt after job is finished
 		if worker.HaltGroup != nil {
-			worker.Stop()
+			worker.stop()
 			break
 		}
 		elapsed := time.Now().Sub(start)
-		if elapsed < pollThrottling {
-			time.Sleep(pollThrottling - elapsed)
+		if elapsed < throttle {
+			time.Sleep(throttle - elapsed)
 		}
 	}
 }
 
-func (worker *Worker) Stop() {
+func (worker *Worker) stop() {
 	for _, w := range worker.AccountHandlers {
 		w.WorkerDesk <- Stop
 	}
@@ -201,44 +206,50 @@ func (worker *Worker) Stop() {
 	log.Infof("worker %s stopped", worker.Id)
 }
 
-// getOrCreateWorker returns a pointer to a worker already in cache
+// getOrCreateHandler returns a pointer to a worker already in cache
 // or tries to create a new worker for the remote identity if not.
 // returns nil if get or create failed.
-func (w *Worker) getOrCreateWorker(userId, remoteId string) *AccountHandler {
-	if accountWorker, ok := w.AccountHandlers[userId+remoteId]; ok {
-		return accountWorker
+func (w *Worker) getOrCreateHandler(userId, remoteId string) *AccountHandler {
+	w.WorkersGuard.RLock()
+	if accountHandler, ok := w.AccountHandlers[userId+remoteId]; ok {
+		w.WorkersGuard.RUnlock()
+		return accountHandler
 	} else {
-		log.Infof("[getOrCreateWorker] failed to retrieve registered worker for remote %s (user %s). Trying to add one.", remoteId, userId)
+		w.WorkersGuard.RUnlock()
+		log.Infof("[getOrCreateHandler] failed to retrieve registered worker for remote %s (user %s). Trying to add one.", remoteId, userId)
 		if userId == "" || remoteId == "" {
 			return nil
 		}
-		accountWorker, err := NewAccountHandler(userId, remoteId, *w)
+		accountHandler, err := NewAccountHandler(userId, remoteId, *w)
 		if err != nil {
-			log.WithError(err).Warnf("[getOrCreateWorker] failed to create new worker for remote %s (user %s)", remoteId, userId)
+			log.WithError(err).Warnf("[getOrCreateHandler] failed to create new worker for remote %s (user %s)", remoteId, userId)
 			return nil
 		}
-		w.RegisterWorker(accountWorker)
-		go accountWorker.Start()
-		return accountWorker
+		w.RegisterAccountHandler(accountHandler)
+		go accountHandler.Start()
+		return accountHandler
 
 	}
 }
 
-func (w *Worker) RegisterWorker(accountWorker *AccountHandler) {
-	workerKey := accountWorker.userAccount.userID.String() + accountWorker.userAccount.remoteID.String()
-	// do not register same broker twice
-	if registeredWorker, ok := w.AccountHandlers[workerKey]; ok {
-		w.RemoveAccountHandler(registeredWorker)
+func (w *Worker) RegisterAccountHandler(accountHandler *AccountHandler) {
+	workerKey := accountHandler.userAccount.userID.String() + accountHandler.userAccount.remoteID.String()
+	// stop & remove handler first if it's already registered
+	w.WorkersGuard.RLock()
+	registeredHandler, ok := w.AccountHandlers[workerKey]
+	w.WorkersGuard.RUnlock()
+	if ok {
+		w.RemoveAccountHandler(registeredHandler)
 	}
 	w.WorkersGuard.Lock()
-	w.AccountHandlers[workerKey] = accountWorker
+	w.AccountHandlers[workerKey] = accountHandler
 	w.WorkersGuard.Unlock()
 }
 
-func (w *Worker) RemoveAccountHandler(accountWorker *AccountHandler) {
-	workerKey := accountWorker.userAccount.userID.String() + accountWorker.userAccount.remoteID.String()
+func (w *Worker) RemoveAccountHandler(accountHandler *AccountHandler) {
+	workerKey := accountHandler.userAccount.userID.String() + accountHandler.userAccount.remoteID.String()
 	w.WorkersGuard.Lock()
-	accountWorker.Stop()
+	accountHandler.Stop(true)
 	delete(w.AccountHandlers, workerKey)
 	w.WorkersGuard.Unlock()
 }

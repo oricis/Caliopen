@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 - End to end PGP encryption/decryption.
+- Test for imap worker, twitter worker and identities worker
 
 ### Fixed
 

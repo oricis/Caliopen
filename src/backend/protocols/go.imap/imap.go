@@ -172,7 +172,7 @@ func MarshalImap(message *imap.Message, xHeaders ImapFetcherHeaders) (mail *Emai
 	var mailBuff bytes.Buffer
 
 	for k, v := range xHeaders {
-		mailBuff.WriteString(k + ": " + v + "\r")
+		mailBuff.WriteString(k + ": " + v + "\r\n")
 	}
 
 	if len(message.Body) == 1 { // should have only one body
@@ -185,7 +185,6 @@ func MarshalImap(message *imap.Message, xHeaders ImapFetcherHeaders) (mail *Emai
 			break
 		}
 	}
-
 	mail = &Email{
 		Raw:     mailBuff,
 		ImapUid: message.Uid,
