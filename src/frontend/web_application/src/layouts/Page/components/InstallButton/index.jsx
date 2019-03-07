@@ -25,7 +25,7 @@ const InstallButton = ({ notifySuccess }) => (
 
       return (
         <VerticalMenuItem>
-          <Button display="expanded" onClick={handleInstall}>
+          <Button display="expanded" center={false} onClick={handleInstall}>
             <Trans id="pwa.action.install">Install</Trans>
           </Button>
         </VerticalMenuItem>

@@ -8,6 +8,10 @@
 
   &__text { margin-left: $co-margin / 4; }
 
+  &--center {
+    text-align: center;
+  }
+
   // display: inline, inline-block or expanded :
   &--inline-block {
     @include o-clickable--button;
