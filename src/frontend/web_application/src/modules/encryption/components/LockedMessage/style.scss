@@ -1,0 +1,40 @@
+@import '../../../../styles/common';
+
+.m-encryption-locked-message {
+  position: relative;
+  margin: $co-margin $co-margin $co-margin 6.5rem;
+
+  // vertical padding here is meant to avoid margin fusion
+  padding: 1px 0;
+  background: no-repeat top left / 95% url('../../assets/fake-text.svg');
+
+  &__message {
+    position: relative;
+    width: 70%;
+    margin: $co-margin auto;
+    padding: map_get($co-margin_, 'xsmall');
+    border-radius: 3rem;
+    background-color: transparentize($co-color__fg__back, 0.2);
+    overflow: hidden;
+  }
+
+  &__icon {
+    vertical-align: middle;
+    float: left;
+    width: 2.5rem;
+    margin: 1rem - map_get($co-margin_, 'xsmall');
+    margin-right: 1rem;
+    padding: .375rem .125rem;
+    border-radius: 1.25rem;
+    background-color: $co-color__primary;
+    color: $co-color__contrast__text;
+    font-size: 1.75rem;
+    text-align: center;
+  }
+
+  &__status {
+    &--error {
+      color: map_get($caliopen-palette, 'alert');
+    }
+  }
+}

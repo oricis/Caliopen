@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import getClient from '../../services/api-client';
-// import OpenPGPKeysDetails from './components/OpenPGPKeysDetails';
-// import TFAForm from './components/TFAForm';
+import OpenPGPKeysDetails from './components/OpenPGPKeysDetails';
 import { PageTitle, Section } from '../../components/';
 import PasswordDetails from './components/PasswordDetails';
 import LoginDetails from './components/LoginDetails';
+
 import './style.scss';
 
 class UserSecurity extends Component {
@@ -25,6 +25,9 @@ class UserSecurity extends Component {
   };
 
   componentDidMount() {
+    /* eslint-disable-next-line global-require */
+    this.saveKey = require('../../services/openpgp-keychain-repository').saveKey;
+
     this.props.requestUser();
   }
 
@@ -74,21 +77,20 @@ class UserSecurity extends Component {
               </div>
             </div>
           </Section>
-          {/* TODO: enable TFA and PGP sections
+        </form>
+        {/* TODO: enable TFA section
           <Section
           title={i18n._('user.security.section_tfa.title',
             null, { defaults: '2-factor authentication' })}
           >
             <TFAForm user={user} />
           </Section>
-          <Section
-            title={i18n._('user.security.section_pgpkeys.title',
-              null, { defaults: 'PGP private keys' })}
-          >
-            <OpenPGPKeysDetails user={user} />
-          </Section>
           */}
-        </form>
+        <Section
+          title={i18n._('user.security.section_pgpkeys.title', null, { defaults: 'PGP private keys' })}
+        >
+          <OpenPGPKeysDetails user={user} />
+        </Section>
       </div>
     );
   }

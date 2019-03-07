@@ -8,6 +8,7 @@ import { isMessageFromUser, getAuthor, isUserRecipient, getRecipientsExceptUser,
 import { getAveragePIMessage, getPiClass } from '../../../../modules/pi';
 import { AuthorAvatarLetter } from '../../../../modules/avatar';
 import { Icon, TextBlock } from '../../../../components';
+import { LockedMessage } from '../../../../modules/encryption';
 import MessagePi from '../MessagePi';
 
 import './style.scss';
@@ -35,6 +36,12 @@ class InstantMessage extends PureComponent {
     // noInteractions: PropTypes.bool,
     user: PropTypes.shape({}).isRequired,
     scrollTarget: PropTypes.shape({ forwardRef: PropTypes.func }).isRequired,
+    isLocked: PropTypes.bool.isRequired,
+    encryptionStatus: PropTypes.shape({}),
+  };
+
+  static defaultProps = {
+    encryptionStatus: undefined,
   };
 
   getProtocolIconType = ({ protocol }) => PROTOCOL_ICONS[protocol] || 'comment';
@@ -70,7 +77,10 @@ class InstantMessage extends PureComponent {
   }
 
   render() {
-    const { message, scrollTarget: { forwardRef } } = this.props;
+    const {
+      isLocked, encryptionStatus,
+      message, scrollTarget: { forwardRef },
+    } = this.props;
     const author = getAuthor(message);
     const pi = getAveragePIMessage({ message });
 
@@ -94,7 +104,12 @@ class InstantMessage extends PureComponent {
           </div>
           <MessagePi illustrate={false} describe={false} message={message} />
         </aside>
-        <TextBlock className="m-instant-message__content" nowrap={false}>{message.body}</TextBlock>
+        {
+          isLocked ?
+            <LockedMessage encryptionStatus={encryptionStatus} />
+            :
+            <TextBlock className="m-instant-message__content" nowrap={false}>{message.body}</TextBlock>
+        }
       </article>
     );
   }

@@ -6,12 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- End to end PGP encryption/decryption.
 - Test for imap worker, twitter worker and identities worker
 
 ### Fixed
 
+- Fix chronological order of messages in discussion scene
 - Better responsiveness on small screens for timeline & discussion & logo
+- Better responsiveness on small screens for dropdowns
 - inversion en/fr for some translations
+- BSOD on draft view in case there is no author (for example after remote identity deletion)
 
 ## [0.16.0] 2019-02-25
 

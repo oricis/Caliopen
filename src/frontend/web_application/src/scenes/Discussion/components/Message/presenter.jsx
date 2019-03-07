@@ -20,6 +20,8 @@ class Message extends Component {
     updateTagCollection: PropTypes.func,
     i18n: PropTypes.shape({}).isRequired,
     noInteractions: PropTypes.bool,
+    isLocked: PropTypes.bool.isRequired,
+    encryptionStatus: PropTypes.shape({}),
   };
 
   static defaultProps = {
@@ -30,6 +32,7 @@ class Message extends Component {
     onMessageUnread: () => {},
     onReply: () => {},
     updateTagCollection: () => {},
+    encryptionStatus: undefined,
   };
 
   state = {
@@ -37,9 +40,9 @@ class Message extends Component {
   };
 
   onVisibilityChange = (isVisible) => {
-    const { message, onMessageRead } = this.props;
+    const { isLocked, message, onMessageRead } = this.props;
 
-    if (isVisible && message.is_unread) {
+    if (!isLocked && isVisible && message.is_unread) {
       onMessageRead({ message });
     }
   }

@@ -11,6 +11,7 @@ import IdentitySelector from '../IdentitySelector';
 import { getRecipients } from '../../../../services/message/';
 import { withNotification } from '../../../userNotify';
 import { getIdentityProtocol } from '../../services/getIdentityProtocol';
+import { LockedMessage } from '../../../../services/encryption';
 
 import './draft-message-quick.scss';
 import './draft-message-advanced.scss';
@@ -51,6 +52,11 @@ class DraftMessage extends Component {
     isFetching: PropTypes.bool,
     // required in redux selector and withDraftMessage …
     hasDiscussion: PropTypes.bool.isRequired,
+    isEncrypted: PropTypes.bool,
+    encryptionStatus: PropTypes.string,
+    draftEncryption: PropTypes.shape({
+      status: PropTypes.string.isRequired,
+    }),
   };
   static defaultProps = {
     className: undefined,
@@ -65,16 +71,24 @@ class DraftMessage extends Component {
     onSent: () => {},
     onDeleteMessageSuccessfull: () => {},
     isFetching: true,
+    isEncrypted: false,
+    draftEncryption: undefined,
+    encryptionStatus: undefined,
   };
 
   static genererateStateFromProps(props, prevState) {
     const {
       draftMessage, isReply, availableIdentities, isFetching,
+      isEncrypted, draftEncryption, encryptionStatus,
     } = props;
 
     if (!draftMessage) {
       return prevState;
     }
+
+    const isLocked = isEncrypted && encryptionStatus !== 'decrypted';
+    const { body } = (isEncrypted && encryptionStatus && encryptionStatus === 'decrypted') ?
+      draftEncryption.decryptedMessage : draftMessage;
 
     const recipients = getRecipients(draftMessage);
     const identityId = (draftMessage.user_identities && draftMessage.user_identities[0]) || '';
@@ -82,11 +96,11 @@ class DraftMessage extends Component {
     const currIdentity = availableIdentities.find(identity => identity.identity_id === identityId);
 
     return {
-      initialized: !isFetching,
+      initialized: !isFetching && !isLocked,
       advancedForm: !isReply || !currIdentity,
       draftMessage: {
         ...prevState.draftMessage,
-        body: draftMessage.body,
+        body,
         subject: draftMessage.subject,
         identityId,
         recipients,
@@ -106,6 +120,7 @@ class DraftMessage extends Component {
 
   static initialState = {
     initialized: false,
+    isLocked: false,
     advancedForm: true,
     isSending: false,
     draftMessage: {
@@ -119,14 +134,8 @@ class DraftMessage extends Component {
   state = this.constructor.genererateStateFromProps(this.props, this.constructor.initialState);
 
   componentDidUpdate(prevProps) {
-    const propNames = ['draftMessage', 'isReply', 'availableIdentities', 'isFetching'];
-    const hasChanged = propNames.reduce((acc, propName) => {
-      if (acc) {
-        return true;
-      }
-
-      return this.props[propName] !== prevProps[propName];
-    }, false);
+    const propNames = ['draftMessage', 'isReply', 'availableIdentities', 'isFetching', 'encryptionStatus'];
+    const hasChanged = propNames.some(propName => this.props[propName] !== prevProps[propName]);
 
     if (!this.state.initialized && hasChanged) {
       // eslint-disable-next-line react/no-did-update-set-state
@@ -425,6 +434,7 @@ class DraftMessage extends Component {
   renderQuick() {
     const {
       className, i18n, draftFormRef, onFocus, scrollTarget: { forwardRef },
+      draftEncryption,
     } = this.props;
     const ref = (el) => {
       draftFormRef(el);
@@ -439,14 +449,19 @@ class DraftMessage extends Component {
           <div className="m-draft-message-quick__toggle-advanced">
             {this.renderToggleAdvancedButton()}
           </div>
-          <InputText
-            className="m-draft-message-quick__input"
-            onChange={this.handleChange}
-            onFocus={onFocus}
-            name="body"
-            value={this.state.draftMessage.body}
-            placeholder={this.getQuickInputPlaceholder()}
-          />
+          {
+            this.state.isLocked ?
+              <LockedMessage encryptionStatus={draftEncryption} />
+            :
+              <InputText
+                className="m-draft-message-quick__input"
+                onChange={this.handleChange}
+                onFocus={onFocus}
+                name="body"
+                value={this.state.draftMessage.body}
+                placeholder={this.getQuickInputPlaceholder()}
+              />
+          }
           <div className="m-draft-message-quick__send">
             <Button
               display="expanded"
@@ -467,6 +482,7 @@ class DraftMessage extends Component {
     const {
       className, draftMessage, parentMessage, original, draftFormRef, isReply, availableIdentities,
       onFocus, scrollTarget: { forwardRef },
+      draftEncryption,
     } = this.props;
 
     const isSubjectSupported = ({ draft }) => {
@@ -523,17 +539,22 @@ class DraftMessage extends Component {
               onChange={this.handleChange}
             />
           )}
-          <TextareaFieldGroup
-            className="m-draft-advanced__body"
-            label={<Trans id="messages.compose.form.body.label">Type your message here...</Trans>}
-            showLabelForSR
-            inputProps={{
-              name: 'body',
-              onChange: this.handleChange,
-              onFocus,
-              value: this.state.draftMessage.body,
-            }}
-          />
+          {
+            this.state.isLocked ?
+              <LockedMessage encryptionStatus={draftEncryption} />
+            :
+              <TextareaFieldGroup
+                className="m-draft-advanced__body"
+                label={<Trans id="messages.compose.form.body.label">Type your message here...</Trans>}
+                showLabelForSR
+                inputProps={{
+                  name: 'body',
+                  onChange: this.handleChange,
+                  onFocus,
+                  value: this.state.draftMessage.body,
+                }}
+              />
+          }
           <AttachmentManager
             className="m-draft-message-advanced__attachments"
             onUploadAttachments={this.handleFilesChange}

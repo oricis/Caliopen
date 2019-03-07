@@ -6,6 +6,7 @@ import Message from '../../components/Message';
 import ProtocolSwitch from '../../components/ProtocolSwitch';
 import { getAveragePIMessage } from '../../../../modules/pi';
 import { withSettings } from '../../../../modules/settings';
+import { CheckDecryption } from '../../../../modules/encryption';
 
 import './style.scss';
 
@@ -108,6 +109,7 @@ class MessageList extends Component {
           {this.renderLoadMore()}
         </div>
         {this.renderList()}
+        <CheckDecryption messages={messages} />
       </div>
     );
   }

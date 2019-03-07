@@ -4,10 +4,15 @@
 .m-dropdown {
   position: absolute;
   visibility: hidden;
+  overflow-y: auto;
 
   &--is-open {
-    z-index: $l-z-index__actions-container;
+    z-index: $l-z-index__dropdown;
     visibility: visible;
+  }
+
+  &--display-first-layer {
+    z-index: $l-z-index__dropdown--first-layer !important;
   }
 
   &--is-menu {

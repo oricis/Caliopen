@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Button from '../../../Button';
 
-const ActionBarButton = ({ className, ...props }) => (
-  <Button className={classnames('m-action-bar__action-btn', className)}{...props} />
+const ActionBarButton = ({ className, ...props }, ref) => (
+  <Button ref={ref} className={classnames('m-action-bar__action-btn', className)}{...props} />
 );
 
 ActionBarButton.propTypes = {
@@ -14,4 +14,4 @@ ActionBarButton.defaultProps = {
   className: undefined,
 };
 
-export default ActionBarButton;
+export default forwardRef(ActionBarButton);
