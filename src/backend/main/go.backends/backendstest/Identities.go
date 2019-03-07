@@ -1,6 +1,7 @@
-// Copyleft (ɔ) 2019 The Mailden contributors.
-// Use of this source code is governed by a GNU GENERAL PUBLIC
-// license (GPL) that can be found in the LICENSE file.
+// Copyleft (ɔ) 2019 The Caliopen contributors.
+// Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
+// license (AGPL) that can be found in the LICENSE file.
+
 
 // Package backendstest provides utilities and interfaces for mocking backends interfaces
 package backendstest
@@ -25,14 +26,14 @@ func GetIdentitiesBackend(locals, remotes []*UserIdentity) *IdentitiesBackend {
 			i.localIdentities[local.UserId.String()+local.Id.String()] = local
 		}
 	} else {
-		i.localIdentities = localIdentities
+		i.localIdentities = LocalIdentities
 	}
 	if len(remotes) > 0 {
 		for _, remote := range remotes {
 			i.remoteIdentities[remote.UserId.String()+remote.Id.String()] = remote
 		}
 	} else {
-		i.remoteIdentities = remoteIdentities
+		i.remoteIdentities = RemoteIdentities
 	}
 
 	return &i
@@ -112,3 +113,22 @@ func (ib *IdentitiesBackend) IsRemoteIdentity(userId, identityId string) bool {
 func (ib *IdentitiesBackend) Close() {
 
 }
+
+func LocalsCount() int {
+	return len(LocalIdentities)
+}
+
+func RemotesCount() int {
+	return len(RemoteIdentities)
+}
+
+func ActiveRemotesCount() int {
+	var c int
+	for _, remote := range RemoteIdentities {
+		if remote.Status == "active" {
+			c += 1
+		}
+	}
+	return c
+}
+

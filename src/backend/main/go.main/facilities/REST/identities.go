@@ -94,17 +94,22 @@ func (rest *RESTfacility) RetrieveRemoteIdentities(userId string, withCredential
 	return
 }
 
+// CreateUserIdentity wraps the following actions :
+// - checks UserIdentity correctness
+// - adds UserIdentity in cassandra's tables
+// - adds identity to user's contact entry
+// - emits nats message toward identity poller
 func (rest *RESTfacility) CreateUserIdentity(identity *UserIdentity) CaliopenError {
 	// check if mandatory properties are ok
-	if len(identity.UserId) == 0 || (bytes.Equal(identity.UserId.Bytes(), EmptyUUID.Bytes())) {
+	if len(identity.UserId.Bytes()) == 0 || (bytes.Equal(identity.UserId.Bytes(), EmptyUUID.Bytes())) {
 		return NewCaliopenErr(UnprocessableCaliopenErr, "[CreateUserIdentity] empty user id")
 	}
 	if identity.Type == "" || identity.Protocol == "" || identity.Identifier == "" {
 		return NewCaliopenErr(UnprocessableCaliopenErr, "[CreateUserIdentity] miss mandatory property")
 	}
 
-	if len((*identity).Id) == 0 || (bytes.Equal((*identity).Id.Bytes(), EmptyUUID.Bytes())) {
-		(*identity).Id.UnmarshalBinary(uuid.NewV4().Bytes())
+	if len((*identity).Id.Bytes()) == 0 || (bytes.Equal((*identity).Id.Bytes(), EmptyUUID.Bytes())) {
+		_ = (*identity).Id.UnmarshalBinary(uuid.NewV4().Bytes())
 	}
 
 	// set defaults
@@ -136,6 +141,17 @@ func (rest *RESTfacility) CreateUserIdentity(identity *UserIdentity) CaliopenErr
 			if e != nil {
 				log.WithError(e).Warnf("[CreateUserIdentity] failed to publish 'add' order to idpoller")
 			}
+		}
+	}
+
+	// adds identity to user's contact entry
+	contact, e := rest.RetrieveUserContact(identity.UserId.String())
+	if e != nil {
+		log.WithError(e).Warnf("[CreateUserIdentity] failed to retrieve user's contact. Can't add identity to contact.")
+	} else {
+		_, err = addIdentityToContact(rest.store, rest.index, rest.store, *identity, contact)
+		if err != nil {
+			log.WithError(err).Warnf("[CreateUserIdentity] failed to add identity <%s> to user <%s>'s contact <%s>", identity.Id, identity.UserId, contact.ContactId)
 		}
 	}
 
@@ -233,7 +249,7 @@ func (rest *RESTfacility) DeleteUserIdentity(userId, identityId string) Caliopen
 		if jerr == nil {
 			e := rest.nats_conn.Publish(rest.natsTopics[Nats_IdPoller_topicKey], jorder)
 			if e != nil {
-				log.WithError(e).Warnf("[saveErrorState] failed to publish delete order to idpoller")
+				log.WithError(e).Warn("[saveErrorState] failed to publish delete order to idpoller")
 			}
 		}
 	}

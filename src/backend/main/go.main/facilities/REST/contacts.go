@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
 	log "github.com/Sirupsen/logrus"
 	"github.com/bitly/go-simplejson"
@@ -73,7 +74,7 @@ func (rest *RESTfacility) CreateContact(contact *Contact) (err error) {
 	return nil
 }
 
-// RetrieveContacts returns contacts from index given filter params
+// RetrieveContacts returns contacts collection from index given filter params
 func (rest *RESTfacility) RetrieveContacts(filter IndexSearch) (contacts []*Contact, totalFound int64, err error) {
 
 	contacts, totalFound, err = rest.index.FilterContacts(filter)
@@ -84,8 +85,23 @@ func (rest *RESTfacility) RetrieveContacts(filter IndexSearch) (contacts []*Cont
 	return
 }
 
+// RetrieveContact returns one contact
 func (rest *RESTfacility) RetrieveContact(userID, contactID string) (contact *Contact, err error) {
 	return rest.store.RetrieveContact(userID, contactID)
+}
+
+// RetrieveUserContact returns the contact entry belonging to user.
+// This is the contact that is auto-created for user and can't be deleted.
+func (rest *RESTfacility) RetrieveUserContact(userID string) (contact *Contact, err error) {
+	contactID := rest.store.RetrieveUserContactId(userID)
+	if contactID == "" {
+		return nil, NewCaliopenErrf(NotFoundCaliopenErr, "[RetrieveUserContact] didn't find contact id for user %s", userID)
+	}
+	contact, err = rest.store.RetrieveContact(userID, contactID)
+	if err != nil {
+		return nil, err
+	}
+	return
 }
 
 // PatchContact is a shortcut for REST api to :
@@ -194,7 +210,10 @@ func (rest *RESTfacility) UpdateContact(user *UserInfo, contact, oldContact *Con
 	go func(contact *Contact) {
 		const update_order = "contact_update"
 		natsMessage := fmt.Sprintf(Nats_contact_tmpl, update_order, contact.ContactId.String(), contact.UserId.String())
-		rest.PublishOnNats(natsMessage, rest.natsTopics[Nats_Contacts_topicKey])
+		err := rest.PublishOnNats(natsMessage, rest.natsTopics[Nats_Contacts_topicKey])
+		if err != nil {
+			log.WithError(err).Error("[UpdateContact] failed to publish contact_update on nats")
+		}
 	}(contact)
 
 	return nil
@@ -251,4 +270,60 @@ func (rest *RESTfacility) DeleteContact(userID, contactID string) error {
 
 func (rest *RESTfacility) ContactExists(userID, contactID string) bool {
 	return rest.store.ContactExists(userID, contactID)
+}
+
+// addIdentityToContact updates Contact card in db and index with data from UserIdentity
+// it embeds a new Email or a new SocialIdentity or a new IM depending of UserIdentity's type.
+// returns new version of Contact saved in stores.
+func addIdentityToContact(storeContact backends.ContactStorage, indexContact backends.ContactIndex, storeUser backends.UserStorage, identity UserIdentity, contact *Contact) (*Contact, CaliopenError) {
+	updatedFields := map[string]interface{}{}
+	newContact := *contact
+	switch identity.Protocol {
+	case EmailProtocol, ImapProtocol, SmtpProtocol:
+		ec := new(EmailContact)
+		ec.MarshallNew()
+		ec.Address = identity.Identifier
+		ec.Type = "other"
+		if identity.DisplayName != "" {
+			ec.Label = identity.DisplayName
+		} else {
+			ec.Label = identity.Identifier
+		}
+		ec.IsPrimary = false
+		if contact.Emails == nil {
+			newContact.Emails = []EmailContact{*ec}
+		} else {
+			newContact.Emails = append(contact.Emails, *ec)
+		}
+		updatedFields["Emails"] = newContact.Emails
+	case TwitterProtocol:
+		si := new(SocialIdentity)
+		si.MarshallNew()
+		si.Type = TwitterProtocol
+		si.Name = identity.Identifier
+		si.Infos = map[string]string{
+			"twitterid":   identity.Infos["twitterid"],
+			"screen_name": identity.Identifier,
+		}
+		if contact.Identities == nil {
+			newContact.Identities = []SocialIdentity{*si}
+		} else {
+			newContact.Identities = append(contact.Identities, *si)
+		}
+		updatedFields["Identities"] = newContact.Identities
+	default:
+		return nil, NewCaliopenErrf(UnprocessableCaliopenErr, "[addIdentityToContact] unknown protocol %s for identity %s. Can't add identity to contact card.", identity.Protocol, identity.Id)
+	}
+
+	err := storeContact.UpdateContact(&newContact, contact, updatedFields)
+	if err != nil {
+		return nil, WrapCaliopenErrf(err, FailDependencyCaliopenErr, "[addIdentityToContact] failed to update contact %s in store", contact.ContactId)
+	}
+	userShard := storeUser.GetShardForUser(identity.UserId.String())
+	err = indexContact.UpdateContact(&UserInfo{identity.UserId.String(), userShard}, &newContact, updatedFields)
+	if err != nil {
+		return nil, WrapCaliopenErrf(err, FailDependencyCaliopenErr, "[addIdentityToContact] failed to update contact %s in index", contact.ContactId)
+	}
+
+	return &newContact, nil
 }

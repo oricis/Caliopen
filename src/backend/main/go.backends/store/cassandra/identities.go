@@ -239,7 +239,7 @@ func (cb *CassandraBackend) RetrieveAllRemotes(withCredentials bool) (<-chan *Us
 			}
 			userIdentity, err := cb.RetrieveUserIdentity(userId.String(), identityId.String(), withCredentials)
 			if err != nil {
-				log.WithError(err).Warnf("[CassandraBackend]RetrieveAllRemotes fails to retrieve identity for user %s and identity_id %", userId.String(), identityId.String())
+				log.WithError(err).Warnf("[CassandraBackend]RetrieveAllRemotes fails to retrieve identity for user %s and identity_id %s", userId.String(), identityId.String())
 				continue
 			}
 			if withCredentials {

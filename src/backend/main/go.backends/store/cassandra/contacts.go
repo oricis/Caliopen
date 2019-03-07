@@ -66,6 +66,17 @@ func (cb *CassandraBackend) RetrieveContact(user_id, contact_id string) (contact
 	return contact, err
 }
 
+// RetrieveUserContactId returns contactID embedded in user entry
+// or empty string if error or not found
+func (cb *CassandraBackend) RetrieveUserContactId(userID string) string {
+	var contactID string
+	err := cb.SessionQuery(`SELECT contact_id FROM user WHERE user_id = ?`, userID).Scan(&contactID)
+	if err != nil {
+		return ""
+	}
+	return contactID
+}
+
 // UpdateContact updates fields into Cassandra
 // AND updates related lookup tables if needed
 func (cb *CassandraBackend) UpdateContact(contact, oldContact *Contact, fields map[string]interface{}) error {
