@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 - End to end PGP encryption/decryption.
-- new feature : when user adds an external identity, it's added to its contact's card
+- When user adds an external account, external identity is added to user's contact card
 - Test for imap worker, twitter worker and identities worker
 
 ### Fixed

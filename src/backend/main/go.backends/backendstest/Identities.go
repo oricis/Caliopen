@@ -2,6 +2,7 @@
 // Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
 // license (AGPL) that can be found in the LICENSE file.
 
+
 // Package backendstest provides utilities and interfaces for mocking backends interfaces
 package backendstest
 
@@ -130,3 +131,4 @@ func ActiveRemotesCount() int {
 	}
 	return c
 }
+

@@ -95,7 +95,7 @@ var (
 			UserId:    UUID(uuid.FromStringOrNil(JeanThubUserId)),
 		},
 	}
-
+  
 	RemoteIdentities = map[string]*UserIdentity{
 		DevIdoireUserId + "7e356efb-d24c-493a-b558-e58c7ad20ac3": {
 			DisplayName: "Dev Idoire email remote",
