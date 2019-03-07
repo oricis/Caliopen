@@ -48,6 +48,7 @@ type (
 		OutTWITTER_topic string `mapstructure:"outTWITTER_topic"`
 		Contacts_topic   string `mapstructure:"contacts_topic"`
 		Keys_topic       string `mapstructure:"keys_topic"`
+		Users_topic      string `mapstructure:"users_topic"`
 		IdPoller_topic   string `mapstructure:"idpoller_topic"`
 	}
 	// Cassandra

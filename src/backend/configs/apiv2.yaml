@@ -37,6 +37,7 @@ ApiConfig:
     outTWITTER_topic: twitter_dm      # topics's name for "send" draft order via TWITTER
     contacts_topic: contactAction     # topic's name to post messages regarding contacts' events
     keys_topic: keyAction             # topic's name to post messages regarding public key events
+    users_topic: userAction           # topic's name to post messages regarding users events
     idpoller_topic: idCache           # topic's name to post messages to idpoller regarding identities management
   swaggerSpec: ./swagger.json #absolute path or relative path to go.server bin
   RedisConfig:

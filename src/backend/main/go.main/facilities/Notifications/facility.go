@@ -50,11 +50,11 @@ func NewNotificationsFacility(config CaliopenConfig, queue *nats.Conn) (notifier
 	//  log.Info("Failed to log to file, using default stdout")
 	//  notifier.log.Out = os.Stdout
 	// }
-	notifier.natsQueue = queue
 	notifier.config = &config.NotifierConfig
 	notifier.natsTopics = make(map[string]string)
 	notifier.natsTopics[Nats_outSMTP_topicKey] = config.NatsConfig.OutSMTP_topic
 	notifier.natsTopics[Nats_Contacts_topicKey] = config.NatsConfig.Contacts_topic
+	notifier.natsQueue = queue
 	switch config.RESTstoreConfig.BackendName {
 	case "cassandra":
 		cassaConfig := store.CassandraConfig{
