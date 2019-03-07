@@ -254,6 +254,7 @@ def notify_new_user(user, config):
     yield client.connect(**opts)
     notif = {
         'message': 'created',
+        'user_name': '{0}'.format(user.name),
         'user_id': '{0}'.format(user.user_id)
     }
     yield client.publish('userAction', json.dumps(notif))

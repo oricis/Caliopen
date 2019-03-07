@@ -29,9 +29,9 @@ type (
 		adminLocalID *UserIdentity // Admin's local identity used to send emails
 		config       *NotifierConfig
 		index        backends.NotificationsIndex
-		natsQueue    *nats.Conn
+		NatsQueue    *nats.Conn
 		natsTopics   map[string]string
-		store        backends.NotificationsStore
+		Store        backends.NotificationsStore
 		log          *log.Logger
 	}
 )
@@ -54,7 +54,7 @@ func NewNotificationsFacility(config CaliopenConfig, queue *nats.Conn) (notifier
 	notifier.natsTopics = make(map[string]string)
 	notifier.natsTopics[Nats_outSMTP_topicKey] = config.NatsConfig.OutSMTP_topic
 	notifier.natsTopics[Nats_Contacts_topicKey] = config.NatsConfig.Contacts_topic
-	notifier.natsQueue = queue
+	notifier.NatsQueue = queue
 	switch config.RESTstoreConfig.BackendName {
 	case "cassandra":
 		cassaConfig := store.CassandraConfig{
@@ -75,7 +75,7 @@ func NewNotificationsFacility(config CaliopenConfig, queue *nats.Conn) (notifier
 		if err != nil {
 			log.WithError(err).Fatalf("Initalization of %s backend failed", config.RESTstoreConfig.BackendName)
 		}
-		notifier.store = backends.NotificationsStore(backend) // type conversion
+		notifier.Store = backends.NotificationsStore(backend) // type conversion
 	default:
 		log.Fatalf("Unknown backend: %s", config.RESTstoreConfig.BackendName)
 	}
@@ -94,12 +94,12 @@ func NewNotificationsFacility(config CaliopenConfig, queue *nats.Conn) (notifier
 		log.Fatalf("Unknown index: %s", config.RESTindexConfig.IndexName)
 	}
 
-	user, err := notifier.store.UserByUsername(config.NotifierConfig.AdminUsername)
+	user, err := notifier.Store.UserByUsername(config.NotifierConfig.AdminUsername)
 	if err != nil {
 		log.WithError(err).Warnf("Failed to retrieve admin user <%s>", config.NotifierConfig.AdminUsername)
 	} else if user != nil {
 		notifier.admin = user
-		ids, err := notifier.store.RetrieveLocalsIdentities(user.UserId.String())
+		ids, err := notifier.Store.RetrieveLocalsIdentities(user.UserId.String())
 		if err != nil {
 			log.WithError(err).Warnf("Failed to retrieve local identities for admin user <%s>", config.NotifierConfig.AdminUsername)
 		} else {
@@ -128,7 +128,7 @@ func (N *Notifier) LogNotification(method string, notif *Notification) {
 
 func (N *Notifier) RetrieveNotifications(userId string, from, to time.Time) ([]Notification, CaliopenError) {
 
-	notifs, err := N.store.RetrieveNotifications(userId, from, to)
+	notifs, err := N.Store.RetrieveNotifications(userId, from, to)
 	if err != nil {
 		return []Notification{}, WrapCaliopenErr(err, DbCaliopenErr, "[RetrieveNotifications] failed")
 	}
@@ -138,7 +138,7 @@ func (N *Notifier) RetrieveNotifications(userId string, from, to time.Time) ([]N
 
 func (N *Notifier) DeleteNotifications(userId string, until time.Time) CaliopenError {
 
-	err := N.store.DeleteNotifications(userId, until)
+	err := N.Store.DeleteNotifications(userId, until)
 	if err != nil {
 		return WrapCaliopenErr(err, DbCaliopenErr, "[Notifier]DeleteNotifications failed")
 	}

@@ -54,13 +54,6 @@ func (facilities *CaliopenFacilities) initialize(config CaliopenConfig) (err err
 		return
 	}
 
-	// Messaging facility initialization
-	facilities.MessagingFacility, err = Messaging.NewCaliopenMessaging(config, facilities.nats)
-	if err != nil {
-		log.WithError(err).Error("CaliopenFacilities : initalization of Messaging facility failed")
-		return
-	}
-
 	// REST facility initialization
 	rest := REST.NewRESTfacility(config, facilities.nats)
 	facilities.RESTfacility = rest
@@ -69,7 +62,15 @@ func (facilities *CaliopenFacilities) initialize(config CaliopenConfig) (err err
 	facilities.Cache = rest.Cache
 
 	// Notifications facility initialization
-	facilities.Notifiers = Notifications.NewNotificationsFacility(config, facilities.nats)
+	notifier := Notifications.NewNotificationsFacility(config, facilities.nats)
+	facilities.Notifiers = notifier
+
+	// Messaging facility initialization
+	facilities.MessagingFacility, err = Messaging.NewCaliopenMessaging(config, notifier)
+	if err != nil {
+		log.WithError(err).Error("CaliopenFacilities : initalization of Messaging facility failed")
+		return
+	}
 
 	return
 }

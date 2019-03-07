@@ -15,7 +15,7 @@ import (
 func (N *Notifier) ByNotifQueue(notif *Notification) CaliopenError {
 	N.LogNotification("ByNotificationQueue", notif)
 
-	err := N.store.PutNotificationInQueue(notif)
+	err := N.Store.PutNotificationInQueue(notif)
 
 	if err != nil {
 		logrus.WithError(err).Errorf("[Notifier]ByNotifQueue failed to put notification in queue")

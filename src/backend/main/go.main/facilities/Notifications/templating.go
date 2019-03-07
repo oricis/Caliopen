@@ -1,6 +1,7 @@
 package Notifications
 
 import (
+	"errors"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"gopkg.in/flosch/pongo2.v3"
 	"gopkg.in/yaml.v2"
@@ -45,4 +46,9 @@ func RenderResetEmail(template_path string, context map[string]interface{}) (*Me
 		Subject:    subject,
 		Body_plain: body_plain,
 	}, nil
+}
+
+func RenderWelcomeEmail(templatePath string, context map[string]interface{}) (*Message, error) {
+
+	return nil, errors.New("[RenderWelcomeEmail] not implemented")
 }

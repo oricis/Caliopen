@@ -29,7 +29,7 @@ func (N *Notifier) ByEmail(notif *Notification) CaliopenError {
 	N.LogNotification("ByEmail", notif)
 	switch notif.Type {
 	case NotifAdminMail:
-		N.SendEmailAdminToUser(notif.User, notif.InternalPayload.(*Message))
+		N.SendEmailAdminToUser(notif.User, notif.InternalPayload.(*Message), notif.Body == "ccLocalMailbox")
 	case NotifPasswordReset:
 		N.SendPasswordResetEmail(notif.User, notif.InternalPayload.(*Pass_reset_session))
 	default:
@@ -41,25 +41,46 @@ func (N *Notifier) ByEmail(notif *Notification) CaliopenError {
 // SendEmailAdminToUser sends an administrative email to user, ie :
 // this is an email composed by the backend to inform user that something happened related to its account
 // func is in charge of saving & indexing draft before sending the "deliver" order to the SMTP broker.
-func (notif *Notifier) SendEmailAdminToUser(user *User, email *Message) error {
+func (notif *Notifier) SendEmailAdminToUser(user *User, email *Message, ccLocalMailbox bool) error {
 	if notif.admin == nil {
 		err := errors.New("[NotificationsFacility] can't SendEmailAdminToUser, no admin user has been set")
 		log.Warn(err)
 		return err
 	}
 
-	sender := Participant{
-		Address:  (*notif.adminLocalID).Identifier,
-		Label:    (*notif.adminLocalID).DisplayName,
-		Protocol: EmailProtocol,
-		Type:     ParticipantFrom,
+	participants := []Participant{
+		{ // sender
+			Address:  (*notif.adminLocalID).Identifier,
+			Label:    (*notif.adminLocalID).DisplayName,
+			Protocol: EmailProtocol,
+			Type:     ParticipantFrom,
+		},
+		{ // recipient
+			Address:     user.RecoveryEmail,
+			Contact_ids: []UUID{user.ContactId},
+			Label:       user.Name,
+			Protocol:    EmailProtocol,
+			Type:        ParticipantTo,
+		},
 	}
-	recipient := Participant{
-		Address:     user.RecoveryEmail,
-		Contact_ids: []UUID{user.ContactId},
-		Label:       user.Name,
-		Protocol:    EmailProtocol,
-		Type:        ParticipantTo,
+
+	if ccLocalMailbox {
+		locals, err := notif.Store.RetrieveLocalsIdentities(user.UserId.String())
+		if err != nil {
+			log.WithError(err).Warnf("[SendEmailAdminToUser] failed to retrieve local identities for user %s", user.UserId)
+		} else {
+			for _, localIdentity := range locals {
+				if localIdentity.Identifier != "" {
+					participants = append(participants, Participant{
+						Address:  localIdentity.Identifier,
+						Label:    localIdentity.DisplayName,
+						Protocol: EmailProtocol,
+						Type:     ParticipantTo,
+					})
+				}
+			}
+
+		}
 	}
 	now := time.Now()
 	(*email).Date = now
@@ -67,13 +88,13 @@ func (notif *Notifier) SendEmailAdminToUser(user *User, email *Message) error {
 	(*email).Message_id.UnmarshalBinary(uuid.NewV4().Bytes())
 	(*email).Discussion_id.UnmarshalBinary(uuid.NewV4().Bytes())
 	(*email).Is_draft = true
-	(*email).Participants = []Participant{sender, recipient}
+	(*email).Participants = participants
 	(*email).Protocol = EmailProtocol
 	(*email).User_id = notif.admin.UserId
 	(*email).UserIdentities = []UUID{notif.adminLocalID.Id}
 
 	// save & index message
-	err := notif.store.CreateMessage(email)
+	err := notif.Store.CreateMessage(email)
 	if err != nil {
 		log.WithError(err).Warn("[EmailNotifiers]: SendEmailAdminToUser failed to store draft")
 		return err
@@ -98,11 +119,11 @@ func (notif *Notifier) SendEmailAdminToUser(user *User, email *Message) error {
 	if e != nil {
 		return fmt.Errorf("[EmailNotifiers] failed to build nats message : %s", e.Error())
 	}
-	rep, err := notif.natsQueue.Request(notif.natsTopics[Nats_outSMTP_topicKey], natsMessage, 30*time.Second)
+	rep, err := notif.NatsQueue.Request(notif.natsTopics[Nats_outSMTP_topicKey], natsMessage, 30*time.Second)
 	if err != nil {
 		log.WithError(err).Warn("[EmailNotifiers]: SendEmailAdminToUser error")
-		if notif.natsQueue.LastError() != nil {
-			log.WithError(notif.natsQueue.LastError()).Warn("[EmailNotifiers]: SendEmailAdminToUser error")
+		if notif.NatsQueue.LastError() != nil {
+			log.WithError(notif.NatsQueue.LastError()).Warn("[EmailNotifiers]: SendEmailAdminToUser error")
 			return err
 		}
 		return err
@@ -139,7 +160,7 @@ func (notif *Notifier) SendPasswordResetEmail(user *User, session *Pass_reset_se
 		return errors.New("[RESTfacility] failed to build reset email")
 	}
 
-	err = notif.SendEmailAdminToUser(user, email)
+	err = notif.SendEmailAdminToUser(user, email, false)
 
 	if err != nil {
 		log.WithError(err).Warnf("[RESTfacility] sending password reset email failed for user %s", user.UserId.String())
