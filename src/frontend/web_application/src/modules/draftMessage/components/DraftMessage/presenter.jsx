@@ -11,7 +11,7 @@ import IdentitySelector from '../IdentitySelector';
 import { getRecipients } from '../../../../services/message/';
 import { withNotification } from '../../../userNotify';
 import { getIdentityProtocol } from '../../services/getIdentityProtocol';
-import { LockedMessage } from '../../../../services/encryption';
+import { LockedMessage } from '../../../../modules/encryption';
 
 import './draft-message-quick.scss';
 import './draft-message-advanced.scss';
