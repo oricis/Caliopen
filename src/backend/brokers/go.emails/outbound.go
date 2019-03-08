@@ -112,7 +112,6 @@ func (b *EmailBroker) natsMsgHandler(msg *nats.Msg) (resp []byte, err error) {
 						b.natsReplyError(msg, err)
 						return resp, err
 					case Oauth2:
-
 						out.MTAparams = &MTAparams{
 							AuthType: Oauth2,
 							Host:     firstIdentity.Infos["outserver"],
