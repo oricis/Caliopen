@@ -53,6 +53,7 @@ const (
 	//notifications types
 	NotifAdminMail     = "adminMail"
 	NotifPasswordReset = "passwordReset"
+	OnboardingMails    = "onboardingMails"
 
 	//identity types
 	LocalIdentity  = "local"

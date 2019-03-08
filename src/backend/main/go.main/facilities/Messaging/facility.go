@@ -60,14 +60,8 @@ func (cm *CaliopenMessaging) HandleUserAction(msg *nats.Msg) {
 		user, err := cm.caliopenNotifier.Store.UserByUsername(payload.UserName)
 
 		notif := &Notification{
-			Body: "ccLocalMailbox", // this body will set ccLocalMailbox to true when calling SendEmailAdminToUser
-			InternalPayload: &Message{
-				Body_plain: "welcome to caliopen",
-				Body_html:  "welcome to caliopen",
-				Subject:    "welcome to caliopen",
-			},
 			NotifId: UUID(uuid.NewV1()),
-			Type:    NotifAdminMail,
+			Type:    OnboardingMails,
 			User:    user,
 		}
 		cErr := cm.caliopenNotifier.ByEmail(notif)
