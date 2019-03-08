@@ -15,8 +15,7 @@ import (
 )
 
 type EmailNotifiers interface {
-	SendEmailAdminToUser(user *User, email *Message) error
-	SendPasswordResetEmail(user *User, session *Pass_reset_session) error
+	SendEmailAdminToUser(user *User, participants []Participant, email *Message) error
 }
 
 const (

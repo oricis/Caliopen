@@ -24,6 +24,13 @@ type CaliopenMessaging struct {
 	Subscriptions    map[string]*nats.Subscription
 }
 
+// unexported vars to help override funcs in tests
+var (
+	notifyByEmail = func(notifier *Notifications.Notifier, notif *Notification) CaliopenError {
+		return notifier.ByEmail(notif)
+	}
+)
+
 func NewCaliopenMessaging(config CaliopenConfig, notifier *Notifications.Notifier) (Facility, error) {
 	if notifier == nil {
 		return nil, errors.New("[NewCaliopenMessaging] needs a non-nil notifier")
@@ -34,12 +41,15 @@ func NewCaliopenMessaging(config CaliopenConfig, notifier *Notifications.Notifie
 	cm := new(CaliopenMessaging)
 	cm.natsConn = notifier.NatsQueue
 	cm.Subscriptions = map[string]*nats.Subscription{}
+	if config.NatsConfig.Users_topic == "" {
+		return nil, errors.New("[NewCaliopenMessaging] wont subscribe to empty topic")
+	}
 	userSub, err := cm.natsConn.Subscribe(config.NatsConfig.Users_topic, cm.HandleUserAction)
 	if err != nil {
-		log.WithError(err).Error("[NewCaliopenMessaging] failed to subscribe to %s topic on NATS", config.NatsConfig.Users_topic)
+		log.WithError(err).Errorf("[NewCaliopenMessaging] failed to subscribe to %s topic on NATS", config.NatsConfig.Users_topic)
 		return nil, err
 	}
-	cm.Subscriptions[config.NatsConfig.Contacts_topic] = userSub
+	cm.Subscriptions[config.NatsConfig.Users_topic] = userSub
 	cm.caliopenNotifier = notifier
 	return cm, nil
 }
@@ -58,14 +68,17 @@ func (cm *CaliopenMessaging) HandleUserAction(msg *nats.Msg) {
 	switch payload.Message {
 	case "created":
 		user, err := cm.caliopenNotifier.Store.UserByUsername(payload.UserName)
-
+		if err != nil {
+			log.WithError(err).Errorf("[HandleUserAction] failed to retrieve user %s", payload.UserName)
+			return
+		}
 		notif := &Notification{
 			NotifId: UUID(uuid.NewV1()),
 			Type:    OnboardingMails,
 			User:    user,
 		}
-		cErr := cm.caliopenNotifier.ByEmail(notif)
-		if err != nil {
+		cErr := notifyByEmail(cm.caliopenNotifier, notif)
+		if cErr != nil {
 			log.WithError(cErr).Warnf("[HandleUserAction] ByEmail notification failed (code : %d, cause : %s)", cErr.Code(), cErr.Cause())
 		}
 	default:
