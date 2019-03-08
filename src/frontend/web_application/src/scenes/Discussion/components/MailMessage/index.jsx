@@ -4,12 +4,15 @@ import Moment from 'react-moment';
 import { Trans, withI18n } from '@lingui/react';
 import classnames from 'classnames';
 import { withScrollTarget } from '../../../../modules/scroll';
-import { withPush } from '../../../../modules/routing/hoc/withPush';
-import { getTagLabelFromName } from '../../../../modules/tags';
-import { Badge, Button, Confirm, Icon, TextBlock } from '../../../../components';
+import { withPush } from '../../../../modules/routing';
+import { Button, Confirm, Icon, TextBlock } from '../../../../components';
 import MessageAttachments from '../MessageAttachments';
 import MessageRecipients from '../MessageRecipients';
 import MessagePi from '../MessagePi';
+import TagList from '../TagList';
+import { replyHandler } from '../../services/replyHandler';
+import { messageDeleteHandler } from '../../services/messageDeleteHandler';
+import { toggleMarkAsReadHandler } from '../../services/toggleMarkAsReadHandler';
 import { LockedMessage } from '../../../../modules/encryption';
 import { getAuthor } from '../../../../services/message';
 import { getAveragePIMessage, getPiClass } from '../../../../modules/pi/services/pi';
@@ -30,9 +33,8 @@ class MailMessage extends Component {
     onMessageDelete: PropTypes.func,
     onOpenTags: PropTypes.func.isRequired,
     onReply: PropTypes.func.isRequired,
-    user: PropTypes.shape({}).isRequired,
     push: PropTypes.func.isRequired,
-    tags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    user: PropTypes.shape({}).isRequired,
     settings: PropTypes.shape({ default_locale: PropTypes.string.isRequired }).isRequired,
     i18n: PropTypes.shape({}).isRequired,
     scrollTarget: PropTypes.shape({ forwardRef: PropTypes.func }).isRequired,
@@ -49,27 +51,9 @@ class MailMessage extends Component {
     encryptionStatus: {},
   }
 
-  handleMessageDelete = () => {
-    const { message, onMessageDelete } = this.props;
-
-    onMessageDelete({ message });
-  }
-
-  handleToggleMarkAsRead = () => {
-    const { message, onMessageRead, onMessageUnread } = this.props;
-
-    if (message.is_unread) {
-      onMessageRead({ message });
-    } else {
-      onMessageUnread({ message });
-    }
-  }
-
-  handleReply = () => {
-    const { onReply, message, push } = this.props;
-    onReply({ message });
-    push({ hash: 'reply' });
-  }
+  handleMessageDelete = messageDeleteHandler(this)
+  handleToggleMarkAsRead = toggleMarkAsReadHandler(this)
+  handleReply = replyHandler(this)
 
   renderBody = () => {
     const { message, isLocked, encryptionStatus } = this.props;
@@ -88,22 +72,6 @@ class MailMessage extends Component {
 
     return (
       <LockedMessage encryptionStatus={encryptionStatus} />
-    );
-  };
-
-  renderTags = ({ tags }) => {
-    const { i18n, tags: allTags } = this.props;
-
-    return (
-      tags && (
-        <ul className="s-mail-message__tags">
-          {tags.map(tag => (
-            <li key={`${this.props.message.message_id}${tag}`} className="s-mail-message__tag">
-              <Badge>{getTagLabelFromName(i18n, allTags, tag)}</Badge>
-            </li>
-          ))}
-        </ul>
-      )
     );
   };
 
@@ -149,7 +117,7 @@ class MailMessage extends Component {
               <span className="direction"><Trans id="message.to">To:</Trans></span> <MessageRecipients message={message} user={user} />
             </div>
           </div>
-          {this.renderTags(message)}
+          <TagList className="s-mail-message__tags" message={message} />
         </aside>
         <div className="s-mail-message__container">
           <h2 className="s-mail-message__subject"><TextBlock nowrap={false}>{message.subject}</TextBlock></h2>
@@ -169,7 +137,6 @@ class MailMessage extends Component {
               <Trans id="message-list.message.action.tags">Tags</Trans>
             </Button>
             <Confirm
-              className="s-mail-message-__action-confirm"
               onConfirm={this.handleMessageDelete}
               title={(<Trans id="message-list.message.confirm-delete.title">Delete a message</Trans>)}
               content={(<Trans id="message-list.message.confirm-delete.content">The deletion is permanent, are you sure you want to delete this message ?</Trans>)}
@@ -184,7 +151,12 @@ class MailMessage extends Component {
                 </Button>
               )}
             />
-            <Button className="m-message-action-container__action" onClick={this.handleToggleMarkAsRead} responsive="icon-only">
+            <Button
+              className="m-message-action-container__action"
+              onClick={this.handleToggleMarkAsRead}
+              responsive="icon-only"
+              icon={message.is_unread ? 'envelope-open' : 'envelope'}
+            >
               {message.is_unread ? (
                 <Trans id="message-list.message.action.mark_as_read">Mark as read</Trans>
               ) : (

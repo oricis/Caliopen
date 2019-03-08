@@ -27,6 +27,7 @@ export const typeAssoc = {
   'dot-circle': 'fa fa-dot-circle',
   edit: 'fa fa-edit',
   envelope: 'fa fa-envelope',
+  'envelope-open': 'fa fa-envelope-open',
   'ellipsis-v': 'fa fa-ellipsis-v',
   email: 'fa fa-envelope',
   editor: 'fa fa-font',
