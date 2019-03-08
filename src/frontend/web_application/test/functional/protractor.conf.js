@@ -93,6 +93,12 @@ if (process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY) {
       version: '65.0',
       'tunnel-identifier': 'caliopen',
       name,
+      'moz:firefoxOptions': {
+        prefs: {
+          'security.insecure_password.ui.enabled': false,
+          'security.insecure_field_warning.contextual.enabled': false,
+        },
+      },
     },
     // {
     //   browserName: 'chrome',
