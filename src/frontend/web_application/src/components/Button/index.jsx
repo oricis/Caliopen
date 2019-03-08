@@ -90,7 +90,7 @@ class Button extends PureComponent {
       );
     }
 
-    return <RawButton onMouse {...buttonProps} ref={innerRef}>{children}</RawButton>;
+    return <RawButton {...buttonProps} ref={innerRef}>{children}</RawButton>;
   }
 }
 
