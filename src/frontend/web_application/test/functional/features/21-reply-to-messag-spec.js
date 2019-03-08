@@ -94,7 +94,8 @@ describe('Reply to message -', () => {
     await element(discussion1Selector).click();
     await browser.wait(EC.presenceOf($('.m-draft-message-quick__input')), 5 * 1000);
     console.info('write msg');
-    await element(by.css('.m-draft-message-quick__input')).sendKeys(protractor.Key.chord(protractor.Key.CONTROL, 'a'), text1);
+    // await element(by.css('.m-draft-message-quick__input')).sendKeys(protractor.Key.chord(protractor.Key.CONTROL, 'a'), text1);
+    await element(by.css('.m-draft-message-quick__input')).sendKeys(text1);
 
     await element(by.cssContainingText('button', 'Save')).click();
     await browser.sleep(1 * 1000);
@@ -119,7 +120,8 @@ describe('Reply to message -', () => {
     await browser.wait(EC.presenceOf(element(by.css('.m-draft-message-quick__input'))), 5 * 1000);
     console.info('write msg');
     const draftBodyElement1 = element(by.css('.m-draft-message-quick__input'));
-    draftBodyElement1.sendKeys(protractor.Key.chord(protractor.Key.CONTROL, 'a'), text1);
+    // draftBodyElement1.sendKeys(protractor.Key.chord(protractor.Key.CONTROL, 'a'), text1);
+    draftBodyElement1.sendKeys(text1);
 
     await element(by.css('.m-draft-message-quick__send-button[title="Send"]')).click();
     await browser.sleep(1 * 1000);

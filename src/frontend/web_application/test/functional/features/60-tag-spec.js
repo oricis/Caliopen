@@ -124,7 +124,8 @@ describe('Tag', () => {
       await browser.wait(EC.presenceOf(element(by.css('.m-add-tag .m-input-text'))), 5 * 1000);
       await element(by.cssContainingText('.s-tags-settings__tags .m-tag-input .m-tag-input__button', 'Inbox')).click();
       // key chord works on FF not chrome
-      await element(by.css('.m-tag-input__input .m-input-text')).sendKeys(protractor.Key.chord(protractor.Key.CONTROL, 'a'), tagName);
+      // await element(by.css('.m-tag-input__input .m-input-text')).sendKeys(protractor.Key.chord(protractor.Key.CONTROL, 'a'), tagName);
+      await element(by.css('.m-tag-input__input .m-input-text')).sendKeys(tagName);
       await element(by.css('.m-tag-input .m-button[aria-label=Save]')).click();
       await browser.wait(EC.presenceOf(element(by.cssContainingText('.s-tags-settings__tags .m-tag-input .m-tag-input__button', tagName)), 5 * 1000));
     });

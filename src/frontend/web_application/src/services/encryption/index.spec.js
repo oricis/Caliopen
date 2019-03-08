@@ -1,4 +1,4 @@
-import { encryptDraft } from './encryption';
+import { encryptMessage } from './index';
 
 jest.mock('openpgp', () => ({
   key: {
@@ -20,7 +20,7 @@ describe('modules draftMessage -- service -- encryption', () => {
     ];
     const draft = { body: 'Thou shalt not read my mails !' };
 
-    expect(await encryptDraft(draft, publicKeys)).toEqual({
+    expect(await encryptMessage(draft, publicKeys)).toEqual({
       body: 'Hello, encryption.',
       privacy_features: {
         message_encrypted: true,
