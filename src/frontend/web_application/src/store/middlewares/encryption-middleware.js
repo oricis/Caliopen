@@ -1,5 +1,5 @@
 import { CREATE_MESSAGE, UPDATE_MESSAGE } from '../modules/message';
-import { encryptMessage as encryptMessageStart, encryptMessageSuccess } from '../modules/encryption';
+import { encryptMessage as encryptMessageStart, encryptMessageSuccess, encryptMessageFail } from '../modules/encryption';
 import { requestRemoteIdentity } from '../modules/remote-identity';
 import { tryCatchAxiosAction } from '../../services/api-client';
 import { getKeysForEmail, PUBLIC_KEY } from '../../services/openpgp-keychain-repository';
@@ -58,46 +58,46 @@ const getFullDraftFromAction = (state, action) => {
 const encryptMessageAction = async (store, dispatch, action) => {
   const message = getFullDraftFromAction(store.getState(), action);
 
-  // try {
-  const keys = await getParticipantsKeys(store.getState(), store.dispatch, message);
+  try {
+    const keys = await getParticipantsKeys(store.getState(), store.dispatch, message);
 
-  const authorAddress = await getAuthorAddress(store.getState(), dispatch, message);
+    const authorAddress = await getAuthorAddress(store.getState(), dispatch, message);
 
-  if (!authorAddress) return action;
+    if (!authorAddress) return action;
 
-  const userKeys = await getKeysForEmail(authorAddress, PUBLIC_KEY);
+    const userKeys = await getKeysForEmail(authorAddress, PUBLIC_KEY);
 
-  if (keys && keys.length > 0 && userKeys.length > 0) {
-    dispatch(encryptMessageStart({ message }));
-    // userKeys[0] : no need more than 1 key
-    const encryptedMessage = await encryptMessage(message, [userKeys[0].armor(), ...keys]);
+    if (keys && keys.length > 0 && userKeys.length > 0) {
+      dispatch(encryptMessageStart({ message }));
+      // userKeys[0] : no need more than 1 key
+      const encryptedMessage = await encryptMessage(message, [userKeys[0].armor(), ...keys]);
 
-    dispatch(encryptMessageSuccess({ message, encryptedMessage }));
+      dispatch(encryptMessageSuccess({ message, encryptedMessage }));
 
-    return {
-      ...action,
-      payload: {
-        ...action.payload,
-        request: {
-          ...action.payload.request,
-          data: {
-            ...action.payload.request.data,
-            current_state: action.payload.request.data.current_state ? {
-              ...action.payload.request.data.current_state,
-              body: action.payload.request.data.current_state.body || message.body,
-              privacy_features: action.payload.request.data.current_state.privacy_features
-              || message.privacy_features,
-            } : undefined,
-            body: encryptedMessage.body,
-            privacy_features: encryptedMessage.privacy_features,
+      return {
+        ...action,
+        payload: {
+          ...action.payload,
+          request: {
+            ...action.payload.request,
+            data: {
+              ...action.payload.request.data,
+              current_state: action.payload.request.data.current_state ? {
+                ...action.payload.request.data.current_state,
+                body: action.payload.request.data.current_state.body || message.body,
+                privacy_features: action.payload.request.data.current_state.privacy_features
+                || message.privacy_features,
+              } : undefined,
+              body: encryptedMessage.body,
+              privacy_features: encryptedMessage.privacy_features,
+            },
           },
         },
-      },
-    };
+      };
+    }
+  } catch (error) {
+    dispatch(encryptMessageFail({ message, error }));
   }
-  // } catch (error) {
-  // dispatch(encryptMessageFail({ message, error }));
-  // }
 
   return action;
 };

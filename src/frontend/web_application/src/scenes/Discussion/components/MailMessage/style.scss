@@ -65,6 +65,14 @@
     overflow: hidden;
   }
 
+  &__encrypted {
+    float: right;
+    color: map_get($privacy-palette, 'super');
+    font-size: 1rem;
+    font-weight: normal;
+    text-align: right;
+  }
+
   &__content, &__subject {
     padding: $co-component__spacing;
     border-bottom: 1px solid #f9f9f9;

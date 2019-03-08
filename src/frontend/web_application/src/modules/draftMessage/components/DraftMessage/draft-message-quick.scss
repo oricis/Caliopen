@@ -1,9 +1,9 @@
 @import '../../../../styles/common';
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
+$fa-font-path: '../../../../../node_modules/font-awesome/fonts';
+@import 'font-awesome';
 
 .m-draft-message-quick {
-  background-color: #fff;
-
   &__recipient-list {
     margin-right: $co-margin;
     margin-bottom: $co-margin;
@@ -13,6 +13,11 @@
   &__container {
     @include flex-grid-row($size: expand);
     border: 1px solid #9a989b;
+    background-color: #fff;
+  }
+
+  &__encryption {
+    text-align: right;
   }
 
   &__toggle-advanced {
@@ -24,6 +29,10 @@
   &__input {
     @include flex-grid-size;
     border: none;
+
+    &--encrypted {
+      position: relative;
+    }
   }
 
   &__send {
@@ -33,7 +42,35 @@
   }
 
   &__send-button {
+    position: relative;
     height: 100%;
     font-size: 1.3rem;
+
+    &::after {
+      @include fa-icon;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 1rem;
+      height: 1rem;
+      font-size: 1rem;
+    }
+
+    &--encrypted {
+      background-color: map_get($privacy-palette, 'super');
+
+      &::after {
+        content: $fa-var-lock;
+      }
+    }
+
+    &--unencrypted {
+      background-color: map_get($privacy-palette, 'good');
+      color: $co-color__fg__text;
+
+      &::after {
+        content: $fa-var-unlock;
+      }
+    }
   }
 }

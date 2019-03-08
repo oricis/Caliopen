@@ -434,7 +434,7 @@ class DraftMessage extends Component {
   renderQuick() {
     const {
       className, i18n, draftFormRef, onFocus, scrollTarget: { forwardRef },
-      draftEncryption,
+      draftEncryption, isEncrypted,
     } = this.props;
     const ref = (el) => {
       draftFormRef(el);
@@ -454,7 +454,10 @@ class DraftMessage extends Component {
               <LockedMessage encryptionStatus={draftEncryption} />
             :
               <InputText
-                className="m-draft-message-quick__input"
+                className={classnames(
+                  'm-draft-message-quick__input',
+                  { 'm-draft-message-quick__input--encrypted': isEncrypted }
+                )}
                 onChange={this.handleChange}
                 onFocus={onFocus}
                 name="body"
@@ -462,18 +465,37 @@ class DraftMessage extends Component {
                 placeholder={this.getQuickInputPlaceholder()}
               />
           }
-          <div className="m-draft-message-quick__send">
+          <div className={classnames(
+              'm-draft-message-quick__send',
+            {
+              'm-draft-message-quick__send--encrypted': isEncrypted,
+              'm-draft-message-quick__send--unencrypted': !isEncrypted,
+            }
+            )}
+          >
             <Button
               display="expanded"
               shape="plain"
               icon="paper-plane"
               title={i18n._('draft-message.action.send', null, { defaults: 'Send' })}
-              className="m-draft-message-quick__send-button"
+              className={classnames(
+              'm-draft-message-quick__send-button',
+            {
+              'm-draft-message-quick__send-button--encrypted': isEncrypted,
+              'm-draft-message-quick__send-button--unencrypted': !isEncrypted,
+            }
+            )}
               onClick={this.handleSend}
               disabled={!canSend}
             />
           </div>
         </div>
+        {
+          isEncrypted &&
+          <div className="m-draft-message-quick__encryption">
+            <Trans id="draft-message.encryption.ok">This message will be encrypted.</Trans>
+          </div>
+        }
       </div>
     );
   }
