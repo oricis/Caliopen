@@ -1,8 +1,8 @@
-import { bindActionCreators, compose } from 'redux';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { reply } from '../../../../modules/draftMessage';
-import { updateTagCollection, withTags } from '../../../../modules/tags';
+import { updateTagCollection } from '../../../../modules/tags';
 import { messageEncryptionStatusSelector } from '../../../../modules/encryption';
 import { isMessageEncrypted } from '../../../../services/encryption';
 
@@ -31,7 +31,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   updateTagCollection,
 }, dispatch);
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  withTags(),
-)(Presenter);
+export default connect(mapStateToProps, mapDispatchToProps)(Presenter);

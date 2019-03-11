@@ -622,7 +622,7 @@ class DraftMessage extends Component {
       return (
         <div className={classnames(className)} ref={ref} >
           <Callout color="info">
-            <Trans id="draft-message.no-available-identities">You have no available identities for this discussion. You can add one in your <Link to="/settings/identities">settings</Link></Trans>
+            <Trans id="draft-message.no-available-identities">You have no available identities for this discussion. You can add one in your <Link to="/user/identities">account</Link></Trans>
           </Callout>
         </div>
       );

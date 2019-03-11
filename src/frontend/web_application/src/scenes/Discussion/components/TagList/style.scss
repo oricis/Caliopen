@@ -1,0 +1,9 @@
+@import '../../../../styles/common';
+
+.m-message-tags-list {
+  &__tag {
+    display: inline;
+    margin-right: $co-component__spacing;
+    margin-bottom: $co-component__spacing;
+  }
+}

@@ -177,7 +177,7 @@
   "draft-message.form.placeholder.quick-reply": "Réponse rapide pour {recipients} par {protocol}",
   "draft-message.form.placeholder.quick-reply-no-recipients": "Réponse rapide de {identifier}",
   "draft-message.form.placeholder.quick-start": "Démarrer une nouvelle discussion",
-  "draft-message.no-available-identities": "Vous n'avez pas d'identité disponibles pour cette discussion. Vous pouvez en ajouter une dans vos <0>paramètres</0>.",
+  "draft-message.no-available-identities": "Vous n'avez pas d'identité disponibles pour cette discussion. Vous pouvez en ajouter une dans votre <0>compte</0>.",
   "draft.action.import_attachement": "Importer un fichier joint",
   "draft.attachement.form.descr": "Attacher un fichier",
   "draft.feedback.save-error": "Impossible de sauver le brouillon",

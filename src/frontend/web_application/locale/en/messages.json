@@ -177,7 +177,7 @@
   "draft-message.form.placeholder.quick-reply": "Quick reply to {recipients} by {protocol}",
   "draft-message.form.placeholder.quick-reply-no-recipients": "Quick reply from {identifier}",
   "draft-message.form.placeholder.quick-start": "Start a new discussion",
-  "draft-message.no-available-identities": "You have no available identities for this discussion. You can add one in your <0>settings</0>.",
+  "draft-message.no-available-identities": "You have no available identities for this discussion. You can add one in your <0>account</0>.",
   "draft.action.import_attachement": "Import attachement",
   "draft.attachement.form.descr": "Attach a file.",
   "draft.feedback.save-error": "Unable to save the draft",
