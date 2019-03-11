@@ -4,8 +4,13 @@
 
 .m-button {
   @include o-clickable;
+  text-align: left;
 
   &__text { margin-left: $co-margin / 4; }
+
+  &--center {
+    text-align: center;
+  }
 
   // display: inline, inline-block or expanded :
   &--inline-block {

@@ -1,9 +1,11 @@
 const path = require('path');
 const webpackMerge = require('webpack-merge');
+const OfflinePlugin = require('offline-plugin');
+const WebpackPwaManifest = require('webpack-pwa-manifest');
 const configs = require('./config.js');
 const common = require('./webpack.common.js');
 
-const PUBLIC_PATH = '/assets/';
+const PUBLIC_PATH = '/';
 const isDev = process.env.NODE_ENV === 'development';
 
 const base = {
@@ -22,12 +24,52 @@ const base = {
     ],
   },
   output: {
-    path: path.join(__dirname, '..', 'dist/server/public/assets'),
+    path: path.join(__dirname, '..', 'dist/server/public'),
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js',
     publicPath: PUBLIC_PATH,
   },
 };
+
+const configurePWA = () => ({
+  plugins: [
+    new WebpackPwaManifest({
+      name: 'Caliopen',
+      short_name: 'Caliopen',
+      description: 'Private messages aggregator with privacy',
+      background_color: '#2196f3',
+      theme_color: '#ffffff',
+      icons: [
+        {
+          src: path.join(__dirname, '..', 'assets/caliopen-icon.png'),
+          sizes: [96, 128, 192, 256, 384, 512],
+        },
+        {
+          src: path.join(__dirname, '..', 'assets/caliopen-logo.png'),
+          size: '1022x265',
+        },
+      ],
+      ios: true,
+    }),
+    new OfflinePlugin({
+      appShell: '/',
+      responseStrategy: 'network-first',
+      externals: [
+        '/',
+        // disable caching of authenticated routes since the plugin tries to preload its
+        // '/api/v1/me',
+        // '/api/v1/settings',
+      ],
+      excludes: ['**/*.worker.js'],
+      relativePaths: false,
+      ServiceWorker: {
+        output: 'offline.worker.js',
+        navigationPreload: false,
+        events: true,
+      },
+    }),
+  ],
+});
 
 const configureDevServer = () => {
   if (!isDev) {
@@ -60,6 +102,7 @@ const config = webpackMerge(
   configs.configureVendorSplit(),
   configs.configureHTMLTemplate(),
   configs.configureEnv('browser'),
+  configurePWA(),
   configureDevServer(),
   base
 );

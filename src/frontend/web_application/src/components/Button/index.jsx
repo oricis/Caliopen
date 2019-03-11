@@ -17,6 +17,7 @@ class Button extends PureComponent {
     accessKey: PropTypes.string,
     noDecoration: PropTypes.bool,
     disabled: PropTypes.bool,
+    center: PropTypes.bool,
     innerRef: PropTypes.shape({}),
   };
   static defaultProps = {
@@ -30,6 +31,7 @@ class Button extends PureComponent {
     accessKey: null,
     noDecoration: false,
     disabled: false,
+    center: true,
     innerRef: undefined,
   };
 
@@ -49,7 +51,8 @@ class Button extends PureComponent {
 
   render() {
     const {
-      children, className, icon, display, color, shape, responsive, noDecoration, innerRef, ...props
+      children, className, icon, display, color, shape, responsive, noDecoration, center, innerRef,
+      ...props
     } = this.props;
 
     const buttonProps = {
@@ -58,6 +61,7 @@ class Button extends PureComponent {
         className,
         'm-button',
         {
+          'm-button--center': center,
           'm-button--active': color === 'active',
           'm-button--alert': color === 'alert',
           'm-button--secondary': color === 'secondary',

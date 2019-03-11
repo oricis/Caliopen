@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, Redirect } from 'react-router-dom';
 import { AppLoader } from '../../../../components';
+import { isAuthenticated } from '../../../user';
 import { withAuthenticatedProps } from './withAuthenticatedProps';
 
 @withRouter
@@ -38,7 +39,13 @@ class AuthenticatedLayout extends Component {
       user, settings, children, location: { pathname }, didLostAuth,
     } = this.props;
 
-    if (didLostAuth) {
+    let redirectRequired = false;
+
+    if (BUILD_TARGET === 'browser') {
+      redirectRequired = !isAuthenticated();
+    }
+
+    if (didLostAuth || redirectRequired) {
       return (
         <Redirect push to={`/auth/signin?redirect=${pathname}`} />
       );

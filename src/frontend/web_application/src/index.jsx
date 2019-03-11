@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
 import PiwikReactRouter from 'piwik-react-router';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { install as PWAOfflineInstall, applyUpdate } from 'offline-plugin/runtime';
 import App from './App';
 import configureStore from './store/configure-store';
 import { initialState as initialStateSettings } from './store/modules/settings';
@@ -40,6 +42,12 @@ const store = configureStore({
   },
 }, devTools);
 
+PWAOfflineInstall({
+  onUpdateReady: () => {
+    // Tells to new SW to take control immediately
+    applyUpdate();
+  },
+});
 const rootEl = document.getElementById('root');
 ReactDOM.hydrate(
   (

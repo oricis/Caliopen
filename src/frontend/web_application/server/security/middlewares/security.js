@@ -1,13 +1,14 @@
 const securityMiddleware = (req, res, next) => {
   const security = {
     firewalls: {
-      assets: {
-        paths: [
-          '/favicon.ico',
-          /^\/assets\/.*$/,
-        ],
-        security: false,
-      },
+      // middleware for assets is applied before the security middleware, so this is unused
+      // assets: {
+      //   paths: [
+      //     '/favicon.ico',
+      //     /^\/assets\/.*$/,
+      //   ],
+      //   security: false,
+      // },
       auth: {
         paths: [
           /^\/auth\/.*/,

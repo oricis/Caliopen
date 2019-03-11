@@ -101,6 +101,28 @@ class TakeATour extends Component {
           </div>
         ),
       },
+      {
+        selector: '.l-header__take-a-tour',
+        content: (
+          <div>
+            <h2><Trans id="take-a-tour.step.install.title">Installation</Trans></h2>
+            <div>
+              <Trans id="take-a-tour.step.install.content">
+                <p>If available, the installation button will be displayed.</p>
+                <p>
+                  On android and ios it will add Caliopen to your homescreen.
+                  On desktop, this feature is available for chrome and chromium.
+                </p>
+                <p>
+                  This technology is called «Progressive Web App», it will make the app faster to
+                  load and some features will be available offline and it will help to interract
+                  with your device (like the notification feature) if your are agree.
+                </p>
+              </Trans>
+            </div>
+          </div>
+        ),
+      },
     ];
 
     return (

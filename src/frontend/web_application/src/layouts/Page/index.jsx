@@ -8,6 +8,7 @@ import { TabProvider } from '../../modules/tab';
 import { PageActions } from '../../modules/control';
 import { UserMenu } from '../../modules/user';
 import { ScrollDetector } from '../../modules/scroll';
+import InstallButton from './components/InstallButton';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import NotificationCenter from './components/NotificationCenter';
@@ -93,6 +94,7 @@ class Page extends Component {
                         <Trans id="header.help.privacy-policy">Privacy Policy</Trans>
                       </Link>
                     </VerticalMenuItem>
+                    <InstallButton />
                   </VerticalMenu>
                 </Dropdown>
               </div>
