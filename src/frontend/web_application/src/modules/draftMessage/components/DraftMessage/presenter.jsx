@@ -195,6 +195,14 @@ class DraftMessage extends Component {
     return (isReply || hasRecipients) && !this.state.isSending && isValid;
   }
 
+  getEncryptionTranslation = () => {
+    const { isEncrypted } = this.props;
+
+    return isEncrypted ?
+      i18nMark('draft-message.encryption.ok') :
+      i18nMark('draft-message.encryption.ko');
+  };
+
   validate = () => {
     const currentDraft = this.state.draftMessage;
     const identity = this.getIdentity();
@@ -441,10 +449,6 @@ class DraftMessage extends Component {
       forwardRef(el);
     };
 
-    const encryptionTranslation = isEncrypted ?
-      i18nMark('draft-message.encryption.ok') :
-      i18nMark('draft-message.encryption.ko');
-
     const canSend = this.getCanSend();
 
     return (
@@ -496,7 +500,7 @@ class DraftMessage extends Component {
         </div>
         {
           <div className="m-draft-message-quick__encryption">
-            <Trans id={encryptionTranslation} />
+            <Trans id={this.getEncryptionTranslation()} />
           </div>
         }
       </div>
@@ -507,7 +511,7 @@ class DraftMessage extends Component {
     const {
       className, draftMessage, parentMessage, original, draftFormRef, isReply, availableIdentities,
       onFocus, scrollTarget: { forwardRef },
-      draftEncryption,
+      draftEncryption, isEncrypted,
     } = this.props;
 
     const isSubjectSupported = ({ draft }) => {
@@ -606,7 +610,14 @@ class DraftMessage extends Component {
           />
           <Button
             shape="plain"
-            className="m-draft-message-advanced__action-button m-draft-message-advanced__button-send"
+            className={classnames(
+              'm-draft-message-advanced__action-button',
+              'm-draft-message-advanced__button-send',
+              {
+                'm-draft-message-advanced__button-send--encrypted': isEncrypted,
+                'm-draft-message-advanced__button-send--unencrypted': !isEncrypted,
+              }
+            )}
             onClick={this.handleSend}
             disabled={!canSend}
           >
@@ -625,6 +636,11 @@ class DraftMessage extends Component {
             <FieldErrors errors={errors} />
           </div>
         )}
+        {
+          <div className="m-draft-message-advanced__encryption">
+            <Trans id={this.getEncryptionTranslation()} />
+          </div>
+        }
       </div>
     );
   }
