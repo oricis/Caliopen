@@ -1,5 +1,6 @@
-import { getIdentityProtocol } from '../../draftMessage';
-import { Participant } from '../../message';
+// prevent circular reference between identity and draftMessage modules
+import { getIdentityProtocol } from '../../../modules/draftMessage/services/getIdentityProtocol';
+import { Participant } from '../../../modules/message';
 
 export const identityToParticipant = ({ identity, user, type = 'From' }) => {
   const { identifier, display_name: label } = identity;

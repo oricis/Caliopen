@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { Trans, withI18n } from '@lingui/react';
 import UserInfo from '../UserInfo';
 import { Link, Button, Icon, Dropdown, withDropdownControl, VerticalMenu, VerticalMenuItem, Separator } from '../../../../components/';
-import { withNotification } from '../../../../modules/userNotify';
+// some circular reference breaks unit tests when importing directly from the module
+import { withNotification } from '../../../../modules/userNotify/hoc/withNotification';
 import './style.scss';
 import './next-feature-button.scss';
 
