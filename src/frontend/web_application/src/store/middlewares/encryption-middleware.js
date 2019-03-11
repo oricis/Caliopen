@@ -55,8 +55,38 @@ const getFullDraftFromAction = (state, action) => {
   }
 };
 
+const rebuildAction = (action, message, encryptedMessage) => ({
+  ...action,
+  payload: {
+    ...action.payload,
+    request: {
+      ...action.payload.request,
+      data: {
+        ...action.payload.request.data,
+        current_state: action.payload.request.data.current_state ? {
+          ...action.payload.request.data.current_state,
+          body: action.payload.request.data.current_state.body || message.body,
+          privacy_features: action.payload.request.data.current_state.privacy_features
+          || message.privacy_features,
+        } : undefined,
+        body: encryptedMessage.body,
+        privacy_features: encryptedMessage.privacy_features,
+      },
+    },
+  },
+});
+
 const encryptMessageAction = async (store, dispatch, action) => {
   const message = getFullDraftFromAction(store.getState(), action);
+
+  // XXX : needed until we support MIME multipart messages.
+  if (message.attachments) {
+    return rebuildAction(action, message, {
+      ...message,
+      body: action.payload.request.data.body,
+      privacy_features: {},
+    });
+  }
 
   try {
     const keys = await getParticipantsKeys(store.getState(), store.dispatch, message);
@@ -74,26 +104,7 @@ const encryptMessageAction = async (store, dispatch, action) => {
 
       dispatch(encryptMessageSuccess({ message, encryptedMessage }));
 
-      return {
-        ...action,
-        payload: {
-          ...action.payload,
-          request: {
-            ...action.payload.request,
-            data: {
-              ...action.payload.request.data,
-              current_state: action.payload.request.data.current_state ? {
-                ...action.payload.request.data.current_state,
-                body: action.payload.request.data.current_state.body || message.body,
-                privacy_features: action.payload.request.data.current_state.privacy_features
-                || message.privacy_features,
-              } : undefined,
-              body: encryptedMessage.body,
-              privacy_features: encryptedMessage.privacy_features,
-            },
-          },
-        },
-      };
+      return rebuildAction(action, message, encryptedMessage);
     }
   } catch (error) {
     dispatch(encryptMessageFail({ message, error }));

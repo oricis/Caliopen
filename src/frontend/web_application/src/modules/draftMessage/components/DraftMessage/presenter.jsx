@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { withI18n } from '@lingui/react';
+import { i18nMark, withI18n } from '@lingui/react';
 import { Trans } from '@lingui/macro'; // eslint-disable-line import/no-extraneous-dependencies
 import { Button, Icon, InputText, TextareaFieldGroup, TextFieldGroup, Link, Confirm, PlaceholderBlock, Callout, FieldErrors, Spinner } from '../../../../components';
 import { withScrollTarget } from '../../../scroll';
@@ -441,6 +441,10 @@ class DraftMessage extends Component {
       forwardRef(el);
     };
 
+    const encryptionTranslation = isEncrypted ?
+      i18nMark('draft-message.encryption.ok') :
+      i18nMark('draft-message.encryption.ko');
+
     const canSend = this.getCanSend();
 
     return (
@@ -491,9 +495,8 @@ class DraftMessage extends Component {
           </div>
         </div>
         {
-          isEncrypted &&
           <div className="m-draft-message-quick__encryption">
-            <Trans id="draft-message.encryption.ok">This message will be encrypted.</Trans>
+            <Trans id={encryptionTranslation} />
           </div>
         }
       </div>
