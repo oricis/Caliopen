@@ -100,9 +100,9 @@ class MailMessage extends Component {
             { 'm-mail-message-details__author--encrypted': encryptionStatus }
             )}
           >
-            {encryptionStatus && <Icon type="lock" />}
+            {encryptionStatus && <Icon type="lock" className="m-mail-message-details--encrypted__icon" />}
             {encryptionStatus && ' '}
-            <Icon type="envelope" />
+            <Icon type="envelope" className={classnames({ 'm-mail-message-details--encrypted__icon': encryptionStatus })} />
             {' '}
             <span className="m-mail-message-details__author-name">{author.label}</span>
             {' '}

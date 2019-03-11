@@ -113,7 +113,7 @@ class AttachmentManager extends Component {
         onClose={this.handleCloseImportModal}
       >
         <TextBlock nowrap={false} className="m-attachement-manager__encryption-warning">
-          <Trans id="draft.action.import_attachement.encryption_warning">WARNING : Caliopen cannot encrypt messages with attachments yet. If you proceed now, message will be sent unencrypted.</Trans>
+          <Trans id="draft.action.import_attachement.encryption_warning">WARNING: Caliopen cannot encrypt messages with attachments yet. If you proceed now, message will be sent unencrypted.</Trans>
         </TextBlock>
         <InputFileGroup
           onInputChange={this.handleInputFileChange}

@@ -498,11 +498,9 @@ class DraftMessage extends Component {
             />
           </div>
         </div>
-        {
-          <div className="m-draft-message-quick__encryption">
-            <Trans id={this.getEncryptionTranslation()} />
-          </div>
-        }
+        <div className="m-draft-message-quick__encryption">
+          <Trans id={this.getEncryptionTranslation()} />
+        </div>
       </div>
     );
   }
@@ -636,11 +634,9 @@ class DraftMessage extends Component {
             <FieldErrors errors={errors} />
           </div>
         )}
-        {
-          <div className="m-draft-message-advanced__encryption">
-            <Trans id={this.getEncryptionTranslation()} />
-          </div>
-        }
+        <div className="m-draft-message-advanced__encryption">
+          <Trans id={this.getEncryptionTranslation()} />
+        </div>
       </div>
     );
   }

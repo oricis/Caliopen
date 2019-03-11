@@ -14,10 +14,10 @@
     @include flex-grid-size(12);
     color: #858585;
     font-size: 0.825rem;
+  }
 
-    &--encrypted .fa {
-      color: map_get($privacy-palette, 'super');
-    }
+  &--encrypted__icon {
+    color: map_get($privacy-palette, 'super');
   }
 
   &__author-name {
