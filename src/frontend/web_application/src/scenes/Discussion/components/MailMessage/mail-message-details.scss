@@ -16,6 +16,10 @@
     font-size: 0.825rem;
   }
 
+  &--encrypted__icon {
+    color: map_get($privacy-palette, 'super');
+  }
+
   &__author-name {
     font-weight: 800;
   }

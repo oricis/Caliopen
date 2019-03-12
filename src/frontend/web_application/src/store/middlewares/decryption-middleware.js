@@ -35,6 +35,7 @@ const decryptMessageAction = async (state, dispatch, message) => {
   }
 
   try {
+    dispatch(decryptMessageStart({ message }));
     const keys = await getKeysForMessage(message);
 
     if (keys.length <= 0) {
@@ -71,7 +72,6 @@ const decryptMessageAction = async (state, dispatch, message) => {
       return message;
     }
 
-    dispatch(decryptMessageStart({ message }));
     const decryptedMessage = await decryptMessage(message, [usableKey]);
     dispatch(decryptMessageSuccess({ message, decryptedMessage }));
 

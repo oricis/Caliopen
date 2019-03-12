@@ -48,7 +48,7 @@ class MailMessage extends Component {
     onMessageUnread: () => {},
     onMessageDelete: () => {},
     noInteractions: false,
-    encryptionStatus: {},
+    encryptionStatus: undefined,
   }
 
   handleMessageDelete = messageDeleteHandler(this)
@@ -94,8 +94,15 @@ class MailMessage extends Component {
     return (
       <article id={`message-${message.message_id}`} ref={forwardRef} className="s-mail-message">
         <div className="s-mail-message__details m-mail-message-details">
-          <TextBlock className="m-mail-message-details__author">
-            <Icon type="envelope" />
+          <TextBlock
+            className={classnames(
+              'm-mail-message-details__author',
+            { 'm-mail-message-details__author--encrypted': encryptionStatus }
+            )}
+          >
+            {encryptionStatus && <Icon type="lock" className="m-mail-message-details--encrypted__icon" />}
+            {encryptionStatus && ' '}
+            <Icon type="envelope" className={classnames({ 'm-mail-message-details--encrypted__icon': encryptionStatus })} />
             {' '}
             <span className="m-mail-message-details__author-name">{author.label}</span>
             {' '}
@@ -120,13 +127,16 @@ class MailMessage extends Component {
           <TagList className="s-mail-message__tags" message={message} />
         </aside>
         <div className="s-mail-message__container">
-          <h2 className="s-mail-message__subject"><TextBlock nowrap={false}>{message.subject}</TextBlock></h2>
+          <h2 className="s-mail-message__subject">
+            <TextBlock nowrap={false}>{message.subject}</TextBlock>
+          </h2>
           { this.renderBody() }
           {// Do not display attachments if message is encrypted.
             !encryptionStatus &&
               <div className="m-message__attachments">
                 <MessageAttachments message={message} />
-              </div>}
+              </div>
+          }
         </div>
         {!noInteractions && (
           <footer className="s-mail-message__actions">

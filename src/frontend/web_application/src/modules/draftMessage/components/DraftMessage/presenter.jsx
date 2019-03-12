@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { withI18n } from '@lingui/react';
+import { i18nMark, withI18n } from '@lingui/react';
 import { Trans } from '@lingui/macro'; // eslint-disable-line import/no-extraneous-dependencies
 import { Button, Icon, InputText, TextareaFieldGroup, TextFieldGroup, Link, Confirm, PlaceholderBlock, Callout, FieldErrors, Spinner } from '../../../../components';
 import { withScrollTarget } from '../../../scroll';
@@ -11,7 +11,7 @@ import IdentitySelector from '../IdentitySelector';
 import { getRecipients } from '../../../../services/message/';
 import { withNotification } from '../../../userNotify';
 import { getIdentityProtocol } from '../../services/getIdentityProtocol';
-import { LockedMessage } from '../../../../services/encryption';
+import { LockedMessage } from '../../../../modules/encryption';
 
 import './draft-message-quick.scss';
 import './draft-message-advanced.scss';
@@ -194,6 +194,14 @@ class DraftMessage extends Component {
 
     return (isReply || hasRecipients) && !this.state.isSending && isValid;
   }
+
+  getEncryptionTranslation = () => {
+    const { isEncrypted } = this.props;
+
+    return isEncrypted ?
+      i18nMark('draft-message.encryption.ok') :
+      i18nMark('draft-message.encryption.ko');
+  };
 
   validate = () => {
     const currentDraft = this.state.draftMessage;
@@ -434,7 +442,7 @@ class DraftMessage extends Component {
   renderQuick() {
     const {
       className, i18n, draftFormRef, onFocus, scrollTarget: { forwardRef },
-      draftEncryption,
+      draftEncryption, isEncrypted,
     } = this.props;
     const ref = (el) => {
       draftFormRef(el);
@@ -454,7 +462,10 @@ class DraftMessage extends Component {
               <LockedMessage encryptionStatus={draftEncryption} />
             :
               <InputText
-                className="m-draft-message-quick__input"
+                className={classnames(
+                  'm-draft-message-quick__input',
+                  { 'm-draft-message-quick__input--encrypted': isEncrypted }
+                )}
                 onChange={this.handleChange}
                 onFocus={onFocus}
                 name="body"
@@ -462,17 +473,33 @@ class DraftMessage extends Component {
                 placeholder={this.getQuickInputPlaceholder()}
               />
           }
-          <div className="m-draft-message-quick__send">
+          <div className={classnames(
+              'm-draft-message-quick__send',
+            {
+              'm-draft-message-quick__send--encrypted': isEncrypted,
+              'm-draft-message-quick__send--unencrypted': !isEncrypted,
+            }
+            )}
+          >
             <Button
               display="expanded"
               shape="plain"
               icon="paper-plane"
               title={i18n._('draft-message.action.send', null, { defaults: 'Send' })}
-              className="m-draft-message-quick__send-button"
+              className={classnames(
+              'm-draft-message-quick__send-button',
+            {
+              'm-draft-message-quick__send-button--encrypted': isEncrypted,
+              'm-draft-message-quick__send-button--unencrypted': !isEncrypted,
+            }
+            )}
               onClick={this.handleSend}
               disabled={!canSend}
             />
           </div>
+        </div>
+        <div className="m-draft-message-quick__encryption">
+          <Trans id={this.getEncryptionTranslation()} />
         </div>
       </div>
     );
@@ -482,7 +509,7 @@ class DraftMessage extends Component {
     const {
       className, draftMessage, parentMessage, original, draftFormRef, isReply, availableIdentities,
       onFocus, scrollTarget: { forwardRef },
-      draftEncryption,
+      draftEncryption, isEncrypted,
     } = this.props;
 
     const isSubjectSupported = ({ draft }) => {
@@ -581,7 +608,14 @@ class DraftMessage extends Component {
           />
           <Button
             shape="plain"
-            className="m-draft-message-advanced__action-button m-draft-message-advanced__button-send"
+            className={classnames(
+              'm-draft-message-advanced__action-button',
+              'm-draft-message-advanced__button-send',
+              {
+                'm-draft-message-advanced__button-send--encrypted': isEncrypted,
+                'm-draft-message-advanced__button-send--unencrypted': !isEncrypted,
+              }
+            )}
             onClick={this.handleSend}
             disabled={!canSend}
           >
@@ -600,6 +634,9 @@ class DraftMessage extends Component {
             <FieldErrors errors={errors} />
           </div>
         )}
+        <div className="m-draft-message-advanced__encryption">
+          <Trans id={this.getEncryptionTranslation()} />
+        </div>
       </div>
     );
   }

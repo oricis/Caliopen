@@ -1,11 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Trans, i18nMark, withI18n } from '@lingui/react';
+import { i18nMark, Trans, withI18n } from '@lingui/react';
 import classnames from 'classnames';
 import { Icon, TextBlock } from '../../../../components';
-import { getAveragePIMessage, getPiClass, PI_LEVEL_DISABLED, PI_LEVEL_UGLY, PI_LEVEL_BAD, PI_LEVEL_GOOD, PI_LEVEL_SUPER } from '../../../../modules/pi';
+import { getAveragePIMessage, getPiClass } from '../../../../modules/pi';
+import { isMessageEncrypted } from '../../../../services/encryption';
 
-import sealedEnvelope from './assets/sealed-envelope.png';
+import simpleEnvelope from './assets/simple-envelope.png';
+// XXX uncomment when messages will be signed
+// import sealedEnvelope from './assets/sealed-envelope.png';
 import postalCard from './assets/postal-card.png';
 
 import './style.scss';
@@ -39,26 +42,22 @@ class MessagePi extends PureComponent {
 
   renderIllustrationImg = () => {
     const { message, i18n } = this.props;
-    const piAggregate = getAveragePIMessage({ message });
 
-    switch (true) {
-      case Number.isNaN(piAggregate):
-        return null;
-      case piAggregate <= 50:
-        return (
-          <img
-            src={postalCard}
-            alt={i18n._('message.img.postal-card', null, { defaults: 'This message is like a postal card' })}
-          />
-        );
-      default:
-        return (
-          <img
-            src={sealedEnvelope}
-            alt={i18n._('message.img.sealed-envelope', null, { defaults: 'This message is like a sealed envelop' })}
-          />
-        );
+    if (isMessageEncrypted(message)) {
+      return (
+        <img
+          src={simpleEnvelope}
+          alt={i18n._('message.img.simple-envelope', null, { defaults: 'This message is like a sealed envelop' })}
+        />
+      );
     }
+
+    return (
+      <img
+        src={postalCard}
+        alt={i18n._('message.img.postal-card', null, { defaults: 'This message is like a postal card' })}
+      />
+    );
   };
 
   renderIllustration() {
@@ -91,23 +90,24 @@ class MessagePi extends PureComponent {
     );
   }
 
-  renderDescription = (piAggregate) => {
-    const piQuality = getPiClass(piAggregate);
-
-    if (piQuality === PI_LEVEL_DISABLED) {
-      return null;
-    }
+  renderDescription = () => {
+    const { message } = this.props;
 
     const metaphors = {
-      [PI_LEVEL_UGLY]: i18nMark('message.pi.description.metaphor.ugly'),
-      [PI_LEVEL_BAD]: i18nMark('message.pi.description.metaphor.bad'),
-      [PI_LEVEL_GOOD]: i18nMark('message.pi.description.metaphor.good'),
-      [PI_LEVEL_SUPER]: i18nMark('message.pi.description.metaphor.super'),
+      encrypted: i18nMark('message.pi.description.metaphor.encrypted'),
+      plain: i18nMark('message.pi.description.metaphor.unencrypted'),
     };
 
     return (
       <p className="m-message-pi__metaphor">
-        <Trans key={piQuality} id={metaphors[piQuality]} />
+        <Trans
+          id={
+            isMessageEncrypted(message) ?
+              metaphors.encrypted
+              :
+              metaphors.plain
+          }
+        />
       </p>
     );
   };
@@ -142,7 +142,7 @@ class MessagePi extends PureComponent {
             <span className="m-message-pi__numeric-value">{piValue}</span>
           </div>
         </div>
-        {describe && this.renderDescription(piAggregate)}
+        {describe && this.renderDescription()}
       </div>
     );
   }

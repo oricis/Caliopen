@@ -1,5 +1,7 @@
 @import '../../../../styles/common';
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
+$fa-font-path: '../../../../../node_modules/font-awesome/fonts';
+@import 'font-awesome';
 
 .m-draft-message-advanced {
   @include flex-grid-row($size: expand);
@@ -39,6 +41,14 @@
     padding-bottom: map_get($co-margin_, 'small');
     text-align: center;
   }
+
+  &__encryption {
+    width: 100%;
+    padding-right: map_get($co-margin_, 'xlarge');
+    padding-left: map_get($co-margin_, 'xsmall');
+    text-align: right;
+  }
+
   &__action-send {
     text-align: right;
   }
@@ -50,7 +60,33 @@
   }
 
   &__button-send {
-    background-color: #07b798;
+    position: relative;
+
+    &::after {
+      @include fa-icon;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 1rem;
+      height: 1rem;
+      font-size: 1rem;
+    }
+    &--encrypted {
+      background-color: map_get($privacy-palette, 'super');
+
+      &::after {
+        content: $fa-var-lock;
+      }
+    }
+
+    &--unencrypted {
+      background-color: map_get($privacy-palette, 'good');
+      color: $co-color__fg__text;
+
+      &::after {
+        content: $fa-var-unlock;
+      }
+    }
   }
 
   &__subject,
