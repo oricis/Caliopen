@@ -44,6 +44,12 @@ type PasswordResetRequest struct {
 	Username     string `json:"username"`
 }
 
+// payload for triggering delete user process inside an `actions` call
+type DeleteUserParams struct {
+	Password    string `json:"password"`
+	AccessToken string `json:"access_token"`
+}
+
 // data stored into cache for authenticated user
 type Auth_cache struct {
 	Access_token  string    `json:"access_token"`

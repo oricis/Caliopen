@@ -241,11 +241,33 @@ func (rest *RESTfacility) DeleteUser(payload ActionsPayload) CaliopenError {
 		return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] DeleteUser failed to delete user in store")
 	}
 
-	// Logout
-	err = rest.Cache.LogoutUser(payload.Params.AccessToken)
+	if params, ok := payload.Params.(DeleteUserParams); ok {
+		user, err := rest.store.RetrieveUser(payload.UserId)
+		if err != nil {
+			return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] DeleteUser failed to retrieve user")
+		}
 
-	if err != nil {
-		return NewCaliopenErr(UnprocessableCaliopenErr, "[RESTfacility] Unable to logout.")
+		if !user.DateDelete.IsZero() {
+			return NewCaliopenErr(UnprocessableCaliopenErr, "[RESTfacility] User already deleted.")
+		}
+
+		err = bcrypt.CompareHashAndPassword(user.Password, []byte(params.Password))
+		if err != nil {
+			return WrapCaliopenErr(err, WrongCredentialsErr, "[RESTfacility] DeleteUser Wrong password")
+		}
+		err = rest.store.DeleteUser(payload.UserId)
+		if err != nil {
+			return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] DeleteUser failed to delete user in store")
+		}
+
+		// Logout
+		err = rest.Cache.LogoutUser(params.AccessToken)
+
+		if err != nil {
+			return NewCaliopenErr(UnprocessableCaliopenErr, "[RESTfacility] Unable to logout.")
+		}
+	} else {
+		return NewCaliopenErr(UnprocessableCaliopenErr, "[RESTfacility] payload.Params is not of type DeleteUserParams")
 	}
 
 	return nil
