@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Better responsiveness on small screens for dropdowns
 - inversion en/fr for some translations
 - BSOD on draft view in case there is no author (for example after remote identity deletion)
+- Last messages not visible in case the discussion has been openned
 
 ## [0.16.0] 2019-02-25
 
