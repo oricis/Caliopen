@@ -1,4 +1,4 @@
-import React, { Component, forwardRef, createRef, Element } from 'react';
+import React, { Component, forwardRef, createRef } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import throttle from 'lodash.throttle';
@@ -41,8 +41,8 @@ class Dropdown extends Component {
     closeOnScroll: PropTypes.bool, // should Dropdown close on windows scroll ?
     isMenu: PropTypes.bool,
     onToggle: PropTypes.func,
-    innerRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    dropdownControlRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+    innerRef: PropTypes.shape({ current: PropTypes.shape({}) }),
+    dropdownControlRef: PropTypes.shape({ current: PropTypes.shape({}) }),
     show: PropTypes.bool,
     displayFirstLayer: PropTypes.bool,
   };

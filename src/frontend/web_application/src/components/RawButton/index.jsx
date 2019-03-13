@@ -1,11 +1,11 @@
-import React, { PureComponent, forwardRef, Element } from 'react';
+import React, { PureComponent, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 
 class RawButton extends PureComponent {
   static propTypes = {
     type: PropTypes.oneOf(['button', 'submit']),
     children: PropTypes.node.isRequired,
-    innerRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+    innerRef: PropTypes.shape({ current: PropTypes.shape({}) }),
   };
   static defaultProps = {
     type: 'button',
