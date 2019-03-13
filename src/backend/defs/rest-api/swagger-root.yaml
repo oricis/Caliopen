@@ -93,7 +93,11 @@ paths:
     "$ref": paths/devices.yaml#/devices
   "/v2/devices/{device_id}":
     "$ref": paths/devices.yaml#/devices_{device_id}
-## search/suggest ##
+  "/v2/devices/{device_id}/actions":
+    "$ref": paths/devices.yaml#/devices_{device_id}_actions
+  "/v2/validate-device/{token}":
+    "$ref": paths/devices.yaml#/validate_device_{token}
+  ## search/suggest ##
   "/v2/participants/suggest":
     "$ref": paths/participants.yaml#/participants_suggest
   "/v1/participants/discussion":

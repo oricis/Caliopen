@@ -4,49 +4,49 @@ messages:
     description: Returns the list of messages for current user according to given
       parameters/filter
     tags:
-    - messages
+      - messages
     security:
-    - basicAuth: []
+      - basicAuth: []
     parameters:
-    - name: X-Caliopen-PI
-      in: header
-      required: true
-      description: The PI range requested in form of `0;100`
-      type: string
-      default: 0;100
-    - name: X-Caliopen-IL
-      in: header
-      required: true
-      description: The Importance Level range requested in form of `-10;10`
-      type: string
-      default: -10;10
-    - name: discussion_id
-      in: query
-      description: filter messages belonging to a specific discussion
-      required: false
-      type: string
-    - name: limit
-      in: query
-      required: false
-      type: integer
-      description: number of messages to return per page
-    - name: offset
-      in: query
-      type: integer
-      required: false
-      description: number of pages to skip from the response
-    - name: msg_id
-      in: query
-      type: string
-      required: false
-      description: if provided with range[] param, specify a message_id around which messages will be fetched
-    - name: range[]
-      in: query
-      type: string
-      required: false
-      description: boundaries param if message_id param is provided [before, after]
+      - name: X-Caliopen-PI
+        in: header
+        required: true
+        description: The PI range requested in form of `0;100`
+        type: string
+        default: 0;100
+      - name: X-Caliopen-IL
+        in: header
+        required: true
+        description: The Importance Level range requested in form of `-10;10`
+        type: string
+        default: -10;10
+      - name: discussion_id
+        in: query
+        description: filter messages belonging to a specific discussion
+        required: false
+        type: string
+      - name: limit
+        in: query
+        required: false
+        type: integer
+        description: number of messages to return per page
+      - name: offset
+        in: query
+        type: integer
+        required: false
+        description: number of pages to skip from the response
+      - name: msg_id
+        in: query
+        type: string
+        required: false
+        description: if provided with range[] param, specify a message_id around which messages will be fetched
+      - name: range[]
+        in: query
+        type: string
+        required: false
+        description: boundaries param if message_id param is provided [before, after]
     produces:
-    - application/json
+      - application/json
     responses:
       '200':
         description: Messages returned
@@ -74,16 +74,16 @@ messages_{message_id}:
   get:
     description: returns a message
     tags:
-    - messages
+      - messages
     security:
-    - basicAuth: []
+      - basicAuth: []
     parameters:
-    - name: message_id
-      in: path
-      type: string
-      required: true
+      - name: message_id
+        in: path
+        type: string
+        required: true
     produces:
-    - application/json
+      - application/json
     responses:
       '200':
         description: Message found
@@ -103,23 +103,23 @@ messages_{message_id}_actions:
       : send, etc. A successful execution of the action will probably modify one or
       more message''s attribute(s)'
     tags:
-    - messages
+      - messages
     security:
-    - basicAuth: []
+      - basicAuth: []
     consumes:
-    - application/json
+      - application/json
     parameters:
-    - name: message_id
-      in: path
-      type: string
-      required: true
-    - name: actions
-      in: body
-      required: true
-      schema:
-        "$ref": "../objects/Actions.yaml"
+      - name: message_id
+        in: path
+        type: string
+        required: true
+      - name: actions
+        in: body
+        required: true
+        schema:
+          "$ref": "../objects/Actions.yaml"
     produces:
-    - application/json
+      - application/json
     responses:
       '200':
         description: action(s) successfully executed. Message is sent back with its
@@ -159,24 +159,24 @@ messages_{message_id}_attachments:
   post:
     description: (for draft only) upload a file to server and add attachment reference to the draft.
     tags:
-    - attachments
-    - messages
+      - attachments
+      - messages
     security:
-    - basicAuth: []
+      - basicAuth: []
     consumes:
-    - multipart/form-data
+      - multipart/form-data
     parameters:
-    - name: message_id
-      in: path
-      required: true
-      type: string
-    - name: attachment
-      in: formData
-      description: the attachment file to upload
-      type: file
-      required: true
+      - name: message_id
+        in: path
+        required: true
+        type: string
+      - name: attachment
+        in: formData
+        description: the attachment file to upload
+        type: file
+        required: true
     produces:
-    - application/json
+      - application/json
     responses:
       '201':
         description: File uploaded sucessfully. Backend sends back attachment's temp_id.
@@ -200,20 +200,20 @@ messages_{message_id}_attachments_{attachment_id}:
   get:
     description: Download file from server
     tags:
-    - messages
-    - attachments
+      - messages
+      - attachments
     security:
-    - basicAuth: []
+      - basicAuth: []
     parameters:
-    - name: message_id
-      in: path
-      required: true
-      type: string
-    - name: attachment_id
-      description: attachment position within message
-      in: path
-      required: true
-      type: string
+      - name: message_id
+        in: path
+        required: true
+        type: string
+      - name: attachment_id
+        description: attachment position within message
+        in: path
+        required: true
+        type: string
     produces: [] # permissive because a large set of file types could be returned.
     responses:
       '200':
@@ -231,20 +231,20 @@ messages_{message_id}_attachments_{attachment_id}:
   delete:
     description: (for drafts only) delete temporary file and remove attachment reference from the draft.
     tags:
-    - messages
-    - attachments
+      - messages
+      - attachments
     security:
-    - basicAuth: []
+      - basicAuth: []
     parameters:
-    - name: message_id
-      in: path
-      required: true
-      type: string
-    - name: attachment_id
-      description: attachment's temporary id.
-      in: path
-      required: true
-      type: string
+      - name: message_id
+        in: path
+        required: true
+        type: string
+      - name: attachment_id
+        description: attachment's temporary id.
+        in: path
+        required: true
+        type: string
     responses:
       '204':
         description: Successful deletion. No body is returned
@@ -264,40 +264,40 @@ messages_{message_id}_tags:
   patch:
     description: update tags list for message
     tags:
-    - messages
-    - tags
+      - messages
+      - tags
     security:
-    - basicAuth: []
+      - basicAuth: []
     parameters:
-    - name: message_id
-      in: path
-      required: true
-      type: string
-    - name: patch
-      in: body
-      required: true
-      description: the patch to apply. See 'Caliopen Patch RFC' within /doc directory.
-      schema:
-        type: object
-        properties:
-          tags:
-            type: array
-            items:
-              type: string
-          current_state:
-            type: object
-            properties:
-              tags:
-                type: array
-                items:
-                  type: string
-        required:
-        - tags
-        - current_state
+      - name: message_id
+        in: path
+        required: true
+        type: string
+      - name: patch
+        in: body
+        required: true
+        description: the patch to apply. See 'Caliopen Patch RFC' within /doc directory.
+        schema:
+          type: object
+          properties:
+            tags:
+              type: array
+              items:
+                type: string
+            current_state:
+              type: object
+              properties:
+                tags:
+                  type: array
+                  items:
+                    type: string
+          required:
+            - tags
+            - current_state
     consumes:
-    - application/json
+      - application/json
     produces:
-    - application/json
+      - application/json
     responses:
       '204':
         description: message's tags updated. Empty body.
