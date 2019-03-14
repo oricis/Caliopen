@@ -136,12 +136,10 @@ class Contact extends Component {
 
   createOrUpdateAction = async ({ contact, original }) => {
     const {
-      updateContact, requestContact, createContact,
+      updateContact, createContact,
     } = this.props;
     if (contact.contact_id) {
-      await updateContact({ contact, original });
-
-      return requestContact(contact.contact_id);
+      return updateContact({ contact, original });
     }
 
     const resultAction = await createContact({ contact });
