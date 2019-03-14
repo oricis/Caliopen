@@ -12,6 +12,7 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
+	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	swgErr "github.com/go-openapi/errors"
 	"io/ioutil"
@@ -228,4 +229,55 @@ func DeleteDevice(ctx *gin.Context) {
 	} else {
 		ctx.Status(http.StatusNoContent)
 	}
+}
+
+// Actions handles POST /devices/:deviceID/actions
+func Actions(ctx *gin.Context) {
+	user_id := ctx.MustGet("user_id").(string)
+	shard_id := ctx.MustGet("shard_id").(string)
+	user_info := &UserInfo{User_id: user_id, Shard_id: shard_id}
+	var actions ActionsPayload
+	if err := ctx.BindJSON(&actions); err == nil {
+		switch actions.Actions[0] {
+		case "device-validation":
+			log.Info(actions)
+			log.Info(user_info)
+			e := swgErr.New(http.StatusNotImplemented, "not implemented")
+			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+			ctx.Abort()
+		default:
+			e := swgErr.New(http.StatusNotImplemented, "unknown action "+actions.Actions[0])
+			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+			ctx.Abort()
+		}
+	} else {
+		log.WithError(err).Errorf("failed to bind json payload to ActionsPayload struct")
+		e := swgErr.New(http.StatusFailedDependency, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+	}
+}
+
+// ValidateDevice handles GET /validate-device/:token
+func ValidateDevice(ctx *gin.Context) {
+
+	token := ctx.Param("token")
+
+	if token == "" {
+		e := swgErr.New(http.StatusUnprocessableEntity, "validate token is empty")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
+	err := caliopen.Facilities.RESTfacility.ValidateDevice(token)
+
+	if err != nil {
+		e := swgErr.New(http.StatusNotFound, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+	} else {
+		ctx.Status(http.StatusNoContent)
+	}
+	return
 }

@@ -223,22 +223,8 @@ func (rest *RESTfacility) ResetUserPassword(token, new_password string, notify N
 // Check the password as a validation before
 func (rest *RESTfacility) DeleteUser(payload ActionsPayload) CaliopenError {
 
-	user, err := rest.store.RetrieveUser(payload.UserId)
-	if err != nil {
-		return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] DeleteUser failed to retrieve user")
-	}
-
-	if !user.DateDelete.IsZero() {
-		return NewCaliopenErr(UnprocessableCaliopenErr, "[RESTfacility] User already deleted.")
-	}
-
-	err = bcrypt.CompareHashAndPassword(user.Password, []byte(payload.Params.Password))
-	if err != nil {
-		return WrapCaliopenErr(err, WrongCredentialsErr, "[RESTfacility] DeleteUser Wrong password")
-	}
-	err = rest.store.DeleteUser(payload.UserId)
-	if err != nil {
-		return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] DeleteUser failed to delete user in store")
+	if payload.Params == nil {
+		return NewCaliopenErr(UnprocessableCaliopenErr, "[RESTfacility] delete user params is missing")
 	}
 
 	if params, ok := payload.Params.(DeleteUserParams); ok {

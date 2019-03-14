@@ -195,10 +195,11 @@ devices_{device_id}_actions:
           "$ref": "../objects/Error.yaml"
 validate_device_{token}:
   get:
-    description: complete device validation if token in path is valid
+    description: complete device validation if token is valid
     tags:
       - devices
-    security: []
+    security:
+      - basicAuth: []
     parameters:
       - name: token
         in: path
@@ -210,6 +211,6 @@ validate_device_{token}:
       '204':
         description: Route is valid. No body is returned.
       '404':
-        description: Token not found
+        description: Token not found or invalid
         schema:
           "$ref": "../objects/Error.yaml"

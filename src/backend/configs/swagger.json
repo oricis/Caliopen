@@ -14509,11 +14509,15 @@
     },
     "/v2/validate-device/{token}": {
       "get": {
-        "description": "complete device validation if token in path is valid",
+        "description": "complete device validation if token is valid",
         "tags": [
           "devices"
         ],
-        "security": [],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
         "parameters": [
           {
             "name": "token",
@@ -14530,7 +14534,7 @@
             "description": "Route is valid. No body is returned."
           },
           "404": {
-            "description": "Token not found",
+            "description": "Token not found or invalid",
             "schema": {
               "type": "object",
               "properties": {

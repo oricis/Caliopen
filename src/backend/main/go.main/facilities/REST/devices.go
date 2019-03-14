@@ -7,7 +7,9 @@
 package REST
 
 import (
+	"errors"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/facilities/Notifications"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
 	"github.com/bitly/go-simplejson"
 	"github.com/satori/go.uuid"
@@ -119,4 +121,12 @@ func (rest *RESTfacility) DeleteDevice(userId, deviceId string) CaliopenError {
 	}
 
 	return nil
+}
+
+func (rest *RESTfacility) RequestDeviceValidation(payload ActionsPayload, notifier Notifications.Notifiers) error {
+	return errors.New("not implemented")
+}
+
+func (rest *RESTfacility) ValidateDevice(token string) error {
+	return errors.New("not implemented")
 }

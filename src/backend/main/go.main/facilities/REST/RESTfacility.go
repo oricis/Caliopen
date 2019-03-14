@@ -82,6 +82,8 @@ type (
 		UpdateDevice(device, oldDevice *Device, update map[string]interface{}) CaliopenError
 		PatchDevice(patch []byte, userId, deviceId string) CaliopenError
 		DeleteDevice(userId, deviceId string) CaliopenError
+		RequestDeviceValidation(payload ActionsPayload, notifier Notifications.Notifiers) error
+		ValidateDevice(token string) error
 		//keys
 		CreatePGPPubKey(label string, pubkey []byte, contact *Contact) (*PublicKey, CaliopenError)
 		RetrieveContactPubKeys(userId, contactId string) (pubkeys PublicKeys, err CaliopenError)

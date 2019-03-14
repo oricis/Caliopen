@@ -253,12 +253,14 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	cts.PATCH("/:contactID/tags", tags.PatchResourceWithTags)
 
 	/** devices API **/
+	api.GET("/validate-device/:token", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"), devices.ValidateDevice)
 	dev := api.Group(http_middleware.DevicesRoute, http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
 	dev.GET("", devices.GetDevicesList)
 	//dev.POST("", devices.NewDevice)
 	dev.GET("/:deviceID", devices.GetDevice)
 	dev.PATCH("/:deviceID", devices.PatchDevice)
 	dev.DELETE("/:deviceID", devices.DeleteDevice)
+	dev.POST("/:deviceID/actions", devices.Actions)
 
 	/** tags API **/
 	tag := api.Group(http_middleware.TagsRoute, http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
