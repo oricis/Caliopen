@@ -44,5 +44,14 @@ func (ub *UsersBackend) UsernameIsAvailable(username string) (bool, error) {
 	return false, errors.New("UsernameIsAvailable test interface not implemented")
 }
 func (ub *UsersBackend) UserByUsername(username string) (user *User, err error) {
-	return nil, errors.New("UserByUsername test interface not implemented")
+	return UserByUsername(username)
+}
+
+func UserByUsername(username string) (user *User, err error) {
+	for _, user := range Users {
+		if user.Name == username {
+			return user, nil
+		}
+	}
+	return nil, errors.New("not found")
 }

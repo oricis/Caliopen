@@ -1,0 +1,36 @@
+---
+# django like formatting for string blocks
+
+subject: "Quelle aventure."
+body_plain: "\n
+Quelle aventure.\n
+\n
+Lancé comme une piste de reflexion après l’indignation soulevée par les alertes d’E. Snowden, avec un objectif qui s’est précisé - d’abord dans le débat public, puis les réunions en petits comité - en prenant le temps qu’il fallait pour définir son ambition et ses fonctionnalités, Caliopen est devenu, petit à petit, une réalité.\n
+\n
+Le chemin était long. Il l’est encore (si j’avais su à quel point, je ne sais pas si je l’aurais pris). Mais aujourd’hui - même s’il reste encore beaucoup à faire (toutes les contributions sont bienvenues) - il est possible d’utiliser Caliopen comme outil de messagerie quotidien.\n
+\n
+C’est la raison pour laquelle il passe en version “Beta”.\n
+\n
+Une version beta ce n’est pas rien mais ce n’est pas tout : les fonctionnalités sont encore limitées et il manque beaucoup d’options qui viendront en leur temps. Mais c’est un moment important, qui nous donne l’occasion de vous faire participer à l’aventure. N’hésitez surtout pas à nous faire part de vos commentaires sur https://feedback.caliopen.org.\n
+\n
+Je ne souhaite pas faire un message trop long ici, juste vous souhaiter la bienvenue, à vous qui nous rejoignez, et vous remercier de l’intérêt que vous portez à Caliopen. Je vous laisse découvrir notre travail.\n
+\n
+\n
+Laurent Chemla
+"
+body_html: "\n
+Quelle aventure.\n
+\n
+Lancé comme une piste de reflexion après l’indignation soulevée par les alertes d’E. Snowden, avec un objectif qui s’est précisé - d’abord dans le débat public, puis les réunions en petits comité - en prenant le temps qu’il fallait pour définir son ambition et ses fonctionnalités, Caliopen est devenu, petit à petit, une réalité.\n
+\n
+Le chemin était long. Il l’est encore (si j’avais su à quel point, je ne sais pas si je l’aurais pris). Mais aujourd’hui - même s’il reste encore beaucoup à faire (toutes les contributions sont bienvenues) - il est possible d’utiliser Caliopen comme outil de messagerie quotidien.\n
+\n
+C’est la raison pour laquelle il passe en version “Beta”.\n
+\n
+Une version beta ce n’est pas rien mais ce n’est pas tout : les fonctionnalités sont encore limitées et il manque beaucoup d’options qui viendront en leur temps. Mais c’est un moment important, qui nous donne l’occasion de vous faire participer à l’aventure. N’hésitez surtout pas à nous faire part de vos commentaires sur https://feedback.caliopen.org.\n
+\n
+Je ne souhaite pas faire un message trop long ici, juste vous souhaiter la bienvenue, à vous qui nous rejoignez, et vous remercier de l’intérêt que vous portez à Caliopen. Je vous laisse découvrir notre travail.\n
+\n
+\n
+Laurent Chemla
+"

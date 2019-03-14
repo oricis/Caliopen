@@ -19,7 +19,7 @@ const (
 
 var (
 	Users = map[string]*User{
-		DevIdoireUserId: {
+		EmmaTommeUserId: {
 			ContactId:     UUID(uuid.FromStringOrNil("63ab7904-c416-4f1a-9652-3de82e4fd1f1")),
 			FamilyName:    "Tomme",
 			GivenName:     "Emma",
@@ -28,7 +28,7 @@ var (
 			ShardId:       "4faae137-5938-42d3-bf1a-8e1a4e1868e1",
 			UserId:        UUID(uuid.FromStringOrNil(EmmaTommeUserId)),
 		},
-		EmmaTommeUserId: {
+		DevIdoireUserId: {
 			ContactId:     UUID(uuid.FromStringOrNil("5f0baee8-1278-43eb-9931-01b7383b419b")),
 			FamilyName:    "Idoire",
 			GivenName:     "Dev",
@@ -95,7 +95,7 @@ var (
 			UserId:    UUID(uuid.FromStringOrNil(JeanThubUserId)),
 		},
 	}
-  
+
 	RemoteIdentities = map[string]*UserIdentity{
 		DevIdoireUserId + "7e356efb-d24c-493a-b558-e58c7ad20ac3": {
 			DisplayName: "Dev Idoire email remote",

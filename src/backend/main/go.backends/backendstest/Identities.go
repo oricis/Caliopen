@@ -2,7 +2,6 @@
 // Use of this source code is governed by a GNU AFFERO GENERAL PUBLIC
 // license (AGPL) that can be found in the LICENSE file.
 
-
 // Package backendstest provides utilities and interfaces for mocking backends interfaces
 package backendstest
 
@@ -40,38 +39,13 @@ func GetIdentitiesBackend(locals, remotes []*UserIdentity) *IdentitiesBackend {
 }
 
 func (ib *IdentitiesBackend) RetrieveLocalsIdentities(user_id string) ([]UserIdentity, error) {
-	locals := []UserIdentity{}
-	for _, local := range ib.localIdentities {
-		locals = append(locals, *local)
-	}
-	return locals, nil
+	return RetrieveLocalsIdentities(user_id)
 }
 func (ib *IdentitiesBackend) CreateUserIdentity(userIdentity *UserIdentity) CaliopenError {
 	return NewCaliopenErr(NotImplementedCaliopenErr, "test interface not implemented")
 }
 func (ib *IdentitiesBackend) RetrieveUserIdentity(userId, identityId string, withCredentials bool) (*UserIdentity, error) {
-	if userId == "" && identityId == "" {
-		// return one remote identity by default
-		for _, remote := range ib.remoteIdentities {
-			if !withCredentials {
-				remote.Credentials = nil
-			}
-			return remote, nil
-		}
-	}
-	if remote, ok := ib.remoteIdentities[userId+identityId]; ok {
-		if !withCredentials {
-			remote.Credentials = nil
-		}
-		return remote, nil
-	}
-	if local, ok := ib.localIdentities[userId+identityId]; ok {
-		if !withCredentials {
-			local.Credentials = nil
-		}
-		return local, nil
-	}
-	return nil, errors.New("not found")
+	return RetrieveUserIdentity(userId, identityId, withCredentials)
 }
 func (ib *IdentitiesBackend) LookupIdentityByIdentifier(string, ...string) ([][2]string, error) {
 	return [][2]string{}, errors.New("test interface not implemented")
@@ -89,14 +63,7 @@ func (ib *IdentitiesBackend) RetrieveRemoteIdentities(userId string, withCredent
 	return nil, errors.New("test interface not implemented")
 }
 func (ib *IdentitiesBackend) RetrieveAllRemotes(withCredentials bool) (<-chan *UserIdentity, error) {
-	ch := make(chan *UserIdentity)
-	go func() {
-		for _, remote := range ib.remoteIdentities {
-			ch <- remote
-		}
-		close(ch)
-	}()
-	return ch, nil
+	return RetrieveAllRemotes(withCredentials)
 }
 func (ib *IdentitiesBackend) UpdateRemoteInfosMap(userId, remoteId string, infos map[string]string) error {
 	return errors.New("test interface not implemented")
@@ -132,3 +99,46 @@ func ActiveRemotesCount() int {
 	return c
 }
 
+func RetrieveLocalsIdentities(user_id string) ([]UserIdentity, error) {
+	locals := []UserIdentity{}
+	for _, local := range LocalIdentities {
+		locals = append(locals, *local)
+	}
+	return locals, nil
+}
+
+func RetrieveUserIdentity(userId, identityId string, withCredentials bool) (*UserIdentity, error) {
+	if userId == "" && identityId == "" {
+		// return one remote identity by default
+		for _, remote := range RemoteIdentities {
+			if !withCredentials {
+				remote.Credentials = nil
+			}
+			return remote, nil
+		}
+	}
+	if remote, ok := RemoteIdentities[userId+identityId]; ok {
+		if !withCredentials {
+			remote.Credentials = nil
+		}
+		return remote, nil
+	}
+	if local, ok := LocalIdentities[userId+identityId]; ok {
+		if !withCredentials {
+			local.Credentials = nil
+		}
+		return local, nil
+	}
+	return nil, errors.New("not found")
+}
+
+func RetrieveAllRemotes(withCredentials bool) (<-chan *UserIdentity, error) {
+	ch := make(chan *UserIdentity)
+	go func() {
+		for _, remote := range RemoteIdentities {
+			ch <- remote
+		}
+		close(ch)
+	}()
+	return ch, nil
+}

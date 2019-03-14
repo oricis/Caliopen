@@ -9,11 +9,10 @@ import (
 	"fmt"
 	"github.com/CaliOpen/Caliopen/src/backend/brokers/go.emails"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/NATS/go.mockednats"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/backendstest"
 	"github.com/nats-io/gnatsd/server"
 	"github.com/nats-io/go-nats"
-	"github.com/phayes/freeport"
-	"strconv"
 	"sync"
 	"testing"
 	"time"
@@ -38,31 +37,12 @@ func newWorkerTest() (worker *Worker, natsServer *server.Server, err error) {
 		NatsSubs: make([]*nats.Subscription, 1),
 	}
 
-	// starting an embedded nats server
-	port, err := freeport.GetFreePort()
+	natsServer, natsConn, err := mockednats.GetNats()
 	if err != nil {
 		return nil, nil, err
 	}
-	natsServer, err = server.NewServer(&server.Options{
-		Host:     natsUrl,
-		Port:     port,
-		HTTPPort: -1,
-		Cluster:  server.ClusterOpts{Port: -1},
-		NoLog:    true,
-		NoSigs:   true,
-		Debug:    false,
-		Trace:    false,
-	})
-	if err != nil || natsServer == nil {
-		panic(fmt.Sprintf("No NATS Server object returned: %v", err))
-	}
-	go natsServer.Start()
-	// Wait for accept loop(s) to be started
-	if !natsServer.ReadyForConnections(10 * time.Second) {
-		panic("Unable to start NATS Server in Go Routine")
-	}
 
-	worker.NatsConn, err = nats.Connect("nats://" + natsUrl + ":" + strconv.Itoa(port))
+	worker.NatsConn = natsConn
 
 	connectors := email_broker.EmailBrokerConnectors{
 		Ingress: make(chan *email_broker.SmtpEmail),

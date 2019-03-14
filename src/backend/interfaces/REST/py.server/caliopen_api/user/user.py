@@ -8,6 +8,11 @@ import datetime
 from pyramid.security import NO_PERMISSION_REQUIRED
 from cornice.resource import resource, view
 
+import tornado.ioloop
+import tornado.gen
+from nats.io import Client as Nats
+import json
+
 from ..base.context import DefaultContext
 from .util import create_token
 
@@ -16,6 +21,7 @@ from ..base.exception import AuthenticationError, NotAcceptable
 from ..base.exception import Unprocessable, ValidationError, MethodFailure
 
 from caliopen_storage.exception import NotFound
+from caliopen_storage.config import Configuration
 from caliopen_main.common.core import PublicKey
 from caliopen_main.user.core import User
 from caliopen_main.user.parameters import NewUser, Settings
@@ -211,6 +217,17 @@ class UserAPI(Api):
             log.warn('Missing default device parameter')
         user_url = self.request.route_path('User', user_id=user.user_id)
         self.request.response.location = user_url.encode('utf-8')
+
+        # send notification to apiv2 to trigger post-registration actions
+        config = Configuration('global').get("message_queue")
+        try:
+            tornado.ioloop.IOLoop.current().run_sync(
+                lambda: notify_new_user(user, config), timeout=5)
+        except Exception as exc:
+            log.exception(
+                'Error when sending new_user notification on NATS : {0}'.
+                    format(exc))
+
         return {'location': user_url}
 
 
@@ -227,3 +244,19 @@ class MeUserAPI(Api):
         user_id = self.request.authenticated_userid.user_id
         user = User.get(user_id)
         return ReturnUser.build(user).serialize()
+
+
+@tornado.gen.coroutine
+def notify_new_user(user, config):
+    client = Nats()
+    server = 'nats://{}:{}'.format(config['host'], config['port'])
+    opts = {"servers": [server]}
+    yield client.connect(**opts)
+    notif = {
+        'message': 'created',
+        'user_name': '{0}'.format(user.name),
+        'user_id': '{0}'.format(user.user_id)
+    }
+    yield client.publish('userAction', json.dumps(notif))
+    yield client.flush()
+    log.info("New user notification sent on NATS for {0}".format(user.user_id))

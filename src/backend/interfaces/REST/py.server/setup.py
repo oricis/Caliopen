@@ -12,13 +12,15 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.rst')).read()
 
-with open(os.path.join(*([here] + name.split('.') + ['__init__.py']))) as v_file:
-    version = re.compile(r".*__version__ = '(.*?)'", re.S).match(v_file.read()).group(1)
+with open(
+        os.path.join(*([here] + name.split('.') + ['__init__.py']))) as v_file:
+    version = re.compile(r".*__version__ = '(.*?)'", re.S).match(
+        v_file.read()).group(1)
 
 requires = [
     'pyramid',
     'pyramid_jinja2',
-    'redis==2.10.6',    # Enforce this version, version >= 3.0.0 break setex
+    'redis==2.10.6',  # Enforce this version, version >= 3.0.0 break setex
     'pyramid_kvs==0.3.0',
     'waitress',
     'cornice==1.2.1',
@@ -27,17 +29,17 @@ requires = [
     'rfc3987',
     'webcolors',
     'strict-rfc3339',
+    'nats-client',
+    'tornado==4.2',
     'ecdsa']
 
 if (os.path.isfile('./requirements.deps')):
     with open('./requirements.deps') as f_deps:
         requires.extend(f_deps.read().split('\n'))
 
-
 tests_require = ['nose', 'coverage']
 if sys.version_info < (3, 3):
     tests_require.append('mock')
-
 
 extras_require = {
     'dev': [

@@ -7,6 +7,7 @@ package caliopen
 import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/facilities/Messaging"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/facilities/Notifications"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/facilities/REST"
 	log "github.com/Sirupsen/logrus"
@@ -25,7 +26,9 @@ type (
 		Cache backends.APICache
 
 		// NATS facility
-		nats *nats.Conn
+		nats              *nats.Conn
+		MessagingFacility Messaging.Facility
+
 		// LDA facility
 		LDAstore backends.LDAStore
 		// Notifications facility
@@ -47,7 +50,7 @@ func (facilities *CaliopenFacilities) initialize(config CaliopenConfig) (err err
 	// NATS facility initialization
 	facilities.nats, err = nats.Connect(config.NatsConfig.Url)
 	if err != nil {
-		log.WithError(err).Warn("CaliopenFacilities : initalization of NATS connexion failed")
+		log.WithError(err).Error("CaliopenFacilities : initalization of NATS connexion failed")
 		return
 	}
 
@@ -59,7 +62,15 @@ func (facilities *CaliopenFacilities) initialize(config CaliopenConfig) (err err
 	facilities.Cache = rest.Cache
 
 	// Notifications facility initialization
-	facilities.Notifiers = Notifications.NewNotificationsFacility(config, facilities.nats)
+	notifier := Notifications.NewNotificationsFacility(config, facilities.nats)
+	facilities.Notifiers = notifier
+
+	// Messaging facility initialization
+	facilities.MessagingFacility, err = Messaging.NewCaliopenMessaging(config, notifier)
+	if err != nil {
+		log.WithError(err).Error("CaliopenFacilities : initalization of Messaging facility failed")
+		return
+	}
 
 	return
 }
