@@ -65,12 +65,11 @@ class MessageList extends Component {
       hash, scrollToTarget, user, settings,
     } = this.props;
 
-    const messageList = [];
-
-    return (messages.length > 0) && messages.reduce((acc, message) => {
-      if (message.protocol !== 'email' && messageList.length > 0
+    return messages.reduce((acc, message) => {
+      const result = [...acc];
+      if (message.protocol !== 'email' && acc.length > 0
         && this.findMessageBefore(message).protocol !== message.protocol) {
-        messageList.push(<ProtocolSwitch
+        result.push(<ProtocolSwitch
           newProtocol={message.protocol}
           pi={getAveragePIMessage({ message })}
           date={message.date}
@@ -79,7 +78,7 @@ class MessageList extends Component {
         />);
       }
 
-      messageList.push(<Message
+      result.push(<Message
         onMessageRead={onMessageRead}
         onMessageUnread={onMessageUnread}
         onMessageDelete={onMessageDelete}
@@ -90,8 +89,8 @@ class MessageList extends Component {
         settings={settings}
       />);
 
-      return messageList;
-    }, messageList);
+      return result;
+    }, []);
   }
 
   render() {

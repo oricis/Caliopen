@@ -12,9 +12,11 @@ const onReply = ({ message }) => (dispatch) => {
   dispatch(reply({ internalId: message.discussion_id, message }));
 };
 
-const mapStateToProps = (state, { message }) => createSelector(
-  [messageEncryptionStatusSelector],
-  (messageEncryptionStatus) => {
+const messageSelector = (state, { message }) => message;
+
+const mapStateToProps = createSelector(
+  [messageEncryptionStatusSelector, messageSelector],
+  (messageEncryptionStatus, message) => {
     const encryptionStatus = messageEncryptionStatus[message.message_id];
 
     return {
