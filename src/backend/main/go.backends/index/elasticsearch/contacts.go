@@ -17,7 +17,7 @@ import (
 )
 
 func (es *ElasticSearchBackend) CreateContact(contact *Contact) error {
-	es_contact, err := contact.MarshelES()
+	es_contact, err := contact.MarshalES()
 	if err != nil {
 		log.WithError(err).Warn("[ElasticSearchBackend] failed to parse contact to json : %s", string(es_contact))
 		return err

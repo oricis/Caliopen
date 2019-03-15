@@ -375,7 +375,7 @@ func (c *Contact) MarshalFrontEnd() ([]byte, error) {
 	return JSONMarshaller("frontend", c)
 }
 
-func (c *Contact) MarshelES() ([]byte, error) {
+func (c *Contact) MarshalES() ([]byte, error) {
 	return JSONMarshaller("elastic", c)
 }
 
