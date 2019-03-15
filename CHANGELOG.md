@@ -24,6 +24,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - BSOD on draft view in case there is no author (for example after remote identity deletion)
 - Last messages not visible in case the discussion has been openned
 
+### Changed
+
+- Remove device's locations field (IP definition) that wasn't saved and has no effects for now
+
 ## [0.16.0] 2019-02-25
 
 ### Added
