@@ -2,9 +2,10 @@ import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm, formValues } from 'redux-form';
-import { requestContact, updateContact, createContact, deleteContact, invalidate as invalidateContacts } from '../../store/modules/contact';
-import { addAddressToContact } from '../../modules/contact';
-import { updateTagCollection } from '../../modules/tags';
+import { requestContact, createContact, deleteContact, invalidate as invalidateContacts } from '../../store/modules/contact';
+import { requestUser } from '../../store/modules/user';
+import { addAddressToContact, updateContact } from '../../modules/contact';
+import { updateTagCollection as updateTagCollectionBase } from '../../modules/tags';
 import { getNewContact } from '../../services/contact';
 import { userSelector } from '../../modules/user';
 import { withSearchParams } from '../../modules/routing';
@@ -45,6 +46,23 @@ const mapStateToProps = createSelector(
     };
   }
 );
+
+const updateTagCollection = (i18n, {
+  type, entity, tags: tagCollection, lazy,
+}) =>
+  async (dispatch, getState) => {
+    const result = await dispatch(updateTagCollectionBase(i18n, {
+      type, entity, tags: tagCollection, lazy,
+    }));
+
+    const userContact = userSelector(getState()).contact;
+
+    if (userContact.contact_id === entity.contact_id) {
+      dispatch(requestUser());
+    }
+
+    return result;
+  };
 
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({
