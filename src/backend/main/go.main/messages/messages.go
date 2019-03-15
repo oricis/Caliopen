@@ -5,14 +5,14 @@
 package messages
 
 import (
-		. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/microcosm-cc/bluemonday"
 	"golang.org/x/net/html"
 	"regexp"
 	"strings"
 	"unicode"
 	"unicode/utf8"
-	)
+)
 
 // scrub message's bodies to make message displayable in frontend interfaces.
 // message is modified in-place.
@@ -36,6 +36,7 @@ func CaliopenPolicy() *bluemonday.Policy {
 	basePolicy := bluemonday.UGCPolicy()
 	basePolicy.AllowAttrs("title").Matching(regexp.MustCompile(`[\p{L}\p{N}\s\-_',:\[\]!\./\\\(\)&]*`)).Globally()
 	basePolicy.RequireNoFollowOnFullyQualifiedLinks(true)
+	basePolicy.AddTargetBlankToFullyQualifiedLinks(true)
 	// allow body with few attributes
 	basePolicy.AllowElements("body")
 	basePolicy.AllowAttrs("leftmargin").Matching(bluemonday.Integer).OnElements("body")
@@ -45,6 +46,8 @@ func CaliopenPolicy() *bluemonday.Policy {
 	basePolicy.AllowAttrs("marginwidth").Matching(bluemonday.Integer).OnElements("body")
 	basePolicy.AllowAttrs("marginheight").Matching(bluemonday.Integer).OnElements("body")
 	basePolicy.AllowAttrs("offset").Matching(bluemonday.Integer).OnElements("body")
+	// allow img src="data:…
+	basePolicy.AllowDataURIImages()
 
 	return basePolicy
 }
@@ -109,8 +112,6 @@ func excerptFromHMTL(source string) (excerpt string, err error) {
 	excerpt = html.UnescapeString(excerpt)
 	return
 }
-
-
 
 func trimExcerpt(s string, l int, wordWrap, addEllipsis bool) string {
 
