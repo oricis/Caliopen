@@ -25,6 +25,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Last messages not visible in case the discussion has been openned
 - Sync contact associated to the user when editing in the contact book
 
+### Changed
+
+- Remove device's locations field (IP definition) that wasn't saved and has no effects for now
+
 ## [0.16.0] 2019-02-25
 
 ### Added

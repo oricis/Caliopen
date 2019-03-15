@@ -1,20 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
-import classnames from 'classnames';
-import { Button, FormGrid, FormRow, FormColumn, Label, TextFieldGroup, SelectFieldGroup, CollectionFieldGroup } from '../../../../components';
+// import classnames from 'classnames';
+import { Button, FormGrid, FormRow, FormColumn, TextFieldGroup, SelectFieldGroup } from '../../../../components';
 import './style.scss';
-
-function generateStateFromProps(props) {
-  return {
-    device: {
-      name: '',
-      type: '',
-      locations: [],
-      ...props.device,
-    },
-  };
-}
 
 class DeviceForm extends Component {
   static propTypes = {
@@ -25,16 +14,35 @@ class DeviceForm extends Component {
     i18n: PropTypes.shape({}).isRequired,
   };
 
-  state = {
-    ...generateStateFromProps(this.props),
-  };
+  static generateStateFromProps(props, prevState) {
+    const { isFetching, device } = props;
 
-  componentWillMount() {
-    this.setState(generateStateFromProps(this.props));
+    return {
+      ...prevState,
+      initialized: !isFetching && device,
+      device,
+    };
   }
 
-  componentWillReceiveProps(newProps) {
-    this.setState(generateStateFromProps(newProps));
+  static initialState = {
+    initialized: false,
+    device: {
+      name: '',
+      type: '',
+      // locations: [],
+    },
+  };
+
+  state = this.constructor.generateStateFromProps(this.props, this.constructor.initialState);
+
+  componentDidUpdate(prevProps) {
+    const propNames = ['device'];
+    const hasChanged = propNames.some(propName => this.props[propName] !== prevProps[propName]);
+
+    if (!this.state.initialized && hasChanged) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState(prevState => this.constructor.generateStateFromProps(this.props, prevState));
+    }
   }
 
   handleFieldChange = (ev) => {
@@ -47,25 +55,26 @@ class DeviceForm extends Component {
     }));
   }
 
-  handleLocationsChange = (locations) => {
-    this.setState(prevState => ({
-      device: {
-        ...prevState.device,
-        locations,
-      },
-    }));
-  }
+  // handleLocationsChange = (locations) => {
+  //   this.setState(prevState => ({
+  //     device: {
+  //       ...prevState.device,
+  //       locations,
+  //     },
+  //   }));
+  // }
 
-  validateIP = (ip) => {
-    // XXX: add IP V6 support
-    if (/^[0-9]{1,3}(\.[-/0-9]*){1,3}$/.test(ip)) {
-      return { isValid: true };
-    }
-
-    const { i18n } = this.props;
-
-    return { isValid: false, errors: [i18n._('device.feedback.invalid_ip', null, { defaults: 'IP or subnet address is invalid.' })] };
-  }
+  // validateIP = (ip) => {
+  //   // XXX: add IP V6 support
+  //   if (/^[0-9]{1,3}(\.[-/0-9]*){1,3}$/.test(ip)) {
+  //     return { isValid: true };
+  //   }
+  //
+  //   const { i18n } = this.props;
+  //
+  //   return { isValid: false, errors: [i18n._('device.feedback.invalid_ip', null, { defaults: 'IP
+  //   or subnet address is invalid.' })] };
+  // }
 
   handleSubmit = async (event) => {
     const { onChange, notifyError, notifySuccess } = this.props;
@@ -87,47 +96,51 @@ class DeviceForm extends Component {
       { value: 'tablet', label: i18n._('device.type.tablet', null, { defaults: 'Tablet' }) },
       { value: 'other', label: i18n._('device.type.other', null, { defaults: 'Other' }) },
     ];
-    const locationTypes = [
-      { label: i18n._('device.location.type.unknown', null, { defaults: 'Unknown' }), value: 'unknown' },
-      { label: i18n._('device.location.type.home', null, { defaults: 'Home' }), value: 'home' },
-      { label: i18n._('device.location.type.work', null, { defaults: 'Work' }), value: 'work' },
-      { label: i18n._('device.location.type.public', null, { defaults: 'Public' }), value: 'public' },
-    ];
-    const defaultLocation = { address: '', type: locationTypes[0].value };
-
-    const locationTemplate = ({ item: location, onChange, className }) => {
-      const handleChange = (ev) => {
-        const { name, value } = ev.target;
-        onChange({
-          item: {
-            ...location,
-            [name]: value,
-          },
-        });
-      };
-
-      return (
-        <div className={classnames('m-device-form__location-group', className)}>
-          <TextFieldGroup
-            showLabelforSr
-            name="address"
-            label={i18n._('device.form.locations.address.label', null, { defaults: 'IP or subnet mask' })}
-            value={location.address}
-            onChange={handleChange}
-            className="m-device-form__location-address"
-          />
-          <SelectFieldGroup
-            showLabelforSr
-            name="type"
-            label={i18n._('device.form.locations.type.label', null, { defaults: 'Connection location' })}
-            value={location.type}
-            options={locationTypes}
-            onChange={handleChange}
-            className="m-device-form__location-type"
-          />
-        </div>
-      );
-    };
+    // const locationTypes = [
+    //   { label: i18n._('device.location.type.unknown', null, { defaults: 'Unknown' }), value:
+    //   'unknown' },
+    //   { label: i18n._('device.location.type.home', null, { defaults: 'Home' }), value: 'home' },
+    //   { label: i18n._('device.location.type.work', null, { defaults: 'Work' }), value: 'work' },
+    //   { label: i18n._('device.location.type.public', null, { defaults: 'Public' }), value:
+    //   'public' },
+    // ];
+    // const defaultLocation = { address: '', type: locationTypes[0].value };
+    //
+    // const locationTemplate = ({ item: location, onChange, className }) => {
+    //   const handleChange = (ev) => {
+    //     const { name, value } = ev.target;
+    //     onChange({
+    //       item: {
+    //         ...location,
+    //         [name]: value,
+    //       },
+    //     });
+    //   };
+    //
+    //   return (
+    //     <div className={classnames('m-device-form__location-group', className)}>
+    //       <TextFieldGroup
+    //         showLabelforSr
+    //         name="address"
+    //         label={i18n._('device.form.locations.address.label', null, { defaults: 'IP or subnet
+    //         mask' })}
+    //         value={location.address}
+    //         onChange={handleChange}
+    //         className="m-device-form__location-address"
+    //       />
+    //       <SelectFieldGroup
+    //         showLabelforSr
+    //         name="type"
+    //         label={i18n._('device.form.locations.type.label', null, { defaults: 'Connection
+    //         location' })}
+    //         value={location.type}
+    //         options={locationTypes}
+    //         onChange={handleChange}
+    //         className="m-device-form__location-type"
+    //       />
+    //     </div>
+    //   );
+    // };
 
     return (
       <FormGrid className="m-device-form">
@@ -142,18 +155,24 @@ class DeviceForm extends Component {
                 onChange={this.handleFieldChange}
               />
             </FormColumn>
-            <FormColumn bottomSpace rightSpace={false}>
-              <Label htmlFor="device-ips" className="m-device-form__label">
-                <Trans id="device.manage_form.ips.infotext">Restrict the access of your account to certain IP addresses for this device. (e.g. 192.168.10 or 192.168.1.1/24 or 192.168.1.1-20)</Trans>
-              </Label>
-              <CollectionFieldGroup
-                defaultValue={defaultLocation}
-                collection={this.state.device.locations}
-                addTemplate={locationTemplate}
-                editTemplate={locationTemplate}
-                onChange={this.handleLocationsChange}
-              />
-            </FormColumn>
+            {
+              // XXX: hidden for now, backend does not save it and it is not used anywere
+              // we need a specification for this feature https://trello.com/c/j5iKNg7x/192-securisation-des-devices-par-ip-de-connexion
+              //   <FormColumn bottomSpace rightSpace={false}>
+              //   <Label htmlFor="device-ips" className="m-device-form__label">
+              //     <Trans id="device.manage_form.ips.infotext">Restrict the access of your account
+              //     to certain IP addresses for this device. (e.g. 192.168.10 or 192.168.1.1/24 or
+              //     192.168.1.1-20)</Trans>
+              //   </Label>
+              //   <CollectionFieldGroup
+              //     defaultValue={defaultLocation}
+              //     collection={this.state.device.locations}
+              //     addTemplate={locationTemplate}
+              //     editTemplate={locationTemplate}
+              //     onChange={this.handleLocationsChange}
+              //   />
+              // </FormColumn>
+            }
           </FormRow>
           <FormRow>
             <FormColumn rightSpace={false} bottomSpace >
