@@ -46,7 +46,7 @@ func (es *ElasticSearchBackend) UpdateContact(user *UserInfo, contact *Contact, 
 		jsonFields[split[0]] = value
 	}
 	update, err := es.Client.Update().Index(user.Shard_id).Type(ContactIndexType).Id(contact.ContactId.String()).
-		Doc(fields).
+		Doc(jsonFields).
 		Refresh("wait_for").
 		Do(context.TODO())
 	if err != nil {
