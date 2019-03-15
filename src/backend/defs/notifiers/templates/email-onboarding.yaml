@@ -137,7 +137,7 @@ contact@caliopen.org ou @caliopen_org\n
 "
 body_html: "\n
 <div>
-  <p><span style="font-style: italic;">(English version below)</span></p>
+  <p><span style=\"font-style: italic;\">(English version below)</span></p>
   <hr />
   <h1>Bienvenue dans Caliopen !</h1>
   <p><strong>Caliopen est une application de messagerie qui respecte votre vie privée, vous permet d’envoyer des messages de manière confidentielle à vos interlocuteurs et de mieux comprendre la confidentialité des messages que vous recevez.</strong></p>
@@ -151,26 +151,26 @@ body_html: "\n
   <p>Pour le moment, le fil de discussion peut vous sembler vide (à part ce message bien sûr 😀) , nous allons y remédier. Vous pourrez retrouver et gérer tous vos emails précédemment reçus en ajoutant votre compte mail ou twitter dans Caliopen. Pas d’inquiétude, vous ne changez pas de fournisseur ni d’adresse.</p>
   <p>Nous appelons chaque compte différent une « identité ».</p>
   <p>Vous pouvez ajouter vos comptes mails et twitter depuis le menu utilisateur « 👤 &gt; compte &gt; compte externe »</p>
-  <div><img src="assets/ext_account_fr.png" alt="Compte externe" /></div>
+  <div><img src=\"{{base64encodeImgSrc(\"assets/ext_account_fr.png\")}}\" alt=\"Compte externe\" /></div>
   <h2>Envoyer un message</h2>
   <p>Pour envoyer un message, appuyez sur le bouton “écrire” à tout moment. Si vous avez ajouté d’autres comptes à Caliopen, vous pouvez décider de la part de quel compte et par quel service vous souhaitez envoyer votre message en le choisissant en haut du message.</p>
-  <div><img src="assets/compose_button_fr.png" alt="Bouton de nouveau message" /></div>
+  <div><img src=\"{{base64encodeImgSrc(\"assets/compose_button_fr.png\")}}\" alt=\"Bouton de nouveau message\" /></div>
   <br/>
-  <div><img src="assets/compose_fr.png" alt="Formulaire de nouveau message" /></div>
+  <div><img src=\"{{base64encodeImgSrc(\"assets/compose_fr.png\")}}\" alt=\"Formulaire de nouveau message\" /></div>
   <p>Ajoutez ensuite des participants grâce à leur adresse email, nom d’utilisateur twitter ou directement depuis votre carnet d’adresse Caliopen.</p>
-  <div><img src="assets/participants.png" alt="Sélection des participants" /></div>
+  <div><img src=\"{{base64encodeImgSrc(\"assets/participants.png\")}}\" alt=\"Sélection des participants\" /></div>
   <h2>Discussions</h2>
   <p>Comme nous l’avons vu, Caliopen regroupe les messages en discussions, par interlocuteur. Lorsque vous parlez à une personne, vous pouvez lui écrire depuis n’importe laquelle de vos identités.</p>
   <p>Vous pouvez contacter la personne depuis votre adresse Caliopen, il peut vous répondre avec un message privé Twitter, et vous pouvez lui répondre de nouveau avec une autre adresse email, la discussion se poursuivra dans le même fil.</p>
   <p>S’il y a plusieurs interlocuteurs dans une discussion, vous ne pouvez par contre répondre uniquement que par le premier moyen de communication utilisé par chacun.</p>
   <p>Pour résumer techniquement, Caliopen permet du multi-protocole mono-destinataire, et du mono-protocole multi-destinataires.</p>
-  <div><img src="assets/identity_fr.png" alt="Sélection de l'identité" /></div>
+  <div><img src=\"{{base64encodeImgSrc(\"assets/identity_fr.png\")}}\" alt=\"Sélection de l'identité\" /></div>
   <h2>Carnet d’adresse</h2>
   <p>vous pouvez ajouter des contacts à votre carnet d’adresse, et ajouter toutes les identités de votre interlocuteur dans une seule fiche de contact. De cette manière, Caliopen saura que 2 adresses différentes sont une même personne et pourra rassembler les messages de ce contact dans une même discussion.</p>
-  <div><img src="assets/new_contact_fr.png" alt="Ajout de contact" /></div>
+  <div><img src=\"{{base64encodeImgSrc(\"assets/new_contact_fr.png\")}}\" alt=\"Ajout de contact\" /></div>
   <h2>Recherche intuitive</h2>
   <p>Trouvez tout ce que vous cherchez dans vos messages et vos contacts. Pour protéger votre vie privée, Caliopen ne peut pas chercher dans vos messages chiffrés, vous seul pouvez en lire le contenu.</p>
-  <div><img src="assets/search_fr.png" alt="Écran de recherche" /></div>
+  <div><img src=\"{{base64encodeImgSrc(\"assets/search_fr.png\")}}\" alt=\"Écran de recherche\" /></div>
   <h2>Menu utilisateur</h2>
   <p>Mettez à jour les informations de votre compte.<br>
   Personnalisez votre application dans vos paramètres.</p>
@@ -179,7 +179,7 @@ body_html: "\n
   <p>Si vous ne savez pas par où commencer, pourquoi ne pas commencer par répondre à ce message pour dire coucou à l’équipe ?</p>
   <pre>contact@caliopen.org</pre> ou <pre>@caliopen_org</pre>
   <hr/>
-  <p style="font-style: bold;">**English version**</p>
+  <p style=\"font-style: bold;\">**English version**</p>
   <br/>
   <p>Welcome to Caliopen !</p>
   <p>Caliopen is a privacy enabler messenger app, that allows you to send and receive messages confidentially by helping to understand how private are your messages.</p>
@@ -192,25 +192,25 @@ body_html: "\n
   <p>At first your main timeline may appear empty (aside this message of course 😀), let’s fix it. You will be able to find and handle here your old messages by adding your email or Twitter account in Caliopen. Don’t worry, your previous adress or provider will not change.</p>
   <p>We call each different account an “identity”</p>
   <p>You can add your Twitter and email accounts from the user menu « 👤 > account > external account ».</p>
-  <p><img src="assets/ext_account_en.png" alt="External account" /></p>
+  <p><img src=\"{{base64encodeImgSrc(\"assets/ext_account_en.png\")}}\" alt=\"External account\" /></p>
   <h2>Sending a message</h2>
   <p>To send a messsage tou can use the “Compose” button at any time. If you added external accounts, you can then chose from which “identity” you wish to send your message, by selecting it at the top of the message window.</p>
-  <p><img src="assets/compose_button_en.png" alt="New message button" /></p>
-  <p><img src="assets/compose_en.png" alt="New message form" /></p>
+  <p><img src=\"{{base64encodeImgSrc(\"assets/compose_button_en.png\")}}\" alt=\"New message button\" /></p>
+  <p><img src=\"{{base64encodeImgSrc(\"assets/compose_en.png\")}}\" alt=\"New message form\" /></p>
   <p>You then can specify your adressees by adding their email address, Twitter username or directly from your Caliopen contact book.</p>
-  <p><img src="assets/participants.png" alt="Recipients selection" /></p>
+  <p><img src=\"{{base64encodeImgSrc(\"assets/participants.png\")}}\" alt=\"Recipients selection\" /></p>
   <h2>Discussions</h2>
   <p>As seen before, all messages are gathered into discussions grouped by contacts. When you talk to someone, you can write from any of your “identities”.</p>
   <p>Contacted from your Caliopen address, your correspondent can answer with a Twitter private message, and you can answer again from another email address: it will appear as only one discussion from a Caliopen point of vue.</p>
   <p>However, in a discussion with more than on person, you can only use the first communication channel used by each contact to answer him.</p>
   <p>Technically, one can see Caliopen as handling mono-recipient multi-protocols, or multi-recipients mono-protocol.</p>
-  <p><img src="assets/identity_en.png" alt="Identity selection" /></p>
+  <p><img src=\"{{base64encodeImgSrc(\"assets/identity_en.png\")}}\" alt=\"Identity selection\" /></p>
   <h2>Address book</h2>
   <p>You can add contacts to your address book, and specify all of your contact identities in his contact card. By doing this, Caliopen will know that 2 different addresses are the same person, and will be able to group all messages from this contact in the same discussion.</p>
-  <p><img src="assets/new_contact_en.png" alt="New contact" /></p>
+  <p><img src=\"{{base64encodeImgSrc(\"assets/new_contact_en.png\")}}\" alt=\"New contact\" /></p>
   <h2>Intuitive search</h2>
   <p>Find everything you are looking for in your messages and contact. To preserve your privacy, Caliopen cannot search in your messages if they are encrypted: you only can read their content.</p>
-  <p><img src="assets/search_en.png" alt="Search screen" /></p>
+  <p><img src=\"{{base64encodeImgSrc(\"assets/search_en.png\")}}\" alt=\"Search screen\" /></p>
   <h2>User menu</h2>
   <p>Update your account informations.</p>
   <p>Cutstomize your application settings.</p>
