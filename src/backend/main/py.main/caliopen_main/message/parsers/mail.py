@@ -145,6 +145,13 @@ class MailMessage(object):
 
         if self.mail.get("Content-Type", None):
             if self.mail.is_multipart():
+                if self.mail.get_content_subtype() == 'encrypted':
+                    parts = self.mail.get_payload()
+                    if len(parts) == 2:
+                        self.body_plain = parts[1].get_payload()
+                        return
+                    else:
+                        log.warn('Encrypted message with invalid parts count')
                 for top_level_part in self.mail.get_payload():
                     if top_level_part.get_content_maintype() == "multipart":
                         for alternative in top_level_part.get_payload():
