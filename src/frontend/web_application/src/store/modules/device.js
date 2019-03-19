@@ -89,7 +89,14 @@ export function verifyDevice({ device }) {
   return {
     type: VERIFY_DEVICE,
     payload: {
-      device,
+      request: {
+        method: 'post',
+        url: `/api/v2/devices/${device.device_id}/actions`,
+        data: {
+          actions: ['device-validation'],
+          params: { channel: 'email' },
+        },
+      },
     },
   };
 }

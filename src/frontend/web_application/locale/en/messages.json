@@ -130,6 +130,7 @@
   "device.feedback.invalid_ip": "IP or subnet address is invalid.",
   "device.feedback.revoke_success": "The device has been revoked",
   "device.feedback.save_success": "The device has been saved",
+  "device.feedback.send-validation-success": "An email has been sent to your backup email in order to verify the device.",
   "device.form.locations.address.label": "IP or subnet mask",
   "device.form.locations.type.label": "Connection location",
   "device.info.date_insert": "Insert date",

@@ -7,6 +7,7 @@ export const actions = {
   createOnSignin: createAction('Create device'),
   delete: createAction('Delete a device'),
   patch: createAction('Patch a device'),
+  reqVerif: createAction('Req Verif of a device'),
 };
 
 export const selectors = {
@@ -67,6 +68,19 @@ const reducer = {
 
     return nextState;
   },
+  [actions.patch]: (state, { params, body }) => {
+    const original = state.find(device => device.device_id === params.device_id);
+    if (!original) {
+      throw `device w/ id ${params.device_id} not found`;
+    }
+    const { actions } = body;
+
+    if (actions[0] !== 'device-validation') {
+      throw new Error('Unknown action');
+    }
+
+    return state;
+  }
 };
 
 const routes = {
@@ -87,6 +101,10 @@ const routes = {
   },
   'PATCH /:device_id': {
     action: actions.patch,
+    status: 204,
+  },
+  'POST /:device_id/actions': {
+    action: actions.reqVerif,
     status: 204,
   },
 };

@@ -130,6 +130,7 @@
   "device.feedback.invalid_ip": "IP or Subnet Adresse ist ungültig.",
   "device.feedback.revoke_success": "",
   "device.feedback.save_success": "",
+  "device.feedback.send-validation-success": "",
   "device.form.locations.address.label": "IP-Adresse oder Subnetzadresse",
   "device.form.locations.type.label": "Verbindungsort",
   "device.info.date_insert": "Erstellungsdatum",
