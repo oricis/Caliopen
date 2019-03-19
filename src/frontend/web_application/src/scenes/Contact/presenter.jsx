@@ -281,7 +281,13 @@ class Contact extends Component {
     return contact && contact.tags && (
       <div className="s-contact__tags">
         {getCleanedTagCollection(tags, contact.tags).map(tag => (
-          <Badge key={tag.name} rightSpaced>{getTagLabel(i18n, tag)}</Badge>
+          <Badge
+            key={tag.name}
+            rightSpaced
+            to={`/search-results?term=${getTagLabel(i18n, tag)}&doctype=contact`}
+          >
+            {getTagLabel(i18n, tag)}
+          </Badge>
         ))}
       </div>
     );

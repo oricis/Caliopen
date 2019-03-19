@@ -9,6 +9,7 @@ $m-badge--large__font-size: $co-font__size !default;
 $m-badge--large__padding: ($m-badge--large__height - $m-badge--large__font-size) / 2;
 
 .m-badge {
+  $baseName: &;
   display: inline-flex;
   align-items: center;
   height: $m-badge__height;
@@ -21,6 +22,13 @@ $m-badge--large__padding: ($m-badge--large__height - $m-badge--large__font-size)
 
   &--right-spaced {
     margin-right: $co-margin / 4;
+  }
+
+  &--is-link {
+    #{$baseName}__text {
+      color: $co-color__contrast__text;
+      text-decoration: none;
+    }
   }
 
   &__text {

@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { Link as BaseLink } from 'react-router-dom';
 import Button from '../Button';
 import Spinner from '../Spinner';
 import './style.scss';
@@ -17,6 +18,7 @@ class Badge extends PureComponent {
     ariaLabel: PropTypes.string, // option to show aria-label on delete button
     isLoading: PropTypes.bool, // option to show spinner on delete button
     rightSpaced: PropTypes.bool,
+    to: PropTypes.string,
   };
   static defaultProps = {
     children: undefined,
@@ -29,12 +31,32 @@ class Badge extends PureComponent {
     ariaLabel: null,
     isLoading: false,
     rightSpaced: false,
+    to: undefined,
   };
+
+  renderChildren() {
+    const {
+      to, children, large, onDelete,
+    } = this.props;
+
+    const textClassName = classnames('m-badge__text', {
+      'm-badge__text--large': large,
+      'm-badge__text--has-button': onDelete,
+    });
+
+    if (!to) {
+      return <span className={textClassName}>{children}</span>;
+    }
+
+    return (
+      <BaseLink to={to} className={textClassName}>{children}</BaseLink>
+    );
+  }
 
   render() {
     const {
       children, className, onDelete, low, large, radiusType, isLoading, ariaLabel, rightSpaced,
-      color, ...props
+      color, to, ...props
     } = this.props;
 
     const badgeProps = {
@@ -49,6 +71,7 @@ class Badge extends PureComponent {
         'm-badge--alert': color === 'alert',
         'm-badge--secondary': color === 'secondary',
         'm-badge--success': color === 'success',
+        'm-badge--is-link': to !== undefined,
       }, className),
       ...props,
     };
@@ -57,14 +80,9 @@ class Badge extends PureComponent {
       'm-badge__button--large': large,
     });
 
-    const textClassName = classnames('m-badge__text', {
-      'm-badge__text--large': large,
-      'm-badge__text--has-button': onDelete,
-    });
-
     return (
       <span {...badgeProps}>
-        {children && <span className={textClassName}>{children}</span>}
+        {children && this.renderChildren()}
         {onDelete && (
           <Button
             className={buttonClassName}

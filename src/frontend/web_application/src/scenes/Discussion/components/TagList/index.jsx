@@ -19,7 +19,9 @@ const TagList = ({
     <ul className={classnames(className, 'm-message-tags-list')}>
       {message.tags.map(tag => (
         <li key={tag} className="s-mail-message__tag m-message-tags-list__tag">
-          <Badge>{getTagLabelFromName(i18n, allTags, tag)}</Badge>
+          <Badge to={`/search-results?term=${getTagLabelFromName(i18n, allTags, tag)}&doctype=message`}>
+            {getTagLabelFromName(i18n, allTags, tag)}
+          </Badge>
         </li>
       ))}
     </ul>

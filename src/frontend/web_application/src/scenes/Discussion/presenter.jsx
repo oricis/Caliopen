@@ -9,7 +9,7 @@ import MessageList from './components/MessageList';
 import ReplyExcerpt from './components/ReplyExcerpt';
 import AddParticipantsToContactBook from './components/AddParticipantsToContactBook';
 import { withCloseTab } from '../../modules/tab';
-import { ManageEntityTags } from '../../modules/tags';
+import { ManageEntityTags, getTagLabel } from '../../modules/tags';
 import { DraftMessage } from '../../modules/draftMessage';
 import { ScrollDetector, withScrollManager } from '../../modules/scroll';
 import { addEventListener } from '../../services/event-manager';
@@ -200,15 +200,19 @@ class Discussion extends Component {
     closeTab();
   };
 
-  renderTags = ({ tags }) => (
-    tags && (
-      <ul className="s-discussion-action-bar__tags s-discussion-action-bar__action s-discussion__tags">
-        {tags.map(tag => (
-          <li key={tag.name} className="s-discussion__tag"><Badge>{tag.name}</Badge></li>
-        ))}
-      </ul>
-    )
-  );
+  renderTags = ({ tags }) => {
+    const { i18n } = this.props;
+
+    return (
+      tags && (
+        <ul className="s-discussion-action-bar__tags s-discussion-action-bar__action s-discussion__tags">
+          {tags.map(tag => (
+            <li key={tag.name} className="s-discussion__tag"><Badge to={`/search-results?term=${getTagLabel(i18n, tag)}&doctype=message`}>{tag.name}</Badge></li>
+          ))}
+        </ul>
+      )
+    );
+  }
 
   renderTagModal = () => {
     const { discussion, i18n } = this.props;
