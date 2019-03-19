@@ -13,6 +13,6 @@ describe('component TagsForm', () => {
       <TagsForm search={noop} updateTags={noop} {...connectedProps} />
     );
 
-    expect(comp.find('DropdownMenu').length).toEqual(1);
+    expect(comp.find('VerticalMenu').length).toEqual(1);
   });
 });

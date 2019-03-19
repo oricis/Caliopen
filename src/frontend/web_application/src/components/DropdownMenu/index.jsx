@@ -6,6 +6,7 @@ import './style.scss';
 
 export { withDropdownControl };
 
+// @deprecated: use Dropdown
 const DropdownMenu = ({ className, hasTriangle, ...props }) => (
   <Dropdown
     className={classnames(

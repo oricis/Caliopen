@@ -79,10 +79,10 @@ class Presenter extends Component {
               <Link to="/settings/application" expanded button><Trans id="header.menu.settings">Settings</Trans></Link>
             </VerticalMenuItem>
             <VerticalMenuItem>
-              <Button className="m-next-feature-button" display="expanded" onClick={this.handleClickNewFeature}><Trans id="header.menu.agenda">Agenda</Trans></Button>
+              <Button className="m-next-feature-button" center={false} display="expanded" onClick={this.handleClickNewFeature}><Trans id="header.menu.agenda">Agenda</Trans></Button>
             </VerticalMenuItem>
             <VerticalMenuItem>
-              <Button className="m-next-feature-button" display="expanded" onClick={this.handleClickNewFeature}><Trans id="header.menu.files">Files</Trans></Button>
+              <Button className="m-next-feature-button" center={false} display="expanded" onClick={this.handleClickNewFeature}><Trans id="header.menu.files">Files</Trans></Button>
             </VerticalMenuItem>
             <VerticalMenuItem>
               {user && (

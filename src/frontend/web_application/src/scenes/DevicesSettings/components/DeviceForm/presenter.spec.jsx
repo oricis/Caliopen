@@ -20,7 +20,8 @@ describe('component Device DeviceForm', () => {
     expect(comp.find('SelectFieldGroup').length).toEqual(1);
   });
 
-  describe('validates ip', () => {
+  // input has been disabled
+  xdescribe('validates ip', () => {
     it('is valid with simple ip', () => {
       const props = {
         device: {},

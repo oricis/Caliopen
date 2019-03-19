@@ -78,6 +78,7 @@ class TagFieldGroup extends Component {
           {...inputProps}
           name="terms"
           value={this.state.terms}
+          autoComplete="off"
         />
         <Button
           className="m-tags-search__button"
