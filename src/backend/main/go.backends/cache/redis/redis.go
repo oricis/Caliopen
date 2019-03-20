@@ -6,6 +6,7 @@ package cache
 
 import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	log "github.com/Sirupsen/logrus"
 	"gopkg.in/redis.v5"
 )
 
@@ -31,6 +32,7 @@ func (cache *RedisBackend) initialize(config CacheConfig) (err error) {
 	})
 	_, err = client.Ping().Result()
 	if err != nil {
+		log.WithError(err).Errorf("[RedisBackend] initialize failed")
 		return err
 	}
 	cache.client = client

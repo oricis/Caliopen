@@ -7,6 +7,7 @@ package cache
 import (
 	"encoding/json"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	log "github.com/Sirupsen/logrus"
 	"time"
 )
 
@@ -19,11 +20,13 @@ const (
 func (cache *RedisBackend) GetOauthSession(key string) (session *OauthSession, err error) {
 	session_str, err := cache.client.Get(oauthSessionPrefix + key).Bytes()
 	if err != nil {
+		log.WithError(err).Errorf("[GetOauthSession] failed to get key %s", key)
 		return nil, err
 	}
 	session = &OauthSession{}
 	err = json.Unmarshal(session_str, session)
 	if err != nil {
+		log.WithError(err).Errorf("[GetOauthSession] failed to unmarshal session %s for key %s", session_str, key)
 		return nil, err
 	}
 	return
@@ -34,11 +37,13 @@ func (cache *RedisBackend) SetOauthSession(key string, session *OauthSession) (e
 	ttl := oauthSessionTTL * time.Minute
 	session_str, err := json.Marshal(session)
 	if err != nil {
+		log.WithError(err).Errorf("[SetOauthSession] failed to marshal session.for key %s", key)
 		return err
 	}
 
 	_, err = cache.client.Set(oauthSessionPrefix+key, session_str, ttl).Result()
 	if err != nil {
+		log.WithError(err).Errorf("[SetOauthSession] failed to set session for key %s", key)
 		return err
 	}
 
@@ -49,6 +54,7 @@ func (cache *RedisBackend) SetOauthSession(key string, session *OauthSession) (e
 func (cache *RedisBackend) DeleteOauthSession(key string) error {
 	_, err := cache.client.Del(oauthSessionPrefix + key).Result()
 	if err != nil {
+		log.WithError(err).Errorf("[DeleteOauthSession] failed to delete session for key %s", key)
 		return err
 	}
 	return nil

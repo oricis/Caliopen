@@ -7,9 +7,9 @@ package cache
 import (
 	"encoding/json"
 	"errors"
-	"strings"
-
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	log "github.com/Sirupsen/logrus"
+	"strings"
 )
 
 // GetAuthToken retrieves auth values stored for the given key
@@ -19,10 +19,12 @@ func (cache *RedisBackend) GetAuthToken(key string) (value *Auth_cache, err erro
 	value = &Auth_cache{}
 	cache_str, err := cache.client.Get(key).Result()
 	if err != nil {
+		log.WithError(err).Errorf("[GetAuthToken] failed to get cache key %s", key)
 		return nil, err
 	}
 	err = json.Unmarshal([]byte(cache_str), value)
 	if err != nil {
+		log.WithError(err).Errorf("[GetAuthToken] failed to unmarshal cache %s for key", cache_str, key)
 		return nil, err
 	}
 	return
@@ -34,6 +36,8 @@ func (cache *RedisBackend) LogoutUser(key string) error {
 		return errors.New("Unvalid key")
 	}
 	_, err := cache.client.Del(key).Result()
-
+	if err != nil {
+		log.WithError(err).Errorf("[LogoutUser] failed to delete key %s", key)
+	}
 	return err
 }
