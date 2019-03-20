@@ -1,3 +1,4 @@
+export const [ERROR_NEED_PASSPHRASE, ERROR_WRONG_PASSPHRASE] = ['error_need_passphrase', 'error_wrong_passphrase'];
 const DEFAULT_KEY_OPTIONS = { numBits: 4096 };
 
 const prepareKeys = async (openpgp, armoredKeys) => {
@@ -58,3 +59,21 @@ export const generateKey = async (options) => {
   return openpgp.generateKey({ ...DEFAULT_KEY_OPTIONS, ...options });
 };
 
+export const getPublicKeyFromPrivateKey = async (privateKeyArmored, passphrase) => {
+  const openpgp = await import(/* webpackChunkName: "openpgp" */ 'openpgp');
+  const { keys: [privateKey] } = await openpgp.key.readArmored(privateKeyArmored);
+
+  if (!privateKey.isDecrypted()) {
+    if (!passphrase) {
+      throw new Error(ERROR_NEED_PASSPHRASE);
+    }
+
+    try {
+      await privateKey.decrypt(passphrase);
+    } catch (e) {
+      throw new Error(ERROR_WRONG_PASSPHRASE);
+    }
+  }
+
+  return privateKey.toPublic().armor();
+};
