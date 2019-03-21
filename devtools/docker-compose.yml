@@ -223,10 +223,11 @@ services:
   # Inbucket : a small smtp server to catch all outgoing emails for testing purpose
   # point your browser at localhost:8888
   smtp:
-    image: jhillyerd/inbucket
+    image: inbucket/inbucket
     ports:
       - "8888:9000"
       - "2500:2500"
+      - "1100:1100"
 
   kibana:
     image: kibana:5

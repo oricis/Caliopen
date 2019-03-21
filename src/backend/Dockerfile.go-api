@@ -19,6 +19,9 @@ MAINTAINER Caliopen
 # Add CA certificates
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
+# Add email templates
+COPY --from=builder /go/src/github.com/CaliOpen/Caliopen/src/backend/defs/notifiers/templates /etc/defs/notifiers/templates
+
 COPY --from=builder /go/src/github.com/CaliOpen/Caliopen/src/backend/caliopen_rest /usr/local/bin/caliopen_rest
 
 WORKDIR  "/etc/caliopen"
