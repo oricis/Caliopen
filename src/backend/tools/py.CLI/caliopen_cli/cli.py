@@ -8,9 +8,7 @@ Command Line Interface (CLI) for caliopen project
 import sys
 import argparse
 import logging
-import time
 
-from cassandra.cluster import NoHostAvailable
 from caliopen_storage.config import Configuration
 from caliopen_storage.helpers.connection import connect_storage
 from caliopen_cli.commands import (shell, import_email, setup, create_user,
@@ -20,7 +18,6 @@ from caliopen_cli.commands import (shell, import_email, setup, create_user,
                                    resync_shard_index)
 
 logging.basicConfig(level=logging.INFO)
-log = logging.getLogger(__name__)
 
 
 def main(args=sys.argv):
@@ -110,19 +107,6 @@ def main(args=sys.argv):
 
     Configuration.load(config_uri, 'global')
     connect_storage()
-    from caliopen_main.user.core import ReservedName
-    attempts = 0
-    while attempts < 15:
-        try:
-            ReservedName.count()
-            log.info('Connected to storage')
-            break
-        except NoHostAvailable:
-            log.info('Storage not available, retry in 1s')
-            time.sleep(1.0)
-            attempts += 1
-        except Exception as exc:
-            log.exception('Unexpectec exception {0}'.format(exc))
 
     func(**kwargs)
 
