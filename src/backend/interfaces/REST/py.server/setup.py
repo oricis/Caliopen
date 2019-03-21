@@ -31,6 +31,7 @@ requires = [
     'strict-rfc3339',
     'nats-client',
     'tornado==4.2',
+    'gunicorn',
     'ecdsa']
 
 if (os.path.isfile('./requirements.deps')):
