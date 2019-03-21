@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
 import { Icon, Button } from '../../../../components/';
 import { getPrimaryKeysByFingerprint, saveKey, deleteKey } from '../../../../services/openpgp-keychain-repository';
-import { generateKey } from '../../../../services/encryption';
+import { generateKey, getPublicKeyFromPrivateKey } from '../../../../services/encryption';
 import OpenPGPKey from '../OpenPGPKey';
 import OpenPGPKeyForm from '../OpenPGPKeyForm';
 import './style.scss';
@@ -19,9 +19,10 @@ class OpenPGPKeysDetails extends Component {
   }
 
   state = {
-    importForm: {},
+    importForm: { errors: {} },
     editMode: false,
     keys: undefined,
+    isFormLoading: false,
   };
 
   componentDidMount() {
@@ -54,12 +55,33 @@ class OpenPGPKeysDetails extends Component {
     }));
   }
 
-  importKeys = async ({ publicKeyArmored, privateKeyArmored }) => {
-    const error = await saveKey(publicKeyArmored, privateKeyArmored);
-    const newState = error ? {} : { importForm: {} };
-    this.updateKeyState(newState);
+  importKeys = async () => {
+    const { privateKeyArmored, passphrase } = this.state.importForm;
 
-    return error;
+    this.setState({ isFormLoading: true });
+    try {
+      const publicKeyArmored = await getPublicKeyFromPrivateKey(privateKeyArmored, passphrase);
+      const error = await saveKey(publicKeyArmored, privateKeyArmored);
+      const newState = error ?
+        {
+          isFormLoading: false,
+          importForm: { privateKeyArmored, passphrase, errors: { global: [error] } },
+        }
+        : {
+          isFormLoading: false,
+          importForm: {
+            errors: {},
+            privateKeyArmored: '',
+            passphrase: '',
+          },
+        };
+      this.updateKeyState(newState);
+    } catch (e) {
+      this.updateKeyState({
+        isFormLoading: false,
+        importForm: { privateKeyArmored, passphrase, errors: { global: [e.message] } },
+      });
+    }
   }
 
   handleDeleteKey = async ({ fingerprint }) => {
@@ -67,6 +89,15 @@ class OpenPGPKeysDetails extends Component {
 
     this.updateKeyState({});
   };
+
+  handleImportFormChange = (newValue) => {
+    this.setState(prevState => ({
+      importForm: {
+        ...prevState.importForm,
+        ...newValue,
+      },
+    }));
+  }
 
   generateAndSaveKeys = async (generateForm) => {
     const options = {
@@ -115,8 +146,9 @@ class OpenPGPKeysDetails extends Component {
               emails={user.contact.emails}
               onImport={this.importKeys}
               onGenerate={this.generateAndSaveKeys}
+              onImportFormChange={this.handleImportFormChange}
               importForm={this.state.importForm}
-              isLoading={isLoading}
+              isLoading={isLoading || this.state.isFormLoading}
               cancel={this.handleClickEditMode}
             />
             <div className="m-account-openpgp__info">
