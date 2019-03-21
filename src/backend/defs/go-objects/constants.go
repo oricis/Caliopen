@@ -51,13 +51,26 @@ const (
 	ParticipantTo      = "To"
 
 	//notifications types
-	NotifAdminMail     = "adminMail"
-	NotifPasswordReset = "passwordReset"
-	OnboardingMails    = "onboardingMails"
+	NotifAdminMail        = "adminMail"
+	NotifPasswordReset    = "passwordReset"
+	NotifDeviceValidation = "deviceValidation"
+	OnboardingMails       = "onboardingMails"
 
 	//identity types
 	LocalIdentity  = "local"
 	RemoteIdentity = "remote"
+
+	//device status
+	DeviceVerifiedStatus   = "verified"
+	DeviceUnverifiedStatus = "unverified"
+	DeviceDeletedStatus    = "deleted"
+
+	//device types
+	DeviceOtherType      = "other"
+	DeviceDesktopType    = "desktop"
+	DeviceLaptopType     = "laptop"
+	DeviceSmartphoneType = "smartphone"
+	DeviceTabletType     = "tablet"
 
 	/** JWA strings from RFC7518 **/
 	// "alg" param from RFC7581#3.1

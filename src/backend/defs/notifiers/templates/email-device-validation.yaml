@@ -1,0 +1,23 @@
+---
+# django like formatting for string blocks
+# fields available within template blocks :
+#   - user's given_name => given_name
+#   - user's family_name => family_name
+#   - device name => device_name
+#   - url of the reset password link => url
+
+subject: "Demande de validation d'un appareil pour Caliopen"
+body_plain: "\n
+Bonjour {{ given_name }} {{ family_name }},\n
+vous avez demandé la validation de l'appareil « {{ device_name }} » pour vous connecter à Caliopen.\n
+Pour confirmer la validation, veuillez cliquer sur ce lien :\n
+\n
+{{ url }}\n
+\n
+et suivre les indications à l'écran.\n
+\n
+Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer ce mail.\n
+\n
+Cordialement,\n
+L'équipe de Caliopen.\n
+"
