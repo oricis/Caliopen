@@ -8,12 +8,13 @@ import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"gopkg.in/redis.v5"
+	"time"
 )
 
 type (
 	RedisBackend struct {
 		CacheConfig
-		client *redis.Client
+		backend *redis.Client
 	}
 )
 
@@ -23,8 +24,8 @@ func InitializeRedisBackend(config CacheConfig) (cache *RedisBackend, err error)
 	return
 }
 
-func (cache *RedisBackend) initialize(config CacheConfig) (err error) {
-	cache.CacheConfig = config
+func (rb *RedisBackend) initialize(config CacheConfig) (err error) {
+	rb.CacheConfig = config
 	client := redis.NewClient(&redis.Options{
 		Addr:     config.Host,
 		Password: config.Password,
@@ -35,10 +36,18 @@ func (cache *RedisBackend) initialize(config CacheConfig) (err error) {
 		log.WithError(err).Errorf("[RedisBackend] initialize failed")
 		return err
 	}
-	cache.client = client
+	rb.backend = client
 	return nil
 }
 
-func (cache *RedisBackend) GetClient() *redis.Client {
-	return cache.client
+func (rb *RedisBackend) Set(key string, value []byte, ttl time.Duration) error {
+	return rb.backend.Set(key, value, ttl).Err()
+}
+
+func (rb *RedisBackend) Get(key string) (value []byte, err error) {
+	return rb.backend.Get(key).Bytes()
+}
+
+func (rb *RedisBackend) Del(key string) error {
+	return rb.backend.Del(key).Err()
 }

@@ -15,14 +15,15 @@ import (
 // GetAuthToken retrieves auth values stored for the given key
 // values are casted into an Auth_cache struct
 // key is in the form of "tokens::user_id"
-func (cache *RedisBackend) GetAuthToken(key string) (value *Auth_cache, err error) {
+func (rb *RedisBackend) GetAuthToken(key string) (value *Auth_cache, err error) {
 	value = &Auth_cache{}
-	cache_str, err := cache.client.Get(key).Result()
+	cache_str, err := rb.Get(key)
 	if err != nil {
 		log.WithError(err).Errorf("[GetAuthToken] failed to get cache key %s", key)
 		return nil, err
 	}
-	err = json.Unmarshal([]byte(cache_str), value)
+
+	err = json.Unmarshal(cache_str, value)
 	if err != nil {
 		log.WithError(err).Errorf("[GetAuthToken] failed to unmarshal cache %s for key", cache_str, key)
 		return nil, err
@@ -31,11 +32,11 @@ func (cache *RedisBackend) GetAuthToken(key string) (value *Auth_cache, err erro
 }
 
 // LogoutUser will delete the entry of the user corresponding the ke
-func (cache *RedisBackend) LogoutUser(key string) error {
+func (rb *RedisBackend) LogoutUser(key string) error {
 	if !strings.HasPrefix(key, "tokens::") {
 		return errors.New("Unvalid key")
 	}
-	_, err := cache.client.Del(key).Result()
+	err := rb.Del(key)
 	if err != nil {
 		log.WithError(err).Errorf("[LogoutUser] failed to delete key %s", key)
 	}
