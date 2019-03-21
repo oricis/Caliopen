@@ -11,6 +11,7 @@ export const CREATE_DEVICE = 'co/device/CREATE_DEVICE';
 export const UPDATE_DEVICE = 'co/device/UPDATE_DEVICE';
 export const REMOVE_DEVICE = 'co/device/REMOVE_DEVICE';
 export const VERIFY_DEVICE = 'co/device/VERIFY_DEVICE';
+export const VALIDATE_DEVICE = 'co/device/VALIDATE_DEVICE';
 
 export function setNewDevice(isNew) {
   return {
@@ -96,6 +97,18 @@ export function verifyDevice({ device }) {
           actions: ['device-validation'],
           params: { channel: 'email' },
         },
+      },
+    },
+  };
+}
+
+export function requestDeviceVerification({ token }) {
+  return {
+    type: VALIDATE_DEVICE,
+    payload: {
+      request: {
+        method: 'get',
+        url: `/api/v2/validate-device/${token}`,
       },
     },
   };

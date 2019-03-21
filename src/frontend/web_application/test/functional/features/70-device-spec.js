@@ -1,4 +1,4 @@
-const { signin } = require('../utils/user-util');
+const { signin, signout } = require('../utils/user-util');
 const { showSettings } = require('../utils/user-util');
 const { clearKeypairInLocalStorage, restoreKeypairInLocalStorage } = require('../utils/window');
 
@@ -80,6 +80,42 @@ describe('Device', () => {
       await deviceBlock.element(by.cssContainingText('.m-button', 'Revoke this device')).click();
       expect(browser.getCurrentUrl()).toContain('signin');
       await restoreKeypairInLocalStorage();
+    });
+  });
+
+  describe('Validate device', () => {
+    beforeAll(async () => {
+      await signin();
+    });
+
+    it('request validation', async () => {
+      await browser.wait(EC.presenceOf(element(by.css('.s-new-device-info')), 5 * 1000));
+      await browser.wait(EC.presenceOf(element(by.css('.s-new-device-info')), 5 * 1000));
+      await element(by.cssContainingText('.l-settings .m-link', 'Device')).click();
+      await element(by.cssContainingText('.m-device-verify__button', 'Verify this device')).click();
+      await browser.wait(EC.presenceOf(element(by.cssContainingText('.l-notification-center', 'An email has been sent to your backup email in order to verify the device.')), 5 * 1000));
+    });
+
+    it('verify with valid token not authenticated', async () => {
+      await signout();
+      await browser.get('/validate-device/aaaa-bbbb');
+      await signin();
+      await browser.wait(EC.presenceOf(element(by.cssContainingText('.s-validate-device', 'The device is now verified, you can continue to use Caliopen.')), 5 * 1000));
+    });
+
+    it('verify with valid token', async () => {
+      await browser.get('/validate-device/aaaa-bbbb');
+      await browser.wait(EC.presenceOf(element(by.cssContainingText('.s-validate-device', 'The device is now verified, you can continue to use Caliopen.')), 5 * 1000));
+    });
+
+    it('verify with an invalid token', async () => {
+      await browser.get('/validate-device/foobar');
+      await browser.wait(EC.presenceOf(element(by.cssContainingText('.s-validate-device', 'The device cannot be verified, the validation link might not be valid anymore or may be the device has been revoked. You can send the verification link from the device list')), 5 * 1000));
+    });
+
+    it('verification crashed', async () => {
+      await browser.get('/validate-device/fail');
+      await browser.wait(EC.presenceOf(element(by.cssContainingText('.s-validate-device', 'The device cannot be verified, the validation link might not be valid anymore or may be the device has been revoked. You can send the verification link from the device list')), 5 * 1000));
     });
   });
 });

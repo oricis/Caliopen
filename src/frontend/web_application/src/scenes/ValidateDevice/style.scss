@@ -1,0 +1,11 @@
+@import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+.s-validate-device {
+  @include flex-grid-row($size: expand);
+  padding: $co-margin / 2;
+
+  &__feedback {
+    @include flex-grid-size(12);
+  }
+}

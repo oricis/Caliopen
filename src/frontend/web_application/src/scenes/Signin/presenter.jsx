@@ -84,14 +84,14 @@ class Signin extends Component {
   }
 
   render() {
-    if (this.state.isAuthenticated && this.state.redirectDevice) {
+    const { location: { search } } = this.props;
+    const redirect = getRedirect(search) || '/';
+
+    if (this.state.isAuthenticated && this.state.redirectDevice && !redirect.includes('/validate-device/')) {
       return <Redirect push to={URL_DEVICES} />;
     }
 
     if (this.state.isAuthenticated) {
-      const { location: { search } } = this.props;
-      const redirect = getRedirect(search) || '/';
-
       return <Redirect push to={redirect} />;
     }
 
