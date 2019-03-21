@@ -29,9 +29,9 @@ const (
 
 // as of oct. 2017, PatchUser only implemented for changing user's password
 // any attempt to patch something else should trigger an error
-func (rest *RESTfacility) PatchUser(user_id string, patch *gjson.Result, notify Notifications.Notifiers) error {
+func (rest *RESTfacility) PatchUser(userId string, patch *gjson.Result, notify Notifications.Notifiers) error {
 
-	user, err := rest.store.RetrieveUser(user_id)
+	user, err := rest.store.RetrieveUser(userId)
 	if err != nil {
 		return err
 	}
@@ -71,7 +71,7 @@ func (rest *RESTfacility) PatchUser(user_id string, patch *gjson.Result, notify 
 	return nil
 }
 
-func (rest *RESTfacility) GetUser(user_id string) (user *User, err error) {
+func (rest *RESTfacility) GetUser(userId string) (user *User, err error) {
 	//TODO
 	return
 }
@@ -165,12 +165,12 @@ func (rest *RESTfacility) RequestPasswordReset(payload PasswordResetRequest, not
 	return nil
 }
 
-func (rest *RESTfacility) ValidatePasswordResetToken(token string) (session *Pass_reset_session, err error) {
+func (rest *RESTfacility) ValidatePasswordResetToken(token string) (session *TokenSession, err error) {
 	session, err = rest.Cache.GetResetPasswordToken(token)
 	if err != nil || session == nil {
 		return nil, errors.New("[RESTfacility] token not found")
 	}
-	if time.Now().After(session.Expires_at) {
+	if time.Now().After(session.ExpiresAt) { // unlikely to happen because ttl is also set in cache facility
 		return nil, errors.New("[RESTfacility] token expired")
 	}
 	return session, nil
@@ -181,7 +181,7 @@ func (rest *RESTfacility) ResetUserPassword(token, new_password string, notify N
 	if err != nil {
 		return err
 	}
-	user, err := rest.store.RetrieveUser(session.User_id)
+	user, err := rest.store.RetrieveUser(session.UserId)
 	if err != nil {
 		return err
 	}

@@ -7,12 +7,14 @@
 package REST
 
 import (
-	"errors"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/facilities/Notifications"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
+	log "github.com/Sirupsen/logrus"
 	"github.com/bitly/go-simplejson"
+	"github.com/renstrom/shortuuid"
 	"github.com/satori/go.uuid"
+	"gopkg.in/redis.v5"
 	"strings"
 	"time"
 )
@@ -123,10 +125,93 @@ func (rest *RESTfacility) DeleteDevice(userId, deviceId string) CaliopenError {
 	return nil
 }
 
-func (rest *RESTfacility) RequestDeviceValidation(payload ActionsPayload, notifier Notifications.Notifiers) error {
-	return errors.New("not implemented")
+// RequestDeviceValidation sets a temporary validation token in cache
+// and sends it to user via Notifier facility on given channel
+func (rest *RESTfacility) RequestDeviceValidation(userId, deviceId, channel string, notifier Notifications.Notifiers) CaliopenError {
+	// 1. check if resources exist
+	user, err := rest.store.RetrieveUser(userId)
+	if err != nil || user == nil || !user.DateDelete.IsZero() {
+		return NewCaliopenErr(NotFoundCaliopenErr, "user not found")
+	}
+	device, err := rest.store.RetrieveDevice(userId, deviceId)
+	if err != nil || device == nil {
+		return WrapCaliopenErr(err, NotFoundCaliopenErr, "device not found")
+	}
+
+	// 2. check if a validation request has already been ignited for these resources
+	validationSession, err := rest.Cache.GetDeviceValidationSession(userId, deviceId)
+	if err != nil && err != redis.Nil {
+		log.WithError(err).Errorf("[RequestDeviceValidation] failed to GetDeviceValidationSession for user %s, device %s", userId, deviceId)
+		return WrapCaliopenErrf(err, DbCaliopenErr, "failed to check  validation session in cache for user %s, device %s. Aborting", userId, deviceId)
+	}
+	if validationSession != nil {
+		err = rest.Cache.DeleteDeviceValidationSession(userId, deviceId)
+		if err != nil {
+			log.WithError(err).Errorf("[RequestDeviceValidation] failed to delete previous validation session for user %s, device %s", userId, deviceId)
+			return WrapCaliopenErrf(err, DbCaliopenErr, "failed to delete previous validation session in cache for user %s, device %s. Aborting", userId, deviceId)
+		}
+		log.Infof("[RequestDeviceValidation] device validation session delete for user <%s> and device <%s>", userId, deviceId)
+	}
+
+	// 3. generate a validation token and cache it
+	token := shortuuid.New()
+	validationSession, err = rest.Cache.SetDeviceValidationSession(userId, deviceId, token)
+	if err != nil {
+		log.WithError(err).Errorf("[RequestDeviceValidation] failed to store validation session in cache for user %s, device %s", userId, deviceId)
+		return WrapCaliopenErr(err, DbCaliopenErr, "failed to store validation session in cache")
+	}
+
+	// 4. sends valilation token to user
+	switch channel {
+	case "email":
+		notif := &Notification{
+			User:            user,
+			InternalPayload: validationSession,
+			NotifId:         UUID(uuid.NewV1()),
+			Body:            device.Name,
+			Type:            NotifDeviceValidation,
+		}
+		go notifier.ByEmail(notif)
+	default:
+		log.Warnf("[RequestDeviceValidation] unknown channel notification : %s", channel)
+		_ = rest.Cache.DeleteDeviceValidationSession(userId, deviceId)
+		return NewCaliopenErrf(FailDependencyCaliopenErr, "[RequestDeviceValidation] unknown channel notification : aborting process")
+	}
+
+	return nil
 }
 
-func (rest *RESTfacility) ValidateDevice(token string) error {
-	return errors.New("not implemented")
+func (rest *RESTfacility) ConfirmDeviceValidation(userId, token string) CaliopenError {
+
+	session, err := rest.Cache.GetTokenValidationSession(userId, token)
+	if err != nil && err != redis.Nil {
+		return WrapCaliopenErrf(err, DbCaliopenErr, "[ConfirmDeviceValidation] failed to get session for user %s, token %s", userId, token)
+	}
+	if session == nil || err == redis.Nil {
+		return NewCaliopenErr(NotFoundCaliopenErr, "not found")
+	}
+
+	// update device's state
+	currentDevice, err := rest.RetrieveDevice(userId, session.ResourceId)
+	if err != nil {
+		log.WithError(err).Errorf("[ConfirmDeviceValidation] failed to retrieve device %s", session.ResourceId)
+		return WrapCaliopenErrf(err, NotFoundCaliopenErr, "failed to retrieve device %s", session.ResourceId)
+	}
+	var newDevice Device
+	newDevice = *currentDevice
+	newDevice.Status = DeviceVerifiedStatus
+	err = rest.UpdateDevice(&newDevice, currentDevice, map[string]interface{}{"Status": DeviceVerifiedStatus})
+	if err != nil {
+		log.WithError(err).Errorf("[ConfirmDeviceValidation] failed to update device %s", session.ResourceId)
+		return WrapCaliopenErrf(err, FailDependencyCaliopenErr, "failed to update device %s", session.ResourceId)
+	}
+
+	// invalidate validation token
+	err = rest.Cache.DeleteDeviceValidationSession(userId, session.ResourceId)
+	if err != nil {
+		log.WithError(err).Errorf("[ConfirmDeviceValidation] failed to delete session for user %s, device %s", userId, session.ResourceId)
+		return WrapCaliopenErrf(err, FailDependencyCaliopenErr, "failed to delete session for user %s, device %s", userId, session.ResourceId)
+	}
+
+	return nil
 }
