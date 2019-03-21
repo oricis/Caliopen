@@ -1,7 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from '@lingui/react';
+// import { Trans } from '@lingui/react';
 import { Section } from '../../../../components';
+import { STATUS_VERIFIED } from '../../../../modules/device';
 import DeviceForm from '../DeviceForm';
 import DeviceInformation from '../DeviceInformation';
 import VerifyDevice from '../VerifyDevice';
@@ -22,65 +23,41 @@ class DeviceSettings extends Component {
     device: null,
   };
 
-  renderRevokeButton() {
-    const {
-      device, isCurrentDevice, isLastVerifiedDevice, isCurrentDeviceVerified,
-    } = this.props;
+  renderVerifyDevice() {
+    const { device } = this.props;
 
-    if (isLastVerifiedDevice === undefined) {
+    if (device.status === STATUS_VERIFIED) {
       return null;
     }
 
-    if (isLastVerifiedDevice) {
-      return (<Trans id="device.info.last_verified_device">The last verified device can not be revoked.</Trans>);
-    }
+    return (
+      <VerifyDevice device={device} />
+    );
+  }
+
+  renderRevokeDevice() {
+    const { device, isCurrentDeviceVerified, isCurrentDevice } = this.props;
 
     if (isCurrentDeviceVerified || isCurrentDevice) {
       return (<RevokeDevice device={device} />);
     }
 
-    return (<Trans id="device.info.other_device">You need a verified device to revoke this one.</Trans>);
-  }
-
-  renderForm() {
-    const { device, isCurrentDevice } = this.props;
-
-    return (
-      <Fragment>
-        <DeviceInformation device={device} isCurrentDevice={isCurrentDevice} />
-        <DeviceForm device={device} />
-        {this.renderRevokeButton()}
-      </Fragment>
-    );
-  }
-
-  renderVerifyDevice() {
-    const { device, isCurrentDevice } = this.props;
-
-    return (
-      <Fragment>
-        <DeviceInformation device={device} isCurrentDevice={isCurrentDevice} />
-        <VerifyDevice device={device} />
-      </Fragment>
-    );
-  }
-
-  renderDevice() {
-    const { device } = this.props;
-
-    // FIXME: verify device should be displayed on a verified device or ...
-    return device.signature_key === null ?
-      this.renderVerifyDevice(device) :
-      this.renderForm(device);
+    return null;
   }
 
   render() {
-    // TODO: set context according to security level
-    const borderContext = 'disabled';
+    const { device, isCurrentDevice } = this.props;
+    const borderContext = (device.status === STATUS_VERIFIED) ? 'safe' : 'disabled';
 
     return (
       <Section borderContext={borderContext}>
-        {this.renderDevice()}
+        <DeviceInformation device={device} isCurrentDevice={isCurrentDevice} />
+        <DeviceForm device={device} />
+        <div>
+          {this.renderVerifyDevice()}
+          {' '}
+          {this.renderRevokeDevice()}
+        </div>
       </Section>
     );
   }

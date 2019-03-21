@@ -1,10 +1,10 @@
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { verifyDevice } from '../../../../modules/device';
 import Presenter from './presenter';
+import { requestDeviceVerification } from '../../store/modules/device';
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  onVerifyDevice: verifyDevice,
+  requestDeviceVerification,
 }, dispatch);
 
 export default compose(connect(null, mapDispatchToProps))(Presenter);

@@ -29,6 +29,7 @@ import ContactBook from '../../../scenes/ContactBook';
 import PageNotFound from '../../../scenes/PageNotFound';
 import DevicesSettings from '../../../scenes/DevicesSettings';
 import NewDeviceInfo from '../../../scenes/NewDeviceInfo';
+import ValidateDevice from '../../../scenes/ValidateDevice';
 import View from '../../../scenes/View';
 import { renderParticipant } from '../../../services/message';
 import { formatName } from '../../../services/contact';
@@ -330,6 +331,22 @@ class RoutingProvider extends Component {
                     // },
                     // },
 
+                  ],
+                },
+                {
+                  path: '/validate-device/:token',
+                  component: SettingsLayout,
+                  routes: [
+                    {
+                      path: '/validate-device/:token',
+                      component: ValidateDevice,
+                      tab: {
+                        type: 'default',
+                        icon: 'cog',
+                        renderLabel: () => i18n._('route.settings.label.devices', null, { defaults: 'Devices' }),
+                        tabMatch: tabMatchRoute,
+                      },
+                    },
                   ],
                 },
                 {

@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
 import { Button, Icon } from '../../../../components';
 import { signout } from '../../../../modules/routing';
-import './style.scss';
+// unused for now: we want inline buttons
+// import './style.scss';
 
 class RevokeDevice extends Component {
   static propTypes = {
@@ -36,7 +37,7 @@ class RevokeDevice extends Component {
 
   render() {
     return (
-      <div className="m-device-revoke">
+      <span className="m-device-revoke">
         {/* TODO: At this time we can't prevent any device to connect */}
         {/* <span className="m-device-revoke__info">
           <Trans id="device.revoke_info">You can prevent this device to connect to your account in
@@ -50,7 +51,7 @@ class RevokeDevice extends Component {
         >
           <Icon type="remove" rightSpaced /><Trans id="device.action.revoke">Revoke this device</Trans>
         </Button>
-      </div>
+      </span>
     );
   }
 }
