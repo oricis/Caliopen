@@ -129,7 +129,7 @@
   "device.current_device": "Cet appareil",
   "device.feedback.invalid_ip": "Adresse IP ou de sous-réseau invalide.",
   "device.feedback.revoke_success": "L'appareil a été révoqué",
-  "device.feedback.save_success": "L'appareil a été sauvé",
+  "device.feedback.save_success": "L'appareil a été sauvegardé",
   "device.form.locations.address.label": "IP ou masque de sous-réseau",
   "device.form.locations.type.label": "Lieu de connexion",
   "device.info.date_insert": "Date de création",
