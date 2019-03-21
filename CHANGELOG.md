@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - BSOD on draft view in case there is no author (for example after remote identity deletion)
 - Last messages not visible in case the discussion has been openned
 - Sync contact associated to the user when editing in the contact book
+- Accept only Private Key in user account
 
 ### Changed
 
