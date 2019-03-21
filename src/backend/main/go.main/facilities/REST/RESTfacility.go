@@ -72,7 +72,7 @@ type (
 		//users
 		PatchUser(user_id string, patch *gjson.Result, notifier Notifications.Notifiers) error
 		RequestPasswordReset(payload PasswordResetRequest, notifier Notifications.Notifiers) error
-		ValidatePasswordResetToken(token string) (session *Pass_reset_session, err error)
+		ValidatePasswordResetToken(token string) (session *TokenSession, err error)
 		ResetUserPassword(token, new_password string, notifier Notifications.Notifiers) error
 		DeleteUser(payload ActionsPayload) CaliopenError
 		//devices
@@ -82,6 +82,8 @@ type (
 		UpdateDevice(device, oldDevice *Device, update map[string]interface{}) CaliopenError
 		PatchDevice(patch []byte, userId, deviceId string) CaliopenError
 		DeleteDevice(userId, deviceId string) CaliopenError
+		RequestDeviceValidation(userId, deviceId, channel string, notifier Notifications.Notifiers) CaliopenError
+		ConfirmDeviceValidation(userId, token string) CaliopenError
 		//keys
 		CreatePGPPubKey(label string, pubkey []byte, contact *Contact) (*PublicKey, CaliopenError)
 		RetrieveContactPubKeys(userId, contactId string) (pubkeys PublicKeys, err CaliopenError)

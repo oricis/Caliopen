@@ -3,28 +3,28 @@ devices:
   get:
     description: Returns devices belonging to current user according to given parameters
     tags:
-    - devices
+      - devices
     security:
-    - basicAuth: []
+      - basicAuth: []
     parameters:
-    - name: X-Caliopen-PI
-      in: header
-      required: true
-      description: The PI range requested in form of `1;100`
-      type: string
-      default: 1;100
-    - name: limit
-      in: query
-      required: false
-      type: integer
-      description: number of devices to return per page
-    - name: offset
-      in: query
-      type: integer
-      required: false
-      description: number of pages to skip from the response
+      - name: X-Caliopen-PI
+        in: header
+        required: true
+        description: The PI range requested in form of `1;100`
+        type: string
+        default: 1;100
+      - name: limit
+        in: query
+        required: false
+        type: integer
+        description: number of devices to return per page
+      - name: offset
+        in: query
+        type: integer
+        required: false
+        description: number of pages to skip from the response
     produces:
-    - application/json
+      - application/json
     responses:
       '200':
         description: Devices returned
@@ -44,16 +44,16 @@ devices_{device_id}:
   get:
     description: Returns a device
     tags:
-    - devices
+      - devices
     security:
-    - basicAuth: []
+      - basicAuth: []
     parameters:
-    - name: device_id
-      in: path
-      required: true
-      type: string
+      - name: device_id
+        in: path
+        required: true
+        type: string
     produces:
-    - application/json
+      - application/json
     responses:
       '200':
         description: Device found
@@ -70,14 +70,14 @@ devices_{device_id}:
   delete:
     description: Delete a device
     tags:
-    - devices
+      - devices
     security:
-    - basicAuth: []
+      - basicAuth: []
     parameters:
-    - name: device_id
-      in: path
-      required: true
-      type: string
+      - name: device_id
+        in: path
+        required: true
+        type: string
     responses:
       '204':
         description: Device deleted
@@ -92,32 +92,32 @@ devices_{device_id}:
   patch:
     description: update a device with rfc5789 and rfc7396 specifications
     tags:
-    - devices
+      - devices
     security:
-    - basicAuth: []
+      - basicAuth: []
     consumes:
-    - application/json
+      - application/json
     parameters:
-    - name: device_id
-      in: path
-      required: true
-      type: string
-    - name: patch
-      in: body
-      required: true
-      description: the patch to apply. See 'Caliopen Patch RFC' within /doc directory.
-      schema:
-        type: object
-        properties:
-          "$ref": "../objects/Device.yaml#/properties"
-          current_state:
-            type: object
-            properties:
-              "$ref": "../objects/Device.yaml#/properties"
-        required:
-        - current_state
+      - name: device_id
+        in: path
+        required: true
+        type: string
+      - name: patch
+        in: body
+        required: true
+        description: the patch to apply. See 'Caliopen Patch RFC' within /doc directory.
+        schema:
+          type: object
+          properties:
+            "$ref": "../objects/Device.yaml#/properties"
+            current_state:
+              type: object
+              properties:
+                "$ref": "../objects/Device.yaml#/properties"
+          required:
+            - current_state
     produces:
-    - application/json
+      - application/json
     responses:
       '204':
         description: Update successful. No body is returned.
@@ -142,4 +142,75 @@ devices_{device_id}:
         description: patch was semantically malformed or unprocessable
         schema:
           "$ref": "../objects/Error.yaml"
-
+devices_{device_id}_actions:
+  post:
+    description: Route to receive orders to trigger actions on a device
+    tags:
+      - devices
+    security:
+      - basicAuth: []
+    consumes:
+      - application/json
+    parameters:
+      - name: device_id
+        in: path
+        type: string
+        required: true
+      - name: actions
+        in: body
+        required: true
+        schema:
+          "$ref": "../objects/Actions.yaml"
+    produces:
+      - application/json
+    responses:
+      '204':
+        description: action(s) successfully executed. Nothing returned.
+        schema:
+          "$ref": "../objects/MessageV2.yaml"
+      '400':
+        description: json payload malformed
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '401':
+        description: Unauthorized access
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '403':
+        description: Forbidden action. Server is refusing to execute the given action(s)
+          to this ressource
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '404':
+        description: Device not found
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '422':
+        description: json is valid but action was semantically malformed or unprocessable
+        schema:
+          "$ref": "../objects/Error.yaml"
+      '424':
+        description: execution of action failed.
+        schema:
+          "$ref": "../objects/Error.yaml"
+validate_device_{token}:
+  get:
+    description: complete device validation if token is valid
+    tags:
+      - devices
+    security:
+      - basicAuth: []
+    parameters:
+      - name: token
+        in: path
+        required: true
+        type: string
+    produces:
+      - application/json
+    responses:
+      '204':
+        description: Route is valid. No body is returned.
+      '404':
+        description: Token not found or invalid
+        schema:
+          "$ref": "../objects/Error.yaml"

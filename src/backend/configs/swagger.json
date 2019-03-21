@@ -1650,7 +1650,8 @@
                       "set_read",
                       "set_unread",
                       "reset_password",
-                      "delete"
+                      "delete",
+                      "device-validation"
                     ]
                   }
                 },
@@ -11697,7 +11698,8 @@
                       "set_read",
                       "set_unread",
                       "reset_password",
-                      "delete"
+                      "delete",
+                      "device-validation"
                     ]
                   }
                 },
@@ -14079,6 +14081,460 @@
           },
           "422": {
             "description": "patch was semantically malformed or unprocessable",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/devices/{device_id}/actions": {
+      "post": {
+        "description": "Route to receive orders to trigger actions on a device",
+        "tags": [
+          "devices"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          },
+          {
+            "name": "actions",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "actions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "send",
+                      "set_read",
+                      "set_unread",
+                      "reset_password",
+                      "delete",
+                      "device-validation"
+                    ]
+                  }
+                },
+                "params": {
+                  "type": "object"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "actions"
+              ]
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "action(s) successfully executed. Nothing returned.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "attachments": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "content_type": {
+                        "type": "string"
+                      },
+                      "is_inline": {
+                        "type": "boolean"
+                      },
+                      "file_name": {
+                        "type": "string"
+                      },
+                      "size": {
+                        "type": "integer",
+                        "format": "int64"
+                      },
+                      "temp_id": {
+                        "type": "string"
+                      },
+                      "url": {
+                        "type": "string"
+                      },
+                      "mime_boundary": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "body": {
+                  "type": "string"
+                },
+                "body_is_plain": {
+                  "type": "boolean"
+                },
+                "date": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "date_delete": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "date_insert": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "date_sort": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "discussion_id": {
+                  "type": "string"
+                },
+                "external_references": {
+                  "type": "object",
+                  "properties": {
+                    "ancestors_id": {
+                      "type": "string"
+                    },
+                    "message_id": {
+                      "type": "string"
+                    },
+                    "parent_id": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "excerpt": {
+                  "type": "string"
+                },
+                "user_identities": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "importance_level": {
+                  "type": "integer",
+                  "format": "int32"
+                },
+                "is_answered": {
+                  "type": "boolean"
+                },
+                "is_draft": {
+                  "type": "boolean"
+                },
+                "is_unread": {
+                  "type": "boolean"
+                },
+                "is_received": {
+                  "type": "boolean"
+                },
+                "message_id": {
+                  "type": "string"
+                },
+                "parent_id": {
+                  "type": "string"
+                },
+                "participants": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "address": {
+                        "type": "string"
+                      },
+                      "contact_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "label": {
+                        "type": "string"
+                      },
+                      "protocol": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "To",
+                          "Cc",
+                          "Bcc",
+                          "From",
+                          "Reply-To",
+                          "Sender"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "address",
+                      "type",
+                      "protocol"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "privacy_features": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "pi": {
+                  "type": "object",
+                  "properties": {
+                    "technic": {
+                      "type": "integer"
+                    },
+                    "context": {
+                      "type": "integer"
+                    },
+                    "comportment": {
+                      "type": "integer"
+                    },
+                    "version": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": true
+                },
+                "pi_message": {
+                  "type": "object",
+                  "properties": {
+                    "content": {
+                      "type": "integer"
+                    },
+                    "transport": {
+                      "type": "integer"
+                    },
+                    "social": {
+                      "type": "integer"
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "raw_msg_id": {
+                  "type": "string"
+                },
+                "subject": {
+                  "type": "string"
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "protocol": {
+                  "type": "string"
+                },
+                "user_id": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "400": {
+            "description": "json payload malformed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden action. Server is refusing to execute the given action(s) to this ressource",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Device not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "json is valid but action was semantically malformed or unprocessable",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "424": {
+            "description": "execution of action failed.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/validate-device/{token}": {
+      "get": {
+        "description": "complete device validation if token is valid",
+        "tags": [
+          "devices"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "Route is valid. No body is returned."
+          },
+          "404": {
+            "description": "Token not found or invalid",
             "schema": {
               "type": "object",
               "properties": {

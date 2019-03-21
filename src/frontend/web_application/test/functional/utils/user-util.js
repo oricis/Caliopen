@@ -5,7 +5,11 @@ module.exports = {
     const loginKeys = login || 'dev';
     const passwordKeys = password || '123456';
 
-    await browser.get('/auth/signin');
+    const url = await browser.getCurrentUrl();
+
+    if (!url.includes('/auth/signin')) {
+      await browser.get('/auth/signin');
+    }
     await element(by.css('input[name=username]')).sendKeys(loginKeys);
     await element(by.css('input[name=password]')).sendKeys(passwordKeys);
     await element(by.cssContainingText('button[type=submit]', 'Login')).click();

@@ -15,11 +15,6 @@ import (
 	"net/http"
 )
 
-// json payload on routes …/actions
-type REST_order struct {
-	Actions []string `json:"actions"`
-}
-
 // POST …/:message_id/actions
 func Actions(ctx *gin.Context) {
 	user_id := ctx.MustGet("user_id").(string)
@@ -32,7 +27,7 @@ func Actions(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	var actions REST_order
+	var actions ActionsPayload
 	if err := ctx.BindJSON(&actions); err == nil {
 		switch actions.Actions[0] {
 		case "send":
@@ -76,6 +71,9 @@ func Actions(ctx *gin.Context) {
 			ctx.Abort()
 		}
 	} else {
-		log.Warn(err)
+		log.WithError(err).Errorf("failed to bind json payload to ActionsPayload struct")
+		e := swgErr.New(http.StatusFailedDependency, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
 	}
 }

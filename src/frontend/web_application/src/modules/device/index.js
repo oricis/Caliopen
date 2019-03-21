@@ -2,6 +2,7 @@ export * from './actions/requestDevice';
 export * from './actions/requestDevices';
 export * from './actions/revokeDevice';
 export * from './actions/saveDevice';
+export * from './actions/verifyDevice';
 export { default as DeviceProvider } from './components/DeviceProvider';
 export { default as WithDevice } from './components/WithDevice';
 export * from './hoc/withDevice';

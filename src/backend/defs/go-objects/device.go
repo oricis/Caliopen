@@ -35,6 +35,12 @@ type Device struct {
 	UserId          UUID             `cql:"user_id"          json:"user_id"                    patch:"system"`
 }
 
+// payload for triggering a device validation process for an end-user
+type DeviceValidationRequest struct {
+	DeviceId UUID   `json:"device_id"`
+	Channel  string `json:"channel"`
+}
+
 // UnmarshalCQLMap hydrates a Device with data from a map[string]interface{}
 // typical usage is for unmarshaling response from Cassandra backend
 func (d *Device) UnmarshalCQLMap(input map[string]interface{}) {

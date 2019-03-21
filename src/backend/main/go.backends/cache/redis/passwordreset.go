@@ -7,6 +7,7 @@ package cache
 import (
 	"encoding/json"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	log "github.com/Sirupsen/logrus"
 	"time"
 )
 
@@ -16,71 +17,78 @@ const (
 	resetPasswordTTL = 8 // ttl in hours
 )
 
-// GetResetPasswordSession returns reset password session values stored for the user_id, if any
+// GetResetPasswordSession returns reset password session values stored for the userId, if any
 // Returns a nil 'session' if key is not found
-func (cache *RedisBackend) GetResetPasswordSession(user_id string) (session *Pass_reset_session, err error) {
-	key := sessionPrefix + user_id
+func (cache *RedisBackend) GetResetPasswordSession(userId string) (session *TokenSession, err error) {
+	key := sessionPrefix + userId
 	session_str, err := cache.client.Get(key).Bytes()
 	if err != nil {
+		log.WithError(err).Errorf("[GetResetPasswordSession] failed to get key %s", key)
 		return nil, err
 	}
-	session = &Pass_reset_session{}
+	session = &TokenSession{}
 	err = json.Unmarshal(session_str, session)
 	if err != nil {
+		log.WithError(err).Errorf("[GetResetPasswordSession] failed to unmarshal value %s for key %s", session_str, key)
 		return nil, err
 	}
 	return
 }
 
-// SetResetPasswordSession stores key,value for given user_id and reset_token.
-// The key will be in the form of "resetsession::user_id".
-// Func will also call setResetPasswordToken() to add a secondary key in the form "resettoken::reset_token" pointing to the same value
+// SetResetPasswordSession stores key,value for given userId and resetToken.
+// The key will be in the form of "resetsession::userId".
+// Func will also call setResetPasswordToken() to add a secondary key in the form "resettoken::resetToken" pointing to the same value
 // Func returns a pointer to the Pass_reset_session object that represents values stored in the cache.
-// user_id and reset_token strings must be well-formatted, they will not be checked.
-func (cache *RedisBackend) SetResetPasswordSession(user_id, reset_token string) (session *Pass_reset_session, err error) {
+// userId and resetToken strings must be well-formatted, they will not be checked.
+func (cache *RedisBackend) SetResetPasswordSession(userId, resetToken string) (session *TokenSession, err error) {
 	ttl := resetPasswordTTL * time.Hour
 	expiration := time.Now().Add(ttl)
-	session = &Pass_reset_session{
-		Reset_token: reset_token,
-		Expires_at:  expiration,
-		Expires_in:  int(ttl / time.Second),
-		User_id:     user_id,
+	session = &TokenSession{
+		ExpiresAt: expiration,
+		ExpiresIn: int(ttl / time.Second),
+		Token:     resetToken,
+		UserId:    userId,
 	}
 	session_str, err := json.Marshal(session)
 	if err != nil {
+		log.WithError(err).Errorf("[SetResetPasswordSession] failed to marshal session %s", session)
 		return nil, err
 	}
 
-	_, err = cache.client.Set(sessionPrefix+user_id, session_str, ttl).Result()
+	_, err = cache.client.Set(sessionPrefix+userId, session_str, ttl).Result()
 	if err != nil {
+		log.WithError(err).Errorf("[SetResetPasswordSession] failed to set session key in cache for user %s", userId)
 		return nil, err
 	}
 
-	err = cache.setResetPasswordToken(reset_token, session_str, ttl)
+	err = cache.setResetPasswordToken(resetToken, session_str, ttl)
 	if err != nil {
+		log.WithError(err).Errorf("[SetResetPasswordSession] failed to setResetPasswordToken in cache for user %s", userId)
 		return nil, err
 	}
 	return session, nil
 }
 
-// SetResetPasswordToken stores key,value for given reset_token.
+// SetResetPasswordToken stores key,value for given resetToken.
 // It is called by SetResetPasswordSession to add a secondary key pointing to the same underlying value.
-// The key is in the form "resettoken::reset_token"
+// The key is in the form "resettoken::resetToken"
 func (cache *RedisBackend) setResetPasswordToken(token string, session []byte, ttl time.Duration) error {
 	_, err := cache.client.Set(resetTokenPrefix+token, session, ttl).Result()
 	return err
 }
 
-// GetResetPasswordToken returns values found for the given reset_token key
-func (cache *RedisBackend) GetResetPasswordToken(token string) (session *Pass_reset_session, err error) {
+// GetResetPasswordToken returns values found for the given resetToken key
+func (cache *RedisBackend) GetResetPasswordToken(token string) (session *TokenSession, err error) {
 	key := resetTokenPrefix + token
 	session_str, err := cache.client.Get(key).Bytes()
 	if err != nil {
+		log.WithError(err).Errorf("[GetResetPasswordToken] failed to get key for token %s", token)
 		return nil, err
 	}
-	session = &Pass_reset_session{}
+	session = &TokenSession{}
 	err = json.Unmarshal(session_str, session)
 	if err != nil {
+		log.WithError(err).Errorf("[GetResetPasswordToken] failed to unmarshal session %s for token %s", session_str, token)
 		return nil, err
 	}
 	return
@@ -88,22 +96,25 @@ func (cache *RedisBackend) GetResetPasswordToken(token string) (session *Pass_re
 
 // DeleteResetPasswordSession will delete two keys in a row :
 // the resetsession key and the resettoken key
-func (cache *RedisBackend) DeleteResetPasswordSession(user_id string) error {
+func (cache *RedisBackend) DeleteResetPasswordSession(userId string) error {
 
-	session, err := cache.GetResetPasswordSession(user_id)
+	session, err := cache.GetResetPasswordSession(userId)
 	if err != nil {
+		log.WithError(err).Errorf("[DeleteResetPasswordSession] failed to get session for user %s", userId)
 		return err
 	}
 
-	key := sessionPrefix + user_id
+	key := sessionPrefix + userId
 	_, err = cache.client.Del(key).Result()
 	if err != nil {
+		log.WithError(err).Errorf("[DeleteResetPasswordSession] failed to delete session for user %s", userId)
 		return err
 	}
 
-	key = resetTokenPrefix + session.Reset_token
+	key = resetTokenPrefix + session.Token
 	_, err = cache.client.Del(key).Result()
 	if err != nil {
+		log.WithError(err).Errorf("[DeleteResetPasswordSession] failed to delete session token for user %s", userId)
 		return err
 	}
 	return nil

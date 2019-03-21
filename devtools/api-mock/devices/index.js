@@ -7,6 +7,8 @@ export const actions = {
   createOnSignin: createAction('Create device'),
   delete: createAction('Delete a device'),
   patch: createAction('Patch a device'),
+  reqVerif: createAction('Req Verif of a device'),
+  verify: createAction('Verify'),
 };
 
 export const selectors = {
@@ -67,27 +69,60 @@ const reducer = {
 
     return nextState;
   },
+  [actions.reqVerif]: (state, { params, body }) => {
+    const original = state.find(device => device.device_id === params.device_id);
+    if (!original) {
+      throw `device w/ id ${params.device_id} not found`;
+    }
+    const { actions } = body;
+
+    if (actions[0] !== 'device-validation') {
+      throw new Error('Unknown action');
+    }
+
+    return state;
+  },
 };
 
 const routes = {
-  'GET /': {
+  'GET /devices/': {
     action: actions.get,
     selector: selectors.all,
     status: 200,
     middlewares: [createCollectionMiddleware('devices')],
   },
-  'GET /:device_id': {
+  'GET /devices/:device_id': {
     action: actions.get,
     selector: selectors.byId,
     status: 200,
   },
-  'DELETE /:device_id': {
+  'DELETE /devices/:device_id': {
     action: actions.delete,
     status: 204,
   },
-  'PATCH /:device_id': {
+  'PATCH /devices/:device_id': {
     action: actions.patch,
     status: 204,
+  },
+  'POST /devices/:device_id/actions': {
+    action: actions.reqVerif,
+    status: 204,
+  },
+  'GET /validate-device/:token': {
+    action: actions.verify,
+    status: 204,
+    middlewares: [data => (req, res, next) => {
+      if (req.params.token === 'fail') {
+        res.status(500);
+
+        return;
+      }
+      if (req.params.token !== 'aaaa-bbbb') {
+        res.status(404);
+
+        return;
+      }
+    }],
   },
 };
 
@@ -95,6 +130,6 @@ export default {
   name: 'devices',
   data: require('./data.json'),
   reducer: reducer,
-  endpoint: '/api/v2/devices',
+  endpoint: '/api/v2',
   routes: routes,
 };

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - PWA: add to home screen
 - PWA: basic offline capabilities
 - Search when click on tags (basic search)
+- Verify device by mail
 
 ### Fixed
 

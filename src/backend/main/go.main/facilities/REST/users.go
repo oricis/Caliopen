@@ -29,9 +29,9 @@ const (
 
 // as of oct. 2017, PatchUser only implemented for changing user's password
 // any attempt to patch something else should trigger an error
-func (rest *RESTfacility) PatchUser(user_id string, patch *gjson.Result, notify Notifications.Notifiers) error {
+func (rest *RESTfacility) PatchUser(userId string, patch *gjson.Result, notify Notifications.Notifiers) error {
 
-	user, err := rest.store.RetrieveUser(user_id)
+	user, err := rest.store.RetrieveUser(userId)
 	if err != nil {
 		return err
 	}
@@ -71,7 +71,7 @@ func (rest *RESTfacility) PatchUser(user_id string, patch *gjson.Result, notify 
 	return nil
 }
 
-func (rest *RESTfacility) GetUser(user_id string) (user *User, err error) {
+func (rest *RESTfacility) GetUser(userId string) (user *User, err error) {
 	//TODO
 	return
 }
@@ -165,12 +165,12 @@ func (rest *RESTfacility) RequestPasswordReset(payload PasswordResetRequest, not
 	return nil
 }
 
-func (rest *RESTfacility) ValidatePasswordResetToken(token string) (session *Pass_reset_session, err error) {
+func (rest *RESTfacility) ValidatePasswordResetToken(token string) (session *TokenSession, err error) {
 	session, err = rest.Cache.GetResetPasswordToken(token)
 	if err != nil || session == nil {
 		return nil, errors.New("[RESTfacility] token not found")
 	}
-	if time.Now().After(session.Expires_at) {
+	if time.Now().After(session.ExpiresAt) { // unlikely to happen because ttl is also set in cache facility
 		return nil, errors.New("[RESTfacility] token expired")
 	}
 	return session, nil
@@ -181,7 +181,7 @@ func (rest *RESTfacility) ResetUserPassword(token, new_password string, notify N
 	if err != nil {
 		return err
 	}
-	user, err := rest.store.RetrieveUser(session.User_id)
+	user, err := rest.store.RetrieveUser(session.UserId)
 	if err != nil {
 		return err
 	}
@@ -223,29 +223,37 @@ func (rest *RESTfacility) ResetUserPassword(token, new_password string, notify N
 // Check the password as a validation before
 func (rest *RESTfacility) DeleteUser(payload ActionsPayload) CaliopenError {
 
-	user, err := rest.store.RetrieveUser(payload.UserId)
-	if err != nil {
-		return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] DeleteUser failed to retrieve user")
+	if payload.Params == nil {
+		return NewCaliopenErr(UnprocessableCaliopenErr, "[RESTfacility] delete user params is missing")
 	}
 
-	if !user.DateDelete.IsZero() {
-		return NewCaliopenErr(UnprocessableCaliopenErr, "[RESTfacility] User already deleted.")
-	}
+	if params, ok := payload.Params.(DeleteUserParams); ok {
+		user, err := rest.store.RetrieveUser(payload.UserId)
+		if err != nil {
+			return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] DeleteUser failed to retrieve user")
+		}
 
-	err = bcrypt.CompareHashAndPassword(user.Password, []byte(payload.Params.Password))
-	if err != nil {
-		return WrapCaliopenErr(err, WrongCredentialsErr, "[RESTfacility] DeleteUser Wrong password")
-	}
-	err = rest.store.DeleteUser(payload.UserId)
-	if err != nil {
-		return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] DeleteUser failed to delete user in store")
-	}
+		if !user.DateDelete.IsZero() {
+			return NewCaliopenErr(UnprocessableCaliopenErr, "[RESTfacility] User already deleted.")
+		}
 
-	// Logout
-	err = rest.Cache.LogoutUser(payload.Params.AccessToken)
+		err = bcrypt.CompareHashAndPassword(user.Password, []byte(params.Password))
+		if err != nil {
+			return WrapCaliopenErr(err, WrongCredentialsErr, "[RESTfacility] DeleteUser Wrong password")
+		}
+		err = rest.store.DeleteUser(payload.UserId)
+		if err != nil {
+			return WrapCaliopenErr(err, DbCaliopenErr, "[RESTfacility] DeleteUser failed to delete user in store")
+		}
 
-	if err != nil {
-		return NewCaliopenErr(UnprocessableCaliopenErr, "[RESTfacility] Unable to logout.")
+		// Logout
+		err = rest.Cache.LogoutUser(params.AccessToken)
+
+		if err != nil {
+			return NewCaliopenErr(UnprocessableCaliopenErr, "[RESTfacility] Unable to logout.")
+		}
+	} else {
+		return NewCaliopenErr(UnprocessableCaliopenErr, "[RESTfacility] payload.Params is not of type DeleteUserParams")
 	}
 
 	return nil

@@ -10,12 +10,12 @@ import (
 
 type (
 	UserStorage interface {
-		GetSettings(user_id string) (settings *Settings, err error)
-		RetrieveUser(user_id string) (user *User, err error)
+		GetSettings(userId string) (settings *Settings, err error)
+		RetrieveUser(userId string) (user *User, err error)
 		UpdateUserPasswordHash(user *User) error
 		UpdateUser(user *User, fields map[string]interface{}) error // 'fields' are the struct fields names that have been modified
 		UserByRecoveryEmail(email string) (user *User, err error)
-		DeleteUser(user_id string) error
+		DeleteUser(userId string) error
 		GetShardForUser(userID string) string
 	}
 	UserNameStorage interface {

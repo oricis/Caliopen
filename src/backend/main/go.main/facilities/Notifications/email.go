@@ -19,10 +19,12 @@ type EmailNotifiers interface {
 }
 
 const (
-	resetPasswordTemplate   = "email-reset-password-link.yaml"
-	onboardingEmailTemplate = "email-onboarding.yaml"
-	welcomeEmailTemplate    = "email-welcome.yaml"
-	resetLinkFmt            = "%s/auth/passwords/reset/%s"
+	resetPasswordTemplate    = "email-reset-password-link.yaml"
+	onboardingEmailTemplate  = "email-onboarding.yaml"
+	welcomeEmailTemplate     = "email-welcome.yaml"
+	resetLinkFmt             = "%s/auth/passwords/reset/%s"
+	deviceValidationLinkFmt  = "%s/validate-device/%s"
+	deviceValidationTemplate = "email-device-validation.yaml"
 )
 
 // ByEmail notifies an user by the mean of an email.
@@ -67,12 +69,31 @@ func (N *Notifier) ByEmail(notif *Notification) CaliopenError {
 				}
 			}
 		}
-		N.SendEmailAdminToUser(notif.User, participants, notif.InternalPayload.(*Message))
+		err := N.SendEmailAdminToUser(notif.User, participants, notif.InternalPayload.(*Message))
+		if err != nil {
+			log.WithError(err).Errorf("[ByEmail] SendEmailAdminToUser failed for notification %+v", *notif)
+			return WrapCaliopenErrf(err, FailDependencyCaliopenErr, "[ByEmail] SendEmailAdminToUser failed")
+		}
 	case NotifPasswordReset:
-		N.SendPasswordResetEmail(notif.User, notif.InternalPayload.(*Pass_reset_session))
+		err := N.SendPasswordResetEmail(notif.User, notif.InternalPayload.(*TokenSession))
+		if err != nil {
+			log.WithError(err).Errorf("[ByEmail] SendPasswordResetEmail failed for notification %+v", *notif)
+			return WrapCaliopenErrf(err, FailDependencyCaliopenErr, "[ByEmail] SendPasswordResetEmail failed")
+		}
 	case OnboardingMails:
-		N.SendOnboardingMails(notif.User)
+		err := N.SendOnboardingMails(notif.User)
+		if err != nil {
+			log.WithError(err).Errorf("[ByEmail] SendOnboardingMails failed for notification %+v", *notif)
+			return WrapCaliopenErrf(err, FailDependencyCaliopenErr, "[ByEmail] SendOnboardingMails failed")
+		}
+	case NotifDeviceValidation:
+		err := N.SendDeviceValidationEmail(notif.User, notif.Body, notif.InternalPayload.(*TokenSession))
+		if err != nil {
+			log.WithError(err).Errorf("[ByEmail] SendDeviceValidationEmail failed for notification %+v", *notif)
+			return WrapCaliopenErrf(err, FailDependencyCaliopenErr, "[ByEmail] SendDeviceValidationEmail failed")
+		}
 	default:
+		log.Errorf("[Notifier]ByEmail : unknown notification type <%s>", notif.Type)
 		return NewCaliopenErrf(UnprocessableCaliopenErr, "[Notifier]ByEmail : unknown notification type <%s>", notif.Type)
 	}
 	return nil
@@ -146,12 +167,12 @@ func (notif *Notifier) SendEmailAdminToUser(user *User, participants []Participa
 	return nil
 }
 
-func (notif *Notifier) SendPasswordResetEmail(user *User, session *Pass_reset_session) error {
+func (notif *Notifier) SendPasswordResetEmail(user *User, session *TokenSession) error {
 	if user == nil || session == nil {
 		return errors.New("[NotificationsFacility] SendPasswordResetEmail invalid params")
 	}
 
-	reset_link := fmt.Sprintf(resetLinkFmt, notif.config.BaseUrl, session.Reset_token)
+	reset_link := fmt.Sprintf(resetLinkFmt, notif.config.BaseUrl, session.Token)
 	context := map[string]interface{}{
 		"given_name":  user.GivenName,
 		"family_name": user.FamilyName,
@@ -247,6 +268,49 @@ func (notif *Notifier) SendOnboardingMails(user *User) error {
 		}
 	} else {
 		log.WithError(err).Warnf("[SendOnboardingMails] failed to render welcomeMail. This email won't be send.")
+	}
+
+	return nil
+}
+
+func (notif *Notifier) SendDeviceValidationEmail(user *User, deviceName string, session *TokenSession) error {
+	if user == nil || session == nil {
+		return errors.New("[NotificationsFacility] SendDeviceValidationEmail invalid params")
+	}
+
+	reset_link := fmt.Sprintf(deviceValidationLinkFmt, notif.config.BaseUrl, session.Token)
+	context := map[string]interface{}{
+		"given_name":  user.GivenName,
+		"family_name": user.FamilyName,
+		"device_name": deviceName,
+		"url":         reset_link,
+	}
+	email, err := RenderEmail(notif.config.TemplatesPath+deviceValidationTemplate, context)
+	if err != nil {
+		log.WithError(err).Warnf("[RESTfacility] failed to build device validation email from template for user %s", user.UserId.String())
+		return errors.New("[RESTfacility] failed to build reset email")
+	}
+	participants := []Participant{
+		{ // sender
+			Address:  (*notif.adminLocalID).Identifier,
+			Label:    (*notif.adminLocalID).DisplayName,
+			Protocol: EmailProtocol,
+			Type:     ParticipantFrom,
+		},
+		{ // recipient
+			Address:     user.RecoveryEmail,
+			Contact_ids: []UUID{user.ContactId},
+			Label:       user.Name,
+			Protocol:    EmailProtocol,
+			Type:        ParticipantTo,
+		},
+	}
+
+	err = notif.SendEmailAdminToUser(user, participants, email)
+
+	if err != nil {
+		log.WithError(err).Warnf("[RESTfacility] sending device validation email failed for user %s", user.UserId.String())
+		return errors.New("[RESTfacility] failed to send device validation email")
 	}
 
 	return nil

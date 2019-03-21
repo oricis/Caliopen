@@ -1,40 +1,48 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
-import Button from '../../../../components/Button';
+import { Button, Spinner } from '../../../../components';
+import { withNotification } from '../../../../modules/userNotify';
 
+@withNotification()
 class VerifyDevice extends Component {
   static propTypes = {
     device: PropTypes.shape({}).isRequired,
-    onDeleteDevice: PropTypes.func.isRequired,
     onVerifyDevice: PropTypes.func.isRequired,
+    notifySuccess: PropTypes.func.isRequired,
   };
 
-  handleVerify = () => {
-    const { device, onVerifyDevice } = this.props;
-    onVerifyDevice({ device });
-  };
+  state = {
+    sending: false,
+  }
 
-  handleDelete = () => {
-    const { device, onDeleteDevice } = this.props;
-    onDeleteDevice({ device });
+  handleVerify = async () => {
+    const { device, onVerifyDevice, notifySuccess } = this.props;
+    this.setState({ sending: true });
+    try {
+      await onVerifyDevice({ device });
+      notifySuccess({
+        message: (<Trans id="device.feedback.send-validation-success">An email has been sent to your backup email in order to verify the device.</Trans>),
+      });
+    } catch (e) {
+      // continue to the next handler
+      throw new Error(e);
+    } finally {
+      this.setState({ sending: false });
+    }
   };
 
   render() {
     return (
-      <div className="m-device-verify">
-        <Button
-          shape="plain"
-          className="m-device-verify__button"
-          onClick={this.handleVerify}
-        >
-          <Trans id="device.action.verify">Verify this device</Trans>
-        </Button>
-        <br />
-        <Trans id="device.verify.not-you">It&apos;s not you?</Trans>
-        {' '}
-        <Button onClick={this.handleDelete}><Trans id="device.action.delete">Delete</Trans></Button>
-      </div>
+      <Button
+        icon={this.state.sending ? (<Spinner isLoading display="inline" />) : 'check'}
+        shape="plain"
+        className="m-device-verify__button"
+        onClick={this.handleVerify}
+        disabled={this.state.sending}
+      >
+        <Trans id="device.action.verify">Verify this device</Trans>
+      </Button>
     );
   }
 }

@@ -190,7 +190,9 @@ func Delete(ctx *gin.Context) {
 		return
 	}
 
-	if payload.Params == nil || payload.Params.Password == "" {
+	password := payload.Params.(map[string]interface{})["password"].(string)
+
+	if payload.Params == nil || password == "" {
 		e := swgErr.New(http.StatusBadRequest, "Password missing")
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
@@ -198,9 +200,15 @@ func Delete(ctx *gin.Context) {
 	}
 
 	payload.UserId = user_id
-	payload.Params.AccessToken = access_token
 
-	caliopenErr = caliopen.Facilities.RESTfacility.DeleteUser(payload)
+	caliopenErr = caliopen.Facilities.RESTfacility.DeleteUser(ActionsPayload{
+		Actions: payload.Actions,
+		Params: DeleteUserParams{
+			Password:    password,
+			AccessToken: access_token,
+		},
+		UserId: payload.UserId,
+	})
 	if caliopenErr != nil {
 		returnedErr := new(swgErr.CompositeError)
 		if caliopenErr.Code() == DbCaliopenErr && caliopenErr.Cause().Error() == "[CassandraBackend] user not found" {

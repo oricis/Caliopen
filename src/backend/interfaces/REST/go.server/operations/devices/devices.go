@@ -12,6 +12,7 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
+	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	swgErr "github.com/go-openapi/errors"
 	"io/ioutil"
@@ -228,4 +229,112 @@ func DeleteDevice(ctx *gin.Context) {
 	} else {
 		ctx.Status(http.StatusNoContent)
 	}
+}
+
+// Actions handles POST /devices/:deviceID/actions
+func Actions(ctx *gin.Context) {
+	var err error
+	userId, err := operations.NormalizeUUIDstring(ctx.MustGet("user_id").(string))
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
+	deviceId, err := operations.NormalizeUUIDstring(ctx.Param("deviceID"))
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+	var actions ActionsPayload
+	if err := ctx.BindJSON(&actions); err == nil {
+		switch actions.Actions[0] {
+		case "device-validation":
+			// validate params in payload before calling API
+			valid := true
+			var channel string
+			if actions.Params == nil {
+				valid = false
+			} else if params, ok := actions.Params.(map[string]interface{}); ok {
+				if channel, ok = params["channel"].(string); channel == "" || !ok {
+					valid = false
+				}
+			} else {
+				valid = false
+			}
+			if !valid {
+				e := swgErr.New(http.StatusUnprocessableEntity, "params is missing or malformed")
+				http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+				ctx.Abort()
+				return
+			}
+
+			actions.UserId = userId
+			actions.Params.(map[string]interface{})["device_id"] = deviceId
+			err := caliopen.Facilities.RESTfacility.RequestDeviceValidation(userId, deviceId, channel, caliopen.Facilities.Notifiers)
+			if err != nil {
+				if Cerr, ok := err.(CaliopenError); ok {
+					returnedErr := new(swgErr.CompositeError)
+					if (Cerr.Code() == DbCaliopenErr && Cerr.Cause().Error() == "not found") || Cerr.Code() == NotFoundCaliopenErr {
+						returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusNotFound, "db returned not found"), Cerr, Cerr.Cause())
+					} else {
+						returnedErr = swgErr.CompositeValidationError(Cerr, Cerr.Cause())
+					}
+					http_middleware.ServeError(ctx.Writer, ctx.Request, returnedErr)
+					ctx.Abort()
+					return
+				}
+				e := swgErr.New(http.StatusFailedDependency, err.Error())
+				http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+				ctx.Abort()
+			} else {
+				ctx.Status(http.StatusNoContent)
+			}
+		default:
+			e := swgErr.New(http.StatusNotImplemented, "unknown action "+actions.Actions[0])
+			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+			ctx.Abort()
+		}
+	} else {
+		log.WithError(err).Errorf("failed to bind json payload to ActionsPayload struct")
+		e := swgErr.New(http.StatusFailedDependency, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+	}
+}
+
+// ValidateDevice handles GET /validate-device/:token
+func ValidateDevice(ctx *gin.Context) {
+
+	var err error
+	userId, err := operations.NormalizeUUIDstring(ctx.MustGet("user_id").(string))
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
+	token := ctx.Param("token")
+
+	if token == "" {
+		e := swgErr.New(http.StatusUnprocessableEntity, "validation token is empty")
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
+	err = caliopen.Facilities.RESTfacility.ConfirmDeviceValidation(userId, token)
+
+	if err != nil {
+		e := swgErr.New(http.StatusNotFound, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+	} else {
+		ctx.Status(http.StatusNoContent)
+	}
+	return
 }
