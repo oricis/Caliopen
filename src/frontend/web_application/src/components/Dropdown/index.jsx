@@ -77,10 +77,9 @@ class Dropdown extends Component {
     dropdownStyle: this.constructor.defaultDropdownStyle,
   };
 
-
   componentDidMount() {
-    const { dropdownControlRef } = this.props;
-    this.toggle(this.props.show);
+    const { dropdownControlRef, show } = this.props;
+    this.handleToggleVisibility({ show });
 
     if (this.props.closeOnClick !== DO_NOT_CLOSE) {
       this.unsubscribeClickEvent = addEventListener('click', (ev) => {
@@ -92,21 +91,21 @@ class Dropdown extends Component {
           (dropdownControlRef.current === target || dropdownControlRef.current.contains(target));
 
         if (controlClick) {
-          this.toggle(!this.state.isOpen);
+          this.handleToggleVisibility({ show: !this.state.isOpen });
 
           return;
         }
 
         if (this.props.closeOnClick === CLOSE_ON_CLICK_EXCEPT_SELF && dropdownClick) { return; }
 
-        this.toggle(false);
+        this.handleToggleVisibility({ show: false });
       });
     }
 
     this.unsubscribeResizeEvent = addEventListener('resize', () => {
       // this prevent dropdown to be misplaced on window resize
       // TODO: get new offset instead of closing dropdown
-      this.toggle(false);
+      this.handleToggleVisibility({ show: false });
     });
 
     this.unsubscribeScrollEvent = this.props.closeOnScroll ? addEventListener('scroll', throttle(() => {
@@ -114,14 +113,16 @@ class Dropdown extends Component {
       const closeDropdown = scrollSize > 10;
 
       if (closeDropdown) {
-        this.toggle(false);
+        this.handleToggleVisibility({ show: false });
       }
     }, 100, { leading: true, trailing: true })) : () => {};
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.show !== nextProps.show) {
-      this.toggle(nextProps.show);
+  componentDidUpdate(prevProps) {
+    const { show } = this.props;
+
+    if (show !== prevProps.show) {
+      this.handleToggleVisibility({ show });
     }
   }
 
@@ -133,26 +134,17 @@ class Dropdown extends Component {
     this.unsubscribeScrollEvent();
   }
 
-  toggle = (isVisible) => {
-    this.setState((prevState) => {
-      // update offset only if prevState.isOpen is false
-      // otherwise return prevState.offset
-      const newStyle = prevState.isOpen ? prevState.dropdownStyle : this.updateDropdownStyle();
+  getStyles = ({ show }) => {
+    if (!show) {
+      // dropdown must be at default position when not visible for correct calc when displaying it
+      return this.constructor.defaultDropdownStyle;
+    }
 
-      if (isVisible !== prevState.isOpen) { this.props.onToggle(isVisible); }
-
-      return {
-        isOpen: isVisible !== prevState.isOpen && isVisible,
-        dropdownStyle: isVisible ? newStyle : this.constructor.defaultDropdownStyle,
-      };
-    });
-  }
-
-  updateDropdownStyle = () => {
     const { alignRight, dropdownControlRef } = this.props;
 
-    // if no dropdownControl declared, return empty dropdownStyle
-    // otherwise, return new dropdownStyle
+    // FIXME: when no dropdownControl declared, it should calc position according to ??? position
+    // may be a relativeRef which is optionnal?
+    // relativeRef = relativeRef || dropdownControlRef;
     return dropdownControlRef ?
       getDropdownStyle({
         alignRight,
@@ -160,6 +152,18 @@ class Dropdown extends Component {
         dropdownElement: this.dropdownRef.current,
       }) :
       this.constructor.defaultDropdownStyle;
+  }
+
+  handleToggleVisibility = ({ show }) => {
+    if (show === this.state.isOpen) {
+      return;
+    }
+    this.setState({
+      dropdownStyle: this.getStyles({ show }),
+      isOpen: show,
+    }, () => {
+      this.props.onToggle(this.state.isOpen);
+    });
   }
 
   render() {

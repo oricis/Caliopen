@@ -12,10 +12,14 @@
   }
 
   &__section {
+    // XXX: required for the dropdown position
+    position: relative;
     margin-bottom: map-get($co-form__spacing, 'large');
   }
 
   &__dropdown {
+    // XXX: dirty fix when dropdown has no controller then getDropdownStyle() can not be used correctly
+    margin-top: $co-component__height;
     padding: map-get($co-form__spacing, 'small');
     background-color: $co-color__fg__back;
   }

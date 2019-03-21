@@ -2,17 +2,13 @@ import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
 import isequal from 'lodash.isequal';
-import { Button, Icon, DropdownMenu, VerticalMenu, VerticalMenuItem } from '../../../../components';
+import { Button, Icon, Dropdown, VerticalMenu, VerticalMenuItem } from '../../../../components';
 import { getTagLabel } from '../../';
 import TagItem from '../TagItem';
 import TagFieldGroup from '../TagFieldGroup';
 import { searchTags } from '../../services/searchTags';
 import { addEventListener } from '../../../../services/event-manager';
 import './style.scss';
-
-const generateStateFromProps = ({ tags }) => ({
-  tags,
-});
 
 class TagsForm extends Component {
   static propTypes = {
@@ -27,39 +23,53 @@ class TagsForm extends Component {
     tags: [],
   };
 
-  state = {
+  static initialState = {
     tags: [],
     errors: [],
     searchTerms: '',
     isTagCollectionUpdating: false,
     foundTags: [],
+    searchHasFocus: false,
   };
 
-  componentWillMount() {
-    this.setState(generateStateFromProps(this.props));
+  static generateStateFromProps({ tags, userTags }, prevState) {
+    return {
+      ...prevState,
+      tags,
+      foundTags: this.getAvailableTags({ userTags, tags }).slice(0, 20),
+    };
   }
+
+  static getAvailableTags({ userTags, tags }) {
+    const tagSet = new Set(tags);
+
+    return userTags.filter(tag => !tagSet.has(tag));
+  }
+
+  state = this.constructor.generateStateFromProps(this.props, this.constructor.initialState);
 
   componentDidMount() {
     this.unsubscribeClickEvent = addEventListener('click', (ev) => {
       const { target } = ev;
+      ev.preventDefault();
+
       if (target !== this.dropdownElement.current && target !== this.inpputSearchElement) {
-        this.setState({ foundTags: [] });
+        this.setState({ searchHasFocus: false });
       }
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!isequal(nextProps.tags, this.props.tags)) {
-      this.setState(generateStateFromProps(nextProps));
+  componentDidUpdate(prevProps) {
+    const propNames = ['tags'];
+    const hasChanged = propNames.some(propName =>
+      !isequal(this.props[propName], prevProps[propName]));
+
+    if (hasChanged) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState(prevState => this.constructor.generateStateFromProps(this.props, prevState));
     }
   }
 
-  getAvailableTags = () => {
-    const { userTags } = this.props;
-    const tags = new Set(this.state.tags);
-
-    return userTags.filter(tag => !tags.has(tag));
-  }
   dropdownElement = createRef();
 
   updateTags = async () => {
@@ -82,20 +92,33 @@ class TagsForm extends Component {
   }
 
   handleSearchChange = async (searchTerms) => {
-    const { i18n } = this.props;
+    const { i18n, userTags } = this.props;
     if (searchTerms === '') {
-      this.setState({ searchTerms, foundTags: this.getAvailableTags().slice(0, 20), errors: [] });
+      this.setState(prevState => ({
+        searchTerms,
+        foundTags:
+          this.constructor.getAvailableTags({ userTags, tags: prevState.tags }).slice(0, 20),
+        errors: [],
+      }));
 
       return;
     }
 
-    const foundTags = await searchTags(i18n, this.getAvailableTags(), searchTerms);
+    const foundTags = await searchTags(i18n, this.constructor.getAvailableTags({
+      userTags, tags: this.state.tags,
+    }), searchTerms);
     this.setState({ searchTerms, foundTags, errors: [] });
   }
 
   handleSearchFocus = () => {
+    const { userTags } = this.props;
     if (this.state.searchTerms === '') {
-      this.setState({ foundTags: this.getAvailableTags().slice(0, 20) });
+      this.setState(prevState => ({
+        foundTags: this.constructor.getAvailableTags({
+          userTags, tags: prevState.tags,
+        }).slice(0, 20),
+        searchHasFocus: true,
+      }));
     }
   }
 
@@ -159,10 +182,11 @@ class TagsForm extends Component {
             }}
             onSubmit={this.handleAddNewTag}
           />
-          <DropdownMenu
-            show={this.state.foundTags.length > 0}
+          <Dropdown
+            show={this.state.searchHasFocus && this.state.foundTags.length > 0}
             className="m-tags-form__dropdown"
             ref={this.dropdownElement}
+            closeOnClick="doNotClose"
           >
             <VerticalMenu>
               {this.state.foundTags.map(tag => (
@@ -180,7 +204,7 @@ class TagsForm extends Component {
                 </VerticalMenuItem>
               ))}
             </VerticalMenu>
-          </DropdownMenu>
+          </Dropdown>
         </div>
       </div>
     );
