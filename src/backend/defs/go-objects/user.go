@@ -63,14 +63,6 @@ type Auth_cache struct {
 	Shard_id      string    `json:"shard_id"`
 }
 
-// data stored into cache as long as a reset password request is pending for an user
-type Pass_reset_session struct {
-	Reset_token string    `json:"reset_token"`
-	Expires_in  int       `json:"expires_in"`
-	Expires_at  time.Time `json:"expires_at"`
-	User_id     string    `json:"user_id"`
-}
-
 // unmarshal a map[string]interface{} that must owns all Contact's fields
 // typical usage is for unmarshaling response from Cassandra backend
 func (user *User) UnmarshalCQLMap(input map[string]interface{}) {
