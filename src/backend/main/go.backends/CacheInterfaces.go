@@ -27,8 +27,6 @@ type APICache interface {
 	GetTokenValidationSession(userId, token string) (*TokenSession, error)
 	SetDeviceValidationSession(userId, deviceId, token string) (*TokenSession, error)
 	DeleteDeviceValidationSession(userId, deviceId string) error
-
-	CacheBackend
 }
 
 type CacheBackend interface {

@@ -17,8 +17,8 @@ const (
 )
 
 // GetOauthSession unmarshal json found at `key`, if any, into an OauthSession struct
-func (rb *RedisBackend) GetOauthSession(key string) (session *OauthSession, err error) {
-	session_str, err := rb.Get(oauthSessionPrefix + key)
+func (c *Cache) GetOauthSession(key string) (session *OauthSession, err error) {
+	session_str, err := c.Backend.Get(oauthSessionPrefix + key)
 	if err != nil {
 		log.WithError(err).Errorf("[GetOauthSession] failed to get key %s", key)
 		return nil, err
@@ -34,7 +34,7 @@ func (rb *RedisBackend) GetOauthSession(key string) (session *OauthSession, err 
 }
 
 // SetOauthSession put `OauthSession` as a json string at `key` prefixed with oauthSessionPrefix
-func (rb *RedisBackend) SetOauthSession(key string, session *OauthSession) (err error) {
+func (c *Cache) SetOauthSession(key string, session *OauthSession) (err error) {
 	ttl := oauthSessionTTL * time.Minute
 	session_str, err := json.Marshal(session)
 	if err != nil {
@@ -42,7 +42,7 @@ func (rb *RedisBackend) SetOauthSession(key string, session *OauthSession) (err 
 		return err
 	}
 
-	err = rb.Set(oauthSessionPrefix+key, session_str, ttl)
+	err = c.Backend.Set(oauthSessionPrefix+key, session_str, ttl)
 	if err != nil {
 		log.WithError(err).Errorf("[SetOauthSession] failed to set session for key %s", key)
 		return err
@@ -52,8 +52,8 @@ func (rb *RedisBackend) SetOauthSession(key string, session *OauthSession) (err 
 }
 
 // DeleteOauthSession deletes value found at `key` prefixed with oauthSessionPrefix
-func (rb *RedisBackend) DeleteOauthSession(key string) error {
-	err := rb.Del(oauthSessionPrefix + key)
+func (c *Cache) DeleteOauthSession(key string) error {
+	err := c.Backend.Del(oauthSessionPrefix + key)
 	if err != nil {
 		log.WithError(err).Errorf("[DeleteOauthSession] failed to delete session for key %s", key)
 		return err

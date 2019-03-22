@@ -19,9 +19,9 @@ const (
 
 // GetResetPasswordSession returns reset password session values stored for the userId, if any
 // Returns a nil 'session' if key is not found
-func (rb *RedisBackend) GetResetPasswordSession(userId string) (session *TokenSession, err error) {
+func (c *Cache) GetResetPasswordSession(userId string) (session *TokenSession, err error) {
 	key := sessionPrefix + userId
-	session_str, err := rb.Get(key)
+	session_str, err := c.Backend.Get(key)
 	if err != nil {
 		log.WithError(err).Errorf("[GetResetPasswordSession] failed to get key %s", key)
 		return nil, err
@@ -41,7 +41,7 @@ func (rb *RedisBackend) GetResetPasswordSession(userId string) (session *TokenSe
 // Func will also call setResetPasswordToken() to add a secondary key in the form "resettoken::resetToken" pointing to the same value
 // Func returns a pointer to the Pass_reset_session object that represents values stored in the cache.
 // userId and resetToken strings must be well-formatted, they will not be checked.
-func (rb *RedisBackend) SetResetPasswordSession(userId, resetToken string) (session *TokenSession, err error) {
+func (c *Cache) SetResetPasswordSession(userId, resetToken string) (session *TokenSession, err error) {
 	ttl := resetPasswordTTL * time.Hour
 	expiration := time.Now().Add(ttl)
 	session = &TokenSession{
@@ -56,13 +56,13 @@ func (rb *RedisBackend) SetResetPasswordSession(userId, resetToken string) (sess
 		return nil, err
 	}
 
-	err = rb.Set(sessionPrefix+userId, session_str, ttl)
+	err = c.Backend.Set(sessionPrefix+userId, session_str, ttl)
 	if err != nil {
 		log.WithError(err).Errorf("[SetResetPasswordSession] failed to set session key in cache for user %s", userId)
 		return nil, err
 	}
 
-	err = rb.setResetPasswordToken(resetToken, session_str, ttl)
+	err = c.setResetPasswordToken(resetToken, session_str, ttl)
 	if err != nil {
 		log.WithError(err).Errorf("[SetResetPasswordSession] failed to setResetPasswordToken in cache for user %s", userId)
 		return nil, err
@@ -73,14 +73,14 @@ func (rb *RedisBackend) SetResetPasswordSession(userId, resetToken string) (sess
 // SetResetPasswordToken stores key,value for given resetToken.
 // It is called by SetResetPasswordSession to add a secondary key pointing to the same underlying value.
 // The key is in the form "resettoken::resetToken"
-func (rb *RedisBackend) setResetPasswordToken(token string, session []byte, ttl time.Duration) error {
-	return rb.Set(resetTokenPrefix+token, session, ttl)
+func (c *Cache) setResetPasswordToken(token string, session []byte, ttl time.Duration) error {
+	return c.Backend.Set(resetTokenPrefix+token, session, ttl)
 }
 
 // GetResetPasswordToken returns values found for the given resetToken key
-func (rb *RedisBackend) GetResetPasswordToken(token string) (session *TokenSession, err error) {
+func (c *Cache) GetResetPasswordToken(token string) (session *TokenSession, err error) {
 	key := resetTokenPrefix + token
-	session_str, err := rb.Get(key)
+	session_str, err := c.Backend.Get(key)
 	if err != nil {
 		log.WithError(err).Errorf("[GetResetPasswordToken] failed to get key for token %s", token)
 		return nil, err
@@ -97,23 +97,23 @@ func (rb *RedisBackend) GetResetPasswordToken(token string) (session *TokenSessi
 
 // DeleteResetPasswordSession will delete two keys in a row :
 // the resetsession key and the resettoken key
-func (rb *RedisBackend) DeleteResetPasswordSession(userId string) error {
+func (c *Cache) DeleteResetPasswordSession(userId string) error {
 
-	session, err := rb.GetResetPasswordSession(userId)
+	session, err := c.GetResetPasswordSession(userId)
 	if err != nil {
 		log.WithError(err).Errorf("[DeleteResetPasswordSession] failed to get session for user %s", userId)
 		return err
 	}
 
 	key := sessionPrefix + userId
-	err = rb.Del(key)
+	err = c.Backend.Del(key)
 	if err != nil {
 		log.WithError(err).Errorf("[DeleteResetPasswordSession] failed to delete session for user %s", userId)
 		return err
 	}
 
 	key = resetTokenPrefix + session.Token
-	err = rb.Del(key)
+	err = c.Backend.Del(key)
 	if err != nil {
 		log.WithError(err).Errorf("[DeleteResetPasswordSession] failed to delete session token for user %s", userId)
 		return err
