@@ -7,6 +7,7 @@ package backendstest
 import (
 	"errors"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"gopkg.in/redis.v5"
 	"time"
 )
 
@@ -68,7 +69,7 @@ func (mr *MockRedis) Get(key string) (value []byte, err error) {
 	if v, ok := mr.Store[key]; ok {
 		return v, err
 	} else {
-		return nil, errors.New("not found")
+		return nil, redis.Nil
 	}
 }
 
