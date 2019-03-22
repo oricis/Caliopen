@@ -1,4 +1,4 @@
-import { encryptMessage } from './index';
+import { encryptMessage, isMessageEncrypted } from './index';
 
 jest.mock('openpgp', () => ({
   key: {
@@ -23,9 +23,42 @@ describe('modules draftMessage -- service -- encryption', () => {
     expect(await encryptMessage(draft, publicKeys)).toEqual({
       body: 'Hello, encryption.',
       privacy_features: {
-        message_encrypted: true,
+        message_encrypted: 'True',
         message_encryption_method: 'pgp',
       },
     });
+  });
+
+  it('Properly detects non-encryption in privacy_features', () => {
+    const message = {
+      body: 'Empty body',
+      privacy_features: {
+        message_encrypted: 'False',
+        message_encryption_method: 'pgp',
+      },
+    };
+
+    const message2 = {
+      body: 'Empty body',
+      privacy_features: {
+        message_encrypted: 'True',
+        message_encryption_method: 'aes',
+      },
+    };
+
+    expect(isMessageEncrypted(message)).toBeFalsy();
+    expect(isMessageEncrypted(message2)).toBeFalsy();
+  });
+
+  it('Properly detects encryption in privacy_features', () => {
+    const message = {
+      body: 'Void body',
+      privacy_features: {
+        message_encrypted: 'True',
+        message_encryption_method: 'pgp',
+      },
+    };
+
+    expect(isMessageEncrypted(message)).toBeTruthy();
   });
 });
