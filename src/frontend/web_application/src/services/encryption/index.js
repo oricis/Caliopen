@@ -9,7 +9,9 @@ const prepareKeys = async (openpgp, armoredKeys) => {
     [...acc, ...disarmoredKey.keys], []);
 };
 
-export const isMessageEncrypted = message => message.privacy_features && message.privacy_features.message_encryption_method === 'pgp';
+export const isMessageEncrypted = message => message.privacy_features
+  && message.privacy_features.message_encrypted === 'True'
+  && message.privacy_features.message_encryption_method === 'pgp';
 
 export const encryptMessage = async (message, keys) => {
   const openpgp = await import(/* webpackChunkName: "openpgp" */ 'openpgp');
@@ -24,7 +26,8 @@ export const encryptMessage = async (message, keys) => {
 
   /* eslint-disable-next-line camelcase */
   const privacy_features = {
-    message_encrypted: true,
+    ...message.privacy_features,
+    message_encrypted: 'True',
     message_encryption_method: 'pgp',
   };
 
