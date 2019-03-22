@@ -9,7 +9,9 @@ import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 )
 
-type DevicesStore struct{}
+type DevicesStore struct {
+	devices map[string]*Device
+}
 
 func (ds DevicesStore) CreateDevice(device *Device) error {
 	return errors.New("test interface not implemented")
@@ -18,10 +20,14 @@ func (ds DevicesStore) RetrieveDevices(user_id string) (devices []Device, err er
 	return nil, errors.New("test interface not implemented")
 }
 func (ds DevicesStore) RetrieveDevice(userId, deviceId string) (device *Device, err error) {
-	return nil, errors.New("test interface not implemented")
+	if device, ok := Devices[userId+deviceId]; ok {
+		return device, nil
+	}
+	return nil, errors.New("not found")
 }
 func (ds DevicesStore) UpdateDevice(device, oldDevice *Device, modifiedFields map[string]interface{}) error {
-	return errors.New("test interface not implemented")
+	Devices[device.UserId.String()+device.DeviceId.String()] = device
+	return nil
 }
 func (ds DevicesStore) DeleteDevice(device *Device) error {
 	return errors.New("test interface not implemented")
