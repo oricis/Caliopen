@@ -38,46 +38,46 @@ func GetIdentitiesBackend(locals, remotes []*UserIdentity) *IdentitiesBackend {
 	return &i
 }
 
-func (ib *IdentitiesBackend) RetrieveLocalsIdentities(user_id string) ([]UserIdentity, error) {
+func (ib IdentitiesBackend) RetrieveLocalsIdentities(user_id string) ([]UserIdentity, error) {
 	return RetrieveLocalsIdentities(user_id)
 }
-func (ib *IdentitiesBackend) CreateUserIdentity(userIdentity *UserIdentity) CaliopenError {
+func (ib IdentitiesBackend) CreateUserIdentity(userIdentity *UserIdentity) CaliopenError {
 	return NewCaliopenErr(NotImplementedCaliopenErr, "test interface not implemented")
 }
-func (ib *IdentitiesBackend) RetrieveUserIdentity(userId, identityId string, withCredentials bool) (*UserIdentity, error) {
+func (ib IdentitiesBackend) RetrieveUserIdentity(userId, identityId string, withCredentials bool) (*UserIdentity, error) {
 	return RetrieveUserIdentity(userId, identityId, withCredentials)
 }
-func (ib *IdentitiesBackend) LookupIdentityByIdentifier(string, ...string) ([][2]string, error) {
+func (ib IdentitiesBackend) LookupIdentityByIdentifier(string, ...string) ([][2]string, error) {
 	return [][2]string{}, errors.New("test interface not implemented")
 }
-func (ib *IdentitiesBackend) LookupIdentityByType(string, ...string) ([][2]string, error) {
+func (ib IdentitiesBackend) LookupIdentityByType(string, ...string) ([][2]string, error) {
 	return [][2]string{}, errors.New("test interface not implemented")
 }
-func (ib *IdentitiesBackend) UpdateUserIdentity(userIdentity *UserIdentity, fields map[string]interface{}) error {
+func (ib IdentitiesBackend) UpdateUserIdentity(userIdentity *UserIdentity, fields map[string]interface{}) error {
 	return errors.New("test interface not implemented")
 }
-func (ib *IdentitiesBackend) DeleteUserIdentity(userIdentity *UserIdentity) error {
+func (ib IdentitiesBackend) DeleteUserIdentity(userIdentity *UserIdentity) error {
 	return errors.New("test interface not implemented")
 }
-func (ib *IdentitiesBackend) RetrieveRemoteIdentities(userId string, withCredentials bool) ([]*UserIdentity, error) {
+func (ib IdentitiesBackend) RetrieveRemoteIdentities(userId string, withCredentials bool) ([]*UserIdentity, error) {
 	return nil, errors.New("test interface not implemented")
 }
-func (ib *IdentitiesBackend) RetrieveAllRemotes(withCredentials bool) (<-chan *UserIdentity, error) {
+func (ib IdentitiesBackend) RetrieveAllRemotes(withCredentials bool) (<-chan *UserIdentity, error) {
 	return RetrieveAllRemotes(withCredentials)
 }
-func (ib *IdentitiesBackend) UpdateRemoteInfosMap(userId, remoteId string, infos map[string]string) error {
+func (ib IdentitiesBackend) UpdateRemoteInfosMap(userId, remoteId string, infos map[string]string) error {
 	return errors.New("test interface not implemented")
 }
-func (ib *IdentitiesBackend) RetrieveRemoteInfosMap(userId, remoteId string) (infos map[string]string, err error) {
+func (ib IdentitiesBackend) RetrieveRemoteInfosMap(userId, remoteId string) (infos map[string]string, err error) {
 	return map[string]string{}, errors.New("test interface not implemented")
 }
-func (ib *IdentitiesBackend) IsLocalIdentity(userId, identityId string) bool {
+func (ib IdentitiesBackend) IsLocalIdentity(userId, identityId string) bool {
 	return false
 }
-func (ib *IdentitiesBackend) IsRemoteIdentity(userId, identityId string) bool {
+func (ib IdentitiesBackend) IsRemoteIdentity(userId, identityId string) bool {
 	return false
 }
-func (ib *IdentitiesBackend) Close() {
+func (ib IdentitiesBackend) Close() {
 
 }
 
