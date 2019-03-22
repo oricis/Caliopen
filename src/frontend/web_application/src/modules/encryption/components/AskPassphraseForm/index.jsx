@@ -66,7 +66,7 @@ class AskPassphraseForm extends Component {
     return (
       <FormGrid className={classNames(className, 'm-ask-passphrase')}>
         <form onSubmit={this.handleSubmit}>
-          <Trans id="encryption.ask-passphrase.explain" values={{ fingerprint, numberMessages }}>
+          <Trans id="encryption.ask-passphrase.explain" values={{ fingerprint: fingerprint.toUpperCase(), numberMessages }}>
             Please enter passphrase for key {`${fingerprint}`} to unlock {`${numberMessages}`} messages.
           </Trans>
           {
