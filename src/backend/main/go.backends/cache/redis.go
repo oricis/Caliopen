@@ -6,6 +6,7 @@ package cache
 
 import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/backendstest"
 	log "github.com/Sirupsen/logrus"
 	"gopkg.in/redis.v5"
 	"time"
@@ -47,4 +48,14 @@ func (rb *redisBackend) Get(key string) (value []byte, err error) {
 
 func (rb *redisBackend) Del(key string) error {
 	return rb.client.Del(key).Err()
+}
+
+func InitializeTestCache() (c *Cache, mock *backendstest.MockRedis, err error) {
+	c = new(Cache)
+	mock = &backendstest.MockRedis{
+		Store: map[string][]byte{},
+		Ttl:   map[string]time.Duration{},
+	}
+	c.Backend = mock
+	return
 }

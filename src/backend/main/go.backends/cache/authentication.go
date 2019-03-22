@@ -25,7 +25,7 @@ func (c *Cache) GetAuthToken(key string) (value *Auth_cache, err error) {
 
 	err = json.Unmarshal(cache_str, value)
 	if err != nil {
-		log.WithError(err).Errorf("[GetAuthToken] failed to unmarshal cache %s for key", cache_str, key)
+		log.WithError(err).Errorf("[GetAuthToken] failed to unmarshal cache %s for key %s", cache_str, key)
 		return nil, err
 	}
 	return

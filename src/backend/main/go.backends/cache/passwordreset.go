@@ -52,7 +52,7 @@ func (c *Cache) SetResetPasswordSession(userId, resetToken string) (session *Tok
 	}
 	session_str, err := json.Marshal(session)
 	if err != nil {
-		log.WithError(err).Errorf("[SetResetPasswordSession] failed to marshal session %s", session)
+		log.WithError(err).Errorf("[SetResetPasswordSession] failed to marshal session %+v", *session)
 		return nil, err
 	}
 
