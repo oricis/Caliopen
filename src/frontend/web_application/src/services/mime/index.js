@@ -1,4 +1,4 @@
-import { parse } from 'mimemessage';
+import { parse, factory } from 'mimemessage';
 import base64 from 'base64-js';
 import utf8 from 'utf8';
 import quotedPrintable from 'quoted-printable';
@@ -45,3 +45,8 @@ export const getPlainTextFromMime = ({ body }) => {
 
   return body;
 };
+
+export const mimeEncapsulate = body => factory({
+  contentType: 'text/plain;charset=utf8',
+  body,
+});
