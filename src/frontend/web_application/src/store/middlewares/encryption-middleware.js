@@ -8,14 +8,23 @@ import { identitiesSelector } from '../selectors/identities';
 import { encryptMessage } from '../../services/encryption';
 import { getAuthor } from '../../services/message';
 
-const getIdentities = (state, identitiesIds) =>
-  identitiesSelector(state).filter(identity => identitiesIds.includes(identity.identity_id));
 
 const fetchRemoteIdentities = async (dispatch, identitiesIds) =>
   Promise.all(identitiesIds.map(identityId =>
-    tryCatchAxiosAction(dispatch(requestRemoteIdentity({ identityId })))));
+    tryCatchAxiosAction(() => dispatch(requestRemoteIdentity({ identityId })))));
 
 const getIdentitiesAddresses = identities => identities.map(({ identifier }) => identifier);
+
+const getIdentities = async (state, dispatch, identitiesIds) => {
+  const localIdentities = identitiesSelector(state)
+    .filter(identity => identitiesIds.includes(identity.identity_id));
+
+  if (localIdentities.length <= 0) {
+    return fetchRemoteIdentities(dispatch, identitiesIds);
+  }
+
+  return localIdentities;
+};
 
 export const getAuthorAddress = async (state, dispatch, message) => {
   const author = getAuthor(message);
@@ -28,8 +37,7 @@ export const getAuthorAddress = async (state, dispatch, message) => {
   const { user_identities: userIdentitiesIds } = message;
 
   if (userIdentitiesIds && userIdentitiesIds.length > 0) {
-    const userIdentities = getIdentities(state, userIdentitiesIds)
-      || await fetchRemoteIdentities(dispatch, userIdentitiesIds);
+    const userIdentities = await getIdentities(state, dispatch, userIdentitiesIds);
 
     return getIdentitiesAddresses(userIdentities)[0];
   }

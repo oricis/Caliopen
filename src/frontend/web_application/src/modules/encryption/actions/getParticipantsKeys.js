@@ -6,10 +6,11 @@ import fetchRemoteKeys from './fetchRemoteKeys';
 export const getParticipantsKeys = async (state, dispatch,
   { participants, discussion_id: discussionId }) => {
   const actualParticipants = getRecipients({ participants }) ||
+      (discussionId &&
       getRecipients({
         participants:
-          await requestParticipantsForDiscussionId({ discussionId })(dispatch, () => state),
-      });
+        await requestParticipantsForDiscussionId({ discussionId })(dispatch, () => state),
+      }));
 
   const allContactIds = getParticipantsContactIds({ participants: actualParticipants });
   const allAddresses = getParticipantsAddresses({ participants: actualParticipants });
