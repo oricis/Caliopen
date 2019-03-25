@@ -9,12 +9,16 @@ export const deleteMessage = ({ message }) => async (dispatch) => {
     // components and children
     dispatch(removeFromCollection({ message }));
 
-    // XXX: when discussion no more available, the api redirect to an other location which fails
-    // (due to the OPTION method ?)
-    const discussion = await tryCatchAxiosAction(() =>
-      dispatch(requestDiscussion({ discussionId: message.discussion_id })));
-    if (!discussion) {
-      dispatch(removeDiscussionFromCollection({ discussionId: message.discussion_id }));
+    if (message.discussion_id) {
+      try {
+        const discussion = await tryCatchAxiosAction(() =>
+          dispatch(requestDiscussion({ discussionId: message.discussion_id })));
+        dispatch(removeDiscussionFromCollection({ discussionId: discussion.discussion_id }));
+      } catch (apiErrors) {
+        if (!Array.isArray(apiErrors) || apiErrors[0].code !== 404) {
+          throw apiErrors;
+        }
+      }
     }
 
     return result;

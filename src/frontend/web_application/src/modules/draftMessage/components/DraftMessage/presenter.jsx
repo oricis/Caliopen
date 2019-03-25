@@ -308,10 +308,17 @@ class DraftMessage extends Component {
 
   handleDelete = async () => {
     const {
-      original, internalId, onDeleteMessage, onDeleteMessageSuccessfull,
+      original, internalId, onDeleteMessage, onDeleteMessageSuccessfull, requestDraft,
+      hasDiscussion,
     } = this.props;
 
     await onDeleteMessage({ message: original, internalId });
+    this.setState({
+      initialized: false,
+      draftMessage: undefined,
+    });
+
+    await requestDraft({ internalId, hasDiscussion });
     onDeleteMessageSuccessfull();
   }
 
@@ -590,22 +597,23 @@ class DraftMessage extends Component {
           />
         </div>
         <div className="m-draft-message-advanced__action-send">
-          <Confirm
-            onConfirm={this.handleDelete}
-            title={(<Trans id="message-list.message.confirm-delete.title">Delete a message</Trans>)}
-            content={(<Trans id="message-list.message.confirm-delete.content">The deletion is permanent, are you sure you want to delete this message ?</Trans>)}
-            render={confirm => (
-              <Button
-                onClick={confirm}
-                icon="trash"
-                disabled={!original}
-                color="alert"
-                className="m-draft-message-advanced__action-button"
-              >
-                <Trans id="message-list.message.action.delete">Delete</Trans>
-              </Button>
-            )}
-          />
+          {original && (
+            <Confirm
+              onConfirm={this.handleDelete}
+              title={(<Trans id="message-list.message.confirm-delete.title">Delete a message</Trans>)}
+              content={(<Trans id="message-list.message.confirm-delete.content">The deletion is permanent, are you sure you want to delete this message ?</Trans>)}
+              render={confirm => (
+                <Button
+                  onClick={confirm}
+                  icon="trash"
+                  color="alert"
+                  className="m-draft-message-advanced__action-button"
+                >
+                  <Trans id="message-list.message.action.delete">Delete</Trans>
+                </Button>
+              )}
+            />
+          )}
           <Button
             shape="plain"
             className={classnames(
