@@ -28,12 +28,12 @@ const getIdentities = async (state, dispatch, identitiesIds) => {
   return storedIdentities;
 };
 
-export const getAuthorAddress = async (state, dispatch, message) => {
+export const getAuthorAddresses = async (state, dispatch, message) => {
   const author = getAuthor(message);
   const authorAddress = author && author.address;
 
   if (authorAddress) {
-    return authorAddress;
+    return [authorAddress];
   }
 
   const { user_identities: userIdentitiesIds } = message;
@@ -41,10 +41,10 @@ export const getAuthorAddress = async (state, dispatch, message) => {
   if (userIdentitiesIds && userIdentitiesIds.length > 0) {
     const userIdentities = await getIdentities(state, dispatch, userIdentitiesIds);
 
-    return getIdentitiesAddresses(userIdentities)[0];
+    return getIdentitiesAddresses(userIdentities);
   }
 
-  return null;
+  return [];
 };
 
 const extractMessageIdFromAction = (action) => {
@@ -106,15 +106,17 @@ const encryptMessageAction = async (store, dispatch, action) => {
   try {
     const keys = await getParticipantsKeys(store.getState(), store.dispatch, message);
 
-    const authorAddress = await getAuthorAddress(store.getState(), dispatch, message);
+    const authorAddresses = await getAuthorAddresses(store.getState(), dispatch, message);
 
-    if (!authorAddress) return action;
+    if (authorAddresses.length === 0) return action;
 
-    const userKeys = await getKeysForEmail(authorAddress, PUBLIC_KEY);
+    // 1. we need to check all addresses to find keys.
+    const userKeys = await Promise.all(authorAddresses.map(authorAddress =>
+      getKeysForEmail(authorAddress, PUBLIC_KEY)));
 
     if (keys && keys.length > 0 && userKeys.length > 0) {
       dispatch(encryptMessageStart({ message }));
-      // userKeys[0] : no need more than 1 key
+      // 2. but there is no need for more than 1 key
       const encryptedMessage = await encryptMessage(message, [userKeys[0].armor(), ...keys]);
 
       dispatch(encryptMessageSuccess({ message, encryptedMessage }));
