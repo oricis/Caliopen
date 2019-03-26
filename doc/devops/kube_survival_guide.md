@@ -61,6 +61,8 @@ $ gandi vm reboot <node>
 ```
 
 3 - restart service
+
+```
 # ssh root@<node>
 $ service systemd-resolved start
 
