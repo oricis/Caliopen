@@ -1,6 +1,8 @@
 Deploy application
 ==================
 
+For cluster basic operational commands, there is a [survival guide](./kube_survival_guide.md)
+
 Prepare
 -------
 
