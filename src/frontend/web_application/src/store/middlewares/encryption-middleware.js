@@ -51,15 +51,20 @@ const extractMessageIdFromAction = (action) => {
   return messageId;
 };
 const getFullDraftFromAction = (state, action) => {
-  const { data: message } = action.payload.request;
+  const { data: message, current_state: oldMessage } = action.payload.request;
   const { draftsByInternalId } = state.draftMessage;
+  const participants = message.participants ||
+    (oldMessage && oldMessage.participants);
 
   switch (action.type) {
     case CREATE_MESSAGE:
-      return message;
+      return { participants, ...message };
     default:
-      return Object.values(draftsByInternalId)
-        .find(draft => draft.message_id === extractMessageIdFromAction(action));
+      return {
+        participants,
+        ...Object.values(draftsByInternalId)
+          .find(draft => draft.message_id === extractMessageIdFromAction(action)),
+      };
   }
 };
 
