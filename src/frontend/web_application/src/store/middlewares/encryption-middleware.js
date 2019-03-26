@@ -16,14 +16,16 @@ const fetchRemoteIdentities = async (dispatch, identitiesIds) =>
 const getIdentitiesAddresses = identities => identities.map(({ identifier }) => identifier);
 
 const getIdentities = async (state, dispatch, identitiesIds) => {
-  const localIdentities = identitiesSelector(state)
+  // check all identities available in the store
+  const storedIdentities = identitiesSelector(state)
     .filter(identity => identitiesIds.includes(identity.identity_id));
 
-  if (localIdentities.length <= 0) {
+  // if identity is not in the store fetch remoteIdentities.
+  if (storedIdentities.length <= 0) {
     return fetchRemoteIdentities(dispatch, identitiesIds);
   }
 
-  return localIdentities;
+  return storedIdentities;
 };
 
 export const getAuthorAddress = async (state, dispatch, message) => {
