@@ -1,7 +1,9 @@
 import { requestDraft as requestDraftBase, requestDraftSuccess } from '../../../store/modules/draft-message';
 import { newDraft } from './newDraft';
 import { getDraft, getMessage, getLastMessage, Message } from '../../message';
-import { draftSelector } from '../../draftMessage';
+import { getUser } from '../../user';
+import { draftSelector } from '../selectors/draft';
+import { changeAuthorInParticipants } from '../services/changeAuthorInParticipants';
 
 export const requestDraft = ({ internalId, hasDiscussion }) =>
   async (dispatch, getState) => {
@@ -40,11 +42,18 @@ export const requestDraft = ({ internalId, hasDiscussion }) =>
       return draft;
     }
 
-    const messageInReply = await dispatch(getLastMessage({ discussionId: internalId })) || {};
+    const [messageInReply, user] = await Promise.all([
+      dispatch(getLastMessage({ discussionId: internalId })),
+      dispatch(getUser()),
+    ]);
     draft = new Message({
-      discussion_id: internalId,
+      // discussion_id is never saved for a draft, it set by the backend when the message is sent
+      // discussion_id: internalId,
       subject: messageInReply.subject || '',
       parent_id: messageInReply.message_id,
+      participants: changeAuthorInParticipants({
+        participants: messageInReply.participants, user,
+      }),
     });
 
     const nextDraft = await dispatch(newDraft({ internalId, draft }));
