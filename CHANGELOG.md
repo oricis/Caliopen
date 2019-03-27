@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Send and receive text/plain MIME messages
+
+### Fixed
+
+- Reply encrypted messages
+
 ## [0.17.0] 2019-03-21
 
 ### Added
