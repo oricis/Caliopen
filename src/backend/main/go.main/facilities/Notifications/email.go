@@ -287,8 +287,8 @@ func (notif *Notifier) SendDeviceValidationEmail(user *User, deviceName string, 
 	}
 	email, err := RenderEmail(notif.config.TemplatesPath+deviceValidationTemplate, context)
 	if err != nil {
-		log.WithError(err).Warnf("[RESTfacility] failed to build device validation email from template for user %s", user.UserId.String())
-		return errors.New("[RESTfacility] failed to build reset email")
+		log.WithError(err).Warnf("[SendDeviceValidationEmail] failed to build device validation email from template for user %s", user.UserId.String())
+		return errors.New("[SendDeviceValidationEmail] failed to build validation email")
 	}
 	participants := []Participant{
 		{ // sender
@@ -309,8 +309,8 @@ func (notif *Notifier) SendDeviceValidationEmail(user *User, deviceName string, 
 	err = notif.SendEmailAdminToUser(user, participants, email)
 
 	if err != nil {
-		log.WithError(err).Warnf("[RESTfacility] sending device validation email failed for user %s", user.UserId.String())
-		return errors.New("[RESTfacility] failed to send device validation email")
+		log.WithError(err).Warnf("[SendDeviceValidationEmail] sending device validation email failed for user %s", user.UserId.String())
+		return errors.New("[SendDeviceValidationEmail] failed to send device validation email")
 	}
 
 	return nil

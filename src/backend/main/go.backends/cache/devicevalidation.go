@@ -18,20 +18,21 @@ const (
 	deviceValidationTTL = 24 // ttl in hours
 )
 
-func (cache *RedisBackend) GetDeviceValidationSession(userId, deviceId string) (session *TokenSession, err error) {
-	return cache.getValidationSession(validationPrefix + userId + "::" + deviceId)
+func (c *Cache) GetDeviceValidationSession(userId, deviceId string) (session *TokenSession, err error) {
+	return c.getValidationSession(validationPrefix + userId + "::" + deviceId)
 }
 
-func (cache *RedisBackend) GetTokenValidationSession(userId, token string) (session *TokenSession, err error) {
-	return cache.getValidationSession(validationPrefix + userId + "::" + token)
+func (c *Cache) GetTokenValidationSession(userId, token string) (session *TokenSession, err error) {
+	return c.getValidationSession(validationPrefix + userId + "::" + token)
 }
 
-func (cache *RedisBackend) getValidationSession(key string) (session *TokenSession, err error) {
-	session_str, err := cache.client.Get(key).Bytes()
+func (c *Cache) getValidationSession(key string) (session *TokenSession, err error) {
+	session_str, err := c.Backend.Get(key)
 	if err != nil {
 		log.WithError(err).Errorf("[getValidationSession] failed to get key %s", key)
 		return nil, err
 	}
+
 	session = &TokenSession{}
 	err = json.Unmarshal(session_str, session)
 	if err != nil {
@@ -44,7 +45,7 @@ func (cache *RedisBackend) getValidationSession(key string) (session *TokenSessi
 // SetDeviceValidationSession sets two keys in cache facility
 // - one to retrieve session by device id
 // - one to retrieve session by token
-func (cache *RedisBackend) SetDeviceValidationSession(userId, deviceId, token string) (session *TokenSession, err error) {
+func (c *Cache) SetDeviceValidationSession(userId, deviceId, token string) (session *TokenSession, err error) {
 	ttl := deviceValidationTTL * time.Hour
 	expiration := time.Now().Add(ttl)
 	session = &TokenSession{
@@ -56,23 +57,23 @@ func (cache *RedisBackend) SetDeviceValidationSession(userId, deviceId, token st
 	}
 	session_str, err := json.Marshal(session)
 	if err != nil {
-		log.WithError(err).Errorf("[SetDeviceValidationSession] failed to marshal session %s", session)
+		log.WithError(err).Errorf("[SetDeviceValidationSession] failed to marshal session %+v", *session)
 		return nil, err
 	}
 	prefix := validationPrefix + userId + "::"
 	deviceKey := prefix + deviceId
 	tokenKey := prefix + token
 
-	_, err = cache.client.Set(deviceKey, session_str, ttl).Result()
+	err = c.Backend.Set(deviceKey, session_str, ttl)
 	if err != nil {
 		log.WithError(err).Errorf("[SetDeviceValidationSession] failed to set session key in cache for user %s, deviceId %s", userId, deviceId)
 		return nil, err
 	}
 
-	_, err = cache.client.Set(tokenKey, session_str, ttl).Result()
+	err = c.Backend.Set(tokenKey, session_str, ttl)
 	if err != nil {
 		log.WithError(err).Errorf("[SetDeviceValidationSession] failed to set session key in cache for user %s, token %s", userId, token)
-		cache.client.Del(deviceKey)
+		_ = c.Backend.Del(deviceKey)
 		return nil, err
 	}
 
@@ -80,9 +81,9 @@ func (cache *RedisBackend) SetDeviceValidationSession(userId, deviceId, token st
 }
 
 // DeleteDeviceValidationSession deletes the two keys associated with a device validation session
-func (cache *RedisBackend) DeleteDeviceValidationSession(userId, deviceId string) error {
+func (c *Cache) DeleteDeviceValidationSession(userId, deviceId string) error {
 
-	session, _ := cache.GetDeviceValidationSession(userId, deviceId)
+	session, _ := c.GetDeviceValidationSession(userId, deviceId)
 	if session == nil {
 		log.Errorf("[DeleteDeviceValidationSession] failed to retrieve session for user %s, device %s", userId, deviceId)
 		return errors.New("not found")
@@ -92,11 +93,11 @@ func (cache *RedisBackend) DeleteDeviceValidationSession(userId, deviceId string
 	deviceKey := prefix + deviceId
 	tokenKey := prefix + session.Token
 
-	_, err := cache.client.Del(deviceKey).Result()
+	err := c.Backend.Del(deviceKey)
 	if err != nil && err != redis.Nil {
 		log.WithError(err).Errorf("[DeleteDeviceValidationSession] failed to delete device validation session for user %s, device %s", userId, deviceId)
 	}
-	_, err = cache.client.Del(tokenKey).Result()
+	err = c.Backend.Del(tokenKey)
 	if err != nil && err != redis.Nil {
 		log.WithError(err).Errorf("[DeleteDeviceValidationSession] failed to delete device validation session for user %s, token %s", userId, session.Token)
 	}

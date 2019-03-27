@@ -17,7 +17,6 @@ import (
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server"
-	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/cache/redis"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/index/elasticsearch"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/store/cassandra"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/store/vault"
@@ -228,6 +227,7 @@ func getMsgSystemFacility() (MsgSys *nats.Conn, err error) {
 // getCacheFacility reads configuration and tries to connect to a memory cache
 // It returns a handler to make use of facility
 // For now, only returns a RedisBackend
+/*
 func getCacheFacility() (Cache *cache.RedisBackend, err error) {
 	Cache, err = cache.InitializeRedisBackend(CacheConfig(apiConf.APIConfig.CacheSettings))
 	if err != nil {
@@ -235,6 +235,7 @@ func getCacheFacility() (Cache *cache.RedisBackend, err error) {
 	}
 	return
 }
+*/
 
 // getAPIConnection pings API1 and API2 connections and returns URLs from configuration file
 // OK is false if at least one API is not responding

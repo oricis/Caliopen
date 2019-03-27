@@ -13,23 +13,23 @@ type ContactsBackend struct {
 	contacts map[string]*Contact
 }
 
-func (cb *ContactsBackend) CreateContact(contact *Contact) error {
+func (cb ContactsBackend) CreateContact(contact *Contact) error {
 	return errors.New("CreateContact test interface not implemented")
 }
-func (cb *ContactsBackend) RetrieveContact(userID, contactID string) (contact *Contact, err error) {
+func (cb ContactsBackend) RetrieveContact(userID, contactID string) (contact *Contact, err error) {
 	return nil, errors.New("RetrieveContact test interface not implemented")
 }
-func (cb *ContactsBackend) RetrieveUserContactId(userID string) string {
+func (cb ContactsBackend) RetrieveUserContactId(userID string) string {
 	return ""
 }
-func (cb *ContactsBackend) UpdateContact(contact, oldContact *Contact, fields map[string]interface{}) error {
+func (cb ContactsBackend) UpdateContact(contact, oldContact *Contact, fields map[string]interface{}) error {
 	//return errors.New("UpdateContact test interface not implemented")
 	return nil
 }
-func (cb *ContactsBackend) DeleteContact(contact *Contact) error {
+func (cb ContactsBackend) DeleteContact(contact *Contact) error {
 	return errors.New("DeleteContact test interface not implemented")
 }
-func (cb *ContactsBackend) ContactExists(userId, contactId string) bool {
+func (cb ContactsBackend) ContactExists(userId, contactId string) bool {
 	return false
 }
 
@@ -37,19 +37,19 @@ func (cb *ContactsBackend) ContactExists(userId, contactId string) bool {
 type ContactsIndex struct {
 }
 
-func (ci *ContactsIndex) CreateContact(contact *Contact) error {
+func (ci ContactsIndex) CreateContact(contact *Contact) error {
 	return errors.New("CreateContact test interface not implemented")
 }
 
-func (ci *ContactsIndex) UpdateContact(user *UserInfo, contact *Contact, fields map[string]interface{}) error {
+func (ci ContactsIndex) UpdateContact(user *UserInfo, contact *Contact, fields map[string]interface{}) error {
 	//return errors.New("UpdateContact test interface not implemented")
 	return nil
 }
 
-func (ci *ContactsIndex) FilterContacts(search IndexSearch) (contacts []*Contact, totalFound int64, err error) {
+func (ci ContactsIndex) FilterContacts(search IndexSearch) (contacts []*Contact, totalFound int64, err error) {
 	return nil, 0, errors.New("FilterContact test interface not implemented")
 }
 
-func (ci *ContactsIndex) DeleteContact(contact *Contact) error {
+func (ci ContactsIndex) DeleteContact(contact *Contact) error {
 	return errors.New("DeleteContact test interface not implemented")
 }

@@ -122,7 +122,7 @@ func validateCurrentState(patch *patch) (err error) {
 	for key := range patch.fieldsInPatch {
 		field := patch.jsonMap[key]
 		if ok, err := reflections.HasField(patch.dbState, field); err != nil || !ok {
-			return NewCaliopenErrf(UnprocessableCaliopenErr, "struct %s has no key %", reflect.TypeOf(patch.dbState).String(), key)
+			return NewCaliopenErrf(UnprocessableCaliopenErr, "struct %s has no key %s", reflect.TypeOf(patch.dbState).String(), key)
 		}
 		if _, present := patch.fieldsInCurrentState[key]; !present {
 			empty, err1 := reflections.GetField(emptyState, field)

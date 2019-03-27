@@ -28,3 +28,23 @@ func (mb MessagesBackend) RetrieveMessage(userId, msgId string) (msg *Message, e
 	}
 	return nil, errors.New("not found")
 }
+
+func (mb MessagesBackend) CreateMessage(msg *Message) error {
+	return errors.New("test interface not implemented")
+}
+
+func (mb MessagesBackend) UpdateMessage(msg *Message, fields map[string]interface{}) error {
+	return errors.New("test interface not implemented")
+}
+
+func (mb MessagesBackend) DeleteMessage(msg *Message) error {
+	return errors.New("test interface not implemented")
+}
+
+func (mb MessagesBackend) SetMessageUnread(user_id, message_id string, status bool) error {
+	return errors.New("test interface not implemented")
+}
+
+func (mb MessagesBackend) GetRawMessage(raw_message_id string) (raw_message RawMessage, err error) {
+	return RawMessage{}, errors.New("test interface not implemented")
+}

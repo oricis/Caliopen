@@ -5,11 +5,11 @@
 package REST
 
 import (
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/cache"
 	"io"
 
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
-	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/cache/redis"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/index/elasticsearch"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/store/cassandra"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/facilities/Notifications"
@@ -159,13 +159,11 @@ func NewRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility
 	default:
 		log.Fatalf("unknown index: %s", config.RESTindexConfig.IndexName)
 	}
-
-	cach, err := cache.InitializeRedisBackend(config.CacheConfig)
+	var err error
+	rest_facility.Cache, err = cache.InitializeRedisBackend(config.CacheConfig)
 	if err != nil {
 		log.WithError(err).Fatal("initialization of Redis cache failed")
 	}
-
-	rest_facility.Cache = backends.APICache(cach) // type conversion
 
 	rest_facility.providers = map[string]Provider{}
 	for _, provider := range config.Providers {
