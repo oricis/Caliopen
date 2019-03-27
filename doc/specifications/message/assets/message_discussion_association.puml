@@ -1,0 +1,117 @@
+@startuml
+title Message discussion association
+
+box "User frontend"
+  actor "authenticated user" as user
+  participant "New message UI" as compose
+  participant "Discussion UI" as reply
+endbox
+box "ReST interface"
+  control api
+endbox
+
+note over api
+  All declared properties used in requests are mandatory
+  except when "[Opt]" keyword is used
+end note
+
+group Compose
+  user o-> compose: write a new draft with \nor without participants
+  activate compose
+  compose -> compose: throttle save
+  activate compose
+  compose -> api: [POST: /api/vx/messages]\n{ message_id: String,\n  participants: [Opt] Array … }
+  activate api
+  api -> compose: ack creation [status 204]
+  deactivate api
+  compose -> api: [GET: /api/vx/messages/{message_id}]
+  activate api
+  api -> compose: response [status 200]\n{ message_id: String, …}
+  deactivate api
+  deactivate compose
+  deactivate compose
+
+  alt loop
+    user o-> compose: edit the new draft with \nor without participants
+    activate compose
+    compose -> compose: throttle save
+    activate compose
+    compose -> api: [PATCH: /api/vx/messages/{message_id}]\n{ current_state: object,\n  participants: [Opt] Array … }
+    activate api
+    api -> compose: ack patch [status 204]
+    deactivate api
+    compose -> api: [GET: /api/vx/messages/{message_id}]
+    activate api
+    api -> compose: response [status 200]\n{ message_id: String, …}
+    deactivate api
+    deactivate compose
+    deactivate compose
+  else
+    user o-> compose: hit «Send»
+    activate compose
+    compose -> api: [POST: /api/vx/messages/{message_id}/actions]\n{ actions: ["send"] }
+    activate api
+    api -> api: validate participants\ncalc discussion_id according participants
+    api -> compose: ack patch [status 204]
+    deactivate api
+    compose -> api: [GET: /api/vx/messages/{message_id}]
+    activate api
+    api -> compose: response [status 200]\n{\n  message_id: String,\n  discussion_id: String,\n  parent_id: [Opt] String,\n  participants: Array, …\n}
+    deactivate api
+    compose -> compose: render the discussion
+    compose -> user
+    deactivate compose
+  end
+end
+
+group Reply
+  user o-> reply: reply to a discussion
+  activate reply
+  reply -> reply: throttle save
+  activate reply
+  reply -> api: [POST: /api/vx/messages]\n{\n  message_id: String, \n  parent_id: String, \n  discussion_id: String, \n  participants: Array, … \n}
+  activate api
+  api -> api: validate discussion_id, participants, parent_id
+  api -> reply: ack creation [status 204]
+  deactivate api
+  reply -> api: [GET: /api/vx/messages/{message_id}]
+  activate api
+  api -> reply: response [status 200]\n{\n  message_id: String, \n  parent_id: String, \n  discussion_id: String, \n  participants: Array, …\n}
+  deactivate api
+  deactivate reply
+  deactivate reply
+
+  alt loop
+    user o-> reply: edit the reply
+    activate reply
+    reply -> reply: throttle save
+    activate reply
+    reply -> api: [PATCH: /api/vx/messages/{message_id}]\n{ current_state: object, … }
+    activate api
+    api -> api: validate discussion_id, participants, parent_id
+    api -> reply: ack patch [status 204]
+    deactivate api
+    reply -> api: [GET: /api/vx/messages/{message_id}]
+    activate api
+    api -> reply: response [status 200]\n{\n  message_id: String, \n  parent_id: String, \n  discussion_id: String, \n  participants: Array, …\n}
+    deactivate api
+    deactivate reply
+    deactivate reply
+  else
+    user o-> reply: hit «Send»
+    activate reply
+    reply -> api: [POST: /api/vx/messages/{message_id}/actions]\n{ actions: ["send"] }
+    activate api
+    api -> reply: ack patch [status 204]
+    deactivate api
+    reply -> api: [GET: /api/vx/messages/{message_id}]
+    activate api
+    api -> reply: response [status 200]\n{\n  message_id: String,\n  discussion_id: String,\n  parent_id: String,\n  participants: Array, …\n}
+    deactivate api
+    reply -> reply: render discussion
+    reply -> user
+    deactivate reply
+  end
+end
+
+@enduml
