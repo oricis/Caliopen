@@ -66,5 +66,5 @@ ProxyConfig:
   port: 31415
   routes:
     - /api/v2/: localhost:6544
-    - /: apiv1:6543         # route "/" catch all other requests
+    - /: apiv1:3001         # route "/" catch all other requests
 
