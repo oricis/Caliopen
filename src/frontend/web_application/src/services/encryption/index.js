@@ -1,4 +1,7 @@
+import { getPlainTextFromMime, mimeEncapsulate } from '../mime';
+
 export const [ERROR_NEED_PASSPHRASE, ERROR_WRONG_PASSPHRASE] = ['error_need_passphrase', 'error_wrong_passphrase'];
+
 const DEFAULT_KEY_OPTIONS = { numBits: 4096 };
 
 const prepareKeys = async (openpgp, armoredKeys) => {
@@ -16,8 +19,9 @@ export const encryptMessage = async (message, keys) => {
 
   if (keys.length === 0) return message;
 
+  const mimeBody = mimeEncapsulate(message.body).toString();
   const options = {
-    message: openpgp.message.fromText(message.body),
+    message: openpgp.message.fromText(mimeBody),
     publicKeys: await prepareKeys(openpgp, keys),
     privateKeys: null,
   };
@@ -48,7 +52,7 @@ export const decryptMessage = async (message, keys) => {
   };
 
   const { data: body } = await openpgp.decrypt(options);
-  const decryptedMessage = { ...message, body };
+  const decryptedMessage = { ...message, body: getPlainTextFromMime({ body }) };
 
   return decryptedMessage;
 };
