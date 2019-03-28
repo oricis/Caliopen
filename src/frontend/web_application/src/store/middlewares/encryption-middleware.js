@@ -1,40 +1,39 @@
 import { CREATE_MESSAGE, UPDATE_MESSAGE } from '../modules/message';
 import { encryptMessage as encryptMessageStart, encryptMessageSuccess, encryptMessageFail } from '../modules/encryption';
-import { requestRemoteIdentity } from '../modules/remote-identity';
-import { tryCatchAxiosAction } from '../../services/api-client';
 import { getKeysForEmail, PUBLIC_KEY } from '../../services/openpgp-keychain-repository';
 import { getParticipantsKeys } from '../../modules/encryption';
-import { identitiesSelector } from '../selectors/identities';
+import { getLocalIdentities, getRemoteIdentities } from '../../modules/identity';
 import { encryptMessage } from '../../services/encryption';
 import { getAuthor } from '../../services/message';
 
-const getIdentities = (state, identitiesIds) =>
-  identitiesSelector(state).filter(identity => identitiesIds.includes(identity.identity_id));
+const getIdentities = () => async (getState, dispatch) => {
+  const [localIdentities, remoteIdentities] =
+    await Promise.all([getLocalIdentities()(dispatch, getState),
+      getRemoteIdentities()(dispatch, getState)]);
 
-const fetchRemoteIdentities = async (dispatch, identitiesIds) =>
-  Promise.all(identitiesIds.map(identityId =>
-    tryCatchAxiosAction(dispatch(requestRemoteIdentity({ identityId })))));
+  return [...localIdentities, ...remoteIdentities];
+};
 
 const getIdentitiesAddresses = identities => identities.map(({ identifier }) => identifier);
 
-export const getAuthorAddress = async (state, dispatch, message) => {
+export const getAuthorAddresses = async (getState, dispatch, message) => {
   const author = getAuthor(message);
   const authorAddress = author && author.address;
 
   if (authorAddress) {
-    return authorAddress;
+    return [authorAddress];
   }
 
   const { user_identities: userIdentitiesIds } = message;
 
   if (userIdentitiesIds && userIdentitiesIds.length > 0) {
-    const userIdentities = getIdentities(state, userIdentitiesIds)
-      || await fetchRemoteIdentities(dispatch, userIdentitiesIds);
+    const userIdentities = (await getIdentities()(getState, dispatch))
+      .filter(({ identity_id: identityId }) => userIdentitiesIds.includes(identityId));
 
-    return getIdentitiesAddresses(userIdentities)[0];
+    return getIdentitiesAddresses(userIdentities);
   }
 
-  return null;
+  return [];
 };
 
 const extractMessageIdFromAction = (action) => {
@@ -43,15 +42,20 @@ const extractMessageIdFromAction = (action) => {
   return messageId;
 };
 const getFullDraftFromAction = (state, action) => {
-  const { data: message } = action.payload.request;
+  const { data: message, current_state: oldMessage } = action.payload.request;
   const { draftsByInternalId } = state.draftMessage;
+  const participants = message.participants ||
+    (oldMessage && oldMessage.participants);
 
   switch (action.type) {
     case CREATE_MESSAGE:
-      return message;
+      return { participants, ...message };
     default:
-      return Object.values(draftsByInternalId)
-        .find(draft => draft.message_id === extractMessageIdFromAction(action));
+      return {
+        participants,
+        ...Object.values(draftsByInternalId)
+          .find(draft => draft.message_id === extractMessageIdFromAction(action)),
+      };
   }
 };
 
@@ -91,16 +95,18 @@ const encryptMessageAction = async (store, dispatch, action) => {
   try {
     const keys = await getParticipantsKeys(store.getState(), store.dispatch, message);
 
-    const authorAddress = await getAuthorAddress(store.getState(), dispatch, message);
+    const authorAddresses = await getAuthorAddresses(store.getState, dispatch, message);
 
-    if (!authorAddress) return action;
+    if (authorAddresses.length === 0) return action;
 
-    const userKeys = await getKeysForEmail(authorAddress, PUBLIC_KEY);
+    // 1. we need to check all addresses to find keys.
+    const userKeys = await Promise.all(authorAddresses.map(authorAddress =>
+      getKeysForEmail(authorAddress, PUBLIC_KEY)));
 
     if (keys && keys.length > 0 && userKeys.length > 0) {
       dispatch(encryptMessageStart({ message }));
-      // userKeys[0] : no need more than 1 key
-      const encryptedMessage = await encryptMessage(message, [userKeys[0].armor(), ...keys]);
+      // 2. but there is no need for more than 1 key
+      const encryptedMessage = await encryptMessage(message, [userKeys[0][0].armor(), ...keys]);
 
       dispatch(encryptMessageSuccess({ message, encryptedMessage }));
 

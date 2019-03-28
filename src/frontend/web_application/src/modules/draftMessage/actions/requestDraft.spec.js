@@ -13,6 +13,13 @@ const getStore = () => mockStore({
     draftsByInternalId: {
     },
   },
+  user: {
+    user: {
+      contact: {
+        contact_id: 'unused',
+      },
+    },
+  },
 });
 jest.mock('../../message', () => {
   const actualModule = jest.requireActual('../../message');
@@ -26,7 +33,6 @@ jest.mock('../../message', () => {
         case '01':
           return Promise.resolve({
             message_id: 'bar',
-            discussion_id: '01',
             is_draft: true,
           });
         default:
@@ -156,7 +162,6 @@ describe('modules draftMessage - actions - requestDraft', () => {
     it('creates a new draft', async () => {
       const store = getStore();
       const draft = {
-        discussion_id: '02',
         body: '',
         user_identities: expect.anything(),
         parent_id: 'last-msg',
@@ -184,7 +189,6 @@ describe('modules draftMessage - actions - requestDraft', () => {
     it('new twitter draft', async () => {
       const store = getStore();
       const draft = {
-        discussion_id: '03',
         body: '',
         subject: '',
         user_identities: ['ident-twitter'],
@@ -237,7 +241,6 @@ describe('modules draftMessage - actions - requestDraft', () => {
     it('fetch discussion with a result', async () => {
       const draft = {
         message_id: 'bar',
-        discussion_id: '01',
         is_draft: true,
       };
       const store = getStore();

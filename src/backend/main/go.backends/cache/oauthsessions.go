@@ -17,12 +17,13 @@ const (
 )
 
 // GetOauthSession unmarshal json found at `key`, if any, into an OauthSession struct
-func (cache *RedisBackend) GetOauthSession(key string) (session *OauthSession, err error) {
-	session_str, err := cache.client.Get(oauthSessionPrefix + key).Bytes()
+func (c *Cache) GetOauthSession(key string) (session *OauthSession, err error) {
+	session_str, err := c.Backend.Get(oauthSessionPrefix + key)
 	if err != nil {
 		log.WithError(err).Errorf("[GetOauthSession] failed to get key %s", key)
 		return nil, err
 	}
+
 	session = &OauthSession{}
 	err = json.Unmarshal(session_str, session)
 	if err != nil {
@@ -33,7 +34,7 @@ func (cache *RedisBackend) GetOauthSession(key string) (session *OauthSession, e
 }
 
 // SetOauthSession put `OauthSession` as a json string at `key` prefixed with oauthSessionPrefix
-func (cache *RedisBackend) SetOauthSession(key string, session *OauthSession) (err error) {
+func (c *Cache) SetOauthSession(key string, session *OauthSession) (err error) {
 	ttl := oauthSessionTTL * time.Minute
 	session_str, err := json.Marshal(session)
 	if err != nil {
@@ -41,7 +42,7 @@ func (cache *RedisBackend) SetOauthSession(key string, session *OauthSession) (e
 		return err
 	}
 
-	_, err = cache.client.Set(oauthSessionPrefix+key, session_str, ttl).Result()
+	err = c.Backend.Set(oauthSessionPrefix+key, session_str, ttl)
 	if err != nil {
 		log.WithError(err).Errorf("[SetOauthSession] failed to set session for key %s", key)
 		return err
@@ -51,8 +52,8 @@ func (cache *RedisBackend) SetOauthSession(key string, session *OauthSession) (e
 }
 
 // DeleteOauthSession deletes value found at `key` prefixed with oauthSessionPrefix
-func (cache *RedisBackend) DeleteOauthSession(key string) error {
-	_, err := cache.client.Del(oauthSessionPrefix + key).Result()
+func (c *Cache) DeleteOauthSession(key string) error {
+	err := c.Backend.Del(oauthSessionPrefix + key)
 	if err != nil {
 		log.WithError(err).Errorf("[DeleteOauthSession] failed to delete session for key %s", key)
 		return err

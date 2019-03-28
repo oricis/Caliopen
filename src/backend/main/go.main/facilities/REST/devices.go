@@ -19,6 +19,13 @@ import (
 	"time"
 )
 
+// unexported vars to help override funcs in tests
+var (
+	notifyByEmail = func(notifier Notifications.Notifiers, notif *Notification) CaliopenError {
+		return notifier.ByEmail(notif)
+	}
+)
+
 func (rest *RESTfacility) RetrieveDevices(userId string) (devices []Device, err CaliopenError) {
 	devices, e := rest.store.RetrieveDevices(userId)
 	if e != nil {
@@ -171,7 +178,7 @@ func (rest *RESTfacility) RequestDeviceValidation(userId, deviceId, channel stri
 			Body:            device.Name,
 			Type:            NotifDeviceValidation,
 		}
-		go notifier.ByEmail(notif)
+		go notifyByEmail(notifier, notif)
 	default:
 		log.Warnf("[RequestDeviceValidation] unknown channel notification : %s", channel)
 		_ = rest.Cache.DeleteDeviceValidationSession(userId, deviceId)

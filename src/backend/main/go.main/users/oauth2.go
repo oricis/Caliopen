@@ -56,7 +56,7 @@ func ValidateOauth2Credentials(userIdentity *UserIdentity, interfacer Oauth2Inte
 			}
 		}
 	default:
-		return NewCaliopenErrf(FailDependencyCaliopenErr, "unhandled oauth2 provider <%s>", interfacer.GetProviders()[userIdentity.Infos["provider"]])
+		return NewCaliopenErrf(FailDependencyCaliopenErr, "unhandled oauth2 provider <%v>", interfacer.GetProviders()[userIdentity.Infos["provider"]])
 	}
 	return nil
 }

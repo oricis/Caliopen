@@ -8,6 +8,7 @@ package backendstest
 import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/satori/go.uuid"
+	"sync"
 	"time"
 )
 
@@ -226,6 +227,17 @@ var (
 			Subject:        "Sent email message with external identity",
 			User_id:        UUID(uuid.FromStringOrNil(EmmaTommeUserId)),
 			UserIdentities: []UUID{UUID(uuid.FromStringOrNil("7e4eb26d-1b70-4bb3-b556-6c54f046e88e"))},
+		},
+	}
+
+	Devices = map[string]*Device{
+		EmmaTommeUserId + "b8c11acd-a90d-467f-90f7-21b6b615149d": {
+			Locker:   new(sync.Mutex),
+			DeviceId: UUID(uuid.FromStringOrNil("b8c11acd-a90d-467f-90f7-21b6b615149d")),
+			Name:     "fake device for tests",
+			Status:   DeviceUnverifiedStatus,
+			Type:     DeviceLaptopType,
+			UserId:   UUID(uuid.FromStringOrNil(EmmaTommeUserId)),
 		},
 	}
 )

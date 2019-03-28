@@ -14,8 +14,43 @@ Following this assomption, an action MUST be a Promise.
 An action MAY be specific to a component.
 An action MAY be related to one or more concept.
 An action MAY be a serie of redux actions.
-An action MUST return an entity or a collection of entity or throw an error.
+An action MUST return an entity or a collection of entity or throw an erro except for `fetch` actions, see below.
 An action MUST store the result of the action(s) in the state except for password related actions.
+An action MUST be in the `actions` folder of a module. An exception for low level redux actions that are in `src/store/modules/<reduxModule>` (cf. client/architecure.md)
+
+### Naming
+
+The name of an action tells' the developer the purpose of the action. There are 3 main prefixes: `fetch`, `get`, `request`
+
+* `get<Resource>` will try to retrieve data from the store and eventually request it then return the resource
+* `request<Resource>` will force the fetch and return the resource
+* `fetch<Resource>` is a raw fetch, the value return is the raw response
+
+Examples:
+_note: we use [axios middleware](https://github.com/svrcekmichal/redux-axios-middleware) to make the requests_
+
+```js
+import { messageSelector } from 'a/message/module/';
+
+const fetchMessage = (messageId) => {
+  type: 'fetchMessage', payload: { request: `/api/v2/messages/${messageId}` } ,
+};
+
+const requestMessage = (messageId) => async (dispatch, getState) => {
+  await dispatch(fetchMessage(messageId));
+
+  return messageSelector(getState(), { messageId });
+}
+
+const getMessage = (messageId) => (dispatch, getState) => {
+  const message =  messageSelector(getState(), { messageId });
+  if (message) {
+    return message;
+  }
+
+  return dispatch(fetchMessage(messageId));
+}
+```
 
 ## State
 
