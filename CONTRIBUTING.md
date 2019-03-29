@@ -2,10 +2,10 @@
 
 First of all, thank you for contributing, you are awesome!
 
-CONTRIBUTING.md file may be present in sub-directries with specific informations.
-
-* report a bug or post a feature request: https://feedback.caliopen.org/
+* Report a bug or post a feature request: https://feedback.caliopen.org/
 * [Installation process](doc/installation) for development purpose
+* You don't where to start and you want something simple to do? [Take a look to the good first issues](https://github.com/CaliOpen/Caliopen/labels/good%20first%20issue)
+* You are more involved on Caliopen developments, please read the [Welcome Guide](./doc/welcome.md)
 
 ## Code of conduct
 
@@ -21,8 +21,7 @@ _(This code of conduct may evolve)_.
 * [@gdchamal](https://github.com/gdchamal)
 * [@iamdey](https://github.com/iamdey)
 * [@sapiens-sapide](https://github.com/sapiens-sapide)
-* [@myleneb](https://github.com/myleneb)
-* [@judbd](https://github.com/orgs/CaliOpen/people/judbd)
+* [@MonsieurLanza](https://github.com/MonsieurLanza)
 
 ## Contributors
 
@@ -48,3 +47,5 @@ Of course we can't show all of you from https://feedback.caliopen.org/. Thank yo
 * [@lisonferez](https://github.com/lisonferez)
 * [@didimoo](https://github.com/didimoo)
 * [@octplane](https://github.com/octplane)
+* [@myleneb](https://github.com/myleneb)
+* [@judbd](https://github.com/orgs/CaliOpen/people/judbd)

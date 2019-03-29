@@ -24,9 +24,54 @@ Things to do for a new release...
   ./manage_package --conf ./packages.yaml create_version all 0.18.1
   deactivate
   ```
+* Add a tag for the release, the tag will be signed and annoted:
+  ```
+  git tag -a -s release-0.18.0
+  ```
+* Publish the release on github:
+  ```
+  git push
+  git push origin release-0.18.0
+  ```
+* Create a new release https://github.com/CaliOpen/Caliopen/releases/new and specify the tag name you've just published e.g. `release-0.18.0`
 
-## 2. Build packages
+## 2. Build images & Publish
 
-## 3. Publish
+### Prepare
 
-## 4. [Communicate](./Communication.md)
+```
+# checkout the tag you need to build
+git checkout release-X.Y.Z
+
+cd devtools
+
+# Make sure having credential for registry access
+cp registry.conf.template registry.conf
+vi registry.conf
+
+# Note: It's excluded from git objects in .gitignore file.
+
+# Define environment variables for version and application to deploy
+
+export CALIOPEN_VERSION=X.Y.Z
+export APP_NAME=<package>
+```
+
+### Build and publish
+
+This will build the container related to the given application and publish it on the docker images registry using 2 tags:
+- `${APP_NAME}/latest`
+- `${APP_NAME}/${CALIOPEN_VERSION}`
+
+```
+cd devtools
+make master
+```
+
+## 3. Deploy
+
+cf. [Deploy Kubernetes](./deploy-kuberntes.md)
+
+## 4. Communicate
+
+cf. [Communication](./Communication.md)
