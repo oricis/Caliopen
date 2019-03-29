@@ -1,6 +1,6 @@
 {
-    "alpha.footer.feedback": "",
-    "app-loader.action.retry": "",
+    "alpha.footer.feedback": "Dinos si algo ha salido mal <a href=\"https://feedback.caliopen.org/\">https://feedback.caliopen.org/</a>.",
+    "app-loader.action.retry": "Clique aquí para volver a intentarlo",
     "app-loader.activity.cats": "",
     "app-loader.activity.chicken": "",
     "app-loader.activity.macaroons": "",
