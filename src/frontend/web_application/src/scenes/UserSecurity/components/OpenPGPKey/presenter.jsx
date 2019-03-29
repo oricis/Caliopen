@@ -106,7 +106,7 @@ class OpenPGPKey extends Component {
         <div className="m-openpgp-key__main">
           <Spinner isLoading={this.state.isLoading} />
           <div className="m-openpgp-key__icon">{children}</div>
-          <div className="m-openpgp-key__fingerprint">{this.state.openpgpKey.fingerprint}</div>
+          <div className="m-openpgp-key__fingerprint">{this.state.openpgpKey.fingerprint && this.state.openpgpKey.fingerprint.toUpperCase()}</div>
 
           <div className="m-openpgp-key__actions">
             <Button
