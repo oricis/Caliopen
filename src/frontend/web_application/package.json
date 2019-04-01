@@ -48,7 +48,7 @@
   "author": "CaliOpen <contact@caliopen.org> (https://caliopen.org/)",
   "license": "MIT",
   "dependencies": {
-    "@lingui/react": "^2.7.2",
+    "@lingui/react": "^2.7.4",
     "argv": "^0.0.2",
     "async-validator": "^1.11.0",
     "axios": "^0.18.0",
@@ -112,8 +112,8 @@
     "zxcvbn": "^4.4.1"
   },
   "devDependencies": {
-    "@lingui/cli": "^2.7.2",
-    "@lingui/macro": "^2.7.2",
+    "@lingui/cli": "^2.7.4",
+    "@lingui/macro": "^2.7.4",
     "autoprefixer": "^9.2.1",
     "axios-mock-adapter": "^1.15.0",
     "babel-core": "^6.26.3",
