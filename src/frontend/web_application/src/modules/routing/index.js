@@ -11,4 +11,5 @@ export * from './hoc/withSearchParams';
 export * from './services/url';
 export * from './services/findTabbableRouteConfig';
 export * from './services/flattenRouteConfig';
+export * from './services/getRouterHistory';
 export * from './services/signout';

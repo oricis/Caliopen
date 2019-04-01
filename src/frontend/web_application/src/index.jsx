@@ -7,7 +7,7 @@ import { install as PWAOfflineInstall, applyUpdate } from 'offline-plugin/runtim
 import App from './App';
 import configureStore from './store/configure-store';
 import { initialState as initialStateSettings } from './store/modules/settings';
-import getRouterHistory from './services/router-history';
+import { getRouterHistory } from './modules/routing';
 import { getUserLocales } from './modules/i18n';
 import { getDefaultSettings } from './modules/settings';
 import { getConfig } from './services/config';

@@ -1,4 +1,4 @@
-import getRouterHistory from '../../../services/router-history';
+import { getRouterHistory } from './getRouterHistory';
 
 export const signout = ({ withRedirect } = { withRedirect: false }) => {
   if (BUILD_TARGET !== 'browser') {
