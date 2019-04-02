@@ -11,3 +11,4 @@ from .compute import basic_compute
 from .reserved_names import import_reserved_names
 from .resync_index import resync_index
 from .resync_shard_index import resync_shard_index
+from .copy_model import copy_model
