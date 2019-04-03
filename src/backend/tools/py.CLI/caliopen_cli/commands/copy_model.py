@@ -17,8 +17,11 @@ def copy_model(**kwargs):
     dest = cluster_dest.connect(conf['new_cassandra']['keyspace'])
 
     table = kwargs['model'].lower()
-    query = "SELECT * from {0}".format(table)
-    statement = SimpleStatement(query, fetch_size=100)
+    fetch_size = kwargs.get('fetch_size', 100)
+    query = "SELECT * FROM {0}".format(table)
+    if 'where' in kwargs and kwargs['where']:
+        query = "{0} WHERE {1} ALLOW FILTERING".format(query, kwargs['where'])
+    statement = SimpleStatement(query, fetch_size=fetch_size)
     insert_query = "INSERT INTO {0} ({1}) VALUES ({2})"
     cpt = 0
     insert = None

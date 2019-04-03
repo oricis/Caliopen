@@ -67,6 +67,8 @@ def main(args=sys.argv):
     sp_copy = subparsers.add_parser('copy')
     sp_copy.set_defaults(func=copy_model)
     sp_copy.add_argument('-m', dest='model', help='model to dump')
+    sp_copy.add_argument('--where', dest='where', help='where condition')
+    sp_copy.add_argument('--fetch-size', dest='fetch_size', default=100)
 
     sp_dump_index = subparsers.add_parser('dump_index')
     sp_dump_index.set_defaults(func=dump_indexes)
