@@ -4,14 +4,22 @@ jest.mock('@lingui/react', () => ({
   withI18n: () => WrappedComponent => props =>
     (<WrappedComponent i18n={{ _: (id, values, { defaults }) => (defaults || id) }} {...props} />),
   i18nMark: str => str,
-  Trans: ({ id, children }) => children || id,
+  Trans: ({ id, children }) => {
+    if (!children) {
+      return id;
+    }
+
+    return <div>{children}</div>;
+  },
   NumberFormat: ({ value }) => value,
 }));
 
 jest.mock('@lingui/macro', () => ({
   Trans: ({ id, children }) => {
-    console.log('trans');
+    if (!children) {
+      return id;
+    }
 
-    return children || id;
+    return <div>{children}</div>;
   },
 }));
