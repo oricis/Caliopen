@@ -109,7 +109,7 @@ func (rest *RESTfacility) RetrieveUserContact(userID string) (contact *Contact, 
 // - UpdateWithPatch() with UserActor role
 // - then UpdateContact() to save updated contact to stores & index if everything went good.
 func (rest *RESTfacility) PatchContact(user *UserInfo, patch []byte, contactID string) error {
-
+	// TODO : fix removing identities which fails silently on user's contact
 	current_contact, err := rest.RetrieveContact(user.User_id, contactID)
 	if err != nil {
 		if err.Error() == "not found" {
@@ -276,6 +276,7 @@ func (rest *RESTfacility) ContactExists(userID, contactID string) bool {
 // it embeds a new Email or a new SocialIdentity or a new IM depending of UserIdentity's type.
 // returns new version of Contact saved in stores.
 func addIdentityToContact(storeContact backends.ContactStorage, indexContact backends.ContactIndex, storeUser backends.UserStorage, identity UserIdentity, contact *Contact) (*Contact, CaliopenError) {
+	// TODO : prevent duplicate
 	updatedFields := map[string]interface{}{}
 	newContact := *contact
 	switch identity.Protocol {

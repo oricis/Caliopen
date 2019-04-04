@@ -78,6 +78,9 @@ func (rest *RESTfacility) GetProviderOauthFor(userId, name string) (provider Pro
 }
 
 func (rest *RESTfacility) CreateTwitterIdentity(requestToken, verifier string) (remoteId string, err CaliopenError) {
+	if requestToken == "" || verifier == "" {
+		return "", NewCaliopenErr(UnprocessableCaliopenErr, "[CreateTwitterIdentity] missing oauth_token or oauth_verifier")
+	}
 	provider := rest.providers[TwitterProtocol]
 	conf := &oauth1.Config{
 		ConsumerKey:    provider.Infos["consumer_key"],
@@ -91,13 +94,13 @@ func (rest *RESTfacility) CreateTwitterIdentity(requestToken, verifier string) (
 		return
 	}
 	if len(oauthCache.RequestSecret) < 5 {
-		log.WithError(e).Errorf("[CreateTwitterIdentity] oauthCache.RequestSecret too short to be a valid one: <%s> (token %s, verifier %s)", oauthCache.RequestSecret, requestToken, verifier)
+		log.WithError(e).Errorf("[CreateTwitterIdentity] oauthCache.RequestSecret too short to be a valid one: <%s> (token %s, verifier %s), user_id %s", oauthCache.RequestSecret, requestToken, verifier, oauthCache.UserId)
 		err = WrapCaliopenErrf(e, FailDependencyCaliopenErr, "[CreateTwitterIdentity] invalid oauthCache.RequestSecret")
 		return
 	}
 	accessToken, accessSecret, e := conf.AccessToken(requestToken, oauthCache.RequestSecret, verifier)
 	if e != nil {
-		log.WithError(e).Errorf("[CreateTwitterIdentity] failed to request an access token : token %s, verifier %s, secret : (5 first chars only) <%s>", requestToken, verifier, oauthCache.RequestSecret[0:5])
+		log.WithError(e).Errorf("[CreateTwitterIdentity] failed to request an access token : token %s, verifier %s, secret : (5 first chars only) <%s>, user_id %s", requestToken, verifier, oauthCache.RequestSecret[0:5], oauthCache.UserId)
 		err = WrapCaliopenErrf(e, FailDependencyCaliopenErr, "[CreateTwitterIdentity] AccessToken request failed")
 		return
 	}
