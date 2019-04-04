@@ -1,4 +1,4 @@
-const securityMiddleware = (req, res, next) => {
+export const securityMiddleware = (req, res, next) => {
   const security = {
     firewalls: {
       // middleware for assets is applied before the security middleware, so this is unused
@@ -55,5 +55,3 @@ const securityMiddleware = (req, res, next) => {
 
   next();
 };
-
-module.exports = securityMiddleware;

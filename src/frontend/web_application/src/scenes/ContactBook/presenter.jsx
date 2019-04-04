@@ -19,7 +19,7 @@ export const SORT_VIEW_FAMILY_NAME = 'family_name';
 export const SORT_VIEW_TITLE = 'title';
 export const DEFAULT_SORT_VIEW = SORT_VIEW_GIVEN_NAME;
 
-const DEFAULT_SORT_DIR = 'ASC';
+export const DEFAULT_SORT_DIR = 'ASC';
 
 function getFilteredContacts(contactList, tag) {
   if (tag === '') {

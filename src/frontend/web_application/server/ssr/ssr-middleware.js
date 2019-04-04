@@ -1,14 +1,14 @@
-const React = require('react');
-const ReactDOMServer = require('react-dom/server');
-const DocumentTitle = require('react-document-title');
-const serialize = require('serialize-javascript');
-const Bootstrap = require('./components/Bootstrap').default;
-const configureStore = require('../../src/store/configure-store').default;
-const { getUserLocales } = require('../../src/modules/i18n');
-const { getDefaultSettings } = require('../../src/modules/settings');
-const template = require('../../dist/server/template.html');
-const { getConfig } = require('../config');
-const { initialState: initialStateSettings } = require('../../src/store/modules/settings');
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+import DocumentTitle from 'react-document-title';
+import serialize from 'serialize-javascript';
+import Bootstrap from './components/Bootstrap';
+import configureStore from '../../src/store/configure-store';
+import { getUserLocales } from '../../src/modules/i18n';
+import { getDefaultSettings } from '../../src/modules/settings';
+import template from '../../dist/server/template.html';
+import { getConfig } from '../config';
+import { initialState as initialStateSettings } from '../../src/store/modules/settings';
 
 /**
  * base html template
@@ -39,7 +39,7 @@ function applyUserLocaleToGlobal(req) {
   global.USER_LOCALE = req.locale;
 }
 
-module.exports = (req, res) => {
+export default (req, res) => {
   applyUserLocaleToGlobal(req);
   const initialState = {
     settings: {

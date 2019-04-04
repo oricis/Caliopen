@@ -1,5 +1,6 @@
-const proxy = require('express-http-proxy');
-const { getApiHost } = require('../../config');
+import proxy from 'express-http-proxy';
+import { getApiHost } from '../../config';
+
 const { COOKIE_NAME, authenticate } = require('../lib/cookie');
 
 const createLoginRouting = (router) => {
@@ -34,4 +35,4 @@ const createLoginRouting = (router) => {
   });
 };
 
-module.exports = createLoginRouting;
+export default createLoginRouting;

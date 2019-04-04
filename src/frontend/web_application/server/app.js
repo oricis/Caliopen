@@ -1,13 +1,14 @@
-const express = require('express');
-const path = require('path');
-const applyAPI = require('./api');
-const applySecurity = require('./security');
-const applyAssets = require('./assets');
-const applyAuth = require('./auth');
-const applyError = require('./error');
-const { configure: applyExpressReact } = require('./express-react');
+import express from 'express';
+import path from 'path';
+import applyAPI from './api';
+import applySecurity from './security';
+import applyAssets from './assets';
+import applyAuth from './auth';
+import applyError from './error';
+import { configure as applyExpressReact } from './express-react';
+import applySSR from './ssr';
 
-module.exports = () => {
+export default () => {
   const app = express();
 
   //-------
@@ -19,8 +20,6 @@ module.exports = () => {
   applyExpressReact(app);
 
   if (process.env.HAS_SSR !== false && process.env.HAS_SSR !== 'false') {
-    // eslint-disable-next-line global-require
-    const applySSR = require('./ssr');
     applySSR(app);
   } else {
     app.get('*', (req, res) => {

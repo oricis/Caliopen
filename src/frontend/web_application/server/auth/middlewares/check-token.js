@@ -1,4 +1,4 @@
-const checkToken = (req, res, next) => {
+export const checkTokenMiddleware = (req, res, next) => {
   if (!req.user && req.security === false) {
     next();
 
@@ -40,5 +40,3 @@ const checkToken = (req, res, next) => {
 
   next();
 };
-
-module.exports = checkToken;
