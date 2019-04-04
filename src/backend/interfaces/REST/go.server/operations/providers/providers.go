@@ -65,7 +65,7 @@ func CallbackHandler(ctx *gin.Context) {
 			ctx.Abort()
 			return
 		}
-		ctx.Status(http.StatusOK)
+		ctx.Status(http.StatusNoContent)
 	case "gmail":
 		state := ctx.Query("state")
 		code := ctx.Query("code")
@@ -77,7 +77,7 @@ func CallbackHandler(ctx *gin.Context) {
 			ctx.Abort()
 			return
 		}
-		ctx.Status(http.StatusOK)
+		ctx.Status(http.StatusNoContent)
 	default:
 		e := swgErr.New(http.StatusNotImplemented, "not implemented")
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
