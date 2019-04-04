@@ -105,6 +105,7 @@ def main(args=sys.argv):
                                       help='Resync shard index')
     sp_resync.set_defaults(func=resync_shard_index)
     sp_resync.add_argument('-s', dest='shard_id', help='Shard id')
+    sp_resync.add_argument('-o', dest='old_shard_id', help='Old shard id')
     kwargs = parser.parse_args(args[1:])
     kwargs = vars(kwargs)
 

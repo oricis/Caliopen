@@ -56,6 +56,9 @@ def resync_shard_index(**kwargs):
     from caliopen_main.user.core.setups import setup_shard_index
 
     shard_id = kwargs['shard_id']
+    old_shard_id = kwargs.get('old_shard_id')
+    if not old_shard_id:
+        old_shard_id = shard_id
     shards = Configuration('global').get('elasticsearch.shards')
     if shard_id not in shards:
         log.error('Invalid shard {0}'.format(shard_id))
@@ -67,8 +70,12 @@ def resync_shard_index(**kwargs):
     users = User._model_class.all()
     cpt = 0
     for user in users:
-        if user.shard_id != shard_id:
+        if user.shard_id not in (old_shard_id, shard_id):
             continue
+
+        if user.shard_id != shard_id:
+            user.shard_id = shard_id
+            user.save()
         resync_user(user)
         cpt += 1
     log.info('Sync {0} users into shards'.format(cpt, shard_id))
