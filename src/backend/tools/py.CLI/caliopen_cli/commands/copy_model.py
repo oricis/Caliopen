@@ -27,7 +27,7 @@ def copy_model(**kwargs):
     insert = None
     for row in source.execute(statement):
         if cpt == 0:
-            columns = row.keys()
+            columns = ['"{}"'.format(x) for x in row.keys()]
             binds = ['?' for x in range(0, len(columns))]
             insert_str = insert_query.format(table,
                                              ','.join(columns),
