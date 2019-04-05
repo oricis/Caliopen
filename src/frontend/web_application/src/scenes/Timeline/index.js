@@ -1,7 +1,9 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { requestDiscussions, hasMore, loadMoreDiscussions, filterImportance } from '../../store/modules/discussion';
+import {
+  requestDiscussions, hasMore, loadMoreDiscussions, filterImportance,
+} from '../../store/modules/discussion';
 import { UserSelector } from '../../store/selectors/user';
 import { getUser } from '../../modules/user/actions/getUser';
 

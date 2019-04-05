@@ -45,11 +45,12 @@ class DiscussionItem extends PureComponent {
   };
 
   // participants except user
-  buildParticipantsLabels = ({ participants }) =>
-    participants
-      .filter(participant => !(participant.contact_ids && participant.contact_ids.some(contactId =>
-        contactId === this.props.user.contact.contact_id)))
-      .map(participant => participant.label);
+  buildParticipantsLabels = ({ participants }) => participants
+    .filter(participant => !(
+      participant.contact_ids && participant.contact_ids
+        .some(contactId => contactId === this.props.user.contact.contact_id)
+    ))
+    .map(participant => participant.label);
 
   renderMessageSubject = (discussion) => {
     const { last_message_subject: lastMessageSubject } = discussion;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
-import { Button, InputFileGroup, Spinner } from '../../../../components/';
+import { Button, InputFileGroup, Spinner } from '../../../../components';
 import { getMaxSize } from '../../../../services/config';
 
 
@@ -49,7 +49,7 @@ class ImportContactForm extends Component {
 
     return (
       <div className="m-import-contact-form__buttons">
-        {!this.props.hasImported &&
+        {!this.props.hasImported && (
           <Button
             className="m-import-contact-form__button"
             shape="hollow"
@@ -57,9 +57,9 @@ class ImportContactForm extends Component {
           >
             <Trans id="general.action.cancel">Cancel</Trans>
           </Button>
-        }
+        )}
 
-        {this.state.file && !this.props.hasImported &&
+        {this.state.file && !this.props.hasImported && (
           <Button
             className="m-import-contact-form__button m-import-contact-form__button--right"
             type="submit"
@@ -69,9 +69,9 @@ class ImportContactForm extends Component {
           >
             <Trans id="import-contact.action.import">Import</Trans>
           </Button>
-        }
+        )}
 
-        {this.props.hasImported &&
+        {this.props.hasImported && (
           <Button
             className="m-import-contact-form__button m-import-contact-form__button--right"
             shape="plain"
@@ -79,7 +79,7 @@ class ImportContactForm extends Component {
           >
             <Trans id="import-contact.form.button.close">Close</Trans>
           </Button>
-        }
+        )}
       </div>
     );
   }
@@ -97,7 +97,7 @@ class ImportContactForm extends Component {
         method="post"
         encType="multipart/form-data"
       >
-        {!hasImported ?
+        {!hasImported ? (
           <InputFileGroup
             onInputChange={this.handleInputFileChange}
             errors={errors}
@@ -105,7 +105,7 @@ class ImportContactForm extends Component {
             fileTypes={VALID_EXT}
             maxSize={getMaxSize()}
           />
-        :
+        ) :
           <p><Trans id="import-contact.form.success">Successfuly imported !</Trans></p>
       }
         {this.renderButtons()}

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
 import classnames from 'classnames';
-import { Title, Link } from '../../../../components/';
+import { Title, Link } from '../../../../components';
 import { withTags } from '../../../../modules/tags';
 import ContactItem from '../ContactItem';
 import { DEFAULT_SORT_DIR } from '../../presenter';
@@ -28,6 +28,7 @@ class ContactList extends PureComponent {
     sortDir: PropTypes.string,
     mode: PropTypes.string,
   };
+
   static defaultProps = {
     contacts: [],
     userContact: undefined,

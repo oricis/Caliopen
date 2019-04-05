@@ -12,6 +12,7 @@ class PlaceholderBlock extends PureComponent {
     width: PropTypes.oneOf(['small', 'default', 'large', 'xlarge']), // available only when display is inline-block
     display: PropTypes.oneOf(['inline-block', 'block']),
   };
+
   static defaultProps = {
     children: ' ',
     className: undefined,

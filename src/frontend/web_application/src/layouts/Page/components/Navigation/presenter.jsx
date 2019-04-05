@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import HorizontalScroll from '../HorizontalScroll';
-import { Tab, NavbarItem, ApplicationTab, DiscussionTab, ContactAssociationTab, ContactTab, SearchTab } from '../Navbar/components';
-import { Button, Icon } from '../../../../components/';
+import {
+  Tab, NavbarItem, ApplicationTab, DiscussionTab, ContactAssociationTab, ContactTab, SearchTab,
+} from '../Navbar/components';
+import { Button, Icon } from '../../../../components';
 import { Tab as TabModel, withCurrentTab } from '../../../../modules/tab';
 import { withPush, findTabbableRouteConfig } from '../../../../modules/routing';
 import './style.scss';
@@ -20,6 +22,7 @@ class Navigation extends Component {
     removeTab: PropTypes.func.isRequired,
     push: PropTypes.func.isRequired,
   };
+
   static defaultProps = {
     className: undefined,
     currentTab: undefined,
@@ -112,7 +115,9 @@ class Navigation extends Component {
           {tabs.map(tab => this.renderTab({ tab }))}
           <NavbarItem key="compose-button" className={classnames('l-navigation__compose-item', { 'l-navigation__compose-item--sticky': isSticky })}>
             <Button onClick={this.handleClickCompose} shape="plain" display="expanded" className="l-navigation__compose-btn">
-              <Icon type="pencil" /> <Icon type="plus" />
+              <Icon type="pencil" />
+              {' '}
+              <Icon type="plus" />
             </Button>
           </NavbarItem>
         </HorizontalScroll>

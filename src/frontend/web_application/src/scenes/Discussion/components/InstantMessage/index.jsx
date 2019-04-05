@@ -8,8 +8,12 @@ import { withPush } from '../../../../modules/routing';
 import { getAveragePIMessage, getPiClass } from '../../../../modules/pi';
 import { AuthorAvatarLetter } from '../../../../modules/avatar';
 import { LockedMessage } from '../../../../modules/encryption';
-import { Button, Confirm, Icon, TextBlock } from '../../../../components';
-import { isMessageFromUser, getAuthor, isUserRecipient, getRecipientsExceptUser, getRecipients } from '../../../../services/message';
+import {
+  Button, Confirm, Icon, TextBlock,
+} from '../../../../components';
+import {
+  isMessageFromUser, getAuthor, isUserRecipient, getRecipientsExceptUser, getRecipients,
+} from '../../../../services/message';
 import MessagePi from '../MessagePi';
 import TagList from '../TagList';
 import { replyHandler } from '../../services/replyHandler';
@@ -58,6 +62,12 @@ class InstantMessage extends PureComponent {
     noInteractions: false,
   };
 
+  handleMessageDelete = messageDeleteHandler(this)
+
+  handleToggleMarkAsRead = toggleMarkAsReadHandler(this)
+
+  handleReply = replyHandler(this)
+
   getProtocolIconType = ({ protocol }) => PROTOCOL_ICONS[protocol] || 'comment';
 
   getRecipientsString = (shorten) => {
@@ -74,8 +84,7 @@ class InstantMessage extends PureComponent {
   getRecipientsLabels = (recipients) => {
     if (!recipients) return [];
 
-    return recipients.map(recipient =>
-      (recipient.label ? recipient.label : recipient.address));
+    return recipients.map(recipient => (recipient.label ? recipient.label : recipient.address));
   };
 
   getRecipientsArray = () => {
@@ -89,10 +98,6 @@ class InstantMessage extends PureComponent {
       :
       this.getRecipientsLabels(getRecipients(message));
   }
-
-  handleMessageDelete = messageDeleteHandler(this)
-  handleToggleMarkAsRead = toggleMarkAsReadHandler(this)
-  handleReply = replyHandler(this)
 
   renderActions() {
     const {
@@ -165,7 +170,10 @@ class InstantMessage extends PureComponent {
           <div className="m-instant-message-aside__info">
             <div className="m-instant-message__participants m-instant-message-participants">
               <TextBlock className="m-instant-message-participants__from">{author.label}</TextBlock>
-              <TextBlock className="m-instant-message-participants__to">{this.getRecipientsString(true)}<Icon type="caret-down" title={this.getRecipientsString(false)} /></TextBlock>
+              <TextBlock className="m-instant-message-participants__to">
+                {this.getRecipientsString(true)}
+                <Icon type="caret-down" title={this.getRecipientsString(false)} />
+              </TextBlock>
             </div>
             <MessagePi illustrate={false} describe={false} message={message} />
           </div>

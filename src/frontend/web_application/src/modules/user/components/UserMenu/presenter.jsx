@@ -2,9 +2,11 @@ import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import { Trans, withI18n } from '@lingui/react';
 import UserInfo from '../UserInfo';
-import { Link, Button, Icon, Dropdown, withDropdownControl, VerticalMenu, VerticalMenuItem, Separator } from '../../../../components/';
+import {
+  Link, Button, Icon, Dropdown, withDropdownControl, VerticalMenu, VerticalMenuItem, Separator,
+} from '../../../../components';
 // some circular reference breaks unit tests when importing directly from the module
-import { withNotification } from '../../../../modules/userNotify/hoc/withNotification';
+import { withNotification } from '../../../userNotify/hoc/withNotification';
 import './style.scss';
 import './next-feature-button.scss';
 
@@ -28,11 +30,11 @@ class Presenter extends Component {
     isDropdownOpen: false,
   };
 
+  dropdownControlRef = createRef();
+
   componentDidMount() {
     this.props.getUser();
   }
-
-  dropdownControlRef = createRef();
 
   handleDropdownToggle = (isDropdownOpen) => {
     this.setState({ isDropdownOpen });
@@ -52,7 +54,8 @@ class Presenter extends Component {
     return (
       <div className="m-user-menu">
         <DropdownControl ref={this.dropdownControlRef} icon="user" display="inline-block">
-          <span className="m-user-menu__button-label">{user && user.name}</span>&nbsp;
+          <span className="m-user-menu__button-label">{user && user.name}</span>
+&nbsp;
           <Icon type={this.state.isDropdownOpen ? 'caret-up' : 'caret-down'} />
         </DropdownControl>
         <Dropdown

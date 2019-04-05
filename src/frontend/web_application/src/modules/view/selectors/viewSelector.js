@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { createModuleStateSelector } from '../../../store/selectors/getModuleStateSelector';
+import { getModuleStateSelector } from '../../../store/selectors/getModuleStateSelector';
 
 const viewIdSelector = (state, { viewId }) => {
   if (!viewId) {
@@ -10,6 +10,6 @@ const viewIdSelector = (state, { viewId }) => {
 };
 
 export const viewModelSelector = createSelector(
-  [viewIdSelector, createModuleStateSelector('view')],
+  [viewIdSelector, getModuleStateSelector('view')],
   (viewId, viewState) => viewState[viewId]
 );

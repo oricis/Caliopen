@@ -9,6 +9,7 @@ class ContactAvatarLetter extends PureComponent {
     contact: PropTypes.shape({}).isRequired,
     contactDisplayFormat: PropTypes.string,
   };
+
   static defaultProps = {
     contactDisplayFormat: 'title',
   };

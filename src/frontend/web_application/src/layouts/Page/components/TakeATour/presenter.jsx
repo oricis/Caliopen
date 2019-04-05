@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/macro'; // eslint-disable-line import/no-extraneous-dependencies
 import Tour from './components/Tour';
-import { Button, Link } from '../../../../components/';
+import { Button, Link } from '../../../../components';
 import './style.scss';
 
 class TakeATour extends Component {
   static propTypes = {
     i18n: PropTypes.shape({}).isRequired,
   };
+
   static defaultProps = {
   };
+
   state = {
     isTourActive: false,
   };
@@ -133,7 +135,11 @@ class TakeATour extends Component {
           step={this.state.tourStep}
           onRequestClose={this.handleclose}
           steps={steps}
-          badgeContent={(current, total) => (<Trans id="take-a-tour.current-step">Take a tour ({current} of {total})</Trans>)}
+          badgeContent={(current, total) => (
+            <Trans id="take-a-tour.current-step">
+              Take a tour ({current} of {total})
+            </Trans>
+          )}
           showNavigation={false}
           skipButton={i18n._('take-a-tour.action.skip', null, { defaults: 'Skip' })}
           prevButton={i18n._('take-a-tour.action.prev', null, { defaults: 'Previous' })}

@@ -42,7 +42,7 @@ const isDocumentVisible = () => {
 
 export const notify = async ({ message, force = false }) => {
   if (!isSupported) {
-    return Promise.reject('Browser notifications not supported');
+    return Promise.reject(new Error('Browser notifications not supported'));
   }
 
   if (isDocumentVisible() && !force) {
@@ -53,5 +53,5 @@ export const notify = async ({ message, force = false }) => {
     return new window.Notification(message);
   }
 
-  return Promise.reject('Browser notifications is not granted');
+  return Promise.reject(new Error('Browser notifications is not granted'));
 };

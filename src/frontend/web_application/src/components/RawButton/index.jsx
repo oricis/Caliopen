@@ -7,6 +7,7 @@ class RawButton extends PureComponent {
     children: PropTypes.node.isRequired,
     innerRef: PropTypes.shape({ current: PropTypes.shape({}) }),
   };
+
   static defaultProps = {
     type: 'button',
     innerRef: undefined,
@@ -14,16 +15,12 @@ class RawButton extends PureComponent {
 
   render() {
     const {
-      children, type, innerRef, ...props
+      children, type, innerRef, ...buttonProps
     } = this.props;
-    const buttonProps = {
-      ...props,
-      type,
-    };
 
-    return (
-      <button {...buttonProps} ref={innerRef}>{children}</button>
-    );
+    // this rules does not understand vars (2019-04-05)
+    // eslint-disable-next-line react/button-has-type
+    return (<button type={type} {...buttonProps} ref={innerRef}>{children}</button>);
   }
 }
 

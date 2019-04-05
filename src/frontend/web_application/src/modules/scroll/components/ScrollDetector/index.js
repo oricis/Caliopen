@@ -8,9 +8,11 @@ class ScrollDetector extends Component {
     render: PropTypes.func.isRequired,
     offset: PropTypes.number,
   };
+
   static defaultProps = {
     offset: 0,
   };
+
   state = {
     isScrollDetected: false,
   };

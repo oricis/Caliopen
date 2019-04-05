@@ -20,6 +20,7 @@ class Button extends PureComponent {
     center: PropTypes.bool,
     innerRef: PropTypes.shape({}),
   };
+
   static defaultProps = {
     className: undefined,
     children: null,

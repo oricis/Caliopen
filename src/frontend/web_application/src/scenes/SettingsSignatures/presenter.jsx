@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Section, Link, PageTitle, NavList, NavItem } from '../../components/';
+import {
+  Section, Link, PageTitle, NavList, NavItem,
+} from '../../components';
 import SignatureForm from './components/SignatureForm';
 
 import './style.scss';
@@ -17,7 +19,7 @@ const navLinks = [
 const SettingsSignatures = ({ i18n }) => (
   <div className="s-settings-signatures">
     <PageTitle />
-    {navLinks &&
+    {navLinks && (
       <NavList dir="vertical" className="s-settings-signatures__menu">
         {navLinks.map(link => (
           // this should be identities.map(identity => ... )
@@ -26,7 +28,7 @@ const SettingsSignatures = ({ i18n }) => (
           </NavItem>
         ))}
       </NavList>
-    }
+    )}
     <div className="s-settings-signatures__panel">
       <Section title={i18n._('settings.signatures.title', { defaults: 'Update your signature' })}>
         <SignatureForm settings={fakeSignaturesSettings} onSubmit={str => str} />

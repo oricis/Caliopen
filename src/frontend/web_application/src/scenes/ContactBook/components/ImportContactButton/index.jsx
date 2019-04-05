@@ -12,6 +12,7 @@ class ImportContactButton extends PureComponent {
     onUploadSuccess: PropTypes.func.isRequired,
     i18n: PropTypes.shape({}).isRequired,
   };
+
   static defaultProps = {
     className: undefined,
   };

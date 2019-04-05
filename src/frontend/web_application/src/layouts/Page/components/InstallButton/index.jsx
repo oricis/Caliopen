@@ -10,8 +10,10 @@ class InstallButton extends Component {
   static propTypes = {
     notifySuccess: PropTypes.func.isRequired,
   };
+
   static defaultProps = {
   };
+
   state = {
     isInstalled: false,
   };

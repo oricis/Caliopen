@@ -16,6 +16,7 @@ class User extends PureComponent {
     children: PropTypes.node,
     i18n: PropTypes.shape({}).isRequired,
   };
+
   static defaultProps = {
     children: null,
   };

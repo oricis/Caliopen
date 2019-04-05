@@ -40,7 +40,8 @@ class LockedMessage extends PureComponent {
       <div className="m-encryption-locked-message">
         <div className="m-encryption-locked-message__message">
           <Icon type="lock" className="m-encryption-locked-message__icon" />
-          <Trans id="encryption.locked-message.primary-text">Le contenu de ce message est chiffré.</Trans><br />
+          <Trans id="encryption.locked-message.primary-text">Le contenu de ce message est chiffré.</Trans>
+          <br />
           <span className="m-encryption-locked-message__status m-encryption-locked-message__status--error">{this.renderStatusText()}</span>
         </div>
       </div>

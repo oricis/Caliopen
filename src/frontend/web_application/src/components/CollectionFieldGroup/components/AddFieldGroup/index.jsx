@@ -19,12 +19,14 @@ class AddFieldGroup extends Component {
     onAdd: PropTypes.func.isRequired,
     validate: PropTypes.func,
   };
+
   static defaultProps = {
     defaultValue: '',
     validate: () => ({
       isValid: true,
     }),
   };
+
   constructor(props) {
     super(props);
     this.state = {

@@ -7,6 +7,7 @@ const THROTTLE_DURATION = 40 * 1000;
 
 class Poller {
   client = getUnsignedClient();
+
   intervalId = undefined
 
   installInterceptor = (device) => {

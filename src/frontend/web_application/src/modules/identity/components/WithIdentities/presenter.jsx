@@ -9,6 +9,7 @@ class WithIdentities extends Component {
     getIdentities: PropTypes.func.isRequired,
     localIsFetching: PropTypes.bool,
   };
+
   static defaultProps = {
     identities: undefined,
     remoteIsFetching: false,

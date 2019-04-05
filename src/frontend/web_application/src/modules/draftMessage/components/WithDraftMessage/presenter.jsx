@@ -12,12 +12,14 @@ class WithDraftMessage extends Component {
     isRequestingDraft: PropTypes.bool,
     isDeletingDraft: PropTypes.bool,
   };
+
   static defaultProps = {
     draftMessage: undefined,
     original: undefined,
     isRequestingDraft: false,
     isDeletingDraft: false,
   };
+
   state = {};
 
   componentDidMount() {

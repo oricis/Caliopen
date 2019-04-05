@@ -1,17 +1,20 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { FieldErrors, TextFieldGroup as TextFieldGroupBase, FormGrid, FormRow, FormColumn } from '../../../../components';
+import {
+  FieldErrors, TextFieldGroup as TextFieldGroupBase, FormGrid, FormRow, FormColumn,
+} from '../../../../components';
 import renderReduxField from '../../../../services/renderReduxField';
 
 const TextFieldGroup = renderReduxField(TextFieldGroupBase);
 
-class ProfileForm extends Component {
+class ProfileForm extends PureComponent {
   static propTypes = {
     errors: PropTypes.shape({}),
     editMode: PropTypes.bool.isRequired,
     i18n: PropTypes.shape({}).isRequired,
   };
+
   static defaultProps = {
     errors: {},
   };
@@ -42,7 +45,7 @@ class ProfileForm extends Component {
           </FormRow>
         */}
         <FormRow>
-          <FormColumn size="medium" bottomSpace >
+          <FormColumn size="medium" bottomSpace>
             <Field
               component={TextFieldGroup}
               name="name"
@@ -50,7 +53,7 @@ class ProfileForm extends Component {
               disabled
             />
           </FormColumn>
-          <FormColumn size="medium" bottomSpace >
+          <FormColumn size="medium" bottomSpace>
             <Field
               component={TextFieldGroup}
               name="recovery_email"
@@ -68,7 +71,7 @@ class ProfileForm extends Component {
               disabled={!editMode}
             />
           </FormColumn>
-          <FormColumn size="medium" bottomSpace >
+          <FormColumn size="medium" bottomSpace>
             <Field
               component={TextFieldGroup}
               name="contact.family_name"

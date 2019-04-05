@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
-import { Icon, Button } from '../../../../components/';
-import { notify, requestPermission, isSupported, PERMISSION_DENIED, PERMISSION_GRANTED } from '../../../../services/browser-notification';
+import { Icon, Button } from '../../../../components';
+import {
+  notify, requestPermission, isSupported, PERMISSION_DENIED, PERMISSION_GRANTED,
+} from '../../../../services/browser-notification';
 import './style.scss';
 
 class DesktopNotificationSettings extends Component {
@@ -46,8 +48,10 @@ class DesktopNotificationSettings extends Component {
       return (
         <div>
           <span className="m-desktop-notifications--allowed">
-            <Icon type="check" />{' '}
-            <Trans id="settings.desktop_notification.desktop_notifications_enabled">Desktop notifications enabled</Trans>{' '}
+            <Icon type="check" />
+            {' '}
+            <Trans id="settings.desktop_notification.desktop_notifications_enabled">Desktop notifications enabled</Trans>
+            {' '}
           </span>
           {' '}
           <Button

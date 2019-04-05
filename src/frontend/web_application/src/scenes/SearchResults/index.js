@@ -1,7 +1,9 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { search, loadMore, getKey, hasMore } from '../../store/modules/search';
+import {
+  search, loadMore, getKey, hasMore,
+} from '../../store/modules/search';
 import { withSearchParams } from '../../modules/routing';
 import Presenter from './presenter';
 

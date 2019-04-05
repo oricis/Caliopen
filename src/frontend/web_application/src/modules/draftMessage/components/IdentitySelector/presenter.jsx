@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Trans } from '@lingui/macro'; // eslint-disable-line import/no-extraneous-dependencies
 import { AdvancedSelectFieldGroup, Icon } from '../../../../components';
-import { PROVIDER_EMAIL, PROVIDER_GMAIL, PROVIDER_TWITTER, ProviderIcon } from '../../../remoteIdentity';
+import {
+  PROVIDER_EMAIL, PROVIDER_GMAIL, PROVIDER_TWITTER, ProviderIcon,
+} from '../../../remoteIdentity';
 
 class IdentitySelector extends Component {
   static propTypes = {
@@ -12,6 +14,7 @@ class IdentitySelector extends Component {
     identities: PropTypes.arrayOf(PropTypes.shape({})),
     onChange: PropTypes.func.isRequired,
   };
+
   static defaultProps = {
     className: undefined,
     identityId: '',
@@ -55,9 +58,13 @@ class IdentitySelector extends Component {
               label: `${identity.display_name} <${identity.identifier}>`,
               advancedlabel: (
                 <Fragment>
-                  {this.renderProvider({ identity })}{' '}
-                  {identity.display_name}{' '}
-                  &lt;{identity.identifier}&gt;
+                  {this.renderProvider({ identity })}
+                  {' '}
+                  {identity.display_name}
+                  {' '}
+                  &lt;
+                  {identity.identifier}
+&gt;
                 </Fragment>
               ),
               value: identity.identity_id,

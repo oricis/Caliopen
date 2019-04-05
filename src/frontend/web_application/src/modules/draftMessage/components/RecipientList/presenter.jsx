@@ -4,7 +4,9 @@ import { v1 as uuidV1 } from 'uuid';
 import classnames from 'classnames';
 import debounce from 'lodash.debounce';
 import { Trans } from '@lingui/react';
-import { Dropdown, Button, Icon, VerticalMenu, VerticalMenuItem } from '../../../../components';
+import {
+  Dropdown, Button, Icon, VerticalMenu, VerticalMenuItem,
+} from '../../../../components';
 import protocolsConfig, { ASSOC_PROTOCOL_ICON } from '../../../../services/protocols-config';
 import { addEventListener } from '../../../../services/event-manager';
 import Recipient from '../Recipient';
@@ -34,6 +36,7 @@ class RecipientList extends Component {
     searchResults: PropTypes.arrayOf(PropTypes.shape({})),
     identity: PropTypes.shape({}),
   };
+
   static defaultProps = {
     className: undefined,
     internalId: undefined,
@@ -48,9 +51,7 @@ class RecipientList extends Component {
     searchOpened: false,
   };
 
-  focusSearch() {
-    this.searchInputRef.focus();
-  }
+  search = debounce(this.props.search, 1 * 1000, { leading: false, trailing: true });
 
   handleRemoveRecipient = (participant) => {
     this.removeRecipient(participant);
@@ -79,8 +80,6 @@ class RecipientList extends Component {
       return undefined;
     });
   };
-
-  search = debounce(this.props.search, 1 * 1000, { leading: false, trailing: true });
 
   handleClickRecipientList = (ev) => {
     if (ev.target === ev.currentTarget) {
@@ -156,6 +155,10 @@ class RecipientList extends Component {
     if ([KEY.COMMA, KEY.SEMICOLON].indexOf(key) !== -1) {
       ev.preventDefault();
     }
+  }
+
+  focusSearch() {
+    this.searchInputRef.focus();
   }
 
   addParticipant(participant) {

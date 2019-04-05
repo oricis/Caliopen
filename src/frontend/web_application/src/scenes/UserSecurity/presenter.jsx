@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import getClient from '../../services/api-client';
 import OpenPGPKeysDetails from './components/OpenPGPKeysDetails';
-import { PageTitle, Section } from '../../components/';
+import { PageTitle, Section } from '../../components';
 import PasswordDetails from './components/PasswordDetails';
 import LoginDetails from './components/LoginDetails';
 
@@ -16,6 +16,7 @@ class UserSecurity extends Component {
     notifySuccess: PropTypes.func.isRequired,
     notifyError: PropTypes.func.isRequired,
   };
+
   static defaultProps = {
     user: undefined,
   };

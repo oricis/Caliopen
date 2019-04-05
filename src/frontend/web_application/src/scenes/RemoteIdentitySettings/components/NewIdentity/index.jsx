@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/macro'; // eslint-disable-line import/no-extraneous-dependencies
-import { Section, Callout, Icon, Title } from '../../../../components';
+import {
+  Section, Callout, Icon, Title,
+} from '../../../../components';
 import { PROVIDER_GMAIL, PROVIDER_TWITTER } from '../../../../modules/remoteIdentity';
 import RemoteIdentityEmail from '../RemoteIdentityEmail';
 import AuthButton from '../AuthButton';
@@ -16,6 +18,7 @@ class NewIdentity extends Component {
     onRemoteIdentityChange: PropTypes.func.isRequired,
     onClear: PropTypes.func.isRequired,
   };
+
   static defaultProps = {
   };
 
@@ -57,7 +60,8 @@ class NewIdentity extends Component {
         <Callout color="info">
           <Trans id="remote_identity.how_to">
             <p>
-              External accounts are fetched every 15 minutes.<br />
+              External accounts are fetched every 15 minutes.
+              <br />
               Currently there is no indicator to inform that the account is correctly configured
               until first try is done.
             </p>

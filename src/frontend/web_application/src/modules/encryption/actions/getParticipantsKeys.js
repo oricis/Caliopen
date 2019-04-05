@@ -23,4 +23,3 @@ export const getParticipantsKeys = async (state, dispatch, { participants }) => 
 
   return filteredKeys;
 };
-

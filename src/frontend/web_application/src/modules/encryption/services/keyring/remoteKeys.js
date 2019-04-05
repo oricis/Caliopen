@@ -19,9 +19,8 @@ export const getStoredKeys = (state, contactIds) => {
   return { keys: cachedKeys, missingKeysContactIds };
 };
 
-export const filterKeysByAddress = (keys, addresses) =>
-  keys.filter(({ emails }) => intersect(emails, addresses));
+export const filterKeysByAddress = (keys, addresses) => keys
+  .filter(({ emails }) => intersect(emails, addresses));
 
-export const checkEachAddressHasKey = (addresses, keys) =>
-  addresses.every(address => keys.some(({ emails }) => emails.includes(address)));
-
+export const checkEachAddressHasKey = (addresses, keys) => addresses
+  .every(address => keys.some(({ emails }) => emails.includes(address)));

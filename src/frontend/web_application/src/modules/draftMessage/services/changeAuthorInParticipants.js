@@ -1,4 +1,4 @@
-export const changeAuthorInParticipants = ({ participants, user }) =>
+export const changeAuthorInParticipants = ({ participants, user }) => (
   participants && participants.reduce((acc, participant) => {
     if (participant.contact_ids && participant.contact_ids.includes(user.contact.contact_id)) {
       return [
@@ -11,4 +11,5 @@ export const changeAuthorInParticipants = ({ participants, user }) =>
       ...acc,
       { ...participant, type: 'To' },
     ];
-  }, []);
+  }, [])
+);

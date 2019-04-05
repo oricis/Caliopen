@@ -14,6 +14,9 @@
     "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.spec.js", "**/*.spec.jsx"]}],
     "import/no-useless-path-segments": "warn",
     "import/prefer-default-export": 0,
+    "jsx-a11y/label-has-associated-control": ["error", {
+      "controlComponents": ["Field"]
+    }],
     "jsx-a11y/label-has-for": [ "error", {
       "components": [ "Label" ],
       "required": {

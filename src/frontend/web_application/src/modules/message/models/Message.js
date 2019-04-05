@@ -7,9 +7,14 @@ export class Message {
   }
 
   message_id = uuidv4()
+
   discussion_id
+
   subject = ''
+
   body = ''
+
   parent_id
+
   user_identities
 }

@@ -50,4 +50,3 @@ export const getParticipantsContactIds = ({ participants }) => participants
 
 export const getParticipantsAddresses = ({ participants }) => participants
   .map(participant => participant.address);
-

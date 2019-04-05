@@ -8,6 +8,7 @@ class AuthorAvatarLetter extends PureComponent {
   static propTypes = {
     message: PropTypes.shape({}).isRequired,
   };
+
   static defaultProps = {};
 
   render() {

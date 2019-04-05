@@ -4,10 +4,15 @@ import classnames from 'classnames';
 // unable to use @lingui/macro due to a miss-interpolated value in Plural component
 import { Trans, Plural, withI18n } from '@lingui/react';
 import ContactList from './components/ContactList';
-import { PageTitle, Spinner, Button, ActionBarWrapper, ActionBar, Checkbox, SidebarLayout, NavList, NavItem, Confirm, Modal } from '../../components';
+import {
+  PageTitle, Spinner, Button, ActionBarWrapper, ActionBar, Checkbox, SidebarLayout, NavList,
+  NavItem, Confirm, Modal,
+} from '../../components';
 import { withPush } from '../../modules/routing';
 import { withScrollManager, ScrollDetector } from '../../modules/scroll';
-import { withTags, TagsForm, getCleanedTagCollection, getTagNamesInCommon } from '../../modules/tags';
+import {
+  withTags, TagsForm, getCleanedTagCollection, getTagNamesInCommon,
+} from '../../modules/tags';
 import TagList from './components/TagList';
 import ImportContactButton from './components/ImportContactButton';
 import { withTagSearched } from './hoc/withTagSearched';

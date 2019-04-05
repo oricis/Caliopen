@@ -9,6 +9,7 @@ class Brand extends PureComponent {
     theme: PropTypes.oneOf(['low']),
     responsive: PropTypes.bool,
   };
+
   static defaultProps = {
     className: undefined,
     theme: undefined,

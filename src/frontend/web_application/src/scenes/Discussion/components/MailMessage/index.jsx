@@ -5,7 +5,9 @@ import { Trans, withI18n } from '@lingui/react';
 import classnames from 'classnames';
 import { withScrollTarget } from '../../../../modules/scroll';
 import { withPush } from '../../../../modules/routing';
-import { Button, Confirm, Icon, TextBlock } from '../../../../components';
+import {
+  Button, Confirm, Icon, TextBlock,
+} from '../../../../components';
 import MessageAttachments from '../MessageAttachments';
 import MessageRecipients from '../MessageRecipients';
 import MessagePi from '../MessagePi';
@@ -52,7 +54,9 @@ class MailMessage extends Component {
   }
 
   handleMessageDelete = messageDeleteHandler(this)
+
   handleToggleMarkAsRead = toggleMarkAsReadHandler(this)
+
   handleReply = replyHandler(this)
 
   renderBody = () => {
@@ -97,7 +101,7 @@ class MailMessage extends Component {
           <TextBlock
             className={classnames(
               'm-mail-message-details__author',
-            { 'm-mail-message-details__author--encrypted': encryptionStatus }
+              { 'm-mail-message-details__author--encrypted': encryptionStatus }
             )}
           >
             {encryptionStatus && <Icon type="lock" className="m-mail-message-details--encrypted__icon" />}
@@ -118,10 +122,14 @@ class MailMessage extends Component {
           <MessagePi message={message} illustrate describe />
           <div className="s-mail-message__participants">
             <div className="s-mail-message__participants-from">
-              <span className="direction"><Trans id="message.from">From:</Trans></span> {author.label}
+              <span className="direction"><Trans id="message.from">From:</Trans></span>
+              {' '}
+              {author.label}
             </div>
             <div className="s-mail-message__participants-to">
-              <span className="direction"><Trans id="message.to">To:</Trans></span> <MessageRecipients message={message} user={user} />
+              <span className="direction"><Trans id="message.to">To:</Trans></span>
+              {' '}
+              <MessageRecipients message={message} user={user} />
             </div>
           </div>
           <TagList className="s-mail-message__tags" message={message} />
@@ -132,11 +140,11 @@ class MailMessage extends Component {
           </h2>
           { this.renderBody() }
           {// Do not display attachments if message is encrypted.
-            !encryptionStatus &&
-              <div className="m-message__attachments">
-                <MessageAttachments message={message} />
-              </div>
-          }
+            !encryptionStatus && (
+            <div className="m-message__attachments">
+              <MessageAttachments message={message} />
+            </div>
+            )}
         </div>
         {!noInteractions && (
           <footer className="s-mail-message__actions">

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
-import { Link, FileSize, TextBlock, Button, Modal, InputFileGroup, Spinner, Icon } from '../../../../components';
+import {
+  Link, FileSize, TextBlock, Button, Modal, InputFileGroup, Spinner, Icon,
+} from '../../../../components';
 import { getMaxSize } from '../../../../services/config';
 import './style.scss';
 
@@ -17,14 +19,17 @@ function generateStateFromProps(props) {
 
 class AttachmentManager extends Component {
   static propTypes = {
+    onUploadAttachments: PropTypes.func.isRequired,
     message: PropTypes.shape({}),
     i18n: PropTypes.shape({}).isRequired,
     notifyError: PropTypes.func.isRequired,
     onDeleteAttachement: PropTypes.func.isRequired,
   };
+
   static defaultProps = {
     message: undefined,
   };
+
   state = {
     attachments: [],
     isFetching: {},

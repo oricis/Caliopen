@@ -52,14 +52,14 @@ class CheckboxFieldGroup extends PureComponent {
     const renderSwitch = () => (
       <div>
         <Switch id={checkboxId} label={label} {...inputProps} />
-        {showTextLabel &&
+        {showTextLabel && (
           <Label
             htmlFor={checkboxId}
             className={classnames('m-checkbox-field-group__label', labelClassname)}
           >
             {label}
           </Label>
-        }
+        )}
       </div>
     );
 

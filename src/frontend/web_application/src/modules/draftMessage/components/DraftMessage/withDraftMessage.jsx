@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import WithDraftMessage from '../WithDraftMessage';
 
 export const withDraftMessage = () => (WrappedComp) => {
@@ -26,6 +27,10 @@ export const withDraftMessage = () => (WrappedComp) => {
     />
   );
   C.displayName = `C(${WrappedComp.displayName || WrappedComp.name || 'Component'})`;
+  C.propTypes = {
+    internalId: PropTypes.string.isRequired,
+    hasDiscussion: PropTypes.bool.isRequired,
+  };
 
   return C;
 };

@@ -12,6 +12,7 @@ class ContactTitleField extends PureComponent {
     className: PropTypes.string,
     onClick: PropTypes.func.isRequired,
   };
+
   static defaultProps = {
     className: undefined,
   };

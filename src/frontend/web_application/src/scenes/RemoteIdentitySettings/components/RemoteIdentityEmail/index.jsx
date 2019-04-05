@@ -3,8 +3,13 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withI18n } from '@lingui/react';
 import { Trans } from '@lingui/macro'; // eslint-disable-line import/no-extraneous-dependencies
-import { TextFieldGroup, CheckboxFieldGroup, FormGrid, FormRow, FormColumn, FieldErrors, Confirm, Button, Spinner, TextBlock } from '../../../../components';
-import { REMOTE_IDENTITY_STATUS_ACTIVE, REMOTE_IDENTITY_STATUS_INACTIVE, PROTOCOL_EMAIL, Identity } from '../../../../modules/remoteIdentity';
+import {
+  TextFieldGroup, CheckboxFieldGroup, FormGrid, FormRow, FormColumn, FieldErrors, Confirm, Button,
+  Spinner, TextBlock,
+} from '../../../../components';
+import {
+  REMOTE_IDENTITY_STATUS_ACTIVE, REMOTE_IDENTITY_STATUS_INACTIVE, PROTOCOL_EMAIL, Identity,
+} from '../../../../modules/remoteIdentity';
 import Status from '../Status';
 import RemoteIdentityDetails from '../RemoteIdentityDetails';
 import './style.scss';
@@ -114,6 +119,7 @@ class RemoteIdentityEmail extends Component {
   init = () => {
     this.setState(prevState => generateStateFromProps(this.props, prevState));
   }
+
   reset = () => {
     this.setState(generateStateFromProps(this.props, { ...this.constructor.initialState }));
   }

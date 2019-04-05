@@ -8,12 +8,17 @@ import { withPush } from '../../modules/routing';
 import { ScrollDetector } from '../../modules/scroll';
 import { withSettings } from '../../modules/settings';
 import { withCloseTab, withCurrentTab } from '../../modules/tab';
-import { ManageEntityTags, getTagLabel, getCleanedTagCollection, withTags } from '../../modules/tags';
+import {
+  ManageEntityTags, getTagLabel, getCleanedTagCollection, withTags,
+} from '../../modules/tags';
 import { withNotification } from '../../modules/userNotify';
 import fetchLocation from '../../services/api-location';
 import { formatName } from '../../services/contact';
 import ContactProfileForm from './components/ContactProfileForm';
-import { ActionBarWrapper, ActionBar, ActionBarButton, Badge, Button, Confirm, Icon, Modal, PageTitle, PlaceholderBlock, Spinner, TextBlock, TextList, TextItem, Title } from '../../components';
+import {
+  ActionBarWrapper, ActionBar, ActionBarButton, Badge, Button, Confirm, Icon, Modal, PageTitle,
+  PlaceholderBlock, Spinner, TextBlock, TextList, TextItem, Title,
+} from '../../components';
 import FormCollection from './components/FormCollection';
 import EmailForm from './components/EmailForm';
 import PhoneForm from './components/PhoneForm';
@@ -49,6 +54,7 @@ class Contact extends Component {
     i18n: PropTypes.shape({}).isRequired,
     notifyError: PropTypes.func.isRequired,
     requestContact: PropTypes.func.isRequired,
+    createContact: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
     reset: PropTypes.func.isRequired,
     updateContact: PropTypes.func.isRequired,
@@ -497,7 +503,8 @@ class Contact extends Component {
         isFetching
         actionsNode={(
           <Fragment>
-            <PlaceholderBlock shape="line" display="inline-block" width="small" />:
+            <PlaceholderBlock shape="line" display="inline-block" width="small" />
+:
             <PlaceholderBlock shape="line" display="inline-block" />
             <PlaceholderBlock shape="line" display="inline-block" width="large" />
           </Fragment>

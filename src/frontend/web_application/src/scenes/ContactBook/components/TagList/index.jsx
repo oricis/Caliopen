@@ -4,7 +4,7 @@ import { withI18n } from '@lingui/react';
 import classnames from 'classnames';
 import { WithTags, getTagLabel } from '../../../../modules/tags';
 import { withTagSearched } from '../../hoc/withTagSearched';
-import { Link, NavList, NavItem } from '../../../../components/';
+import { Link, NavList, NavItem } from '../../../../components';
 
 import './style.scss';
 
@@ -15,13 +15,15 @@ class TagList extends Component {
     i18n: PropTypes.shape({}).isRequired,
     tagSearched: PropTypes.string,
   };
+
   static defaultProps = {
     tagSearched: '',
   };
+
   state = {};
 
-  sortTags = (i18n, tags) =>
-    [...tags].sort((a, b) => getTagLabel(i18n, a).localeCompare(getTagLabel(i18n, b)));
+  sortTags = (i18n, tags) => [...tags]
+    .sort((a, b) => getTagLabel(i18n, a).localeCompare(getTagLabel(i18n, b)));
 
   renderItem({ tagName, label }) {
     const { tagSearched } = this.props;
@@ -57,7 +59,7 @@ class TagList extends Component {
               label: getTagLabel(i18n, tag),
             })}
           </NavItem>
-          ))}
+        ))}
         />
       </NavList>
     );

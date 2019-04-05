@@ -6,6 +6,7 @@ export class Legend extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
   };
+
   static defaultProps = {
     className: undefined,
   };

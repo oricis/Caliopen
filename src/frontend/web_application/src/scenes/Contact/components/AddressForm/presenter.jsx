@@ -4,7 +4,10 @@ import { Trans } from '@lingui/react';
 import { CountryDropdown as CountryDropdownBase, RegionDropdown as RegionDropdownBase } from 'react-country-region-selector';
 import { Field } from 'redux-form';
 import renderReduxField from '../../../../services/renderReduxField';
-import { Button, Icon, FieldErrors, SelectFieldGroup as SelectFieldGroupBase, TextFieldGroup as TextFieldGroupBase, Fieldset, Legend, FormGrid, FormRow, FormColumn } from '../../../../components';
+import {
+  Button, Icon, FieldErrors, SelectFieldGroup as SelectFieldGroupBase,
+  TextFieldGroup as TextFieldGroupBase, Fieldset, Legend, FormGrid, FormRow, FormColumn,
+} from '../../../../components';
 import './style.scss';
 
 const ADDRESS_TYPES = ['', 'work', 'home', 'other'];

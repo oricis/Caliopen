@@ -22,6 +22,7 @@ class NavbarItem extends PureComponent {
     children: PropTypes.node,
     color: PropTypes.oneOf(['secondary', 'contrasted']),
   };
+
   static defaultProps = {
     className: undefined,
     active: false,
@@ -30,6 +31,7 @@ class NavbarItem extends PureComponent {
     children: null,
     color: undefined,
   };
+
   state = {};
 
   render() {

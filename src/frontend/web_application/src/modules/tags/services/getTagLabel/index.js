@@ -10,8 +10,8 @@ const SYSTEM_TAGS = {
   [TAG_SPAM]: i18nMark('tags.label.spam'),
 };
 
-export const getCleanedTagCollection = (tags, names) =>
-  tags.filter(tag => names.includes(tag.name));
+export const getCleanedTagCollection = (tags, names) => tags
+  .filter(tag => names.includes(tag.name));
 
 export const getTag = (tags, name) => tags.find(item => item.name === name);
 

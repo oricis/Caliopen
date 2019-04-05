@@ -28,12 +28,16 @@ export const withDropdownControl = (WrappedComponent) => {
   };
 
   WithDropdownControl.displayName = `WithDropdownControl(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+  WithDropdownControl.propTypes = {
+    toggleId: PropTypes.string.isRequired,
+  };
 
   return forwardRef(WithDropdownControl);
 };
 
 class Dropdown extends Component {
   static propTypes = {
+    id: PropTypes.string,
     alignRight: PropTypes.bool, // force align right
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     className: PropTypes.string,
@@ -48,6 +52,7 @@ class Dropdown extends Component {
   };
 
   static defaultProps = {
+    id: undefined,
     alignRight: false,
     children: null,
     className: null,

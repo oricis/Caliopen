@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { isAuthenticated } from '../../../user';
+import { isAuthenticated } from '../..';
 
 class WithUser extends Component {
   static propTypes = {

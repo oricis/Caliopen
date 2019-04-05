@@ -54,9 +54,11 @@ const deleteDiscussion = ({ discussionId, messages }) => async (dispatch) => {
   return dispatch(invalidate('discussion', discussionId));
 };
 
-const updateDiscussionTags = ({ i18n, messages, tags }) => async dispatch =>
-  Promise.all(messages.map(message =>
-    dispatch(updateTagCollection(i18n, { type: 'message', entity: message, tags }))));
+const updateDiscussionTags = ({ i18n, messages, tags }) => async dispatch => (
+  Promise.all(messages.map(message => (
+    dispatch(updateTagCollection(i18n, { type: 'message', entity: message, tags }))
+  )))
+);
 
 const onMessageReply = ({ message, discussionId }) => async (dispatch) => {
   dispatch(reply({ internalId: discussionId, message }));

@@ -20,6 +20,7 @@ class Badge extends PureComponent {
     rightSpaced: PropTypes.bool,
     to: PropTypes.string,
   };
+
   static defaultProps = {
     children: undefined,
     className: undefined,

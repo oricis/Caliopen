@@ -9,6 +9,7 @@ class DeviceProvider extends Component {
     children: PropTypes.node.isRequired,
     setDeviceGenerated: PropTypes.func.isRequired,
   };
+
   static defaultProps = {
   };
 

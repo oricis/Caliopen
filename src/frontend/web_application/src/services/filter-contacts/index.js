@@ -1,7 +1,7 @@
 export default ({ contacts, searchTerms }) => contacts.filter((contact) => {
-  const match = ({ item, props }) =>
-    props.find(propName =>
-      item[propName] && item[propName].toLowerCase().includes(searchTerms.toLowerCase()));
+  const match = ({ item, props }) => props.find(propName => (
+    item[propName] && item[propName].toLowerCase().includes(searchTerms.toLowerCase())
+  ));
 
   const searchContactProps = [
     'title',

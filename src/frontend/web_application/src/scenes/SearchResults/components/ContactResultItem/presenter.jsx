@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { WithTags, getTagLabel, getCleanedTagCollection } from '../../../../modules/tags';
 import { ContactAvatarLetter, SIZE_SMALL } from '../../../../modules/avatar';
-import { Badge, Link, TextBlock } from '../../../../components/';
+import { Badge, Link, TextBlock } from '../../../../components';
 import { formatName } from '../../../../services/contact';
 import Highlights from '../Highlights';
 import './style.scss';
@@ -17,6 +17,7 @@ class ContactResultItem extends PureComponent {
     contact: PropTypes.shape({}).isRequired,
     contactDisplayFormat: PropTypes.string.isRequired,
   };
+
   static defaultProps = {
     highlights: null,
   };
@@ -40,7 +41,7 @@ class ContactResultItem extends PureComponent {
           {' '}
           <Badge className="m-contact-result-item__tag">{getTagLabel(i18n, tag)}</Badge>
         </span>
-        ))}
+      ))}
       />
     );
   }
@@ -67,7 +68,11 @@ class ContactResultItem extends PureComponent {
         <TextBlock className="m-contact-result-item__col-title">
           {contact.name_prefix && (<span className="m-contact-result-item__contact-prefix"><Highlights term={term} highlights={contact.name_prefix} /></span>)}
           <span className="m-contact-result-item__contact-title">{this.renderTitle()}</span>
-          {contact.name_suffix && (<span className="m-contact-result-item__contact-suffix">, <Highlights term={term} highlights={contact.name_suffix} /></span>)}
+          {contact.name_suffix && (
+            <span className="m-contact-result-item__contact-suffix">
+              , <Highlights term={term} highlights={contact.name_suffix} />
+            </span>
+          )}
         </TextBlock>
         <TextBlock className="m-contact-result-item__col-highlights">
           {this.renderHighlights()}

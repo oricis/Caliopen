@@ -23,8 +23,8 @@ export const updateTags = (type, entity, { tags }) => (dispatch) => {
   return tryCatchAxiosPromise(dispatch(action({ [type]: entity, tags })));
 };
 
-const getTagFromLabel = (i18n, tags, label) =>
-  tags.find(tag => getTagLabel(i18n, tag).toLowerCase() === label.toLowerCase());
+const getTagFromLabel = (i18n, tags, label) => tags
+  .find(tag => getTagLabel(i18n, tag).toLowerCase() === label.toLowerCase());
 
 const createMissingTags = (i18n, tagCollection) => async (dispatch, getState) => {
   const { tags: userTags } = getState().tag;
@@ -55,30 +55,29 @@ const getRequestEntityAct = (type) => {
 
 export const updateTagCollection = (i18n, {
   type, entity, tags: tagCollection, lazy = false,
-}) =>
-  async (dispatch) => {
-    const upToDateTags = await dispatch(createMissingTags(i18n, tagCollection));
-    const normalizedTags = tagCollection.reduce((acc, tag) => [
-      ...acc,
-      !tag.name ? getTagFromLabel(i18n, upToDateTags, tag.label) : tag,
-    ], []);
-    const tagNames = normalizedTags.map(tag => tag.name);
+}) => async (dispatch) => {
+  const upToDateTags = await dispatch(createMissingTags(i18n, tagCollection));
+  const normalizedTags = tagCollection.reduce((acc, tag) => [
+    ...acc,
+    !tag.name ? getTagFromLabel(i18n, upToDateTags, tag.label) : tag,
+  ], []);
+  const tagNames = normalizedTags.map(tag => tag.name);
 
-    if (!isEqual(entity.tags, tagCollection.map(tag => tag.name))) {
-      await dispatch(updateTags(type, entity, {
+  if (!isEqual(entity.tags, tagCollection.map(tag => tag.name))) {
+    await dispatch(updateTags(type, entity, {
+      tags: tagNames,
+    }));
+
+    if (lazy) {
+      return {
+        ...entity,
         tags: tagNames,
-      }));
-
-      if (lazy) {
-        return {
-          ...entity,
-          tags: tagNames,
-        };
-      }
-      const request = getRequestEntityAct(type);
-
-      return tryCatchAxiosPromise(dispatch(request(entity[`${type}_id`])));
+      };
     }
+    const request = getRequestEntityAct(type);
 
-    return entity;
-  };
+    return tryCatchAxiosPromise(dispatch(request(entity[`${type}_id`])));
+  }
+
+  return entity;
+};

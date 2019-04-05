@@ -1,7 +1,10 @@
 export class View {
   id
+
   condition
+
   label
+
   isFetching = false;
 
   constructor(props = {}) {

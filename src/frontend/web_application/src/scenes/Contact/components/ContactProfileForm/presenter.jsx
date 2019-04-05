@@ -4,7 +4,7 @@ import { Trans } from '@lingui/react';
 import { Field } from 'redux-form';
 import ContactTitleField from '../ContactTitleField';
 import renderReduxField from '../../../../services/renderReduxField';
-import { Button, TextFieldGroup as TextFieldGroupBase } from '../../../../components/';
+import { Button, TextFieldGroup as TextFieldGroupBase } from '../../../../components';
 import './style.scss';
 
 const TextFieldGroup = renderReduxField(TextFieldGroupBase);
@@ -42,7 +42,7 @@ class ContactProfileForm extends Component {
             form={form}
             onClick={this.toggleExpandForm}
           />
-          {this.state.isExpanded ?
+          {this.state.isExpanded ? (
             <Button
               icon="caret-up"
               display="inline"
@@ -53,7 +53,7 @@ class ContactProfileForm extends Component {
                 <Trans id="contact_profile.action.edit_contact">Edit</Trans>
               </span>
             </Button>
-          :
+          ) : (
             <Button
               icon="caret-down"
               display="inline"
@@ -64,10 +64,10 @@ class ContactProfileForm extends Component {
                 <Trans id="contact_profile.action.edit_contact">Edit</Trans>
               </span>
             </Button>
-          }
+          )}
         </div>
 
-        {this.state.isExpanded &&
+        {this.state.isExpanded && (
           <div className="m-contact-profile-form__expanded-form">
             <Field
               component={TextFieldGroup}
@@ -102,7 +102,7 @@ class ContactProfileForm extends Component {
               showLabelforSr
             />
           </div>
-        }
+        )}
       </div>
     );
   }

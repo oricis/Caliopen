@@ -46,12 +46,12 @@ class Section extends PureComponent {
 
     return (
       <section className={classnames('m-section', modifiers, borderModifier, className)}>
-        {(title || descr) &&
+        {(title || descr) && (
           <header className="m-section__header">
             {title && <Title className="m-section__title" {...titleProps}>{title}</Title>}
             {descr && <p className="m-section__descr">{descr}</p>}
           </header>
-        }
+        )}
         {children}
       </section>
     );

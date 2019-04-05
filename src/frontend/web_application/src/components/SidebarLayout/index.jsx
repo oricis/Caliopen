@@ -11,6 +11,7 @@ class SidebarLayout extends PureComponent {
     sidebarClassName: PropTypes.string,
     panelClassName: PropTypes.string,
   };
+
   static defaultProps = {
     sidebar: null,
     children: null,
