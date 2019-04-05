@@ -14,10 +14,13 @@ def clean_email_address(addr):
     if not email or '@' not in email:
         log.warn(err_msg)
         return ("", "")
-    name, domain = email.lower().split('@', 2)
+    name, domain = email.lower().split('@', 1)
+    if '@' in domain:
+        log.error(err_msg)
+        return ("", "")
     if '+' in name:
         try:
-            name, ext = name.split('+', 2)
+            name, ext = name.split('+', 1)
         except Exception as exc:
             log.info(exc)
     # unicode everywhere
