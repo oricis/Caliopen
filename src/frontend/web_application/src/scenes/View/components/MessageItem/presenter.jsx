@@ -8,7 +8,9 @@ import { withSettings } from '../../../../modules/settings';
 import MessageDate from '../../../../components/MessageDate';
 import { AuthorAvatarLetter, SIZE_SMALL } from '../../../../modules/avatar';
 // import MessageItemContainer from '../MessageItemContainer';
-import { Badge, Link, Checkbox, Icon, TextBlock } from '../../../../components/';
+import {
+  Badge, Link, Checkbox, Icon, TextBlock,
+} from '../../../../components';
 import { getTagLabel, getCleanedTagCollection } from '../../../../modules/tags';
 import { renderParticipant, getAuthor } from '../../../../services/message';
 
@@ -158,13 +160,10 @@ class MessageItem extends Component {
         )}
       >
         <div className="s-message-item__col-avatar">
-          <label htmlFor={message.message_id}>
-            <AuthorAvatarLetter
-              size={SIZE_SMALL}
-              message={message}
-              isSelected={isMessageSelected}
-            />
-          </label>
+          <AuthorAvatarLetter
+            size={SIZE_SMALL}
+            message={message}
+          />
         </div>
         <div className="s-message-item__col-content">
           {this.renderContent()}

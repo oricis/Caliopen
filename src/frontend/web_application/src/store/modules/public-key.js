@@ -76,8 +76,7 @@ export function deletePublicKey({ contactId, publicKeyId }) {
 
 const initialState = {};
 
-const extractContactIdFromAction = action =>
-  action.meta.previousAction.payload.contactId;
+const extractContactIdFromAction = action => action.meta.previousAction.payload.contactId;
 
 const keyListReducer = (state = [], action = {}) => {
   const contactId = extractContactIdFromAction(action);
