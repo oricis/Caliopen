@@ -54,8 +54,10 @@ class MessageList extends Component {
       hasMore, loadMore, isFetching,
     } = this.props;
 
-    return (loadMore && !(isFetching && hasMore)) && (
-      <Button shape="hollow" onClick={loadMore}><Trans id="general.action.load_more">Load more</Trans></Button>
+    return loadMore && !isFetching && hasMore && (
+      <Button shape="hollow" onClick={loadMore} className="m-message-list__load-more">
+        <Trans id="general.action.load_more">Load more</Trans>
+      </Button>
     );
   }
 
