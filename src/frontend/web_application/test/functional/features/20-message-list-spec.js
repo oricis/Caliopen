@@ -24,4 +24,14 @@ describe('Message list', () => {
     console.log('wait success for .m-message');
     expect(element.all(by.css('article')).count()).toEqual(2);
   });
+
+  it('Does not display "Load More" on complete discussion', async () => {
+    // await filter('All');
+    await browser.wait(EC.presenceOf($('.s-timeline .s-discussion-item')), 5 * 1000);
+    await element(by.cssContainingText(
+      '.s-discussion-item__message_excerpt',
+      'Fry! Stay back! He\'s too powerful!'
+    )).click();
+    expect(element.all(by.css('m-message-list__load-more')).count()).toEqual(0);
+  });
 });
