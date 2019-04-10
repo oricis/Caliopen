@@ -4,9 +4,11 @@ import classnames from 'classnames';
 import { Trans, withI18n } from '@lingui/react';
 import Moment from 'react-moment';
 import {
-  Button, Spinner, Icon, TextareaFieldGroup, DefList,
+  Button, Spinner, Icon, TextareaFieldGroup, DefList, Link,
 } from '../../../../components';
 import getPGPManager from '../../../../services/openpgp-manager';
+import { strToBase64 } from '../../../../services/encode-utils';
+
 import './style.scss';
 
 async function generateStateFromProps({ props, getKeyFromASCII, keyStatuses }) {
@@ -83,6 +85,8 @@ class OpenPGPKey extends Component {
       ));
   }
 
+  getPrivateKeyDataUrl = () => `data:application/x-pgp;base64,${strToBase64(this.props.privateKeyArmored)}`;
+
   handleDeleteKey() {
     this.props.onDeleteKey({ fingerprint: this.state.openpgpKey.fingerprint });
   }
@@ -151,6 +155,16 @@ class OpenPGPKey extends Component {
             }
             {' '}
             {this.state.openpgpKey.keyStatus && openpgpStatuses[this.state.openpgpKey.keyStatus]}
+            <Link
+              button
+              plain
+              href={this.getPrivateKeyDataUrl()}
+              download="private-key.asc"
+            >
+              <Icon type="download" />
+              {' '}
+              <Trans id="openpgp-key.download">Save and keep in a safe place.</Trans>
+            </Link>
           </div>
         )}
 

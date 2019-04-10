@@ -42,6 +42,7 @@ export { default as InputFile } from './InputFile';
 export { default as InputFileGroup } from './InputFileGroup';
 export { default as InputText } from './InputText';
 export { default as Label } from './Label';
+export { default as MultiSelectFieldGroup } from './MultiSelectFieldGroup';
 export { default as PasswordStrength } from './PasswordStrength';
 export { default as RadioFieldGroup } from './RadioFieldGroup';
 export { default as SelectFieldGroup } from './SelectFieldGroup';
