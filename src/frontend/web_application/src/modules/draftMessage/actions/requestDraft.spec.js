@@ -21,6 +21,9 @@ const getStore = () => mockStore({
     },
   },
 });
+jest.mock('../../user', () => ({
+  getUser: () => dispatch => dispatch({ type: 'getUser', payload: {} }),
+}));
 jest.mock('../../message', () => {
   const actualModule = jest.requireActual('../../message');
 
@@ -50,6 +53,10 @@ jest.mock('../../message', () => {
             subject: 'Parent msg subject',
             is_draft: false,
             type: 'email',
+            participants: [
+              { address: 'to@bar.tld', type: 'To', protocol: 'email' },
+              { address: 'me@example.tld', type: 'From', protocol: 'email' },
+            ],
           });
         case '03':
           return Promise.resolve({
@@ -57,6 +64,10 @@ jest.mock('../../message', () => {
             discussion_id: '03',
             is_draft: false,
             type: 'twitter',
+            participants: [
+              { address: 'me-twitter', type: 'To', protocol: 'twitter' },
+              { address: 'From', type: 'From', protocol: 'twitter' },
+            ],
           });
         default:
           return Promise.resolve(undefined);
@@ -84,17 +95,21 @@ jest.mock('../../message', () => {
   };
 });
 jest.mock('./getDefaultIdentity', () => ({
-  getDefaultIdentity: ({ parentMessage } = {}) => (dispatch) => {
-    dispatch({ type: 'getDefaultIdentity', payload: { parentMessage } });
+  getDefaultIdentity: ({ participants, protocol = 'email' } = {}) => (dispatch) => {
+    dispatch({ type: 'getDefaultIdentity', payload: { participants, protocol } });
 
-    if (!!parentMessage && parentMessage.type === 'twitter') {
+    if (protocol === 'twitter') {
       return Promise.resolve({
         identity_id: 'ident-twitter',
+        identifier: 'me-twitter',
+        protocol: 'twitter',
       });
     }
 
     return Promise.resolve({
       identity_id: 'ident-default-mail',
+      identifier: 'me@example.tld',
+      protocol: 'imap',
     });
   },
 }));
@@ -107,19 +122,19 @@ describe('modules draftMessage - actions - requestDraft', () => {
         body: '',
         subject: '',
         user_identities: expect.anything(),
-        message_id: expect.anything(),
+        message_id: 'whatever',
       };
       const expectedActions = [
         requestDraftBase({ internalId: 'unknown' }),
-        { type: 'getMessage', payload: { messageId: 'unknown' } },
-        { type: 'getDefaultIdentity', payload: { } },
+        { type: 'getMessage', payload: { messageId: 'whatever' } },
+        { type: 'getDefaultIdentity', payload: { protocol: 'email' } },
         createDraft({ internalId: 'unknown', draft }),
         requestDraftSuccess({
           internalId: 'unknown',
           draft,
         }),
       ];
-      const action = requestDraft({ internalId: 'unknown', hasDiscussion: false });
+      const action = requestDraft({ internalId: 'unknown', hasDiscussion: false, messageId: 'whatever' });
 
       const result = await store.dispatch(action);
       expect(result).toEqual(draft);
@@ -129,7 +144,7 @@ describe('modules draftMessage - actions - requestDraft', () => {
 
     it('has default identity', async () => {
       const store = getStore();
-      const action = requestDraft({ internalId: 'unknown', hasDiscussion: false });
+      const action = requestDraft({ internalId: 'unknown', hasDiscussion: false, messageId: 'whatever' });
 
       const result = await store.dispatch(action);
       expect(result.user_identities).toEqual(['ident-default-mail']);
@@ -150,7 +165,7 @@ describe('modules draftMessage - actions - requestDraft', () => {
           draft: message,
         }),
       ];
-      const action = requestDraft({ internalId: 'saved', hasDiscussion: false });
+      const action = requestDraft({ internalId: 'saved', hasDiscussion: false, messageId: 'saved' });
 
       const result = await store.dispatch(action);
       expect(result).toEqual(message);
@@ -162,19 +177,33 @@ describe('modules draftMessage - actions - requestDraft', () => {
     it('creates a new draft', async () => {
       const store = getStore();
       const draft = {
+        discussion_id: '02',
         body: '',
         user_identities: expect.anything(),
         parent_id: 'last-msg',
         subject: 'Parent msg subject',
         message_id: expect.anything(),
+        participants: [
+          { address: 'to@bar.tld', type: 'To', protocol: 'email' },
+          { address: 'me@example.tld', type: 'From', protocol: 'email' },
+        ],
       };
 
       const expectedActions = [
         requestDraftBase({ internalId: '02' }),
         { type: 'getDraft', payload: { discussionId: '02' } },
         { type: 'getLastMessage', payload: { discussionId: '02' } },
-        { type: 'getMessage', payload: { messageId: draft.parent_id } },
-        { type: 'getDefaultIdentity', payload: { } },
+        { type: 'getUser', payload: {} },
+        {
+          type: 'getDefaultIdentity',
+          payload: {
+            protocol: 'email',
+            participants: [
+              { address: 'to@bar.tld', type: 'To', protocol: 'email' },
+              { address: 'me@example.tld', type: 'From', protocol: 'email' },
+            ],
+          },
+        },
         createDraft({ internalId: '02', draft }),
         requestDraftSuccess({ internalId: '02', draft }),
       ];
@@ -189,19 +218,34 @@ describe('modules draftMessage - actions - requestDraft', () => {
     it('new twitter draft', async () => {
       const store = getStore();
       const draft = {
+        discussion_id: '03',
         body: '',
         subject: '',
         user_identities: ['ident-twitter'],
         parent_id: 'twitter-msg',
         message_id: expect.anything(),
+        participants: [
+          // To and From has been inverted as expected
+          { address: 'me-twitter', type: 'From', protocol: 'twitter' },
+          { address: 'From', type: 'To', protocol: 'twitter' },
+        ],
       };
 
       const expectedActions = [
         requestDraftBase({ internalId: '03' }),
         { type: 'getDraft', payload: { discussionId: '03' } },
         { type: 'getLastMessage', payload: { discussionId: '03' } },
-        { type: 'getMessage', payload: { messageId: draft.parent_id } },
-        { type: 'getDefaultIdentity', payload: { parentMessage: { message_id: 'twitter-msg', type: 'twitter' } } },
+        { type: 'getUser', payload: {} },
+        {
+          type: 'getDefaultIdentity',
+          payload: {
+            protocol: 'twitter',
+            participants: [
+              { address: 'me-twitter', type: 'To', protocol: 'twitter' },
+              { address: 'From', type: 'From', protocol: 'twitter' },
+            ],
+          },
+        },
         createDraft({ internalId: '03', draft }),
         requestDraftSuccess({ internalId: '03', draft }),
       ];

@@ -6,6 +6,7 @@ class WithDraftMessage extends Component {
     hasDiscussion: PropTypes.bool.isRequired,
     render: PropTypes.func.isRequired,
     internalId: PropTypes.string.isRequired,
+    messageId: PropTypes.string,
     draftMessage: PropTypes.shape({}),
     original: PropTypes.shape({}),
     requestDraft: PropTypes.func.isRequired,
@@ -16,6 +17,7 @@ class WithDraftMessage extends Component {
   static defaultProps = {
     draftMessage: undefined,
     original: undefined,
+    messageId: undefined,
     isRequestingDraft: false,
     isDeletingDraft: false,
   };
@@ -25,10 +27,11 @@ class WithDraftMessage extends Component {
   componentDidMount() {
     const {
       draftMessage, isRequestingDraft, isDeletingDraft, requestDraft, internalId, hasDiscussion,
+      messageId,
     } = this.props;
 
     if (!draftMessage && !isRequestingDraft && !isDeletingDraft) {
-      requestDraft({ internalId, hasDiscussion });
+      requestDraft({ internalId, hasDiscussion, messageId });
     }
   }
 

@@ -305,7 +305,9 @@ class DraftMessage extends Component {
         draftMessage: undefined,
       });
 
-      await requestDraft({ internalId, hasDiscussion });
+      if (hasDiscussion) {
+        await requestDraft({ internalId, hasDiscussion });
+      }
 
       onSent({ message });
     } catch (err) {
@@ -328,7 +330,9 @@ class DraftMessage extends Component {
       draftMessage: undefined,
     });
 
-    await requestDraft({ internalId, hasDiscussion });
+    if (hasDiscussion) {
+      await requestDraft({ internalId, hasDiscussion });
+    }
     onDeleteMessageSuccessfull();
   }
 
