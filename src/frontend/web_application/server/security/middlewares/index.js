@@ -1,3 +1,1 @@
-const security = require('./security');
-
-module.exports = { security };
+export * from './security';

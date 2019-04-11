@@ -3,15 +3,18 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { i18nMark, withI18n } from '@lingui/react';
 import { Trans } from '@lingui/macro'; // eslint-disable-line import/no-extraneous-dependencies
-import { Button, Icon, InputText, TextareaFieldGroup, TextFieldGroup, Link, Confirm, PlaceholderBlock, Callout, FieldErrors, Spinner } from '../../../../components';
+import {
+  Button, Icon, InputText, TextareaFieldGroup, TextFieldGroup, Link, Confirm, PlaceholderBlock,
+  Callout, FieldErrors, Spinner,
+} from '../../../../components';
 import { withScrollTarget } from '../../../scroll';
 import RecipientList from '../RecipientList';
 import AttachmentManager from '../AttachmentManager';
 import IdentitySelector from '../IdentitySelector';
-import { getRecipients } from '../../../../services/message/';
+import { getRecipients } from '../../../../services/message';
 import { withNotification } from '../../../userNotify';
 import { getIdentityProtocol } from '../../services/getIdentityProtocol';
-import { LockedMessage } from '../../../../modules/encryption';
+import { LockedMessage } from '../../../encryption';
 
 import './draft-message-quick.scss';
 import './draft-message-advanced.scss';
@@ -25,6 +28,7 @@ const PROTOCOL_EMAIL = 'email';
 @withScrollTarget()
 class DraftMessage extends Component {
   static propTypes = {
+    notifyError: PropTypes.func.isRequired,
     className: PropTypes.string,
     isReply: PropTypes.bool,
     i18n: PropTypes.shape({}).isRequired,
@@ -58,6 +62,7 @@ class DraftMessage extends Component {
       status: PropTypes.string.isRequired,
     }),
   };
+
   static defaultProps = {
     className: undefined,
     availableIdentities: [],
@@ -220,7 +225,12 @@ class DraftMessage extends Component {
       currentDraft.recipients.some(participant => participant.protocol !== protocol)
     ) {
       return [
-        (<Trans id="draft-message.errors.invalid-participant">According to your identity, all your participants must use a {protocol} address to contact them all together</Trans>),
+        (
+          <Trans id="draft-message.errors.invalid-participant">
+            According to your identity, all your participants must use a {protocol} address to
+            contact them all together
+          </Trans>
+        ),
       ];
     }
 
@@ -467,26 +477,26 @@ class DraftMessage extends Component {
           {
             this.state.isLocked ?
               <LockedMessage encryptionStatus={draftEncryption} />
-            :
-              <InputText
-                className={classnames(
-                  'm-draft-message-quick__input',
-                  { 'm-draft-message-quick__input--encrypted': isEncrypted }
-                )}
-                onChange={this.handleChange}
-                onFocus={onFocus}
-                name="body"
-                value={this.state.draftMessage.body}
-                placeholder={this.getQuickInputPlaceholder()}
-              />
-          }
+              : (
+                <InputText
+                  className={classnames(
+                    'm-draft-message-quick__input',
+                    { 'm-draft-message-quick__input--encrypted': isEncrypted }
+                  )}
+                  onChange={this.handleChange}
+                  onFocus={onFocus}
+                  name="body"
+                  value={this.state.draftMessage.body}
+                  placeholder={this.getQuickInputPlaceholder()}
+                />
+              )}
           <div className={classnames(
-              'm-draft-message-quick__send',
+            'm-draft-message-quick__send',
             {
               'm-draft-message-quick__send--encrypted': isEncrypted,
               'm-draft-message-quick__send--unencrypted': !isEncrypted,
             }
-            )}
+          )}
           >
             <Button
               display="expanded"
@@ -494,12 +504,12 @@ class DraftMessage extends Component {
               icon="paper-plane"
               title={i18n._('draft-message.action.send', null, { defaults: 'Send' })}
               className={classnames(
-              'm-draft-message-quick__send-button',
-            {
-              'm-draft-message-quick__send-button--encrypted': isEncrypted,
-              'm-draft-message-quick__send-button--unencrypted': !isEncrypted,
-            }
-            )}
+                'm-draft-message-quick__send-button',
+                {
+                  'm-draft-message-quick__send-button--encrypted': isEncrypted,
+                  'm-draft-message-quick__send-button--unencrypted': !isEncrypted,
+                }
+              )}
               onClick={this.handleSend}
               disabled={!canSend}
             />
@@ -544,7 +554,7 @@ class DraftMessage extends Component {
     const canSend = this.getCanSend();
 
     return (
-      <div className={classnames(className, 'm-draft-message-advanced')} ref={ref} >
+      <div className={classnames(className, 'm-draft-message-advanced')} ref={ref}>
         <div className="m-draft-message-advanced__toggle-simple">
           {isReply && this.renderToggleAdvancedButton()}
         </div>
@@ -559,7 +569,10 @@ class DraftMessage extends Component {
           {parentMessage && (
             <div className="m-reply__parent">
               <Link to={`#${parentMessage.message_id}`} className="m-reply__parent-link">
-                <Trans id="reply-form.in-reply-to">In reply to: {parentMessage.excerpt}</Trans>
+                <Trans id="reply-form.in-reply-to">
+In reply to:
+                  {parentMessage.excerpt}
+                </Trans>
               </Link>
             </div>
           )}
@@ -576,19 +589,19 @@ class DraftMessage extends Component {
           {
             this.state.isLocked ?
               <LockedMessage encryptionStatus={draftEncryption} />
-            :
-              <TextareaFieldGroup
-                className="m-draft-advanced__body"
-                label={<Trans id="messages.compose.form.body.label">Type your message here...</Trans>}
-                showLabelForSR
-                inputProps={{
-                  name: 'body',
-                  onChange: this.handleChange,
-                  onFocus,
-                  value: this.state.draftMessage.body,
-                }}
-              />
-          }
+              : (
+                <TextareaFieldGroup
+                  className="m-draft-advanced__body"
+                  label={<Trans id="messages.compose.form.body.label">Type your message here...</Trans>}
+                  showLabelForSR
+                  inputProps={{
+                    name: 'body',
+                    onChange: this.handleChange,
+                    onFocus,
+                    value: this.state.draftMessage.body,
+                  }}
+                />
+              )}
           <AttachmentManager
             className="m-draft-message-advanced__attachments"
             onUploadAttachments={this.handleFilesChange}
@@ -665,9 +678,12 @@ class DraftMessage extends Component {
       };
 
       return (
-        <div className={classnames(className)} ref={ref} >
+        <div className={classnames(className)} ref={ref}>
           <Callout color="info">
-            <Trans id="draft-message.no-available-identities">You have no available identities for this discussion. You can add one in your <Link to="/user/identities">account</Link></Trans>
+            <Trans id="draft-message.no-available-identities">
+You have no available identities for this discussion. You can add one in your
+              <Link to="/user/identities">account</Link>
+            </Trans>
           </Callout>
         </div>
       );

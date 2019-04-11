@@ -103,7 +103,7 @@ class InputFileGroup extends Component {
     const acceptProp = fileTypes ? { accept: fileTypes } : {};
 
     return (
-      <FieldGroup className={classnames('m-input-file-group', className)} errors={allErrors} >
+      <FieldGroup className={classnames('m-input-file-group', className)} errors={allErrors}>
         {descr && <p>{descr}</p>}
 
         {this.state.files.length > 0 ? this.state.files.map(file => (

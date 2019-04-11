@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import PiGraph from '../PiGraph';
 import Ratings from '../Ratings';
-import { Button, Dropdown, withDropdownControl } from '../../../../components/';
+import { Button, Dropdown, withDropdownControl } from '../../../../components';
 
 import './style.scss';
 

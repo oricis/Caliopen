@@ -4,7 +4,9 @@ import throttle from 'lodash.throttle';
 import classnames from 'classnames';
 import { withRouter } from 'react-router-dom';
 import { Trans, withI18n } from '@lingui/react';
-import { ActionBarWrapper, ActionBar, ActionBarButton, Badge, Modal } from '../../components';
+import {
+  ActionBarWrapper, ActionBar, ActionBarButton, Badge, Modal,
+} from '../../components';
 import MessageList from './components/MessageList';
 import ReplyExcerpt from './components/ReplyExcerpt';
 import AddParticipantsToContactBook from './components/AddParticipantsToContactBook';
@@ -44,7 +46,7 @@ class Discussion extends Component {
     deleteMessage: PropTypes.func.isRequired,
     // XXX: waiting for API
     // deleteDiscussion: PropTypes.func.isRequired,
-    // updateDiscussionTags: PropTypes.func.isRequired,
+    updateDiscussionTags: PropTypes.func.isRequired,
     closeTab: PropTypes.func.isRequired,
     push: PropTypes.func.isRequired,
     getUser: PropTypes.func.isRequired,
@@ -190,15 +192,15 @@ class Discussion extends Component {
     }
   };
 
-  handleDeleteAll = async () => {
-    const {
-      messages, deleteDiscussion, discussionId, closeTab,
-    } = this.props;
-
-    // FIXME : only deletes fetched messages.
-    deleteDiscussion({ discussionId, messages });
-    closeTab();
-  };
+  // handleDeleteAll = async () => {
+  //   const {
+  //     messages, deleteDiscussion, discussionId, closeTab,
+  //   } = this.props;
+  //
+  //   // FIXME : only deletes fetched messages.
+  //   deleteDiscussion({ discussionId, messages });
+  //   closeTab();
+  // };
 
   renderTags = ({ tags }) => {
     const { i18n } = this.props;

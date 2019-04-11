@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getTagLabel } from '../../../../modules/tags';
-import { Button, Icon, Spinner, FormGrid, FieldErrors, TextFieldGroup } from '../../../../components';
+import {
+  Button, Icon, Spinner, FormGrid, FieldErrors, TextFieldGroup,
+} from '../../../../components';
 import './style.scss';
 
 const TAG_TYPE_USER = 'user';
@@ -23,6 +25,7 @@ class TagInput extends Component {
     onDeleteTag: PropTypes.func.isRequired,
     errors: PropTypes.arrayOf(PropTypes.node),
   };
+
   static defaultProps = {
     errors: [],
   };

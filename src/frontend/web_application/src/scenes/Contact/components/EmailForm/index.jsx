@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { Trans, withI18n } from '@lingui/react';
 import renderReduxField from '../../../../services/renderReduxField';
-import { Button, Icon, FieldErrors, TextFieldGroup as TextFieldGroupBase, SelectFieldGroup as SelectFieldGroupBase, Fieldset, Legend, FormGrid, FormRow, FormColumn } from '../../../../components';
+import {
+  Button, Icon, FieldErrors, TextFieldGroup as TextFieldGroupBase,
+  SelectFieldGroup as SelectFieldGroupBase, Fieldset, Legend, FormGrid, FormRow, FormColumn,
+} from '../../../../components';
 import './style.scss';
 
 const EMAIL_TYPES = ['', 'work', 'home', 'other'];

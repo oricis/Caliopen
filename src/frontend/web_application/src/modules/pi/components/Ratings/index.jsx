@@ -48,7 +48,7 @@ const Ratings = ({
 
   return (
     <div className={ratingsClassName} title={title}>
-      {displayAveragePi &&
+      {displayAveragePi && (
         <Rating
           className="m-pi-ratings__item--average"
           name="Average PI"
@@ -56,7 +56,7 @@ const Ratings = ({
           piMax={piMax}
           mini={mini}
         />
-      }
+      )}
       {PI_PROPERTIES.map(name => (
         <Rating
           name={name}

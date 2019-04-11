@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
-import { PasswordStrength, Button, TextBlock } from '../../../../components/';
+import { PasswordStrength, Button, TextBlock } from '../../../../components';
 import PasswordForm from '../PasswordForm';
 import './style.scss';
 
@@ -45,29 +45,29 @@ class PasswordDetails extends Component {
 
     return (
       <div className="m-password-details">
-        {!this.state.editMode &&
+        {!this.state.editMode && (
           <TextBlock className="m-password-details__title">
             <Trans id="password.details.password_strength.title">Password strength:</Trans>
           </TextBlock>
-        }
-        {this.state.editMode ?
+        )}
+        {this.state.editMode ? (
           <div className="m-password-details__form">
             <PasswordForm
               onSubmit={onSubmit}
               onCancel={this.toggleEditMode}
             />
           </div>
-        :
+        ) : (
           <PasswordStrength
             className="m-password-details__strength"
             strength={passwordStrengthNumber}
           />
-        }
-        {!this.state.editMode &&
+        )}
+        {!this.state.editMode && (
           <div className="m-password-details__action">
             <Button onClick={this.toggleEditMode}><Trans id="password.details.action.change">Change</Trans></Button>
           </div>
-        }
+        )}
       </div>
     );
   }

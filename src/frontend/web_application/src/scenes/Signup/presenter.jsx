@@ -23,15 +23,6 @@ class Signup extends Component {
     isValidating: false,
   };
 
-  resetErrorsState(fieldname) {
-    this.setState(prevState => ({
-      errors: {
-        ...prevState.errors,
-        [fieldname]: [],
-      },
-    }));
-  }
-
   usernameHasChanged = (username) => {
     if (username.length === 0) {
       this.resetErrorsState('username');
@@ -129,6 +120,15 @@ class Signup extends Component {
 
       return undefined;
     }
+  }
+
+  resetErrorsState(fieldname) {
+    this.setState(prevState => ({
+      errors: {
+        ...prevState.errors,
+        [fieldname]: [],
+      },
+    }));
   }
 
   render() {

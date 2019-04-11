@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
 // import classnames from 'classnames';
-import { Button, FormGrid, FormRow, FormColumn, TextFieldGroup, SelectFieldGroup } from '../../../../components';
+import {
+  Button, FormGrid, FormRow, FormColumn, TextFieldGroup, SelectFieldGroup,
+} from '../../../../components';
 import './style.scss';
 
 class DeviceForm extends Component {
@@ -175,7 +177,7 @@ class DeviceForm extends Component {
             }
           </FormRow>
           <FormRow>
-            <FormColumn rightSpace={false} bottomSpace >
+            <FormColumn rightSpace={false} bottomSpace>
               <SelectFieldGroup
                 className="m-device-form__type"
                 label={i18n._('device.manage_form.type.label', null, { defaults: 'Type:' })}

@@ -11,6 +11,7 @@ class InfiniteScroll extends Component {
     onReachBottom: PropTypes.func.isRequired,
     children: PropTypes.node,
   };
+
   static defaultProps = {
     children: undefined,
   };

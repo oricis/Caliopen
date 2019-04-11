@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Trans, withI18n } from '@lingui/react';
 import Moment from 'react-moment';
-import { Button, Spinner, Icon, TextareaFieldGroup, DefList } from '../../../../components';
+import {
+  Button, Spinner, Icon, TextareaFieldGroup, DefList,
+} from '../../../../components';
 import getPGPManager from '../../../../services/openpgp-manager';
 import './style.scss';
 
@@ -65,18 +67,20 @@ class OpenPGPKey extends Component {
 
   componentDidMount() {
     getPGPManager()
-      .then(async ({ getKeyFromASCII, module: { enums: { keyStatus: keyStatuses } } }) =>
+      .then(async ({ getKeyFromASCII, module: { enums: { keyStatus: keyStatuses } } }) => (
         this.setState(await generateStateFromProps({
           props: this.props, getKeyFromASCII, keyStatuses,
-        })));
+        }))
+      ));
   }
 
   componentWillReceiveProps(newProps) {
     getPGPManager()
-      .then(async ({ getKeyFromASCII, module: { enums: { keyStatus: keyStatuses } } }) =>
+      .then(async ({ getKeyFromASCII, module: { enums: { keyStatus: keyStatuses } } }) => (
         this.setState(await generateStateFromProps({
           props: newProps, getKeyFromASCII, keyStatuses,
-        })));
+        }))
+      ));
   }
 
   handleDeleteKey() {
@@ -139,7 +143,9 @@ class OpenPGPKey extends Component {
                 && this.state.openpgpKey.expirationTime.length
                 && (
                   <span>
-                    / <Moment format="ll" locale={locale}>{this.state.openpgpKey.expirationTime}</Moment>
+                    /
+                    {' '}
+                    <Moment format="ll" locale={locale}>{this.state.openpgpKey.expirationTime}</Moment>
                   </span>
                 )
             }

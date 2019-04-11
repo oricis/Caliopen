@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { SelectFieldGroup as SelectFieldGroupBase, FormGrid, FormRow, FormColumn } from '../../../../components';
+import {
+  SelectFieldGroup as SelectFieldGroupBase, FormGrid, FormRow, FormColumn,
+} from '../../../../components';
 import renderReduxField from '../../../../services/renderReduxField';
 
 const SelectFieldGroup = renderReduxField(SelectFieldGroupBase);
@@ -12,6 +14,7 @@ class ContactsForm extends Component {
   static propTypes = {
     i18n: PropTypes.shape({}).isRequired,
   };
+
   static defaultProps = {
   };
 
@@ -43,7 +46,7 @@ class ContactsForm extends Component {
     return (
       <FormGrid className="m-contacts-form">
         <FormRow>
-          <FormColumn rightSpace={false} bottomSpace >
+          <FormColumn rightSpace={false} bottomSpace>
             <Field
               component={SelectFieldGroup}
               name="contact_display_format"
@@ -52,7 +55,7 @@ class ContactsForm extends Component {
               expanded
             />
           </FormColumn>
-          <FormColumn rightSpace={false} >
+          <FormColumn rightSpace={false}>
             <Field
               component={SelectFieldGroup}
               name="contact_display_order"

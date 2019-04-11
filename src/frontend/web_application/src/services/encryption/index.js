@@ -5,11 +5,10 @@ export const [ERROR_NEED_PASSPHRASE, ERROR_WRONG_PASSPHRASE] = ['error_need_pass
 const DEFAULT_KEY_OPTIONS = { numBits: 4096 };
 
 const prepareKeys = async (openpgp, armoredKeys) => {
-  const disarmoredKeys = await Promise.all(armoredKeys.map(armoredKey =>
-    openpgp.key.readArmored(armoredKey.key || armoredKey)));
+  const disarmoredKeys = await Promise
+    .all(armoredKeys.map(armoredKey => openpgp.key.readArmored(armoredKey.key || armoredKey)));
 
-  return disarmoredKeys.reduce((acc, disarmoredKey) =>
-    [...acc, ...disarmoredKey.keys], []);
+  return disarmoredKeys.reduce((acc, disarmoredKey) => [...acc, ...disarmoredKey.keys], []);
 };
 
 export const isMessageEncrypted = message => message.privacy_features

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
-import { Icon, Button } from '../../../../components/';
+import { Icon, Button } from '../../../../components';
 import { getPrimaryKeysByFingerprint, saveKey, deleteKey } from '../../../../services/openpgp-keychain-repository';
 import { generateKey, getPublicKeyFromPrivateKey } from '../../../../services/encryption';
 import OpenPGPKey from '../OpenPGPKey';
@@ -30,6 +30,7 @@ class OpenPGPKeysDetails extends Component {
   }
 
   getPrivateKeys = () => Object.values(this.state.keys || {});
+
   getUserEmails = () => {
     const { user: { contact, title } } = this.props;
 
@@ -40,13 +41,12 @@ class OpenPGPKeysDetails extends Component {
     return null;
   }
 
-  updateKeyState = newState =>
-    getPrimaryKeysByFingerprint()
-      .then(keys => this.setState({
-        ...this.state,
-        ...newState,
-        keys,
-      }));
+  updateKeyState = newState => getPrimaryKeysByFingerprint()
+    .then(keys => this.setState(prevState => ({
+      ...prevState,
+      ...newState,
+      keys,
+    })));
 
 
   handleClickEditMode = () => {
@@ -165,7 +165,7 @@ class OpenPGPKeysDetails extends Component {
               </p>
             </div>
           </div>
-        ) :
+        ) : (
           <Button
             {...activeButtonProp}
             onClick={this.handleClickEditMode}
@@ -174,7 +174,7 @@ class OpenPGPKeysDetails extends Component {
           >
             <Trans id="user.openpgp.action.edit-keys">Edit and add keys</Trans>
           </Button>
-        }
+        )}
       </div>
     );
   }

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
-import { Spinner, Link, Label, Subtitle, PasswordStrength, FieldErrors, TextBlock, Modal, Button, TextFieldGroup, CheckboxFieldGroup, FormGrid, FormRow, FormColumn } from '../../../../components/';
+import {
+  Spinner, Link, Label, Subtitle, PasswordStrength, FieldErrors, TextBlock, Modal, Button,
+  TextFieldGroup, CheckboxFieldGroup, FormGrid, FormRow, FormColumn,
+} from '../../../../components';
 import './style.scss';
 
 function generateStateFromProps(props) {
@@ -184,7 +187,7 @@ class SignupForm extends Component {
             </FormRow>
             )}
             <FormRow>
-              <FormColumn rightSpace={false} bottomSpace >
+              <FormColumn rightSpace={false} bottomSpace>
                 <TextFieldGroup
                   id="signup_username"
                   name="username"
@@ -223,7 +226,7 @@ class SignupForm extends Component {
               )}
             </FormRow>
             <FormRow>
-              <FormColumn rightSpace={false} bottomSpace >
+              <FormColumn rightSpace={false} bottomSpace>
                 <TextFieldGroup
                   id="signup_recovery_email"
                   theme="contrasted"

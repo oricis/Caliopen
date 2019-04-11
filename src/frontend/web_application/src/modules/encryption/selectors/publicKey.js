@@ -5,4 +5,3 @@ export const selectKeys = (state, contactId) => {
 
   return null;
 };
-

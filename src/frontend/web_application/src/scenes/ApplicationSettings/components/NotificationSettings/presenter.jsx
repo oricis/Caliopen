@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { CheckboxFieldGroup as CheckboxFieldGroupBase, SelectFieldGroup as SelectFieldGroupBase, FormGrid, FormRow, FormColumn } from '../../../../components';
+import {
+  CheckboxFieldGroup as CheckboxFieldGroupBase, SelectFieldGroup as SelectFieldGroupBase, FormGrid,
+  FormRow, FormColumn,
+} from '../../../../components';
 import renderReduxField from '../../../../services/renderReduxField';
 
 const SelectFieldGroup = renderReduxField(SelectFieldGroupBase);
@@ -14,6 +17,7 @@ class NotificationForm extends Component {
   static propTypes = {
     i18n: PropTypes.shape({}).isRequired,
   };
+
   static defaultProps = {
   };
 
@@ -46,7 +50,7 @@ class NotificationForm extends Component {
     return (
       <FormGrid className="m-contacts-form">
         <FormRow>
-          <FormColumn rightSpace={false} bottomSpace >
+          <FormColumn rightSpace={false} bottomSpace>
             <Field
               component={CheckboxFieldGroup}
               type="checkbox"
@@ -54,7 +58,7 @@ class NotificationForm extends Component {
               label={i18n._('settings.notification.enabled.label', null, { defaults: 'Enabled' })}
             />
           </FormColumn>
-          <FormColumn rightSpace={false} bottomSpace >
+          <FormColumn rightSpace={false} bottomSpace>
             <Field
               component={CheckboxFieldGroup}
               type="checkbox"
@@ -62,7 +66,7 @@ class NotificationForm extends Component {
               label={i18n._('settings.notification.sound_enabled.label', null, { defaults: 'Sound enabled' })}
             />
           </FormColumn>
-          <FormColumn rightSpace={false} bottomSpace >
+          <FormColumn rightSpace={false} bottomSpace>
             <Field
               component={SelectFieldGroup}
               name="notification_message_preview"
@@ -71,7 +75,7 @@ class NotificationForm extends Component {
               expanded
             />
           </FormColumn>
-          <FormColumn rightSpace={false} >
+          <FormColumn rightSpace={false}>
             <Field
               component={SelectFieldGroup}
               name="notification_delay_disappear"

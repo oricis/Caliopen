@@ -12,9 +12,7 @@ class FileSize extends Component {
     const { size } = this.props;
 
     return (
-      <Trans id="file.size.B">
-        {size} B
-      </Trans>
+      <Trans id="file.size.B">{size} B</Trans>
     );
   }
 

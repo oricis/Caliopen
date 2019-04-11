@@ -1,7 +1,9 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { createIdentity, deleteIdentity, updateIdentity, identitiesSelector, identityStateSelector } from '../../modules/remoteIdentity';
+import {
+  createIdentity, deleteIdentity, updateIdentity, identitiesSelector, identityStateSelector,
+} from '../../modules/remoteIdentity';
 import { requestRemoteIdentities } from '../../store/modules/remote-identity';
 import Presenter from './presenter';
 

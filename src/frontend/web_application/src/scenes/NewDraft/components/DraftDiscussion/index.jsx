@@ -21,6 +21,7 @@ class DraftDiscussion extends Component {
     }),
     settings: PropTypes.shape({}).isRequired,
   };
+
   static defaultProps = {
     className: undefined,
     draftDiscussion: {
@@ -37,8 +38,10 @@ class DraftDiscussion extends Component {
     }
 
     return discussion.participants
-      .filter(participant => !(participant.contact_ids && participant.contact_ids.some(contactId =>
-        contactId === user.contact.contact_id)))
+      .filter(participant => !(
+        participant.contact_ids && participant.contact_ids
+          .some(contactId => contactId === user.contact.contact_id)
+      ))
       .map(participant => participant.label);
   }
 
@@ -56,7 +59,10 @@ class DraftDiscussion extends Component {
     return (
       <div className={classnames(className)}>
         <Title hr>
-          <Trans id="discussion-draft.last-messages">Last messages with {participants}</Trans>
+          <Trans id="discussion-draft.last-messages">
+Last messages with
+            {participants}
+          </Trans>
         </Title>
         {messages.map(message => (
           <Message

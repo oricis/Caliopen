@@ -11,6 +11,7 @@ class DeviceInformation extends PureComponent {
     // locale: PropTypes.string,
     isCurrentDevice: PropTypes.bool,
   };
+
   static defaultProps = {
     // locale: undefined,
     isCurrentDevice: false,

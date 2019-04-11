@@ -7,6 +7,70 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const clientOptions = require('../config/client.default.js');
 
+const configureSrcBabelLoader = ({ isNode } = { isNode: false }) => {
+  const presetEnvTarget = isNode ? { node: 'current' } : {};
+
+  return {
+    module: {
+      rules: [
+        {
+          test: /(?<!\.worker)\.jsx?$/,
+          exclude: /node_modules/,
+          include: path.join(__dirname, '../src/'),
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              ['@babel/preset-env', { modules: 'auto', targets: presetEnvTarget }],
+              '@babel/preset-react',
+            ],
+            plugins: [
+              '@babel/plugin-proposal-object-rest-spread',
+              ['@babel/plugin-proposal-decorators', { legacy: true }],
+              ['@babel/plugin-proposal-class-properties', { loose: true }],
+              '@babel/plugin-syntax-dynamic-import',
+              'babel-plugin-macros',
+              '@babel/plugin-proposal-export-default-from',
+              '@babel/plugin-proposal-export-namespace-from',
+              '@babel/plugin-transform-runtime',
+            ],
+          },
+        },
+        ...(isNode ? [{
+          test: /\.worker\.js$/,
+          use: [
+            { loader: 'null-loader' },
+          ],
+        }] : [{
+          test: /\.worker\.js$/,
+          exclude: /node_modules/,
+          use: [
+            { loader: 'worker-loader' },
+            {
+              loader: 'babel-loader',
+              options: {
+                presets: [
+                  ['@babel/preset-env', { modules: 'auto', targets: presetEnvTarget }],
+                ],
+                plugins: [
+                  ['@babel/plugin-proposal-class-properties', { loose: true }],
+                ],
+              },
+            },
+            {
+              loader: 'eslint-loader',
+              options: {
+                cache: true,
+                options: { name: 'WorkerName.[hash].js' },
+                failOnError: false,
+              },
+            },
+          ],
+        }]),
+      ],
+    },
+  };
+};
+
 const configureStylesheet = () => {
   return {
     plugins: [
@@ -110,7 +174,6 @@ const configureVendorSplit = () => ({
       'moment-timezone',
       'openpgp',
       'prop-types',
-      'rc-slider',
       'react',
       'react-country-region-selector',
       'react-datepicker',
@@ -120,7 +183,6 @@ const configureVendorSplit = () => ({
       'react-redux',
       'react-redux-notify',
       'react-router-dom',
-      'react-tappable',
       'redux',
       'redux-axios-middleware',
       'redux-form',
@@ -173,6 +235,7 @@ const configureEnv = (buildTarget) => {
 };
 
 module.exports = {
+  configureSrcBabelLoader,
   configureStylesheet,
   configureAssets,
   configureVendorSplit,

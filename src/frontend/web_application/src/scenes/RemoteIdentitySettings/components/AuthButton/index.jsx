@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Spinner } from '../../../../components';
 import { capitalize } from '../../../../services/capitalize';
-import { PROVIDER_GMAIL, PROVIDER_TWITTER, withAuthorize, ProviderIcon } from '../../../../modules/remoteIdentity';
+import {
+  PROVIDER_GMAIL, PROVIDER_TWITTER, withAuthorize, ProviderIcon,
+} from '../../../../modules/remoteIdentity';
 import ProviderButton from '../ProviderButton';
 import './style.scss';
 
@@ -15,9 +17,11 @@ class AuthButton extends Component {
     authorize: PropTypes.func.isRequired,
     providerName: PropTypes.oneOf([PROVIDER_GMAIL, PROVIDER_TWITTER]).isRequired,
   };
+
   static defaultProps = {
     className: undefined,
   };
+
   state = {
     hasActivity: false,
   };

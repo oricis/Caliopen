@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
 import TextList, { TextItem } from '../../../../components/TextList';
-import { Button, Icon, SelectFieldGroup, FormGrid, FormRow, FormColumn, Legend } from '../../../../components/';
+import {
+  Button, Icon, SelectFieldGroup, FormGrid, FormRow, FormColumn, Legend,
+} from '../../../../components';
 import './style.scss';
 
 class AddFormFieldForm extends Component {
@@ -13,8 +15,10 @@ class AddFormFieldForm extends Component {
     // formValues: PropTypes.shape({}).isRequired,
     i18n: PropTypes.shape({}).isRequired,
   };
+
   static defaultProps = {
   };
+
   state = {
     formType: 'emails',
   };

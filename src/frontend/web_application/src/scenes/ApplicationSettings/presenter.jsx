@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
-import { Section, PageTitle, Button, FieldErrors } from '../../components/';
+import {
+  Section, PageTitle, Button, FieldErrors,
+} from '../../components';
 import InterfaceSettings from './components/InterfaceSettings';
 import MessageSettings from './components/MessageSettings';
 import ContactSettings from './components/ContactSettings';
@@ -18,6 +20,7 @@ class ApplicationSettings extends PureComponent {
     errors: PropTypes.shape({}),
     i18n: PropTypes.shape({}).isRequired,
   };
+
   static defaultProps = {
     errors: {},
   };

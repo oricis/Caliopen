@@ -7,7 +7,7 @@ const common = require('./webpack.common.js');
 
 const base = {
   entry: [
-    'babel-polyfill',
+    '@babel/polyfill',
     'expose-loader?$!expose-loader?jQuery!jquery',
     'script-loader!foundation-sites',
     path.join(__dirname, '../src/index.jsx'),

@@ -1,6 +1,6 @@
-const { COOKIE_NAME } = require('../lib/cookie');
+import { COOKIE_NAME } from '../lib/cookie';
 
-const checkCookie = (req, res, next) => {
+export const checkCookieMiddleware = (req, res, next) => {
   const cookie = req.signedCookies && req.signedCookies[COOKIE_NAME];
 
   if (!cookie) {
@@ -22,5 +22,3 @@ const checkCookie = (req, res, next) => {
 
   next();
 };
-
-module.exports = checkCookie;

@@ -9,6 +9,7 @@ class Callout extends PureComponent {
     className: PropTypes.string,
     color: PropTypes.oneOf(['success', 'info', 'warning', 'alert']),
   };
+
   static defaultProps = {
     children: null,
     className: undefined,

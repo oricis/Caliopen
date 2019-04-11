@@ -33,11 +33,13 @@ class ContactAssociation extends Component {
     closeTab: PropTypes.func.isRequired,
     currentTab: PropTypes.shape({}).isRequired,
   };
+
   static defaultProps = {
     isFetching: false,
     contacts: undefined,
     userContact: undefined,
   };
+
   state = {};
 
   handleClickContact = ({ contact }) => {

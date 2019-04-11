@@ -10,8 +10,11 @@ class Popup {
   }
 
   provider
+
   window
+
   detectionId
+
   detectionInc = 0
 
   static getPopupName({ providerName }) {

@@ -4,8 +4,9 @@ import { tryCatchAxiosAction } from '../../../services/api-client';
 export const createMessage = ({ message }) => async (dispatch) => {
   await dispatch(createMessageBase({ message }));
 
-  const messageUpToDate = await tryCatchAxiosAction(() =>
-    dispatch(requestMessage(message.message_id)));
+  const messageUpToDate = await tryCatchAxiosAction(() => (
+    dispatch(requestMessage(message.message_id))
+  ));
 
   await dispatch(addToCollection({ message: messageUpToDate }));
 

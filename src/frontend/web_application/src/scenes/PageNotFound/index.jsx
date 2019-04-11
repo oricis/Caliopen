@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Trans, withI18n } from '@lingui/react';
-import { PageTitle } from '../../components/';
+import { PageTitle } from '../../components';
 import './style.scss';
 
 @withI18n()
@@ -9,6 +9,7 @@ class PageNotFound extends PureComponent {
   static propTypes = {
     i18n: PropTypes.shape({}).isRequired,
   };
+
   static defaultProps = {
   };
 

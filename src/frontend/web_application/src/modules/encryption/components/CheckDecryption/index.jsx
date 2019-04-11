@@ -23,13 +23,13 @@ const lockedMessagesSelector = messagesIds => createSelector(
 
       return acc;
     }, {}),
-    keyLessMessages: messagesIds.reduce((acc, messageId) =>
-      (encryptionState[messageId] && encryptionState[messageId].status === 'need_privatekey' ? acc + 1 : acc), 0),
+    keyLessMessages: messagesIds.reduce((acc, messageId) => (encryptionState[messageId] && encryptionState[messageId].status === 'need_privatekey' ? acc + 1 : acc), 0),
   })
 );
 
-const mapStateToProps = (state, ownProps) =>
-  lockedMessagesSelector(ownProps.messages.map(message => message.message_id));
+const mapStateToProps = (state, ownProps) => (
+  lockedMessagesSelector(ownProps.messages.map(message => message.message_id))
+);
 
 @connect(mapStateToProps)
 class CheckDecryption extends Component {

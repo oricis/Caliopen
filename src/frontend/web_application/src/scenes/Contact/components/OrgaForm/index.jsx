@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { Trans, withI18n } from '@lingui/react';
-import { Icon, Button, FieldErrors, TextFieldGroup as TextFieldGroupBase, Fieldset, Legend, FormGrid, FormRow, FormColumn } from '../../../../components';
+import {
+  Icon, Button, FieldErrors, TextFieldGroup as TextFieldGroupBase, Fieldset, Legend, FormGrid,
+  FormRow, FormColumn,
+} from '../../../../components';
 import renderReduxField from '../../../../services/renderReduxField';
 import './style.scss';
 
@@ -15,6 +18,7 @@ class OrgaForm extends Component {
     onDelete: PropTypes.func.isRequired,
     i18n: PropTypes.shape({}).isRequired,
   };
+
   static defaultProps = {
     errors: [],
   };

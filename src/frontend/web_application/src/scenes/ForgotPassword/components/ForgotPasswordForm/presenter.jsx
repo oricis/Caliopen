@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
-import { Title, Link, Button, Icon, TextFieldGroup, FieldErrors, Fieldset, Legend, FormGrid, FormRow, FormColumn } from '../../../../components/';
+import {
+  Title, Link, Button, Icon, TextFieldGroup, FieldErrors, Fieldset, Legend, FormGrid, FormRow,
+  FormColumn,
+} from '../../../../components';
 
 import './style.scss';
 
@@ -61,7 +64,8 @@ class ForgotPasswordForm extends Component {
               {success ? (
                 <FormRow>
                   <FormColumn rightSpace={false} bottomSpace className="m-forgot-password-form__success">
-                    <Icon type="check" rightSpaced /><Trans id="password.forgot-form.success">Done! You will receive an email shortly with instructions to reset your password.</Trans>
+                    <Icon type="check" rightSpaced />
+                    <Trans id="password.forgot-form.success">Done! You will receive an email shortly with instructions to reset your password.</Trans>
                   </FormColumn>
                   <FormColumn rightSpace={false} className="m-forgot-password-form__action" bottomSpace>
                     <Link

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
-import { Section, Link, PasswordStrength, Button, Icon, FieldErrors, TextFieldGroup, FormGrid, FormColumn, FormRow } from '../../../../components/';
+import {
+  Section, Link, PasswordStrength, Button, Icon, FieldErrors, TextFieldGroup, FormGrid, FormColumn,
+  FormRow,
+} from '../../../../components';
 
 import './style.scss';
 
@@ -88,7 +91,8 @@ class ResetPasswordForm extends Component {
 
   renderSuccess = () => (
     <div className="m-reset-password-form__success">
-      <Icon type="check" rightSpaced /><Trans id="password.reset-form.success">Done!</Trans>
+      <Icon type="check" rightSpaced />
+      <Trans id="password.reset-form.success">Done!</Trans>
     </div>
   );
 

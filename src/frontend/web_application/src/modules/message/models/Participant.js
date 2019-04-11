@@ -5,8 +5,12 @@ export class Participant {
   }
 
   address
+
   protocol
+
   label
+
   type = 'To'
+
   contact_ids = []
 }

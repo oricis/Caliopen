@@ -7,6 +7,7 @@ class MessageNotifications extends Component {
     removeNotifications: PropTypes.func.isRequired,
     notifications: PropTypes.arrayOf(PropTypes.shape({})),
   };
+
   static defaultProps = {
     notifications: [],
   };

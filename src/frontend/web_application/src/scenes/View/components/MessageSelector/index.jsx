@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n, Trans } from '@lingui/react';
-import { Checkbox, Spinner, Confirm, ActionBarButton } from '../../../../components/';
+import {
+  Checkbox, Spinner, Confirm, ActionBarButton,
+} from '../../../../components';
 
 import './style.scss';
 

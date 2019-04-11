@@ -32,15 +32,14 @@ export const withAuthenticatedProps = () => (C) => {
             (settings, isSettingsFetching, didLostAuthSettings) => (
               <WithUser
                 render={
-                  (user, isUserFetching, didLostAuthUser) =>
-                    this.renderComponent({
-                      settings,
-                      isSettingsFetching,
-                      user,
-                      isUserFetching,
-                      didLostAuthSettings,
-                      didLostAuthUser,
-                    })
+                  (user, isUserFetching, didLostAuthUser) => this.renderComponent({
+                    settings,
+                    isSettingsFetching,
+                    user,
+                    isUserFetching,
+                    didLostAuthSettings,
+                    didLostAuthUser,
+                  })
                 }
               />
             )

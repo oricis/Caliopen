@@ -15,6 +15,7 @@ class SearchResults extends PureComponent {
     searchResultsPreview: PropTypes.shape({}),
     children: PropTypes.node,
   };
+
   static defaultProps = {
     term: '',
     searchResultsPreview: {
@@ -47,9 +48,21 @@ class SearchResults extends PureComponent {
     const location = `${pathname}${search}`;
 
     const navLinks = [
-      { key: 'search-results.all', label: <Trans id="search-results.all" values={{ total }}>All ({total})</Trans>, to: `/search-results?term=${term}` },
-      { key: 'search-results.messages', label: <Trans id="search-results.messages" values={{ nbMessages }}>Messages ({nbMessages})</Trans>, to: `/search-results?term=${term}&doctype=message` },
-      { key: 'search-results.contacts', label: <Trans id="search-results.contacts" values={{ nbContacts }}>Contacts ({nbContacts})</Trans>, to: `/search-results?term=${term}&doctype=contact` },
+      {
+        key: 'search-results.all',
+        label: (<Trans id="search-results.all" values={{ total }}>All ({total})</Trans>),
+        to: `/search-results?term=${term}`,
+      },
+      {
+        key: 'search-results.messages',
+        label: (<Trans id="search-results.messages" values={{ nbMessages }}>Messages ({nbMessages})</Trans>),
+        to: `/search-results?term=${term}&doctype=message`,
+      },
+      {
+        key: 'search-results.contacts',
+        label: (<Trans id="search-results.contacts" values={{ nbContacts }}>Contacts ({nbContacts})</Trans>),
+        to: `/search-results?term=${term}&doctype=contact`,
+      },
     ].map(link => ({
       ...link,
       isActive: matchPath(location, { path: link.to, exact: false, strict: false }) && true,

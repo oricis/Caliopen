@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { I18nProvider } from '@lingui/react';
-import { getLanguage } from '../../';
+import { getLanguage } from '../..';
 
 class I18nLoader extends Component {
   static propTypes = {

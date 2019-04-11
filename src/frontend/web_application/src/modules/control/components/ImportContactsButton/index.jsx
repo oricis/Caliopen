@@ -9,9 +9,11 @@ class ImportContactsButton extends Component {
     className: PropTypes.string,
     requestContacts: PropTypes.func.isRequired,
   };
+
   static defaultProps = {
     className: undefined,
   };
+
   state = {
     isImportModalOpen: false,
   };

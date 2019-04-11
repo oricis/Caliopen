@@ -12,6 +12,7 @@ class Title extends PureComponent {
     size: PropTypes.oneOf(['medium', 'large']),
     className: PropTypes.string,
   };
+
   static defaultProps = {
     actions: undefined,
     hr: false,

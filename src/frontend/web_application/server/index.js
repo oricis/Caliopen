@@ -1,11 +1,13 @@
-const path = require('path');
-const fs = require('fs');
-const argv = require('argv');
-const http = require('http');
-const getApp = require('./app');
-const { getConfig, initConfig } = require('./config');
-const { version } = require('../package.json');
-const logger = require('./logger')();
+import path from 'path';
+import fs from 'fs';
+import argv from 'argv';
+import http from 'http';
+import getApp from './app';
+import { getConfig, initConfig } from './config';
+import { version } from '../package.json';
+import createLogger from './logger';
+
+const logger = createLogger();
 
 const { options: { config: configPath } } = argv
   .option([

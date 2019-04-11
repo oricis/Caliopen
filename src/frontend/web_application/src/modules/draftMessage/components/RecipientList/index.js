@@ -5,11 +5,11 @@ import Presenter from './presenter';
 import { setRecipientSearchTerms } from '../../../../store/modules/draft-message';
 import { search, getKey } from '../../../../store/modules/participant-suggestions';
 
-const findRecipient = (recipients, { address, protocol }) =>
-  recipients.find(recipient => recipient.address === address && recipient.protocol === protocol);
+const findRecipient = (recipients, { address, protocol }) => recipients
+  .find(recipient => recipient.address === address && recipient.protocol === protocol);
 
-const searchTermsSelector = (state, ownProps) =>
-  state.draftMessage.recipientSearchTermsByInternalId[ownProps.internalId];
+const searchTermsSelector = (state, ownProps) => state.draftMessage
+  .recipientSearchTermsByInternalId[ownProps.internalId];
 
 const participantSuggestionsSelector = state => state.participantSuggestions;
 

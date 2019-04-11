@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
-import { Section, PageTitle, Button, Confirm, TextFieldGroup } from '../../components/';
+import {
+  Section, PageTitle, Button, Confirm, TextFieldGroup,
+} from '../../components';
 import ProfileForm from './components/ProfileForm';
 import ProfileInfo from './components/ProfileInfo';
 import { signout } from '../../modules/routing';
@@ -87,7 +89,7 @@ class UserProfile extends Component {
   }
 
   toggleEditMode = () => {
-    this.setState({ editMode: !this.state.editMode });
+    this.setState(prevState => ({ editMode: !prevState.editMode }));
   }
 
   renderForm = () => {
@@ -115,7 +117,7 @@ class UserProfile extends Component {
           <Confirm
             className="s-user-profile__delete"
             render={confirm => (
-              <Button shape="plain" onClick={confirm} color="alert" >
+              <Button shape="plain" onClick={confirm} color="alert">
                 <Trans id="user.action.delete">Delete account</Trans>
               </Button>
             )}

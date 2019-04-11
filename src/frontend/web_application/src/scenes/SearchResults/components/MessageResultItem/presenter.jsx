@@ -6,7 +6,9 @@ import { Trans } from '@lingui/react';
 import { WithTags, getTagLabel, getCleanedTagCollection } from '../../../../modules/tags';
 import MessageDate from '../../../../components/MessageDate';
 import { AuthorAvatarLetter, SIZE_SMALL } from '../../../../modules/avatar';
-import { Badge, Link, Icon, TextBlock } from '../../../../components/';
+import {
+  Badge, Link, Icon, TextBlock,
+} from '../../../../components';
 import { renderParticipant } from '../../../../services/message';
 import Highlights from '../Highlights';
 
@@ -20,6 +22,7 @@ class MessageResultItem extends PureComponent {
     highlights: PropTypes.shape({}),
     locale: PropTypes.string.isRequired,
   };
+
   static defaultProps = {
     highlights: null,
   };
@@ -44,7 +47,7 @@ class MessageResultItem extends PureComponent {
           {' '}
           <Badge className="s-message-result-item__tag">{getTagLabel(i18n, tag)}</Badge>
         </span>
-        ))}
+      ))}
       />
     );
   }
@@ -96,11 +99,17 @@ class MessageResultItem extends PureComponent {
           </span>
           <span className={topicClassNames}>
             {message.attachments && message.attachments.length > 0 && <Icon type="paperclip" spaced />}
-            {message.is_draft && (<span className="s-message-result-item__draft-prefix"><Trans id="timeline.draft-prefix">Draft in progress:</Trans>{' '}</span>)}
+            {message.is_draft && (
+              <span className="s-message-result-item__draft-prefix">
+                <Trans id="timeline.draft-prefix">Draft in progress:</Trans>
+                {' '}
+              </span>
+            )}
             {message.subject && (<span className="s-message-result-item__info-subject">{message.subject}</span>)}
           </span>
           <span className="s-message-result-item__tags">
-            {' '}{this.renderTags()}
+            {' '}
+            {this.renderTags()}
           </span>
         </TextBlock>
 

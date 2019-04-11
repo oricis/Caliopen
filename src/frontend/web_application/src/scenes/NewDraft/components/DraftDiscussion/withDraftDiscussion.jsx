@@ -42,8 +42,9 @@ const getParticipantsHash = ({ participants }) => {
 };
 const discussionStateSelector = getModuleStateSelector('discussion');
 const messageStateSelector = getModuleStateSelector('message');
-const draftMessageSelector = (state, { messageId }) =>
-  draftSelector(state, { internalId: messageId });
+const draftMessageSelector = (state, { messageId }) => (
+  draftSelector(state, { internalId: messageId })
+);
 const discussionIdSelector = createSelector(
   [discussionStateSelector, draftMessageSelector, identitiesSelector, userSelector],
   (discussionState, draftMessage, identities, user) => {
@@ -97,7 +98,9 @@ export const withDraftDiscussion = () => (C) => {
   class WithDraftDiscussion extends Component {
     static propTypes = {
       requestDraftDiscussion: PropTypes.func.isRequired,
-      draftMessage: PropTypes.shape({}),
+      draftMessage: PropTypes.shape({
+        participants: PropTypes.arrayOf(PropTypes.shape({})),
+      }),
       discussion: PropTypes.shape({}),
       messages: PropTypes.arrayOf(PropTypes.shape({})),
       // user: PropTypes.shape({}).isRequired,

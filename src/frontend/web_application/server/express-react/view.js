@@ -2,9 +2,9 @@ class View {
   constructor(name, opts = {}) {
     this.defaultEngine = opts.defaultEngine;
     this.name = name;
-    this.ext = this.defaultEngine[0] !== '.'
-        ? `.${this.defaultEngine}`
-        : this.defaultEngine;
+    this.ext = this.defaultEngine[0] !== '.' ?
+      `.${this.defaultEngine}` :
+      this.defaultEngine;
 
     this.engine = opts.engines[this.ext];
     // there is no path because components are in memory
@@ -17,4 +17,4 @@ class View {
   }
 }
 
-module.exports = View;
+export default View;

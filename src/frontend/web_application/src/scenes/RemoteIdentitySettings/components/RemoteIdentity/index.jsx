@@ -1,7 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Section, Icon } from '../../../../components';
-import { PROVIDER_EMAIL, PROVIDER_GMAIL, PROVIDER_TWITTER, ProviderIcon } from '../../../../modules/remoteIdentity';
+import {
+  PROVIDER_EMAIL, PROVIDER_GMAIL, PROVIDER_TWITTER, ProviderIcon,
+} from '../../../../modules/remoteIdentity';
 import RemoteIdentityEmail from '../RemoteIdentityEmail';
 import RemoteIdentityOauth from '../RemoteIdentityOauth';
 
@@ -12,6 +14,7 @@ class RemoteIdentity extends Component {
     onRemoteIdentityDelete: PropTypes.func.isRequired,
     onClear: PropTypes.func.isRequired,
   };
+
   static defaultProps = {
     remoteIdentity: undefined,
   };

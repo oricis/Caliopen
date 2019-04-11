@@ -1,6 +1,10 @@
+/* eslint-disable */
+// unused for now
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Section, PageTitle, MultidimensionalPi, TextList, TextItem } from '../../components/';
+import {
+  Section, PageTitle, MultidimensionalPi, TextList, TextItem,
+} from '../../components';
 
 import './style.scss';
 

@@ -1,6 +1,6 @@
-const winston = require('winston');
-const { Syslog } = require('winston-syslog');
-const { getConfig } = require('../config');
+import winston from 'winston';
+import { Syslog } from 'winston-syslog';
+import { getConfig } from '../config';
 
 const LOGGER_CATEGORY = 'caliopen-frontend';
 const stdFormat = winston.format.combine(
@@ -38,4 +38,4 @@ const getLogger = () => {
   return logger;
 };
 
-module.exports = getLogger;
+export default getLogger;

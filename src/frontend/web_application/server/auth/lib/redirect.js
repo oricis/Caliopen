@@ -1,5 +1,1 @@
-const DEFAULT_REDIRECT = '/';
-
-module.exports = {
-  DEFAULT_REDIRECT,
-};
+export const DEFAULT_REDIRECT = '/';

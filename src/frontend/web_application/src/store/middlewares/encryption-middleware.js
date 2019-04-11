@@ -100,8 +100,8 @@ const encryptMessageAction = async (store, dispatch, action) => {
     if (authorAddresses.length === 0) return action;
 
     // 1. we need to check all addresses to find keys.
-    const userKeys = await Promise.all(authorAddresses.map(authorAddress =>
-      getKeysForEmail(authorAddress, PUBLIC_KEY)));
+    const userKeys = await Promise
+      .all(authorAddresses.map(authorAddress => getKeysForEmail(authorAddress, PUBLIC_KEY)));
 
     if (keys && keys.length > 0 && userKeys.length > 0) {
       dispatch(encryptMessageStart({ message }));

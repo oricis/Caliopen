@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n, Trans, Plural } from '@lingui/react';
-import { Checkbox, Button, Spinner, Confirm } from '../../../../components/';
+import {
+  Checkbox, Button, Spinner, Confirm,
+} from '../../../../components';
 
 import './style.scss';
 
@@ -83,8 +85,8 @@ class DiscussionSelector extends Component {
             <Plural
               id="timeline.discussions.selected"
               value={{ count, totalCount }}
-              one={<Trans>{count}/{totalCount} discussion:</Trans>}
-              other={<Trans>{count}/{totalCount} discussions:</Trans>}
+              one={(<Trans>{count}/{totalCount} discussion:</Trans>)}
+              other={(<Trans>{count}/{totalCount} discussions:</Trans>)}
             />
           </span>
         )}

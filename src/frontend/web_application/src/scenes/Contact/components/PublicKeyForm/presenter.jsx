@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { withI18n, Trans } from '@lingui/react';
 import renderReduxField from '../../../../services/renderReduxField';
-import { Button, Confirm, FieldErrors, Fieldset, FormColumn, FormGrid, FormRow, Icon, Legend, TextFieldGroup as TextFieldGroupBase, TextareaFieldGroup as TextareaFieldGroupBase } from '../../../../components';
+import {
+  Button, Confirm, FieldErrors, Fieldset, FormColumn, FormGrid, FormRow, Icon, Legend,
+  TextFieldGroup as TextFieldGroupBase, TextareaFieldGroup as TextareaFieldGroupBase,
+} from '../../../../components';
 
 import './style.scss';
 
@@ -80,7 +83,7 @@ class PublicKeyForm extends PureComponent {
             </FormRow>
             <FormRow>
               <FormColumn className="m-public-key-form__actions" rightSpaced={false}>
-                {publicKey ?
+                {publicKey ? (
                   <Confirm
                     onConfirm={this.handleDelete}
                     title={i18n._(
@@ -94,10 +97,12 @@ class PublicKeyForm extends PureComponent {
                       { defaults: 'Are you sure you want to delete the key "{label} - {fingerprint}" ? This action cannot be undone.' }
                     )}
                     render={confirm => (
-                      <Button className="m-public-key-form__button-remove"type="button" color="alert" icon="remove" onClick={confirm}>
+                      <Button className="m-public-key-form__button-remove" type="button" color="alert" icon="remove" onClick={confirm}>
                         <Trans id="contact.public_key_form.delete_key">Delete Key</Trans>
-                      </Button>)}
-                  /> : null}
+                      </Button>
+                    )}
+                  />
+                ) : null}
                 <Button icon="remove" className="m-public-key-form__button-cancel" onClick={onCancel}><Trans id="contact.public_key_form.cancel">Cancel</Trans></Button>
                 <Button type="submit" icon="check" color="active" className="m-public-key-form__button-validate">
                   <Trans id="contact.public_key_form.validate">Validate</Trans>

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
-import { Button } from '../../../../components/';
+import { Button } from '../../../../components';
 import { withPush } from '../../../routing';
 
 @withPush()
@@ -10,6 +10,7 @@ class ComposeContactButton extends PureComponent {
     push: PropTypes.func.isRequired,
     className: PropTypes.string,
   };
+
   static defaultProps = {
     className: undefined,
   };

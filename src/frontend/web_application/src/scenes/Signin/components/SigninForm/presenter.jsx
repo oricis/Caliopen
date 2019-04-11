@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
 import { usernameNormalizer } from '../../../../modules/user';
-import { Link, Spinner, FieldErrors, TextFieldGroup, Button, FormGrid, FormRow, FormColumn } from '../../../../components/';
+import {
+  Link, Spinner, FieldErrors, TextFieldGroup, Button, FormGrid, FormRow, FormColumn,
+} from '../../../../components';
 
 import './style.scss';
 

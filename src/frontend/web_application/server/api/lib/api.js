@@ -1,9 +1,11 @@
-const http = require('http');
-const https = require('https');
-const debug = require('debug')('caliopen.web:app:api-query');
-const { getConfig } = require('../../config');
+import http from 'http';
+import https from 'https';
+import createDebug from 'debug';
+import { getConfig } from '../../config';
 
-const query = (requestParams = {}, opts = {}) => {
+const debug = createDebug('caliopen.web:app:api-query');
+
+export const query = (requestParams = {}, opts = {}) => {
   const { api: { protocol, hostname, port, checkCertificate } } = getConfig();
   const params = {
     protocol: `${protocol}:`,
@@ -87,8 +89,4 @@ const query = (requestParams = {}, opts = {}) => {
   req.end();
 
   return req;
-};
-
-module.exports = {
-  query,
 };

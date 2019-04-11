@@ -1,7 +1,7 @@
 import { SEARCH, suggest, searchSuccess } from '../modules/participant-suggestions';
 import { requestContact, REQUEST_CONTACT_SUCCESS } from '../modules/contact';
 import { formatName } from '../../services/contact';
-import { settingsSelector } from '../../store/selectors/settings';
+import { settingsSelector } from '../selectors/settings';
 
 const sortResults = ({ contactSuggestions, rawSuggestions }) => contactSuggestions
   .reduce((acc, suggestion) => {
@@ -14,17 +14,21 @@ const sortResults = ({ contactSuggestions, rawSuggestions }) => contactSuggestio
     ];
   }, rawSuggestions)
   .filter(suggestion => suggestion.address)
-  .filter((suggestion, idx, arr) =>
-    idx === arr.findIndex(sugg =>
-      sugg.address === suggestion.address && sugg.protocol === suggestion.protocol));
+  .filter((suggestion, idx, arr) => (
+    idx === arr.findIndex(sugg => (
+      sugg.address === suggestion.address && sugg.protocol === suggestion.protocol
+    ))
+  ));
 const filterSuggestionsWithContact = results => results.filter(result => result.source === 'contact');
-const extractContactFromAxios = axiosResult =>
-  axiosResult.type === REQUEST_CONTACT_SUCCESS && axiosResult.payload.data;
-const getContacts = ({ store, contactIds }) =>
+const extractContactFromAxios = axiosResult => (
+  axiosResult.type === REQUEST_CONTACT_SUCCESS && axiosResult.payload.data
+);
+const getContacts = ({ store, contactIds }) => (
   Promise.all(contactIds.map(contactId => store.dispatch(requestContact(contactId))))
     .then(allContactAxiosResults => allContactAxiosResults
       .map(extractContactFromAxios)
-      .filter(contact => contact));
+      .filter(contact => contact))
+);
 const getSuggestion = ({
   label, address, protocol, ...opts
 }) => ({

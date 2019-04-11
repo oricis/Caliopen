@@ -12,6 +12,7 @@ class Spinner extends PureComponent {
     theme: PropTypes.oneOf(['default', 'bright']),
     className: PropTypes.string,
   };
+
   static defaultProps = {
     isLoading: true,
     height: 14,

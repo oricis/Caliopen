@@ -1,7 +1,14 @@
 // Renaming REQUEST_DRAFT_SUCCESS actions for disambiguation.
 import { decryptDraftSuccess, REQUEST_DRAFT_SUCCESS as DRAFT_REQUEST_DRAFT_SUCCESS } from '../modules/draft-message';
-import { FETCH_MESSAGES_SUCCESS, REQUEST_MESSAGE_SUCCESS, REQUEST_MESSAGES_SUCCESS, REQUEST_DRAFT_SUCCESS as MESSAGE_REQUEST_DRAFT_SUCCESS } from '../modules/message';
-import { askPassphrase, needPassphrase, setPassphraseSuccess, resetPassphrase, needPrivateKey, decryptMessage as decryptMessageStart, decryptMessageSuccess, decryptMessageFail, SET_PASSPHRASE, SET_PASSPHRASE_SUCCESS } from '../modules/encryption';
+import {
+  FETCH_MESSAGES_SUCCESS, REQUEST_MESSAGE_SUCCESS, REQUEST_MESSAGES_SUCCESS,
+  REQUEST_DRAFT_SUCCESS as MESSAGE_REQUEST_DRAFT_SUCCESS,
+} from '../modules/message';
+import {
+  askPassphrase, needPassphrase, setPassphraseSuccess, resetPassphrase, needPrivateKey,
+  decryptMessage as decryptMessageStart, decryptMessageSuccess, decryptMessageFail, SET_PASSPHRASE,
+  SET_PASSPHRASE_SUCCESS,
+} from '../modules/encryption';
 import { getKeysForMessage } from '../../services/openpgp-keychain-repository';
 import { isMessageEncrypted, decryptMessage } from '../../services/encryption';
 
@@ -112,8 +119,9 @@ export default store => next => async (action) => {
   switch (action.type) {
     case DRAFT_REQUEST_DRAFT_SUCCESS:
       decryptMessageAction(store.getState(), store.dispatch, extractMessagesFromAction(action)[0])
-        .then(draft =>
-          store.dispatch(decryptDraftSuccess({ internalId: action.payload.internalId, draft })));
+        .then(draft => (
+          store.dispatch(decryptDraftSuccess({ internalId: action.payload.internalId, draft }))
+        ));
 
       return next(action);
     case MESSAGE_REQUEST_DRAFT_SUCCESS:

@@ -2,7 +2,9 @@ import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n } from '@lingui/react';
 import { CancelToken } from 'axios';
-import { Button, TextBlock, FileSize, Icon } from '../../../../components';
+import {
+  Button, TextBlock, FileSize, Icon,
+} from '../../../../components';
 import getClient from '../../../../services/api-client';
 import DownloadFileProgression from '../DownloadFileProgression';
 import './style.scss';

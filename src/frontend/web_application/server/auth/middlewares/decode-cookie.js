@@ -1,7 +1,7 @@
-const cyphered = require('../lib/seal');
-const { getConfig } = require('../../config');
+import { decode } from '../lib/seal';
+import { getConfig } from '../../config';
 
-const decodeCookie = (req, res, next) => {
+export const decodeCookieMiddleware = (req, res, next) => {
   const { seal: { secret } } = getConfig();
   const seal = req.seal;
 
@@ -11,7 +11,7 @@ const decodeCookie = (req, res, next) => {
     return;
   }
 
-  cyphered.decode(seal, secret, (err, obj) => {
+  decode(seal, secret, (err, obj) => {
     if (err || !obj) {
       const error = new Error('Unexpected Server Error on cookie decoding');
       error.status = 500;
@@ -27,5 +27,3 @@ const decodeCookie = (req, res, next) => {
     next();
   });
 };
-
-module.exports = decodeCookie;

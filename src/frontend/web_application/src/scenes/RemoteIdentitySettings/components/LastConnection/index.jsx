@@ -10,6 +10,7 @@ class lastConnection extends PureComponent {
     lastCheck: PropTypes.string,
     settings: PropTypes.shape({ default_locale: PropTypes.string.isRequired }).isRequired,
   };
+
   static defaultProps = {
     lastCheck: undefined,
   };

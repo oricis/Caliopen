@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans, withI18n } from '@lingui/react';
 import classnames from 'classnames';
-import { Spinner, Button, FieldErrors, CheckboxFieldGroup, SelectFieldGroup, TextFieldGroup, TextareaFieldGroup } from '../../../../components/';
+import {
+  Spinner, Button, FieldErrors, CheckboxFieldGroup, SelectFieldGroup, TextFieldGroup,
+  TextareaFieldGroup,
+} from '../../../../components';
 
 import {
   ERROR_UNABLE_READ_PRIVATE_KEY,
@@ -68,17 +71,6 @@ class OpenPGPKeyForm extends Component {
     }
   }
 
-  initTranslations() {
-    const { i18n } = this.props;
-
-    this.errorsLabels = {
-      [ERROR_UNABLE_READ_PRIVATE_KEY]: i18n._('openpgp.feedback.unable-read-private-key', null, { defaults: 'Unable to read private key' }),
-      [ERROR_FINGERPRINTS_NOT_MATCH]: i18n._('openpgp.feedback.fingerprints-not-match', null, { defaults: 'Fingerprints do not match' }),
-      [ERROR_NEED_PASSPHRASE]: i18n._('openpgp.feedback.need-passphrase', null, { defaults: 'Passphrase is needed to retrieve public key' }),
-      [ERROR_WRONG_PASSPHRASE]: i18n._('openpgp.feedback.wrong-passphrase', null, { defaults: 'Cannot decrypt with current passphrase' }),
-    };
-  }
-
   handleSwitchFormType = (event) => {
     this.setState({
       formType: event.target.name,
@@ -121,6 +113,17 @@ class OpenPGPKeyForm extends Component {
 
   handleCancelForm = () => {
     this.props.cancel();
+  }
+
+  initTranslations() {
+    const { i18n } = this.props;
+
+    this.errorsLabels = {
+      [ERROR_UNABLE_READ_PRIVATE_KEY]: i18n._('openpgp.feedback.unable-read-private-key', null, { defaults: 'Unable to read private key' }),
+      [ERROR_FINGERPRINTS_NOT_MATCH]: i18n._('openpgp.feedback.fingerprints-not-match', null, { defaults: 'Fingerprints do not match' }),
+      [ERROR_NEED_PASSPHRASE]: i18n._('openpgp.feedback.need-passphrase', null, { defaults: 'Passphrase is needed to retrieve public key' }),
+      [ERROR_WRONG_PASSPHRASE]: i18n._('openpgp.feedback.wrong-passphrase', null, { defaults: 'Cannot decrypt with current passphrase' }),
+    };
   }
 
   render() {

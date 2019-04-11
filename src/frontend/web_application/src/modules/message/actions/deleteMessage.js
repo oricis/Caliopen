@@ -11,8 +11,9 @@ export const deleteMessage = ({ message }) => async (dispatch) => {
 
     if (message.discussion_id) {
       try {
-        const discussion = await tryCatchAxiosAction(() =>
-          dispatch(requestDiscussion({ discussionId: message.discussion_id })));
+        const discussion = await tryCatchAxiosAction(() => (
+          dispatch(requestDiscussion({ discussionId: message.discussion_id }))
+        ));
         dispatch(removeDiscussionFromCollection({ discussionId: discussion.discussion_id }));
       } catch (apiErrors) {
         if (!Array.isArray(apiErrors) || apiErrors[0].code !== 404) {

@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import NewIdentity from './components/NewIdentity';
 import RemoteIdentity from './components/RemoteIdentity';
-import { PageTitle } from '../../components/';
+import { PageTitle } from '../../components';
 
 import './style.scss';
 
@@ -13,6 +13,7 @@ class RemoteIdentitySettings extends Component {
     onIdentityDelete: PropTypes.func.isRequired,
     identities: PropTypes.arrayOf(PropTypes.shape({})),
   };
+
   static defaultProps = {
     identities: undefined,
   };

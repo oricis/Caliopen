@@ -30,5 +30,6 @@ export const getAveragePI = (pi, piProps = PI_PROPERTIES) => {
   return Math.round((piProps.reduce((acc, name) => acc + pi[name] || 0, 0)) / piProps.length);
 };
 
-export const getAveragePIMessage = ({ message }) =>
-  getAveragePI(message.pi_message, PI_MESSAGE_PROPERTIES);
+export const getAveragePIMessage = ({ message }) => (
+  getAveragePI(message.pi_message, PI_MESSAGE_PROPERTIES)
+);

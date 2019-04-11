@@ -4,7 +4,7 @@ import { withI18n } from '@lingui/react';
 import { withRouter } from 'react-router-dom';
 import { Tab } from '../../model/Tab';
 import { TabContext } from '../../contexts/TabContext';
-import { RoutingConsumer, findTabbableRouteConfig } from '../../../../modules/routing';
+import { RoutingConsumer, findTabbableRouteConfig } from '../../../routing';
 
 const withRoutes = () => C => props => (
   <RoutingConsumer
@@ -28,10 +28,12 @@ class TabProvider extends Component {
     i18n: PropTypes.shape({}).isRequired,
     routes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   };
+
   static defaultProps = {
     children: null,
     location: {},
   };
+
   state = {
     previousPathname: undefined,
     providerValue: {

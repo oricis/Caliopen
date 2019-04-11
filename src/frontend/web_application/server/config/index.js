@@ -1,23 +1,17 @@
-const merge = require('lodash.merge');
-const defaults = require('../../config/server.default.js');
-const envVars = require('../../config/server.env-var.js');
+import merge from 'lodash.merge';
+import defaults from '../../config/server.default';
+import envVars from '../../config/server.env-var';
 
 let config = merge(defaults, envVars);
 
-const initConfig = (forceDefaults) => {
+export const initConfig = (forceDefaults) => {
   config = merge(defaults, forceDefaults, envVars);
 };
 
-const getConfig = () => config;
+export const getConfig = () => config;
 
-const getApiHost = () => {
+export const getApiHost = () => {
   const { api: { hostname, port, protocol } } = getConfig();
 
   return `${protocol}://${hostname}:${port}`;
-};
-
-module.exports = {
-  getConfig,
-  getApiHost,
-  initConfig,
 };

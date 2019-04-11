@@ -61,8 +61,8 @@ export const filterIdentities = ({
     participantsContacts.length === 0 ||
     participantsContacts.length > 1
   ) {
-    return identities.filter(identity =>
-      getIdentityProtocol(identity) === getMessageProtocol(parentMessage));
+    return identities
+      .filter(identity => getIdentityProtocol(identity) === getMessageProtocol(parentMessage));
   }
 
   // in a discussion 1-to-1 we allow to switch identity of the protocol that the associated contact

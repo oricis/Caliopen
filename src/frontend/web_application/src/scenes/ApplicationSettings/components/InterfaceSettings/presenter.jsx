@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
-import { SelectFieldGroup as SelectFieldGroupBase, FormGrid, FormRow, FormColumn } from '../../../../components';
+import {
+  SelectFieldGroup as SelectFieldGroupBase, FormGrid, FormRow, FormColumn,
+} from '../../../../components';
 import renderReduxField from '../../../../services/renderReduxField';
 
 const SelectFieldGroup = renderReduxField(SelectFieldGroupBase);
@@ -38,7 +40,7 @@ class InterfaceSettings extends PureComponent {
     return (
       <FormGrid className="m-interface-form">
         <FormRow>
-          <FormColumn rightSpace={false} >
+          <FormColumn rightSpace={false}>
             <Field
               component={SelectFieldGroup}
               name="default_locale"
