@@ -43,7 +43,7 @@ discussions:
               format: int32
               description: number of discussions found for current user for the given
                 parameters
-            discussion:
+            discussions:
               type: array
               items:
                 "$ref": "../objects/Discussion.yaml"

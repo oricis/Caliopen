@@ -29,6 +29,7 @@ func (rest *RESTfacility) SendDraft(user_info *UserInfo, msg_id string) (msg *Me
 		return nil, errors.New("unknown protocol for sender")
 	}
 	// Associate to an existing discussion or create a new one
+	/*TODO
 	discussion, err := rest.store.GetOrCreateDiscussion(draft.User_id, draft.Participants)
 	if err != nil {
 		log.WithError(err).Error("[SendDraft] failed to associate to a discussion")
@@ -50,7 +51,7 @@ func (rest *RESTfacility) SendDraft(user_info *UserInfo, msg_id string) (msg *Me
 		log.WithError(err).Warn("[SendDraft] Index.UpdateMessage operation failed")
 		return nil, err
 	}
-
+	*/
 	var natsTopic string
 	switch protocol {
 	case EmailProtocol, ImapProtocol:

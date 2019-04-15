@@ -42,3 +42,5 @@ properties:
   last_message_date:
     type: string
     format: date-time
+  last_message_subject:
+    type: string

@@ -48,6 +48,8 @@ type (
 		GetProviderOauthFor(userID, provider string) (Provider, CaliopenError)
 		CreateTwitterIdentity(requestToken, verifier string) (remoteId string, err CaliopenError)
 		CreateGmailIdentity(state, code string) (remoteId string, err CaliopenError)
+		//discussions
+		GetDiscussionsList(user *UserInfo, ILrange, PIrange [2]int8, limit, offset int) ([]Discussion, int64, error)
 		//messages
 		GetMessagesList(filter IndexSearch) (messages []*Message, totalFound int64, err error)
 		GetMessagesRange(filter IndexSearch) (messages []*Message, totalFound int64, err error)

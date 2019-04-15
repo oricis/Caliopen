@@ -6,17 +6,18 @@ package store
 
 import (
 	"crypto/sha256"
+	"errors"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocassa/gocassa"
-	"github.com/gocql/gocql"
 	"sort"
 	"strings"
 )
 
 // setParticipantLookupWithContact manage contact_ids related to a participant
 func (cb *CassandraBackend) setParticipantLookupWithContact(user_id UUID, participant Participant, partId UUID) error {
+	/* TODO
 	for _, uuid := range participant.Contact_ids {
 		contact_id := uuid.String()
 		log.Info("Processing participant ", participant, " with contact ", contact_id)
@@ -41,10 +42,12 @@ func (cb *CassandraBackend) setParticipantLookupWithContact(user_id UUID, partic
 			log.Warn("Inconsistent ParticipantId with contact one ", participant)
 		}
 	}
+	*/
 	return nil
 }
 
 func (cb *CassandraBackend) setParticipantLookup(user_id UUID, participant Participant) (partId UUID, err error) {
+	/*TODO
 	lookup, err := cb.RetrieveParticipantLookup(user_id, participant.Address, participant.Protocol)
 	if err == gocql.ErrNotFound {
 		newLookup := &ParticipantLookup{}
@@ -55,6 +58,8 @@ func (cb *CassandraBackend) setParticipantLookup(user_id UUID, participant Parti
 		return newLookup.ParticipantId, err
 	}
 	return lookup.ParticipantId, err
+	*/
+	return EmptyUUID, errors.New("not implemented")
 }
 
 func (cb *CassandraBackend) prepareParticipantLookup(user_id UUID, participants []Participant) (parts []string, err error) {
@@ -97,6 +102,7 @@ func (cb *CassandraBackend) CreateDiscussion(discussion Discussion) error {
 }
 
 func (cb *CassandraBackend) GetDiscussion(user_id, discussion_id UUID) (discussion *Discussion, err error) {
+	/* TODO
 	discussion = new(Discussion)
 	m := map[string]interface{}{}
 	q := cb.SessionQuery(`SELECT * FROM discussion WHERE user_id = ? AND discussion_id = ?`, user_id, discussion_id)
@@ -105,7 +111,8 @@ func (cb *CassandraBackend) GetDiscussion(user_id, discussion_id UUID) (discussi
 		return nil, err
 	}
 	discussion.UnmarshalCQLMap(m)
-	return
+	*/
+	return nil, errors.New("not implemented")
 }
 
 // CreateThreadLookup inserts a new entry into discussion_thread_lookup table
@@ -123,7 +130,9 @@ func (cb *CassandraBackend) CreateDiscussionGlobalLookup(user_id UUID, hash stri
 		discussion_id.String()).Exec()
 }
 
+/*
 func (cb *CassandraBackend) GetDiscussionGlobalLookup(user_id UUID, hash string) (lookup *DiscussionGlobalLookup, err error) {
+	/* TODO
 	lookup = new(DiscussionGlobalLookup)
 	m := map[string]interface{}{}
 	q := cb.SessionQuery(`SELECT * FROM discussion_global_lookup WHERE user_id = ? AND hashed = ?`, user_id, hash)
@@ -132,9 +141,10 @@ func (cb *CassandraBackend) GetDiscussionGlobalLookup(user_id UUID, hash string)
 		return nil, err
 	}
 	lookup.UnmarshalCQLMap(m)
-	return
-}
 
+	return nil, errors.New("not implemented")
+}
+*/
 // GetDiscussionByParticipants retrieve the hash value related to a list of participants used for discussion lookup
 // golang version of python NewMessage.hash_participants function
 func (cb *CassandraBackend) GetDiscussionHashByParticipants(user_id UUID, participants []Participant) (string, error) {
@@ -148,6 +158,7 @@ func (cb *CassandraBackend) GetDiscussionHashByParticipants(user_id UUID, partic
 	return fmt.Sprintf("%x", hash), nil
 }
 
+/*
 // GetOrCreateDiscussion will get an existing discussion for the list of given participants or create a new one
 func (cb *CassandraBackend) GetOrCreateDiscussion(user_id UUID, participants []Participant) (discussion *Discussion, err error) {
 	discussion = new(Discussion)
@@ -180,3 +191,4 @@ func (cb *CassandraBackend) GetOrCreateDiscussion(user_id UUID, participants []P
 	}
 	return
 }
+*/

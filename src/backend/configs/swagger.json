@@ -7599,7 +7599,7 @@
                   "format": "int32",
                   "description": "number of discussions found for current user for the given parameters"
                 },
-                "discussion": {
+                "discussions": {
                   "type": "array",
                   "items": {
                     "type": "object",
@@ -7695,6 +7695,9 @@
                       "last_message_date": {
                         "type": "string",
                         "format": "date-time"
+                      },
+                      "last_message_subject": {
+                        "type": "string"
                       }
                     }
                   }
@@ -7886,6 +7889,9 @@
                 "last_message_date": {
                   "type": "string",
                   "format": "date-time"
+                },
+                "last_message_subject": {
+                  "type": "string"
                 }
               }
             }
