@@ -35,4 +35,10 @@ properties:
   unread_count:
     type: integer
     format: int32
-
+  messages_hash:
+    type: string
+  last_message_id:
+    type: string
+  last_message_date:
+    type: string
+    format: date-time
