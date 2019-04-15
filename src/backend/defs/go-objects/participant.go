@@ -21,11 +21,20 @@ type (
 	}
 
 	ParticipantLookup struct {
-		UserId        UUID      `cql:"user_id"`
-		Identifier    string    `cql:"identifier"`
-		Type          string    `cql:"type"`
-		ParticipantId UUID      `cql:"participant_id"`
-		DateInsert    time.Time `cql:"date_insert"`
+		UserId         UUID      `cql:"user_id"` // primary key
+		Uri            string    `cql:"uri"`     // primary key
+		Hash           string    `cql:"hash"`    // primary key
+		DateInsert     time.Time `cql:"date_insert"`
+		HashComponents []string  `cql:"hash_components"`
+	}
+
+	HashLookup struct {
+		UserId     UUID      `cql:"user_id"` // primary key
+		Kind       string    `cql:"kind"`    // primary key
+		Key        string    `cql:"key"`     // primary key
+		Value      string    `cql:"value"`   // primary key
+		Components []string  `cql:"components"`
+		DateInsert time.Time `cql:"date_insert"`
 	}
 )
 
@@ -60,14 +69,17 @@ func (pl *ParticipantLookup) UnmarshalCQLMap(input map[string]interface{}) error
 	if user_id, ok := input["user_id"].(gocql.UUID); ok {
 		pl.UserId.UnmarshalBinary(user_id.Bytes())
 	}
-	if identifier, ok := input["identifier"].(string); ok {
-		pl.Identifier = identifier
+	if uri, ok := input["uri"].(string); ok {
+		pl.Uri = uri
 	}
-	if type_, ok := input["type"].(string); ok {
-		pl.Type = type_
+	if hash, ok := input["hash"].(string); ok {
+		pl.Hash = hash
 	}
-	if part_id, ok := input["participant_id"].(gocql.UUID); ok {
-		pl.ParticipantId.UnmarshalBinary(part_id.Bytes())
+	if dateInsert, ok := input["date_insert"].(time.Time); ok {
+		pl.DateInsert = dateInsert
+	}
+	if components, ok := input["hash_components"].([]string); ok {
+		pl.HashComponents = components
 	}
 	return nil
 }
@@ -78,9 +90,6 @@ func (p *Participant) MarshallNew(...interface{}) {
 }
 
 func (pl *ParticipantLookup) MarshallNew(args ...interface{}) {
-	if len(pl.ParticipantId) == 0 || (bytes.Equal(pl.ParticipantId.Bytes(), EmptyUUID.Bytes())) {
-		pl.ParticipantId.UnmarshalBinary(uuid.NewV4().Bytes())
-	}
 	if len(pl.UserId) == 0 || (bytes.Equal(pl.UserId.Bytes(), EmptyUUID.Bytes())) {
 		if len(args) == 1 {
 			switch args[0].(type) {
@@ -89,6 +98,29 @@ func (pl *ParticipantLookup) MarshallNew(args ...interface{}) {
 			}
 		}
 	}
+	pl.HashComponents = []string{}
+}
+
+func (hl *HashLookup) UnmarshalCQLMap(input map[string]interface{}) error {
+	if user_id, ok := input["user_id"].(gocql.UUID); ok {
+		hl.UserId.UnmarshalBinary(user_id.Bytes())
+	}
+	if kind, ok := input["kind"].(string); ok {
+		hl.Kind = kind
+	}
+	if key, ok := input["key"].(string); ok {
+		hl.Key = key
+	}
+	if value, ok := input["value"].(string); ok {
+		hl.Value = value
+	}
+	if components, ok := input["components"].([]string); ok {
+		hl.Components = components
+	}
+	if dateInsert, ok := input["date_insert"].(time.Time); ok {
+		hl.DateInsert = dateInsert
+	}
+	return nil
 }
 
 // Sort interface implementation

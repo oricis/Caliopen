@@ -101,6 +101,23 @@ func (cb *CassandraBackend) CreateDiscussion(discussion Discussion) error {
 	return nil
 }
 
+func (cb *CassandraBackend) GetUserLookupHashes(userId UUID, kind string) (hashes []HashLookup, err error) {
+	rawHashes, err := cb.SessionQuery(`SELECT * from hash_lookup WHERE user_id = ? AND kind = ?`, userId, kind).Iter().SliceMap()
+	if err != nil {
+		return
+	}
+	if len(rawHashes) == 0 {
+		err = errors.New("hash not found")
+		return
+	}
+	for _, hash := range rawHashes {
+		h := new(HashLookup)
+		h.UnmarshalCQLMap(hash)
+		hashes = append(hashes, *h)
+	}
+	return
+}
+
 func (cb *CassandraBackend) GetDiscussion(user_id, discussion_id UUID) (discussion *Discussion, err error) {
 	/* TODO
 	discussion = new(Discussion)

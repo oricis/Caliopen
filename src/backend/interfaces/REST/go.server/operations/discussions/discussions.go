@@ -63,7 +63,7 @@ func GetDiscussionsList(ctx *gin.Context) {
 		return
 	}
 	var respBuf bytes.Buffer
-	respBuf.WriteString("{\"total\": " + strconv.FormatInt(totalFound, 10) + ",")
+	respBuf.WriteString("{\"total\": " + strconv.FormatInt(int64(totalFound), 10) + ",")
 	respBuf.WriteString("\"discussions\":[")
 	first := true
 	for _, disc := range list {

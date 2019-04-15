@@ -17,6 +17,7 @@ type IndexSearch struct {
 	User_id  UUID                `json:"user_id"`
 	DocType  string              `json:"doc_type"`
 	ILrange  [2]int8             `json:"il_range"`
+	PIrange  [2]int8             `json:"pi_range"`
 }
 
 type IndexResult struct {

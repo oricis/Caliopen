@@ -13,20 +13,20 @@ import (
 
 type (
 	Discussion struct {
-		AttachmentCount    int32         `json:"attachment_count"`
-		DateInsert         time.Time     `json:"date_insert"              formatter:"RFC3339Milli"`
-		DateUpdate         time.Time     `json:"date_update"`
-		DiscussionId       UUID          `json:"discussion_id"            formatter:"rfc4122"`
+		AttachmentCount    int32         `json:"attachment_count,omitempty"`
+		DateInsert         time.Time     `json:"date_insert,omitempty"              formatter:"RFC3339Milli"`
+		DateUpdate         time.Time     `json:"date_update,omitempty"              formatter:"RFC3339Milli"`
+		DiscussionId       string        `json:"discussion_id"                      formatter:"rfc4122"`
 		Excerpt            string        `json:"excerpt"`
-		ImportanceLevel    int32         `json:"importance_level"`
-		LastMessageDate    time.Time     `json:"last_message_date"`
+		ImportanceLevel    int32         `json:"importance_level,omitempty"`
+		LastMessageDate    time.Time     `json:"last_message_date,omitempty"        formatter:"RFC3339Milli"`
 		LastMessageId      UUID          `json:"last_message_id"`
 		LastMessageSubject string        `json:"last_message_subject"`
-		MessagesHash       string        `json:"messages_hash"`
+		MessagesHash       string        `json:"messages_hash,omitempty"`
 		Participants       []Participant `json:"participants"`
-		Protocol           string        `json:"protocol"`
+		Protocol           string        `json:"protocol,omitempty"`
 		Subject            string        `json:"subject"`
-		Tags               []string      `json:"tags"`
+		Tags               []string      `json:"tags,omitempty"`
 		TotalCount         int32         `json:"total_count"`
 		UnreadCount        int32         `json:"unread_count"`
 		UserId             UUID          `json:"user_id"`
@@ -54,9 +54,7 @@ func (d *Discussion) UnmarshalMap(input map[string]interface{}) error {
 		d.DateUpdate, _ = time.Parse(time.RFC3339Nano, dateUpdate)
 	}
 	if discId, ok := input["discussion_id"].(string); ok {
-		if id, err := uuid.FromString(discId); err == nil {
-			d.DiscussionId.UnmarshalBinary(id.Bytes())
-		}
+		d.DiscussionId = discId
 	}
 	if excerpt, ok := input["excerpt"].(string); ok {
 		d.Excerpt = excerpt
@@ -124,9 +122,6 @@ func (d *Discussion) MarshalFrontEnd() ([]byte, error) {
 
 // MarshallNew implements CaliopenObject interface
 func (d *Discussion) MarshallNew(args ...interface{}) {
-	if len(d.DiscussionId) == 0 || (bytes.Equal(d.DiscussionId.Bytes(), EmptyUUID.Bytes())) {
-		d.DiscussionId.UnmarshalBinary(uuid.NewV4().Bytes())
-	}
 	if len(d.UserId) == 0 || (bytes.Equal(d.UserId.Bytes(), EmptyUUID.Bytes())) {
 		if len(args) == 1 {
 			switch args[0].(type) {
@@ -139,4 +134,18 @@ func (d *Discussion) MarshallNew(args ...interface{}) {
 	if d.DateInsert.IsZero() {
 		d.DateInsert = time.Now()
 	}
+}
+
+type ByLastMessageDateDesc []Discussion
+
+func (blm ByLastMessageDateDesc) Len() int {
+	return len(blm)
+}
+
+func (blm ByLastMessageDateDesc) Less(i, j int) bool {
+	return blm[i].LastMessageDate.Before(blm[j].LastMessageDate)
+}
+
+func (blm ByLastMessageDateDesc) Swap(i, j int) {
+	blm[i], blm[j] = blm[j], blm[i]
 }
