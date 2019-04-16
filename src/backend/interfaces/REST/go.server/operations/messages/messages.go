@@ -76,6 +76,7 @@ func GetMessagesList(ctx *gin.Context) {
 		Offset:   offset,
 		ILrange:  operations.GetImportanceLevel(ctx),
 	}
+
 	var list []*Message
 	var totalFound int64
 	var err error

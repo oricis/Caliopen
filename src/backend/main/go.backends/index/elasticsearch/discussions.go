@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/messages"
 	"github.com/satori/go.uuid"
 	"gopkg.in/olivere/elastic.v5"
@@ -19,11 +20,12 @@ func (es *ElasticSearchBackend) GetDiscussionsList(filter IndexSearch) (discussi
 	search := es.Client.Search().Index(filter.Shard_id).Type(MessageIndexType)
 	search = filter.FilterQuery(search, true)
 	msgSource := elastic.NewFetchSourceContext(true)
-	msgSource.Include("date_sort", "subject", "participants", "body_plain", "body_html")
-	search.Aggregation("by_uris", elastic.NewTermsAggregation().Field("discussion_id").Size(10000). // need to fetch lot of buckets to have an accurate buckets count
+	msgSource.Include("date_sort", "subject", "participants", "body_plain", "body_html", "importance_level")
+	search.Aggregation("by_uris", elastic.NewTermsAggregation().Field("discussion_id").Size(10e3). // need to fetch all buckets to have an accurate buckets count
 													SubAggregation("sub_bucket", elastic.NewTopHitsAggregation().Sort("date_sort", false).Size(1).FetchSourceContext(msgSource)).
-													SubAggregation("unread_count", elastic.NewFilterAggregation().Filter(elastic.NewTermQuery("is_unread", true))))
-	// TODO : attachment count aggr + min importance level agg
+													SubAggregation("unread_count", elastic.NewFilterAggregation().Filter(elastic.NewTermQuery("is_unread", true))).
+													SubAggregation("importance_level", elastic.NewTermsAggregation().Field("importance_level").Size(100).OrderByTermDesc()))
+	// TODO : attachment count aggr
 
 	var result *elastic.SearchResult
 	result, err = search.Do(context.TODO())
@@ -32,7 +34,6 @@ func (es *ElasticSearchBackend) GetDiscussionsList(filter IndexSearch) (discussi
 		return nil, err
 	}
 	agg := result.Aggregations["by_uris"]
-
 	var byUris Aggregation
 	json.Unmarshal([]byte(*agg), &byUris)
 
@@ -60,10 +61,20 @@ func (es *ElasticSearchBackend) GetDiscussionsList(filter IndexSearch) (discussi
 
 		msg.UnmarshalMap(subHit["_source"].(map[string]interface{}))
 
+		var importanceAgg Aggregation
+		json.Unmarshal(hit.ImportanceLevel, &importanceAgg)
+		messagesIL := []float64{}
+		for _, bucket := range importanceAgg.Buckets {
+			for i := 0; i < bucket.DocCount; i++ {
+				messagesIL = append(messagesIL, float64(bucket.Key.(float64)))
+			}
+		}
+
 		discussions = append(discussions, Discussion{
 			DateUpdate:         msg.Date_sort,
-			DiscussionId:       hit.Key,
+			DiscussionId:       hit.Key.(string),
 			Excerpt:            messages.ExcerptMessage(*msg, 200, true, true),
+			ImportanceLevel:    int32(helpers.ComputeDiscussionIL(messagesIL)),
 			LastMessageDate:    msg.Date_sort,
 			LastMessageId:      UUID(uuid.FromStringOrNil(subHit["_id"].(string))),
 			LastMessageSubject: msg.Subject,

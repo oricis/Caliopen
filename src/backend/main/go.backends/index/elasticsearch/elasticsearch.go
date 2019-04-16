@@ -20,10 +20,11 @@ type (
 	}
 
 	Bucket struct {
-		DocCount    int             `json:"doc_count"`
-		Key         string          `json:"key"`
-		SubBucket   json.RawMessage `json:"sub_bucket"`
-		UnreadCount DocCounter      `json:"unread_count"`
+		DocCount        int             `json:"doc_count"`
+		Key             interface{}     `json:"key"`
+		SubBucket       json.RawMessage `json:"sub_bucket"`
+		UnreadCount     DocCounter      `json:"unread_count"`
+		ImportanceLevel json.RawMessage `json:"importance_level"`
 	}
 
 	Aggregation struct {

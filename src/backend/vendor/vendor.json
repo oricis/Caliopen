@@ -685,6 +685,12 @@
 			"revisionTime": "2017-04-22T00:02:51Z"
 		},
 		{
+			"checksumSHA1": "J7ldd5xn1CzfVYLVoyFy3PHzi2s=",
+			"path": "github.com/montanaflynn/stats",
+			"revision": "572e08a0d1d7a2fccb825738d8098ef9b7033f45",
+			"revisionTime": "2019-01-28T06:59:58Z"
+		},
+		{
 			"checksumSHA1": "O60x2mXes26ITuTIyUMwqhOKsfI=",
 			"path": "github.com/mozillazg/go-unidecode",
 			"revision": "8772af720c7f2f4d216cc73c5f23de17450dd008",
