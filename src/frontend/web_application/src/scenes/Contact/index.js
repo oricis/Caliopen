@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { reduxForm, formValues } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import {
   requestContact, createContact, deleteContact, invalidate as invalidateContacts,
 } from '../../store/modules/contact';
@@ -83,6 +83,5 @@ export default compose(
   reduxForm({
     destroyOnUnmount: false,
     enableReinitialize: true,
-  }),
-  formValues({ birthday: 'info.birthday' }),
+  })
 )(Presenter);
