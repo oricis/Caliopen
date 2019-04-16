@@ -5,109 +5,22 @@
 package store
 
 import (
-	"crypto/sha256"
 	"errors"
-	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
-	log "github.com/Sirupsen/logrus"
-	"github.com/gocassa/gocassa"
-	"sort"
-	"strings"
 )
 
-// setParticipantLookupWithContact manage contact_ids related to a participant
-func (cb *CassandraBackend) setParticipantLookupWithContact(user_id UUID, participant Participant, partId UUID) error {
-	/* TODO
-	for _, uuid := range participant.Contact_ids {
-		contact_id := uuid.String()
-		log.Info("Processing participant ", participant, " with contact ", contact_id)
-		lookup_contact, err := cb.RetrieveParticipantLookup(user_id, contact_id, "contact")
-		if err == gocql.ErrNotFound {
-			newLookup := &ParticipantLookup{}
-			newLookup.MarshallNew(user_id)
-			newLookup.Type = "contact"
-			newLookup.Identifier = contact_id
-			newLookup.ParticipantId = partId
-			err = cb.CreateParticipantLookup(newLookup)
-			if err != nil {
-				return err
-			}
-			log.Info("Created contact related participant_lookup ", newLookup)
-			return nil
-		}
-		if err != nil && err != gocql.ErrNotFound {
-			return err
-		}
-		if lookup_contact.ParticipantId != partId {
-			log.Warn("Inconsistent ParticipantId with contact one ", participant)
-		}
+func (cb *CassandraBackend) GetUserLookupHashes(userId UUID, kind, key string) (hashes []HashLookup, err error) {
+	var rawHashes []map[string]interface{}
+	if key != "" {
+		rawHashes, err = cb.SessionQuery(`SELECT * from hash_lookup WHERE user_id = ? AND kind = ? AND key = ?`, userId, kind, key).Iter().SliceMap()
+	} else {
+		rawHashes, err = cb.SessionQuery(`SELECT * from hash_lookup WHERE user_id = ? AND kind = ?`, userId, kind).Iter().SliceMap()
 	}
-	*/
-	return nil
-}
-
-func (cb *CassandraBackend) setParticipantLookup(user_id UUID, participant Participant) (partId UUID, err error) {
-	/*TODO
-	lookup, err := cb.RetrieveParticipantLookup(user_id, participant.Address, participant.Protocol)
-	if err == gocql.ErrNotFound {
-		newLookup := &ParticipantLookup{}
-		newLookup.MarshallNew(user_id)
-		newLookup.Identifier = strings.ToLower(participant.Address)
-		newLookup.Type = participant.Protocol
-		err = cb.CreateParticipantLookup(newLookup)
-		return newLookup.ParticipantId, err
-	}
-	return lookup.ParticipantId, err
-	*/
-	return EmptyUUID, errors.New("not implemented")
-}
-
-func (cb *CassandraBackend) prepareParticipantLookup(user_id UUID, participants []Participant) (parts []string, err error) {
-	set := make(map[string]struct{})
-	parts = make([]string, len(participants))
-
-	for _, participant := range participants {
-		partId, err := cb.setParticipantLookup(user_id, participant)
-		if err != nil {
-			return parts, err
-		}
-		log.Info("Created participant ", partId, " for participant ", participant)
-
-		err = cb.setParticipantLookupWithContact(user_id, participant, partId)
-		if err != nil {
-			return parts, err
-		}
-		to_add := partId.String()
-		if _, ok := set[to_add]; !ok {
-			set[to_add] = struct{}{}
-			parts = append(parts, to_add)
-		}
-	}
-	sort.Strings(parts)
-	return parts, nil
-}
-
-// CreateDiscussion create a new discussion
-func (cb *CassandraBackend) CreateDiscussion(discussion Discussion) error {
-	discussionT := cb.IKeyspace.Table("discussion", &Discussion{}, gocassa.Keys{
-		PartitionKeys: []string{"user_id", "discussion_id"},
-	}).WithOptions(gocassa.Options{TableName: "discussion"})
-
-	// save discussion
-	err := discussionT.Set(discussion).Run()
-	if err != nil {
-		return fmt.Errorf("[CassandraBackend] CreateDiscussion: %s", err)
-	}
-	return nil
-}
-
-func (cb *CassandraBackend) GetUserLookupHashes(userId UUID, kind string) (hashes []HashLookup, err error) {
-	rawHashes, err := cb.SessionQuery(`SELECT * from hash_lookup WHERE user_id = ? AND kind = ?`, userId, kind).Iter().SliceMap()
 	if err != nil {
 		return
 	}
 	if len(rawHashes) == 0 {
-		err = errors.New("hash not found")
+		err = errors.New("not found")
 		return
 	}
 	for _, hash := range rawHashes {
@@ -118,18 +31,15 @@ func (cb *CassandraBackend) GetUserLookupHashes(userId UUID, kind string) (hashe
 	return
 }
 
-func (cb *CassandraBackend) GetDiscussion(user_id, discussion_id UUID) (discussion *Discussion, err error) {
-	/* TODO
-	discussion = new(Discussion)
+func (cb *CassandraBackend) RetrieveLookupHash(userId UUID, kind, hash string) (lookup HashLookup, err error) {
 	m := map[string]interface{}{}
-	q := cb.SessionQuery(`SELECT * FROM discussion WHERE user_id = ? AND discussion_id = ?`, user_id, discussion_id)
+	q := cb.SessionQuery(`SELECT * from hash_lookup WHERE user_id = ? AND kind = ? AND key = ?`, userId, kind, hash)
 	err = q.MapScan(m)
 	if err != nil {
-		return nil, err
+		return
 	}
-	discussion.UnmarshalCQLMap(m)
-	*/
-	return nil, errors.New("not implemented")
+	lookup.UnmarshalCQLMap(m)
+	return
 }
 
 // CreateThreadLookup inserts a new entry into discussion_thread_lookup table
@@ -139,73 +49,3 @@ func (cb *CassandraBackend) CreateThreadLookup(user_id, discussion_id UUID, exte
 		external_msg_id,
 		discussion_id.String()).Exec()
 }
-
-func (cb *CassandraBackend) CreateDiscussionGlobalLookup(user_id UUID, hash string, discussion_id UUID) error {
-	return cb.SessionQuery(`INSERT INTO discussion_global_lookup (user_id, hashed, discussion_id) VALUES (?,?,?)`,
-		user_id.String(),
-		hash,
-		discussion_id.String()).Exec()
-}
-
-/*
-func (cb *CassandraBackend) GetDiscussionGlobalLookup(user_id UUID, hash string) (lookup *DiscussionGlobalLookup, err error) {
-	/* TODO
-	lookup = new(DiscussionGlobalLookup)
-	m := map[string]interface{}{}
-	q := cb.SessionQuery(`SELECT * FROM discussion_global_lookup WHERE user_id = ? AND hashed = ?`, user_id, hash)
-	err = q.MapScan(m)
-	if err != nil {
-		return nil, err
-	}
-	lookup.UnmarshalCQLMap(m)
-
-	return nil, errors.New("not implemented")
-}
-*/
-// GetDiscussionByParticipants retrieve the hash value related to a list of participants used for discussion lookup
-// golang version of python NewMessage.hash_participants function
-func (cb *CassandraBackend) GetDiscussionHashByParticipants(user_id UUID, participants []Participant) (string, error) {
-	parts, err := cb.prepareParticipantLookup(user_id, participants)
-	if err != nil {
-		log.Errorf("prepareParticipantLookup error %s", err)
-		return "", err
-	}
-	hash := sha256.Sum256([]byte(strings.Join(parts, "")))
-	log.Debug("Computed hash for partipants ", fmt.Sprintf("%x", hash))
-	return fmt.Sprintf("%x", hash), nil
-}
-
-/*
-// GetOrCreateDiscussion will get an existing discussion for the list of given participants or create a new one
-func (cb *CassandraBackend) GetOrCreateDiscussion(user_id UUID, participants []Participant) (discussion *Discussion, err error) {
-	discussion = new(Discussion)
-	hash, err := cb.GetDiscussionHashByParticipants(user_id, participants)
-	if err != nil {
-		return
-	}
-	lookup, err := cb.GetDiscussionGlobalLookup(user_id, hash)
-	if err != nil && err != gocql.ErrNotFound {
-		return
-	}
-	if lookup != nil {
-		discussion, err = cb.GetDiscussion(user_id, lookup.DiscussionId)
-		if err == nil {
-			log.Debug("Found existing discussion ", discussion.Discussion_id)
-		}
-		return
-	} else {
-		discussion.MarshallNew(user_id)
-		err = cb.CreateDiscussion(*discussion)
-		if err != nil {
-			return
-		}
-		err = cb.CreateDiscussionGlobalLookup(user_id, hash, discussion.Discussion_id)
-		if err != nil {
-			return
-		}
-		log.Debug("Create a new discussion ", discussion.Discussion_id)
-
-	}
-	return
-}
-*/

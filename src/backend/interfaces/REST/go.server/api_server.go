@@ -235,7 +235,7 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	/** discussions API **/
 	disc := api.Group("/discussions", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
 	disc.GET("", discussions.GetDiscussionsList)
-	disc.GET("/:discussion_id", discussions.GetDiscussion)
+	disc.GET("/:discussionId", discussions.GetDiscussion)
 
 	/** participants API **/
 	parts := api.Group("/participants", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))

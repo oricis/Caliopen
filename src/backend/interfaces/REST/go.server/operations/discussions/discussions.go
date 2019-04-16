@@ -81,9 +81,34 @@ func GetDiscussionsList(ctx *gin.Context) {
 	ctx.Data(http.StatusOK, "application/json; charset=utf-8", respBuf.Bytes())
 }
 
-// GET …/discussions/:discussion_id
+// GET …/discussions/:discussionId
 func GetDiscussion(ctx *gin.Context) {
-	e := swgErr.New(http.StatusFailedDependency, "not implemented")
-	http_middleware.ServeError(ctx.Writer, ctx.Request, e)
-	ctx.Abort()
+	userId, err := operations.NormalizeUUIDstring(ctx.GetString("user_id"))
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+	}
+	shardId := ctx.MustGet("shard_id").(string)
+	userInfo := &UserInfo{User_id: userId, Shard_id: shardId}
+	discussion, err := caliopen.Facilities.RESTfacility.DiscussionMetadata(userInfo, ctx.Param("discussionId"))
+	if err != nil {
+		var e error
+		if err.Error() == "not found" {
+			e = swgErr.New(http.StatusNotFound, err.Error())
+		} else {
+			e = swgErr.New(http.StatusFailedDependency, err.Error())
+		}
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+	disc_json, err := discussion.MarshalFrontEnd()
+	if err != nil {
+		e := swgErr.New(http.StatusFailedDependency, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+	} else {
+		ctx.Data(http.StatusOK, "application/json; charset=utf-8", disc_json)
+	}
 }

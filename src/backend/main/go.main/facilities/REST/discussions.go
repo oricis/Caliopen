@@ -6,6 +6,7 @@ package REST
 
 import (
 	"errors"
+	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/satori/go.uuid"
 	"sort"
@@ -25,13 +26,13 @@ func (rest *RESTfacility) GetDiscussionsList(user *UserInfo, ILrange, PIrange [2
 	}
 	filter.Limit = limit
 
-	URIsDiscussions, err := rest.index.GetDiscussionsList(filter)
+	URIsDiscussions, err := rest.index.GetDiscussionsList(filter, true)
 	if err != nil {
 		return []Discussion{}, 0, err
 	}
 
-	// Get current participants hashes
-	lookups, err := rest.store.GetUserLookupHashes(UUID(uuid.FromStringOrNil(user.User_id)), "uris")
+	// Get all current participants hashes for user
+	lookups, err := rest.store.GetUserLookupHashes(UUID(uuid.FromStringOrNil(user.User_id)), "uris", "")
 	if err != nil {
 		return []Discussion{}, 0, err
 	}
@@ -54,19 +55,7 @@ func (rest *RESTfacility) GetDiscussionsList(user *UserInfo, ILrange, PIrange [2
 	discussionsList := []Discussion{}
 	var discussionsCount int
 	for _, discussions := range participantsMap {
-		earlier := new(Discussion)
-		var msgCount int32
-		var unreadCount int32
-		for _, disc := range discussions {
-			if disc.LastMessageDate.After(earlier.LastMessageDate) {
-				earlier = &disc
-			}
-			msgCount += disc.TotalCount
-			unreadCount += disc.UnreadCount
-		}
-		earlier.TotalCount = msgCount
-		earlier.UnreadCount = unreadCount
-		discussionsList = append(discussionsList, *earlier)
+		discussionsList = append(discussionsList, mergeDiscussionAliases(discussions))
 	}
 	discussionsCount = len(discussionsList)
 
@@ -86,4 +75,75 @@ func (rest *RESTfacility) GetDiscussionsList(user *UserInfo, ILrange, PIrange [2
 	} else {
 		return discussionsList[offset : offset+limit], discussionsCount, nil
 	}
+}
+
+// DiscussionMetadata returns one Discussion hydrated with metadata from its messages
+// and from messages linked to this discussion_id
+func (rest *RESTfacility) DiscussionMetadata(user *UserInfo, discussionId string) (discussion Discussion, err error) {
+	userId := UUID(uuid.FromStringOrNil(user.User_id))
+	// Get current participants hash for this discussionId
+	participants_hash, err := rest.store.GetUserLookupHashes(userId, "uris", discussionId)
+	if err != nil {
+		return
+	}
+	if len(participants_hash) > 1 {
+		err = fmt.Errorf("[DiscussionMetadata] found more than one participants_hash for user %s discussion %s", user.User_id, discussionId)
+		return
+	}
+	if len(participants_hash) == 0 {
+		err = errors.New("not found")
+		return
+	}
+	// Get all discussion_id related to this participants hash
+	related_hashes, err := rest.store.GetUserLookupHashes(userId, "participants", participants_hash[0].Value)
+	if err != nil {
+		return
+	}
+	discussionsIds := []string{}
+	for _, related := range related_hashes {
+		discussionsIds = append(discussionsIds, related.Value)
+	}
+	// retrieve discussions' metadata from index
+	discussions, err := rest.index.GetDiscussionsList(IndexSearch{
+		Shard_id: user.Shard_id,
+		User_id:  userId,
+		Terms:    map[string][]string{"discussion_id": discussionsIds},
+	}, false)
+	if err != nil {
+		return
+	}
+	if len(discussions) == 0 {
+		err = errors.New("not found")
+		return
+	}
+	discussion = mergeDiscussionAliases(discussions)
+	return
+}
+
+// mergeDiscussionAliases return one Discussion with aggregated metadata from a discussions set
+func mergeDiscussionAliases(discussions []Discussion) Discussion {
+	earlier := new(Discussion)
+	var msgCount int32
+	var unreadCount int32
+	aliases := []string{}
+	for _, disc := range discussions {
+		aliases = append(aliases, disc.DiscussionId)
+		if disc.LastMessageDate.After(earlier.LastMessageDate) {
+			earlier = &disc
+		}
+		msgCount += disc.TotalCount
+		unreadCount += disc.UnreadCount
+	}
+	earlier.TotalCount = msgCount
+	earlier.UnreadCount = unreadCount
+	if len(aliases) > 1 {
+		for i, alias := range aliases {
+			if alias == earlier.DiscussionId {
+				aliases = append(aliases[:i], aliases[i+1:]...)
+				break
+			}
+		}
+		earlier.Aliases = aliases
+	}
+	return *earlier
 }

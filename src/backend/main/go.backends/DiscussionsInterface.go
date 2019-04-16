@@ -11,9 +11,9 @@ import (
 )
 
 type DiscussionStorage interface {
-	GetUserLookupHashes(userId UUID, kind string) (hashes []HashLookup, err error)
+	GetUserLookupHashes(userId UUID, kind, key string) (hashes []HashLookup, err error)
 }
 
 type DiscussionIndex interface {
-	GetDiscussionsList(filter IndexSearch) ([]Discussion, error)
+	GetDiscussionsList(filter IndexSearch, withIL bool) ([]Discussion, error)
 }

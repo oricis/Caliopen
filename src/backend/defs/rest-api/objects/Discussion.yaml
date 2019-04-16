@@ -35,8 +35,10 @@ properties:
   unread_count:
     type: integer
     format: int32
-  messages_hash:
-    type: string
+  aliases:       # others discussion_id linked to this one, if any
+    type: array
+    items:
+      type: string
   last_message_id:
     type: string
   last_message_date:

@@ -14,11 +14,13 @@ import (
 	"gopkg.in/olivere/elastic.v5"
 )
 
-func (es *ElasticSearchBackend) GetDiscussionsList(filter IndexSearch) (discussions []Discussion, err error) {
+// GetDiscussionList returns all the discussion_id found in index for an user
+// aggregated by discussion_id, with metadata.
+func (es *ElasticSearchBackend) GetDiscussionsList(filter IndexSearch, withIL bool) (discussions []Discussion, err error) {
 	discussions = []Discussion{}
 
 	search := es.Client.Search().Index(filter.Shard_id).Type(MessageIndexType)
-	search = filter.FilterQuery(search, true)
+	search = filter.FilterQuery(search, withIL)
 	msgSource := elastic.NewFetchSourceContext(true)
 	msgSource.Include("date_sort", "subject", "participants", "body_plain", "body_html", "importance_level")
 	search.Aggregation("by_uris", elastic.NewTermsAggregation().Field("discussion_id").Size(10e3). // need to fetch all buckets to have an accurate buckets count
@@ -61,6 +63,7 @@ func (es *ElasticSearchBackend) GetDiscussionsList(filter IndexSearch) (discussi
 
 		msg.UnmarshalMap(subHit["_source"].(map[string]interface{}))
 
+		// flatten importance levels distribution to an array of float64 for later computation
 		var importanceAgg Aggregation
 		json.Unmarshal(hit.ImportanceLevel, &importanceAgg)
 		messagesIL := []float64{}

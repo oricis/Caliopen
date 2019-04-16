@@ -14,6 +14,7 @@ import (
 type (
 	Discussion struct {
 		AttachmentCount    int32         `json:"attachment_count,omitempty"`
+		Aliases            []string      `json:"aliases,omitempty"` // other discussion_id linked to this one, if any
 		DateInsert         time.Time     `json:"date_insert,omitempty"              formatter:"RFC3339Milli"`
 		DateUpdate         time.Time     `json:"date_update,omitempty"              formatter:"RFC3339Milli"`
 		DiscussionId       string        `json:"discussion_id"                      formatter:"rfc4122"`
@@ -22,7 +23,6 @@ type (
 		LastMessageDate    time.Time     `json:"last_message_date,omitempty"        formatter:"RFC3339Milli"`
 		LastMessageId      UUID          `json:"last_message_id"`
 		LastMessageSubject string        `json:"last_message_subject"`
-		MessagesHash       string        `json:"messages_hash,omitempty"`
 		Participants       []Participant `json:"participants"`
 		Protocol           string        `json:"protocol,omitempty"`
 		Subject            string        `json:"subject"`
@@ -44,6 +44,9 @@ func (d *Discussion) UnmarshalJSON(b []byte) error {
 
 // UnmarshalMap hydrates a Discussion with data from map[string]interface{}
 func (d *Discussion) UnmarshalMap(input map[string]interface{}) error {
+	if aliases, ok := input["aliases"].([]string); ok {
+		d.Aliases = aliases
+	}
 	if attachmentCount, ok := input["attachment_count"].(float64); ok {
 		d.AttachmentCount = int32(attachmentCount)
 	}
@@ -69,9 +72,6 @@ func (d *Discussion) UnmarshalMap(input map[string]interface{}) error {
 		if id, err := uuid.FromString(lastMsgId); err == nil {
 			d.LastMessageId.UnmarshalBinary(id.Bytes())
 		}
-	}
-	if msgHash, ok := input["messages_hash"].(string); ok {
-		d.MessagesHash = msgHash
 	}
 	if participants, ok := input["participants"]; ok && participants != nil {
 		d.Participants = []Participant{}

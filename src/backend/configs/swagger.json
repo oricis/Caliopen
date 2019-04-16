@@ -7686,8 +7686,11 @@
                         "type": "integer",
                         "format": "int32"
                       },
-                      "messages_hash": {
-                        "type": "string"
+                      "aliases": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
                       },
                       "last_message_id": {
                         "type": "string"
@@ -7756,7 +7759,7 @@
     },
     "/v2/discussions/{discussion_id}": {
       "get": {
-        "description": "Returns a discussion",
+        "description": "Returns metadata of a discussion",
         "tags": [
           "discussions"
         ],
@@ -7771,22 +7774,6 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "X-Caliopen-PI",
-            "in": "header",
-            "required": false,
-            "description": "The PI range requested in form of `0;100`",
-            "type": "string",
-            "default": "0;100"
-          },
-          {
-            "name": "X-Caliopen-IL",
-            "in": "header",
-            "required": false,
-            "description": "The Importance Level range requested in form of `-10;10`",
-            "type": "string",
-            "default": "-10;10"
           }
         ],
         "produces": [
@@ -7880,8 +7867,11 @@
                   "type": "integer",
                   "format": "int32"
                 },
-                "messages_hash": {
-                  "type": "string"
+                "aliases": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
                 },
                 "last_message_id": {
                   "type": "string"
