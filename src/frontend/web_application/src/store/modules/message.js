@@ -90,6 +90,7 @@ export function createMessage({ message }) {
         method: 'post',
         data: { ...message },
       },
+      message,
     },
   };
 }
@@ -116,6 +117,7 @@ export function updateMessage({ message, original }) {
         url: `/api/v1/messages/${message.message_id}`,
         data,
       },
+      message,
     },
   };
 }

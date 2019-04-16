@@ -11,7 +11,7 @@ const prepareKeys = async (openpgp, armoredKeys) => {
   return disarmoredKeys.reduce((acc, disarmoredKey) => [...acc, ...disarmoredKey.keys], []);
 };
 
-export const isMessageEncrypted = message => message.privacy_features
+export const isMessageEncrypted = message => !!message.privacy_features
   && message.privacy_features.message_encrypted === 'True'
   && message.privacy_features.message_encryption_method === 'pgp';
 

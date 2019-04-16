@@ -7,14 +7,16 @@ import {
   Button, Icon, InputText, TextareaFieldGroup, TextFieldGroup, Link, Confirm, PlaceholderBlock,
   Callout, FieldErrors, Spinner,
 } from '../../../../components';
-import { withScrollTarget } from '../../../scroll';
+import { LockedMessage } from '../../../../modules/encryption';
+import { identityToParticipant } from '../../../../modules/identity';
+import { withScrollTarget } from '../../../../modules/scroll';
+import { withUser } from '../../../../modules/user';
+import { withNotification } from '../../../../modules/userNotify';
+import { getRecipients } from '../../../../services/message';
 import RecipientList from '../RecipientList';
 import AttachmentManager from '../AttachmentManager';
 import IdentitySelector from '../IdentitySelector';
-import { getRecipients } from '../../../../services/message';
-import { withNotification } from '../../../userNotify';
 import { getIdentityProtocol } from '../../services/getIdentityProtocol';
-import { LockedMessage } from '../../../encryption';
 
 import './draft-message-quick.scss';
 import './draft-message-advanced.scss';
@@ -23,6 +25,7 @@ import './toggle-advanced-draft-button.scss';
 
 const PROTOCOL_EMAIL = 'email';
 
+@withUser()
 @withI18n()
 @withNotification()
 @withScrollTarget()
@@ -61,6 +64,9 @@ class DraftMessage extends Component {
     draftEncryption: PropTypes.shape({
       status: PropTypes.string.isRequired,
     }),
+    userState: PropTypes.shape({
+      user: PropTypes.shape({}).isRequired,
+    }).isRequired,
   };
 
   static defaultProps = {
@@ -114,12 +120,20 @@ class DraftMessage extends Component {
   }
 
   static getDraftFromState(state, props) {
+    const { availableIdentities, userState: { user } } = props;
+    const currIdentity = availableIdentities
+      .find(identity => identity.identity_id === state.draftMessage.identityId);
+    const recipients = state.draftMessage.recipients ? state.draftMessage.recipients : [];
+
     return {
       ...props.draftMessage,
       body: state.draftMessage.body,
       subject: state.draftMessage.subject,
-      user_identities: [state.draftMessage.identityId],
-      participants: state.draftMessage.recipients,
+      user_identities: [currIdentity.identity_id],
+      participants: [
+        identityToParticipant({ identity: currIdentity, user }),
+        ...recipients,
+      ],
     };
   }
 
@@ -309,13 +323,14 @@ class DraftMessage extends Component {
         await requestDraft({ internalId, hasDiscussion });
       }
 
+      this.setState({ isSending: false });
       onSent({ message });
     } catch (err) {
       notifyError({
         message: i18n._('draft.feedback.send-error', null, { defaults: 'Unable to send the message' }),
       });
+      this.setState({ isSending: false });
     }
-    this.setState({ isSending: false });
   }
 
   handleDelete = async () => {
@@ -574,7 +589,7 @@ class DraftMessage extends Component {
             <div className="m-reply__parent">
               <Link to={`#${parentMessage.message_id}`} className="m-reply__parent-link">
                 <Trans id="reply-form.in-reply-to">
-In reply to:
+                  In reply to:
                   {parentMessage.excerpt}
                 </Trans>
               </Link>

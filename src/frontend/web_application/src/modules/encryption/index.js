@@ -1,3 +1,5 @@
+export * from './actions/decryptMessage';
+export * from './actions/encryptMessage';
 export * from './actions/getParticipantsKeys';
 export { default as CheckDecryption } from './components/CheckDecryption';
 export { default as LockedMessage } from './components/LockedMessage';
