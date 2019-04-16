@@ -143,7 +143,7 @@ func (blm ByLastMessageDateDesc) Len() int {
 }
 
 func (blm ByLastMessageDateDesc) Less(i, j int) bool {
-	return blm[i].LastMessageDate.Before(blm[j].LastMessageDate)
+	return blm[i].LastMessageDate.After(blm[j].LastMessageDate)
 }
 
 func (blm ByLastMessageDateDesc) Swap(i, j int) {

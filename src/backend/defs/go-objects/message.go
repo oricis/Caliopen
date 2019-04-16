@@ -29,7 +29,7 @@ type Message struct {
 	Date_delete         time.Time          `cql:"date_delete"              json:"date_delete,omitempty"                                     formatter:"RFC3339Milli"`
 	Date_insert         time.Time          `cql:"date_insert"              json:"date_insert"                                               formatter:"RFC3339Milli"`
 	Date_sort           time.Time          `cql:"date_sort"                json:"date_sort"                                                 formatter:"RFC3339Milli"`
-	Discussion_id       UUID               `cql:"discussion_id"            json:"discussion_id,omitempty"                                   formatter:"rfc4122"`
+	Discussion_id       string             `cql:"discussion_id"            json:"discussion_id,omitempty"                                   formatter:"rfc4122"`
 	External_references ExternalReferences `cql:"external_references"      json:"external_references,omitempty"`
 	UserIdentities      []UUID             `cql:"user_identities"          json:"user_identities,omitempty"       `
 	Importance_level    int32              `cql:"importance_level"         json:"importance_level" `
@@ -182,9 +182,7 @@ func (msg *Message) UnmarshalMap(input map[string]interface{}) error {
 		msg.Date_sort, _ = time.Parse(time.RFC3339Nano, date.(string))
 	}
 	if discussion_id, ok := input["discussion_id"].(string); ok {
-		if id, err := uuid.FromString(discussion_id); err == nil {
-			msg.Discussion_id.UnmarshalBinary(id.Bytes())
-		}
+		msg.Discussion_id = discussion_id
 	}
 
 	if ex_ref, ok := input["external_references"]; ok && ex_ref != nil {
@@ -313,8 +311,8 @@ func (msg *Message) UnmarshalCQLMap(input map[string]interface{}) error {
 	if date_sort, ok := input["date_sort"].(time.Time); ok {
 		msg.Date_sort = date_sort
 	}
-	if discussion_id, ok := input["discussion_id"].(gocql.UUID); ok {
-		msg.Discussion_id.UnmarshalBinary(discussion_id.Bytes())
+	if discussion_id, ok := input["discussion_id"].(string); ok {
+		msg.Discussion_id = discussion_id
 	}
 	msg.External_references = ExternalReferences{
 		Ancestors_ids: []string{},
