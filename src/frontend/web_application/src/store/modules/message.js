@@ -118,6 +118,7 @@ export function updateMessage({ message, original }) {
         data,
       },
       message,
+      original,
     },
   };
 }

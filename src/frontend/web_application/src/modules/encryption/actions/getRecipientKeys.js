@@ -1,11 +1,11 @@
-import { getParticipantsAddresses, getParticipantsContactIds } from '../../../services/message';
+import { getParticipantsAddresses, getParticipantsContactIds, getRecipients } from '../../../services/message';
 import { filterKeysByAddress, checkEachAddressHasKey, getStoredKeys } from '../services/keyring/remoteKeys';
 import { fetchRemoteKeys } from './fetchRemoteKeys';
 
-export const getParticipantsKeys = ({ message }) => async (dispatch, getState) => {
-  const { participants } = message;
-  const allContactIds = getParticipantsContactIds({ participants });
-  const allAddresses = getParticipantsAddresses({ participants });
+export const getRecipientKeys = ({ message }) => async (dispatch, getState) => {
+  const recipients = getRecipients(message);
+  const allContactIds = getParticipantsContactIds({ participants: recipients });
+  const allAddresses = getParticipantsAddresses({ participants: recipients });
 
   const { keys: cachedKeys, missingKeysContactIds } = getStoredKeys(getState(), allContactIds);
   const fetchedKeys = (await dispatch(fetchRemoteKeys(missingKeysContactIds))) || [];

@@ -1,6 +1,6 @@
 import { identitiesSelector } from '../../../modules/identity';
 import { getKeysForEmail, PUBLIC_KEY } from '../../../services/openpgp-keychain-repository';
-import { getParticipantsKeys } from './getParticipantsKeys';
+import { getRecipientKeys } from './getRecipientKeys';
 import { encryptMessage as encryptMessageConcret } from '../../../services/encryption';
 import { encryptMessage as encryptMessageStart, encryptMessageSuccess, encryptMessageFail } from '../../../store/modules/encryption';
 
@@ -18,8 +18,10 @@ export const encryptMessage = ({ message }) => async (dispatch, getState) => {
       .find(curr => message.user_identities.includes(curr.identity_id));
 
     // 1. we need to check all addresses to find keys.
-    const userKey = getKeysForEmail(identity.identifier, PUBLIC_KEY);
-    const keys = await dispatch(getParticipantsKeys({ message }));
+    const [userKey, keys] = await Promise.all([
+      getKeysForEmail(identity.identifier, PUBLIC_KEY),
+      dispatch(getRecipientKeys({ message })),
+    ]);
 
     if (!keys || keys.length === 0 || !userKey) {
       throw new Error('Keys are missing');
@@ -36,7 +38,7 @@ export const encryptMessage = ({ message }) => async (dispatch, getState) => {
 
     return encryptedMessage;
   } catch (error) {
-    dispatch(encryptMessageFail({ message, error }));
+    dispatch(encryptMessageFail({ message, error: error.message || error }));
 
     return undefined;
   }

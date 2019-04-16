@@ -80,8 +80,13 @@ export const handleClientResponseSuccess = (response) => {
 };
 
 export const handleClientResponseError = (payload) => {
+  if (payload instanceof Error) {
+    throw payload;
+  }
+
   if (!payload || !payload.error || !payload.error.response) {
-    throw new Error('Not an axios catched Promise', payload);
+    console.error({ payload });
+    throw new Error('Not an axios catched Promise');
   }
 
   return payload.error.response.data.errors;
