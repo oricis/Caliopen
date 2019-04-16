@@ -31,6 +31,15 @@ func (rest *RESTfacility) GetRawMessage(raw_message_id string) (raw_message []by
 //return a list of messages given filter parameters
 //messages are sanitized, ie : ready for display in front interface, and an excerpt of body is generated
 func (rest *RESTfacility) GetMessagesList(filter IndexSearch) (messages []*Message, totalFound int64, err error) {
+	// if discussion_id in filter, expand to all related discussion_ids before querying index
+	if discussionId, ok := filter.Terms["discussion_id"]; ok {
+		discussionsIds, e := rest.ExpandDiscussionSet(filter.User_id, discussionId[0])
+		if err != nil {
+			err = e
+			return
+		}
+		filter.Terms["discussion_id"] = discussionsIds
+	}
 	messages, totalFound, err = rest.index.FilterMessages(filter)
 	if err != nil {
 		return []*Message{}, 0, err
@@ -45,6 +54,15 @@ func (rest *RESTfacility) GetMessagesList(filter IndexSearch) (messages []*Messa
 //return a list of messages 'around' a message within a discussion
 //messages are sanitized, ie : ready for display in front interface, and an excerpt of body is generated
 func (rest *RESTfacility) GetMessagesRange(filter IndexSearch) (messages []*Message, totalFound int64, err error) {
+	// if discussion_id in filter, expand to all related discussion_ids before querying index
+	if discussionId, ok := filter.Terms["discussion_id"]; ok {
+		discussionsIds, e := rest.ExpandDiscussionSet(filter.User_id, discussionId[0])
+		if e != nil {
+			err = e
+			return
+		}
+		filter.Terms["discussion_id"] = discussionsIds
+	}
 	messages, totalFound, err = rest.index.GetMessagesRange(filter)
 	if err != nil {
 		return []*Message{}, 0, err

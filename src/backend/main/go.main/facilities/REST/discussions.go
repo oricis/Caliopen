@@ -81,27 +81,10 @@ func (rest *RESTfacility) GetDiscussionsList(user *UserInfo, ILrange, PIrange [2
 // and from messages linked to this discussion_id
 func (rest *RESTfacility) DiscussionMetadata(user *UserInfo, discussionId string) (discussion Discussion, err error) {
 	userId := UUID(uuid.FromStringOrNil(user.User_id))
-	// Get current participants hash for this discussionId
-	participants_hash, err := rest.store.GetUserLookupHashes(userId, "uris", discussionId)
+	// create a slice of related discussionId
+	discussionsIds, err := rest.ExpandDiscussionSet(userId, discussionId)
 	if err != nil {
 		return
-	}
-	if len(participants_hash) > 1 {
-		err = fmt.Errorf("[DiscussionMetadata] found more than one participants_hash for user %s discussion %s", user.User_id, discussionId)
-		return
-	}
-	if len(participants_hash) == 0 {
-		err = errors.New("not found")
-		return
-	}
-	// Get all discussion_id related to this participants hash
-	related_hashes, err := rest.store.GetUserLookupHashes(userId, "participants", participants_hash[0].Value)
-	if err != nil {
-		return
-	}
-	discussionsIds := []string{}
-	for _, related := range related_hashes {
-		discussionsIds = append(discussionsIds, related.Value)
 	}
 	// retrieve discussions' metadata from index
 	discussions, err := rest.index.GetDiscussionsList(IndexSearch{
@@ -117,6 +100,33 @@ func (rest *RESTfacility) DiscussionMetadata(user *UserInfo, discussionId string
 		return
 	}
 	discussion = mergeDiscussionAliases(discussions)
+	return
+}
+
+// ExpandDiscussionSet returns a slice of discussions ids currently connected to the discussionId in params
+func (rest *RESTfacility) ExpandDiscussionSet(userId UUID, discussionId string) (discussionsIds []string, err error) {
+	// Get current participants hash for this discussionId
+	participants_hash, err := rest.store.GetUserLookupHashes(userId, "uris", discussionId)
+	if err != nil {
+		return
+	}
+	if len(participants_hash) > 1 {
+		err = fmt.Errorf("[DiscussionMetadata] found more than one participants_hash for user %s discussion %s", userId.String(), discussionId)
+		return
+	}
+	if len(participants_hash) == 0 {
+		err = errors.New("not found")
+		return
+	}
+	// Get all discussion_id related to this participants hash
+	related_hashes, err := rest.store.GetUserLookupHashes(userId, "participants", participants_hash[0].Value)
+	if err != nil {
+		return
+	}
+	discussionsIds = []string{}
+	for _, related := range related_hashes {
+		discussionsIds = append(discussionsIds, related.Value)
+	}
 	return
 }
 
