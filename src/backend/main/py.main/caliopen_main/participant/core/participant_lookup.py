@@ -30,7 +30,7 @@ class ParticipantLookup(BaseCore):
         :param participant:
         :return:
         """
-        # TODO: complete or remove this method
+        #  TODO: complete or remove this method
         if not contact_id or not participant.address \
                 or not participant.protocol:
             raise Exception("missing mandatory property to create lookup entry")
@@ -63,7 +63,7 @@ class ParticipantLookup(BaseCore):
         """
         - resolve uris to contact to build participants' set
         - compute participants_hash
-        - create two way links :
+        - create two ways links :
                                 uris<->uris_hash
                                 uris<->participants_hash
 
@@ -78,10 +78,13 @@ class ParticipantLookup(BaseCore):
 
         participants = set()
         for uri in uris:
-            contact = ContactLookup.get(user, uri.split(":", 1)[1])
-            if contact:
-                participants.add("contact:" + contact.contact_id)
-            else:
+            try:
+                contact = ContactLookup.get(user, uri.split(":", 1)[1])
+                if contact:
+                    participants.add("contact:" + contact.contact_id)
+                else:
+                    participants.add(uri)
+            except NotFound:
                 participants.add(uri)
 
         participants = list(participants)

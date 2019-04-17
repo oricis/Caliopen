@@ -6,13 +6,13 @@ import uuid
 from schematics.types import StringType
 from .message import NewInboundMessage
 from caliopen_main.user.objects.identity import UserIdentity
+from caliopen_main.discussion.core.discussion import Discussion
 from caliopen_main.participant.parameters import Participant
 from caliopen_main.message.parameters.external_references import \
     ExternalReferences
-from caliopen_main.discussion.store.discussion_index import \
-    DiscussionIndexManager as DIM
 from caliopen_storage.exception import NotFound
 from caliopen_main.message.store import Message as ModelMessage
+
 from caliopen_main.common.errors import PatchUnprocessable
 
 import logging
@@ -60,11 +60,16 @@ class Draft(NewInboundMessage):
         # fill <from> field consistently
         # based on current user's selected identity
         self._add_from_participant(user)
-        # Build participants from discussion_id
         self._build_participants_for_reply(user)
-        self.discussion_id = None
         if self.parent_id:
             self._update_external_references(user)
+
+        if self.discussion_id != self.hash_participants:
+           # participants_hash has changed, update lookups
+            Discussion.upsert_lookups_for_participants(user, self.participants)
+            self.discussion_id = self.hash_participants
+
+        return self.discussion_id
 
     def _add_from_participant(self, user):
 
@@ -110,18 +115,17 @@ class Draft(NewInboundMessage):
 
     def _build_participants_for_reply(self, user):
         """
-        Build participants list from last message in discussion.
+        Build participants list from message in-reply to.
 
         - former 'From' recipients are replaced by 'To' recipients
         - provided identity is used to fill the new 'From' participant
         - new sender is removed from former recipients
         """
-        if not self.discussion_id:
+        if not self.parent_id:
             return
-        dim = DIM(user)
-        d_id = self.discussion_id
-        last_message = dim.get_last_message(d_id, -10, 10, False)
-        for i, participant in enumerate(last_message["participants"]):
+        parent_message = ModelMessage.get(user_id=user.user_id,
+                         message_id=self.parent_id)
+        for i, participant in enumerate(parent_message["participants"]):
             if re.match("from", participant['type'], re.IGNORECASE):
                 participant["type"] = "To"
                 self.participants.append(participant)

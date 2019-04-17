@@ -85,21 +85,21 @@ class UserMessageQualifier(BaseQualifier):
         new_message.external_references = email.external_references
 
         participants = []
-        participants_uris = set()
         for p in email.participants:
             participant, contact = self.get_participant(email, p)
             new_message.participants.append(participant)
             participants.append((participant, contact))
-            participants_uris.add(
-                participant.protocol + ":" + participant.address)
 
         if not participants:
             raise Exception("no participant found in raw email {}".format(
                 raw.raw_msg_id))
 
-        # set/get current discussion
-        disc = Discussion.get_or_create_from_uris(self.user, participants_uris)
-        new_message.discussion_id = disc.uris_hash  # embed immutable value only
+        # embed immutable value only
+        new_message.discussion_id = new_message.hash_participants
+
+        # upsert lookup tables
+        Discussion.upsert_lookups_for_participants(self.user,
+                                                   new_message.participants)
 
         for a in email.attachments:
             attachment = Attachment()
