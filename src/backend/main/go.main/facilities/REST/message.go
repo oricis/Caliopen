@@ -34,7 +34,7 @@ func (rest *RESTfacility) GetMessagesList(filter IndexSearch) (messages []*Messa
 	// if discussion_id in filter, expand to all related discussion_ids before querying index
 	if discussionId, ok := filter.Terms["discussion_id"]; ok {
 		discussionsIds, e := rest.ExpandDiscussionSet(filter.User_id, discussionId[0])
-		if err != nil {
+		if e != nil {
 			err = e
 			return
 		}

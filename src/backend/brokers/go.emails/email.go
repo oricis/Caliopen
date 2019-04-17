@@ -262,6 +262,7 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *EmailDeliveryAck) error {
 	// if needed :
 	// insert new entry into discussion_lookup table
 	// with message's external reference
+	/* TODO
 	if ack.EmailMessage.Message.External_references.Parent_id == "" {
 		err = b.Store.CreateThreadLookup(ack.EmailMessage.Message.User_id,
 			ack.EmailMessage.Message.Discussion_id,
@@ -270,6 +271,8 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *EmailDeliveryAck) error {
 			log.WithError(err).Warn("[Email Broker] Store.CreateThreadLookup operation failed")
 		}
 	}
+	*/
+
 	return err
 }
 

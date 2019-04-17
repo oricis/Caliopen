@@ -85,7 +85,7 @@ func GetMessagesList(ctx *gin.Context) {
 	} else {
 		list, totalFound, err = caliopen.Facilities.RESTfacility.GetMessagesList(filter)
 	}
-	if err != nil {
+	if err != nil && err.Error() != "not found" {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
