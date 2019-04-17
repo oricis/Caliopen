@@ -28,30 +28,13 @@ func (rest *RESTfacility) SendDraft(user_info *UserInfo, msg_id string) (msg *Me
 		log.WithError(resolvErr).Info("[SendDraft] failed to resolve sender's protocol")
 		return nil, errors.New("unknown protocol for sender")
 	}
-	// Associate to an existing discussion or create a new one
-	/*TODO
-	discussion, err := rest.store.GetOrCreateDiscussion(draft.User_id, draft.Participants)
+	// Ensure participants and hash lookups are filled accordingly (they should)
+	err = rest.store.UpsertDiscussionLookups(draft.User_id, draft.Participants)
 	if err != nil {
-		log.WithError(err).Error("[SendDraft] failed to associate to a discussion")
+		log.WithError(err).Error("[SendDraft] failed to create discussion's lookups")
 		return nil, err
 	}
 
-	// Update message with the computed discussion
-	fields := make(map[string]interface{})
-	fields["Discussion_id"] = discussion.Discussion_id
-
-	err = rest.store.UpdateMessage(draft, fields)
-	if err != nil {
-		log.WithError(err).Warn("[SendDraft] Store.UpdateMessage operation failed")
-		return nil, err
-	}
-
-	err = rest.index.UpdateMessage(user_info, draft, fields)
-	if err != nil {
-		log.WithError(err).Warn("[SendDraft] Index.UpdateMessage operation failed")
-		return nil, err
-	}
-	*/
 	var natsTopic string
 	switch protocol {
 	case EmailProtocol, ImapProtocol:

@@ -111,7 +111,7 @@ func (notif *Notifier) SendEmailAdminToUser(user *User, participants []Participa
 	(*email).Date = now
 	(*email).Date_insert = now
 	(*email).Message_id.UnmarshalBinary(uuid.NewV4().Bytes())
-	(*email).Discussion_id.UnmarshalBinary(uuid.NewV4().Bytes())
+	//TODO : (*email).Discussion_id.UnmarshalBinary(uuid.NewV4().Bytes())
 	(*email).Is_draft = true
 	(*email).Participants = participants
 	(*email).Protocol = EmailProtocol

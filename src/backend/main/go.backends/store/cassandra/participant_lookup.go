@@ -28,7 +28,7 @@ func (cb *CassandraBackend) RetrieveParticipantLookup(user_id UUID, identifier, 
 
 func (cb *CassandraBackend) CreateParticipantLookup(participant *ParticipantLookup) error {
 	lookupT := cb.IKeyspace.Table("participant_lookup", &ParticipantLookup{}, gocassa.Keys{
-		PartitionKeys: []string{"user_id", "identifier", "type"},
+		PartitionKeys: []string{"user_id", "uri", "hash"},
 	}).WithOptions(gocassa.Options{TableName: "participant_lookup"}) // need to overwrite default gocassa table naming convention
 
 	// save lookup
