@@ -1,4 +1,4 @@
-import { discussionIdSelector } from '../../discussion';
+import { discussionIdSelector } from '../../../modules/discussion';
 import { fetchMessages } from './fetchMessages';
 import { createMessageCollectionStateSelector } from '../../../store/selectors/message';
 import { sortMessages } from '../../../services/message';

@@ -70,7 +70,7 @@ const mapStateToProps = createSelector([
   return {
     key: draftMessage && draftMessage.message_id,
     draftMessage,
-    isEncrypted: draftMessage && isMessageEncrypted(draftMessage),
+    isEncrypted: original && isMessageEncrypted(original),
     isFetching: isRequestingDraft || isIdentitiesFetching,
     isDeletingDraft,
     canEditRecipients,
@@ -80,8 +80,8 @@ const mapStateToProps = createSelector([
     availableIdentities,
     isReply: parentMessage && true,
     draftEncryption: draftMessage && messageEncryptionStatus[draftMessage.message_id],
-    encryptionStatus: draftMessage && messageEncryptionStatus[draftMessage.message_id]
-      && messageEncryptionStatus[draftMessage.message_id].status,
+    encryptionStatus: original && messageEncryptionStatus[original.message_id]
+      && messageEncryptionStatus[original.message_id].status,
   };
 });
 

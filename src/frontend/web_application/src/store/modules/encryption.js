@@ -10,6 +10,15 @@ export const ENCRYPT_MESSAGE_FAIL = 'co/encryption/ENCRYPT_MESSAGE_FAIL';
 export const DECRYPT_MESSAGE = 'co/encryption/DECRYPT_MESSAGE';
 export const DECRYPT_MESSAGE_SUCCESS = 'co/encryption/DECRYPT_MESSAGE_SUCCESS';
 export const DECRYPT_MESSAGE_FAIL = 'co/encryption/DECRYPT_MESSAGE_FAIL';
+export const RESET_ENCRYPTION = 'co/encryption/RESET_ENCRYPTION';
+
+export const STATUS_NEED_PASSPHRASE = 'need_passphrase';
+export const STATUS_NEED_PRIVATEKEY = 'need_privatekey';
+export const STATUS_ENCRYPTING = 'encrypting';
+export const STATUS_ENCRYPTED = 'encrypted';
+export const STATUS_DECRYPTING = 'decrypting';
+export const STATUS_DECRYPTED = 'decrypted';
+export const STATUS_ERROR = 'error';
 
 export function askPassphrase({ fingerprint, error }) {
   return {
@@ -117,6 +126,15 @@ export function decryptMessageFail({ message, error }) {
   };
 }
 
+export function resetEncryption({ message }) {
+  return {
+    type: RESET_ENCRYPTION,
+    payload: {
+      message,
+    },
+  };
+}
+
 const initialState = {
   messageEncryptionStatusById: {},
   privateKeysByFingerprint: {},
@@ -165,7 +183,7 @@ export default function reducer(state = initialState, action) {
         messageEncryptionStatusById: {
           ...state.messageEncryptionStatusById,
           [action.payload.message.message_id]: {
-            status: 'need_passphrase',
+            status: STATUS_NEED_PASSPHRASE,
             keyFingerprint: action.payload.fingerprints,
             decryptedMessage: null,
             encryptedMessage: action.payload.message,
@@ -178,7 +196,7 @@ export default function reducer(state = initialState, action) {
         messageEncryptionStatusById: {
           ...state.messageEncryptionStatusById,
           [action.payload.message.message_id]: {
-            status: 'need_privatekey',
+            status: STATUS_NEED_PRIVATEKEY,
             decryptedMessage: null,
             encryptedMessage: action.payload.message,
           },
@@ -190,7 +208,7 @@ export default function reducer(state = initialState, action) {
         messageEncryptionStatusById: {
           ...state.messageEncryptionStatusById,
           [action.payload.message.message_id]: {
-            status: 'encrypting',
+            status: STATUS_ENCRYPTING,
             encryptedMessage: null,
             decryptedMessage: action.payload.message,
           },
@@ -202,7 +220,7 @@ export default function reducer(state = initialState, action) {
         messageEncryptionStatusById: {
           ...state.messageEncryptionStatusById,
           [action.payload.message.message_id]: {
-            status: 'encrypted',
+            status: STATUS_ENCRYPTED,
             encryptedMessage: action.payload.encryptedMessage,
             decryptedMessage: action.payload.message,
           },
@@ -214,7 +232,7 @@ export default function reducer(state = initialState, action) {
         messageEncryptionStatusById: {
           ...state.messageEncryptionStatusById,
           [action.payload.message.message_id]: {
-            status: 'error',
+            status: STATUS_ERROR,
             error: action.payload.error,
             encryptedMessage: null,
             decryptedMessage: action.payload.message,
@@ -228,7 +246,7 @@ export default function reducer(state = initialState, action) {
           ...state.messageEncryptionStatusById,
           [action.payload.message.message_id]: {
             error: undefined,
-            status: 'decrypting',
+            status: STATUS_DECRYPTING,
             encryptedMessage: action.payload.message,
             decryptedMessage: null,
           },
@@ -241,7 +259,7 @@ export default function reducer(state = initialState, action) {
           ...state.messageEncryptionStatusById,
           [action.payload.message.message_id]: {
             error: undefined,
-            status: 'decrypted',
+            status: STATUS_DECRYPTED,
             encryptedMessage: action.payload.message,
             decryptedMessage: action.payload.decryptedMessage,
           },
@@ -254,10 +272,18 @@ export default function reducer(state = initialState, action) {
           ...state.messageEncryptionStatusById,
           [action.payload.message.message_id]: {
             error: action.payload.error,
-            status: 'error',
+            status: STATUS_ERROR,
             encryptMessage: action.payload.message,
             decryptedMessage: null,
           },
+        },
+      };
+    case RESET_ENCRYPTION:
+      return {
+        ...state,
+        messageEncryptionStatusById: {
+          ...state.messageEncryptionStatusById,
+          [action.payload.message.message_id]: undefined,
         },
       };
 

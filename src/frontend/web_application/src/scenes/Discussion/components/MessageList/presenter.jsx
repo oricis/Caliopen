@@ -69,15 +69,19 @@ class MessageList extends Component {
 
     return messages.reduce((acc, message) => {
       const result = [...acc];
-      if (message.protocol !== 'email' && acc.length > 0
-        && this.findMessageBefore(message).protocol !== message.protocol) {
-        result.push(<ProtocolSwitch
-          newProtocol={message.protocol}
-          pi={getAveragePIMessage({ message })}
-          date={message.date}
-          key={`switch-${message.message_id}`}
-          settings={settings}
-        />);
+      if (
+        message.pi_message && message.protocol !== 'email' && acc.length > 0 &&
+        this.findMessageBefore(message).protocol !== message.protocol
+      ) {
+        result.push(
+          <ProtocolSwitch
+            newProtocol={message.protocol}
+            pi={getAveragePIMessage({ message })}
+            date={message.date}
+            key={`switch-${message.message_id}`}
+            settings={settings}
+          />
+        );
       }
 
       result.push(<Message

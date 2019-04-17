@@ -7,14 +7,17 @@ import {
   Button, Icon, InputText, TextareaFieldGroup, TextFieldGroup, Link, Confirm, PlaceholderBlock,
   Callout, FieldErrors, Spinner,
 } from '../../../../components';
-import { withScrollTarget } from '../../../scroll';
+import { LockedMessage } from '../../../../modules/encryption';
+import { identityToParticipant } from '../../../../modules/identity';
+import { withScrollTarget } from '../../../../modules/scroll';
+import { withUser } from '../../../../modules/user';
+import { withNotification } from '../../../../modules/userNotify';
+import { getRecipients } from '../../../../services/message';
+import { STATUS_DECRYPTED, STATUS_ERROR } from '../../../../store/modules/encryption';
 import RecipientList from '../RecipientList';
 import AttachmentManager from '../AttachmentManager';
 import IdentitySelector from '../IdentitySelector';
-import { getRecipients } from '../../../../services/message';
-import { withNotification } from '../../../userNotify';
 import { getIdentityProtocol } from '../../services/getIdentityProtocol';
-import { LockedMessage } from '../../../encryption';
 
 import './draft-message-quick.scss';
 import './draft-message-advanced.scss';
@@ -23,6 +26,7 @@ import './toggle-advanced-draft-button.scss';
 
 const PROTOCOL_EMAIL = 'email';
 
+@withUser()
 @withI18n()
 @withNotification()
 @withScrollTarget()
@@ -61,6 +65,9 @@ class DraftMessage extends Component {
     draftEncryption: PropTypes.shape({
       status: PropTypes.string.isRequired,
     }),
+    userState: PropTypes.shape({
+      user: PropTypes.shape({}).isRequired,
+    }).isRequired,
   };
 
   static defaultProps = {
@@ -91,8 +98,8 @@ class DraftMessage extends Component {
       return prevState;
     }
 
-    const isLocked = isEncrypted && encryptionStatus !== 'decrypted';
-    const { body } = (isEncrypted && encryptionStatus && encryptionStatus === 'decrypted') ?
+    const isLocked = isEncrypted && ![STATUS_DECRYPTED, STATUS_ERROR].includes(encryptionStatus);
+    const { body } = (isEncrypted && encryptionStatus && encryptionStatus === STATUS_DECRYPTED) ?
       draftEncryption.decryptedMessage : draftMessage;
 
     const recipients = getRecipients(draftMessage);
@@ -114,12 +121,20 @@ class DraftMessage extends Component {
   }
 
   static getDraftFromState(state, props) {
+    const { availableIdentities, userState: { user } } = props;
+    const currIdentity = availableIdentities
+      .find(identity => identity.identity_id === state.draftMessage.identityId);
+    const recipients = state.draftMessage.recipients ? state.draftMessage.recipients : [];
+
     return {
       ...props.draftMessage,
       body: state.draftMessage.body,
       subject: state.draftMessage.subject,
-      user_identities: [state.draftMessage.identityId],
-      participants: state.draftMessage.recipients,
+      user_identities: [currIdentity.identity_id],
+      participants: [
+        identityToParticipant({ identity: currIdentity, user }),
+        ...recipients,
+      ],
     };
   }
 
@@ -201,9 +216,11 @@ class DraftMessage extends Component {
   }
 
   getEncryptionTranslation = () => {
-    const { isEncrypted } = this.props;
+    const { isEncrypted, encryptionStatus } = this.props;
 
-    return isEncrypted ?
+    const encryptionEnabled = isEncrypted && encryptionStatus === STATUS_DECRYPTED;
+
+    return encryptionEnabled ?
       i18nMark('draft-message.encryption.ok') :
       i18nMark('draft-message.encryption.ko');
   };
@@ -305,15 +322,18 @@ class DraftMessage extends Component {
         draftMessage: undefined,
       });
 
-      await requestDraft({ internalId, hasDiscussion });
+      if (hasDiscussion) {
+        await requestDraft({ internalId, hasDiscussion });
+      }
 
+      this.setState({ isSending: false });
       onSent({ message });
     } catch (err) {
       notifyError({
         message: i18n._('draft.feedback.send-error', null, { defaults: 'Unable to send the message' }),
       });
+      this.setState({ isSending: false });
     }
-    this.setState({ isSending: false });
   }
 
   handleDelete = async () => {
@@ -328,7 +348,9 @@ class DraftMessage extends Component {
       draftMessage: undefined,
     });
 
-    await requestDraft({ internalId, hasDiscussion });
+    if (hasDiscussion) {
+      await requestDraft({ internalId, hasDiscussion });
+    }
     onDeleteMessageSuccessfull();
   }
 
@@ -459,12 +481,14 @@ class DraftMessage extends Component {
   renderQuick() {
     const {
       className, i18n, draftFormRef, onFocus, scrollTarget: { forwardRef },
-      draftEncryption, isEncrypted,
+      draftEncryption, isEncrypted, encryptionStatus,
     } = this.props;
     const ref = (el) => {
       draftFormRef(el);
       forwardRef(el);
     };
+
+    const encryptionEnabled = isEncrypted && encryptionStatus === STATUS_DECRYPTED;
 
     const canSend = this.getCanSend();
 
@@ -481,7 +505,7 @@ class DraftMessage extends Component {
                 <InputText
                   className={classnames(
                     'm-draft-message-quick__input',
-                    { 'm-draft-message-quick__input--encrypted': isEncrypted }
+                    { 'm-draft-message-quick__input--encrypted': encryptionEnabled }
                   )}
                   onChange={this.handleChange}
                   onFocus={onFocus}
@@ -493,8 +517,8 @@ class DraftMessage extends Component {
           <div className={classnames(
             'm-draft-message-quick__send',
             {
-              'm-draft-message-quick__send--encrypted': isEncrypted,
-              'm-draft-message-quick__send--unencrypted': !isEncrypted,
+              'm-draft-message-quick__send--encrypted': encryptionEnabled,
+              'm-draft-message-quick__send--unencrypted': !encryptionEnabled,
             }
           )}
           >
@@ -506,8 +530,8 @@ class DraftMessage extends Component {
               className={classnames(
                 'm-draft-message-quick__send-button',
                 {
-                  'm-draft-message-quick__send-button--encrypted': isEncrypted,
-                  'm-draft-message-quick__send-button--unencrypted': !isEncrypted,
+                  'm-draft-message-quick__send-button--encrypted': encryptionEnabled,
+                  'm-draft-message-quick__send-button--unencrypted': !encryptionEnabled,
                 }
               )}
               onClick={this.handleSend}
@@ -525,9 +549,11 @@ class DraftMessage extends Component {
   renderAdvanced() {
     const {
       className, draftMessage, parentMessage, original, draftFormRef, isReply, availableIdentities,
-      onFocus, scrollTarget: { forwardRef },
+      onFocus, scrollTarget: { forwardRef }, encryptionStatus,
       draftEncryption, isEncrypted,
     } = this.props;
+
+    const encryptionEnabled = isEncrypted && encryptionStatus === STATUS_DECRYPTED;
 
     const isSubjectSupported = ({ draft }) => {
       if (!draft.identityId) {
@@ -570,7 +596,7 @@ class DraftMessage extends Component {
             <div className="m-reply__parent">
               <Link to={`#${parentMessage.message_id}`} className="m-reply__parent-link">
                 <Trans id="reply-form.in-reply-to">
-In reply to:
+                  In reply to:
                   {parentMessage.excerpt}
                 </Trans>
               </Link>
@@ -633,8 +659,8 @@ In reply to:
               'm-draft-message-advanced__action-button',
               'm-draft-message-advanced__button-send',
               {
-                'm-draft-message-advanced__button-send--encrypted': isEncrypted,
-                'm-draft-message-advanced__button-send--unencrypted': !isEncrypted,
+                'm-draft-message-advanced__button-send--encrypted': encryptionEnabled,
+                'm-draft-message-advanced__button-send--unencrypted': !encryptionEnabled,
               }
             )}
             onClick={this.handleSend}

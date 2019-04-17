@@ -37,6 +37,7 @@ class NewDraft extends Component {
           className="s-new-draft__form"
           key={routeParams.messageId}
           internalId={routeParams.messageId}
+          messageId={routeParams.messageId}
           hasDiscussion={false}
           onDeleteMessageSuccessfull={closeTab}
           onSent={this.handleSent}

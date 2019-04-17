@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import { Trans, withI18n } from '@lingui/react';
@@ -18,6 +18,7 @@ import { toggleMarkAsReadHandler } from '../../services/toggleMarkAsReadHandler'
 import { LockedMessage } from '../../../../modules/encryption';
 import { getAuthor } from '../../../../services/message';
 import { getAveragePIMessage, getPiClass } from '../../../../modules/pi/services/pi';
+import { STATUS_DECRYPTED } from '../../../../store/modules/encryption';
 
 import './style.scss';
 import './mail-message-details.scss';
@@ -59,31 +60,62 @@ class MailMessage extends Component {
 
   handleReply = replyHandler(this)
 
-  renderBody = () => {
+  renderBody() {
     const { message, isLocked, encryptionStatus } = this.props;
 
-    if (!isLocked) {
-      if (!message.body_is_plain) {
-        return (
-          <TextBlock nowrap={false} className="s-mail-message__content" dangerouslySetInnerHTML={{ __html: message.body }} />
-        );
-      }
-
+    if (isLocked) {
       return (
-        <TextBlock nowrap={false}><pre className="s-mail-message__content">{message.body}</pre></TextBlock>
+        <LockedMessage encryptionStatus={encryptionStatus} />
+      );
+    }
+
+    if (!message.body_is_plain) {
+      return (
+        <TextBlock nowrap={false} className="s-mail-message__content" dangerouslySetInnerHTML={{ __html: message.body }} />
       );
     }
 
     return (
-      <LockedMessage encryptionStatus={encryptionStatus} />
+      <TextBlock nowrap={false}><pre className="s-mail-message__content">{message.body}</pre></TextBlock>
     );
-  };
+  }
+
+  renderAuthor() {
+    const {
+      message, settings: { default_locale: locale }, encryptionStatus, isLocked,
+    } = this.props;
+
+    const isDecrypted = encryptionStatus && encryptionStatus.status === STATUS_DECRYPTED;
+    const author = getAuthor(message);
+
+    return (
+      <TextBlock
+        className={classnames(
+          'm-mail-message-details__author',
+          { 'm-mail-message-details__author--encrypted': isDecrypted }
+        )}
+      >
+        {(isDecrypted || isLocked) && (
+          <Fragment>
+            <Icon type="lock" className="m-mail-message-details--encrypted__icon" />
+            {' '}
+          </Fragment>
+        )}
+        <Icon type="envelope" className={classnames({ 'm-mail-message-details--encrypted__icon': isDecrypted || isLocked })} />
+        {' '}
+        <span className="m-mail-message-details__author-name">{author.label}</span>
+        {' '}
+        <Moment fromNow locale={locale}>{message.date}</Moment>
+      </TextBlock>
+    );
+  }
 
   render() {
     const {
-      message, scrollTarget: { forwardRef }, onOpenTags, user, settings: { default_locale: locale },
-      noInteractions, encryptionStatus,
+      message, scrollTarget: { forwardRef }, onOpenTags, user, noInteractions, encryptionStatus,
+      isLocked,
     } = this.props;
+    const isDecrypted = encryptionStatus && encryptionStatus.status === STATUS_DECRYPTED;
     const pi = getAveragePIMessage({ message });
     const piType = getPiClass(pi);
     const author = getAuthor(message);
@@ -98,20 +130,7 @@ class MailMessage extends Component {
     return (
       <article id={`message-${message.message_id}`} ref={forwardRef} className="s-mail-message">
         <div className="s-mail-message__details m-mail-message-details">
-          <TextBlock
-            className={classnames(
-              'm-mail-message-details__author',
-              { 'm-mail-message-details__author--encrypted': encryptionStatus }
-            )}
-          >
-            {encryptionStatus && <Icon type="lock" className="m-mail-message-details--encrypted__icon" />}
-            {encryptionStatus && ' '}
-            <Icon type="envelope" className={classnames({ 'm-mail-message-details--encrypted__icon': encryptionStatus })} />
-            {' '}
-            <span className="m-mail-message-details__author-name">{author.label}</span>
-            {' '}
-            <Moment fromNow locale={locale}>{message.date}</Moment>
-          </TextBlock>
+          {this.renderAuthor()}
           <TextBlock className="m-mail-message-details__recipients">
             <Trans id="message.to">To:</Trans>
             {' '}
@@ -138,9 +157,10 @@ class MailMessage extends Component {
           <h2 className="s-mail-message__subject">
             <TextBlock nowrap={false}>{message.subject}</TextBlock>
           </h2>
-          { this.renderBody() }
-          {// Do not display attachments if message is encrypted.
-            !encryptionStatus && (
+          {this.renderBody()}
+          {
+            // Do not display attachments if message is encrypted.
+            (isDecrypted || isLocked) && (
             <div className="m-message__attachments">
               <MessageAttachments message={message} />
             </div>

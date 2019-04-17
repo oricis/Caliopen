@@ -10,25 +10,8 @@ import { createMessageCollectionStateSelector } from '../../../../store/selector
 import { draftSelector } from '../../../../modules/draftMessage';
 import { requestDiscussionIdForParticipants } from '../../../../modules/discussion';
 import { requestDiscussion } from '../../../../modules/message';
-import { withIdentities, identityToParticipant, identitiesSelector } from '../../../../modules/identity';
-import { withUser, userSelector } from '../../../../modules/user';
-
-const getParticipants = ({ draftMessage, identities, user }) => {
-  const { user_identities: [identityId], participants = [] } = draftMessage;
-
-  if (!identityId) {
-    return participants;
-  }
-
-  const identity = identities.find(ident => ident.identity_id === identityId);
-  const from = identityToParticipant({ identity, user });
-
-  return [
-    ...participants
-      .filter(part => part.address !== from.address || part.protocol !== from.protocol),
-    from,
-  ];
-};
+import { withIdentities } from '../../../../modules/identity';
+import { withUser } from '../../../../modules/user';
 
 const getParticipantsHash = ({ participants }) => {
   if (participants.length === 0) {
@@ -46,14 +29,13 @@ const draftMessageSelector = (state, { messageId }) => (
   draftSelector(state, { internalId: messageId })
 );
 const discussionIdSelector = createSelector(
-  [discussionStateSelector, draftMessageSelector, identitiesSelector, userSelector],
-  (discussionState, draftMessage, identities, user) => {
+  [discussionStateSelector, draftMessageSelector],
+  (discussionState, draftMessage) => {
     if (!draftMessage || !draftMessage.participants || draftMessage.participants.length === 0) {
       return undefined;
     }
 
-    const participants = getParticipants({ draftMessage, identities, user });
-
+    const { participants } = draftMessage;
     const { discussionId } = discussionState.discussionByParticipantsHash[getParticipantsHash({
       participants,
     })] || {};
@@ -138,14 +120,10 @@ export const withDraftDiscussion = () => (C) => {
     }
 
     fetchDiscussion = () => {
-      const {
-        draftMessage,
-        idents: { identities }, userState: { user },
-      } = this.props;
+      const { draftMessage } = this.props;
+      const { participants } = draftMessage;
 
-      const participants = getParticipants({ draftMessage, identities, user });
-
-      if (participants.length > 0) {
+      if (participants > 0) {
         this.props.requestDraftDiscussion({
           participants,
           internalHash: getParticipantsHash({ participants }),

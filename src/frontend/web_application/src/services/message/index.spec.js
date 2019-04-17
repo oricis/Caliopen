@@ -1,4 +1,6 @@
-import { isMessageFromUser, isParticipantUser, getRecipients, getRecipientsExceptUser, isUserRecipient } from './index';
+import {
+  isMessageFromUser, getRecipients, getRecipientsExceptUser, isUserRecipient,
+} from './index';
 
 describe('message services', () => {
   const user = {
@@ -35,29 +37,6 @@ describe('message services', () => {
         }],
       };
       expect(isMessageFromUser(message, user)).toEqual(true);
-    });
-  });
-
-  describe('isParticipantUser', () => {
-    it('unknown contact', () => {
-      const participant = {
-        type: 'From',
-      };
-      expect(isParticipantUser(participant, user)).toEqual(false);
-    });
-    it('known contact', () => {
-      const participant = {
-        type: 'From',
-        contact_ids: ['whatever'],
-      };
-      expect(isParticipantUser(participant, user)).toEqual(false);
-    });
-    it('is actually the user', () => {
-      const participant = {
-        type: 'From',
-        contact_ids: ['john'],
-      };
-      expect(isParticipantUser(participant, user)).toEqual(true);
     });
   });
 

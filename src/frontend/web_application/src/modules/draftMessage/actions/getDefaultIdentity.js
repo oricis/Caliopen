@@ -1,51 +1,41 @@
-import { getLocalIdentities, getRemoteIdentities } from '../../identity';
-
-const isRecipient = ({ participants, identity }) => participants
-  .some(participant => participant.type === 'To' &&
-    participant.address === identity.identifier &&
-    participant.protocol === identity.protocol);
+import { getIdentities } from '../../identity';
+import { getIdentityProtocol } from '../services/getIdentityProtocol';
 
 const isIdentityUsed = ({ participants, identity }) => participants
   .some(participant => participant.address === identity.identifier &&
-    participant.protocol === identity.protocol);
+    participant.protocol === getIdentityProtocol(identity));
 
-export const getDefaultIdentity = ({ parentMessage } = {}) => async (dispatch) => {
-  const [localIdentity] = await dispatch(getLocalIdentities());
+export const getDefaultIdentity = ({ participants = undefined, protocol = 'email' } = { protocol: 'email' }) => async (dispatch) => {
+  const identities = await dispatch(getIdentities());
 
-  if (!parentMessage) {
-    return localIdentity;
+  if (!participants) {
+    return [...identities
+      .sort((identity) => {
+        if (identity.type === 'local') {
+          return -1;
+        }
+
+        return 1;
+      })]
+      .find(identity => getIdentityProtocol(identity) === protocol);
   }
 
-  const { participants } = parentMessage;
-
-  if (isRecipient({ identity: localIdentity, participants })) {
-    return localIdentity;
-  }
-
-  const remoteIdentities = await dispatch(getRemoteIdentities());
-
-  const remoteIdentity = remoteIdentities.reduce((acc, curr) => {
-    if (acc && isRecipient({ identity: acc, participants })) {
+  return identities.reduce((acc, curr) => {
+    if (getIdentityProtocol(curr) !== protocol) {
       return acc;
     }
 
-    if (isIdentityUsed({ identity: curr, participants })) {
+    if (!acc) {
       return curr;
     }
 
     if (
-      (!acc || !isIdentityUsed({ identity: acc, participants })) &&
-      parentMessage.participants.some(participant => participant.protocol === curr.protocol)
+      !isIdentityUsed({ participants, identity: acc }) &&
+      isIdentityUsed({ participants, identity: curr })
     ) {
       return curr;
     }
 
     return acc;
   }, undefined);
-
-  if (remoteIdentity) {
-    return remoteIdentity;
-  }
-
-  return localIdentity;
 };

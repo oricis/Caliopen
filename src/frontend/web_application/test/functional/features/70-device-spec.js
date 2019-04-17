@@ -26,13 +26,6 @@ describe('Device', () => {
       await signin();
     });
 
-    it('Hides the button for the last verified device', async () => {
-      await showSettings('Devices');
-      const deviceBlock = element(by.cssContainingText('.s-devices-settings__device', 'default'));
-      expect(deviceBlock.element(by.cssContainingText('.m-button', 'Revoke this device')).isPresent())
-        .toEqual(false);
-    });
-
     it('Revoke an other device', async () => {
       await showSettings('Devices');
       await expect(element.all(by.css('.s-devices-settings__device')).count()).toEqual(2);
@@ -89,9 +82,7 @@ describe('Device', () => {
     });
 
     it('request validation', async () => {
-      await browser.wait(EC.presenceOf(element(by.css('.s-new-device-info')), 5 * 1000));
-      await browser.wait(EC.presenceOf(element(by.css('.s-new-device-info')), 5 * 1000));
-      await element(by.cssContainingText('.l-settings .m-link', 'Device')).click();
+      await showSettings('Devices');
       await element(by.cssContainingText('.m-device-verify__button', 'Verify this device')).click();
       await browser.wait(EC.presenceOf(element(by.cssContainingText('.l-notification-center', 'An email has been sent to your backup email in order to verify the device.')), 5 * 1000));
     });
