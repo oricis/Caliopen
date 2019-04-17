@@ -27,17 +27,9 @@ export const encryptMessage = async (message, keys) => {
     privateKeys: null,
   };
 
-  /* eslint-disable-next-line camelcase */
-  const privacy_features = {
-    ...message.privacy_features,
-    message_encrypted: 'True',
-    message_encryption_method: 'pgp',
-  };
-
   const { data: body } = await openpgp.encrypt(options);
-  const encryptedMessage = { ...message, body, privacy_features };
 
-  return encryptedMessage;
+  return { ...message, body };
 };
 
 export const decryptMessage = async (message, keys) => {
