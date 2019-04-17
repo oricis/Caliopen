@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
 import { Icon } from '../../../../components';
@@ -29,7 +29,12 @@ class LockedMessage extends PureComponent {
       case 'need_privatekey':
         return <Trans id="encryption.locked-message.status.need_privatekey">No available private key can decrypt this message.</Trans>;
       case 'error':
-        return <Trans id="encryption.locked-message.status.error">Error while trying to decrypt.</Trans>;
+        return (
+          <Fragment>
+            <Trans id="encryption.locked-message.status.error">Error while trying to decrypt.</Trans>
+            {` (${encryptionStatus.error})`}
+          </Fragment>
+        );
       default:
         return <Trans id="encryption.locked-message.status.no-detail">…</Trans>;
     }
