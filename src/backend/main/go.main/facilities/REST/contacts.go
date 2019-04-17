@@ -137,7 +137,8 @@ func (rest *RESTfacility) PatchContact(user *UserInfo, patch []byte, contactID s
 	var modifiedFields map[string]interface{}
 	newContact, modifiedFields, err := helpers.UpdateWithPatch(patch, current_contact, UserActor)
 	if err != nil {
-		log.WithError(err).Warn("[discoverKey] failed to publish discover key message")
+		log.WithError(err).Warn("[RESTfacility] PatchContact failed")
+		return WrapCaliopenErr(err, FailDependencyCaliopenErr, "[RESTfacility] PatchContact failed")
 	}
 
 	needNewTitle := false
@@ -148,7 +149,7 @@ func (rest *RESTfacility) PatchContact(user *UserInfo, patch []byte, contactID s
 		// check if title has to be re-computed
 		case "AdditionalName", "FamilyName", "GivenName", "NamePrefix", "NameSuffix":
 			needNewTitle = true
-		// Check if we can try to discover a public key
+			// Check if we can try to discover a public key
 		case "Emails", "Identities":
 			discoverKey = true
 		}

@@ -25,7 +25,7 @@ type LDAStore interface {
 	CreateThreadLookup(user_id, discussion_id UUID, external_msg_id string) error
 	SeekMessageByExternalRef(userID, externalMessageID, identityID string) (UUID, error)
 
-	LookupContactsByIdentifier(user_id, address string) (contact_ids []string, err error)
+	LookupContactsByIdentifier(user_id, address, kind string) (contact_ids []string, err error)
 
 	GetAttachment(uri string) (file io.Reader, err error)
 	DeleteAttachment(uri string) error

@@ -340,7 +340,7 @@ func (b *EmailBroker) unmarshalParticipants(h mail.Header, address_type string, 
 			Contact_ids: []UUID{},
 		}
 		if len(user_id) == 1 {
-			contact_ids, err := b.Store.LookupContactsByIdentifier(user_id[0].String(), a.Address)
+			contact_ids, err := b.Store.LookupContactsByIdentifier(user_id[0].String(), a.Address, "email")
 			if err == nil {
 				for _, id := range contact_ids {
 					var contact_id UUID

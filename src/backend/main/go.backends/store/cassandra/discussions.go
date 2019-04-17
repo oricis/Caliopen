@@ -93,7 +93,7 @@ func (cb *CassandraBackend) CreateLookupsFromUris(userId UUID, hash string, uris
 	participants := []Participant{}
 	for _, uri := range uris {
 		uriSplit := strings.SplitN(uri, ":", 1)
-		contacts, err := cb.LookupContactsByIdentifier(userId.String(), uriSplit[1])
+		contacts, err := cb.LookupContactsByIdentifier(userId.String(), uriSplit[1], uriSplit[0])
 		if err != nil {
 			return err
 		}

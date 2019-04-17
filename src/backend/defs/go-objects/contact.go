@@ -282,6 +282,7 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 		c.Identities = []SocialIdentity{}
 		for _, identity := range identities.([]interface{}) {
 			I := new(SocialIdentity)
+			I.Infos = map[string]string{}
 			if err := I.UnmarshalMap(identity.(map[string]interface{})); err == nil {
 				c.Identities = append(c.Identities, *I)
 			}
@@ -563,7 +564,7 @@ func (c *Contact) GetLookupKeys() <-chan StoreLookup {
 		for _, identity := range c.Identities {
 			key := ContactByContactPoints{
 				UserID: c.UserId.String(),
-				Type:   "social",
+				Type:   identity.Type,
 				Value:  identity.Name,
 			}
 			getter <- &key
@@ -572,7 +573,7 @@ func (c *Contact) GetLookupKeys() <-chan StoreLookup {
 		for _, im := range c.Ims {
 			key := ContactByContactPoints{
 				UserID: c.UserId.String(),
-				Type:   "im",
+				Type:   im.Protocol,
 				Value:  im.Address,
 			}
 			getter <- &key
@@ -617,51 +618,19 @@ func (lookup *ContactByContactPoints) UpdateLookups(contacts ...interface{}) fun
 			// iterate over contact's current state to add or update lookups
 			for lookup := range newContact.GetLookupKeys() {
 				lkp := lookup.(*ContactByContactPoints)
-				// try to get the contact_lookup
-				contactIds := new([]string)
-				session.Query(`SELECT contact_ids from contact_lookup WHERE user_id = ? AND value = ? AND type = ?`,
-					lkp.UserID,
-					lkp.Value,
-					lkp.Type,
-				).Scan(contactIds)
-
-				if len(*contactIds) < 1 { // contact_lookup not found or empty => set one
-					err := session.Query(`INSERT INTO contact_lookup (user_id, value, type, contact_ids) VALUES (?,?,?,?)`,
-						(*lkp).UserID,
-						(*lkp).Value,
-						(*lkp).Type,
-						[]string{newContact.ContactId.String()},
-					).Exec()
-					if err != nil {
-						log.WithError(err).Warnf(`[CassandraBackend] UpdateLookups INSERT failed for user: %s, value: %s, type: %s`,
-							lkp.UserID,
-							lkp.Value,
-							lkp.Type)
-					}
-				} else { // contact_lookup found with contact_ids => udpate if needed
-					idFound := false
-					for _, contactId := range *contactIds {
-						if contactId == newContact.ContactId.String() {
-							idFound = true
-							break
-						}
-					}
-					if !idFound {
-						(*contactIds) = append((*contactIds), newContact.ContactId.String())
-						err := session.Query(`INSERT INTO contact_lookup (user_id, value, type, contact_ids) VALUES (?,?,?,?)`,
-							(*lkp).UserID,
-							(*lkp).Value,
-							(*lkp).Type,
-							*contactIds,
-						).Exec()
-						if err != nil {
-							log.WithError(err).Warnf(`[CassandraBackend] UpdateLookups INSERT failed for user: %s, value: %s, type: %s`,
-								lkp.UserID,
-								lkp.Value,
-								lkp.Type)
-						}
-					}
+				err := session.Query(`INSERT INTO contact_lookup (user_id, value, type, contact_id) VALUES (?,?,?,?)`,
+					(*lkp).UserID,
+					(*lkp).Value,
+					(*lkp).Type,
+					newContact.ContactId.String(),
+				).Exec()
+				if err != nil {
+					log.WithError(err).Warnf(`[CassandraBackend] UpdateLookups INSERT failed for user: %s, value: %s, type: %s`,
+						lkp.UserID,
+						lkp.Value,
+						lkp.Type)
 				}
+
 				if update {
 					// remove keys in current states,
 					// thus oldLookups map will only holds remaining entries that are not in the new state
@@ -674,43 +643,16 @@ func (lookup *ContactByContactPoints) UpdateLookups(contacts ...interface{}) fun
 				// need to remove contactID from lookup table
 				for _, lookup := range oldLookups {
 					// try to get the contact_lookup
-					contactIds := []string{}
-					session.Query(`SELECT contact_ids from contact_lookup WHERE user_id = ? AND value = ? AND type = ?`,
+					err := session.Query(`DELETE FROM contact_lookup WHERE user_id = ? AND value = ? AND type = ?`,
 						lookup.UserID,
 						lookup.Value,
 						lookup.Type,
-					).Scan(&contactIds)
-					if len(contactIds) > 0 {
-						updated := false
-						for i, id := range contactIds {
-							if id == newContact.ContactId.String() {
-								// pop contactID
-								contactIds = append(contactIds[:i], contactIds[i+1:]...)
-								updated = true
-							}
-						}
-						if updated {
-							if len(contactIds) == 0 {
-								// no contactIDs left for this lookup, remove it from db
-								err := session.Query(`DELETE FROM contact_lookup WHERE user_id = ? AND value = ? AND type = ?`,
-									lookup.UserID,
-									lookup.Value,
-									lookup.Type).Exec()
-								if err != nil {
-									return err
-								}
-							} else {
-								// update lookup with clean contactIDs slice
-								err := session.Query(`UPDATE contact_lookup SET contact_ids = ? WHERE user_id = ? AND value = ? AND type = ?`,
-									contactIds,
-									lookup.UserID,
-									lookup.Value,
-									lookup.Type).Exec()
-								if err != nil {
-									return err
-								}
-							}
-						}
+					).Exec()
+					if err != nil {
+						log.WithError(err).Warnf(`[CassandraBackend] UpdateLookups DELETE failed for user: %s, value: %s, type: %s`,
+							lookup.UserID,
+							lookup.Value,
+							lookup.Type)
 					}
 
 				}

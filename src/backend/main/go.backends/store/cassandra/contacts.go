@@ -16,6 +16,9 @@ import (
 // CreateContact saves Contact to Cassandra
 // AND fills/updates joined and lookup tables
 func (cb *CassandraBackend) CreateContact(contact *Contact) error {
+	// before doing anything check if there are emails or identities within contact that belong to another contact
+	// TODO
+
 	contactT := cb.IKeyspace.Table("contact", &Contact{}, gocassa.Keys{
 		PartitionKeys: []string{"user_id", "contact_id"},
 	}).WithOptions(gocassa.Options{TableName: "contact"}) // need to overwrite default gocassa table naming convention
@@ -84,6 +87,9 @@ func (cb *CassandraBackend) RetrieveUserContactId(userID string) string {
 // UpdateContact updates fields into Cassandra
 // AND updates related lookup tables if needed
 func (cb *CassandraBackend) UpdateContact(contact, oldContact *Contact, fields map[string]interface{}) error {
+
+	// before doing anything check if there are emails or identities within update that belong to another contact
+	// TODO
 
 	//get cassandra's field name for each field to modify
 	cassaFields := map[string]interface{}{}
@@ -155,8 +161,38 @@ func (cb *CassandraBackend) DeleteContact(contact *Contact) error {
 	return nil
 }
 
-func (cb *CassandraBackend) LookupContactsByIdentifier(user_id, address string) (contact_ids []string, err error) {
-	err = cb.SessionQuery(`SELECT contact_ids FROM contact_lookup WHERE user_id=? and value=? and type='email'`, user_id, address).Scan(&contact_ids)
+type UrisCheck struct {
+	Ok           bool
+	OtherContact string
+}
+
+type UrisChecklist map[string]UrisCheck
+
+// ControlURIsUniqueness checks if all uris embedded in contact belong to this contact only
+// for earch uri, it returns other contact's id if found
+func (cb *CassandraBackend) ControlURIsUniqueness(contact *Contact) (checkList UrisChecklist) {
+	checkList = UrisChecklist{}
+	for lookup := range contact.GetLookupKeys() {
+		lkp := lookup.(*ContactByContactPoints)
+		contacts, err := cb.LookupContactsByIdentifier(contact.UserId.String(), lkp.Value, lkp.Type)
+		if err != nil {
+			checkList[lkp.Type+":"+lkp.Value] = UrisCheck{Ok: false, OtherContact: "error"}
+		}
+		for _, c := range contacts {
+			if c != contact.ContactId.String() {
+				checkList[lkp.Type+":"+lkp.Value] = UrisCheck{Ok: false, OtherContact: c}
+				break
+			}
+		}
+		if _, ok := checkList[lkp.Type+":"+lkp.Value]; !ok {
+			checkList[lkp.Type+":"+lkp.Value] = UrisCheck{Ok: true, OtherContact: ""}
+		}
+	}
+	return checkList
+}
+
+func (cb *CassandraBackend) LookupContactsByIdentifier(user_id, address, kind string) (contact_ids []string, err error) {
+	err = cb.SessionQuery(`SELECT contact_ids FROM contact_lookup WHERE user_id= ? AND value= ? AND type= ?`, user_id, address, kind).Scan(&contact_ids)
 	return
 }
 
