@@ -61,8 +61,12 @@ paths:
     "$ref": paths/discussions.yaml#/discussions
   "/v2/discussions/{discussion_id}":
     "$ref": paths/discussions.yaml#/discussions_{discussion_id}
+  "/v1/messages":
+    "$ref": paths/messages.yaml#/messages
   "/v2/messages":
     "$ref": paths/messagesV2.yaml#/messages
+  "/v1/messages/{message_id}":
+    "$ref": paths/messages.yaml#/messages_{message_id}
   "/v2/messages/{message_id}":
     "$ref": paths/messagesV2.yaml#/messages_{message_id}
   "/v2/messages/{message_id}/tags":
