@@ -5,13 +5,13 @@
 package participants
 
 import (
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
 	"github.com/gin-gonic/gin"
 	swgErr "github.com/go-openapi/errors"
 	"net/http"
 	"strings"
-	."github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 )
 
 // GET …/participants/suggest?context=xxxx&q=xxx

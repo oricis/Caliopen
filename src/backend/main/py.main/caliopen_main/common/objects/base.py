@@ -7,7 +7,8 @@ import pytz
 from six import add_metaclass
 
 from caliopen_storage.exception import NotFound
-from caliopen_main.common.errors import PatchConflict, PatchUnprocessable
+from caliopen_main.common.errors import PatchConflict, PatchUnprocessable, \
+    PatchError
 from caliopen_main.common.errors import ForbiddenAction
 from caliopen_main.common.interfaces import (IO, storage)
 from elasticsearch import exceptions as ESexceptions
@@ -353,13 +354,13 @@ class ObjectUser(ObjectStorable):
         except Exception as exc:
             log.exception(exc)
             raise PatchUnprocessable(message="unmarshall patch "
-                                     "error: %r" % exc)
+                                             "error: %r" % exc)
         try:
             obj_patch_old.unmarshall_json_dict(patch_current)
         except Exception as exc:
             log.exception(exc)
             raise PatchUnprocessable(message="unmarshall current "
-                                     "patch error: %r" % exc)
+                                             "patch error: %r" % exc)
         self.get_db()
 
         # TODO : manage protected attributes, to prevent patch on them

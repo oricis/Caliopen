@@ -240,6 +240,7 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	/** participants API **/
 	parts := api.Group("/participants", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
 	parts.GET("/suggest", participants.Suggest)
+	parts.POST("/discussion", participants.HashUris)
 
 	/** contacts API **/
 	cts := api.Group(http_middleware.ContactsRoute, http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))

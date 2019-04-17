@@ -96,9 +96,8 @@ paths:
   ## search/suggest ##
   "/v2/participants/suggest":
     "$ref": paths/participants.yaml#/participants_suggest
-  "/v1/participants/discussion":
+  "/v2/participants/discussion":
     "$ref": paths/participants.yaml#/participants_discussion
-
   "/v2/search":
     "$ref": paths/search.yaml#/search
 ## notifications

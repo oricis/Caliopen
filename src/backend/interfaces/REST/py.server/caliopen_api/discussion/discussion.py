@@ -9,6 +9,13 @@ from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
 
 log = logging.getLogger(__name__)
 
+"""
+
+deprecated routes since april 2019
+discussions' APIs are provided by APIv2
+
+"""
+
 
 @resource(collection_path='/discussions',
           path='/discussions/{discussion_id}')
@@ -45,10 +52,9 @@ class Discussion(Api):
             raise HTTPBadRequest
 
         try:
-            # TODO : get discussion's hashes before querying index
-            discussion_view = MainView().get_one(self.user, discussion_id,
-                                                 il_range[0],
-                                                 il_range[1])
+            discussion_view = MainView().get_from_hash(self.user, discussion_id,
+                                                       il_range[0],
+                                                       il_range[1])
         except NotFound:
             raise HTTPNotFound
 

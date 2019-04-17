@@ -12621,7 +12621,7 @@
         }
       }
     },
-    "/v1/participants/discussion": {
+    "/v2/participants/discussion": {
       "post": {
         "description": "Returns discussion related to a list of participants",
         "tags": [
@@ -12632,52 +12632,51 @@
             "basicAuth": []
           }
         ],
+        "consumes": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "participants",
             "in": "body",
             "schema": {
-              "properties": {
-                "sources": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "address": {
-                        "type": "string"
-                      },
-                      "contact_ids": {
-                        "type": "array",
-                        "items": {
-                          "type": "string"
-                        }
-                      },
-                      "label": {
-                        "type": "string"
-                      },
-                      "protocol": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "To",
-                          "Cc",
-                          "Bcc",
-                          "From",
-                          "Reply-To",
-                          "Sender"
-                        ]
-                      }
-                    },
-                    "required": [
-                      "address",
-                      "type",
-                      "protocol"
-                    ],
-                    "additionalProperties": false
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "address": {
+                    "type": "string"
+                  },
+                  "contact_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "protocol": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "To",
+                      "Cc",
+                      "Bcc",
+                      "From",
+                      "Reply-To",
+                      "Sender"
+                    ]
                   }
-                }
+                },
+                "required": [
+                  "address",
+                  "type",
+                  "protocol"
+                ],
+                "additionalProperties": false
               }
             },
             "required": true
