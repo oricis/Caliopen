@@ -105,7 +105,7 @@ class MailMessage extends Component {
         {' '}
         <span className="m-mail-message-details__author-name">{author.label}</span>
         {' '}
-        <Moment fromNow locale={locale}>{message.date}</Moment>
+        <Moment fromNow locale={locale} titleFormat="LLLL" withTitle>{message.date}</Moment>
       </TextBlock>
     );
   }

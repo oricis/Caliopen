@@ -164,7 +164,7 @@ class InstantMessage extends PureComponent {
         <header className="m-instant-message__author m-instant-message-author">
           <AuthorAvatarLetter message={message} className="m-instant-message-author__avatar" />
           <Icon type={this.getProtocolIconType(message)} />
-          <Moment className="m-instant-message-author__time" format="HH:mm">{message.date}</Moment>
+          <Moment className="m-instant-message-author__time" format="HH:mm" titleFormat="LLLL" withTitle>{message.date}</Moment>
         </header>
         <aside className="m-instant-message__info m-instant-message-aside">
           <div className="m-instant-message-aside__info">
