@@ -19,7 +19,7 @@ type (
 		DateUpdate         time.Time     `json:"date_update,omitempty"              formatter:"RFC3339Milli"`
 		DiscussionId       string        `json:"discussion_id"                      formatter:"rfc4122"`
 		Excerpt            string        `json:"excerpt"`
-		ImportanceLevel    int32         `json:"importance_level,omitempty"`
+		ImportanceLevel    int32         `json:"importance_level"`
 		LastMessageDate    time.Time     `json:"last_message_date,omitempty"        formatter:"RFC3339Milli"`
 		LastMessageId      UUID          `json:"last_message_id"`
 		LastMessageSubject string        `json:"last_message_subject"`
