@@ -10,6 +10,9 @@ import {
 import { formatName } from '../../../../services/contact';
 import './style.scss';
 
+const TYPE_FACEBOOK = 'facebook';
+const TYPE_TWITTER = 'twitter';
+
 const getAddress = ({ attrName, attr }) => {
   switch (attrName) {
     case 'emails':
@@ -25,10 +28,19 @@ const getAddress = ({ attrName, attr }) => {
       };
 
     case 'identities':
-      return {
-        type: attr.type,
-        identifier: attr.identifier,
-      };
+      switch (attr.type) {
+        case TYPE_FACEBOOK:
+          return {
+            type: attr.type,
+            identifier: attr.name,
+          };
+        case TYPE_TWITTER:
+        default:
+          return {
+            type: attr.type,
+            identifier: attr.identifier,
+          };
+      }
 
     case 'ims':
       return {

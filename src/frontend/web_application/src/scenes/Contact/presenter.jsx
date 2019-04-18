@@ -245,16 +245,24 @@ class Contact extends Component {
                       )}
                     />
                   )}
-                  {!this.state.editMode && (
-                    <ActionBarButton
-                      onClick={this.handleClickEditContact}
-                      display="inline"
-                      noDecoration
-                      icon="list-ul"
-                    >
-                      <Trans id="contact.action.edit_contact">Edit contact</Trans>
-                    </ActionBarButton>
-                  )}
+                  <Switch>
+                    <Route
+                      path={/(.*\/edit|\/new-contact)$/}
+                      render={() => null}
+                    />
+                    <Route
+                      render={() => (
+                        <ActionBarButton
+                          onClick={this.handleClickEditContact}
+                          display="inline"
+                          noDecoration
+                          icon="list-ul"
+                        >
+                          <Trans id="contact.action.edit_contact">Edit contact</Trans>
+                        </ActionBarButton>
+                      )}
+                    />
+                  </Switch>
                   <ActionBarButton
                     onClick={this.handleOpenTags}
                     display="inline"
@@ -503,8 +511,7 @@ class Contact extends Component {
         isFetching
         actionsNode={(
           <Fragment>
-            <PlaceholderBlock shape="line" display="inline-block" width="small" />
-:
+            <PlaceholderBlock shape="line" display="inline-block" width="small" />:
             <PlaceholderBlock shape="line" display="inline-block" />
             <PlaceholderBlock shape="line" display="inline-block" width="large" />
           </Fragment>
@@ -540,7 +547,7 @@ class Contact extends Component {
   render() {
     const { contact } = this.props;
 
-    if (!contact && !this.state.editMode) {
+    if (!contact) {
       return this.renderPlaceholder();
     }
 
