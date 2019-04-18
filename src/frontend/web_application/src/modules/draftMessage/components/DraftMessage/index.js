@@ -162,10 +162,11 @@ const onDeleteAttachement = (internalId, i18n, message, { draft, attachment }) =
 
 const onSendDraft = ({ draft, message, internalId }) => async (dispatch) => {
   try {
-    const messageUpToDate = await dispatch(saveDraft({ draft, message, internalId }, {
+    const savedMessage = await dispatch(saveDraft({ draft, message, internalId }, {
       withThrottle: false,
     }));
-    await dispatch(sendDraft({ draft: messageUpToDate }));
+    // discussion_id is set after the message has been sent for new drafts
+    const messageUpToDate = await dispatch(sendDraft({ draft: savedMessage }));
 
     dispatch(clearDraft({ internalId }));
 

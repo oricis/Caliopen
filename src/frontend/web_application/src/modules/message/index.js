@@ -9,5 +9,6 @@ export * from './actions/requestMessages';
 export * from './actions/setMessageRead';
 export * from './models/Message';
 export * from './models/Participant';
+export * from './selectors/messageSelector';
 export * from './services/findUserParticipant';
 export * from './services/isUserParticipant';

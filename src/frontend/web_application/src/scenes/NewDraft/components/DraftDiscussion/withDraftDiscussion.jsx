@@ -123,7 +123,7 @@ export const withDraftDiscussion = () => (C) => {
       const { draftMessage } = this.props;
       const { participants } = draftMessage;
 
-      if (participants > 0) {
+      if (participants && participants.length > 0) {
         this.props.requestDraftDiscussion({
           participants,
           internalHash: getParticipantsHash({ participants }),

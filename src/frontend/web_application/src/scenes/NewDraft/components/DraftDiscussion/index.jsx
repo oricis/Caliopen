@@ -60,8 +60,7 @@ class DraftDiscussion extends Component {
       <div className={classnames(className)}>
         <Title hr>
           <Trans id="discussion-draft.last-messages">
-Last messages with
-            {participants}
+            Last messages with {participants}
           </Trans>
         </Title>
         {messages.map(message => (
