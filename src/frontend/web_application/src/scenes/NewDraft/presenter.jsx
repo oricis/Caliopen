@@ -25,19 +25,35 @@ class NewDraft extends Component {
   };
 
   componentDidMount() {
-    const { messageId, getMessage } = this.props;
+    const { messageId } = this.props;
 
     if (messageId) {
-      getMessage({ messageId });
+      this.initMessage();
     }
   }
 
-  handleSent = ({ message }) => {
-    const { push } = this.props;
+  initMessage = async () => {
+    const { messageId, getMessage } = this.props;
+    const message = await getMessage({ messageId });
 
-    // closeTab();
+    if (message && message.discussion_id) {
+      this.redirectDiscussion();
+    }
+  }
 
-    return push(`/discussions/${message.discussion_id}`);
+  handleSent = () => {
+    this.redirectDiscussion();
+  }
+
+  redirectDiscussion = () => {
+    const { push, closeTab, message } = this.props;
+
+    if (!message || !message.discussion_id) {
+      throw new Error(`Unable to redirect. No discussions for message "${message && message.message_id}"`);
+    }
+    closeTab();
+
+    return push(`/discussions/${message.discussion_id}#${message.message_id}`);
   }
 
   render() {
@@ -45,10 +61,6 @@ class NewDraft extends Component {
 
     if (!messageId) {
       return <Redirect to={`/messages/${uuidv4()}`} />;
-    }
-
-    if (message && !message.is_draft) {
-      return <Redirect to={`/discussions/${message.discussion_id}`} />;
     }
 
     return (
