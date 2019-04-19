@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { v1 as uuidV1 } from 'uuid';
 import classnames from 'classnames';
 import FieldGroup from '../FieldGroup';
+import CheckboxFieldGroup from '../CheckboxFieldGroup';
 
 const propTypeOption = PropTypes.oneOfType([PropTypes.string, PropTypes.number]);
 const alphaNumPropType = PropTypes.oneOfType([PropTypes.string, PropTypes.number]);
@@ -26,22 +26,26 @@ class MultiSelectFieldGroup extends PureComponent {
     className: null,
   };
 
+  makeChangeHandler = option => () => {
+    const { onChange } = this.props;
+
+    onChange(option);
+  }
+
   render() {
     const {
-      className, errors, onChange, options, ...props
+      className, errors, options,
     } = this.props;
-    const id = `msfg-${uuidV1()}`;
 
     return (
       <FieldGroup className={classnames('m-select-field-group', className)} errors={errors}>
-        <select
-          id={id}
-          className="m-multi-select-field-group__select"
-          name="multiple"
-          {...props}
-        >
-          {options}
-        </select>
+        {options.map(option => (
+          <CheckboxFieldGroup
+            label={option.label}
+            onChange={this.makeChangeHandler(option.label)}
+            checked={this.props.value.includes(option.value)}
+          />
+        ))}
       </FieldGroup>
     );
   }

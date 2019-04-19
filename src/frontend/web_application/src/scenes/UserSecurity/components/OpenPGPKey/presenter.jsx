@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import { Trans, withI18n } from '@lingui/react';
 import Moment from 'react-moment';
 import {
-  Button, Spinner, Icon, TextareaFieldGroup, DefList, Link,
+  Button, Spinner, Icon, Link,
 } from '../../../../components';
 import getPGPManager from '../../../../services/openpgp-manager';
 import { strToBase64 } from '../../../../services/encode-utils';
@@ -40,7 +39,6 @@ class OpenPGPKey extends Component {
     i18n: PropTypes.shape({}).isRequired,
     locale: PropTypes.string,
     children: PropTypes.node,
-    publicKeyArmored: PropTypes.string.isRequired,
     privateKeyArmored: PropTypes.string,
     editMode: PropTypes.bool,
     onDeleteKey: PropTypes.func,
@@ -63,7 +61,6 @@ class OpenPGPKey extends Component {
       },
     };
 
-    this.toggleDetails = this.toggleDetails.bind(this);
     this.handleDeleteKey = this.handleDeleteKey.bind(this);
   }
 
@@ -91,15 +88,9 @@ class OpenPGPKey extends Component {
     this.props.onDeleteKey({ fingerprint: this.state.openpgpKey.fingerprint });
   }
 
-  toggleDetails() {
-    this.setState(prevState => ({
-      showDetails: !prevState.showDetails,
-    }));
-  }
-
   render() {
     const {
-      i18n, locale, children, publicKeyArmored, privateKeyArmored, editMode,
+      i18n, locale, children, editMode,
     } = this.props;
     const openpgpStatuses = {
       invalid: i18n._('openpgp.status.invalid', null, { defaults: 'Invalid' }),

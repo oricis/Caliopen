@@ -151,26 +151,15 @@ class OpenPGPKeyForm extends Component {
         </div>
         {this.state.formType === FORM_TYPE_GENERATE && (
           <form onSubmit={this.handleGenerateSubmit}>
-            {
-              emailOptions.length !== 1 && (
-                <MultiSelectFieldGroup
-                  className="m-account-openpgp-form__field-group"
-                  label={i18n._('user.openpgp.form.email.label', null, { defaults: 'Email' })}
-                  value={generateForm.email}
-                  onChange={this.handleGenerateChanges}
-                  name="email"
-                  options={emailOptions}
-                  required="true"
-                />
-              )
-            }
-            {emailOptions.length === 1 && (
-              <p className="m-account-openpgp-form__field-group">
-                <Trans id="user.openpgp.form.email.label">Email</Trans>
-                {' '}
-                {generateForm.email}
-              </p>
-            )}
+            <MultiSelectFieldGroup
+              className="m-account-openpgp-form__field-group"
+              label={i18n._('user.openpgp.form.email.label', null, { defaults: 'Email' })}
+              value={generateForm.emails}
+              onChange={this.handleGenerateChanges}
+              name="email"
+              options={emailOptions}
+              required="true"
+            />
             <div className="m-account-openpgp-form__field-group">
               <Trans id="user.openpgp.has-passphrase">Enable passphrase</Trans>
               {' '}
