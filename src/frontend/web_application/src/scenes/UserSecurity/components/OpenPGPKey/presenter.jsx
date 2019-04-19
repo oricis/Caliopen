@@ -117,16 +117,16 @@ class OpenPGPKey extends Component {
           <div className="m-openpgp-key__fingerprint">{this.state.openpgpKey.fingerprint && this.state.openpgpKey.fingerprint.toUpperCase()}</div>
 
           <div className="m-openpgp-key__actions">
-            <Button
-              className={classnames({ 'm-openpgp-key__toggle-info--warning': this.state.openpgpKey.keyStatus !== 'valid' })}
-              onClick={this.toggleDetails}
+            <Link
+              button
+              plain
+              href={this.getPrivateKeyDataUrl()}
+              download="private-key.asc"
             >
-              <Icon type="info-circle" />
-              {' '}
-              <Icon type="caret-down" />
-              {' '}
-              <span className="show-for-sr"><Trans id="openpgp.action.toggle-details">Toggle details</Trans></span>
-            </Button>
+              <Trans id="openpgp-key.download">Save and keep in a safe place.</Trans>
+              {' '}
+              <Icon type="download" />
+            </Link>
             {editMode && (
               <Button color="alert" onClick={this.handleDeleteKey}>
                 <Icon type="remove" />
@@ -139,67 +139,22 @@ class OpenPGPKey extends Component {
         {!this.state.showDetails && (
           <div className="m-openpgp-key__summary">
             <span>{this.state.openpgpKey.userId}</span>
+            {' '}
             {this.state.openpgpKey.created && (
               <Moment format="ll" locale={locale}>{this.state.openpgpKey.created}</Moment>
             )}
-            {' '}
+            {' '}
             {this.state.openpgpKey.expirationTime
                 && this.state.openpgpKey.expirationTime.length
                 && (
                   <span>
-                    /
-                    {' '}
-                    <Moment format="ll" locale={locale}>{this.state.openpgpKey.expirationTime}</Moment>
+                    {'/ '}
+                    <Moment format="LL" locale={locale}>{this.state.openpgpKey.expirationTime}</Moment>
                   </span>
                 )
             }
-            {' '}
+            {' '}
             {this.state.openpgpKey.keyStatus && openpgpStatuses[this.state.openpgpKey.keyStatus]}
-            <Link
-              button
-              plain
-              href={this.getPrivateKeyDataUrl()}
-              download="private-key.asc"
-            >
-              <Icon type="download" />
-              {' '}
-              <Trans id="openpgp-key.download">Save and keep in a safe place.</Trans>
-            </Link>
-          </div>
-        )}
-
-        {this.state.showDetails && (
-          <div className="m-openpgp-key__details">
-            <DefList
-              className="m-openpgp-key__detail"
-              definitions={[
-                { title: i18n._('openpgp.details.identities', null, { defaults: 'Identities' }), descriptions: this.state.openpgpKey.userIds },
-                { title: i18n._('openpgp.details.algorithm', null, { defaults: 'Algorithm' }), descriptions: [this.state.openpgpKey.algorithm] },
-                { title: i18n._('openpgp.details.key-size', null, { defaults: 'Key size' }), descriptions: [this.state.openpgpKey.bitSize] },
-                { title: i18n._('openpgp.details.status', null, { defaults: 'Status' }), descriptions: [openpgpStatuses[this.state.openpgpKey.keyStatus]] },
-                { title: i18n._('openpgp.details.creation', null, { defaults: 'Creation' }), descriptions: this.state.openpgpKey.created ? [<Moment format="ll" locale={locale}>{this.state.openpgpKey.created}</Moment>] : [] },
-                { title: i18n._('openpgp.details.expiration', null, { defaults: 'Expiration' }), descriptions: this.state.openpgpKey.expirationTime ? [<Moment format="ll" locale={locale}>{this.state.openpgpKey.expirationTime}</Moment>] : [] },
-              ]}
-            />
-
-            <TextareaFieldGroup
-              className="m-openpgp-key__detail"
-              label={i18n._('openpgp.public-key', null, { defaults: 'Public key' })}
-              inputProps={{
-                readOnly: true,
-                value: publicKeyArmored,
-              }}
-            />
-            {privateKeyArmored && (
-              <TextareaFieldGroup
-                className="m-openpgp-key__detail"
-                label={i18n._('openpgp.private-key', null, { defaults: 'Private key' })}
-                inputProps={{
-                  readOnly: true,
-                  value: privateKeyArmored,
-                }}
-              />
-            )}
           </div>
         )}
       </div>
