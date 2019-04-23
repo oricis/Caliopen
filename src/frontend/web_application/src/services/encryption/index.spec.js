@@ -22,10 +22,12 @@ describe('modules draftMessage -- service -- encryption', () => {
 
     expect(await encryptMessage(draft, publicKeys)).toEqual({
       body: 'Hello, encryption.',
-      privacy_features: {
-        message_encrypted: 'True',
-        message_encryption_method: 'pgp',
-      },
+      // XXX: thoses privacy_features are set in encryption middleware. I'm not sure who's
+      // responsible of this
+      // privacy_features: {
+      //   message_encrypted: 'True',
+      //   message_encryption_method: 'pgp',
+      // },
     });
   });
 
