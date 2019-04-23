@@ -4,7 +4,7 @@ import {
   ERROR_UNABLE_READ_PUBLIC_KEY,
   ERROR_UNABLE_READ_PRIVATE_KEY,
   ERROR_FINGERPRINTS_NOT_MATCH,
-} from '.';
+} from './errors';
 
 const GENERATE_KEY_OPTIONS = {
   numBits: 4096,

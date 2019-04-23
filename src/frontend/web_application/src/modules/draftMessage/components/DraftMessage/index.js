@@ -5,16 +5,15 @@ import { createMessageCollectionStateSelector } from '../../../../store/selector
 import {
   deleteDraft, deleteDraftSuccess, clearDraft, syncDraft,
 } from '../../../../store/modules/draft-message';
+import { deleteMessage, getLastMessageFromArray } from '../../../../modules/message';
 import { withContacts } from '../../../contact';
 import { updateTagCollection } from '../../../tags';
 import { saveDraft } from '../../actions/saveDraft';
 import { sendDraft } from '../../actions/sendDraft';
 import { calcSyncDraft } from '../../services/calcSyncDraft';
 import { uploadDraftAttachments, deleteDraftAttachment } from '../../../file';
-import { deleteMessage } from '../../../message';
 import { withIdentities } from '../../../identity';
 import { userSelector } from '../../../user';
-import { getLastMessage } from '../../../../services/message';
 import { withDraftMessage } from './withDraftMessage';
 import { filterIdentities } from '../../services/filterIdentities';
 import { isMessageEncrypted } from '../../../../services/encryption';
@@ -64,7 +63,7 @@ const mapStateToProps = createSelector([
   }, { messages }, internalId, availableIdentities, parentMessage, sentMessages,
   { isFetching: isIdentitiesFetching }, messageEncryptionStatus,
 ) => {
-  const lastMessage = getLastMessage(sentMessages);
+  const lastMessage = getLastMessageFromArray(sentMessages);
   const canEditRecipients = messages.some(message => !message.is_draft) === false;
 
   return {
