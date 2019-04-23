@@ -1,4 +1,4 @@
-import { DEFAULT_LANGUAGE } from './language';
+import { DEFAULT_LANGUAGE } from './getLanguage';
 
 export const getUserLocales = () => {
   if (BUILD_TARGET === 'browser') {

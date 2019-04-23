@@ -1,7 +1,7 @@
 import { discussionIdSelector } from '../../../modules/discussion';
 import { fetchMessages } from './fetchMessages';
 import { createMessageCollectionStateSelector } from '../../../store/selectors/message';
-import { sortMessages } from '../../../services/message';
+import { sortMessages } from '../services/sortMessages';
 
 const messageCollectionSelector = createMessageCollectionStateSelector(() => 'discussion', discussionIdSelector);
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n } from '@lingui/react';
 import { Badge } from '../../../../components';
-import { getTagLabel } from '../..';
+import { getTagLabel } from '../../services/getTagLabel';
 
 import './style.scss';
 
