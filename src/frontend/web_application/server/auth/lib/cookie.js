@@ -1,19 +1,19 @@
-const seal = require('../lib/seal');
-const { getConfig } = require('../../config');
+import { encode } from '../lib/seal';
+import { getConfig } from '../../config';
 
-const COOKIE_NAME = 'caliopen.web';
-const COOKIE_OPTIONS = {
+export const COOKIE_NAME = 'caliopen.web';
+export const COOKIE_OPTIONS = {
   signed: true,
 };
 
-const authenticate = (res, { user }) => new Promise((resolve, reject) => {
+export const authenticate = (res, { user }) => new Promise((resolve, reject) => {
   const { seal: { secret } } = getConfig();
 
-  seal.encode(
+  encode(
     user,
     secret,
     (err, sealed) => {
-      if (err || !seal) {
+      if (err || !sealed) {
         return reject('Unexpected Error');
       }
       res.cookie(COOKIE_NAME, sealed, COOKIE_OPTIONS);
@@ -22,9 +22,3 @@ const authenticate = (res, { user }) => new Promise((resolve, reject) => {
     }
   );
 });
-
-module.exports = {
-  authenticate,
-  COOKIE_NAME,
-  COOKIE_OPTIONS,
-};

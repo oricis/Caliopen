@@ -1,10 +1,10 @@
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const getRouter = require('./router');
-const { checkCookie, decodeCookie, checkToken, catchLoginErrors } = require('./middlewares');
-const { getConfig } = require('../config');
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import getRouter from './router';
+import { checkCookieMiddleware, decodeCookieMiddleware, checkTokenMiddleware, catchLoginErrorsMiddleware } from './middlewares';
+import { getConfig } from '../config';
 
-module.exports = (app) => {
+export default (app) => {
   const { cookie: { secret } } = getConfig();
   app.use(cookieParser(secret));
   app.use('/auth', bodyParser.json());
@@ -12,9 +12,9 @@ module.exports = (app) => {
   app.use('/auth', getRouter());
 
   app.use(
-    checkCookie,
-    decodeCookie,
-    checkToken,
-    catchLoginErrors
+    checkCookieMiddleware,
+    decodeCookieMiddleware,
+    checkTokenMiddleware,
+    catchLoginErrorsMiddleware
   );
 };

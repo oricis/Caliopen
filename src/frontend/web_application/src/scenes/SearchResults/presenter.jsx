@@ -4,7 +4,9 @@ import debounce from 'lodash.debounce';
 import { Trans } from '@lingui/react';
 import { WithSettings } from '../../modules/settings';
 import SearchResultsLayout from '../../layouts/SearchResults';
-import { Link, InfiniteScroll, PageTitle, Button, BlockList } from '../../components/';
+import {
+  Link, InfiniteScroll, PageTitle, Button, BlockList,
+} from '../../components';
 import MessageResultItem from './components/MessageResultItem';
 import ContactResultItem from './components/ContactResultItem';
 
@@ -22,6 +24,7 @@ class SearchResults extends Component {
     searchResults: PropTypes.shape({}),
     searchResultsPreview: PropTypes.shape({}),
   };
+
   static defaultProps = {
     term: undefined,
     doctype: undefined,
@@ -29,6 +32,7 @@ class SearchResults extends Component {
     searchResults: undefined,
     searchResultsPreview: undefined,
   };
+
   state = {};
 
   componentDidMount() {
@@ -53,8 +57,7 @@ class SearchResults extends Component {
 
   initLoadMore = ({ doctype, term }) => {
     this.debouncedLoadMore = debounce(
-      () =>
-        this.props.hasMoreByDoctype &&
+      () => this.props.hasMoreByDoctype &&
         this.props.hasMoreByDoctype[doctype] &&
         this.props.loadMore({ term, doctype }),
       LOAD_MORE_INTERVAL,

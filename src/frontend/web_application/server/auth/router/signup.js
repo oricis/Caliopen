@@ -1,8 +1,8 @@
-const proxy = require('express-http-proxy');
-const { query } = require('../../api/lib/api');
-const { getApiHost } = require('../../config');
-const { authenticate } = require('../lib/cookie');
-const { DEFAULT_REDIRECT } = require('../lib/redirect');
+import proxy from 'express-http-proxy';
+import { query } from '../../api/lib/api';
+import { getApiHost } from '../../config';
+import { authenticate } from '../lib/cookie';
+import { DEFAULT_REDIRECT } from '../lib/redirect';
 
 const CONTEXT_SAFE = 'safe';
 
@@ -37,4 +37,4 @@ const createSignupRouting = (router) => {
   router.post('/signup', authenticateAfterSignup);
 };
 
-module.exports = createSignupRouting;
+export default createSignupRouting;

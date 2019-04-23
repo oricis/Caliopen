@@ -16,6 +16,7 @@ class AvatarLetterWrapper extends PureComponent {
     isRound: PropTypes.bool,
     className: PropTypes.string,
   };
+
   static defaultProps = {
     children: undefined,
     size: undefined,

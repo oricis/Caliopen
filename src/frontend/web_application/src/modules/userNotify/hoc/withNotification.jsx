@@ -1,6 +1,8 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { notifySuccess, notifyInfo, notifyWarning, notifyError } from '../actions/notify';
+import {
+  notifySuccess, notifyInfo, notifyWarning, notifyError,
+} from '../actions/notify';
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   notifySuccess, notifyInfo, notifyWarning, notifyError,

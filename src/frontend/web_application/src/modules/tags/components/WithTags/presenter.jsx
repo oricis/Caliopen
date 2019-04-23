@@ -9,6 +9,7 @@ class WithTags extends Component {
     isFetching: PropTypes.bool,
     isInvalidated: PropTypes.bool,
   }
+
   static defaultProps = {
     tags: undefined,
     isFetching: false,

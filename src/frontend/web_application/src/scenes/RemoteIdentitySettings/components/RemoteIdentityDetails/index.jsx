@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Trans } from '@lingui/macro'; // eslint-disable-line import/no-extraneous-dependencies
-import { Callout, CheckboxFieldGroup, FormGrid, FormRow, FormColumn } from '../../../../components';
+import {
+  Callout, CheckboxFieldGroup, FormGrid, FormRow, FormColumn,
+} from '../../../../components';
 import LastConnection from '../LastConnection';
 import Status from '../Status';
 import './style.scss';
@@ -17,6 +19,7 @@ class RemoteIdentityDetails extends Component {
       status: PropTypes.bool,
     }),
   };
+
   static defaultProps = {
     className: undefined,
     errors: {},
@@ -41,7 +44,10 @@ class RemoteIdentityDetails extends Component {
       <FormGrid className={classnames(className)}>
         <FormRow>
           <FormColumn bottomSpace>
-            <Trans id="remote_identity.last_connection">Last connection: <LastConnection lastCheck={remoteIdentity.last_check} /></Trans>
+            <Trans id="remote_identity.last_connection">
+              Last connection:
+              <LastConnection lastCheck={remoteIdentity.last_check} />
+            </Trans>
           </FormColumn>
         </FormRow>
         {remoteIdentity.infos.lastFetchError && (

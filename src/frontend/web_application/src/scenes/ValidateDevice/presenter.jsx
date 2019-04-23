@@ -19,9 +19,11 @@ class ValidateDevice extends Component {
     }).isRequired,
     requestDeviceVerification: PropTypes.func.isRequired,
   };
+
   static defaultProps = {
     className: undefined,
   };
+
   state = {
     status: undefined,
   };
@@ -57,19 +59,30 @@ class ValidateDevice extends Component {
       case STATUS_IN_PROGRESS:
         return (
           <Section className="s-validate-device__feedback" borderContext="disabled">
-            <Spinner isLoading /> <Trans id="device.validation.in_progress">In progress.</Trans>
+            <Spinner isLoading />
+            {' '}
+            <Trans id="device.validation.in_progress">In progress.</Trans>
           </Section>
         );
       case STATUS_SUCCEED:
         return (
           <Section className="s-validate-device__feedback" borderContext="safe">
-            <Trans id="device.validation.suceed">The device is now verified, you can continue to use <Link to="/">Caliopen</Link>.</Trans>
+            <Trans id="device.validation.suceed">
+              The device is now verified, you can continue to use <Link to="/">Caliopen</Link>.
+            </Trans>
           </Section>
         );
       case STATUS_FAILED:
         return (
           <Section className="s-validate-device__feedback" borderContext="unsecure">
-            <Trans id="device.validation.failed">The device cannot be verified, the validation link might not be valid anymore or may be the device has been revoked.<br />You can send the verification link from <Link to="/settings/devices">the device list</Link>.</Trans>
+            <Trans id="device.validation.failed">
+              The device cannot be verified, the validation link might not be valid anymore or may
+              be the device has been revoked.
+              <br />
+              You can send the verification link from
+              <Link to="/settings/devices">the device list</Link>
+              .
+            </Trans>
           </Section>
         );
     }

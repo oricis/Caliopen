@@ -7,9 +7,9 @@ import { View, WithViewModel, requestMessages } from '../../modules/view';
 import { withRouteParams } from '../../modules/routing';
 import { getModuleStateSelector } from '../../store/selectors/getModuleStateSelector';
 
-const withViewModel = () => C =>
-  withRouteParams()(({ routeParams: { viewId }, ...props }) =>
-    (<WithViewModel viewId={viewId} render={({ view }) => (<C view={view} {...props} />)} />));
+const withViewModel = () => C => withRouteParams()(({ routeParams: { viewId }, ...props }) => (
+  <WithViewModel viewId={viewId} render={({ view }) => (<C view={view} {...props} />)} />
+));
 
 const viewModelSelector = (state, { view }) => view;
 

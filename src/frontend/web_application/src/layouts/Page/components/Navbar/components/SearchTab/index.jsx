@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { getTabUrl } from '../../../../../../modules/tab';
 import { URLSearchParams } from '../../../../../../modules/routing';
-import { Icon } from '../../../../../../components/';
+import { Icon } from '../../../../../../components';
 import Tab from '../Tab';
 import NavbarItem from '../NavbarItem';
 import ItemLink from '../ItemLink';

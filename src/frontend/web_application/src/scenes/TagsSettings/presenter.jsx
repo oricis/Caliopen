@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import isEqual from 'lodash.isequal';
 import { Trans, withI18n } from '@lingui/react';
 import { WithTags } from '../../modules/tags';
-import { Section } from '../../components/';
+import { Section } from '../../components';
 import TagSearch from './components/TagSearch';
 import TagInput from './components/TagInput';
 import './style.scss';

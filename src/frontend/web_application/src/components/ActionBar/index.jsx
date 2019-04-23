@@ -12,6 +12,7 @@ class ActionBar extends PureComponent {
     actionsNode: PropTypes.node,
     hr: PropTypes.bool,
   };
+
   static defaultProps = {
     children: null,
     className: undefined,

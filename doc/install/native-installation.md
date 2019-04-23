@@ -61,12 +61,40 @@ Will produce a caliopen_lmtp binary from where this command is launched inside t
 
 ## Python developments for CaliOpen
 
-You will need a local virtualenv than can be setup using the `devtools/setup-virtualenv.sh` script.
+### System packages
+
+#### Debian/Ubuntu
+
+```
+apt-get install virtualenv libffi-dev gcc python-dev
+```
+
+### Python virtualenv
+
+You will need a **python2** local [virtualenv](https://virtualenv.pypa.io/en/latest/) than can be setup using the
+[devtools/setup-virtualenv.sh](../../devtools/setup-virtualenv.sh) script.
+
+
+#### Apiv1
 
 To start the apiv1 service and develop on it, you can use the pyramid pserve command to start a local
 http server that will be restarted each time you update part of the code.
 
 ```
 cd src/backend
-pserve configs/caliopen-api.docker.ini --reload
+pserve configs/apiv1.ini --reload
+```
+
+#### Message queue worker
+
+This service process nats message for :
+- incoming SMTP message
+- incomling Twitter message
+- cryptographic public key actions
+- contact actions (create, update)
+
+
+```
+cd src/backend/interfaces/NATS/py.client/caliopen_nats
+python listener.py -f ../../../../configs/caliopen.yaml.template
 ```

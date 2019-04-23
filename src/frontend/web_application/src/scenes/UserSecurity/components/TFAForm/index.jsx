@@ -7,6 +7,7 @@ class TFAForm extends Component {
     // i18n: PropTypes.shape({}).isRequired,
     // requestUser: PropTypes.func.isRequired,
   };
+
   static defaultProps = {
   };
 

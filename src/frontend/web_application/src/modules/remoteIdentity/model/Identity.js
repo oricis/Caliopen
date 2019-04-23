@@ -17,12 +17,19 @@ export class Identity {
   }
 
   display_name
-  credentials: {}
+
+  credentials = {}
+
   identifier
-  infos: {}
+
+  infos = {}
+
   // FIXME: backend doen't have this info for now: usefull for remoteIdentForm display
   provider
+
   protocol
-  status: REMOTE_IDENTITY_STATUS_INACTIVE
-  type: IDENTITY_TYPE_REMOTE
+
+  status = REMOTE_IDENTITY_STATUS_INACTIVE
+
+  type = IDENTITY_TYPE_REMOTE
 }

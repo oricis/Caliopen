@@ -33,15 +33,6 @@ class Signin extends Component {
     this.initTranslation();
   }
 
-  initTranslation() {
-    const { i18n } = this.props;
-    this.localizedErrors = {
-      ERR_REQUIRED_USERNAME: i18n._('signin.feedback.required_username', null, { defaults: 'A username is required' }),
-      ERR_REQUIRED_PASSWORD: i18n._('signin.feedback.required_password', null, { defaults: 'A password is required' }),
-      ERR_INVALID_GLOBAL: i18n._('signin.feedback.invalid', null, { defaults: 'Credentials are invalid' }),
-    };
-  }
-
   handleSignin = (context, formValues) => {
     const { clientDevice: device } = this.props;
 
@@ -81,6 +72,15 @@ class Signin extends Component {
 
   handleChange = () => {
     this.setState({ errors: {} });
+  }
+
+  initTranslation() {
+    const { i18n } = this.props;
+    this.localizedErrors = {
+      ERR_REQUIRED_USERNAME: i18n._('signin.feedback.required_username', null, { defaults: 'A username is required' }),
+      ERR_REQUIRED_PASSWORD: i18n._('signin.feedback.required_password', null, { defaults: 'A password is required' }),
+      ERR_INVALID_GLOBAL: i18n._('signin.feedback.invalid', null, { defaults: 'Credentials are invalid' }),
+    };
   }
 
   render() {

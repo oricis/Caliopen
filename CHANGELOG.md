@@ -10,10 +10,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - render form after draft deletion
 - Reply encrypted messages
+- Hide "load" more button when all messages are displayed
+- Display decryption error message
+- Glitches on encrypted mails
+- Display facebook names on contact book
 
 ### Added
 
 - Send and receive text/plain MIME messages
+- Show full date on Hover
+- Suggest Twitter handles in draft form
 
 ## [0.17.0] 2019-03-21
 

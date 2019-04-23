@@ -2,7 +2,10 @@ import React, { Component, Fragment, createRef } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withI18n } from '@lingui/react';
-import { ActionBarButton, Link, Icon, Dropdown, withDropdownControl, VerticalMenu, VerticalMenuItem, TextBlock } from '../../../../components';
+import {
+  ActionBarButton, Link, Icon, Dropdown, withDropdownControl, VerticalMenu, VerticalMenuItem,
+  TextBlock,
+} from '../../../../components';
 import { getParticipantsExceptUser } from '../../../../services/message';
 import { withUser } from '../../../../modules/user';
 
@@ -26,9 +29,12 @@ class AddParticipantsToContactBook extends Component {
     // discussion
     message: PropTypes.shape({}).isRequired,
   };
+
   static defaultProps = {
     className: undefined,
   };
+
+  dropdownControlRef = createRef();
 
   getUnknownParticipants = () => {
     const { message, userState: { user } } = this.props;
@@ -36,8 +42,6 @@ class AddParticipantsToContactBook extends Component {
     return getParticipantsExceptUser(message, user)
       .filter(participant => !participant.contact_ids);
   }
-
-  dropdownControlRef = createRef();
 
   render() {
     const { i18n, className } = this.props;
@@ -56,7 +60,9 @@ class AddParticipantsToContactBook extends Component {
           className={classnames(className)}
           title={i18n._('message.action.add-participant-to-contacts', null, { defaults: 'Add a participant to the contact book' })}
         >
-          <Icon type="address-book" /> <Icon type="plus" />
+          <Icon type="address-book" />
+          {' '}
+          <Icon type="plus" />
         </DropdownControl>
         <Dropdown
           dropdownControlRef={this.dropdownControlRef}
@@ -77,7 +83,9 @@ class AddParticipantsToContactBook extends Component {
                 >
                   <TextBlock inline className="m-add-participants-dropdown__label">{participant.label}</TextBlock>
                   {' '}
-                  <Icon type="address-book" /> <Icon type="plus" />
+                  <Icon type="address-book" />
+                  {' '}
+                  <Icon type="plus" />
                 </Link>
               </VerticalMenuItem>
             ))}

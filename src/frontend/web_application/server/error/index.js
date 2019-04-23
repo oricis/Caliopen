@@ -1,5 +1,5 @@
-const catchError = require('./middlewares/catch-error');
+import catchError from './middlewares/catch-error';
 
-module.exports = (app) => {
+export default (app) => {
   app.use(catchError);
 };

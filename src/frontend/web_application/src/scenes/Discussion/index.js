@@ -2,12 +2,13 @@ import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { loadMore, invalidate, deleteMessage as deleteMessageRaw } from '../../store/modules/message';
-import { setMessageRead, deleteMessage, requestDiscussion } from '../../modules/message';
+import {
+  setMessageRead, deleteMessage, requestDiscussion, sortMessages, getLastMessageFromArray,
+} from '../../modules/message';
 import { reply } from '../../modules/draftMessage';
 import { createMessageCollectionStateSelector } from '../../store/selectors/message';
 import { UserSelector } from '../../store/selectors/user';
 import { withTags, updateTagCollection } from '../../modules/tags';
-import { sortMessages, getLastMessage } from '../../services/message';
 import { getUser } from '../../modules/user/actions/getUser';
 import { withPush } from '../../modules/routing/hoc/withPush';
 import Discussion from './presenter';
@@ -31,7 +32,7 @@ const mapStateToProps = createSelector(
         .filter(msg => msg.is_draft === false),
       false
     );
-    const lastMessage = getLastMessage(messages);
+    const lastMessage = getLastMessageFromArray(messages);
 
     return {
       discussionId,
@@ -54,9 +55,11 @@ const deleteDiscussion = ({ discussionId, messages }) => async (dispatch) => {
   return dispatch(invalidate('discussion', discussionId));
 };
 
-const updateDiscussionTags = ({ i18n, messages, tags }) => async dispatch =>
-  Promise.all(messages.map(message =>
-    dispatch(updateTagCollection(i18n, { type: 'message', entity: message, tags }))));
+const updateDiscussionTags = ({ i18n, messages, tags }) => async dispatch => (
+  Promise.all(messages.map(message => (
+    dispatch(updateTagCollection(i18n, { type: 'message', entity: message, tags }))
+  )))
+);
 
 const onMessageReply = ({ message, discussionId }) => async (dispatch) => {
   dispatch(reply({ internalId: discussionId, message }));

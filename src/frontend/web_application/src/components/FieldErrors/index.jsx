@@ -8,6 +8,7 @@ class FieldErrors extends PureComponent {
     errors: PropTypes.arrayOf(PropTypes.node),
     className: PropTypes.string,
   };
+
   static defaultProps = {
     errors: [],
     className: undefined,

@@ -19,6 +19,7 @@ class ProviderIcon extends PureComponent {
     // XXX: refactor me
     size: PropTypes.oneOf([PROVIDER_SIZE_NORMAL]),
   };
+
   static defaultProps = {
     children: null,
     className: undefined,

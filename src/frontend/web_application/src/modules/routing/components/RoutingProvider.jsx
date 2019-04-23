@@ -42,9 +42,9 @@ const tabMatchForSettings = ({ pathname }) => matchPath(pathname, {
 });
 const tabMatchRoute = ({ pathname, routeConfig }) => matchPath(pathname, routeConfig);
 const tabMatchPathname = ({ pathname, tab }) => pathname === tab.location.pathname;
-const tabMatchForContact = ({ pathname, tab, routeConfig }) =>
-  tabMatchRoute({ pathname, routeConfig }) &&
-  pathname.split('/edit')[0] === tab.location.pathname.split('/edit')[0];
+const tabMatchForContact = ({ pathname, tab, routeConfig }) => (
+  tabMatchRoute({ pathname, routeConfig }) && pathname.split('/edit')[0] === tab.location.pathname.split('/edit')[0]
+);
 
 @withI18n()
 class RoutingProvider extends Component {
@@ -54,6 +54,7 @@ class RoutingProvider extends Component {
     }).isRequired,
     settings: PropTypes.shape({}).isRequired,
   };
+
   state = {
     routes: [],
   };

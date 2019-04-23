@@ -2,10 +2,12 @@
 import React from 'react';
 // extends https://github.com/elrumordelaluz/reactour/blob/master/src/TourPortal.js
 import TourPortalBase from 'reactour/dist/TourPortal';
-import { Navigation, Dot, SvgMask, Controls } from 'reactour/dist/components';
+import {
+  Navigation, Dot, SvgMask, Controls,
+} from 'reactour/dist/components';
 import cn from 'classnames';
 import Guide from '../Guide';
-import { Button } from '../../../../../../components/';
+import { Button } from '../../../../../../components';
 import './style.scss';
 
 const CN = {
@@ -192,8 +194,8 @@ class TourPortal extends TourPortalBase {
                       {lastStepNextButton && current === steps.length - 1
                         ? lastStepNextButton
                         : nextButton
-                        ? nextButton
-                        : null
+                          ? nextButton
+                          : null
                       }
                     </Button>
                   )}

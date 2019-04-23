@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
 import { Field } from 'redux-form';
 import renderReduxField from '../../../../services/renderReduxField';
-import { Button, Icon, FieldErrors, DatePickerGroup as DatePickerGroupBase, Fieldset, Legend, FormGrid, FormRow, FormColumn } from '../../../../components';
+import {
+  Button, Icon, FieldErrors, DatePickerGroup as DatePickerGroupBase, Fieldset, Legend, FormGrid,
+  FormRow, FormColumn,
+} from '../../../../components';
 
 const DatePickerGroup = renderReduxField(DatePickerGroupBase);
 
@@ -14,6 +17,7 @@ class BirthdayForm extends PureComponent {
     changeField: PropTypes.func.isRequired,
     errors: PropTypes.arrayOf(PropTypes.shape({})),
   };
+
   static defaultProps = {
     errors: [],
   };

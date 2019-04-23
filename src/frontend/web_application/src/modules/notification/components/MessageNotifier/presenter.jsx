@@ -20,11 +20,13 @@ class MessageNotifier extends Component {
     i18n: PropTypes.shape({ _: PropTypes.func.isRequired }).isRequired,
     location: PropTypes.shape({}),
   };
+
   static defaultProps = {
     location: undefined,
     notifications: [],
     settings: undefined,
   };
+
   state = {};
 
   componentDidMount() {
@@ -68,7 +70,10 @@ class MessageNotifier extends Component {
     if ((settings.notification_enabled)) {
       // XXX: should be better to display in tabs
       notifyInfo({
-        message: (<Trans id="app.notification.new_messages" values={[notifications.length]}>You received {0} new messages</Trans>),
+        message: (
+          <Trans id="app.notification.new_messages" values={[notifications.length]}>
+            You received {0} new messages
+          </Trans>),
       });
     }
   }

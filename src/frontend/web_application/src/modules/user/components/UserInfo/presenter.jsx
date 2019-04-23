@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { ContactAvatarLetter } from '../../../../modules/avatar';
-import { WithSettings } from '../../../../modules/settings';
+import { ContactAvatarLetter } from '../../../avatar';
+import { WithSettings } from '../../../settings';
 import './style.scss';
 
 class UserInfo extends PureComponent {
@@ -10,6 +10,7 @@ class UserInfo extends PureComponent {
     user: PropTypes.shape({}),
     className: PropTypes.string,
   };
+
   static defaultProps = {
     user: {},
     className: undefined,

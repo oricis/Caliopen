@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Brand } from '../../components/';
+import { Brand } from '../../components';
 import { getConfig } from '../../services/config';
 import './style.scss';
 
@@ -18,7 +18,9 @@ const AuthPage = ({ children }) => {
           {motd && (
             <div>{motd}</div>
           )}
-          <div>{version} - Be good. - <a href="/privacy-policy.html" target="_blank">Privacy Policy</a></div>
+          <div>
+            {version} - Be good. - <a href="/privacy-policy.html" target="_blank">Privacy Policy</a>
+          </div>
         </footer>
       </div>
     </div>

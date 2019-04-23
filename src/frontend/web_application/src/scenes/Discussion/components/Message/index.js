@@ -4,6 +4,7 @@ import { createSelector } from 'reselect';
 import { reply } from '../../../../modules/draftMessage';
 import { updateTagCollection } from '../../../../modules/tags';
 import { messageEncryptionStatusSelector } from '../../../../modules/encryption';
+import { STATUS_DECRYPTED } from '../../../../store/modules/encryption';
 import { isMessageEncrypted } from '../../../../services/encryption';
 
 import Presenter from './presenter';
@@ -18,12 +19,12 @@ const mapStateToProps = createSelector(
   [messageEncryptionStatusSelector, messageSelector],
   (messageEncryptionStatus, message) => {
     const encryptionStatus = messageEncryptionStatus[message.message_id];
+    const isDecrypted = !!encryptionStatus && encryptionStatus.status === STATUS_DECRYPTED;
 
     return {
-      isLocked: isMessageEncrypted(message) &&
-        (!encryptionStatus || (encryptionStatus && encryptionStatus.status !== 'decrypted')),
+      isLocked: isMessageEncrypted(message) && !isDecrypted,
       encryptionStatus,
-      message: (encryptionStatus && encryptionStatus.decryptedMessage) || message,
+      message: (isDecrypted && encryptionStatus.decryptedMessage) || message,
     };
   }
 );

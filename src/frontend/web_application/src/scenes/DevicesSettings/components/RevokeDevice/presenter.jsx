@@ -49,7 +49,8 @@ class RevokeDevice extends Component {
           color="alert"
           onClick={this.handleRevoke}
         >
-          <Icon type="remove" rightSpaced /><Trans id="device.action.revoke">Revoke this device</Trans>
+          <Icon type="remove" rightSpaced />
+          <Trans id="device.action.revoke">Revoke this device</Trans>
         </Button>
       </span>
     );

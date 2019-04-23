@@ -15,9 +15,11 @@ class RemoteIdentitOauth extends Component {
     onChange: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
   };
+
   static defaultProps = {
     className: undefined,
   };
+
   state = {
     remoteIdentity: {
       identifier: '',

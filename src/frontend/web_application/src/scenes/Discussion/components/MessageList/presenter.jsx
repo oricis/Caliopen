@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
 import { Button, PlaceholderBlock } from '../../../../components';
-import Message from '../../components/Message';
-import ProtocolSwitch from '../../components/ProtocolSwitch';
+import Message from '../Message';
+import ProtocolSwitch from '../ProtocolSwitch';
 import { getAveragePIMessage } from '../../../../modules/pi';
 import { withSettings } from '../../../../modules/settings';
 import { CheckDecryption } from '../../../../modules/encryption';
@@ -54,8 +54,10 @@ class MessageList extends Component {
       hasMore, loadMore, isFetching,
     } = this.props;
 
-    return (loadMore && !(isFetching && hasMore)) && (
-      <Button shape="hollow" onClick={loadMore}><Trans id="general.action.load_more">Load more</Trans></Button>
+    return loadMore && !isFetching && hasMore && (
+      <Button shape="hollow" onClick={loadMore} className="m-message-list__load-more">
+        <Trans id="general.action.load_more">Load more</Trans>
+      </Button>
     );
   }
 
@@ -67,15 +69,19 @@ class MessageList extends Component {
 
     return messages.reduce((acc, message) => {
       const result = [...acc];
-      if (message.protocol !== 'email' && acc.length > 0
-        && this.findMessageBefore(message).protocol !== message.protocol) {
-        result.push(<ProtocolSwitch
-          newProtocol={message.protocol}
-          pi={getAveragePIMessage({ message })}
-          date={message.date}
-          key={`switch-${message.message_id}`}
-          settings={settings}
-        />);
+      if (
+        message.pi_message && message.protocol !== 'email' && acc.length > 0 &&
+        this.findMessageBefore(message).protocol !== message.protocol
+      ) {
+        result.push(
+          <ProtocolSwitch
+            newProtocol={message.protocol}
+            pi={getAveragePIMessage({ message })}
+            date={message.date}
+            key={`switch-${message.message_id}`}
+            settings={settings}
+          />
+        );
       }
 
       result.push(<Message

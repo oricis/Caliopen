@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n, Trans } from '@lingui/react';
-import { TextFieldGroup, Button, PasswordStrength, FormGrid, FormColumn, FormRow } from '../../../../components/';
+import {
+  TextFieldGroup, Button, PasswordStrength, FormGrid, FormColumn, FormRow,
+} from '../../../../components';
 import './style.scss';
 
 @withI18n()
@@ -113,9 +115,9 @@ class PasswordForm extends Component {
             />
           </FormColumn>
           <FormColumn size="medium">
-            <label htmlFor="password" className="m-password-form__tip">
+            <div className="m-password-form__tip">
               <Trans id="password.form.current_password.tip">The password you want to replace.</Trans>
-            </label>
+            </div>
           </FormColumn>
         </FormRow>
         <FormRow className="m-password-form__row">
@@ -130,9 +132,9 @@ class PasswordForm extends Component {
             />
           </FormColumn>
           <FormColumn size="medium">
-            <label htmlFor="newPassword" className="m-password-form__tip">
+            <div className="m-password-form__tip">
               <Trans id="password.form.new_password.tip">The password you want to use from now.</Trans>
-            </label>
+            </div>
           </FormColumn>
           {this.state.passwordStrength.length !== 0 && (
             <FormColumn size="medium" bottomSpace className="m-password-form__strength">
@@ -167,11 +169,11 @@ class PasswordForm extends Component {
           />
         </FormColumn>
         <FormColumn size="medium">
-          <label htmlFor="newPassword" className="m-password-form__tip">
+          <div className="m-password-form__tip">
             <Trans id="password.form.tfa.tip">
               Only if you have enabled the 2-Factor Authentification method.
             </Trans>
-          </label>
+          </div>
         </FormColumn>
       </FormRow>
         */}

@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
 import { Trans, withI18n } from '@lingui/react';
 import renderReduxField from '../../../../services/renderReduxField';
-import { Icon, Button, FieldErrors, SelectFieldGroup as SelectFieldGroupBase, TextFieldGroup as TextFieldGroupBase, Fieldset, Legend, FormGrid, FormRow, FormColumn } from '../../../../components';
+import {
+  Icon, Button, FieldErrors, SelectFieldGroup as SelectFieldGroupBase,
+  TextFieldGroup as TextFieldGroupBase, Fieldset, Legend, FormGrid, FormRow, FormColumn,
+} from '../../../../components';
 import './style.scss';
 
 const PHONE_TYPES = ['', 'work', 'home', 'other'];
@@ -17,6 +20,7 @@ class PhoneForm extends PureComponent {
     onDelete: PropTypes.func.isRequired,
     i18n: PropTypes.shape({}).isRequired,
   };
+
   static defaultProps = {
     errors: [],
   };

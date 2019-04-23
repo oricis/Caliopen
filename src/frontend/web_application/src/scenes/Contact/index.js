@@ -1,8 +1,10 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { reduxForm, formValues } from 'redux-form';
-import { requestContact, createContact, deleteContact, invalidate as invalidateContacts } from '../../store/modules/contact';
+import { reduxForm } from 'redux-form';
+import {
+  requestContact, createContact, deleteContact, invalidate as invalidateContacts,
+} from '../../store/modules/contact';
 import { requestUser } from '../../store/modules/user';
 import { addAddressToContact, updateContact } from '../../modules/contact';
 import { updateTagCollection as updateTagCollectionBase } from '../../modules/tags';
@@ -49,20 +51,19 @@ const mapStateToProps = createSelector(
 
 const updateTagCollection = (i18n, {
   type, entity, tags: tagCollection, lazy,
-}) =>
-  async (dispatch, getState) => {
-    const result = await dispatch(updateTagCollectionBase(i18n, {
-      type, entity, tags: tagCollection, lazy,
-    }));
+}) => async (dispatch, getState) => {
+  const result = await dispatch(updateTagCollectionBase(i18n, {
+    type, entity, tags: tagCollection, lazy,
+  }));
 
-    const userContact = userSelector(getState()).contact;
+  const userContact = userSelector(getState()).contact;
 
-    if (userContact.contact_id === entity.contact_id) {
-      dispatch(requestUser());
-    }
+  if (userContact.contact_id === entity.contact_id) {
+    dispatch(requestUser());
+  }
 
-    return result;
-  };
+  return result;
+};
 
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({
@@ -82,6 +83,5 @@ export default compose(
   reduxForm({
     destroyOnUnmount: false,
     enableReinitialize: true,
-  }),
-  formValues({ birthday: 'info.birthday' }),
+  })
 )(Presenter);

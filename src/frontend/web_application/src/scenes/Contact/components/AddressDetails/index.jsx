@@ -32,18 +32,28 @@ class AddressDetails extends Component {
       <span className="m-address-details">
         <Icon type="map-marker" rightSpaced />
         <address className="m-address-details__postal-address">
-          {address.street}{address.street && ', '}
-          {address.postal_code}{address.postal_code && ' '}
-          {address.city}{address.city && ' '}
-          {address.country}{address.country && ' '}
+          {address.street}
+          {address.street && ', '}
+          {address.postal_code}
+          {address.postal_code && ' '}
+          {address.city}
+          {address.city && ' '}
+          {address.country}
+          {address.country && ' '}
           {address.region}
         </address>
         {' '}
-        {(address.label || address.type) &&
-          <small>
-            <em>({address.label}{address.label && ' '}{this.addressTypesTranslations[address.type]})</em>
-          </small>
-        }
+        {(address.label || address.type) && (
+        <small>
+          <em>
+(
+            {address.label}
+            {address.label && ' '}
+            {this.addressTypesTranslations[address.type]}
+)
+          </em>
+        </small>
+        )}
       </span>
     );
   }

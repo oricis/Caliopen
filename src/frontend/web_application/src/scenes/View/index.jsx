@@ -28,6 +28,7 @@ class View extends Component {
     tags: PropTypes.arrayOf(PropTypes.shape({})),
     isFetching: PropTypes.bool,
   };
+
   static defaultProps = {
     className: undefined,
     messages: undefined,

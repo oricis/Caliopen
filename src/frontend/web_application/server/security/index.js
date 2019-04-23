@@ -1,5 +1,5 @@
-const { security } = require('./middlewares');
+import { securityMiddleware } from './middlewares';
 
-module.exports = (app) => {
-  app.use(security);
+export default (app) => {
+  app.use(securityMiddleware);
 };

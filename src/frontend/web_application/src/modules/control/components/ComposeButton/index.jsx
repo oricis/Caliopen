@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Trans } from '@lingui/react';
-import { withPush } from '../../../../modules/routing';
-import { Button, Icon } from '../../../../components/';
+import { withPush } from '../../../routing';
+import { Button, Icon } from '../../../../components';
 
 import './style.scss';
 
@@ -13,6 +13,7 @@ class ComposeButton extends PureComponent {
     push: PropTypes.func.isRequired,
     className: PropTypes.string,
   };
+
   static defaultProps = {
     className: undefined,
   };

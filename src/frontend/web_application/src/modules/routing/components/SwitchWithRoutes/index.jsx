@@ -6,6 +6,7 @@ class SwitchWithRoutes extends Component {
   static propTypes = {
     routes: PropTypes.arrayOf(PropTypes.shape({})),
   };
+
   static defaultProps = {
     routes: [],
   };

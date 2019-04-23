@@ -30,8 +30,7 @@ class MessageRecipients extends PureComponent {
   getRecipientsLabels = (recipients) => {
     if (!recipients) return [];
 
-    return recipients.map(recipient =>
-      (recipient.label ? recipient.label : recipient.address));
+    return recipients.map(recipient => (recipient.label ? recipient.label : recipient.address));
   };
 
   getRecipientsArray = () => {

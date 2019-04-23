@@ -4,9 +4,14 @@ import classnames from 'classnames';
 import { Trans, withI18n } from '@lingui/react';
 import { ContactAvatarLetter, SIZE_MEDIUM } from '../../../../modules/avatar';
 import { getCleanedTagCollection, getTagLabel } from '../../../../modules/tags';
-import { Button, Link, TextBlock, Icon, Checkbox, Badge, PlaceholderBlock } from '../../../../components/';
+import {
+  Button, Link, TextBlock, Icon, Checkbox, Badge, PlaceholderBlock,
+} from '../../../../components';
 import { formatName } from '../../../../services/contact';
 import './style.scss';
+
+const TYPE_FACEBOOK = 'facebook';
+const TYPE_TWITTER = 'twitter';
 
 const getAddress = ({ attrName, attr }) => {
   switch (attrName) {
@@ -23,10 +28,19 @@ const getAddress = ({ attrName, attr }) => {
       };
 
     case 'identities':
-      return {
-        type: attr.type,
-        identifier: attr.identifier,
-      };
+      switch (attr.type) {
+        case TYPE_FACEBOOK:
+          return {
+            type: attr.type,
+            identifier: attr.name,
+          };
+        case TYPE_TWITTER:
+        default:
+          return {
+            type: attr.type,
+            identifier: attr.identifier,
+          };
+      }
 
     case 'ims':
       return {
@@ -85,6 +99,7 @@ class ContactItem extends PureComponent {
     i18n: PropTypes.shape({}).isRequired,
     tags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   };
+
   static defaultProps = {
     contact: undefined,
     className: undefined,
@@ -181,7 +196,9 @@ class ContactItem extends PureComponent {
                 <TextBlock className="m-contact-item__name">
                   {contact.name_prefix && (<span className="m-contact-item__contact-prefix">{contact.name_prefix}</span>)}
                   <span className="m-contact-item__contact-title">{contactTitle}</span>
-                  {contact.name_suffix && (<span className="m-contact-item__contact-suffix">, {contact.name_suffix}</span>)}
+                  {contact.name_suffix && (
+                    <span className="m-contact-item__contact-suffix">, {contact.name_suffix}</span>
+                  )}
                 </TextBlock>
                 <div className="m-contact-item__tags">
                   {this.renderTags()}
@@ -200,12 +217,14 @@ class ContactItem extends PureComponent {
           ))}
         </div>
         <TextBlock className="m-contact-item__select">
-          {!selectDisabled && <Checkbox
-            label={<Trans id="contact-book.action.select">Select the contact</Trans>}
-            showLabelforSr
-            onChange={this.onCheckboxChange}
-            checked={isContactSelected}
-          />}
+          {!selectDisabled && (
+            <Checkbox
+              label={<Trans id="contact-book.action.select">Select the contact</Trans>}
+              showLabelforSr
+              onChange={this.onCheckboxChange}
+              checked={isContactSelected}
+            />
+          )}
         </TextBlock>
       </div>
     );

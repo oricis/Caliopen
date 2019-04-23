@@ -113,7 +113,7 @@ pipeline:
       branch: [ develop ]
       event: [ push ]
     commands:
-      - export PLUGIN_TAGS=develop,${DRONE_COMMIT_SHA}
+      - export PLUGIN_TAGS=develop
       - . devtools/drone/get_py_dependencies.sh # Get the list of dependencies
       - . devtools/drone/files_changed.sh # Check if any file has been modified
       - . devtools/drone/build_images.sh # Build docker image
@@ -134,7 +134,7 @@ pipeline:
       branch: [ develop ]
       event: [ push ]
     commands:
-      - export PLUGIN_TAGS=develop,${DRONE_COMMIT_SHA}
+      - export PLUGIN_TAGS=develop
       - . devtools/drone/get_py_dependencies.sh # Get the list of dependencies
       - . devtools/drone/files_changed.sh # Check if any file has been modified
       - . devtools/drone/build_images.sh # Build docker image
@@ -155,7 +155,7 @@ pipeline:
       branch: [ develop ]
       event: [ push ]
     commands:
-      - export PLUGIN_TAGS=develop,${DRONE_COMMIT_SHA}
+      - export PLUGIN_TAGS=develop
       - . devtools/drone/get_py_dependencies.sh # Get the list of dependencies
       - . devtools/drone/files_changed.sh # Check if any file has been modified
       - . devtools/drone/build_images.sh # Build docker image
@@ -177,7 +177,7 @@ pipeline:
       branch: [ develop ]
       event: [ push ]
     commands:
-      - export PLUGIN_TAGS=develop,${DRONE_COMMIT_SHA}
+      - export PLUGIN_TAGS=develop
       - . devtools/drone/get_go_dependencies.sh
       - . devtools/drone/files_changed.sh
       - . devtools/drone/build_images.sh
@@ -198,7 +198,7 @@ pipeline:
       branch: [ develop ]
       event: [ push ]
     commands:
-      - export PLUGIN_TAGS=develop,${DRONE_COMMIT_SHA}
+      - export PLUGIN_TAGS=develop
       - . devtools/drone/get_go_dependencies.sh
       - . devtools/drone/files_changed.sh
       - . devtools/drone/build_images.sh
@@ -219,7 +219,7 @@ pipeline:
       branch: [ develop ]
       event: [ push ]
     commands:
-      - export PLUGIN_TAGS=develop,${DRONE_COMMIT_SHA}
+      - export PLUGIN_TAGS=develop
       - . devtools/drone/get_go_dependencies.sh
       - . devtools/drone/files_changed.sh
       - . devtools/drone/build_images.sh
@@ -240,7 +240,7 @@ pipeline:
       branch: [ develop ]
       event: [ push ]
     commands:
-      - export PLUGIN_TAGS=develop,${DRONE_COMMIT_SHA}
+      - export PLUGIN_TAGS=develop
       - . devtools/drone/get_go_dependencies.sh
       - . devtools/drone/files_changed.sh
       - . devtools/drone/build_images.sh
@@ -261,7 +261,7 @@ pipeline:
       branch: [ develop ]
       event: [ push ]
     commands:
-    - export PLUGIN_TAGS=develop,${DRONE_COMMIT_SHA}
+    - export PLUGIN_TAGS=develop
     - . devtools/drone/get_go_dependencies.sh
     - . devtools/drone/files_changed.sh
     - . devtools/drone/build_images.sh
@@ -281,7 +281,7 @@ pipeline:
       branch: [ develop ]
       event: [ push ]
     commands:
-      - export PLUGIN_TAGS=develop,${DRONE_COMMIT_SHA}
+      - export PLUGIN_TAGS=develop
       - . devtools/drone/files_changed.sh
       - . devtools/drone/build_images.sh
 

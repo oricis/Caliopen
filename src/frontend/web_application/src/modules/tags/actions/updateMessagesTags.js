@@ -50,25 +50,25 @@ const updateMessagesTagsConcrete = (i18n, messageIds, tags) => async (dispatch, 
   }
 };
 
-const createThrottled = (resolve, reject, dispatch, { i18n, messageIds, tags }) =>
-  throttle(async () => {
+const createThrottled = (resolve, reject, dispatch, { i18n, messageIds, tags }) => throttle(
+  async () => {
     try {
       resolve(await dispatch(updateMessagesTagsConcrete(i18n, messageIds, tags)));
     } catch (err) {
       reject(err);
     }
-  }, UPDATE_WAIT_TIME, { leading: false });
+  }, UPDATE_WAIT_TIME, { leading: false }
+);
 
 const throttleds = {};
 const sha1 = new JsSHA('SHA-1', 'TEXT');
-const getThrottleHash = messageIds =>
-  (messageIds.sort().reduce((sha, messageId) => {
-    sha.update(messageId);
+const getThrottleHash = messageIds => (messageIds.sort().reduce((sha, messageId) => {
+  sha.update(messageId);
 
-    return sha;
-  }, sha1).getHash('HEX'));
+  return sha;
+}, sha1).getHash('HEX'));
 
-export const updateMessagesTags = (i18n, messageIds, tags, { withThrottle = true } = {}) =>
+export const updateMessagesTags = (i18n, messageIds, tags, { withThrottle = true } = {}) => (
   dispatch => new Promise(async (resolve, reject) => {
     const hash = getThrottleHash(messageIds);
 
@@ -89,4 +89,5 @@ export const updateMessagesTags = (i18n, messageIds, tags, { withThrottle = true
 
     throttleds[hash] = createThrottled(resolve, reject, dispatch, { i18n, messageIds, tags });
     throttleds[hash]();
-  });
+  })
+);

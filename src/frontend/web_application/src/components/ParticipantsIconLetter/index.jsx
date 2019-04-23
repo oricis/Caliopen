@@ -10,6 +10,7 @@ class ParticipantsIconLetter extends PureComponent {
     labels: PropTypes.arrayOf(PropTypes.string).isRequired,
     className: PropTypes.string,
   };
+
   static defaultProps = {
     className: undefined,
   };

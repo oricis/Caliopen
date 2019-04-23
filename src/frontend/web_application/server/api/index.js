@@ -1,8 +1,9 @@
-const proxy = require('express-http-proxy');
-const url = require('url');
+import proxy from 'express-http-proxy';
+import url from 'url';
+
 const { getConfig, getApiHost } = require('../config');
 
-module.exports = (app) => {
+export default (app) => {
   const { api: { checkCertificate }, maxBodySize } = getConfig();
   const target = getApiHost();
 

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
-import { Button, FieldErrors, TextareaFieldGroup, FormGrid, FormRow, FormColumn } from '../../../../components/';
+import {
+  Button, FieldErrors, TextareaFieldGroup, FormGrid, FormRow, FormColumn,
+} from '../../../../components';
 
 function generateStateFromProps(props, prevState) {
   return {
@@ -18,6 +20,7 @@ class SignatureForm extends Component {
     onSubmit: PropTypes.func.isRequired,
     i18n: PropTypes.shape({}).isRequired,
   };
+
   static defaultProps = {
     errors: {},
   };
@@ -71,7 +74,7 @@ class SignatureForm extends Component {
           </FormRow>
           )}
           <FormRow>
-            <FormColumn size="shrink" bottomSpace >
+            <FormColumn size="shrink" bottomSpace>
               <TextareaFieldGroup
                 inputProps={{
                   name: 'signature',

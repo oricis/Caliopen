@@ -8,6 +8,7 @@ class PageContainer extends PureComponent {
     className: PropTypes.string,
     children: PropTypes.node.isRequired,
   };
+
   static defaultProps = {
     className: undefined,
   };

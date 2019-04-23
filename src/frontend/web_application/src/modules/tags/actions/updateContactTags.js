@@ -50,25 +50,25 @@ const updateContactTagsConcrete = (i18n, contactIds, tags) => async (dispatch, g
   }
 };
 
-const createThrottled = (resolve, reject, dispatch, { i18n, contactIds, tags }) =>
-  throttle(async () => {
+const createThrottled = (resolve, reject, dispatch, { i18n, contactIds, tags }) => throttle(
+  async () => {
     try {
       resolve(await dispatch(updateContactTagsConcrete(i18n, contactIds, tags)));
     } catch (err) {
       reject(err);
     }
-  }, UPDATE_WAIT_TIME, { leading: false });
+  }, UPDATE_WAIT_TIME, { leading: false }
+);
 
 const throttleds = {};
 const sha1 = new JsSHA('SHA-1', 'TEXT');
-const getThrottleHash = contactIds =>
-  (contactIds.sort().reduce((sha, contactId) => {
-    sha.update(contactId);
+const getThrottleHash = contactIds => (contactIds.sort().reduce((sha, contactId) => {
+  sha.update(contactId);
 
-    return sha;
-  }, sha1).getHash('HEX'));
+  return sha;
+}, sha1).getHash('HEX'));
 
-export const updateContactTags = (i18n, contactIds, tags, { withThrottle = true } = {}) =>
+export const updateContactTags = (i18n, contactIds, tags, { withThrottle = true } = {}) => (
   dispatch => new Promise(async (resolve, reject) => {
     const hash = getThrottleHash(contactIds);
 
@@ -89,4 +89,5 @@ export const updateContactTags = (i18n, contactIds, tags, { withThrottle = true 
 
     throttleds[hash] = createThrottled(resolve, reject, dispatch, { i18n, contactIds, tags });
     throttleds[hash]();
-  });
+  })
+);

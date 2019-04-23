@@ -1,4 +1,4 @@
-const security = require('./security');
+import { securityMiddleware } from './security';
 
 describe('security middleware', () => {
   it('has an unsecure url', () => {
@@ -6,7 +6,7 @@ describe('security middleware', () => {
       path: '/auth/signup',
     };
 
-    security(req, {}, () => {});
+    securityMiddleware(req, {}, () => {});
 
     expect(req.security).toEqual(false);
   });
@@ -16,7 +16,7 @@ describe('security middleware', () => {
       path: '/api',
     };
 
-    security(req, {}, () => {});
+    securityMiddleware(req, {}, () => {});
 
     expect(req.security).toEqual(true);
   });

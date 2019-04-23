@@ -1,6 +1,6 @@
-const { Router: createRouter } = require('express');
-const createSigninRouting = require('./signin');
-const createSignupRouting = require('./signup');
+import { Router as createRouter } from 'express';
+import createSigninRouting from './signin';
+import createSignupRouting from './signup';
 
 const getRouter = () => {
   const router = createRouter();
@@ -10,4 +10,4 @@ const getRouter = () => {
   return router;
 };
 
-module.exports = getRouter;
+export default getRouter;

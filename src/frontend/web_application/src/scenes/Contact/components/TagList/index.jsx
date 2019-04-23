@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n } from '@lingui/react';
 import { WithTags, getTagLabel } from '../../../../modules/tags';
-import { Link, NavList, NavItem } from '../../../../components/';
+import { Link, NavList, NavItem } from '../../../../components';
 
 import './style.scss';
 
@@ -11,12 +11,14 @@ class TagList extends PureComponent {
   static propTypes = {
     i18n: PropTypes.shape({}).isRequired,
   };
+
   static defaultProps = {
   };
+
   state = {};
 
-  sortTags = (i18n, tags) =>
-    [...tags].sort((a, b) => getTagLabel(i18n, a).localeCompare(getTagLabel(i18n, b)));
+  sortTags = (i18n, tags) => [...tags]
+    .sort((a, b) => getTagLabel(i18n, a).localeCompare(getTagLabel(i18n, b)));
 
   renderItem = ({ tagName, label }) => {
     const param = tagName.length > 0 ? `?tag=${tagName}` : '';
@@ -44,7 +46,7 @@ class TagList extends PureComponent {
               label: getTagLabel(i18n, tag),
             })}
           </NavItem>
-          ))}
+        ))}
         />
       </NavList>
     );

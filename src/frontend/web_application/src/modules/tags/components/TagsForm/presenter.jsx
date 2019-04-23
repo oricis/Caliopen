@@ -2,8 +2,10 @@ import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
 import isequal from 'lodash.isequal';
-import { Button, Icon, Dropdown, VerticalMenu, VerticalMenuItem } from '../../../../components';
-import { getTagLabel } from '../../';
+import {
+  Button, Icon, Dropdown, VerticalMenu, VerticalMenuItem,
+} from '../../../../components';
+import { getTagLabel } from '../..';
 import TagItem from '../TagItem';
 import TagFieldGroup from '../TagFieldGroup';
 import { searchTags } from '../../services/searchTags';
@@ -48,6 +50,8 @@ class TagsForm extends Component {
 
   state = this.constructor.generateStateFromProps(this.props, this.constructor.initialState);
 
+  dropdownElement = createRef();
+
   componentDidMount() {
     this.unsubscribeClickEvent = addEventListener('click', (ev) => {
       const { target } = ev;
@@ -61,16 +65,14 @@ class TagsForm extends Component {
 
   componentDidUpdate(prevProps) {
     const propNames = ['tags'];
-    const hasChanged = propNames.some(propName =>
-      !isequal(this.props[propName], prevProps[propName]));
+    const hasChanged = propNames
+      .some(propName => !isequal(this.props[propName], prevProps[propName]));
 
     if (hasChanged) {
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState(prevState => this.constructor.generateStateFromProps(this.props, prevState));
     }
   }
-
-  dropdownElement = createRef();
 
   updateTags = async () => {
     const { updateTags } = this.props;
@@ -104,10 +106,13 @@ class TagsForm extends Component {
       return;
     }
 
-    const foundTags = await searchTags(i18n, this.constructor.getAvailableTags({
-      userTags, tags: this.state.tags,
-    }), searchTerms);
-    this.setState({ searchTerms, foundTags, errors: [] });
+    this.setState(async (prevState) => {
+      const foundTags = await searchTags(i18n, this.constructor.getAvailableTags({
+        userTags, tags: prevState.tags,
+      }), searchTerms);
+
+      return { searchTerms, foundTags, errors: [] };
+    });
   }
 
   handleSearchFocus = () => {
@@ -167,8 +172,11 @@ class TagsForm extends Component {
     return (
       <div className="m-tags-form">
         <div className="m-tags-form__section">
-          {this.state.tags.length > 0 && this.state.tags.map(tag =>
-            <TagItem tag={tag} key={tag.name} onDelete={this.handleDeleteTag} />)}
+          {
+            this.state.tags.length > 0 && this.state.tags.map(tag => (
+              <TagItem tag={tag} key={tag.name} onDelete={this.handleDeleteTag} />
+            ))
+          }
         </div>
 
         <div className="m-tags-form__section">

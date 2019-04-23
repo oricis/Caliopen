@@ -33,7 +33,7 @@ class TextareaFieldGroup extends PureComponent {
     const id = uuidV1();
 
     return (
-      <FieldGroup className={classnames('m-textarea-field-group', className)} errors={errors} >
+      <FieldGroup className={classnames('m-textarea-field-group', className)} errors={errors}>
         <Label htmlFor={id} className={classnames('m-textarea-field-group__label', { 'sr-only': showLabelForSR })}>{label}</Label>
         <Textarea
           id={id}

@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Icon } from '../../../../../../components/';
+import { Icon } from '../../../../../../components';
 import Tab from '../Tab';
 import NavbarItem from '../NavbarItem';
 import ItemLink from '../ItemLink';

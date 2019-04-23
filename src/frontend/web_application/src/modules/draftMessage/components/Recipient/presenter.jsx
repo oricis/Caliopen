@@ -13,6 +13,7 @@ class Recipient extends Component {
     className: PropTypes.string,
     isValid: PropTypes.bool,
   };
+
   static defaultProps = {
     onRemove: () => {},
     className: undefined,
@@ -36,7 +37,8 @@ class Recipient extends Component {
         ariaLabel={i18n._('messages.compose.action.remove-recipient', null, { defaults: 'Remove recipient' })}
         color={!isValid ? 'alert' : undefined}
       >
-        <Icon type={getIconType(participant.protocol)} rightSpaced />{participant.address}
+        <Icon type={getIconType(participant.protocol)} rightSpaced />
+        {participant.address}
       </Badge>
     );
   }

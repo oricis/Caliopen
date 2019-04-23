@@ -26,11 +26,13 @@ export const withDevices = () => (WrappedComponent) => {
       isFetching: PropTypes.bool,
       requestDevices: PropTypes.func.isRequired,
     };
+
     static defaultProps = {
       devices: undefined,
       didInvalidate: undefined,
       isFetching: false,
     };
+
     state = {};
 
     componentWillMount() {

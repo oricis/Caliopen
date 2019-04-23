@@ -1,7 +1,9 @@
 import { compose, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
-import { requestPublicKeys, createPublicKey, updatePublicKey, deletePublicKey } from '../../../../store/modules/public-key';
+import {
+  requestPublicKeys, createPublicKey, updatePublicKey, deletePublicKey,
+} from '../../../../store/modules/public-key';
 import { notifyError } from '../../../../modules/userNotify';
 import { tryCatchAxiosAction } from '../../../../services/api-client';
 import Presenter from './presenter';
@@ -21,12 +23,11 @@ const makeHandleSubmit = (props, dispatch) => async (values) => {
     if (publicKey) {
       const { key_id: publicKeyId, label } = publicKey;
 
-      await tryCatchAxiosAction(() =>
-        dispatch(updatePublicKey({
-          contactId,
-          publicKey: { ...values, publicKeyId },
-          original: { label },
-        })));
+      await tryCatchAxiosAction(() => dispatch(updatePublicKey({
+        contactId,
+        publicKey: { ...values, publicKeyId },
+        original: { label },
+      })));
     } else {
       await tryCatchAxiosAction(() => dispatch(createPublicKey({ contactId, publicKey: values })));
     }

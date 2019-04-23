@@ -15,10 +15,12 @@ class Highlights extends Component {
     term: PropTypes.string,
     highlights: PropTypes.string,
   };
+
   static defaultProps = {
     term: '',
     highlights: '',
   };
+
   state = {};
 
   getTerms = () => {

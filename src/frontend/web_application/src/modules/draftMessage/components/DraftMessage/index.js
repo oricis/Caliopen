@@ -2,21 +2,22 @@ import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import { createMessageCollectionStateSelector } from '../../../../store/selectors/message';
-import { deleteDraft, deleteDraftSuccess, clearDraft, syncDraft } from '../../../../store/modules/draft-message';
-import { withContacts } from '../../../../modules/contact';
-import { updateTagCollection } from '../../../../modules/tags';
+import {
+  deleteDraft, deleteDraftSuccess, clearDraft, syncDraft,
+} from '../../../../store/modules/draft-message';
+import { deleteMessage, getLastMessageFromArray } from '../../../../modules/message';
+import { withContacts } from '../../../contact';
+import { updateTagCollection } from '../../../tags';
 import { saveDraft } from '../../actions/saveDraft';
 import { sendDraft } from '../../actions/sendDraft';
 import { calcSyncDraft } from '../../services/calcSyncDraft';
-import { uploadDraftAttachments, deleteDraftAttachment } from '../../../../modules/file';
-import { deleteMessage } from '../../../../modules/message';
-import { withIdentities } from '../../../../modules/identity';
-import { userSelector } from '../../../../modules/user';
-import { getLastMessage } from '../../../../services/message';
+import { uploadDraftAttachments, deleteDraftAttachment } from '../../../file';
+import { withIdentities } from '../../../identity';
+import { userSelector } from '../../../user';
 import { withDraftMessage } from './withDraftMessage';
 import { filterIdentities } from '../../services/filterIdentities';
 import { isMessageEncrypted } from '../../../../services/encryption';
-import { messageEncryptionStatusSelector } from '../../../../modules/encryption/selectors/message';
+import { messageEncryptionStatusSelector } from '../../../encryption/selectors/message';
 import Presenter from './presenter';
 
 const internalIdSelector = (state, ownProps) => ownProps.internalId;
@@ -26,10 +27,9 @@ const identityStateSelector = (state, { identHoc: { identities, isFetching } }) 
 const contactsSelector = (state, ownProps) => ownProps.contacts;
 const draftSelector = (state, {
   draftMessage, isRequestingDraft, isDeletingDraft, original,
-}) =>
-  ({
-    draftMessage, isRequestingDraft, isDeletingDraft, original,
-  });
+}) => ({
+  draftMessage, isRequestingDraft, isDeletingDraft, original,
+});
 
 const discussionIdSelector = (state, ownProps) => {
   const { internalId, hasDiscussion } = ownProps;
@@ -63,13 +63,13 @@ const mapStateToProps = createSelector([
   }, { messages }, internalId, availableIdentities, parentMessage, sentMessages,
   { isFetching: isIdentitiesFetching }, messageEncryptionStatus,
 ) => {
-  const lastMessage = getLastMessage(sentMessages);
+  const lastMessage = getLastMessageFromArray(sentMessages);
   const canEditRecipients = messages.some(message => !message.is_draft) === false;
 
   return {
     key: draftMessage && draftMessage.message_id,
     draftMessage,
-    isEncrypted: draftMessage && isMessageEncrypted(draftMessage),
+    isEncrypted: original && isMessageEncrypted(original),
     isFetching: isRequestingDraft || isIdentitiesFetching,
     isDeletingDraft,
     canEditRecipients,
@@ -79,16 +79,18 @@ const mapStateToProps = createSelector([
     availableIdentities,
     isReply: parentMessage && true,
     draftEncryption: draftMessage && messageEncryptionStatus[draftMessage.message_id],
-    encryptionStatus: draftMessage && messageEncryptionStatus[draftMessage.message_id]
-      && messageEncryptionStatus[draftMessage.message_id].status,
+    encryptionStatus: original && messageEncryptionStatus[original.message_id]
+      && messageEncryptionStatus[original.message_id].status,
   };
 });
 
-const onEditDraft = ({ internalId, draft, message }) => dispatch =>
-  dispatch(saveDraft({ internalId, draft, message }, { withThrottle: true }));
+const onEditDraft = ({ internalId, draft, message }) => (
+  dispatch => dispatch(saveDraft({ internalId, draft, message }, { withThrottle: true }))
+);
 
-const onSaveDraft = ({ internalId, draft, message }) => dispatch =>
-  dispatch(saveDraft({ internalId, draft, message }, { force: true }));
+const onSaveDraft = ({ internalId, draft, message }) => (
+  dispatch => dispatch(saveDraft({ internalId, draft, message }, { force: true }))
+);
 
 const onDeleteMessage = ({ message, internalId }) => async (dispatch) => {
   dispatch(deleteDraft({ internalId }));
@@ -100,7 +102,7 @@ const onDeleteMessage = ({ message, internalId }) => async (dispatch) => {
   return result;
 };
 
-const onUpdateEntityTags = (internalId, i18n, message, { type, entity, tags }) =>
+const onUpdateEntityTags = (internalId, i18n, message, { type, entity, tags }) => (
   async (dispatch) => {
     const savedDraft = await dispatch(saveDraft({ internalId, draft: entity, message }, {
       withThrottle: false,
@@ -113,9 +115,10 @@ const onUpdateEntityTags = (internalId, i18n, message, { type, entity, tags }) =
     const nextDraft = calcSyncDraft({ message: messageUpTodate, draft: entity });
 
     return dispatch(syncDraft({ internalId, draft: nextDraft }));
-  };
+  }
+);
 
-const onUploadAttachments = (internalId, i18n, message, { draft, attachments }) =>
+const onUploadAttachments = (internalId, i18n, message, { draft, attachments }) => (
   async (dispatch) => {
     try {
       const savedDraft = await dispatch(saveDraft({ internalId, draft, message }, {
@@ -132,9 +135,10 @@ const onUploadAttachments = (internalId, i18n, message, { draft, attachments }) 
     } catch (err) {
       return Promise.reject(err);
     }
-  };
+  }
+);
 
-const onDeleteAttachement = (internalId, i18n, message, { draft, attachment }) =>
+const onDeleteAttachement = (internalId, i18n, message, { draft, attachment }) => (
   async (dispatch) => {
     try {
       const savedDraft = await dispatch(saveDraft({ internalId, draft, message }, {
@@ -152,14 +156,16 @@ const onDeleteAttachement = (internalId, i18n, message, { draft, attachment }) =
     } catch (err) {
       return Promise.reject(err);
     }
-  };
+  }
+);
 
 const onSendDraft = ({ draft, message, internalId }) => async (dispatch) => {
   try {
-    const messageUpToDate = await dispatch(saveDraft({ draft, message, internalId }, {
+    const savedMessage = await dispatch(saveDraft({ draft, message, internalId }, {
       withThrottle: false,
     }));
-    await dispatch(sendDraft({ draft: messageUpToDate }));
+    // discussion_id is set after the message has been sent for new drafts
+    const messageUpToDate = await dispatch(sendDraft({ draft: savedMessage }));
 
     dispatch(clearDraft({ internalId }));
 

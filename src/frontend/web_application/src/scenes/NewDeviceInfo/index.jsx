@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Trans, withI18n } from '@lingui/react';
-import { Link, Title, Button, Modal } from '../../components';
+import {
+  Link, Title, Button, Modal,
+} from '../../components';
 import './style.scss';
 
 const URL_DEVICES = '/settings/devices';

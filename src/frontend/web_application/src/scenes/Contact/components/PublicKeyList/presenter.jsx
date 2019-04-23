@@ -102,7 +102,8 @@ class PublicKeyList extends Component {
           className={`m-public-key-list__quality-icon--${KEY_QUALITY_CLASSES[this.getKeyQuality(publicKey)]}`}
           rightSpaced
         />
-        <strong className="m-public-key-list__key-label">{publicKey.label}</strong>&nbsp;:&nbsp;{publicKey.fingerprint}
+        <strong className="m-public-key-list__key-label">{publicKey.label}</strong>
+        &nbsp;:&nbsp;{publicKey.fingerprint}
         <Button icon="edit" className="m-public-key-list__edit-button" onClick={this.handleEdit(publicKey)} />
       </li>
     );

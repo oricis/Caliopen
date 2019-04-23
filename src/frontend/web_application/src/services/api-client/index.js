@@ -29,20 +29,19 @@ if (BUILD_TARGET === 'server') {
   };
 }
 
-const buildClient = () =>
-  axios.create({
-    baseURL: getBaseUrl(),
-    responseType: 'json',
-    headers,
-    paramsSerializer: params => queryStringify(params, headers),
-    transformRequest: ([(data) => {
-      if (data instanceof UploadFileAsFormField) {
-        return data.toFormData();
-      }
+const buildClient = () => axios.create({
+  baseURL: getBaseUrl(),
+  responseType: 'json',
+  headers,
+  paramsSerializer: params => queryStringify(params, headers),
+  transformRequest: ([(data) => {
+    if (data instanceof UploadFileAsFormField) {
+      return data.toFormData();
+    }
 
-      return data;
-    }]).concat(axios.defaults.transformRequest),
-  });
+    return data;
+  }]).concat(axios.defaults.transformRequest),
+});
 
 export const getUnsignedClient = () => {
   if (!client) {
@@ -81,8 +80,13 @@ export const handleClientResponseSuccess = (response) => {
 };
 
 export const handleClientResponseError = (payload) => {
+  if (payload instanceof Error) {
+    throw payload;
+  }
+
   if (!payload || !payload.error || !payload.error.response) {
-    throw new Error('Not an axios catched Promise', payload);
+    console.error({ payload });
+    throw new Error('Not an axios catched Promise');
   }
 
   return payload.error.response.data.errors;

@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { sortMessages } from '../../../services/message';
+import { sortMessages } from '../../../modules/message';
 import { createMessageCollectionStateSelector } from '../../../store/selectors/message';
 import { discussionIdSelector } from './discussionIdSelector';
 

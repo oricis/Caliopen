@@ -12,13 +12,13 @@ const base = {
   target: 'web',
   entry: {
     app: [
-      'babel-polyfill',
+      '@babel/polyfill',
       'script-loader!jquery',
       'script-loader!foundation-sites',
       path.join(__dirname, '../src/index.jsx'),
     ],
     vendor: [
-      'babel-polyfill',
+      '@babel/polyfill',
       'script-loader!jquery',
       'script-loader!foundation-sites',
     ],
@@ -97,6 +97,7 @@ const configureDevServer = () => {
 
 const config = webpackMerge(
   common,
+  configs.configureSrcBabelLoader(),
   configs.configureStylesheet(),
   configs.configureAssets(),
   configs.configureVendorSplit(),

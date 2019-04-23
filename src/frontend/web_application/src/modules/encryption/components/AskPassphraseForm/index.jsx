@@ -3,14 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Trans, withI18n } from '@lingui/react';
 import classNames from 'classnames';
-import { FieldErrors, TextFieldGroup, Button, FormGrid, FormRow, FormColumn } from '../../../../components/';
+import {
+  FieldErrors, TextFieldGroup, Button, FormGrid, FormRow, FormColumn,
+} from '../../../../components';
 import { setPassphrase } from '../../../../store/modules/encryption';
 
 import './style.scss';
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onSubmit: passphrase =>
-    dispatch(setPassphrase({ passphrase, fingerprint: ownProps.fingerprint })),
+  onSubmit: passphrase => (
+    dispatch(setPassphrase({ passphrase, fingerprint: ownProps.fingerprint }))
+  ),
 });
 
 const mapStateToProps = (state, ownProps) => ({
@@ -70,13 +73,13 @@ class AskPassphraseForm extends Component {
             Please enter passphrase for key {`${fingerprint}`} to unlock {`${numberMessages}`} messages.
           </Trans>
           {
-            error &&
+            error && (
               <FormRow>
                 <FormColumn>
                   <FieldErrors errors={[this.getErrorId(error)]} />
                 </FormColumn>
               </FormRow>
-          }
+            )}
           <FormRow>
             <FormColumn>
               <TextFieldGroup

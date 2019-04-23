@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Trans, withI18n } from '@lingui/react';
 import { withRouter } from 'react-router-dom';
-import { Icon, InputText, Button } from '../../../../components/';
+import { Icon, InputText, Button } from '../../../../components';
 import { withSearchParams } from '../../../routing';
 import './style.scss';
 
@@ -24,9 +24,11 @@ class SearchField extends Component {
     }).isRequired,
     i18n: PropTypes.shape({}).isRequired,
   };
+
   static defaultProps = {
     className: '',
   };
+
   state = {
     term: '',
   };

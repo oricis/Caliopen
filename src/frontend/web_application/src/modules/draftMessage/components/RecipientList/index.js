@@ -2,14 +2,15 @@ import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
 import Presenter from './presenter';
+import { requestParticipantSuggestions } from '../../actions/requestParticipantSuggestions';
 import { setRecipientSearchTerms } from '../../../../store/modules/draft-message';
-import { search, getKey } from '../../../../store/modules/participant-suggestions';
+import { getKey } from '../../../../store/modules/participant-suggestions';
 
-const findRecipient = (recipients, { address, protocol }) =>
-  recipients.find(recipient => recipient.address === address && recipient.protocol === protocol);
+const findRecipient = (recipients, { address, protocol }) => recipients
+  .find(recipient => recipient.address === address && recipient.protocol === protocol);
 
-const searchTermsSelector = (state, ownProps) =>
-  state.draftMessage.recipientSearchTermsByInternalId[ownProps.internalId];
+const searchTermsSelector = (state, ownProps) => state.draftMessage
+  .recipientSearchTermsByInternalId[ownProps.internalId];
 
 const participantSuggestionsSelector = state => state.participantSuggestions;
 
@@ -39,7 +40,7 @@ const mapStateToProps = createSelector(
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   setSearchTerms: setRecipientSearchTerms,
-  search,
+  search: requestParticipantSuggestions,
 }, dispatch);
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(Presenter);

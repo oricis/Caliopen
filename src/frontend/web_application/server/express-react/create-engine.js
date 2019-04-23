@@ -1,6 +1,6 @@
-const React = require('react');
-const ReactDOMServer = require('react-dom/server');
-const template = require('../../dist/server/template.html');
+import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+import template from '../../dist/server/template.html';
 
 const renderTemplate = markup => [
   { key: '%MARKUP%', value: markup },
@@ -32,4 +32,4 @@ const createEngine = (routes = {}) => {
   return renderview;
 };
 
-module.exports = createEngine;
+export default createEngine;

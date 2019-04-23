@@ -1,0 +1,32 @@
+@startuml
+
+title Delete a discussion
+
+actor Client
+participant API
+participant CoreDiscussion
+participant CoreMessage
+database Cassandra
+database Index
+
+
+Client -> API: DELETE /discussions/<discussion_id>
+
+API -> CoreDiscussion: instanciate Discussion core object
+activate CoreDiscussion
+
+CoreDiscussion -> Index: find all messages related to <discussion_id>
+
+loop foreach messages
+	CoreDiscussion -> CoreMessage: delete()
+	CoreMessage -> Cassandra: delete()
+	CoreMessage -> Index: delete()
+	CoreDiscussion -> CoreMessage: save()
+end
+
+CoreDiscussion -> API: ok
+deactivate CoreDiscussion
+API -> Client: 200 OK
+
+
+@enduml

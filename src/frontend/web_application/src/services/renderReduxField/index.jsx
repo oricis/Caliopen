@@ -7,6 +7,7 @@ const renderReduxField = (WrappedComponent) => {
     static propTypes = {
       input: PropTypes.shape({}).isRequired,
     };
+
     static defaultProps = {
     };
 

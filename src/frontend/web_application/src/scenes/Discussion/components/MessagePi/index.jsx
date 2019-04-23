@@ -114,6 +114,11 @@ class MessagePi extends PureComponent {
 
   render() {
     const { illustrate, describe, message } = this.props;
+
+    if (!message.pi_message) {
+      return null;
+    }
+
     const piAggregate = getAveragePIMessage({ message });
     const piClass = getPiClass(piAggregate);
     const piValue = Number.isFinite(piAggregate) ? Math.round(piAggregate) : '?';

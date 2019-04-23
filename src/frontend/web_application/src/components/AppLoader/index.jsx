@@ -15,6 +15,7 @@ class AppLoader extends Component {
     hasFailure: PropTypes.bool,
     fallbackUrl: PropTypes.string,
   };
+
   static defaultProps = {
     children: null,
     className: undefined,

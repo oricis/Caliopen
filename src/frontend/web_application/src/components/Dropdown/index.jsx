@@ -12,7 +12,7 @@ const CLOSE_ON_CLICK_EXCEPT_SELF = 'exceptSelf';
 const DO_NOT_CLOSE = 'doNotClose';
 
 export const withDropdownControl = (WrappedComponent) => {
-  const WithDropdownControl = ({ toggleId, ...props }, ref) => {
+  const WithDropdownControl = (props, ref) => {
     if (!ref) {
       throw new Error(`a ref is mandatory for a dropdown controller created with "${WrappedComponent.displayName || WrappedComponent.name || 'Component'}"`);
     }
@@ -27,6 +27,7 @@ export const withDropdownControl = (WrappedComponent) => {
     );
   };
 
+  // does this work since it is a forwarded component
   WithDropdownControl.displayName = `WithDropdownControl(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
 
   return forwardRef(WithDropdownControl);
@@ -34,6 +35,7 @@ export const withDropdownControl = (WrappedComponent) => {
 
 class Dropdown extends Component {
   static propTypes = {
+    id: PropTypes.string,
     alignRight: PropTypes.bool, // force align right
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
     className: PropTypes.string,
@@ -48,6 +50,7 @@ class Dropdown extends Component {
   };
 
   static defaultProps = {
+    id: undefined,
     alignRight: false,
     children: null,
     className: null,

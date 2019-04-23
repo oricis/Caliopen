@@ -1,4 +1,7 @@
-import { createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_INFO, NOTIFICATION_TYPE_WARNING, NOTIFICATION_TYPE_ERROR } from 'react-redux-notify';
+import {
+  createNotification, NOTIFICATION_TYPE_SUCCESS, NOTIFICATION_TYPE_INFO, NOTIFICATION_TYPE_WARNING,
+  NOTIFICATION_TYPE_ERROR,
+} from 'react-redux-notify';
 import { settingsSelector } from '../../settings';
 
 const notify = ({
@@ -31,11 +34,15 @@ const notify = ({
   return undefined;
 };
 
-export const notifySuccess = opts => dispatch =>
-  dispatch(notify({ type: NOTIFICATION_TYPE_SUCCESS, ...opts }));
-export const notifyInfo = opts => dispatch =>
-  dispatch(notify({ type: NOTIFICATION_TYPE_INFO, ...opts }));
-export const notifyWarning = opts => dispatch =>
-  dispatch(notify({ type: NOTIFICATION_TYPE_WARNING, ...opts }));
-export const notifyError = opts => dispatch =>
-  dispatch(notify({ type: NOTIFICATION_TYPE_ERROR, ...opts }));
+export const notifySuccess = opts => (
+  dispatch => dispatch(notify({ type: NOTIFICATION_TYPE_SUCCESS, ...opts }))
+);
+export const notifyInfo = opts => (
+  dispatch => dispatch(notify({ type: NOTIFICATION_TYPE_INFO, ...opts }))
+);
+export const notifyWarning = opts => (
+  dispatch => dispatch(notify({ type: NOTIFICATION_TYPE_WARNING, ...opts }))
+);
+export const notifyError = opts => (
+  dispatch => dispatch(notify({ type: NOTIFICATION_TYPE_ERROR, ...opts }))
+);

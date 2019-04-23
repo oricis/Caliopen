@@ -7,7 +7,7 @@ import { DeviceProvider } from './modules/device';
 import { InstallPromptProvider } from './modules/pwa';
 import { SwitchWithRoutes, RoutingConsumer } from './modules/routing';
 import RoutingProvider from './modules/routing/components/RoutingProvider';
-import { PageTitle } from './components/';
+import { PageTitle } from './components';
 import { initConfig } from './services/config';
 import { NotificationProvider } from './modules/notification';
 import './app.scss';

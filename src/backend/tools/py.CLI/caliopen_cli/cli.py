@@ -15,7 +15,7 @@ from caliopen_cli.commands import (shell, import_email, setup, create_user,
                                    import_vcard, dump_model, dump_indexes,
                                    inject_email, basic_compute, migrate_index,
                                    import_reserved_names, resync_index,
-                                   resync_shard_index)
+                                   resync_shard_index, copy_model)
 
 logging.basicConfig(level=logging.INFO)
 
@@ -64,6 +64,12 @@ def main(args=sys.argv):
     sp_dump.add_argument('-m', dest='model', help='model to dump')
     sp_dump.add_argument('-o', dest='output_path', help='output path')
 
+    sp_copy = subparsers.add_parser('copy')
+    sp_copy.set_defaults(func=copy_model)
+    sp_copy.add_argument('-m', dest='model', help='model to dump')
+    sp_copy.add_argument('--where', dest='where', help='where condition')
+    sp_copy.add_argument('--fetch-size', dest='fetch_size', default=100)
+
     sp_dump_index = subparsers.add_parser('dump_index')
     sp_dump_index.set_defaults(func=dump_indexes)
     sp_dump_index.add_argument('-o', dest='output_path', help='output path')
@@ -99,6 +105,7 @@ def main(args=sys.argv):
                                       help='Resync shard index')
     sp_resync.set_defaults(func=resync_shard_index)
     sp_resync.add_argument('-s', dest='shard_id', help='Shard id')
+    sp_resync.add_argument('-o', dest='old_shard_id', help='Old shard id')
     kwargs = parser.parse_args(args[1:])
     kwargs = vars(kwargs)
 

@@ -18,6 +18,7 @@ class DatePickerGroup extends PureComponent {
     onChange: PropTypes.func.isRequired,
     selected: PropTypes.string,
   };
+
   static defaultProps = {
     calendarClassName: null,
     className: null,

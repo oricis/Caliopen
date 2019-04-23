@@ -10,6 +10,7 @@ class PageActions extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
   };
+
   static defaultProps = {
     className: undefined,
   };

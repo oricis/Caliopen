@@ -12,11 +12,13 @@ class NotificationProvider extends Component {
     notifications: PropTypes.arrayOf(PropTypes.shape({})),
     user: PropTypes.shape({}),
   };
+
   static defaultProps = {
     children: null,
     notifications: [],
     user: undefined,
   };
+
   state = {
     isWorking: false,
     initialized: false,

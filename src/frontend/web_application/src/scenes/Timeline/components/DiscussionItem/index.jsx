@@ -45,11 +45,12 @@ class DiscussionItem extends PureComponent {
   };
 
   // participants except user
-  buildParticipantsLabels = ({ participants }) =>
-    participants
-      .filter(participant => !(participant.contact_ids && participant.contact_ids.some(contactId =>
-        contactId === this.props.user.contact.contact_id)))
-      .map(participant => participant.label);
+  buildParticipantsLabels = ({ participants }) => participants
+    .filter(participant => !(
+      participant.contact_ids && participant.contact_ids
+        .some(contactId => contactId === this.props.user.contact.contact_id)
+    ))
+    .map(participant => participant.label);
 
   renderMessageSubject = (discussion) => {
     const { last_message_subject: lastMessageSubject } = discussion;
@@ -107,7 +108,7 @@ class DiscussionItem extends PureComponent {
         </Link>
         {this.renderTags(this.props.discussion)}
         <span className="s-discussion-item__message-type"><Icon type={iconProtocol} /></span>
-        <Moment className="s-discussion-item__message-date" fromNow locale={settings.default_locale}>{date}</Moment>
+        <Moment className="s-discussion-item__message-date" fromNow locale={settings.default_locale} titleFormat="LLLL" withTitle>{date}</Moment>
         {/*
         <div className="s-discussion-item__select">
           <Checkbox

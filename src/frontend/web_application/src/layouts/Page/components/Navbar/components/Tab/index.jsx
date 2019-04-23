@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Icon } from '../../../../../../components/';
+import { Icon } from '../../../../../../components';
 import { getTabUrl, Tab as TabModel } from '../../../../../../modules/tab';
 import ItemLink from '../ItemLink';
 import ItemButton from '../ItemButton';

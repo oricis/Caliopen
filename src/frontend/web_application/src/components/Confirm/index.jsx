@@ -21,6 +21,7 @@ class Confirm extends PureComponent {
     confirmButtonContent: PropTypes.node,
     className: PropTypes.string,
   };
+
   static defaultProps = {
     onCancel: () => {},
     onClose: () => {},
@@ -29,6 +30,7 @@ class Confirm extends PureComponent {
     content: undefined,
     confirmButtonContent: undefined,
   };
+
   state = {
     isModalOpen: false,
   };

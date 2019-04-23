@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { scrollTop, getViewPortTop } from '../';
+import { scrollTop } from '../services/scrollTop';
+import { getViewPortTop } from '../services/getViewPortTop';
 
 export const withScrollTarget = ({ namespace = 'scrollTarget' } = {}) => (Component) => {
   class ScrollTarget extends PureComponent {
@@ -15,6 +16,7 @@ export const withScrollTarget = ({ namespace = 'scrollTarget' } = {}) => (Compon
     state = { alreadyScrolledContext: undefined };
 
     componentDidMount = () => this.scroll();
+
     componentDidUpdate = () => this.scroll();
 
     getRef = (ref) => {

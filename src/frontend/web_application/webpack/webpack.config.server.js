@@ -13,7 +13,7 @@ const base = {
     __dirname: true,
     __filename: true,
   },
-  entry: ['babel-polyfill', path.join(__dirname, '../server/index.js')],
+  entry: ['@babel/polyfill', path.join(__dirname, '../server/index.js')],
   output: {
     path: path.join(__dirname, '../dist/server/'),
     filename: 'index.js',
@@ -44,11 +44,28 @@ const base = {
         loader: 'null-loader',
       },
       {
-        test: /\.jsx?$/,
+        test: /\.js$/,
+        exclude: /node_modules/,
         include: path.join(__dirname, '../server/'),
         loader: 'babel-loader',
         options: {
-          plugins: ['dynamic-import-node'],
+          plugins: [
+            '@babel/plugin-proposal-object-rest-spread',
+          ],
+        },
+      },
+      {
+        test: /\.jsx$/,
+        exclude: /node_modules/,
+        include: path.join(__dirname, '../server/'),
+        loader: 'babel-loader',
+        options: {
+          presets: [
+            '@babel/preset-react',
+          ],
+          plugins: [
+            '@babel/plugin-proposal-object-rest-spread',
+          ],
         },
       },
       { test: /\.html$/, loader: 'raw-loader' },
@@ -69,6 +86,7 @@ const base = {
 const config = webpackMerge(
   common,
   configs.configureEnv('server'),
+  configs.configureSrcBabelLoader({ isNode: true }),
   base
 );
 

@@ -2,7 +2,9 @@ import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Trans } from '@lingui/react';
-import { Brand, Link, Button, withDropdownControl, Dropdown, VerticalMenu, VerticalMenuItem, Icon } from '../../components/';
+import {
+  Brand, Link, Button, withDropdownControl, Dropdown, VerticalMenu, VerticalMenuItem, Icon,
+} from '../../components';
 import { BackgroundImage } from '../../modules/pi';
 import { TabProvider } from '../../modules/tab';
 import { PageActions } from '../../modules/control';
@@ -51,7 +53,7 @@ class Page extends Component {
           </div> */}
           <div className="l-header">
             <PageContainer className="l-header__container">
-              <Link to="/"className="l-header__brand-link"><Brand className="l-header__brand" responsive /></Link>
+              <Link to="/" className="l-header__brand-link"><Brand className="l-header__brand" responsive /></Link>
               {/* <div className="l-header__notif-menu"><Button href="#"><Icon type="bell"
               /></Button></div> */}
               <div className="l-header__take-a-tour">
@@ -118,7 +120,7 @@ class Page extends Component {
                   </PageContainer>
                 </div>
               </div>
-              )}
+            )}
           />
 
           <PageContainer>

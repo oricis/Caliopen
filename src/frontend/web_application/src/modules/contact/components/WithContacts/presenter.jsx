@@ -9,11 +9,13 @@ class WithContacts extends Component {
     didInvalidate: PropTypes.bool,
     requestContacts: PropTypes.func.isRequired,
   };
+
   static defaultProps = {
     contacts: [],
     isFetching: false,
     didInvalidate: false,
   };
+
   state = {};
 
   componentDidMount() {

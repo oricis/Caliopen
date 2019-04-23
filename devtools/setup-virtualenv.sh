@@ -3,7 +3,7 @@ CALIOPEN_BASE_DIR=$(pwd)/..
 CALIOPEN_BACKEND_DIR=${CALIOPEN_BASE_DIR}/src/backend
 
 
-cd ${CALIOPEN_BASE_DIR}
+cd "${CALIOPEN_BASE_DIR}"
 if [[ -d ".venv" ]]; then
     echo "Virtual environment exist, drop it first"
     # exit 1
@@ -29,7 +29,7 @@ COMPONENTS="main/py.storage components/py.pgp components/py.pi components/py.dat
 for comp in ${COMPONENTS}:
 do
 
-    cd ${CALIOPEN_BACKEND_DIR}/${comp}
+    cd "${CALIOPEN_BACKEND_DIR}/${comp}"
     if [[ -f "requirements.txt" ]]; then
         pip install -r requirements.txt
     fi
@@ -50,6 +50,6 @@ pip install nose
 echo "All done, your virtual environment contain these packages :"
 pip freeze
 
-cd ${CALIOPEN_BASE_DIR}
+cd "${CALIOPEN_BASE_DIR}"
 
 echo "Do not forget to activate it"

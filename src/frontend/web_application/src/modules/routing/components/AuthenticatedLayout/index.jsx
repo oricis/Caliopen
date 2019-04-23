@@ -16,10 +16,12 @@ class AuthenticatedLayout extends Component {
     location: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
     didLostAuth: PropTypes.bool.isRequired,
   };
+
   static defaultProps = {
     user: undefined,
     settings: undefined,
   };
+
   state = {
     initialized: !!this.props.user && !!this.props.settings && !this.props.isFetching,
   };

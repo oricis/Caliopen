@@ -1,15 +1,11 @@
-const createEngine = require('./create-engine');
-const View = require('./view');
-const { default: ErrorComponent } = require('../error/components/Error');
+import ErrorComponent from '../error/components/Error';
+import createEngine from './create-engine';
+import View from './view';
 
-module.exports = {
-  createEngine,
-  View,
-  configure: (app) => {
-    app.set('view', View);
-    app.set('view engine', 'component');
-    app.engine('component', createEngine({
-      'error.component': ErrorComponent,
-    }));
-  },
+export const configure = (app) => {
+  app.set('view', View);
+  app.set('view engine', 'component');
+  app.engine('component', createEngine({
+    'error.component': ErrorComponent,
+  }));
 };

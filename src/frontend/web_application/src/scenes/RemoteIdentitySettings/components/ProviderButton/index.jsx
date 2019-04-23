@@ -9,6 +9,7 @@ class ProviderButton extends PureComponent {
     children: PropTypes.node,
     className: PropTypes.string,
   };
+
   static defaultProps = {
     children: null,
     className: undefined,

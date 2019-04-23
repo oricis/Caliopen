@@ -7,6 +7,7 @@ class MessageDate extends PureComponent {
   static propTypes = {
     dateTime: PropTypes.instanceOf(Moment).isRequired,
   };
+
   static defaultProps = {};
 
   renderDate = () => {
