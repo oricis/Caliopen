@@ -59,13 +59,13 @@ class Draft(NewInboundMessage):
 
         # fill <from> field consistently
         # based on current user's selected identity
-        self._add_from_participant(user)
-        self._build_participants_for_reply(user)
-        if self.parent_id:
-            self._update_external_references(user)
+        from_participant = self._add_from_participant(user)
 
-        if self.discussion_id != self.hash_participants:
-           # participants_hash has changed, update lookups
+        if self.parent_id:  # it is a reply, enforce participants
+            self._build_participants_for_reply(user, from_participant)
+            self._update_external_references(user)
+        elif self.discussion_id != self.hash_participants:
+            # participants_hash has changed, update lookups
             Discussion.upsert_lookups_for_participants(user, self.participants)
             self.discussion_id = self.hash_participants
 
@@ -113,28 +113,30 @@ class Draft(NewInboundMessage):
 
         return from_participant
 
-    def _build_participants_for_reply(self, user):
+    def _build_participants_for_reply(self, user, sender):
         """
         Build participants list from message in-reply to.
 
         - former 'From' recipients are replaced by 'To' recipients
         - provided identity is used to fill the new 'From' participant
         - new sender is removed from former recipients
+
+        :param sender: participant previously computed by _add_from_participant
         """
         if not self.parent_id:
             return
+
         parent_message = ModelMessage.get(user_id=user.user_id,
-                         message_id=self.parent_id)
+                                          message_id=self.parent_id)
         for i, participant in enumerate(parent_message["participants"]):
             if re.match("from", participant['type'], re.IGNORECASE):
                 participant["type"] = "To"
                 self.participants.append(participant)
-            else:
+            elif not re.match("list-id", participant['type'], re.IGNORECASE):
                 self.participants.append(participant)
 
         # add sender
         # and remove it from previous recipients
-        sender = self._add_from_participant(user)
         for i, participant in enumerate(self.participants):
             if participant['address'] == sender.address:
                 if re.match("to", participant['type'], re.IGNORECASE) or \
@@ -158,4 +160,4 @@ class Draft(NewInboundMessage):
             self.external_references.ancestors_ids.append(
                 parent_msg.external_references.message_id)
             self.external_references.parent_id = parent_msg.external_references.message_id
-            self.external_references.message_id = ""  # will be set by broker at sending time
+            self.external_references.message_id = ""  # will be set by broker when sending
