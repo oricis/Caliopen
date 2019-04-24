@@ -63,7 +63,8 @@ class Draft(NewInboundMessage):
 
         if hasattr(self, 'parent_id') \
                 and self.parent_id is not None \
-                and self.parent_id != "":
+                and self.parent_id != "" \
+                and is_new:
             # it is a reply, enforce participants
             # and other mandatory properties
             try:
@@ -72,6 +73,8 @@ class Draft(NewInboundMessage):
             except NotFound:
                 raise PatchError(message="parent message not found")
             self._build_participants_for_reply(parent_msg, from_participant)
+            Discussion.upsert_lookups_for_participants(user, self.participants)
+            self.discussion_id = self.hash_participants
             self._update_external_references(user)
             self._build_subject_for_reply(parent_msg)
 
