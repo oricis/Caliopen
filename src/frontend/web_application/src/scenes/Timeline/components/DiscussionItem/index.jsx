@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import classnames from 'classnames';
@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { Badge, Icon, Link } from '../../../../components';
 import ParticipantsIconLetter from '../../../../components/ParticipantsIconLetter';
 import { getAveragePI, getPiClass } from '../../../../modules/pi';
-
+import { ParticipantLabel } from '../../../../modules/message';
 import './style.scss';
 
 // @withI18n()
@@ -44,13 +44,15 @@ class DiscussionItem extends PureComponent {
     onSelectDiscussion(checked ? 'add' : 'remove', discussion.discussion_id);
   };
 
-  // participants except user
-  buildParticipantsLabels = ({ participants }) => participants
-    .filter(participant => !(
-      participant.contact_ids && participant.contact_ids
-        .some(contactId => contactId === this.props.user.contact.contact_id)
-    ))
-    .map(participant => participant.label);
+  getParticipantsExceptUser = () => {
+    const { discussion } = this.props;
+
+    return discussion.participants
+      .filter(participant => !(
+        participant.contact_ids && participant.contact_ids
+          .some(contactId => contactId === this.props.user.contact.contact_id)
+      ));
+  }
 
   renderMessageSubject = (discussion) => {
     const { last_message_subject: lastMessageSubject } = discussion;
@@ -72,6 +74,18 @@ class DiscussionItem extends PureComponent {
     )
   );
 
+  renderParticipants() {
+    const participants = this.getParticipantsExceptUser();
+
+    return participants
+      .map((participant, i) => (
+        <Fragment key={participant.address}>
+          {i > 0 && ', '}
+          <ParticipantLabel participant={participant} />
+        </Fragment>
+      ));
+  }
+
   render() {
     const { settings, className } = this.props;
     const {
@@ -84,7 +98,7 @@ class DiscussionItem extends PureComponent {
 
     // const { isDeleting, isDiscussionSelected, i18n } = this.props;
 
-    const labels = this.buildParticipantsLabels(this.props.discussion);
+    const participants = this.getParticipantsExceptUser();
     const iconProtocol = protocol || 'email';
 
     return (
@@ -99,8 +113,8 @@ class DiscussionItem extends PureComponent {
           `s-discussion-item--${getPiClass(piAggregate)}`
         )}
       >
-        <ParticipantsIconLetter labels={labels} />
-        <a className="s-discussion-item__participants">{labels.join(', ')}</a>
+        <ParticipantsIconLetter labels={participants.map(participant => participant.label)} />
+        <a className="s-discussion-item__participants">{this.renderParticipants()}</a>
         <Link to={`/discussions/${discussionId}#${lastMessageId}`} className="s-discussion-item__message_excerpt">
           {this.renderMessageSubject(this.props.discussion)}
           {' '}
