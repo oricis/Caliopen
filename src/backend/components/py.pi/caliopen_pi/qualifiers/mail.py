@@ -3,14 +3,14 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
+import hashlib
 from caliopen_main.message.parameters import (NewInboundMessage,
                                               Attachment)
+from caliopen_main.participant.parameters.participant import Participant
 
 from caliopen_storage.config import Configuration
-from caliopen_main.discussion.core import (DiscussionThreadLookup,
-                                           DiscussionListLookup,
-                                           DiscussionHashLookup,
-                                           DiscussionParticipantLookup)
+from caliopen_main.participant.core import ParticipantLookup, \
+    hash_participants_uri
 
 # XXX use a message formatter registry not directly mail format
 from caliopen_main.message.parsers.mail import MailMessage
@@ -34,33 +34,52 @@ class UserMessageQualifier(BaseQualifier):
     """
 
     _lookups = {
-        'hash': DiscussionHashLookup,
-        'thread': DiscussionThreadLookup,
-        'list': DiscussionListLookup,
-        'participant': DiscussionParticipantLookup,
+        'list': ParticipantLookup,
+        'hash': ParticipantLookup,
     }
 
     def lookup_discussion_sequence(self, mail, message, *args, **kwargs):
-        """Return list of lookup type, value from a mail message."""
+        """
+        Return list of lookups (type, value) from a mail message
+        and the first lookup'hash from that list
+        """
         seq = []
 
-        # list lookup first
+        # lists lookup first
+        lists = []
         for list_id in mail.extra_parameters.get('lists', []):
-            seq.append(('list', list_id))
+            lists.append(list_id)
+        if len(lists) > 0:
+            # list_ids are considered `participants`
+            # build uris' hash and upsert lookup tables
+            participants = []
+            for list_id in lists:
+                participant = Participant()
+                participant.address = list_id
+                participant.protocol = 'email'
+                participant.type = 'list-id'
+                participants.append(participant)
+                log.info("participants list : {}".format(vars(participant)))
+                Discussion.upsert_lookups_for_participants(self.user,
+                                                           participants)
+                # add list-id as a participant to the message
+                message.participants.append(participant)
+            hash = hash_participants_uri(participants)
+            seq.append(('list', hash['hash']))
 
-        participants = message.hash_participants
-        seq.append(('hash', participants))
+        # then participants
+        seq.append(('hash', message.hash_participants))
 
         # try to link message to external thread's root message-id
-        if len(message.external_references["ancestors_ids"]) > 0:
-            seq.append(("thread",
-                        message.external_references["ancestors_ids"][0]))
-        elif message.external_references["parent_id"]:
-            seq.append(("thread", message.external_references["parent_id"]))
-        elif message.external_references["message_id"]:
-            seq.append(("thread", message.external_references["message_id"]))
+        #        if len(message.external_references["ancestors_ids"]) > 0:
+        #            seq.append(("thread",
+        #                        message.external_references["ancestors_ids"][0]))
+        #        elif message.external_references["parent_id"]:
+        #            seq.append(("thread", message.external_references["parent_id"]))
+        #        elif message.external_references["message_id"]:
+        #            seq.append(("thread", message.external_references["message_id"]))
 
-        return seq
+        return seq, seq[0][1]
 
     def process_inbound(self, raw):
         """Process inbound message.
@@ -94,13 +113,6 @@ class UserMessageQualifier(BaseQualifier):
             raise Exception("no participant found in raw email {}".format(
                 raw.raw_msg_id))
 
-        # embed immutable value only
-        new_message.discussion_id = new_message.hash_participants
-
-        # upsert lookup tables
-        Discussion.upsert_lookups_for_participants(self.user,
-                                                   new_message.participants)
-
         for a in email.attachments:
             attachment = Attachment()
             attachment.content_type = a.content_type
@@ -121,22 +133,16 @@ class UserMessageQualifier(BaseQualifier):
         if new_message.tags:
             log.debug('Resolved tags {}'.format(new_message.tags))
 
-        # lookup by external references
-        # lookup_sequence = self.lookup_discussion_sequence(email, new_message)
-        # lkp = self.lookup(lookup_sequence)
-        # log.debug('Lookup with sequence {} give {}'.
-        #          format(lookup_sequence, lkp))
+        # build discussion_id from lookup_sequence
+        lookup_sequence, discussion_id = self.lookup_discussion_sequence(email,
+                                                                         new_message)
+        log.debug('Lookup with sequence {} gives {}'.format(lookup_sequence,
+                                                           discussion_id))
+        new_message.discussion_id = discussion_id
 
-        # if lkp:
-        #    new_message.discussion_id = lkp.discussion_id
-        #    # do not embed discussion_id from participants's hash
-        #    #        else:
-        #    #            discussion = Discussion.create_from_message(self.user, email,
-        #    #                                                        new_message.participants)
-        #    #            log.debug('Created discussion {}'.format(discussion.discussion_id))
-        #    #            new_message.discussion_id = discussion.discussion_id
-        #    self.create_lookups(lookup_sequence, new_message)
-
+        # upsert lookup tables
+        Discussion.upsert_lookups_for_participants(self.user,
+                                                   new_message.participants)
         # Format features
         new_message.privacy_features = \
             marshal_features(new_message.privacy_features)

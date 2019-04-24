@@ -6,10 +6,7 @@ import logging
 from caliopen_main.message.parameters import NewInboundMessage
 from caliopen_main.message.parsers.twitter import TwitterDM
 from caliopen_main.discussion.core import Discussion
-from caliopen_main.discussion.core import (DiscussionThreadLookup,
-                                           DiscussionListLookup,
-                                           DiscussionHashLookup,
-                                           DiscussionParticipantLookup)
+from caliopen_main.participant.core import ParticipantLookup
 
 from ..features import marshal_features
 from .base import BaseQualifier
@@ -21,10 +18,7 @@ class UserDMQualifier(BaseQualifier):
     """Process a Twitter direct message to unmarshal it in our stack."""
 
     _lookups = {
-        'hash': DiscussionHashLookup,
-        'thread': DiscussionThreadLookup,
-        'list': DiscussionListLookup,
-        'participant': DiscussionParticipantLookup
+        'hash': ParticipantLookup,
     }
 
     def lookup_discussion_sequence(self, message, *args, **kwargs):
@@ -34,10 +28,7 @@ class UserDMQualifier(BaseQualifier):
         participants = message.hash_participants
         seq.append(('hash', participants))
 
-        if message.external_references["message_id"]:
-            seq.append(("thread", message.external_references["message_id"]))
-
-        return seq
+        return seq, seq[0][1]
 
     def process_inbound(self, raw):
         """
@@ -72,13 +63,6 @@ class UserDMQualifier(BaseQualifier):
             raise Exception("no participant found in raw tweet {}".format(
                 raw.raw_msg_id))
 
-        # embed immutable value only
-        new_message.discussion_id = new_message.hash_participants
-
-        # upsert lookup tables
-        Discussion.upsert_lookups_for_participants(self.user,
-                                                   new_message.participants)
-
         # Compute PI !!
         # TODO
 
@@ -87,22 +71,16 @@ class UserDMQualifier(BaseQualifier):
         if new_message.tags:
             log.debug('Resolved tags {}'.format(new_message.tags))
 
-        # lookup by external references
-        # lookup_sequence = self.lookup_discussion_sequence(new_message)
-        # lkp = self.lookup(lookup_sequence)
-        # log.debug('Lookup with sequence {} give {}'.
-        #           format(lookup_sequence, lkp))
-        #
-        # if lkp:
-        #     new_message.discussion_id = lkp.discussion_id
-        # else:
-        #     #TODO : remove discussion.create
-        #     discussion = Discussion.create_from_message(self.user, tweet,
-        #                                                 new_message.participants)
-        #     log.debug('Created discussion {}'.format(discussion.discussion_id))
-        #     new_message.discussion_id = discussion.discussion_id
-        #     self.create_lookups(lookup_sequence, new_message)
+        # build discussion_id from lookup_sequence
+        lookup_sequence, discussion_id = self.lookup_discussion_sequence(tweet,
+                                                                         new_message)
+        log.debug('Lookup with sequence {} gives {}'.format(lookup_sequence,
+                                                           discussion_id))
+        new_message.discussion_id = discussion_id
 
+        # upsert lookup tables
+        Discussion.upsert_lookups_for_participants(self.user,
+                                                   new_message.participants)
         # Format features
         new_message.privacy_features = \
             marshal_features(new_message.privacy_features)

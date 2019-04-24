@@ -3,15 +3,12 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
-import hashlib
 
 from caliopen_storage.exception import NotFound
 
 from caliopen_main.common.core import BaseUserCore
 from caliopen_main.common.helpers.strings import unicode_truncate
 
-from ..store.discussion_lookup import (DiscussionListLookup as ModelListLookup,
-                                       DiscussionThreadLookup as ModelThreadLookup)
 from caliopen_main.discussion.objects import Discussion as DiscussionObject
 from caliopen_main.participant.core import ParticipantLookup
 from caliopen_main.participant.core import HashLookup, hash_participants_uri
@@ -31,34 +28,6 @@ def count_attachment(message):
             if a.name and not a.is_inline:
                 cpt += 1
     return cpt
-
-
-class DiscussionListLookup(BaseUserCore):
-    """Lookup discussion by external list-id"""
-
-    _model_class = ModelListLookup
-    _pkey_name = 'list_id'
-
-
-class DiscussionThreadLookup(BaseUserCore):
-    """Lookup discussion by external thread's root message_id."""
-
-    _model_class = ModelThreadLookup
-    _pkey_name = 'external_root_msg_id'
-
-
-class DiscussionHashLookup(BaseUserCore):
-    """Lookup discussion by participants' hash"""
-
-    _model_class = ParticipantLookup  #  TODO : changed
-    _pkey_name = 'source'
-
-
-class DiscussionParticipantLookup(BaseUserCore):
-    """Lookup discussion by a participant_id"""
-
-    _model_class = ParticipantLookup  # TODO : changed
-    _pkey_name = "source"
 
 
 def build_discussion(core, index):
@@ -181,7 +150,7 @@ class Discussion(BaseUserCore):
         for these participants
 
         :param user:
-        :param participants: a collection of Participants
+        :param participants: a collection of parameters/Participant
         :type uris: set
         :return: Discussion
         """
