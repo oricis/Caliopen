@@ -61,6 +61,7 @@ class Draft(NewInboundMessage):
         # based on current user's selected identity
         from_participant = self._add_from_participant(user)
 
+        discuss = Discussion(user)
         if hasattr(self, 'parent_id') \
                 and self.parent_id is not None \
                 and self.parent_id != "" \
@@ -73,14 +74,14 @@ class Draft(NewInboundMessage):
             except NotFound:
                 raise PatchError(message="parent message not found")
             self._build_participants_for_reply(parent_msg, from_participant)
-            Discussion.upsert_lookups_for_participants(user, self.participants)
+            discuss.upsert_lookups_for_participants(self.participants)
             self.discussion_id = self.hash_participants
             self._update_external_references(user)
             self._build_subject_for_reply(parent_msg)
 
         elif self.discussion_id != self.hash_participants:
             # participants_hash has changed, update lookups
-            Discussion.upsert_lookups_for_participants(user, self.participants)
+            discuss.upsert_lookups_for_participants(self.participants)
             self.discussion_id = self.hash_participants
 
         return self.discussion_id
