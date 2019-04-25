@@ -89,7 +89,7 @@ $s-message-item__pi-width: 7px;
     &--draft { font-style: italic; }
   }
 
-  &__author {
+  &__participants {
     @include flex-grid-size(12);
     color: $co-color__primary--lower;
     font-weight: 600;

@@ -5,6 +5,7 @@ import { Trans, withI18n } from '@lingui/react';
 import classnames from 'classnames';
 import { withScrollTarget } from '../../../../modules/scroll';
 import { withPush } from '../../../../modules/routing';
+import { ParticipantLabel } from '../../../../modules/message';
 import {
   Button, Confirm, Icon, TextBlock,
 } from '../../../../components';
@@ -16,7 +17,7 @@ import { replyHandler } from '../../services/replyHandler';
 import { messageDeleteHandler } from '../../services/messageDeleteHandler';
 import { toggleMarkAsReadHandler } from '../../services/toggleMarkAsReadHandler';
 import { LockedMessage } from '../../../../modules/encryption';
-import { getAuthor } from '../../../../services/message';
+import { getAuthor, getRecipients } from '../../../../services/message';
 import { getAveragePIMessage, getPiClass } from '../../../../modules/pi/services/pi';
 import { STATUS_DECRYPTED } from '../../../../store/modules/encryption';
 
@@ -103,7 +104,7 @@ class MailMessage extends Component {
         )}
         <Icon type="envelope" className={classnames({ 'm-mail-message-details--encrypted__icon': isDecrypted || isLocked })} />
         {' '}
-        <span className="m-mail-message-details__author-name">{author.label}</span>
+        <ParticipantLabel className="m-mail-message-details__author-name" participant={author.label} />
         {' '}
         <Moment fromNow locale={locale} titleFormat="LLLL" withTitle>{message.date}</Moment>
       </TextBlock>
@@ -119,6 +120,7 @@ class MailMessage extends Component {
     const pi = getAveragePIMessage({ message });
     const piType = getPiClass(pi);
     const author = getAuthor(message);
+    const recipients = getRecipients(message);
 
     const infoPiClassName = {
       's-mail-message__info--super': piType === 'super',
@@ -143,12 +145,17 @@ class MailMessage extends Component {
             <div className="s-mail-message__participants-from">
               <span className="direction"><Trans id="message.from">From:</Trans></span>
               {' '}
-              {author.label}
+              <ParticipantLabel participant={author} />
             </div>
             <div className="s-mail-message__participants-to">
               <span className="direction"><Trans id="message.to">To:</Trans></span>
               {' '}
-              <MessageRecipients message={message} user={user} />
+              {recipients.map((participant, i) => (
+                <Fragment key={participant.address}>
+                  {i > 0 && ', '}
+                  <ParticipantLabel participant={participant} />
+                </Fragment>
+              ))}
             </div>
           </div>
           <TagList className="s-mail-message__tags" message={message} />

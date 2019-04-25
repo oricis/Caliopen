@@ -175,10 +175,10 @@ class DraftMessage extends Component {
     const recipients = getRecipients(draftMessage);
 
     if (recipients.length > 3) {
-      return recipients.map(recipient => recipient.identifier).join(', ').concat('...');
+      return recipients.map(recipient => recipient.address).join(', ').concat('...');
     }
 
-    return recipients.map(recipient => recipient.identifier).join(', ');
+    return recipients.map(recipient => recipient.address).join(', ');
   }
 
   getQuickInputPlaceholder = () => {
@@ -596,8 +596,7 @@ class DraftMessage extends Component {
             <div className="m-reply__parent">
               <Link to={`#${parentMessage.message_id}`} className="m-reply__parent-link">
                 <Trans id="reply-form.in-reply-to">
-                  In reply to:
-                  {parentMessage.excerpt}
+                  In reply to: {parentMessage.excerpt}
                 </Trans>
               </Link>
             </div>
@@ -707,8 +706,7 @@ class DraftMessage extends Component {
         <div className={classnames(className)} ref={ref}>
           <Callout color="info">
             <Trans id="draft-message.no-available-identities">
-You have no available identities for this discussion. You can add one in your
-              <Link to="/user/identities">account</Link>
+              You have no available identities for this discussion. You can add one in your <Link to="/user/identities">account</Link>
             </Trans>
           </Callout>
         </div>

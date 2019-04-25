@@ -1,27 +1,31 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Moment from 'react-moment';
 import { Trans, withI18n } from '@lingui/react';
+import { AuthorAvatarLetter, SIZE_SMALL } from '../../../../modules/avatar';
+import { ParticipantLabel } from '../../../../modules/message';
 import { withSettings } from '../../../../modules/settings';
+import { getTagLabel, getCleanedTagCollection } from '../../../../modules/tags';
+import { withUser } from '../../../../modules/user';
 
 import MessageDate from '../../../../components/MessageDate';
-import { AuthorAvatarLetter, SIZE_SMALL } from '../../../../modules/avatar';
-// import MessageItemContainer from '../MessageItemContainer';
 import {
   Badge, Link, Checkbox, Icon, TextBlock,
 } from '../../../../components';
-import { getTagLabel, getCleanedTagCollection } from '../../../../modules/tags';
-import { renderParticipant, getAuthor } from '../../../../services/message';
 
 import './style.scss';
 
 @withSettings()
 @withI18n()
+@withUser()
 class MessageItem extends Component {
   static propTypes = {
     i18n: PropTypes.shape({}).isRequired,
     className: PropTypes.string,
+    userState: PropTypes.shape({
+      user: PropTypes.shape({}).isRequired,
+    }).isRequired,
     message: PropTypes.shape({}).isRequired,
     settings: PropTypes.shape({}).isRequired,
     userTags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
@@ -42,18 +46,26 @@ class MessageItem extends Component {
     onToggleSelectMessage({ message });
   }
 
-  renderAuthor = () => {
-    const author = getAuthor(this.props.message);
+  getParticipantsExceptUser = () => {
+    const { message, userState: { user } } = this.props;
 
-    if (!author) {
-      return null;
-    }
+    return message.participants
+      .filter(participant => !(
+        participant.contact_ids && participant.contact_ids
+          .some(contactId => contactId === user.contact.contact_id)
+      ));
+  }
 
-    return (
-      <TextBlock className="s-message-item__author" title={renderParticipant(author)}>
-        {renderParticipant(author)}
-      </TextBlock>
-    );
+  renderParticipants() {
+    const participants = this.getParticipantsExceptUser();
+
+    return participants
+      .map((participant, i) => (
+        <Fragment key={participant.address}>
+          {i > 0 && ', '}
+          <ParticipantLabel participant={participant} />
+        </Fragment>
+      ));
   }
 
   renderDate = () => {
@@ -82,7 +94,6 @@ class MessageItem extends Component {
     );
   }
 
-
   renderContent = () => {
     const { message } = this.props;
     const { attachments } = message;
@@ -101,7 +112,9 @@ class MessageItem extends Component {
         to={linkTo}
         noDecoration
       >
-        {this.renderAuthor()}
+        <TextBlock className="s-message-item__participants">
+          {this.renderParticipants()}
+        </TextBlock>
         <TextBlock className="s-message-item__title">
           {message.is_draft && (
           <span className="s-message-item__draft-prefix">

@@ -7,6 +7,7 @@ export * from './actions/getMessage';
 export * from './actions/requestDiscussion';
 export * from './actions/requestMessages';
 export * from './actions/setMessageRead';
+export { default as ParticipantLabel } from './components/ParticipantLabel';
 export * from './models/Message';
 export * from './models/Participant';
 export * from './selectors/messageSelector';

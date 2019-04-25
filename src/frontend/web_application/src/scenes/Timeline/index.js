@@ -1,11 +1,12 @@
 import { createSelector } from 'reselect';
-import { bindActionCreators } from 'redux';
+import { compose, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
   requestDiscussions, hasMore, loadMoreDiscussions, filterImportance,
 } from '../../store/modules/discussion';
 import { UserSelector } from '../../store/selectors/user';
 import { getUser } from '../../modules/user/actions/getUser';
+import { withContacts } from '../../modules/contact';
 
 import Presenter from './presenter';
 
@@ -37,4 +38,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   // updateMessagesTags,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Presenter);
+export default compose(
+  // this initialize contacts for Participant rendering
+  withContacts(),
+  connect(mapStateToProps, mapDispatchToProps)
+)(Presenter);

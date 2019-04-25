@@ -1,5 +1,7 @@
 import { createSelector } from 'reselect';
-import { sortMessages } from '../../../modules/message';
+// prevent circular reference draftMessage.requestDraft > message.getDraft >
+// discussion.discussionDraftSelector > message.sortMessages
+import { sortMessages } from '../../../modules/message/services/sortMessages';
 import { createMessageCollectionStateSelector } from '../../../store/selectors/message';
 import { discussionIdSelector } from './discussionIdSelector';
 
