@@ -10,8 +10,9 @@ log = logging.getLogger(__name__)
 def clean_email_address(addr):
     """Clean an email address for user resolve."""
     real_name, email = parseaddr(addr.replace('\r', ''))
-    if not email:
-        log.info('Invalid email address %s' % addr)
+    err_msg = 'Invalid email address {}'.format(addr)
+    if not email or '@' not in email:
+        log.warn(err_msg)
         return ("", "")
     name, domain = email.lower().split('@', 2)
     if '+' in name:
