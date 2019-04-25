@@ -24,12 +24,12 @@ const getStore = () => mockStore({
 jest.mock('../../user', () => ({
   getUser: () => dispatch => dispatch({ type: 'getUser', payload: {} }),
 }));
-jest.mock('../../message', () => {
-  const actualModule = jest.requireActual('../../message');
+jest.mock('../../../modules/message', () => {
+  const actualModule = jest.requireActual('../../../modules/message');
 
   return {
     ...actualModule,
-    getDraft: ({ discussionId }) => (dispatch) => {
+    getDraft: jest.fn(({ discussionId }) => (dispatch) => {
       dispatch({ type: 'getDraft', payload: { discussionId } });
 
       switch (discussionId) {
@@ -41,8 +41,8 @@ jest.mock('../../message', () => {
         default:
           return Promise.resolve(undefined);
       }
-    },
-    getLastMessage: ({ discussionId }) => (dispatch) => {
+    }),
+    getLastMessage: jest.fn(({ discussionId }) => (dispatch) => {
       dispatch({ type: 'getLastMessage', payload: { discussionId } });
 
       switch (discussionId) {
@@ -72,8 +72,8 @@ jest.mock('../../message', () => {
         default:
           return Promise.resolve(undefined);
       }
-    },
-    getMessage: ({ messageId }) => (dispatch) => {
+    }),
+    getMessage: jest.fn(({ messageId }) => (dispatch) => {
       dispatch({ type: 'getMessage', payload: { messageId } });
 
       switch (messageId) {
@@ -91,7 +91,7 @@ jest.mock('../../message', () => {
         default:
           return Promise.reject(undefined);
       }
-    },
+    }),
   };
 });
 jest.mock('./getDefaultIdentity', () => ({
