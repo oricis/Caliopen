@@ -11,9 +11,9 @@ import (
 
 type DiscussionsStore struct{}
 
-func (ds DiscussionsStore) GetUserLookupHashes(userId UUID, kind, key string) (hashes []HashLookup, err error) {
+func (ds *DiscussionsStore) GetUserLookupHashes(userId UUID, kind, key string) (hashes []ParticipantHash, err error) {
 	return nil, errors.New("test interface not implemented")
 }
-func (ds DiscussionsStore) UpsertDiscussionLookups(userId UUID, participants []Participant) error {
+func (ds *DiscussionsStore) UpsertDiscussionLookups(userId UUID, participants []Participant) error {
 	return errors.New("test interface not implemented")
 }

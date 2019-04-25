@@ -211,6 +211,12 @@ var (
 					Type:      "other",
 				},
 			},
+			Identities: []SocialIdentity{
+				{
+					Name: "emmatomme",
+					Type: "twitter",
+				},
+			},
 			FamilyName: "Tomme",
 			GivenName:  "Emma",
 			Title:      "Emma Tomme",
@@ -239,5 +245,12 @@ var (
 			Type:     DeviceLaptopType,
 			UserId:   UUID(uuid.FromStringOrNil(EmmaTommeUserId)),
 		},
+	}
+
+	// used to return contact by uris (kind + ":" + address)
+	ContactLookup = map[string]string{
+		"email:dev@recovery-caliopen.local":  "5f0baee8-1278-43eb-9931-01b7383b419b",
+		"email:emma@recovery-caliopen.local": "63ab7904-c416-4f1a-9652-3de82e4fd1f1",
+		"twitter:emmatomme":                  "63ab7904-c416-4f1a-9652-3de82e4fd1f1",
 	}
 )

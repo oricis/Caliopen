@@ -42,7 +42,7 @@ func UpdateWithPatch(patch []byte, obj ObjectPatchable, actor Initiator) (newObj
 		return obj, nil, err
 	}
 
-	// squash newState values with dbState values for those that he's not allowed to modify
+	// squash newState values with dbState values for those that it's not allowed to modify
 	validatedFields, err := validateActorRights(p.dbState, p.newState, p.actor)
 	if err != nil {
 		return obj, nil, err

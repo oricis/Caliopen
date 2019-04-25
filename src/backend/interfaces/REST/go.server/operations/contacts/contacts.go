@@ -18,6 +18,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 // GetContactList handles GET /contacts
@@ -94,7 +95,12 @@ func NewContact(ctx *gin.Context) {
 	contact.UserId.UnmarshalBinary(uuid.FromStringOrNil(userID).Bytes())
 	err = caliopen.Facilities.RESTfacility.CreateContact(contact)
 	if err != nil {
-		e := swgErr.New(http.StatusInternalServerError, err.Error())
+		var e error
+		if strings.HasPrefix(err.Error(), "uri <") {
+			e = swgErr.New(http.StatusForbidden, err.Error())
+		} else {
+			e = swgErr.New(http.StatusInternalServerError, err.Error())
+		}
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 	} else {
@@ -173,6 +179,8 @@ func PatchContact(ctx *gin.Context) {
 			returnedErr := new(swgErr.CompositeError)
 			if Cerr.Code() == FailDependencyCaliopenErr {
 				returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusFailedDependency, "[RESTfacility] PatchContact failed"), Cerr, Cerr.Cause())
+			} else if Cerr.Code() == ForbiddenCaliopenErr {
+				returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusForbidden, "[RESTfacility] PatchContact forbidden"), Cerr, Cerr.Cause())
 			} else {
 				returnedErr = swgErr.CompositeValidationError(Cerr, Cerr.Cause())
 			}
