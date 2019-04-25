@@ -7,7 +7,7 @@ import { withScrollTarget } from '../../../../modules/scroll';
 import { withPush } from '../../../../modules/routing';
 import { ParticipantLabel } from '../../../../modules/message';
 import {
-  Button, Confirm, Icon, TextBlock,
+  Button, Confirm, Icon, TextBlock, Callout,
 } from '../../../../components';
 import MessageAttachments from '../MessageAttachments';
 import MessageRecipients from '../MessageRecipients';
@@ -114,7 +114,6 @@ class MailMessage extends Component {
   render() {
     const {
       message, scrollTarget: { forwardRef }, onOpenTags, user, noInteractions, encryptionStatus,
-      isLocked,
     } = this.props;
     const isDecrypted = encryptionStatus && encryptionStatus.status === STATUS_DECRYPTED;
     const pi = getAveragePIMessage({ message });
@@ -165,13 +164,19 @@ class MailMessage extends Component {
             <TextBlock nowrap={false}>{message.subject}</TextBlock>
           </h2>
           {this.renderBody()}
-          {
-            // Do not display attachments if message is encrypted.
-            (isDecrypted || isLocked) && (
-            <div className="m-message__attachments">
-              <MessageAttachments message={message} />
-            </div>
-            )}
+          <div className="m-message__attachments">
+            {
+              // Attachments' not decrypted
+              isDecrypted && (
+                <Callout color="info" className="s-mail-message__encrypted-attachments-info">
+                  <Trans id="message.attachment-encryption-not-available">
+                    Attachments decryption will be available in a futur version, please be patient.
+                  </Trans>
+                </Callout>
+              )
+            }
+            <MessageAttachments message={message} />
+          </div>
         </div>
         {!noInteractions && (
           <footer className="s-mail-message__actions">

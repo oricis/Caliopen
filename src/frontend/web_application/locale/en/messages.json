@@ -212,6 +212,7 @@
   "message-list.selected": "{count, plural, one {#/{totalCount} message:} other {#/{totalCount} messages:}}",
   "message.action.add-participant-to-contacts": "Add a participant to the contact book",
   "message.action.add-to-contacts": "Add to contact book",
+  "message.attachment-encryption-not-available": "Attachments decryption will be available in a futur version, please be patient.",
   "message.compose.action.delete_attachement": "Delete the attachment",
   "message.compose.action.open_import_attachements": "Add an attachement",
   "message.from": "From:",

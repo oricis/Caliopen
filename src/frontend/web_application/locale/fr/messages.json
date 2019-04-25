@@ -212,6 +212,7 @@
   "message-list.selected": "{count, plural, one {#/{totalCount} message :} other {#/{totalCount} messages :}}",
   "message.action.add-participant-to-contacts": "Ajouter un contact au carnet d'adresses",
   "message.action.add-to-contacts": "Ajouter au carnet d'adresse",
+  "message.attachment-encryption-not-available": "Le déchiffrement des fichiers joints sera disponible dans une prochaine version, merci d'être patient.",
   "message.compose.action.delete_attachement": "Supprimer le fichier joint",
   "message.compose.action.open_import_attachements": "Ajouter un fichier joint",
   "message.from": "De :",
