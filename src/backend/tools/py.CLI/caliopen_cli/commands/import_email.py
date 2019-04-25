@@ -10,12 +10,12 @@ import os
 import re
 from random import random
 import logging
-import uuid
 
 from email import message_from_string, message_from_file
 from mailbox import mbox, Maildir
 
 from caliopen_storage.exception import NotFound
+from caliopen_main.common.errors import DuplicateMessage
 
 log = logging.getLogger(__name__)
 
@@ -103,6 +103,10 @@ def import_email(email, import_path, format, contact_probability,
         try:
             obj_message = processor.process_raw(raw.raw_msg_id)
         except Exception as exc:
-            log.exception(exc)
+            if isinstance(exc, DuplicateMessage):
+                log.info('duplicate message {}, not imported'.format(
+                    raw.raw_msg_id))
+            else:
+                log.exception(exc)
         else:
             log.info('Created message {}'.format(obj_message.message_id))
