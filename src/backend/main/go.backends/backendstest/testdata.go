@@ -213,7 +213,7 @@ var (
 			},
 			Identities: []SocialIdentity{
 				{
-					Name: "emmatomme",
+					Name: "emmatoclite",
 					Type: "twitter",
 				},
 			},
