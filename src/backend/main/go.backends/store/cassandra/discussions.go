@@ -14,12 +14,12 @@ import (
 	"time"
 )
 
-func (cb *CassandraBackend) GetUserLookupHashes(userId UUID, kind, key string) (hashes []HashLookup, err error) {
+func (cb *CassandraBackend) GetUserLookupHashes(userId UUID, kind, key string) (hashes []ParticipantHash, err error) {
 	var rawHashes []map[string]interface{}
 	if key != "" {
-		rawHashes, err = cb.SessionQuery(`SELECT * from hash_lookup WHERE user_id = ? AND kind = ? AND key = ?`, userId, kind, key).Iter().SliceMap()
+		rawHashes, err = cb.SessionQuery(`SELECT * from participant_hash WHERE user_id = ? AND kind = ? AND key = ?`, userId, kind, key).Iter().SliceMap()
 	} else {
-		rawHashes, err = cb.SessionQuery(`SELECT * from hash_lookup WHERE user_id = ? AND kind = ?`, userId, kind).Iter().SliceMap()
+		rawHashes, err = cb.SessionQuery(`SELECT * from participant_hash WHERE user_id = ? AND kind = ?`, userId, kind).Iter().SliceMap()
 	}
 	if err != nil {
 		return
@@ -29,16 +29,16 @@ func (cb *CassandraBackend) GetUserLookupHashes(userId UUID, kind, key string) (
 		return
 	}
 	for _, hash := range rawHashes {
-		h := new(HashLookup)
+		h := new(ParticipantHash)
 		h.UnmarshalCQLMap(hash)
 		hashes = append(hashes, *h)
 	}
 	return
 }
 
-func (cb *CassandraBackend) RetrieveLookupHash(userId UUID, kind, hash string) (lookup HashLookup, err error) {
+func (cb *CassandraBackend) RetrieveParticipantHash(userId UUID, kind, hash string) (lookup ParticipantHash, err error) {
 	m := map[string]interface{}{}
-	q := cb.SessionQuery(`SELECT * from hash_lookup WHERE user_id = ? AND kind = ? AND key = ?`, userId, kind, hash)
+	q := cb.SessionQuery(`SELECT * from participant_hash WHERE user_id = ? AND kind = ? AND key = ?`, userId, kind, hash)
 	err = q.MapScan(m)
 	if err != nil {
 		return
@@ -47,20 +47,20 @@ func (cb *CassandraBackend) RetrieveLookupHash(userId UUID, kind, hash string) (
 	return
 }
 
-func (cb *CassandraBackend) CreateLookupHash(lookup *HashLookup) error {
-	lookupT := cb.IKeyspace.Table("hash_lookup", &HashLookup{}, gocassa.Keys{
+func (cb *CassandraBackend) CreateParticipantHash(lookup *ParticipantHash) error {
+	lookupT := cb.IKeyspace.Table("participant_hash", &ParticipantHash{}, gocassa.Keys{
 		PartitionKeys: []string{"user_id", "kind", "key", "value"},
-	}).WithOptions(gocassa.Options{TableName: "participant_lookup"}) // need to overwrite default gocassa table naming convention
+	}).WithOptions(gocassa.Options{TableName: "participant_hash"}) // need to overwrite default gocassa table naming convention
 
 	// save lookup
 	err := lookupT.Set(lookup).Run()
 	if err != nil {
-		return fmt.Errorf("[CassandraBackend] CreateLookupHash: %s", err)
+		return fmt.Errorf("[CassandraBackend] CreateParticipantHash: %s", err)
 	}
 	return nil
 }
 
-// UpsertDiscussionLookups ensures that relevant entries are present in both HashLookup and ParticipantLookup tables
+// UpsertDiscussionLookups ensures that relevant entries are present in both HashLookup and ParticipantHash tables
 // for the provided participants, taking into account user's contacts addresses
 func (cb *CassandraBackend) UpsertDiscussionLookups(userId UUID, participants []Participant) error {
 	hash, components, err := helpers.HashFromParticipantsUris(participants)
@@ -88,7 +88,7 @@ func (cb *CassandraBackend) UpsertDiscussionLookups(userId UUID, participants []
 // then computes participants_hash
 // then creates two ways links in HashLookup and ParticipantLookup tables:
 //    uris<->uris_hash
-//    uris<->participants_hash
+//    uris_hash<->participants_hash
 func (cb *CassandraBackend) CreateLookupsFromUris(userId UUID, hash string, uris []string) error {
 	participants := []Participant{}
 	for _, uri := range uris {
@@ -109,7 +109,7 @@ func (cb *CassandraBackend) CreateLookupsFromUris(userId UUID, hash string, uris
 	}
 	now := time.Now()
 	// store uris_hash -> participants_hash
-	e1 := cb.CreateLookupHash(&HashLookup{
+	e1 := cb.CreateParticipantHash(&ParticipantHash{
 		UserId:     userId,
 		Kind:       "uris",
 		Key:        hash,
@@ -118,7 +118,7 @@ func (cb *CassandraBackend) CreateLookupsFromUris(userId UUID, hash string, uris
 		DateInsert: now,
 	})
 	// store participants_hash -> uris_hash
-	e2 := cb.CreateLookupHash(&HashLookup{
+	e2 := cb.CreateParticipantHash(&ParticipantHash{
 		UserId:     userId,
 		Kind:       "participants",
 		Key:        participantsHash,
@@ -134,7 +134,7 @@ func (cb *CassandraBackend) CreateLookupsFromUris(userId UUID, hash string, uris
 	}
 	for _, uri := range uris {
 		// store uri->uris_hash
-		e := cb.CreateParticipantLookup(&ParticipantLookup{
+		e := cb.CreateHashLookup(HashLookup{
 			UserId:         userId,
 			Uri:            uri,
 			Hash:           hash,
@@ -145,26 +145,5 @@ func (cb *CassandraBackend) CreateLookupsFromUris(userId UUID, hash string, uris
 			return e
 		}
 	}
-	for _, participant := range participantsComponents {
-		// store participant->participants_hash
-		e := cb.CreateParticipantLookup(&ParticipantLookup{
-			UserId:         userId,
-			Uri:            participant,
-			Hash:           participantsHash,
-			HashComponents: participantsComponents,
-			DateInsert:     now,
-		})
-		if e != nil {
-			return e
-		}
-	}
 	return nil
-}
-
-// CreateThreadLookup inserts a new entry into discussion_thread_lookup table
-func (cb *CassandraBackend) CreateThreadLookup(user_id, discussion_id UUID, external_msg_id string) error {
-	return cb.SessionQuery(`INSERT INTO discussion_thread_lookup (user_id, external_root_msg_id, discussion_id) VALUES (?,?,?)`,
-		user_id.String(),
-		external_msg_id,
-		discussion_id.String()).Exec()
 }

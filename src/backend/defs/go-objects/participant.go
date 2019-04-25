@@ -20,7 +20,7 @@ type (
 		Type        string `cql:"type"             json:"type,omitempty"`
 	}
 
-	ParticipantLookup struct {
+	HashLookup struct {
 		UserId         UUID      `cql:"user_id"` // primary key
 		Uri            string    `cql:"uri"`     // primary key
 		Hash           string    `cql:"hash"`    // primary key
@@ -28,7 +28,7 @@ type (
 		HashComponents []string  `cql:"hash_components"`
 	}
 
-	HashLookup struct {
+	ParticipantHash struct {
 		UserId     UUID      `cql:"user_id"` // primary key
 		Kind       string    `cql:"kind"`    // primary key
 		Key        string    `cql:"key"`     // primary key
@@ -65,7 +65,7 @@ func (p *Participant) UnmarshalMap(input map[string]interface{}) error {
 	return nil //TODO: errors handling
 }
 
-func (pl *ParticipantLookup) UnmarshalCQLMap(input map[string]interface{}) error {
+func (pl *HashLookup) UnmarshalCQLMap(input map[string]interface{}) error {
 	if user_id, ok := input["user_id"].(gocql.UUID); ok {
 		pl.UserId.UnmarshalBinary(user_id.Bytes())
 	}
@@ -89,7 +89,7 @@ func (p *Participant) MarshallNew(...interface{}) {
 	// nothing to enforce
 }
 
-func (pl *ParticipantLookup) MarshallNew(args ...interface{}) {
+func (pl *HashLookup) MarshallNew(args ...interface{}) {
 	if len(pl.UserId) == 0 || (bytes.Equal(pl.UserId.Bytes(), EmptyUUID.Bytes())) {
 		if len(args) == 1 {
 			switch args[0].(type) {
@@ -101,7 +101,7 @@ func (pl *ParticipantLookup) MarshallNew(args ...interface{}) {
 	pl.HashComponents = []string{}
 }
 
-func (hl *HashLookup) UnmarshalCQLMap(input map[string]interface{}) error {
+func (hl *ParticipantHash) UnmarshalCQLMap(input map[string]interface{}) error {
 	if user_id, ok := input["user_id"].(gocql.UUID); ok {
 		hl.UserId.UnmarshalBinary(user_id.Bytes())
 	}

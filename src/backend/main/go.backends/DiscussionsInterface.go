@@ -11,7 +11,7 @@ import (
 )
 
 type DiscussionStorage interface {
-	GetUserLookupHashes(userId UUID, kind, key string) (hashes []HashLookup, err error)
+	GetUserLookupHashes(userId UUID, kind, key string) (hashes []ParticipantHash, err error)
 	UpsertDiscussionLookups(userId UUID, participants []Participant) error
 }
 

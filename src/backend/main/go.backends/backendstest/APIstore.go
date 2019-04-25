@@ -13,6 +13,7 @@ type APIStore struct {
 	IdentitiesBackend
 	KeysStore
 	MessagesBackend
+	ParticipantStore
 	TagsStore
 	UserNamesStore
 	UsersBackend
