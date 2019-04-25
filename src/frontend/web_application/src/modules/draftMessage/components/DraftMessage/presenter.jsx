@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { i18nMark, withI18n } from '@lingui/react';
-import { Trans } from '@lingui/macro'; // eslint-disable-line import/no-extraneous-dependencies
+import { i18nMark, withI18n, Trans } from '@lingui/react';
 import {
   Button, Icon, InputText, TextareaFieldGroup, TextFieldGroup, Link, Confirm, PlaceholderBlock,
   Callout, FieldErrors, Spinner,
@@ -243,10 +242,11 @@ class DraftMessage extends Component {
     ) {
       return [
         (
-          <Trans id="draft-message.errors.invalid-participant">
-            According to your identity, all your participants must use a {protocol} address to
-            contact them all together
-          </Trans>
+          <Trans
+            id="draft-message.errors.invalid-participant"
+            values={{ protocol }}
+            defaults="According to your identity, all your participants must use a {protocol} address to contact them all together"
+          />
         ),
       ];
     }
@@ -595,9 +595,11 @@ class DraftMessage extends Component {
           {parentMessage && (
             <div className="m-reply__parent">
               <Link to={`#${parentMessage.message_id}`} className="m-reply__parent-link">
-                <Trans id="reply-form.in-reply-to">
-                  In reply to: {parentMessage.excerpt}
-                </Trans>
+                <Trans
+                  id="reply-form.in-reply-to"
+                  values={{ 0: parentMessage.excerpt }}
+                  defaults="In reply to: {0}"
+                />
               </Link>
             </div>
           )}
@@ -705,9 +707,13 @@ class DraftMessage extends Component {
       return (
         <div className={classnames(className)} ref={ref}>
           <Callout color="info">
-            <Trans id="draft-message.no-available-identities">
-              You have no available identities for this discussion. You can add one in your <Link to="/user/identities">account</Link>
-            </Trans>
+            <Trans
+              id="draft-message.no-available-identities"
+              defaults="You have no available identities for this discussion. You can add one in your <0>account</0>"
+              components={[
+                <Link to="/user/identities" />,
+              ]}
+            />
           </Callout>
         </div>
       );
