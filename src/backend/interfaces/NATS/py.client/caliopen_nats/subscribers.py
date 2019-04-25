@@ -5,6 +5,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 import json
 
+from caliopen_storage.exception import DuplicateObject
 from caliopen_main.user.core import User, UserIdentity
 from caliopen_main.contact.objects import Contact
 
@@ -42,6 +43,9 @@ class InboundEmail(BaseHandler):
             deliver = UserMailDelivery(user, identity)
             new_message = deliver.process_raw(payload['message_id'])
             nats_success['message_id'] = str(new_message.message_id)
+            self.natsConn.publish(msg.reply, json.dumps(nats_success))
+        except DuplicateObject:
+            log.info("Message already imported : {}".format(payload))
             self.natsConn.publish(msg.reply, json.dumps(nats_success))
         except Exception as exc:
             # TODO: handle abort exception and report it as special case
