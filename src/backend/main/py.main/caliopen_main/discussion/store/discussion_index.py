@@ -73,7 +73,6 @@ class DiscussionIndexManager(object):
 
     def get_last_message(self, discussion_id, min_il, max_il, include_draft):
         """Get last message of a given discussion."""
-        # TODO : une discussion_id
         search = self._prepare_search() \
             .filter("match", discussion_id=discussion_id) \
             .filter("range", importance_level={'gte': min_il, 'lte': max_il})
@@ -133,3 +132,27 @@ class DiscussionIndexManager(object):
         discussion.unread_count = result.aggregations.discussions.buckets[
             0].unread.doc_count
         return discussion
+
+    def get_by_uris(self, uris_hashes, min_il=0, max_il=100):
+        """
+
+        :param uris_hashes: an array of uris hashes
+        :param min_il:
+        :param max_il:
+        :return:
+        """
+        search = self._prepare_search(). \
+            filter("terms", discussion_id=uris_hashes). \
+            filter("range", importance_level={'gte': min_il, 'lte': max_il})
+
+        agg = A('terms', field='discussion_id',
+                order={'last_message': 'desc'})
+        search.aggs.bucket('discussions', agg). \
+            metric('last_message', 'max', field='date_sort'). \
+            bucket("unread", "filter", term={"is_unread": True})
+
+        result = search.execute()
+        if not result.hits or len(result.hits) < 1:
+            return None
+
+        return result

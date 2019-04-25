@@ -3,14 +3,13 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
-import hashlib
 from caliopen_main.message.parameters import (NewInboundMessage,
                                               Attachment)
 from caliopen_main.participant.parameters.participant import Participant
 
 from caliopen_storage.config import Configuration
-from caliopen_main.participant.core import ParticipantLookup, \
-    hash_participants_uri
+from caliopen_main.participant.core import hash_participants_uri
+from caliopen_main.participant.store import HashLookup
 
 # XXX use a message formatter registry not directly mail format
 from caliopen_main.message.parsers.mail import MailMessage
@@ -34,8 +33,8 @@ class UserMessageQualifier(BaseQualifier):
     """
 
     _lookups = {
-        'list': ParticipantLookup,
-        'hash': ParticipantLookup,
+        'list': HashLookup,
+        'hash': HashLookup,
     }
 
     def lookup_discussion_sequence(self, mail, message, *args, **kwargs):
@@ -59,9 +58,8 @@ class UserMessageQualifier(BaseQualifier):
                 participant.protocol = 'email'
                 participant.type = 'list-id'
                 participants.append(participant)
-                log.info("participants list : {}".format(vars(participant)))
-                Discussion.upsert_lookups_for_participants(self.user,
-                                                           participants)
+                discuss = Discussion(self.user)
+                discuss.upsert_lookups_for_participants(participants)
                 # add list-id as a participant to the message
                 message.participants.append(participant)
             hash = hash_participants_uri(participants)
@@ -137,12 +135,12 @@ class UserMessageQualifier(BaseQualifier):
         lookup_sequence, discussion_id = self.lookup_discussion_sequence(email,
                                                                          new_message)
         log.debug('Lookup with sequence {} gives {}'.format(lookup_sequence,
-                                                           discussion_id))
+                                                            discussion_id))
         new_message.discussion_id = discussion_id
 
         # upsert lookup tables
-        Discussion.upsert_lookups_for_participants(self.user,
-                                                   new_message.participants)
+        discuss = Discussion(self.user)
+        discuss.upsert_lookups_for_participants(new_message.participants)
         # Format features
         new_message.privacy_features = \
             marshal_features(new_message.privacy_features)

@@ -18,7 +18,6 @@ from caliopen_storage.exception import NotFound
 from caliopen_storage.core.mixin import MixinCoreRelation, MixinCoreNested
 from caliopen_main.pi.objects import PIModel
 from caliopen_main.common.core import BaseUserCore
-from caliopen_main.participant.core import ParticipantLookup
 from caliopen_main.participant.objects import Participant
 
 log = logging.getLogger(__name__)
@@ -111,7 +110,6 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
         lookup = ContactLookup.create(self.user, value=value, type=type,
                                       contact_id=self.contact_id)
         participant = Participant(address=value, protocol=type)
-        ParticipantLookup.update(self.user, self.contact_id, participant)
 
         return lookup
 

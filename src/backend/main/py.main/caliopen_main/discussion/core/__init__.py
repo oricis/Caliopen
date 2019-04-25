@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
-from .discussion import MainView, Discussion
+from .discussion import Discussion
 
-__all__ = ['Discussion', 'MainView']
+__all__ = ['Discussion']

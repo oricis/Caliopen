@@ -182,6 +182,11 @@ class Message(ObjectIndexable):
                 "body",
                 "current_state",
                 "user_identities",
+                "message_id",
+                "parent_id",
+                "participants",
+                "subject",
+                "privacy_features",
             ]
             for key, value in params.items():
                 if key not in allowed_properties:

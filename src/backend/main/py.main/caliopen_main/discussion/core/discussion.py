@@ -4,147 +4,19 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 
-from caliopen_storage.exception import NotFound
+from caliopen_main.common.objects.base import ObjectUser
 
-from caliopen_main.common.core import BaseUserCore
-from caliopen_main.common.helpers.strings import unicode_truncate
-
-from caliopen_main.discussion.objects import Discussion as DiscussionObject
-from caliopen_main.participant.core import ParticipantLookup
-from caliopen_main.participant.core import HashLookup, hash_participants_uri
-from ..store.discussion_index import DiscussionIndexManager as DIM
-
-from caliopen_main.discussion.parameters import Discussion as DiscussionParam
-from caliopen_main.participant.parameters import Participant
+from caliopen_main.participant.core import participants_from_uris, \
+    hash_participants_uri
+from caliopen_main.participant.core import ParticipantHash
 
 log = logging.getLogger(__name__)
 
 
-def count_attachment(message):
-    """Return number of attachment in message."""
-    cpt = 0
-    if message.attachments:
-        for a in message.attachments:
-            if a.name and not a.is_inline:
-                cpt += 1
-    return cpt
-
-
-def build_discussion(core, index):
-    """Temporary build of output Discussion return parameter."""
-    discuss = DiscussionParam()
-    discuss.user_id = core.user_id
-    discuss.discussion_id = core.discussion_id
-    discuss.date_insert = core.date_insert
-    discuss.date_update = index.last_message.date_sort
-    # TODO : excerpt from plain or html body
-    maxsize = 100
-    discuss.last_message_id = index.last_message.message_id
-    discuss.last_message_subject = index.last_message.subject
-    discuss.excerpt = unicode_truncate(index.last_message.body_plain,
-                                       maxsize) if index.last_message.body_plain else u''
-    discuss.total_count = index.total_count
-    discuss.subject = index.last_message.subject
-    discuss.protocol = index.last_message.protocol
-
-    # TODO
-    # discussion.privacy_index = index_message.privacy_index
-    # XXX Only last message recipient at this time
-
-    for part in index.last_message.participants:
-        participant = Participant()
-        participant.address = part['address']
-        try:
-            participant.label = part['label']
-        except:
-            participant.label = part['address']
-        participant.type = part['type']
-        if 'contact_ids' in part:
-            participant.contact_ids = part['contact_ids']
-        participant.protocol = part['protocol']
-        discuss.participants.append(participant)
-
-    # XXX Missing values (at least other in parameter to fill)
-    discuss.unread_count = index.unread_count
-    discuss.attachment_count = index.attachment_count
-    return discuss.serialize()
-
-
-class MainView(object):
-    """Build main view return structure from index messages."""
-
-    def build_responses(self, user, discussions):
-        """Build list of responses using core and related index message."""
-        for discussion in discussions:
-            try:
-                core = Discussion.get(user, discussion.discussion_id)
-            except NotFound:
-                continue
-            if core:
-                yield build_discussion(core, discussion)
-
-    def get(self, user, min_il, max_il, limit, offset):
-        """Build the main view results."""
-        # XXX use of correct pagination and correct datasource (index)
-        dim = DIM(user)
-        discussions, total = dim.list_discussions(limit=limit, offset=offset,
-                                                  min_il=min_il, max_il=max_il)
-        responses = self.build_responses(user, discussions)
-        return {'discussions': list(responses), 'total': total}
-
-    def get_from_hash(self, user, uris_hash, min_il=0, max_il=100):
-        """
-        return discussion's messages set linked to the provided uris_hash
-
-        :param user:
-        :param uris_hash: a hash of uris
-        :param min_il:
-        :param max_il:
-        :type uris_hash: string
-        :return:
-        """
-
-        # get current participants hash for this uris hash
-        participants_hash = HashLookup.find(user_id=user.user_id,
-                                            kind="uris",
-                                            key=uris_hash)
-        if not participants_hash:
-            raise NotFound
-
-        # get all uris hash linked to this participants hash
-        related_hash = HashLookup.find(user_id=user.user_id,
-                                       kind="participants",
-                                       key=participants_hash[0].value)
-        related_uris = set()
-        for hash in related_hash:
-            related_uris.add(hash.value)
-
-        # get messages from index belonging to the set
-        discussion_index = DIM(user).get_by_uris(list(related_uris), min_il,
-                                                 max_il)
-        if not discussion_index:
-            raise NotFound
-
-        discussion_core = Discussion(user_id=user.user_id)
-
-        return build_discussion(discussion_core, discussion_index)
-
-
-#        discussion_index = DIM(user).get_by_id(discussion_id, min_il, max_il)
-#        if not discussion_index:
-#            raise NotFound
-#        discussion_core = Discussion.get(user, discussion_index.discussion_id)
-#        if discussion_core:
-#            return build_discussion(discussion_core, discussion_index)
-#        else:
-#            raise NotFound
-
-
-class Discussion(BaseUserCore):
+class Discussion(ObjectUser):
     """Discussion core object."""
 
-    @classmethod
-    def upsert_lookups_for_participants(cls, user, participants):
+    def upsert_lookups_for_participants(self, participants):
         """
         Ensure that participants lookup and hash lookup tables are filled
         for these participants
@@ -158,88 +30,16 @@ class Discussion(BaseUserCore):
             raise Exception("missing mandatory property to create lookup entry")
 
         uris = hash_participants_uri(participants)
-        discussion = DiscussionObject(uris=uris, uris_hash=uris['hash'])
-        hash_lookup = HashLookup.find(user_id=user.user_id, kind="uris",
-                                      key=uris['hash'])
+        hash_lookup = ParticipantHash.find(user_id=self.user.user_id,
+                                           kind="uris",
+                                           key=uris['hash'])
         if len(hash_lookup) > 0:
-            discussion.participants = hash_lookup[0].components
-            discussion.participants_hash = hash_lookup[0].value
+            self.participants = hash_lookup[0].components
+            self.participants_hash = hash_lookup[0].value
         else:
-            parts = ParticipantLookup.participants_from_uris(user, uris['URIs'],
-                                                             uris['hash'])
-            discussion.participants = parts['components']
-            discussion.participants_hash = parts['hash']
+            parts = participants_from_uris(self.user, uris['URIs'],
+                                           uris['hash'])
+            self.participants = parts['components']
+            self.participants_hash = parts['hash']
 
-        return discussion
-
-    # @classmethod
-    # def create_from_message(cls, user, message, participants):
-    #     """
-    #     create a new Discussion in store alongside relevant lookup tables
-    #     :param user:
-    #     :param message: an object with body_plain property
-    #     :param participants: a collection of Participant with participant_id
-    #     :return: Discussion
-    #     """
-    #     # TODO excerpt from plain or html body
-    #     maxsize = 200
-    #     excerpt = unicode_truncate(message.body_plain,
-    #                                maxsize) if message.body_plain else u''
-    #     new_id = uuid.uuid4()
-    #     uris_hash = hash_participants_uri(participants)
-    #     kwargs = {u'discussion_id': new_id,
-    #               u'date_insert': datetime.datetime.now(tz=pytz.utc),
-    #               # 'privacy_index': message.privacy_index,
-    #               # 'importance_level': message.importance_level,
-    #               u'participants_hash': uris_hash['hash'],
-    #               u'participants_ids': uris_hash['URIs'],
-    #               u'excerpt': excerpt,
-    #               }
-    #
-    #     discussion = cls.create(user, **kwargs)
-    #
-    #     # fill-in lookup tables
-    #     for participant_id in uris_hash['URIs']:
-    #         DiscussionParticipantLookup.create(user,
-    #                                            participant_id=participant_id,
-    #                                            discussion_id= \
-    #                                                discussion.discussion_id)
-    #
-    #     DiscussionHashLookup.create(user, hashed=uris_hash['hash'],
-    #                                 discussion_id=discussion.discussion_id)
-    #
-    #     log.debug('Created discussion {}'.format(discussion.discussion_id))
-    #     return discussion
-
-    @classmethod
-    def by_external_id(cls, user, external_discussion_id):
-        try:
-            lookup = DiscussionExternalLookup.get(user, external_discussion_id)
-        except NotFound:
-            return None
-        return cls.get(user, lookup.discussion_id)
-
-    @classmethod
-    def by_recipient_name(cls, user, recipient_name):
-        try:
-            lookup = DiscussionRecipientLookup.get(user, recipient_name)
-        except NotFound:
-            return None
-        return cls.get(user, lookup.discussion_id)
-
-    @classmethod
-    def by_hash(cls, user, hash):
-        try:
-            lookup = DiscussionHashLookup.get(user, hash)
-        except NotFound:
-            return None
-        return cls.get(user, lookup.discussion_id)
-
-    @classmethod
-    def by_participant_id(cls, user, participant_id):
-        try:
-            lookup = DiscussionParticipantLookup.get(user, participant_id)
-        except NotFound:
-            return None
-        return cls.get(user,
-                       lookup.discussion_id)  # TODO : not a get but lookup
+        return self

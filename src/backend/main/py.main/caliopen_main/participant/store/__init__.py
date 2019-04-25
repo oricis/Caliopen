@@ -1,6 +1,4 @@
-from .participant import Participant, ParticipantLookup
-from .hash_lookup import HashLookup
+from .participant import Participant, ParticipantHash, HashLookup
 from .participant_index import IndexedParticipant
 
-__all__ = ['Participant', 'ParticipantLookup', 'IndexedParticipant',
-           'HashLookup']
+__all__ = ['Participant', 'ParticipantHash', 'IndexedParticipant', 'HashLookup']

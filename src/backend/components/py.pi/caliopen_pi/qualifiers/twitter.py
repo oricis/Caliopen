@@ -6,7 +6,7 @@ import logging
 from caliopen_main.message.parameters import NewInboundMessage
 from caliopen_main.message.parsers.twitter import TwitterDM
 from caliopen_main.discussion.core import Discussion
-from caliopen_main.participant.core import ParticipantLookup
+from caliopen_main.participant.store import HashLookup
 
 from ..features import marshal_features
 from .base import BaseQualifier
@@ -18,7 +18,7 @@ class UserDMQualifier(BaseQualifier):
     """Process a Twitter direct message to unmarshal it in our stack."""
 
     _lookups = {
-        'hash': ParticipantLookup,
+        'hash': HashLookup,
     }
 
     def lookup_discussion_sequence(self, message, *args, **kwargs):
@@ -72,15 +72,15 @@ class UserDMQualifier(BaseQualifier):
             log.debug('Resolved tags {}'.format(new_message.tags))
 
         # build discussion_id from lookup_sequence
-        lookup_sequence, discussion_id = self.lookup_discussion_sequence(tweet,
-                                                                         new_message)
+        lookup_sequence, discussion_id = self.lookup_discussion_sequence(
+            new_message)
         log.debug('Lookup with sequence {} gives {}'.format(lookup_sequence,
-                                                           discussion_id))
+                                                            discussion_id))
         new_message.discussion_id = discussion_id
 
         # upsert lookup tables
-        Discussion.upsert_lookups_for_participants(self.user,
-                                                   new_message.participants)
+        discuss = Discussion(self.user)
+        discuss.upsert_lookups_for_participants(new_message.participants)
         # Format features
         new_message.privacy_features = \
             marshal_features(new_message.privacy_features)

@@ -16,21 +16,37 @@ class Participant(BaseUserType):
     type = columns.Text()
 
 
-class ParticipantLookup(BaseModel):
+class HashLookup(BaseModel):
     """
-    Table to store two ways links between participants, contacts and discussions
+    Table to lookup in which hash(es) an uri is embedded
 
-    source and destination are URIs in the form of "scheme:path"
-     - for a contact : "contact:03b84039-348e-4f78-ae06-aa12130fe381"
-     - for a participant : "email:john@example.com", "twitter:caliopen_org"
+    URIs in the form of "scheme:path"
+     - for example : "email:john@example.com", "twitter:caliopen_org"
 
-    It is updated each time :
-        - a message gets in or out (including draft edition)
-        - a participant is added/removed from a contact
+    It is updated each time a message gets in or out (including draft edition)
     """
 
     user_id = columns.UUID(primary_key=True)
     uri = columns.Text(primary_key=True)
     hash = columns.Text(primary_key=True)
     hash_components = columns.List(columns.Text())
+    date_insert = columns.DateTime()
+
+
+class ParticipantHash(BaseModel):
+    """
+    Table to store two ways links between uris'hash (immutable message's prop.)
+    and corresponding current participants'hash
+
+    It is updated each time :
+        - a lookup is made on one uris'hash,
+                            but its participant hash counterpart does not exist
+        - a participant is added/removed from a contact
+    """
+
+    user_id = columns.UUID(primary_key=True)
+    kind = columns.Text(primary_key=True)  # 'uris' or 'participants'
+    key = columns.Text(primary_key=True)  # uris or partcipants' hash
+    value = columns.Text(primary_key=True)  # the hash of opposite kind
+    components = columns.List(columns.Text())  # what hash is made of
     date_insert = columns.DateTime()
