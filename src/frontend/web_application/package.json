@@ -1,6 +1,6 @@
 {
   "name": "@caliopen/frontend",
-  "version": "0.18.1",
+  "version": "0.18.2",
   "description": "CaliOpen UI is the user interface for CaliOpen.",
   "homepage": "https://caliopen.org/",
   "private": true,
@@ -61,7 +61,7 @@
     "debug": "^4.1.1",
     "elliptic": "^6.4.1",
     "express": "^4.16.4",
-    "express-http-proxy": "1.5.1",
+    "express-http-proxy": "1.1.0",
     "font-awesome": "^4.6.3",
     "foundation-sites": "~6.3.0",
     "history": "^4.9.0",
