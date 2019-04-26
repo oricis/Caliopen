@@ -43,7 +43,7 @@
     "lint:js": "eslint --ext .js --ext .jsx --ignore-pattern *.spec.js --ignore-pattern *.spec.jsx src/",
     "lint:styles": "stylelint 'src/**/*.scss'",
     "i18n": "react-translate-scripts",
-    "lingui": "lingui"
+    "lingui": "NODE_ENV=test lingui"
   },
   "author": "CaliOpen <contact@caliopen.org> (https://caliopen.org/)",
   "license": "MIT",
@@ -127,6 +127,7 @@
     "@lingui/macro": "^2.7.4",
     "autoprefixer": "^9.5.1",
     "axios-mock-adapter": "^1.16.0",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.7.1",
     "babel-loader": "^8.0.5",

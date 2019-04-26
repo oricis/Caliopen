@@ -8,6 +8,7 @@ import { withPush } from '../../../../modules/routing';
 import { getAveragePIMessage, getPiClass } from '../../../../modules/pi';
 import { AuthorAvatarLetter } from '../../../../modules/avatar';
 import { LockedMessage } from '../../../../modules/encryption';
+import { ParticipantLabel } from '../../../../modules/message';
 import {
   Button, Confirm, Icon, TextBlock,
 } from '../../../../components';
@@ -169,7 +170,9 @@ class InstantMessage extends PureComponent {
         <aside className="m-instant-message__info m-instant-message-aside">
           <div className="m-instant-message-aside__info">
             <div className="m-instant-message__participants m-instant-message-participants">
-              <TextBlock className="m-instant-message-participants__from">{author.label}</TextBlock>
+              <TextBlock className="m-instant-message-participants__from">
+                <ParticipantLabel participant={author} />
+              </TextBlock>
               <TextBlock className="m-instant-message-participants__to">
                 {this.getRecipientsString(true)}
                 <Icon type="caret-down" title={this.getRecipientsString(false)} />

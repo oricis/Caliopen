@@ -5,8 +5,9 @@ import { Trans, withI18n } from '@lingui/react';
 import classnames from 'classnames';
 import { withScrollTarget } from '../../../../modules/scroll';
 import { withPush } from '../../../../modules/routing';
+import { ParticipantLabel } from '../../../../modules/message';
 import {
-  Button, Confirm, Icon, TextBlock,
+  Button, Confirm, Icon, TextBlock, Callout,
 } from '../../../../components';
 import MessageAttachments from '../MessageAttachments';
 import MessageRecipients from '../MessageRecipients';
@@ -16,7 +17,7 @@ import { replyHandler } from '../../services/replyHandler';
 import { messageDeleteHandler } from '../../services/messageDeleteHandler';
 import { toggleMarkAsReadHandler } from '../../services/toggleMarkAsReadHandler';
 import { LockedMessage } from '../../../../modules/encryption';
-import { getAuthor } from '../../../../services/message';
+import { getAuthor, getRecipients } from '../../../../services/message';
 import { getAveragePIMessage, getPiClass } from '../../../../modules/pi/services/pi';
 import { STATUS_DECRYPTED } from '../../../../store/modules/encryption';
 
@@ -103,7 +104,7 @@ class MailMessage extends Component {
         )}
         <Icon type="envelope" className={classnames({ 'm-mail-message-details--encrypted__icon': isDecrypted || isLocked })} />
         {' '}
-        <span className="m-mail-message-details__author-name">{author.label}</span>
+        <ParticipantLabel className="m-mail-message-details__author-name" participant={author.label} />
         {' '}
         <Moment fromNow locale={locale} titleFormat="LLLL" withTitle>{message.date}</Moment>
       </TextBlock>
@@ -113,12 +114,12 @@ class MailMessage extends Component {
   render() {
     const {
       message, scrollTarget: { forwardRef }, onOpenTags, user, noInteractions, encryptionStatus,
-      isLocked,
     } = this.props;
     const isDecrypted = encryptionStatus && encryptionStatus.status === STATUS_DECRYPTED;
     const pi = getAveragePIMessage({ message });
     const piType = getPiClass(pi);
     const author = getAuthor(message);
+    const recipients = getRecipients(message);
 
     const infoPiClassName = {
       's-mail-message__info--super': piType === 'super',
@@ -143,12 +144,17 @@ class MailMessage extends Component {
             <div className="s-mail-message__participants-from">
               <span className="direction"><Trans id="message.from">From:</Trans></span>
               {' '}
-              {author.label}
+              <ParticipantLabel participant={author} />
             </div>
             <div className="s-mail-message__participants-to">
               <span className="direction"><Trans id="message.to">To:</Trans></span>
               {' '}
-              <MessageRecipients message={message} user={user} />
+              {recipients.map((participant, i) => (
+                <Fragment key={participant.address}>
+                  {i > 0 && ', '}
+                  <ParticipantLabel participant={participant} />
+                </Fragment>
+              ))}
             </div>
           </div>
           <TagList className="s-mail-message__tags" message={message} />
@@ -158,13 +164,19 @@ class MailMessage extends Component {
             <TextBlock nowrap={false}>{message.subject}</TextBlock>
           </h2>
           {this.renderBody()}
-          {
-            // Do not display attachments if message is encrypted.
-            (isDecrypted || isLocked) && (
-            <div className="m-message__attachments">
-              <MessageAttachments message={message} />
-            </div>
-            )}
+          <div className="m-message__attachments">
+            {
+              // Attachments' not decrypted
+              isDecrypted && (
+                <Callout color="info" className="s-mail-message__encrypted-attachments-info">
+                  <Trans id="message.attachment-encryption-not-available">
+                    Attachments decryption will be available in a futur version, please be patient.
+                  </Trans>
+                </Callout>
+              )
+            }
+            <MessageAttachments message={message} />
+          </div>
         </div>
         {!noInteractions && (
           <footer className="s-mail-message__actions">

@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { withI18n } from '@lingui/react';
-import { Trans } from '@lingui/macro'; // eslint-disable-line import/no-extraneous-dependencies
+import { withI18n, Trans } from '@lingui/react';
 import {
   TextFieldGroup, CheckboxFieldGroup, FormGrid, FormRow, FormColumn, FieldErrors, Confirm, Button,
   Spinner, TextBlock,
