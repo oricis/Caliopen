@@ -156,7 +156,7 @@ services:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.mq-worker
-    image: caliopen_mq_worker
+    image: caliopen_mqworker
     depends_on:
       - cassandra
       - elasticsearch
@@ -184,7 +184,7 @@ services:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.imap-worker
-    image: caliopen_imap_worker
+    image: caliopen_imapworker
     depends_on:
       - cassandra
       - objectstore
@@ -197,7 +197,7 @@ services:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.twitter-worker
-    image: caliopen_twitter_worker
+    image: caliopen_twitterworker
     depends_on:
     - cassandra
     - objectstore
@@ -211,7 +211,7 @@ services:
     build:
       context: ../src/backend
       dockerfile: Dockerfile.identity-poller
-    image: caliopen_identity_poller
+    image: caliopen_identitypoller
     depends_on:
       - imapworker
       - mqworker
