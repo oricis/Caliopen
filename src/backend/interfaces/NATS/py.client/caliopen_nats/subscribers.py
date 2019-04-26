@@ -60,7 +60,7 @@ class InboundEmail(BaseHandler):
     def handler(self, msg):
         """Handle an process_raw nats messages."""
         payload = json.loads(msg.data)
-        log.info('Get payload order {}'.format(payload['order']))
+        log.info('Get payload order {}'.format(payload))
         if payload['order'] == "process_raw":
             self.process_raw(msg, payload)
         else:
