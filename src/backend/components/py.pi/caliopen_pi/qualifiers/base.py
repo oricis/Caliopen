@@ -6,13 +6,13 @@ import logging
 
 from caliopen_storage.exception import NotFound
 from caliopen_main.contact.core import Contact
-from caliopen_main.message.parameters import Participant
+from caliopen_main.participant.parameters import Participant
+
 
 log = logging.getLogger(__name__)
 
 
 class BaseQualifier(object):
-
     _lookups = {}
 
     def __init__(self, user, identity):

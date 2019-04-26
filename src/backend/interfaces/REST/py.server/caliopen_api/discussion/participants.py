@@ -3,8 +3,8 @@ import logging
 from cornice.resource import resource, view
 
 from ..base import Api
-from caliopen_main.message.parameters import NewMessage, Participant
-from caliopen_main.discussion.core import Discussion
+from caliopen_main.participant.core import hash_participants_uri
+from caliopen_main.participant.objects import Participant
 
 log = logging.getLogger(__name__)
 
@@ -12,25 +12,26 @@ log = logging.getLogger(__name__)
 @resource(collection_path='/participants/discussion',
           path='/participants/discussion')
 class ParticipantDiscussion(Api):
+    """
+    returns canonical hash of participant_uris
+    which is the corresponding discussion_id
+    """
+
     def __init__(self, request):
         self.request = request
         self.user = request.authenticated_userid
 
     @view(renderer='json', permission='authenticated')
     def collection_post(self):
-        participants = self.request.swagger_data['participants']
-        msg = NewMessage()
-        parts = []
-        for part in participants:
+        parts = self.request.swagger_data['participants']
+        participants = []
+        for part in parts:
             participant = Participant()
             participant.address = part['address']
             participant.label = part['label']
             participant.protocol = part['protocol']
             participant.contact_id = part.get('contact_ids', [])
-            parts.append(participant)
-        msg.participants = parts
-        hashed = msg.hash_participants
-        discussion = Discussion.by_hash(self.user, hashed)
-        did = discussion.discussion_id if discussion else ""
-        return {'hash': hashed,
-                'discussion_id': did}
+            participants.append(participant)
+        uris = hash_participants_uri(participants)
+        return {'hash': uris['hash'],
+                'discussion_id': uris['hash']}

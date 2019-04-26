@@ -42,10 +42,6 @@ paths:
   "/v2/test/oauth":
     "$ref": paths/providers.yaml#/oauth_test
 ## contacts ##
-  "/v1/contacts":
-    "$ref": paths/contacts.yaml#/contacts
-  "/v1/contacts/{contact_id}":
-    "$ref": paths/contacts.yaml#/contacts_{contact_id}
   "/v2/contacts":
     "$ref": paths/contactsV2.yaml#/contacts
   "/v2/contacts/{contact_id}":
@@ -61,9 +57,9 @@ paths:
   "/v1/imports":
     "$ref": paths/imports.yaml#/imports
 ## messages/discussions ##
-  "/v1/discussions":
+  "/v2/discussions":
     "$ref": paths/discussions.yaml#/discussions
-  "/v1/discussions/{discussion_id}":
+  "/v2/discussions/{discussion_id}":
     "$ref": paths/discussions.yaml#/discussions_{discussion_id}
   "/v1/messages":
     "$ref": paths/messages.yaml#/messages
@@ -100,9 +96,8 @@ paths:
   ## search/suggest ##
   "/v2/participants/suggest":
     "$ref": paths/participants.yaml#/participants_suggest
-  "/v1/participants/discussion":
+  "/v2/participants/discussion":
     "$ref": paths/participants.yaml#/participants_discussion
-
   "/v2/search":
     "$ref": paths/search.yaml#/search
 ## notifications

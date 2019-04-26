@@ -22,7 +22,7 @@ export function requestDiscussions(params = {}) {
     type: REQUEST_DISCUSSIONS,
     payload: {
       request: {
-        url: '/api/v1/discussions',
+        url: '/api/v2/discussions',
         params: { offset, limit },
       },
     },
@@ -48,7 +48,7 @@ export function requestDiscussion({ discussionId }) {
     type: REQUEST_DISCUSSION,
     payload: {
       request: {
-        url: `/api/v1/discussions/${discussionId}`,
+        url: `/api/v2/discussions/${discussionId}`,
       },
     },
   };
@@ -61,7 +61,7 @@ export function requestDiscussionByParticipants({ internalHash, participants }) 
       internalHash,
       request: {
         method: 'post',
-        url: '/api/v1/participants/discussion',
+        url: '/api/v2/participants/discussion',
         data: participants,
       },
     },

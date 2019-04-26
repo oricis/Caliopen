@@ -5,22 +5,38 @@
 package objects
 
 import (
+	"bytes"
+	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
+	"time"
 )
 
-type Participant struct {
-	Address     string `cql:"address"          json:"address,omitempty"`
-	Contact_ids []UUID `cql:"contact_ids"      json:"contact_ids,omitempty"             formatter:"rfc4122"`
-	Label       string `cql:"label"            json:"label,omitempty"`
-	Protocol    string `cql:"protocol"         json:"protocol,omitempty"`
-	Type        string `cql:"type"             json:"type,omitempty"`
-}
+type (
+	Participant struct {
+		Address     string `cql:"address"          json:"address,omitempty"`
+		Contact_ids []UUID `cql:"contact_ids"      json:"contact_ids,omitempty"             formatter:"rfc4122"`
+		Label       string `cql:"label"            json:"label,omitempty"`
+		Protocol    string `cql:"protocol"         json:"protocol,omitempty"`
+		Type        string `cql:"type"             json:"type,omitempty"`
+	}
 
-/*
-func (rcpt *Participant) MarshalJSON() ([]byte, error) {
-	return customJSONMarshaler(rcpt, "json")
-}
-*/
+	HashLookup struct {
+		UserId         UUID      `cql:"user_id"` // primary key
+		Uri            string    `cql:"uri"`     // primary key
+		Hash           string    `cql:"hash"`    // primary key
+		DateInsert     time.Time `cql:"date_insert"`
+		HashComponents []string  `cql:"hash_components"`
+	}
+
+	ParticipantHash struct {
+		UserId     UUID      `cql:"user_id"` // primary key
+		Kind       string    `cql:"kind"`    // primary key
+		Key        string    `cql:"key"`     // primary key
+		Value      string    `cql:"value"`   // primary key
+		Components []string  `cql:"components"`
+		DateInsert time.Time `cql:"date_insert"`
+	}
+)
 
 func (p *Participant) UnmarshalMap(input map[string]interface{}) error {
 	if address, ok := input["address"].(string); ok {
@@ -49,9 +65,62 @@ func (p *Participant) UnmarshalMap(input map[string]interface{}) error {
 	return nil //TODO: errors handling
 }
 
+func (pl *HashLookup) UnmarshalCQLMap(input map[string]interface{}) error {
+	if user_id, ok := input["user_id"].(gocql.UUID); ok {
+		pl.UserId.UnmarshalBinary(user_id.Bytes())
+	}
+	if uri, ok := input["uri"].(string); ok {
+		pl.Uri = uri
+	}
+	if hash, ok := input["hash"].(string); ok {
+		pl.Hash = hash
+	}
+	if dateInsert, ok := input["date_insert"].(time.Time); ok {
+		pl.DateInsert = dateInsert
+	}
+	if components, ok := input["hash_components"].([]string); ok {
+		pl.HashComponents = components
+	}
+	return nil
+}
+
 // part of CaliopenObject interface
 func (p *Participant) MarshallNew(...interface{}) {
 	// nothing to enforce
+}
+
+func (pl *HashLookup) MarshallNew(args ...interface{}) {
+	if len(pl.UserId) == 0 || (bytes.Equal(pl.UserId.Bytes(), EmptyUUID.Bytes())) {
+		if len(args) == 1 {
+			switch args[0].(type) {
+			case UUID:
+				pl.UserId = args[0].(UUID)
+			}
+		}
+	}
+	pl.HashComponents = []string{}
+}
+
+func (hl *ParticipantHash) UnmarshalCQLMap(input map[string]interface{}) error {
+	if user_id, ok := input["user_id"].(gocql.UUID); ok {
+		hl.UserId.UnmarshalBinary(user_id.Bytes())
+	}
+	if kind, ok := input["kind"].(string); ok {
+		hl.Kind = kind
+	}
+	if key, ok := input["key"].(string); ok {
+		hl.Key = key
+	}
+	if value, ok := input["value"].(string); ok {
+		hl.Value = value
+	}
+	if components, ok := input["components"].([]string); ok {
+		hl.Components = components
+	}
+	if dateInsert, ok := input["date_insert"].(time.Time); ok {
+		hl.DateInsert = dateInsert
+	}
+	return nil
 }
 
 // Sort interface implementation

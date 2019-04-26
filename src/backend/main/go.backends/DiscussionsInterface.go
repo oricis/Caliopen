@@ -11,6 +11,10 @@ import (
 )
 
 type DiscussionStorage interface {
-	GetDiscussion(user_id, discussion_id UUID) (*Discussion, error)
-	GetOrCreateDiscussion(user_id UUID, participants []Participant) (*Discussion, error)
+	GetUserLookupHashes(userId UUID, kind, key string) (hashes []ParticipantHash, err error)
+	UpsertDiscussionLookups(userId UUID, participants []Participant) error
+}
+
+type DiscussionIndex interface {
+	GetDiscussionsList(filter IndexSearch, withIL bool) ([]Discussion, error)
 }

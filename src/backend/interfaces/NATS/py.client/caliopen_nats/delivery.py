@@ -8,8 +8,9 @@ import datetime
 import pytz
 from caliopen_storage.exception import NotFound, DuplicateObject
 from caliopen_main.message.core import RawMessage, MessageExternalRefLookup
+from caliopen_main.message.store import \
+    MessageExternalRefLookup as ModelMessageExternalRefLookup
 from caliopen_main.message.objects.message import Message
-from caliopen_main.message.store.message import ModelMessageExternalRefLookup
 from caliopen_pi.qualifiers import UserMessageQualifier, UserDMQualifier
 
 log = logging.getLogger(__name__)
@@ -34,27 +35,26 @@ class UserMessageDelivery(object):
         log.debug('Retrieved raw message {}'.format(raw_msg_id))
 
         message = self.qualifier.process_inbound(raw)
-
         external_refs = ModelMessageExternalRefLookup.filter(
             user_id=self.user.user_id,
             external_msg_id=message.external_msg_id)
         if external_refs:
+            msg = external_refs[0]
             # message already imported, update it with identity_id if needed
-            for external_ref in external_refs:
-                obj = Message(user=self.user,
-                              message_id=external_ref.message_id)
-                if str(external_ref.identity_id) != self.identity.identity_id:
-                    obj.get_db()
-                    obj.unmarshall_db()
-                    obj.user_identities.append(self.identity.identity_id)
-                    obj.marshall_db()
-                    obj.save_db()
-                    obj.marshall_index()
-                    obj.save_index()
-                    MessageExternalRefLookup.create(self.user,
-                                                    external_msg_id=external_ref.external_msg_id,
-                                                    identity_id=self.identity.identity_id,
-                                                    message_id=external_ref.message_id)
+            obj = Message(user=self.user,
+                          message_id=msg.message_id)
+            if str(msg.identity_id) != self.identity.identity_id:
+                obj.get_db()
+                obj.unmarshall_db()
+                obj.user_identities.append(self.identity.identity_id)
+                obj.marshall_db()
+                obj.save_db()
+                obj.marshall_index()
+                obj.save_index()
+                MessageExternalRefLookup.create(self.user,
+                                                external_msg_id=msg.external_msg_id,
+                                                identity_id=self.identity.identity_id,
+                                                message_id=msg.message_id)
             raise DuplicateObject(DUPLICATE_MESSAGE_EXC)
 
         # store and index Message

@@ -46,6 +46,7 @@ class DiscussionIndexManager(object):
 
     def __search_ids(self, limit, offset, min_pi, max_pi, min_il, max_il):
         """Search discussions ids as a bucket aggregation."""
+        # TODO : search on participants_hash instead
         search = self._prepare_search(). \
             filter("range", importance_level={'gte': min_il, 'lte': max_il})
         # Do bucket term aggregation, sorted by last_message date
@@ -72,7 +73,6 @@ class DiscussionIndexManager(object):
 
     def get_last_message(self, discussion_id, min_il, max_il, include_draft):
         """Get last message of a given discussion."""
-
         search = self._prepare_search() \
             .filter("match", discussion_id=discussion_id) \
             .filter("range", importance_level={'gte': min_il, 'lte': max_il})
@@ -94,6 +94,7 @@ class DiscussionIndexManager(object):
                                            max_il)
         discussions = []
         for bucket in buckets:
+            # TODO : les buckets seront des hash_participants, donc il faut créer la liste des discussion_id avant et itérer là-dessus
             message = self.get_last_message(bucket['key'],
                                             min_il, max_il,
                                             True)
@@ -115,6 +116,7 @@ class DiscussionIndexManager(object):
     def get_by_id(self, discussion_id, min_il=0, max_il=100):
         """Return a single discussion by discussion_id"""
 
+        # TODO : search by multiple discussion_id because they are hashes now
         search = self._prepare_search() \
             .filter("match", discussion_id=discussion_id)
         search.aggs.bucket('discussions', A('terms', field='discussion_id')) \
@@ -130,3 +132,27 @@ class DiscussionIndexManager(object):
         discussion.unread_count = result.aggregations.discussions.buckets[
             0].unread.doc_count
         return discussion
+
+    def get_by_uris(self, uris_hashes, min_il=0, max_il=100):
+        """
+
+        :param uris_hashes: an array of uris hashes
+        :param min_il:
+        :param max_il:
+        :return:
+        """
+        search = self._prepare_search(). \
+            filter("terms", discussion_id=uris_hashes). \
+            filter("range", importance_level={'gte': min_il, 'lte': max_il})
+
+        agg = A('terms', field='discussion_id',
+                order={'last_message': 'desc'})
+        search.aggs.bucket('discussions', agg). \
+            metric('last_message', 'max', field='date_sort'). \
+            bucket("unread", "filter", term={"is_unread": True})
+
+        result = search.execute()
+        if not result.hits or len(result.hits) < 1:
+            return None
+
+        return result

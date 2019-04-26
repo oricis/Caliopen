@@ -42,10 +42,10 @@ type (
 
 	// ContactByContactPoints is the model of a Cassandra table to lookup contacts by address/email/phone/etc.
 	ContactByContactPoints struct {
-		ContactIDs []string `cql:"contact_ids"`
-		Type       string   `cql:"type"`
-		UserID     string   `cql:"user_id"`
-		Value      string   `cql:"value"`
+		ContactID string `cql:"contact_id"`
+		Type      string `cql:"type"`
+		UserID    string `cql:"user_id"`
+		Value     string `cql:"value"`
 	}
 )
 
@@ -282,6 +282,7 @@ func (c *Contact) UnmarshalMap(input map[string]interface{}) error {
 		c.Identities = []SocialIdentity{}
 		for _, identity := range identities.([]interface{}) {
 			I := new(SocialIdentity)
+			I.Infos = map[string]string{}
 			if err := I.UnmarshalMap(identity.(map[string]interface{})); err == nil {
 				c.Identities = append(c.Identities, *I)
 			}
@@ -481,6 +482,7 @@ func (c *Contact) GetSetRelated() <-chan interface{} {
 func (c *Contact) GetLookupsTables() map[string]StoreLookup {
 	return map[string]StoreLookup{
 		"contact_lookup": &ContactByContactPoints{},
+		//"participant_lookup": &ContactByContactPoints{}, TODO
 	}
 }
 
@@ -548,41 +550,46 @@ func (c *Contact) MarshallNew(args ...interface{}) {
 // GetLookupKeys returns a chan to iterate over fields and values that make up the lookup tables keys
 func (c *Contact) GetLookupKeys() <-chan StoreLookup {
 	getter := make(chan StoreLookup)
-
+	contactId := c.ContactId.String()
+	userId := c.UserId.String()
 	go func(chan StoreLookup) {
 		// emails
 		for _, email := range c.Emails {
 			key := ContactByContactPoints{
-				UserID: c.UserId.String(),
-				Type:   "email",
-				Value:  email.Address,
+				ContactID: contactId,
+				Type:      "email",
+				UserID:    userId,
+				Value:     email.Address,
 			}
 			getter <- &key
 		}
 		// identities
 		for _, identity := range c.Identities {
 			key := ContactByContactPoints{
-				UserID: c.UserId.String(),
-				Type:   "social",
-				Value:  identity.Name,
+				ContactID: contactId,
+				Type:      identity.Type,
+				UserID:    userId,
+				Value:     identity.Name,
 			}
 			getter <- &key
 		}
 		// Ims
 		for _, im := range c.Ims {
 			key := ContactByContactPoints{
-				UserID: c.UserId.String(),
-				Type:   "im",
-				Value:  im.Address,
+				ContactID: contactId,
+				Type:      im.Protocol,
+				UserID:    userId,
+				Value:     im.Address,
 			}
 			getter <- &key
 		}
 		// phones
 		for _, phone := range c.Phones {
 			key := ContactByContactPoints{
-				UserID: c.UserId.String(),
-				Type:   "phone",
-				Value:  phone.Number,
+				ContactID: contactId,
+				Type:      "phone",
+				UserID:    userId,
+				Value:     phone.Number,
 			}
 			getter <- &key
 
@@ -601,118 +608,74 @@ func (lookup *ContactByContactPoints) UpdateLookups(contacts ...interface{}) fun
 	update := false
 	if contactsLen > 0 {
 		newContact := contacts[0].(*Contact)
-		var oldLookups map[string]*ContactByContactPoints
+		newLookups, oldLookups := map[string]*ContactByContactPoints{}, map[string]*ContactByContactPoints{}       // lookups found in new and old contact
+		addedLookups, removedLookups := map[string]*ContactByContactPoints{}, map[string]*ContactByContactPoints{} // filled or drained by loops below
 		return func(session *gocql.Session) error {
 			if contactsLen == 2 && contacts[1] != nil {
 				// it's an update, get a list of old lookupKeys to later find those that have been removed
 				update = true
 				oldContact := contacts[1].(*Contact)
-				oldLookups = map[string]*ContactByContactPoints{} // we'll build strings with cassa's keys
 				for lookup := range oldContact.GetLookupKeys() {
 					lkp := lookup.(*ContactByContactPoints)
-					oldLookups[lkp.UserID+lkp.Value+lkp.Type] = lkp
+					lkpKey := lkp.UserID + lkp.Value + lkp.Type
+					oldLookups[lkpKey] = lkp
+					removedLookups[lkpKey] = lkp
 				}
 
 			}
 			// iterate over contact's current state to add or update lookups
 			for lookup := range newContact.GetLookupKeys() {
 				lkp := lookup.(*ContactByContactPoints)
-				// try to get the contact_lookup
-				contactIds := new([]string)
-				session.Query(`SELECT contact_ids from contact_lookup WHERE user_id = ? AND value = ? AND type = ?`,
-					lkp.UserID,
-					lkp.Value,
-					lkp.Type,
-				).Scan(contactIds)
-
-				if len(*contactIds) < 1 { // contact_lookup not found or empty => set one
-					err := session.Query(`INSERT INTO contact_lookup (user_id, value, type, contact_ids) VALUES (?,?,?,?)`,
-						(*lkp).UserID,
-						(*lkp).Value,
-						(*lkp).Type,
-						[]string{newContact.ContactId.String()},
-					).Exec()
-					if err != nil {
-						log.WithError(err).Warnf(`[CassandraBackend] UpdateLookups INSERT failed for user: %s, value: %s, type: %s`,
-							lkp.UserID,
-							lkp.Value,
-							lkp.Type)
-					}
-				} else { // contact_lookup found with contact_ids => udpate if needed
-					idFound := false
-					for _, contactId := range *contactIds {
-						if contactId == newContact.ContactId.String() {
-							idFound = true
-							break
-						}
-					}
-					if !idFound {
-						(*contactIds) = append((*contactIds), newContact.ContactId.String())
-						err := session.Query(`INSERT INTO contact_lookup (user_id, value, type, contact_ids) VALUES (?,?,?,?)`,
-							(*lkp).UserID,
-							(*lkp).Value,
-							(*lkp).Type,
-							*contactIds,
-						).Exec()
-						if err != nil {
-							log.WithError(err).Warnf(`[CassandraBackend] UpdateLookups INSERT failed for user: %s, value: %s, type: %s`,
-								lkp.UserID,
-								lkp.Value,
-								lkp.Type)
-						}
-					}
+				lkpKey := lkp.UserID + lkp.Value + lkp.Type
+				newLookups[lkpKey] = lkp
+				if _, ok := oldLookups[lkpKey]; !ok {
+					addedLookups[lkpKey] = lkp
+				}
+				err := session.Query(`INSERT INTO contact_lookup (user_id, value, type, contact_id) VALUES (?,?,?,?)`,
+					(*lkp).UserID,
+					(*lkp).Value,
+					(*lkp).Type,
+					(*lkp).ContactID,
+				).Exec()
+				if err != nil {
+					log.WithError(err).Warnf(`[CassandraBackend] UpdateLookups INSERT failed for user: %s, value: %s, type: %s`,
+						lkp.UserID,
+						lkp.Value,
+						lkp.Type)
+				}
+				// do the job of updating participants and discussion related tables
+				err = associateURIWithContact(session, lkp)
+				if err != nil {
+					// TODO : handle multiple error returns to merge into one error or break immediately ?
 				}
 				if update {
-					// remove keys in current states,
-					// thus oldLookups map will only holds remaining entries that are not in the new state
-					delete(oldLookups, lkp.UserID+lkp.Value+lkp.Type)
+					// remove keys in removedLookups,
+					// thus at end it will only hold remaining entries that are not in the new state
+					delete(removedLookups, lkpKey)
 				}
 			}
 
-			if len(oldLookups) > 0 {
+			if len(removedLookups) > 0 {
 				// it remains lookups in the map, meaning these lookups references have been removed from contact
-				// need to remove contactID from lookup table
-				for _, lookup := range oldLookups {
+				// need to cleanup lookup tables
+				for _, lookup := range removedLookups {
 					// try to get the contact_lookup
-					contactIds := []string{}
-					session.Query(`SELECT contact_ids from contact_lookup WHERE user_id = ? AND value = ? AND type = ?`,
+					err := session.Query(`DELETE FROM contact_lookup WHERE user_id = ? AND value = ? AND type = ?`,
 						lookup.UserID,
 						lookup.Value,
 						lookup.Type,
-					).Scan(&contactIds)
-					if len(contactIds) > 0 {
-						updated := false
-						for i, id := range contactIds {
-							if id == newContact.ContactId.String() {
-								// pop contactID
-								contactIds = append(contactIds[:i], contactIds[i+1:]...)
-								updated = true
-							}
-						}
-						if updated {
-							if len(contactIds) == 0 {
-								// no contactIDs left for this lookup, remove it from db
-								err := session.Query(`DELETE FROM contact_lookup WHERE user_id = ? AND value = ? AND type = ?`,
-									lookup.UserID,
-									lookup.Value,
-									lookup.Type).Exec()
-								if err != nil {
-									return err
-								}
-							} else {
-								// update lookup with clean contactIDs slice
-								err := session.Query(`UPDATE contact_lookup SET contact_ids = ? WHERE user_id = ? AND value = ? AND type = ?`,
-									contactIds,
-									lookup.UserID,
-									lookup.Value,
-									lookup.Type).Exec()
-								if err != nil {
-									return err
-								}
-							}
-						}
+					).Exec()
+					if err != nil {
+						log.WithError(err).Warnf(`[CassandraBackend] UpdateLookups DELETE failed for user: %s, value: %s, type: %s`,
+							lookup.UserID,
+							lookup.Value,
+							lookup.Type)
 					}
-
+					// do the job of updating participants and discussion related tables
+					err = dissociateURIFromContact(session, lookup)
+					if err != nil {
+						// TODO : handle multiple error returns to merge into one error or break immediately ?
+					}
 				}
 			}
 			return nil
@@ -763,5 +726,41 @@ func (lookup *ContactByContactPoints) CleanupLookups(contacts ...interface{}) fu
 			return nil
 		}
 	}
+	return nil
+}
+
+// associateURIWithContact is algorithm to update hashes in ParticipantHash table
+// to be able to link URI with contact when building discussions
+func associateURIWithContact(session *gocql.Session, lkp *ContactByContactPoints) error {
+	// lookup uris_hashes where lkp's uri is embedded
+	lkpUri := lkp.Type + ":" + lkp.Value
+	uriHashes, err := session.Query(`SELECT * FROM hash_lookup WHERE user_id = ? AND uri = ?`, lkp.UserID, lkpUri).Iter().SliceMap()
+	if err != nil {
+		return err
+	}
+
+	// for each uris_hash found, resolve to a participant_hash
+	participantHashes := map[string]map[string]interface{}{}
+	for _, uriHash := range uriHashes {
+		var participantHash map[string]interface{}
+		hash := uriHash["hash"].(string)
+		err := session.Query(`SELECT * FROM participant_hash WHERE user_id = ? AND kind = ? AND key = ?`, lkp.UserID, "uris", hash).Scan(&participantHash)
+		if err != nil {
+			if err.Error() == "not found" {
+				continue
+			} else {
+				log.WithError(err).Warn("associateURIWithContact failed to query participant_hash for user_id = %s, kind = %s, key = %s", lkp.UserID, "uris", hash)
+				continue
+			}
+		}
+		participantHashes[hash] = participantHash
+	}
+	return nil
+}
+
+// dissociateURIFromContact is algorithm to update hashes in ParticipantHash table
+// to not link URI to contact anymore when building discussions
+func dissociateURIFromContact(session *gocql.Session, lkp *ContactByContactPoints) error {
+
 	return nil
 }

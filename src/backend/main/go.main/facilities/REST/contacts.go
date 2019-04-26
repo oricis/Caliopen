@@ -34,34 +34,14 @@ func (rest *RESTfacility) CreateContact(contact *Contact) (err error) {
 	MarshalNested(contact)
 	MarshalRelated(contact)
 
-	// concurrent creation in db & index
-	wg := new(sync.WaitGroup)
-	wg.Add(2)
-	errGroup := new([]string)
-	mx := new(sync.Mutex)
-	go func(wg *sync.WaitGroup, errGroup *[]string, mx *sync.Mutex) {
-		err = rest.store.CreateContact(contact)
-		if err != nil {
-			mx.Lock()
-			*errGroup = append(*errGroup, err.Error())
-			mx.Unlock()
-		}
-		wg.Done()
-	}(wg, errGroup, mx)
+	err = rest.store.CreateContact(contact)
+	if err != nil {
+		return err
+	}
 
-	go func(wg *sync.WaitGroup, errGroup *[]string, mx *sync.Mutex) {
-		err = rest.index.CreateContact(contact)
-		if err != nil {
-			mx.Lock()
-			*errGroup = append(*errGroup, err.Error())
-			mx.Unlock()
-		}
-		wg.Done()
-	}(wg, errGroup, mx)
-
-	wg.Wait()
-	if len(*errGroup) > 0 {
-		return fmt.Errorf("%s", strings.Join(*errGroup, " / "))
+	err = rest.index.CreateContact(contact)
+	if err != nil {
+		return err
 	}
 
 	// notify external components
@@ -137,7 +117,8 @@ func (rest *RESTfacility) PatchContact(user *UserInfo, patch []byte, contactID s
 	var modifiedFields map[string]interface{}
 	newContact, modifiedFields, err := helpers.UpdateWithPatch(patch, current_contact, UserActor)
 	if err != nil {
-		log.WithError(err).Warn("[discoverKey] failed to publish discover key message")
+		log.WithError(err).Warn("[RESTfacility] PatchContact failed")
+		return WrapCaliopenErr(err, FailDependencyCaliopenErr, "[RESTfacility] PatchContact failed")
 	}
 
 	needNewTitle := false
@@ -148,7 +129,7 @@ func (rest *RESTfacility) PatchContact(user *UserInfo, patch []byte, contactID s
 		// check if title has to be re-computed
 		case "AdditionalName", "FamilyName", "GivenName", "NamePrefix", "NameSuffix":
 			needNewTitle = true
-		// Check if we can try to discover a public key
+			// Check if we can try to discover a public key
 		case "Emails", "Identities":
 			discoverKey = true
 		}
@@ -161,7 +142,11 @@ func (rest *RESTfacility) PatchContact(user *UserInfo, patch []byte, contactID s
 	// save updated resource
 	err = rest.UpdateContact(user, newContact.(*Contact), current_contact, modifiedFields)
 	if err != nil {
-		return WrapCaliopenErrf(err, FailDependencyCaliopenErr, "[RESTfacility] PatchContact failed with UpdateContact error : %s", err)
+		if strings.HasPrefix(err.Error(), "uri <") {
+			return WrapCaliopenErrf(err, ForbiddenCaliopenErr, "[RESTfacility] PatchContact forbidden : %s", err)
+		} else {
+			return WrapCaliopenErrf(err, FailDependencyCaliopenErr, "[RESTfacility] PatchContact failed with UpdateContact error : %s", err)
+		}
 	}
 	if discoverKey {
 		err = rest.launchKeyDiscovery(current_contact, modifiedFields)

@@ -10,6 +10,7 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/contacts"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/devices"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/discussions"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/identities"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/messages"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/notifications"
@@ -231,9 +232,15 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	//tags
 	msg.PATCH("/:message_id/tags", tags.PatchResourceWithTags)
 
+	/** discussions API **/
+	disc := api.Group("/discussions", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
+	disc.GET("", discussions.GetDiscussionsList)
+	disc.GET("/:discussionId", discussions.GetDiscussion)
+
 	/** participants API **/
 	parts := api.Group("/participants", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
 	parts.GET("/suggest", participants.Suggest)
+	parts.POST("/discussion", participants.HashUris)
 
 	/** contacts API **/
 	cts := api.Group(http_middleware.ContactsRoute, http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))

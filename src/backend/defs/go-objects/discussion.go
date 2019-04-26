@@ -6,34 +6,122 @@ package objects
 
 import (
 	"bytes"
-	"github.com/gocql/gocql"
+	"encoding/json"
 	"github.com/satori/go.uuid"
 	"time"
 )
 
 type (
 	Discussion struct {
-		UserId           UUID      `cql:"user_id"`
-		Date_insert      time.Time `cql:"date_insert"              json:"date_insert"              formatter:"RFC3339Milli"`
-		Discussion_id    UUID      `cql:"discussion_id"            json:"discussion_id"            formatter:"rfc4122"`
-		Importance_level int32     `cql:"importance_level"         json:"importance_level"`
-		Excerpt          string    `cql:"excerpt"                  json:"excerpt"`
-		Total_count      int32     `cql:"-"              json:"total_count"`
-		Unread_count     int32     `cql:"-"             json:"unread_count"`
-	}
-
-	DiscussionGlobalLookup struct {
-		UserId       UUID   `cql:"user_id"`
-		Hashed       string `cql:"hashed"`
-		DiscussionId UUID   `cql:"discussion_id"`
+		AttachmentCount    int32         `json:"attachment_count,omitempty"`
+		Aliases            []string      `json:"aliases,omitempty"` // other discussion_id linked to this one, if any
+		DateInsert         time.Time     `json:"date_insert,omitempty"              formatter:"RFC3339Milli"`
+		DateUpdate         time.Time     `json:"date_update,omitempty"              formatter:"RFC3339Milli"`
+		DiscussionId       string        `json:"discussion_id"                      formatter:"rfc4122"`
+		Excerpt            string        `json:"excerpt"`
+		ImportanceLevel    int32         `json:"importance_level"`
+		LastMessageDate    time.Time     `json:"last_message_date,omitempty"        formatter:"RFC3339Milli"`
+		LastMessageId      UUID          `json:"last_message_id"`
+		LastMessageSubject string        `json:"last_message_subject"`
+		Participants       []Participant `json:"participants"`
+		Protocol           string        `json:"protocol,omitempty"`
+		Subject            string        `json:"subject"`
+		Tags               []string      `json:"tags,omitempty"`
+		TotalCount         int32         `json:"total_count"`
+		UnreadCount        int32         `json:"unread_count"`
+		UserId             UUID          `json:"user_id"`
 	}
 )
 
+func (d *Discussion) UnmarshalJSON(b []byte) error {
+	input := map[string]interface{}{}
+	if err := json.Unmarshal(b, &input); err != nil {
+		return err
+	}
+
+	return d.UnmarshalMap(input)
+}
+
+// UnmarshalMap hydrates a Discussion with data from map[string]interface{}
+func (d *Discussion) UnmarshalMap(input map[string]interface{}) error {
+	if aliases, ok := input["aliases"].([]string); ok {
+		d.Aliases = aliases
+	}
+	if attachmentCount, ok := input["attachment_count"].(float64); ok {
+		d.AttachmentCount = int32(attachmentCount)
+	}
+	if dateInsert, ok := input["date_insert"].(string); ok {
+		d.DateInsert, _ = time.Parse(time.RFC3339Nano, dateInsert)
+	}
+	if dateUpdate, ok := input["date_update"].(string); ok {
+		d.DateUpdate, _ = time.Parse(time.RFC3339Nano, dateUpdate)
+	}
+	if discId, ok := input["discussion_id"].(string); ok {
+		d.DiscussionId = discId
+	}
+	if excerpt, ok := input["excerpt"].(string); ok {
+		d.Excerpt = excerpt
+	}
+	if il, ok := input["importance_level"].(float64); ok {
+		d.ImportanceLevel = int32(il)
+	}
+	if lastMsgDate, ok := input["last_message_date"].(string); ok {
+		d.LastMessageDate, _ = time.Parse(time.RFC3339Nano, lastMsgDate)
+	}
+	if lastMsgId, ok := input["last_message_id"].(string); ok {
+		if id, err := uuid.FromString(lastMsgId); err == nil {
+			d.LastMessageId.UnmarshalBinary(id.Bytes())
+		}
+	}
+	if participants, ok := input["participants"]; ok && participants != nil {
+		d.Participants = []Participant{}
+		for _, participant := range participants.([]interface{}) {
+			P := new(Participant)
+			if err := P.UnmarshalMap(participant.(map[string]interface{})); err == nil {
+				d.Participants = append(d.Participants, *P)
+			}
+		}
+	}
+	if protocol, ok := input["protocol"].(string); ok {
+		d.Protocol = protocol
+	}
+	if subject, ok := input["subject"].(string); ok {
+		d.Subject = subject
+	}
+	if tags, ok := input["tags"]; ok && tags != nil {
+		d.Tags = []string{}
+		for _, tag := range tags.([]interface{}) {
+			d.Tags = append(d.Tags, tag.(string))
+		}
+	}
+	if totalCount, ok := input["total_count"].(float64); ok {
+		d.TotalCount = int32(totalCount)
+	}
+	if unreadCount, ok := input["unread_count"].(float64); ok {
+		d.UnreadCount = int32(unreadCount)
+	}
+	if userId, ok := input["user_id"].(string); ok {
+		if id, err := uuid.FromString(userId); err == nil {
+			d.UserId.UnmarshalBinary(id.Bytes())
+		}
+	}
+	return nil
+}
+
+// bespoke implementation of the json.Marshaller interface
+// outputs a JSON representation of an object
+// this marshaler takes account of custom tags for given 'context'
+func (d *Discussion) JSONMarshaller() ([]byte, error) {
+	return JSONMarshaller("", d)
+}
+
+// return a JSON representation of Message suitable for frontend client
+func (d *Discussion) MarshalFrontEnd() ([]byte, error) {
+	return JSONMarshaller("frontend", d)
+}
+
 // MarshallNew implements CaliopenObject interface
 func (d *Discussion) MarshallNew(args ...interface{}) {
-	if len(d.Discussion_id) == 0 || (bytes.Equal(d.Discussion_id.Bytes(), EmptyUUID.Bytes())) {
-		d.Discussion_id.UnmarshalBinary(uuid.NewV4().Bytes())
-	}
 	if len(d.UserId) == 0 || (bytes.Equal(d.UserId.Bytes(), EmptyUUID.Bytes())) {
 		if len(args) == 1 {
 			switch args[0].(type) {
@@ -43,33 +131,21 @@ func (d *Discussion) MarshallNew(args ...interface{}) {
 		}
 	}
 
-	if d.Date_insert.IsZero() {
-		d.Date_insert = time.Now()
+	if d.DateInsert.IsZero() {
+		d.DateInsert = time.Now()
 	}
 }
 
-func (d *Discussion) UnmarshalCQLMap(input map[string]interface{}) error {
-	if user_id, ok := input["user_id"].(gocql.UUID); ok {
-		d.UserId.UnmarshalBinary(user_id.Bytes())
-	}
-	if discussion_id, ok := input["discussion_id"].(gocql.UUID); ok {
-		d.Discussion_id.UnmarshalBinary(discussion_id.Bytes())
-	}
-	if date_insert, ok := input["date_insert"].(time.Time); ok {
-		d.Date_insert = date_insert
-	}
-	return nil
+type ByLastMessageDateDesc []Discussion
+
+func (blm ByLastMessageDateDesc) Len() int {
+	return len(blm)
 }
 
-func (d *DiscussionGlobalLookup) UnmarshalCQLMap(input map[string]interface{}) error {
-	if user_id, ok := input["user_id"].(gocql.UUID); ok {
-		d.UserId.UnmarshalBinary(user_id.Bytes())
-	}
-	if hash, ok := input["hashed"].(string); ok {
-		d.Hashed = hash
-	}
-	if did, ok := input["discussion_id"].(gocql.UUID); ok {
-		d.DiscussionId.UnmarshalBinary(did.Bytes())
-	}
-	return nil
+func (blm ByLastMessageDateDesc) Less(i, j int) bool {
+	return blm[i].LastMessageDate.After(blm[j].LastMessageDate)
+}
+
+func (blm ByLastMessageDateDesc) Swap(i, j int) {
+	blm[i], blm[j] = blm[j], blm[i]
 }

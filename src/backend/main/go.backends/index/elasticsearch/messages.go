@@ -129,11 +129,7 @@ func (es *ElasticSearchBackend) GetMessagesRange(filter objects.IndexSearch) (me
 	}
 	messages = append(messages, msg)
 
-	// add discussion_id to filter.Terms
-	filter.Terms["discussion_id"] = []string{msg.Discussion_id.String()}
-
 	// prepare search
-
 	// make search_after query for `after` param
 	if wantAfter {
 		searchAfter := es.Client.Search().Index(filter.Shard_id).Type(objects.MessageIndexType)

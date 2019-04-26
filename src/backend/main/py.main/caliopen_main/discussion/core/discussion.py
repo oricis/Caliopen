@@ -3,182 +3,43 @@
 from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
-import uuid
-import datetime
-import pytz
 
-from caliopen_storage.exception import NotFound
-from caliopen_storage.parameters import ReturnCoreObject
+from caliopen_main.common.objects.base import ObjectUser
 
-from caliopen_main.common.core import BaseUserCore
-from caliopen_main.common.helpers.strings import unicode_truncate
-
-from ..store.discussion import (DiscussionListLookup as ModelListLookup,
-     DiscussionThreadLookup as ModelThreadLookup,
-     DiscussionGlobalLookup as ModelGlobalLookup,
-     Discussion as ModelDiscussion)
-from ..store.discussion_index import DiscussionIndexManager as DIM
-
-from caliopen_main.discussion.parameters import Discussion as DiscussionParam
-from caliopen_main.message.parameters.participant import Participant
+from caliopen_main.participant.core import participants_from_uris, \
+    hash_participants_uri
+from caliopen_main.participant.core import ParticipantHash
 
 log = logging.getLogger(__name__)
 
 
-def count_attachment(message):
-    """Return number of attachment in message."""
-    cpt = 0
-    if message.attachments:
-        for a in message.attachments:
-            if a.name and not a.is_inline:
-                cpt += 1
-    return cpt
-
-
-class DiscussionListLookup(BaseUserCore):
-    """Lookup discussion by external list-id"""
-
-    _model_class = ModelListLookup
-    _pkey_name = 'list_id'
-
-
-class DiscussionThreadLookup(BaseUserCore):
-    """Lookup discussion by external thread's root message_id."""
-
-    _model_class = ModelThreadLookup
-    _pkey_name = 'external_root_msg_id'
-
-
-class DiscussionGlobalLookup(BaseUserCore):
-    """Lookup global discussion."""
-
-    _model_class = ModelGlobalLookup
-    _pkey_name = 'hashed'
-
-
-def build_discussion(core, index):
-    """Temporary build of output Discussion return parameter."""
-    discuss = DiscussionParam()
-    discuss.user_id = core.user_id
-    discuss.discussion_id = core.discussion_id
-    discuss.date_insert = core.date_insert
-    discuss.date_update = index.last_message.date_sort
-    # TODO : excerpt from plain or html body
-    maxsize = 100
-    discuss.last_message_id = index.last_message.message_id 
-    discuss.last_message_subject = index.last_message.subject
-    discuss.excerpt = unicode_truncate(index.last_message.body_plain,
-                                       maxsize) if index.last_message.body_plain else u''
-    discuss.total_count = index.total_count
-    discuss.subject = index.last_message.subject
-    discuss.protocol = index.last_message.protocol
-
-    # TODO
-    # discussion.privacy_index = index_message.privacy_index
-    # XXX Only last message recipient at this time
-
-    for part in index.last_message.participants:
-        participant = Participant()
-        participant.address = part['address']
-        try:
-            participant.label = part['label']
-        except:
-            participant.label = part['address']
-        participant.type = part['type']
-        if 'contact_ids' in part:
-            participant.contact_ids = part['contact_ids']
-        participant.protocol = part['protocol']
-        discuss.participants.append(participant)
-
-    # XXX Missing values (at least other in parameter to fill)
-    discuss.unread_count = index.unread_count
-    discuss.attachment_count = index.attachment_count
-    return discuss.serialize()
-
-
-class MainView(object):
-    """Build main view return structure from index messages."""
-
-    def build_responses(self, user, discussions):
-        """Build list of responses using core and related index message."""
-        for discussion in discussions:
-            try:
-                core = Discussion.get(user, discussion.discussion_id)
-            except NotFound:
-                continue
-            if core:
-                yield build_discussion(core, discussion)
-
-    def get(self, user, min_il, max_il, limit, offset):
-        """Build the main view results."""
-        # XXX use of correct pagination and correct datasource (index)
-        dim = DIM(user)
-        discussions, total = dim.list_discussions(limit=limit, offset=offset,
-                                                  min_il=min_il, max_il=max_il)
-        responses = self.build_responses(user, discussions)
-        return {'discussions': list(responses), 'total': total}
-
-    def get_one(self, user, discussion_id, min_il=0, max_il=100):
-
-        discussion_index = DIM(user).get_by_id(discussion_id, min_il, max_il)
-        if not discussion_index:
-            raise NotFound
-        discussion_core = Discussion.get(user, discussion_index.discussion_id)
-        if discussion_core:
-            return build_discussion(discussion_core, discussion_index)
-        else:
-            raise NotFound
-
-
-class Discussion(BaseUserCore):
+class Discussion(ObjectUser):
     """Discussion core object."""
 
-    _model_class = ModelDiscussion
+    def upsert_lookups_for_participants(self, participants):
+        """
+        Ensure that participants lookup and hash lookup tables are filled
+        for these participants
 
-    _pkey_name = 'discussion_id'
+        :param user:
+        :param participants: a collection of parameters/Participant
+        :type uris: set
+        :return: Discussion
+        """
+        if not participants:
+            raise Exception("missing mandatory property to create lookup entry")
 
-    @classmethod
-    def create_from_message(cls, user, message):
-        # TODO excerpt from plain or html body
-        maxsize = 200
-        excerpt = unicode_truncate(message.body_plain,
-                                   maxsize) if message.body_plain else u''
-        new_id = uuid.uuid4()
-        kwargs = {u'discussion_id': new_id,
-                  u'date_insert': datetime.datetime.now(tz=pytz.utc),
-                  # 'privacy_index': message.privacy_index,
-                  # 'importance_level': message.importance_level,
-                  u'excerpt': excerpt,
-                  }
-        discussion = cls.create(user, **kwargs)
-        log.debug('Created discussion {}'.format(discussion.discussion_id))
-        return discussion
+        uris = hash_participants_uri(participants)
+        hash_lookup = ParticipantHash.find(user_id=self.user.user_id,
+                                           kind="uris",
+                                           key=uris['hash'])
+        if len(hash_lookup) > 0:
+            self.participants = hash_lookup[0].components
+            self.participants_hash = hash_lookup[0].value
+        else:
+            parts = participants_from_uris(self.user, uris['URIs'],
+                                           uris['hash'])
+            self.participants = parts['components']
+            self.participants_hash = parts['hash']
 
-    @classmethod
-    def by_external_id(cls, user, external_discussion_id):
-        try:
-            lookup = DiscussionExternalLookup.get(user, external_discussion_id)
-        except NotFound:
-            return None
-        return cls.get(user, lookup.discussion_id)
-
-    @classmethod
-    def by_recipient_name(cls, user, recipient_name):
-        try:
-            lookup = DiscussionRecipientLookup.get(user, recipient_name)
-        except NotFound:
-            return None
-        return cls.get(user, lookup.discussion_id)
-
-    @classmethod
-    def by_hash(cls, user, hash):
-        try:
-            lookup = DiscussionGlobalLookup.get(user, hash)
-        except NotFound:
-            return None
-        return cls.get(user, lookup.discussion_id)
-
-
-class ReturnDiscussion(ReturnCoreObject):
-    _core_class = Discussion
-    _return_class = DiscussionParam
+        return self

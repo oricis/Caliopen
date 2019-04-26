@@ -43,7 +43,7 @@ discussions:
               format: int32
               description: number of discussions found for current user for the given
                 parameters
-            discussion:
+            discussions:
               type: array
               items:
                 "$ref": "../objects/Discussion.yaml"
@@ -58,7 +58,7 @@ discussions:
           "$ref": "../objects/Error.yaml"
 discussions_{discussion_id}:
   get:
-    description: Returns a discussion
+    description: Returns metadata of a discussion
     tags:
     - discussions
     security:
@@ -68,18 +68,6 @@ discussions_{discussion_id}:
       in: path
       required: true
       type: string
-    - name: X-Caliopen-PI
-      in: header
-      required: false
-      description: The PI range requested in form of `0;100`
-      type: string
-      default: 0;100
-    - name: X-Caliopen-IL
-      in: header
-      required: false
-      description: The Importance Level range requested in form of `-10;10`
-      type: string
-      default: -10;10
     produces:
     - application/json
     responses:

@@ -17,6 +17,7 @@ type IndexSearch struct {
 	User_id  UUID                `json:"user_id"`
 	DocType  string              `json:"doc_type"`
 	ILrange  [2]int8             `json:"il_range"`
+	PIrange  [2]int8             `json:"pi_range"`
 }
 
 type IndexResult struct {
@@ -46,17 +47,30 @@ func (is *IndexSearch) FilterQuery(service *elastic.SearchService, withIL bool) 
 	q := elastic.NewBoolQuery()
 	// Strictly filter on user_id
 	q = q.Filter(elastic.NewTermQuery("user_id", is.User_id))
+
+	// if discussion_id in terms, add it to the query as a `terms` query (plural)
+	// because it could have multiple values to lookup
+	if discussion_id, ok := is.Terms["discussion_id"]; ok {
+		values := []interface{}{}
+		for _, value := range discussion_id {
+			values = append(values, value)
+		}
+		q = q.Filter(elastic.NewTermsQuery("discussion_id", values...))
+		delete(is.Terms, "discussion_id")
+	}
+
 	for name, values := range is.Terms {
 		for _, value := range values {
 			q = q.Filter(elastic.NewTermQuery(name, value))
 		}
 	}
+
 	if withIL {
 		rq := elastic.NewRangeQuery("importance_level").Gte(is.ILrange[0]).Lte(is.ILrange[1])
 		q = q.Filter(rq)
 	}
-	service = service.Query(q)
 
+	service = service.Query(q)
 	return service
 }
 

@@ -37,7 +37,11 @@ type (
 )
 
 func (si *SocialIdentity) UnmarshalMap(input map[string]interface{}) error {
-	si.Infos, _ = input["infos"].(map[string]string)
+	if infos, ok := input["infos"].(map[string]interface{}); ok {
+		for k, v := range infos {
+			si.Infos[k] = v.(string)
+		}
+	}
 	si.Name, _ = input["name"].(string)
 	if soc_id, ok := input["social_id"].(string); ok {
 		if id, err := uuid.FromString(soc_id); err == nil {
@@ -54,6 +58,12 @@ func (si *SocialIdentity) MarshallNew(...interface{}) {
 	if len(si.SocialId) == 0 || (bytes.Equal(si.SocialId.Bytes(), EmptyUUID.Bytes())) {
 		si.SocialId.UnmarshalBinary(uuid.NewV4().Bytes())
 	}
+}
+
+func (si *SocialIdentity) NewEmpty() interface{} {
+	newSi := new(SocialIdentity)
+	newSi.Infos = map[string]string{}
+	return newSi
 }
 
 // Sort interface implementations

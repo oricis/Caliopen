@@ -262,6 +262,7 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *EmailDeliveryAck) error {
 	// if needed :
 	// insert new entry into discussion_lookup table
 	// with message's external reference
+	/* TODO
 	if ack.EmailMessage.Message.External_references.Parent_id == "" {
 		err = b.Store.CreateThreadLookup(ack.EmailMessage.Message.User_id,
 			ack.EmailMessage.Message.Discussion_id,
@@ -270,6 +271,8 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *EmailDeliveryAck) error {
 			log.WithError(err).Warn("[Email Broker] Store.CreateThreadLookup operation failed")
 		}
 	}
+	*/
+
 	return err
 }
 
@@ -337,7 +340,7 @@ func (b *EmailBroker) unmarshalParticipants(h mail.Header, address_type string, 
 			Contact_ids: []UUID{},
 		}
 		if len(user_id) == 1 {
-			contact_ids, err := b.Store.LookupContactsByIdentifier(user_id[0].String(), a.Address)
+			contact_ids, err := b.Store.LookupContactsByIdentifier(user_id[0].String(), a.Address, "email")
 			if err == nil {
 				for _, id := range contact_ids {
 					var contact_id UUID
