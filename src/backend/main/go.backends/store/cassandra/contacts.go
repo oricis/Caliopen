@@ -9,6 +9,7 @@ import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocassa/gocassa"
+	"github.com/gocql/gocql"
 	"gopkg.in/oleiade/reflections.v1"
 )
 
@@ -54,6 +55,9 @@ func (cb *CassandraBackend) RetrieveContact(user_id, contact_id string) (contact
 	err = q.MapScan(m)
 	if err != nil {
 		return nil, err
+	}
+	if len(m) == 0 {
+		return nil, gocql.ErrNotFound
 	}
 	contact.UnmarshalCQLMap(m)
 

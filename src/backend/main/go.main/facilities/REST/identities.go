@@ -148,10 +148,12 @@ func (rest *RESTfacility) CreateUserIdentity(identity *UserIdentity) CaliopenErr
 	contact, e := rest.RetrieveUserContact(identity.UserId.String())
 	if e != nil {
 		log.WithError(e).Warnf("[CreateUserIdentity] failed to retrieve user's contact. Can't add identity to contact.")
+		return NewCaliopenErr(NotFoundCaliopenErr, "[CreateUserIdentity] failed to retrieve user's contact. Can't add identity to contact.")
 	} else {
 		_, err = addIdentityToContact(rest.store, rest.index, rest.store, *identity, contact)
 		if err != nil {
 			log.WithError(err).Warnf("[CreateUserIdentity] failed to add identity <%s> to user <%s>'s contact <%s>", identity.Id, identity.UserId, contact.ContactId)
+			return NewCaliopenErrf(FailDependencyCaliopenErr, "[CreateUserIdentity] failed to add identity <%s> to user <%s>'s contact <%s>", identity.Id, identity.UserId, contact.ContactId)
 		}
 	}
 

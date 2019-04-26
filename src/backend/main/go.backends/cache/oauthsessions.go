@@ -19,8 +19,8 @@ const (
 // GetOauthSession unmarshal json found at `key`, if any, into an OauthSession struct
 func (c *Cache) GetOauthSession(key string) (session *OauthSession, err error) {
 	session_str, err := c.Backend.Get(oauthSessionPrefix + key)
-	if err != nil {
-		log.WithError(err).Errorf("[GetOauthSession] failed to get key %s", key)
+	if err != nil || len(session_str) == 0 {
+		log.WithError(err).Errorf("[GetOauthSession] failed to get session with key %s", key)
 		return nil, err
 	}
 

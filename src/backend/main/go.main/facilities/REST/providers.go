@@ -78,6 +78,9 @@ func (rest *RESTfacility) GetProviderOauthFor(userId, name string) (provider Pro
 }
 
 func (rest *RESTfacility) CreateTwitterIdentity(requestToken, verifier string) (remoteId string, err CaliopenError) {
+	if requestToken == "" || verifier == "" {
+		return "", NewCaliopenErr(UnprocessableCaliopenErr, "[CreateTwitterIdentity] missing oauth_token or oauth_verifier")
+	}
 	provider := rest.providers[TwitterProtocol]
 	conf := &oauth1.Config{
 		ConsumerKey:    provider.Infos["consumer_key"],
@@ -91,13 +94,13 @@ func (rest *RESTfacility) CreateTwitterIdentity(requestToken, verifier string) (
 		return
 	}
 	if len(oauthCache.RequestSecret) < 5 {
-		log.WithError(e).Errorf("[CreateTwitterIdentity] oauthCache.RequestSecret too short to be a valid one: <%s> (token %s, verifier %s)", oauthCache.RequestSecret, requestToken, verifier)
+		log.WithError(e).Errorf("[CreateTwitterIdentity] oauthCache.RequestSecret too short to be a valid one: <%s> (token %s, verifier %s), user_id %s", oauthCache.RequestSecret, requestToken, verifier, oauthCache.UserId)
 		err = WrapCaliopenErrf(e, FailDependencyCaliopenErr, "[CreateTwitterIdentity] invalid oauthCache.RequestSecret")
 		return
 	}
 	accessToken, accessSecret, e := conf.AccessToken(requestToken, oauthCache.RequestSecret, verifier)
 	if e != nil {
-		log.WithError(e).Errorf("[CreateTwitterIdentity] failed to request an access token : token %s, verifier %s, secret : (5 first chars only) <%s>", requestToken, verifier, oauthCache.RequestSecret[0:5])
+		log.WithError(e).Errorf("[CreateTwitterIdentity] failed to request an access token : token %s, verifier %s, secret : (5 first chars only) <%s>, user_id %s", requestToken, verifier, oauthCache.RequestSecret[0:5], oauthCache.UserId)
 		err = WrapCaliopenErrf(e, FailDependencyCaliopenErr, "[CreateTwitterIdentity] AccessToken request failed")
 		return
 	}
@@ -205,11 +208,6 @@ func (rest *RESTfacility) CreateGmailIdentity(state, code string) (remoteId stri
 		err = WrapCaliopenErrf(e, NotFoundCaliopenErr, "[CreateGmailIdentity] failed to retrieve access token for state %s", state)
 		return
 	}
-	if token.RefreshToken == "" {
-		log.WithError(e).Errorf("[CreateGmailIdentity] exchange access token for state %s and code %s got an empty refreshToken. oauthConfig=%+v, token=%+v", state, code, *oauthConfig, *token)
-		err = WrapCaliopenErrf(e, NotFoundCaliopenErr, "[CreateGmailIdentity] failed to get a refresh token for state %s. User should check application permissions.", state)
-		return
-	}
 	// retrieve gmail profile from Google api
 	httpClient := oauthConfig.Client(ctx, token)
 	googleService, e := googleApi.New(httpClient)
@@ -235,6 +233,12 @@ func (rest *RESTfacility) CreateGmailIdentity(state, code string) (remoteId stri
 	foundCount := len(foundIdentities)
 	switch foundCount {
 	case 0:
+		// it appears that google API does not return a refresh token if Caliopen has already been authorize for this google account and user is logged in his google account
+		if token.RefreshToken == "" {
+			log.WithError(e).Errorf("[CreateGmailIdentity] exchange access token for state %s and code %s got an empty refreshToken. oauthConfig=%+v, token=%+v", state, code, *oauthConfig, *token)
+			err = WrapCaliopenErrf(e, NotFoundCaliopenErr, "[CreateGmailIdentity] failed to get a refresh token for state %s. User should check application permissions.", state)
+			return
+		}
 		userIdentity := new(UserIdentity)
 		userID := UUID(uuid.FromStringOrNil(oauthCache.UserId))
 		userIdentity.MarshallNew(userID)
@@ -267,7 +271,8 @@ func (rest *RESTfacility) CreateGmailIdentity(state, code string) (remoteId stri
 	case 1:
 		// this identity already exists,
 		// WHAT TO DO ?? -> stop here or continue ?
-		// checking if it belongs to this user and, if ok, just updating display name and tokens
+		// checking if it belongs to this user and, if ok, just updating display name
+		// but not tokens
 		storedIdentity, e := rest.RetrieveUserIdentity(foundIdentities[0][0], foundIdentities[0][1], false)
 		if e != nil || storedIdentity == nil {
 			log.WithError(e).Errorf("[CreateGmailIdentity] failed to retrieve user identity found for google account %s: foundIdentities=%+v", googleUser.Name, foundIdentities)
@@ -275,17 +280,18 @@ func (rest *RESTfacility) CreateGmailIdentity(state, code string) (remoteId stri
 			return
 		}
 		storedIdentity.DisplayName = googleUser.Name
-		storedIdentity.Credentials = &Credentials{
-			users.CRED_ACCESS_TOKEN:  token.AccessToken,
-			users.CRED_REFRESH_TOKEN: token.RefreshToken,
-			users.CRED_TOKEN_EXPIRY:  token.Expiry.Format(time.RFC3339),
-			users.CRED_TOKEN_TYPE:    token.TokenType,
-			users.CRED_USERNAME:      googleUser.Email,
-		}
-
+		/*
+			storedIdentity.Credentials = &Credentials{
+				users.CRED_ACCESS_TOKEN:  token.AccessToken,
+				users.CRED_REFRESH_TOKEN: token.RefreshToken,
+				users.CRED_TOKEN_EXPIRY:  token.Expiry.Format(time.RFC3339),
+				users.CRED_TOKEN_TYPE:    token.TokenType,
+				users.CRED_USERNAME:      googleUser.Email,
+			}
+		*/
 		modifiedFields := map[string]interface{}{
 			"DisplayName": googleUser.Name,
-			"Credentials": storedIdentity.Credentials,
+			//"Credentials": storedIdentity.Credentials,
 		}
 		if e := rest.store.UpdateUserIdentity(storedIdentity, modifiedFields); e != nil {
 			log.WithError(e).Errorf("[CreateGmailIdentity] failed to update user identity in db : identity=%+v, fields=%+v", *storedIdentity, modifiedFields)
