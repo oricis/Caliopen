@@ -36,7 +36,7 @@ class NewDraft extends Component {
     const { messageId, getMessage } = this.props;
     const message = await getMessage({ messageId });
 
-    if (message && message.discussion_id) {
+    if (message && (message.parent_id || !message.is_draft)) {
       this.redirectDiscussion();
     }
   }

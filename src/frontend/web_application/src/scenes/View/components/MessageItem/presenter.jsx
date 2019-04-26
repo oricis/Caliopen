@@ -97,7 +97,7 @@ class MessageItem extends Component {
   renderContent = () => {
     const { message } = this.props;
     const { attachments } = message;
-    const linkTo = message.discussion_id ?
+    const linkTo = message.parent_id || !message.is_draft ?
       `/discussions/${message.discussion_id}#reply` :
       `/messages/${message.message_id}`;
 
