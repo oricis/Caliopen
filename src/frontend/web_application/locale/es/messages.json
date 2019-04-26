@@ -212,6 +212,7 @@
   "message-list.selected": "",
   "message.action.add-participant-to-contacts": "",
   "message.action.add-to-contacts": "",
+  "message.attachment-encryption-not-available": "",
   "message.compose.action.delete_attachement": "",
   "message.compose.action.open_import_attachements": "",
   "message.from": "",

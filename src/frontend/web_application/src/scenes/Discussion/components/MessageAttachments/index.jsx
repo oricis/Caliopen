@@ -22,7 +22,6 @@ class MessageAttachments extends Component {
     downloads: {},
   };
 
-  // eslint-disable-next-line react/sort-comp
   downloadRefs = {};
 
   cancelTokenSource = CancelToken.source();

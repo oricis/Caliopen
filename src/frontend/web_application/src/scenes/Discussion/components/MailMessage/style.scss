@@ -90,6 +90,12 @@
     text-align: right;
   }
 
+  // XXX: to remove when attachments decryption is available
+  &__encrypted-attachments-info {
+    margin-right: 1rem;
+    margin-left: 1rem;
+  }
+
   @include breakpoint(medium) {
     grid-template-columns: 13rem 1fr;
     grid-template-rows: $co-component__height auto $co-component__height;

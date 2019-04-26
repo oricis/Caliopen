@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Better display of message's participants
 
+### Fixed
+
+- Attachments visibility, it displays a warning if the message has been encrypted
+
 ## [0.18.0] 2019-04-23
 
 ### Fixed
