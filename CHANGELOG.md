@@ -6,9 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.18.1] 2019-04-26
+
 ### Changed
 
 - Better display of message's participants
+- Fix attachment visibility
+- Raise an explicit error on duplicate message for better processing
+- Validate better email address when cleaning it
+- Better oauth token validation
 
 ### Fixed
 
