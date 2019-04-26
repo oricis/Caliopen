@@ -46,6 +46,8 @@ class InboundEmail(BaseHandler):
             self.natsConn.publish(msg.reply, json.dumps(nats_success))
         except DuplicateObject:
             log.info("Message already imported : {}".format(payload))
+            nats_success['message_id'] = str(payload['message_id'])
+            nats_success['message'] = 'raw message already imported'
             self.natsConn.publish(msg.reply, json.dumps(nats_success))
         except Exception as exc:
             # TODO: handle abort exception and report it as special case
