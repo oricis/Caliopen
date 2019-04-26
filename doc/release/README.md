@@ -70,7 +70,7 @@ make master
 
 ## 3. Deploy
 
-cf. [Deploy Kubernetes](./deploy-kuberntes.md)
+cf. [Deploy Kubernetes](./deploy_kubernetes.md)
 
 ## 4. Communicate
 

@@ -68,6 +68,6 @@ export default {
   name: 'discussions',
   data: require('./data.json'),
   reducer: reducer,
-  endpoint: '/api/v1/discussions',
+  endpoint: '/api/v2/discussions',
   routes: routes,
 };
