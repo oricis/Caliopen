@@ -608,8 +608,8 @@ func (lookup *ContactByContactPoints) UpdateLookups(contacts ...interface{}) fun
 	update := false
 	if contactsLen > 0 {
 		newContact := contacts[0].(*Contact)
-		newLookups, oldLookups := map[string]*ContactByContactPoints{}, map[string]*ContactByContactPoints{}       // lookups found in new and old contact
-		addedLookups, removedLookups := map[string]*ContactByContactPoints{}, map[string]*ContactByContactPoints{} // filled or drained by loops below
+		oldLookups := map[string]*ContactByContactPoints{}     // lookups found in old contact
+		removedLookups := map[string]*ContactByContactPoints{} // drained by loops below
 		return func(session *gocql.Session) error {
 			if contactsLen == 2 && contacts[1] != nil {
 				// it's an update, get a list of old lookupKeys to later find those that have been removed
@@ -621,40 +621,39 @@ func (lookup *ContactByContactPoints) UpdateLookups(contacts ...interface{}) fun
 					oldLookups[lkpKey] = lkp
 					removedLookups[lkpKey] = lkp
 				}
-
 			}
 			// iterate over contact's current state to add or update lookups
 			for lookup := range newContact.GetLookupKeys() {
 				lkp := lookup.(*ContactByContactPoints)
 				lkpKey := lkp.UserID + lkp.Value + lkp.Type
-				newLookups[lkpKey] = lkp
-				if _, ok := oldLookups[lkpKey]; !ok {
-					addedLookups[lkpKey] = lkp
-				}
-				err := session.Query(`INSERT INTO contact_lookup (user_id, value, type, contact_id) VALUES (?,?,?,?)`,
-					(*lkp).UserID,
-					(*lkp).Value,
-					(*lkp).Type,
-					(*lkp).ContactID,
-				).Exec()
-				if err != nil {
-					log.WithError(err).Warnf(`[CassandraBackend] UpdateLookups INSERT failed for user: %s, value: %s, type: %s`,
+				// check if it's a new uri
+				if _, ok := oldLookups[lkpKey]; !ok || !update {
+					err := session.Query(`INSERT INTO contact_lookup (user_id, value, type, contact_id) VALUES (?,?,?,?)`,
 						lkp.UserID,
 						lkp.Value,
-						lkp.Type)
-				}
-				// do the job of updating participants and discussion related tables
-				err = associateURIWithContact(session, lkp)
-				if err != nil {
-					// TODO : handle multiple error returns to merge into one error or break immediately ?
-				}
-				if update {
-					// remove keys in removedLookups,
-					// thus at end it will only hold remaining entries that are not in the new state
-					delete(removedLookups, lkpKey)
+						lkp.Type,
+						lkp.ContactID,
+					).Exec()
+					if err != nil {
+						log.WithError(err).Warnf(`[CassandraBackend] UpdateLookups INSERT failed for user: %s, value: %s, type: %s`,
+							lkp.UserID,
+							lkp.Value,
+							lkp.Type)
+					}
+					// do the job of updating participants and discussion related tables
+					err = associateURIWithContact(session, lkp)
+					if err != nil {
+						// TODO : handle multiple error returns to merge into one error or break immediately ?
+						log.WithError(err).Errorf("[Contact.UpdateLookups] associateURIWithContact failed with lookup %+v", lkp)
+					}
+					if update {
+						// remove keys in removedLookups,
+						// thus at end it will only hold remaining entries that are not in the new state
+						delete(removedLookups, lkpKey)
+
+					}
 				}
 			}
-
 			if len(removedLookups) > 0 {
 				// it remains lookups in the map, meaning these lookups references have been removed from contact
 				// need to cleanup lookup tables
@@ -672,7 +671,7 @@ func (lookup *ContactByContactPoints) UpdateLookups(contacts ...interface{}) fun
 							lookup.Type)
 					}
 					// do the job of updating participants and discussion related tables
-					err = dissociateURIFromContact(session, lookup)
+					err = dissociateURIFromContact(session, *lookup)
 					if err != nil {
 						// TODO : handle multiple error returns to merge into one error or break immediately ?
 					}
@@ -734,33 +733,87 @@ func (lookup *ContactByContactPoints) CleanupLookups(contacts ...interface{}) fu
 func associateURIWithContact(session *gocql.Session, lkp *ContactByContactPoints) error {
 	// lookup uris_hashes where lkp's uri is embedded
 	lkpUri := lkp.Type + ":" + lkp.Value
-	uriHashes, err := session.Query(`SELECT * FROM hash_lookup WHERE user_id = ? AND uri = ?`, lkp.UserID, lkpUri).Iter().SliceMap()
+	uriLookups, err := session.Query(`SELECT * FROM hash_lookup WHERE user_id = ? AND uri = ?`, lkp.UserID, lkpUri).Iter().SliceMap()
 	if err != nil {
 		return err
 	}
 
-	// for each uris_hash found, resolve to a participant_hash
-	participantHashes := map[string]map[string]interface{}{}
-	for _, uriHash := range uriHashes {
-		var participantHash map[string]interface{}
-		hash := uriHash["hash"].(string)
-		err := session.Query(`SELECT * FROM participant_hash WHERE user_id = ? AND kind = ? AND key = ?`, lkp.UserID, "uris", hash).Scan(&participantHash)
+	// for each uris_hash found, lookup its participant_hash counterpart
+	participantHashes := []ParticipantHash{}
+	urisComponents := map[string][]string{}
+	for _, lookup := range uriLookups {
+		var uriHash HashLookup
+		uriHash.UnmarshalCQLMap(lookup)
+		urisComponents[uriHash.Hash] = uriHash.HashComponents
+		var participants string
+		err := session.Query(`SELECT value FROM participant_hash WHERE user_id = ? AND kind = ? AND key = ?`, lkp.UserID, "uris", uriHash.Hash).Scan(&participants)
 		if err != nil {
 			if err.Error() == "not found" {
 				continue
 			} else {
-				log.WithError(err).Warn("associateURIWithContact failed to query participant_hash for user_id = %s, kind = %s, key = %s", lkp.UserID, "uris", hash)
+				log.WithError(err).Warnf("associateURIWithContact failed to query participant_hash for user_id = %s, kind = %s, key = %s", lkp.UserID, "uris", uriHash.Hash)
 				continue
 			}
 		}
-		participantHashes[hash] = participantHash
+		row := map[string]interface{}{}
+		err = session.Query(`SELECT * FROM participant_hash WHERE user_id = ? AND kind = ? AND key = ?`, lkp.UserID, "participants", participants).MapScan(row)
+		if err != nil {
+			if err.Error() == "not found" {
+				continue
+			} else {
+				log.WithError(err).Warnf("associateURIWithContact failed to query participant_hash for user_id = %s, kind = %s, key = %s", lkp.UserID, "participants", uriHash.Hash)
+				continue
+			}
+		}
+		var participantHash ParticipantHash
+		participantHash.UnmarshalCQLMap(row)
+		participantHashes = append(participantHashes, participantHash)
 	}
+
+	// for each participant_hash :
+	//     - compute a new participant_hash with current contact_id
+	//     - add new bijection uri_hash <-> new_participant_hash
+	for _, participantHash := range participantHashes {
+		newParticipantHash, err := ComputeNewParticipantHash(lkpUri, "contact:"+lkp.ContactID, participantHash)
+		if err != nil {
+			log.WithError(err).Warnf("associateURIWithContact failed to compute new participant hash for uri <%s> and former participant hash : %+v", lkpUri, participantHash)
+		}
+		StoreURIsParticipantsBijection(
+			session,
+			UUID(uuid.FromStringOrNil(lkp.UserID)),
+			participantHash.Value,
+			newParticipantHash.Key,
+			urisComponents[participantHash.Value],
+			newParticipantHash.Components,
+		)
+	}
+
 	return nil
 }
 
 // dissociateURIFromContact is algorithm to update hashes in ParticipantHash table
-// to not link URI to contact anymore when building discussions
-func dissociateURIFromContact(session *gocql.Session, lkp *ContactByContactPoints) error {
+// to remove uri_hash <-> contact association
+func dissociateURIFromContact(session *gocql.Session, lkp ContactByContactPoints) error {
 
+	return nil
+}
+
+// StoreURIsParticipantsBijection stores uris_hash <-> participants_hash bijection
+// in participant_hash table
+func StoreURIsParticipantsBijection(session *gocql.Session, userId UUID, uriHash, participantHash string, uriComponents, participantComponents []string) error {
+	now := time.Now()
+	// store uris_hash -> participants_hash
+	e1 := session.Query(`INSERT INTO participant_hash (user_id, kind, key, value, components, date_insert) VALUES (?,?,?,?,?,?)`,
+		userId, "uris", uriHash, participantHash, uriComponents, now).Exec()
+
+	// store participants_hash -> uris_hash
+	e2 := session.Query(`INSERT INTO participant_hash (user_id, kind, key, value, components, date_insert) VALUES (?,?,?,?,?,?)`,
+		userId, "participants", participantHash, uriHash, participantComponents, now).Exec()
+	switch {
+	case e1 != nil:
+		return e1
+	case e2 != nil:
+		return e2
+	}
 	return nil
 }
