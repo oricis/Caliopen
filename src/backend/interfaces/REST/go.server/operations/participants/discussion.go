@@ -9,7 +9,6 @@ import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
-	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
 	"github.com/gin-gonic/gin"
 	swgErr "github.com/go-openapi/errors"
 	"net/http"
@@ -30,7 +29,7 @@ func HashUris(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	hash, _, err := helpers.HashFromParticipantsUris(participants)
+	hash, _, err := HashFromParticipantsUris(participants)
 	if err != nil {
 		e := swgErr.New(http.StatusFailedDependency, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)

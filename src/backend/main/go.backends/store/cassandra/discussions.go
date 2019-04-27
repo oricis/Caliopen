@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
-	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
 	"github.com/Sirupsen/logrus"
 	"github.com/gocassa/gocassa"
 	"strings"
@@ -64,7 +63,7 @@ func (cb *CassandraBackend) CreateParticipantHash(lookup *ParticipantHash) error
 // UpsertDiscussionLookups ensures that relevant entries are present in both HashLookup and ParticipantHash tables
 // for the provided participants, taking into account user's contacts addresses
 func (cb *CassandraBackend) UpsertDiscussionLookups(userId UUID, participants []Participant) error {
-	hash, components, err := helpers.HashFromParticipantsUris(participants)
+	hash, components, err := HashFromParticipantsUris(participants)
 	if err != nil {
 		return err
 	}
@@ -82,7 +81,7 @@ func (cb *CassandraBackend) CreateLookupsFromUris(userId UUID, uriHash string, u
 	for _, uri := range uris {
 		uriSplit := strings.SplitN(uri, ":", 2)
 		if len(uriSplit) != 2 {
-			err := fmt.Errorf("[CreateLookupsFromUris] uri malformed : %s => ", uri, uriSplit)
+			err := fmt.Errorf("[CreateLookupsFromUris] uri malformed : %s => %v", uri, uriSplit)
 			logrus.WithError(err)
 			return err
 		}
@@ -107,9 +106,9 @@ func (cb *CassandraBackend) CreateLookupsFromUris(userId UUID, uriHash string, u
 			return e
 		}
 	}
-	participantsHash, participantsComponents, err := helpers.HashFromParticipantsUris(participants)
+	participantsHash, participantsComponents, err := HashFromParticipantsUris(participants)
 	if err != nil {
 		return err
 	}
-	return helpers.StoreURIsParticipantsBijection(cb.Session, userId, uriHash, participantsHash, uris, participantsComponents)
+	return StoreURIsParticipantsBijection(cb.Session, userId, uriHash, participantsHash, uris, participantsComponents)
 }

@@ -6,8 +6,12 @@ package objects
 
 import (
 	"bytes"
+	"crypto/sha256"
+	"fmt"
 	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
+	"sort"
+	"strings"
 	"time"
 )
 
@@ -136,4 +140,50 @@ func (p ByAddress) Less(i, j int) bool {
 
 func (p ByAddress) Swap(i, j int) {
 	p[i], p[j] = p[j], p[i]
+}
+
+// HashFromParticipatnsUris creates a hash from a collection of Participant
+func HashFromParticipantsUris(participants []Participant) (hash string, components []string, err error) {
+	urisMap := map[string]struct{}{}
+	for _, participant := range participants {
+		uri := participant.Protocol + ":" + participant.Address
+		urisMap[uri] = struct{}{}
+	}
+	components = []string{}
+	for k, _ := range urisMap {
+		components = append(components, k)
+	}
+	hash = HashComponents(components)
+	return
+}
+
+// ComputeNewParticipantHash computes a new participants_hash and update participants components
+// based on new uri->participant relation provided in params
+func ComputeNewParticipantHash(uri, participantUri string, current ParticipantHash) (new ParticipantHash, err error) {
+	new.UserId = current.UserId
+	new.Kind = "participants"
+	participantsMap := map[string]struct{}{}
+	// replace uri by participant
+	for _, component := range current.Components {
+		if component == uri {
+			participantsMap[participantUri] = struct{}{}
+		} else {
+			participantsMap[component] = struct{}{}
+		}
+	}
+	// compute new hash
+	components := []string{}
+	for k, _ := range participantsMap {
+		components = append(components, k)
+	}
+	// embed new components slice
+	new.Components = components
+	new.Key = HashComponents(components)
+	return
+}
+
+func HashComponents(c []string) string {
+	sort.Strings(c)
+	sum := sha256.Sum256([]byte(strings.Join(c, "")))
+	return fmt.Sprintf("%x", sum)
 }
