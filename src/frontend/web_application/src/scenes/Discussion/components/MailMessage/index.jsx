@@ -104,7 +104,7 @@ class MailMessage extends Component {
         )}
         <Icon type="envelope" className={classnames({ 'm-mail-message-details--encrypted__icon': isDecrypted || isLocked })} />
         {' '}
-        <ParticipantLabel className="m-mail-message-details__author-name" participant={author.label} />
+        <ParticipantLabel className="m-mail-message-details__author-name" participant={author} />
         {' '}
         <Moment fromNow locale={locale} titleFormat="LLLL" withTitle>{message.date}</Moment>
       </TextBlock>
