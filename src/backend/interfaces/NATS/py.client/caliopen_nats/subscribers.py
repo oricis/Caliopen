@@ -4,6 +4,8 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import logging
 import json
+import sys
+import traceback
 
 from caliopen_storage.exception import DuplicateObject
 from caliopen_main.user.core import User, UserIdentity
@@ -51,9 +53,10 @@ class InboundEmail(BaseHandler):
             self.natsConn.publish(msg.reply, json.dumps(nats_success))
         except Exception as exc:
             # TODO: handle abort exception and report it as special case
-            log.error("deliver process failed for raw {}, error : {}".
-                      format(payload, exc))
-            nats_error['error'] = str(exc.message)
+            exc_info = sys.exc_info()
+            log.error("deliver process failed for raw {}: {}".
+                      format(payload, traceback.print_exception(*exc_info)))
+            nats_error['error'] = str(exc)
             self.natsConn.publish(msg.reply, json.dumps(nats_error))
             return exc
 
@@ -97,8 +100,9 @@ class InboundTwitter(BaseHandler):
             self.natsConn.publish(msg.reply, json.dumps(nats_success))
         except Exception as exc:
             # TODO: handle abort exception and report it as special case
-            log.error("deliver process failed for raw {}, error : {}".
-                      format(payload, exc))
+            exc_info = sys.exc_info()
+            log.error("deliver process failed for raw {}: {}".
+                      format(payload, traceback.print_exception(*exc_info)))
             nats_error['error'] = str(exc.message)
             self.natsConn.publish(msg.reply, json.dumps(nats_error))
             return exc
