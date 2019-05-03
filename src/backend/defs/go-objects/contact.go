@@ -627,31 +627,31 @@ func (lookup *ContactByContactPoints) UpdateLookups(contacts ...interface{}) fun
 				lkp := lookup.(*ContactByContactPoints)
 				lkpKey := lkp.UserID + lkp.Value + lkp.Type
 				// check if it's a new uri
-				if _, ok := oldLookups[lkpKey]; !ok || !update {
-					err := session.Query(`INSERT INTO contact_lookup (user_id, value, type, contact_id) VALUES (?,?,?,?)`,
+				err := session.Query(`INSERT INTO contact_lookup (user_id, value, type, contact_id) VALUES (?,?,?,?)`,
+					lkp.UserID,
+					lkp.Value,
+					lkp.Type,
+					lkp.ContactID,
+				).Exec()
+				if err != nil {
+					log.WithError(err).Warnf(`[CassandraBackend] UpdateLookups INSERT failed for user: %s, value: %s, type: %s`,
 						lkp.UserID,
 						lkp.Value,
-						lkp.Type,
-						lkp.ContactID,
-					).Exec()
-					if err != nil {
-						log.WithError(err).Warnf(`[CassandraBackend] UpdateLookups INSERT failed for user: %s, value: %s, type: %s`,
-							lkp.UserID,
-							lkp.Value,
-							lkp.Type)
-					}
+						lkp.Type)
+				}
+				if _, ok := oldLookups[lkpKey]; !ok || !update {
 					// do the job of updating participants and discussion related tables
 					err = updateURIWithContact(session, lkp, true)
 					if err != nil {
 						// TODO : handle multiple error returns to merge into one error or break immediately ?
 						log.WithError(err).Errorf("[Contact.UpdateLookups] associateURIWithContact failed with lookup %+v", lkp)
 					}
-					if update {
-						// remove keys in removedLookups,
-						// thus at end it will only hold remaining entries that are not in the new state
-						delete(removedLookups, lkpKey)
+				}
+				if update {
+					// remove keys in removedLookups,
+					// thus at end it will only hold remaining entries that are not in the new state
+					delete(removedLookups, lkpKey)
 
-					}
 				}
 			}
 			if len(removedLookups) > 0 {
