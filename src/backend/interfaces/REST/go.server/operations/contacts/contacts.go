@@ -28,6 +28,7 @@ func GetContactsList(ctx *gin.Context) {
 
 	user_uuid_str := ctx.MustGet("user_id").(string)
 	user_uuid, _ := uuid.FromString(user_uuid_str)
+	shard_id := ctx.MustGet("shard_id").(string)
 	user_UUID.UnmarshalBinary(user_uuid.Bytes())
 
 	query_values := ctx.Request.URL.Query()
@@ -41,10 +42,11 @@ func GetContactsList(ctx *gin.Context) {
 	}
 
 	filter := IndexSearch{
-		User_id: user_UUID,
-		Terms:   map[string][]string(query_values),
-		Limit:   limit,
-		Offset:  offset,
+		User_id:  user_UUID,
+		Shard_id: shard_id,
+		Terms:    map[string][]string(query_values),
+		Limit:    limit,
+		Offset:   offset,
 	}
 
 	list, totalFound, err := caliopen.Facilities.RESTfacility.RetrieveContacts(filter)
