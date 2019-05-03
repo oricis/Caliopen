@@ -65,7 +65,11 @@ class BaseQualifier(object):
         p.protocol = message.message_protocol
         log.debug('Will lookup contact {} for user {}'.
                   format(participant.address, self.user.user_id))
-        c = Contact.lookup(self.user, participant.address)
+        try:
+            c = Contact.lookup(self.user, participant.address)
+        except Exception as exc:
+            log.error("Contact lookup failed in get_participant for participant {} : {}".format(vars(participant), exc))
+            raise exc
         if c:
             p.contact_ids = [c.contact_id]
         else:

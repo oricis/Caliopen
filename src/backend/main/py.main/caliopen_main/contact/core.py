@@ -207,17 +207,15 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
 
     @classmethod
     def lookup(cls, user, value):
-        lookup = ContactLookup._model_class.get(user_id=user.user_id,
+        lookups = ContactLookup._model_class.filter(user_id=user.user_id,
                                                     value=value)
-        if lookup and lookup.contact_id:
-            # as of 2019, april it is forbidden in Caliopen
-            # to add an external address to more than one contact
-            # as a mater of fact, lookup should always return one contact only
+        if lookups and lookups[0].contact_id:
+            # XXX how to manage many contacts
             try:
-                return cls.get(user, lookup.contact_id)
+                return cls.get(user, lookups[0].contact_id)
             except NotFound:
                 log.warn('Inconsistent contact lookup with non existing '
-                         ' contact %r' % lookup.contact_id)
+                         ' contact %r' % lookups[0].contact_id)
                 return None
         # XXX something else to do ?
         return None

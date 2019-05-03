@@ -627,31 +627,31 @@ func (lookup *ContactByContactPoints) UpdateLookups(contacts ...interface{}) fun
 				lkp := lookup.(*ContactByContactPoints)
 				lkpKey := lkp.UserID + lkp.Value + lkp.Type
 				// check if it's a new uri
-				if _, ok := oldLookups[lkpKey]; !ok || !update {
-					err := session.Query(`INSERT INTO contact_lookup (user_id, value, type, contact_id) VALUES (?,?,?,?)`,
+				err := session.Query(`INSERT INTO contact_lookup (user_id, value, type, contact_id) VALUES (?,?,?,?)`,
+					lkp.UserID,
+					lkp.Value,
+					lkp.Type,
+					lkp.ContactID,
+				).Exec()
+				if err != nil {
+					log.WithError(err).Warnf(`[CassandraBackend] UpdateLookups INSERT failed for user: %s, value: %s, type: %s`,
 						lkp.UserID,
 						lkp.Value,
-						lkp.Type,
-						lkp.ContactID,
-					).Exec()
-					if err != nil {
-						log.WithError(err).Warnf(`[CassandraBackend] UpdateLookups INSERT failed for user: %s, value: %s, type: %s`,
-							lkp.UserID,
-							lkp.Value,
-							lkp.Type)
-					}
+						lkp.Type)
+				}
+				if _, ok := oldLookups[lkpKey]; !ok || !update {
 					// do the job of updating participants and discussion related tables
-					err = associateURIWithContact(session, lkp)
+					err = updateURIWithContact(session, lkp, true)
 					if err != nil {
 						// TODO : handle multiple error returns to merge into one error or break immediately ?
 						log.WithError(err).Errorf("[Contact.UpdateLookups] associateURIWithContact failed with lookup %+v", lkp)
 					}
-					if update {
-						// remove keys in removedLookups,
-						// thus at end it will only hold remaining entries that are not in the new state
-						delete(removedLookups, lkpKey)
+				}
+				if update {
+					// remove keys in removedLookups,
+					// thus at end it will only hold remaining entries that are not in the new state
+					delete(removedLookups, lkpKey)
 
-					}
 				}
 			}
 			if len(removedLookups) > 0 {
@@ -671,7 +671,7 @@ func (lookup *ContactByContactPoints) UpdateLookups(contacts ...interface{}) fun
 							lookup.Type)
 					}
 					// do the job of updating participants and discussion related tables
-					err = dissociateURIFromContact(session, *lookup)
+					err = updateURIWithContact(session, lookup, false)
 					if err != nil {
 						// TODO : handle multiple error returns to merge into one error or break immediately ?
 					}
@@ -695,7 +695,7 @@ func (lookup *ContactByContactPoints) CleanupLookups(contacts ...interface{}) fu
 				return err
 			}
 			for _, lookup := range related {
-				ids := lookup["contact_ids"].([]gocql.UUID)
+				ids := lookup["contact_id"].([]gocql.UUID)
 				updated_ids := []string{}
 				for _, id := range ids {
 					if id.String() != contact.ContactId.String() { // keep only contact_ids that are not from the deleted contact
@@ -728,9 +728,10 @@ func (lookup *ContactByContactPoints) CleanupLookups(contacts ...interface{}) fu
 	return nil
 }
 
-// associateURIWithContact is algorithm to update hashes in ParticipantHash table
+// updateURIWithContact is algorithm to update hashes in ParticipantHash table
 // to be able to link URI with contact when building discussions
-func associateURIWithContact(session *gocql.Session, lkp *ContactByContactPoints) error {
+// if associate == true, then lkp is associated with contact, else it is dissociated from contact
+func updateURIWithContact(session *gocql.Session, lkp *ContactByContactPoints, associate bool) error {
 	// lookup uris_hashes where lkp's uri is embedded
 	lkpUri := lkp.Type + ":" + lkp.Value
 	uriLookups, err := session.Query(`SELECT * FROM hash_lookup WHERE user_id = ? AND uri = ?`, lkp.UserID, lkpUri).Iter().SliceMap()
@@ -751,7 +752,7 @@ func associateURIWithContact(session *gocql.Session, lkp *ContactByContactPoints
 			if err.Error() == "not found" {
 				continue
 			} else {
-				log.WithError(err).Warnf("associateURIWithContact failed to query participant_hash for user_id = %s, kind = %s, key = %s", lkp.UserID, "uris", uriHash.Hash)
+				log.WithError(err).Warnf("updateURIWithContact failed to query participant_hash for user_id = %s, kind = %s, key = %s", lkp.UserID, "uris", uriHash.Hash)
 				continue
 			}
 		}
@@ -761,7 +762,7 @@ func associateURIWithContact(session *gocql.Session, lkp *ContactByContactPoints
 			if err.Error() == "not found" {
 				continue
 			} else {
-				log.WithError(err).Warnf("associateURIWithContact failed to query participant_hash for user_id = %s, kind = %s, key = %s", lkp.UserID, "participants", uriHash.Hash)
+				log.WithError(err).Warnf("updateURIWithContact failed to query participant_hash for user_id = %s, kind = %s, key = %s", lkp.UserID, "participants", uriHash.Hash)
 				continue
 			}
 		}
@@ -771,29 +772,35 @@ func associateURIWithContact(session *gocql.Session, lkp *ContactByContactPoints
 	}
 
 	// for each participant_hash :
-	//     - compute a new participant_hash with current contact_id
+	//     - compute a new participant_hash
 	//     - add new bijection uri_hash <-> new_participant_hash
+	//     - remove former bijection
 	for _, participantHash := range participantHashes {
-		newParticipantHash, err := ComputeNewParticipantHash(lkpUri, "contact:"+lkp.ContactID, participantHash)
+		var newParticipantHash ParticipantHash
+		var err error
+		newParticipantHash, err = ComputeNewParticipantHash(lkpUri, lkp.ContactID, participantHash, urisComponents[participantHash.Value], associate)
 		if err != nil {
-			log.WithError(err).Warnf("associateURIWithContact failed to compute new participant hash for uri <%s> and former participant hash : %+v", lkpUri, participantHash)
+			log.WithError(err).Warnf("updateURIWithContact failed to compute new participant hash for uri <%s> and former participant hash : %+v", lkpUri, participantHash)
+		} else {
+			err = StoreURIsParticipantsBijection(
+				session,
+				UUID(uuid.FromStringOrNil(lkp.UserID)),
+				participantHash.Value,
+				newParticipantHash.Key,
+				urisComponents[participantHash.Value],
+				newParticipantHash.Components,
+			)
+			if err != nil {
+				log.WithError(err).Warn("StoreURIsParticipantsBijection failed")
+			} else {
+				// remove former bijection
+				err = RemoveURIsParticipantsBijection(session, participantHash)
+				if err != nil {
+					log.WithError(err).Warn("RemoveURIsParticipantsBijection failed")
+				}
+			}
 		}
-		StoreURIsParticipantsBijection(
-			session,
-			UUID(uuid.FromStringOrNil(lkp.UserID)),
-			participantHash.Value,
-			newParticipantHash.Key,
-			urisComponents[participantHash.Value],
-			newParticipantHash.Components,
-		)
 	}
-
-	return nil
-}
-
-// dissociateURIFromContact is algorithm to update hashes in ParticipantHash table
-// to remove uri_hash <-> contact association
-func dissociateURIFromContact(session *gocql.Session, lkp ContactByContactPoints) error {
 
 	return nil
 }
@@ -809,6 +816,35 @@ func StoreURIsParticipantsBijection(session *gocql.Session, userId UUID, uriHash
 	// store participants_hash -> uris_hash
 	e2 := session.Query(`INSERT INTO participant_hash (user_id, kind, key, value, components, date_insert) VALUES (?,?,?,?,?,?)`,
 		userId, "participants", participantHash, uriHash, participantComponents, now).Exec()
+	switch {
+	case e1 != nil:
+		return e1
+	case e2 != nil:
+		return e2
+	}
+	return nil
+}
+
+// RemoveURIsParticipantsBijection delete uris_hash <-> participants_hash bijection
+// in participant_hash table
+func RemoveURIsParticipantsBijection(session *gocql.Session, participantHash ParticipantHash) error {
+	var first, second string
+	first = participantHash.Kind
+	if first == "participants" {
+		second = "uris"
+	} else {
+		second = "participants"
+	}
+	e1 := session.Query(`DELETE FROM participant_hash WHERE user_id = ? AND kind = ? AND key = ? AND value = ?`,
+		participantHash.UserId,
+		first,
+		participantHash.Key,
+		participantHash.Value).Exec()
+	e2 := session.Query(`DELETE FROM participant_hash WHERE user_id = ? AND kind = ? AND key = ? AND value = ?`,
+		participantHash.UserId,
+		second,
+		participantHash.Value,
+		participantHash.Key).Exec()
 	switch {
 	case e1 != nil:
 		return e1

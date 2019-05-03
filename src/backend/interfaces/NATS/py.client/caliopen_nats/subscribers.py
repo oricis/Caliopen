@@ -51,7 +51,7 @@ class InboundEmail(BaseHandler):
             self.natsConn.publish(msg.reply, json.dumps(nats_success))
         except Exception as exc:
             # TODO: handle abort exception and report it as special case
-            log.error("deliver process failed for raw {}: {}".
+            log.error("deliver process failed for raw {}, error : {}".
                       format(payload, exc))
             nats_error['error'] = str(exc.message)
             self.natsConn.publish(msg.reply, json.dumps(nats_error))
@@ -97,7 +97,7 @@ class InboundTwitter(BaseHandler):
             self.natsConn.publish(msg.reply, json.dumps(nats_success))
         except Exception as exc:
             # TODO: handle abort exception and report it as special case
-            log.error("deliver process failed for raw {}: {}".
+            log.error("deliver process failed for raw {}, error : {}".
                       format(payload, exc))
             nats_error['error'] = str(exc.message)
             self.natsConn.publish(msg.reply, json.dumps(nats_error))
