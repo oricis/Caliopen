@@ -138,21 +138,21 @@ class Draft(NewInboundMessage):
             return
         # TODO : manage reply to discussion-list
         # TODO : and to messages that have a `reply-to` header
+        self.participants = []
         for i, participant in enumerate(parent_msg.participants):
-            if re.match("from", participant['type'], re.IGNORECASE):
-                participant["type"] = "To"
-                self.participants.append(participant)
-            elif not re.match("list-id", participant['type'], re.IGNORECASE):
+            if not re.match(sender['address'], participant['address'],
+                            re.IGNORECASE):
+                if re.match("from", participant['type'], re.IGNORECASE):
+                    participant["type"] = "To"
+                    self.participants.append(participant)
+                elif not re.match("list-id", participant['type'],
+                                  re.IGNORECASE):
+                    self.participants.append(participant)
+            elif not re.match("to|from", participant['type'], re.IGNORECASE):
                 self.participants.append(participant)
 
         # add sender
-        # and remove it from previous recipients
-        for i, participant in enumerate(self.participants):
-            if participant['address'] == sender.address:
-                if re.match("to", participant['type'], re.IGNORECASE) or \
-                        re.match("cc", participant['type'], re.IGNORECASE) or \
-                        re.match("bcc", participant['type'], re.IGNORECASE):
-                    self.participants.pop(i)
+        self.participants.append(sender)
 
     def _build_subject_for_reply(self, parent_msg):
         """
@@ -166,18 +166,14 @@ class Draft(NewInboundMessage):
         p = re.compile(
             '([\[\(] *)?(RE?S?|FYI|RIF|I|FS|VB|RV|ENC|ODP|PD|YNT|ILT|SV|VS|VL|AW|WG|ΑΠ|ΣΧΕΤ|ΠΡΘ|תגובה|הועבר|主题|转发|FWD?) *([-:;)\]][ :;\])-]*|$)|\]+ *$',
             re.IGNORECASE)
-        if hasattr(self, 'subject') and self.subject is not None:
-            if p.sub('', self.subject).strip() != p.sub('',
-                                                        parent_msg.subject).strip():
-                raise PatchConflict(message="subject has been changed")
-        else:
-            # no subject property provided :
-            # add subject from context with only one "Re: " prefix
-            self.subject = "Re: " + p.sub('', parent_msg.subject).strip()
-
-            # TODO: prevent modification of protected attributes
-            # below attributes should not be editable by patch:
-            # - tags
+        # if hasattr(self, 'subject') and self.subject is not None:
+        #    if p.sub('', self.subject).strip() != p.sub('',
+        #                                                parent_msg.subject).strip():
+        #        raise PatchConflict(message="subject has been changed")
+        # else:
+        #    # no subject property provided :
+        #    # add subject from context with only one "Re: " prefix
+        self.subject = "Re: " + p.sub('', parent_msg.subject, -1)
 
     def _update_external_references(self, user):
         """
