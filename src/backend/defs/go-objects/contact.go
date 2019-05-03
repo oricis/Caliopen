@@ -695,7 +695,7 @@ func (lookup *ContactByContactPoints) CleanupLookups(contacts ...interface{}) fu
 				return err
 			}
 			for _, lookup := range related {
-				ids := lookup["contact_ids"].([]gocql.UUID)
+				ids := lookup["contact_id"].([]gocql.UUID)
 				updated_ids := []string{}
 				for _, id := range ids {
 					if id.String() != contact.ContactId.String() { // keep only contact_ids that are not from the deleted contact
