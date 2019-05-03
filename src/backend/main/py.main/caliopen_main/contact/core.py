@@ -209,13 +209,13 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
     def lookup(cls, user, value):
         lookups = ContactLookup._model_class.filter(user_id=user.user_id,
                                                     value=value)
-        if lookups and lookups[0].contact_ids:
+        if lookups and lookups[0].contact_id:
             # XXX how to manage many contacts
             try:
-                return cls.get(user, lookups[0].contact_ids[0])
+                return cls.get(user, lookups[0].contact_id)
             except NotFound:
                 log.warn('Inconsistent contact lookup with non existing '
-                         ' contact %r' % lookups[0].contact_ids)
+                         ' contact %r' % lookups[0].contact_id)
                 return None
         # XXX something else to do ?
         return None
