@@ -215,7 +215,7 @@ func (b *EmailBroker) processInbound(rcptsIds [][]UUID, in *SmtpEmail, raw_only 
 						return
 					}
 					log.WithError(errors.New(err.(string))).Warnf("[EmailBroker] inbound delivery failed for user %s", rcptId[0].String())
-					log.Infof("natsMessage: %s\nnatsResponse: %+v\n", natsMessage, resp)
+					log.Infof("natsMessage: %s\nnatsResponse: %s\n", natsMessage, resp)
 					multierror.Append(errs, errors.New(err.(string)))
 					return
 				}
