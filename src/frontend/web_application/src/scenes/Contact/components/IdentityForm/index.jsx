@@ -60,7 +60,7 @@ class IdentityForm extends PureComponent {
                 name="name"
                 label={i18n._('contact.identity_form.identity.label', null, { defaults: 'Identity' })}
                 showLabelforSr
-                placeholder={i18n._('contact.identity_form.identity.placeholder', null, { defaults: '@username, account\'s URL...' })}
+                placeholder={i18n._('contact.identity_form.identity.placeholder', null, { defaults: 'username, account\'s URL...' })}
                 required
               />
             </FormColumn>

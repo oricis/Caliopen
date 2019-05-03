@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- twitter nick not displayed on contact book
+
 ## [0.18.2] 2019-04-26
 
 ### Fixed

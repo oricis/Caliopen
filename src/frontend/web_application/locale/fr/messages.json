@@ -65,7 +65,7 @@
   "contact.form-selector.phone_form.label": "Téléphone",
   "contact.identities": "Identités",
   "contact.identity_form.identity.label": "Identité",
-  "contact.identity_form.identity.placeholder": "@username, URL du compte...",
+  "contact.identity_form.identity.placeholder": "nom d'utilisateur, URL du compte...",
   "contact.identity_form.legend": "Identités",
   "contact.identity_form.service.label": "Service",
   "contact.im_form.address.label": "Adresse",
