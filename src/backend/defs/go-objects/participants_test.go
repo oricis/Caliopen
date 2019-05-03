@@ -14,8 +14,8 @@ func TestComputeNewParticipantHash(t *testing.T) {
 		Components: []string{"email:dev@caliopen.local", "email:eliz@gnu.org", "email:kaushal.modi@gmail.com"},
 	}
 	uri := "email:eliz@gnu.org"
-	participantUri := "contact:5f0baee8-1278-43eb-9931-01b7383b419b"
-	newH, err := ComputeNewParticipantHash(uri, participantUri, current)
+	contactId := "5f0baee8-1278-43eb-9931-01b7383b419b"
+	newH, err := ComputeNewParticipantHash(uri, contactId, current, current.Components, true)
 	if err != nil {
 		t.Error(err)
 	}

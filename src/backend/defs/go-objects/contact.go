@@ -641,7 +641,7 @@ func (lookup *ContactByContactPoints) UpdateLookups(contacts ...interface{}) fun
 							lkp.Type)
 					}
 					// do the job of updating participants and discussion related tables
-					err = associateURIWithContact(session, lkp)
+					err = updateURIWithContact(session, lkp, true)
 					if err != nil {
 						// TODO : handle multiple error returns to merge into one error or break immediately ?
 						log.WithError(err).Errorf("[Contact.UpdateLookups] associateURIWithContact failed with lookup %+v", lkp)
@@ -671,7 +671,7 @@ func (lookup *ContactByContactPoints) UpdateLookups(contacts ...interface{}) fun
 							lookup.Type)
 					}
 					// do the job of updating participants and discussion related tables
-					err = dissociateURIFromContact(session, *lookup)
+					err = updateURIWithContact(session, lookup, false)
 					if err != nil {
 						// TODO : handle multiple error returns to merge into one error or break immediately ?
 					}
@@ -728,9 +728,10 @@ func (lookup *ContactByContactPoints) CleanupLookups(contacts ...interface{}) fu
 	return nil
 }
 
-// associateURIWithContact is algorithm to update hashes in ParticipantHash table
+// updateURIWithContact is algorithm to update hashes in ParticipantHash table
 // to be able to link URI with contact when building discussions
-func associateURIWithContact(session *gocql.Session, lkp *ContactByContactPoints) error {
+// if associate == true, then lkp is associated with contact, else it is dissociated from contact
+func updateURIWithContact(session *gocql.Session, lkp *ContactByContactPoints, associate bool) error {
 	// lookup uris_hashes where lkp's uri is embedded
 	lkpUri := lkp.Type + ":" + lkp.Value
 	uriLookups, err := session.Query(`SELECT * FROM hash_lookup WHERE user_id = ? AND uri = ?`, lkp.UserID, lkpUri).Iter().SliceMap()
@@ -751,7 +752,7 @@ func associateURIWithContact(session *gocql.Session, lkp *ContactByContactPoints
 			if err.Error() == "not found" {
 				continue
 			} else {
-				log.WithError(err).Warnf("associateURIWithContact failed to query participant_hash for user_id = %s, kind = %s, key = %s", lkp.UserID, "uris", uriHash.Hash)
+				log.WithError(err).Warnf("updateURIWithContact failed to query participant_hash for user_id = %s, kind = %s, key = %s", lkp.UserID, "uris", uriHash.Hash)
 				continue
 			}
 		}
@@ -761,7 +762,7 @@ func associateURIWithContact(session *gocql.Session, lkp *ContactByContactPoints
 			if err.Error() == "not found" {
 				continue
 			} else {
-				log.WithError(err).Warnf("associateURIWithContact failed to query participant_hash for user_id = %s, kind = %s, key = %s", lkp.UserID, "participants", uriHash.Hash)
+				log.WithError(err).Warnf("updateURIWithContact failed to query participant_hash for user_id = %s, kind = %s, key = %s", lkp.UserID, "participants", uriHash.Hash)
 				continue
 			}
 		}
