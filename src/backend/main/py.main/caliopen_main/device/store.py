@@ -6,8 +6,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 import uuid
 
-import datetime
-import pytz
+from datetime import datetime
 
 from cassandra.cqlengine import columns
 
@@ -35,8 +34,7 @@ class Device(BaseModel):
     device_id = columns.UUID(primary_key=True, default=uuid.uuid4)
 
     name = columns.Text()
-    date_insert = columns.DateTime(required=True,
-                                   default=datetime.datetime.now(tz=pytz.utc))
+    date_insert = columns.DateTime(required=True, default=datetime.utcnow)
     date_revoked = columns.DateTime()
     type = columns.Text(required=True)      # laptop, desktop, smartphone, etc
     status = columns.Text(default='unverified')
@@ -51,8 +49,7 @@ class DeviceConnectionLog(BaseModel):
 
     user_id = columns.UUID(primary_key=True)
     resource_id = columns.UUID(primary_key=True)  # device_id
-    date_insert = columns.DateTime(primary_key=True,
-                                   default=datetime.datetime.now(tz=pytz.utc))
+    date_insert = columns.DateTime(primary_key=True, default=datetime.utcnow)
     ip_address = columns.Text()
     type = columns.Text()       # Connection type (login/logout)
     country = columns.Text()    # Geoip detected country
