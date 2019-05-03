@@ -57,6 +57,7 @@
   "contact.email_type.other": "Other",
   "contact.email_type.work": "Professional",
   "contact.feedback.unable_to_save": "Unable to save the contact",
+  "contact.feedback.unable_to_save_address_already_used": "The address \"{address}\" belongs to <0>{name}</0>. You can remove it from that contact before using it here.",
   "contact.form-selector.add_new_field.label": "Add a new field",
   "contact.form-selector.address_form.label": "Address",
   "contact.form-selector.email_form.label": "Email",

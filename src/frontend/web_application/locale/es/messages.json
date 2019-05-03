@@ -57,6 +57,7 @@
   "contact.email_type.other": "",
   "contact.email_type.work": "",
   "contact.feedback.unable_to_save": "",
+  "contact.feedback.unable_to_save_address_already_used": "",
   "contact.form-selector.add_new_field.label": "",
   "contact.form-selector.address_form.label": "",
   "contact.form-selector.email_form.label": "",

@@ -16,8 +16,8 @@ import fetchLocation from '../../services/api-location';
 import { formatName } from '../../services/contact';
 import ContactProfileForm from './components/ContactProfileForm';
 import {
-  ActionBarWrapper, ActionBar, ActionBarButton, Badge, Button, Confirm, Icon, Modal, PageTitle,
-  PlaceholderBlock, Spinner, TextBlock, TextList, TextItem, Title,
+  ActionBarWrapper, ActionBar, ActionBarButton, Badge, Button, Confirm, Icon, Link, Modal,
+  PageTitle, PlaceholderBlock, Spinner, TextBlock, TextList, TextItem, Title,
 } from '../../components';
 import FormCollection from './components/FormCollection';
 import EmailForm from './components/EmailForm';
@@ -37,6 +37,9 @@ import ImDetails from './components/ImDetails';
 import AddressDetails from './components/AddressDetails';
 import IdentityDetails from './components/IdentityDetails';
 import BirthdayDetails from './components/BirthdayDetails';
+import {
+  handleContactSaveErrors, CONTACT_ERROR_ADDRESS_UNICITY_CONSTRAINT,
+} from './services/handleContactSaveErrors';
 
 import './style.scss';
 import './contact-action-bar.scss';
@@ -57,6 +60,7 @@ class Contact extends Component {
     createContact: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
     reset: PropTypes.func.isRequired,
+    getContact: PropTypes.func.isRequired,
     updateContact: PropTypes.func.isRequired,
     deleteContact: PropTypes.func.isRequired,
     invalidateContacts: PropTypes.func.isRequired,
@@ -157,7 +161,7 @@ class Contact extends Component {
 
   handleSubmit = async (ev) => {
     const {
-      i18n, handleSubmit, contactId, notifyError, contact: original,
+      handleSubmit, contactId, notifyError, contact: original,
       push, closeTab, currentTab,
     } = this.props;
     this.setState({ isSaving: true });
@@ -176,7 +180,50 @@ class Contact extends Component {
       push(`/contacts/${contactUpToDate.contact_id}`);
       closeTab(currentTab);
     } catch (err) {
-      notifyError({ message: i18n._('contact.feedback.unable_to_save', null, { defaults: 'Unable to save the contact' }) });
+      this.setState({ isSaving: false }, async () => {
+        const { getContact } = this.props;
+        const contactErrors = handleContactSaveErrors(err);
+        const contactIdsToGet = contactErrors
+          .filter(contactErr => contactErr.type === CONTACT_ERROR_ADDRESS_UNICITY_CONSTRAINT)
+          .map(contactErr => contactErr.ownerContactId);
+        const contactsUsed = await Promise.all(
+          contactIdsToGet.map(ctId => getContact({ contactId: ctId }))
+        );
+        const contactsById = contactsUsed.reduce(
+          (acc, curr) => ({ ...acc, [curr.contact_id]: curr }),
+          {}
+        );
+
+        notifyError({
+          duration: 0,
+          message: contactErrors.map((contactErr, index) => {
+            switch (contactErr.type) {
+              case CONTACT_ERROR_ADDRESS_UNICITY_CONSTRAINT:
+                return (
+                  <p key={`${contactErr.type}_${contactErr.address}`}>
+                    <Trans
+                      id="contact.feedback.unable_to_save_address_already_used"
+                      defaults="The address &quot;{address}&quot; belongs to <0>{name}</0>. You can remove it from that contact before using it here."
+                      values={{
+                        name: (contactsById[contactErr.ownerContactId] && contactsById[contactErr.ownerContactId].given_name) || '?',
+                        address: contactErr.address,
+                      }}
+                      components={[
+                        <Link to={`/contacts/${contactErr.ownerContactId}`} />,
+                      ]}
+                    />
+                  </p>
+                );
+              default:
+                return (
+                  <p key={index}>
+                    <Trans id="contact.feedback.unable_to_save">Unable to save the contact</Trans>
+                  </p>
+                );
+            }
+          }),
+        });
+      });
     }
   }
 

@@ -57,6 +57,7 @@
   "contact.email_type.other": "Andere",
   "contact.email_type.work": "Geschäftlich",
   "contact.feedback.unable_to_save": "",
+  "contact.feedback.unable_to_save_address_already_used": "",
   "contact.form-selector.add_new_field.label": "Ein Feld hinzufügen",
   "contact.form-selector.address_form.label": "Adresse",
   "contact.form-selector.email_form.label": "Email",

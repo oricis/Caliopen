@@ -6,7 +6,7 @@ import {
   requestContact, createContact, deleteContact, invalidate as invalidateContacts,
 } from '../../store/modules/contact';
 import { requestUser } from '../../store/modules/user';
-import { addAddressToContact, updateContact } from '../../modules/contact';
+import { addAddressToContact, updateContact, getContact } from '../../modules/contact';
 import { updateTagCollection as updateTagCollectionBase } from '../../modules/tags';
 import { getNewContact } from '../../services/contact';
 import { userSelector } from '../../modules/user';
@@ -68,6 +68,7 @@ const updateTagCollection = (i18n, {
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({
     requestContact,
+    getContact,
     updateContact,
     createContact,
     deleteContact,
