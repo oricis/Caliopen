@@ -15,7 +15,9 @@ import { initialState as initialStateSettings } from '../../src/store/modules/se
  */
 function getMarkup({ store, context, location }) {
   try {
-    const { protocol, hostname, port } = getConfig();
+    const {
+      protocol, hostname, port, maxBodySize,
+    } = getConfig();
     const config = { protocol, hostname, port };
     const markup = ReactDOMServer.renderToString(React.createElement(Bootstrap, {
       context, location, store, config,
@@ -25,7 +27,7 @@ function getMarkup({ store, context, location }) {
 
     return [
       { key: '</title>', value: `${documentTitle}</title>` },
-      { key: '</head>', value: `<script>window.__STORE__ = ${serialize(initialState)};</script></head>` },
+      { key: '</head>', value: `<script>window.__STORE__ = ${serialize(initialState)};window.__INSTANCE_CONFIG__ = ${serialize({ hostname, maxBodySize })}</script></head>` },
       { key: '%MARKUP%', value: markup },
     ].reduce((str, current) => str.replace(current.key, current.value), template);
   } catch (e) {
@@ -46,6 +48,7 @@ export default (req, res) => {
       ...initialStateSettings,
       settings: getDefaultSettings(getUserLocales()[0]),
     },
+    instanceConfig: getConfig(),
   };
 
   const store = configureStore(initialState);
