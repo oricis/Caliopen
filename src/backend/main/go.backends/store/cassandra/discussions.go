@@ -72,7 +72,7 @@ func (cb *CassandraBackend) UpsertDiscussionLookups(userId UUID, participants []
 
 // CreateLookupsFromUris resolves uris to contact to build participants' set
 // then computes participants_hash
-// then creates two ways links in HashLookup and ParticipantLookup tables:
+// then creates bijection in HashLookup and ParticipantLookup tables:
 //    uris<->uris_hash
 //    uris_hash<->participants_hash
 func (cb *CassandraBackend) CreateLookupsFromUris(userId UUID, uriHash string, uris []string) error {

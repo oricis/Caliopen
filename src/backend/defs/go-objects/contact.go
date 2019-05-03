@@ -771,29 +771,35 @@ func associateURIWithContact(session *gocql.Session, lkp *ContactByContactPoints
 	}
 
 	// for each participant_hash :
-	//     - compute a new participant_hash with current contact_id
+	//     - compute a new participant_hash
 	//     - add new bijection uri_hash <-> new_participant_hash
+	//     - remove former bijection
 	for _, participantHash := range participantHashes {
-		newParticipantHash, err := ComputeNewParticipantHash(lkpUri, "contact:"+lkp.ContactID, participantHash)
+		var newParticipantHash ParticipantHash
+		var err error
+		newParticipantHash, err = ComputeNewParticipantHash(lkpUri, lkp.ContactID, participantHash, urisComponents[participantHash.Value], associate)
 		if err != nil {
-			log.WithError(err).Warnf("associateURIWithContact failed to compute new participant hash for uri <%s> and former participant hash : %+v", lkpUri, participantHash)
+			log.WithError(err).Warnf("updateURIWithContact failed to compute new participant hash for uri <%s> and former participant hash : %+v", lkpUri, participantHash)
+		} else {
+			err = StoreURIsParticipantsBijection(
+				session,
+				UUID(uuid.FromStringOrNil(lkp.UserID)),
+				participantHash.Value,
+				newParticipantHash.Key,
+				urisComponents[participantHash.Value],
+				newParticipantHash.Components,
+			)
+			if err != nil {
+				log.WithError(err).Warn("StoreURIsParticipantsBijection failed")
+			} else {
+				// remove former bijection
+				err = RemoveURIsParticipantsBijection(session, participantHash)
+				if err != nil {
+					log.WithError(err).Warn("RemoveURIsParticipantsBijection failed")
+				}
+			}
 		}
-		StoreURIsParticipantsBijection(
-			session,
-			UUID(uuid.FromStringOrNil(lkp.UserID)),
-			participantHash.Value,
-			newParticipantHash.Key,
-			urisComponents[participantHash.Value],
-			newParticipantHash.Components,
-		)
 	}
-
-	return nil
-}
-
-// dissociateURIFromContact is algorithm to update hashes in ParticipantHash table
-// to remove uri_hash <-> contact association
-func dissociateURIFromContact(session *gocql.Session, lkp ContactByContactPoints) error {
 
 	return nil
 }
@@ -809,6 +815,35 @@ func StoreURIsParticipantsBijection(session *gocql.Session, userId UUID, uriHash
 	// store participants_hash -> uris_hash
 	e2 := session.Query(`INSERT INTO participant_hash (user_id, kind, key, value, components, date_insert) VALUES (?,?,?,?,?,?)`,
 		userId, "participants", participantHash, uriHash, participantComponents, now).Exec()
+	switch {
+	case e1 != nil:
+		return e1
+	case e2 != nil:
+		return e2
+	}
+	return nil
+}
+
+// RemoveURIsParticipantsBijection delete uris_hash <-> participants_hash bijection
+// in participant_hash table
+func RemoveURIsParticipantsBijection(session *gocql.Session, participantHash ParticipantHash) error {
+	var first, second string
+	first = participantHash.Kind
+	if first == "participants" {
+		second = "uris"
+	} else {
+		second = "participants"
+	}
+	e1 := session.Query(`DELETE FROM participant_hash WHERE user_id = ? AND kind = ? AND key = ? AND value = ?`,
+		participantHash.UserId,
+		first,
+		participantHash.Key,
+		participantHash.Value).Exec()
+	e2 := session.Query(`DELETE FROM participant_hash WHERE user_id = ? AND kind = ? AND key = ? AND value = ?`,
+		participantHash.UserId,
+		second,
+		participantHash.Value,
+		participantHash.Key).Exec()
 	switch {
 	case e1 != nil:
 		return e1
