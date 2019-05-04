@@ -695,25 +695,10 @@ func (lookup *ContactByContactPoints) CleanupLookups(contacts ...interface{}) fu
 				return err
 			}
 			for _, lookup := range related {
-				ids := lookup["contact_id"].([]gocql.UUID)
-				updated_ids := []string{}
-				for _, id := range ids {
-					if id.String() != contact.ContactId.String() { // keep only contact_ids that are not from the deleted contact
-						updated_ids = append(updated_ids, id.String())
-					}
-				}
-				if len(ids) == 0 || // we found an empty lookup: it should have been removed ! cleaning up
-					len(updated_ids) == 0 { // lookup had only one contact_ids and we just deleted it. cleaning up
+				contact_id := lookup["contact_id"].(gocql.UUID)
+				if contact.ContactId.String() == contact_id.String() {
+					log.Info("Deleting contact_lookup for user %s with value %s", lookup["user_id"], lookup["value"])
 					err := session.Query(`DELETE FROM contact_lookup WHERE user_id = ? AND value = ? AND type = ?`,
-						lookup["user_id"],
-						lookup["value"],
-						lookup["type"]).Exec()
-					if err != nil {
-						return err
-					}
-				} else if len(ids) != len(updated_ids) { // an id has been pop, need to update contact_lookup
-					err := session.Query(`UPDATE contact_lookup SET contact_ids = ? WHERE user_id = ? AND value = ? AND type = ?`,
-						updated_ids,
 						lookup["user_id"],
 						lookup["value"],
 						lookup["type"]).Exec()
