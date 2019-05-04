@@ -1,10 +1,14 @@
 import logging
+import uuid
+
+from caliopen_main.user.core.user import User
+from caliopen_main.user.core import allocate_user_shard
+from caliopen_main.user.core.setups import setup_shard_index
 
 log = logging.getLogger(__name__)
 
 
 def prepare_index_shards(client, shards):
-    from caliopen_main.user.core.setups import setup_shard_index
 
     for shard_id in shards:
         if not client.indices.exists(shard_id):
@@ -13,9 +17,6 @@ def prepare_index_shards(client, shards):
 
 
 def migrate_all_users(new_domain, count=None):
-    import uuid
-    from caliopen_main.user.core.user import User
-    from caliopen_main.user.core import allocate_user_shard
     cpt = 0
     for model in User._model_class.all():
         user = User(model)

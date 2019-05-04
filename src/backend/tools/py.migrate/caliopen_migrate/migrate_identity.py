@@ -1,14 +1,13 @@
 import logging
 
-from caliopen_main.user.core import User
+from caliopen_storage.exception import NotFound
+from caliopen_main.contact.objects.contact import Contact as ContactObject
+from caliopen_main.contact.objects.email import Email as EmailObject
 
 log = logging.getLogger(__name__)
 
 
 def fix_user_contact(user, new_domain, only_index=False):
-    from caliopen_storage.exception import NotFound
-    from caliopen_main.contact.objects.contact import Contact as ContactObject
-    from caliopen_main.contact.objects.email import Email as EmailObject
     try:
         contact = ContactObject(user, contact_id=user.contact_id)
         contact.get_db()
