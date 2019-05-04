@@ -1,13 +1,5 @@
 import logging
 
-from caliopen_storage.config import Configuration
-from caliopen_storage.helpers.connection import get_index_connection
-
-
-client = get_index_connection()
-shards = Configuration('global').get('elasticsearch.shards')
-
-
 log = logging.getLogger(__name__)
 
 
