@@ -64,6 +64,6 @@ func (ci ContactsIndex) FilterContacts(search IndexSearch) (contacts []*Contact,
 	return nil, 0, errors.New("FilterContact test interface not implemented")
 }
 
-func (ci ContactsIndex) DeleteContact(contact *Contact) error {
+func (ci ContactsIndex) DeleteContact(user *UserInfo, contact *Contact) error {
 	return errors.New("DeleteContact test interface not implemented")
 }
