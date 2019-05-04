@@ -22,7 +22,7 @@ type ContactStorage interface {
 
 type ContactIndex interface {
 	CreateContact(user *UserInfo, contact *Contact) error
-	DeleteContact(contact *Contact) error
+	DeleteContact(user *UserInfo, contact *Contact) error
 	UpdateContact(user *UserInfo, contact *Contact, fields map[string]interface{}) error
 	FilterContacts(search IndexSearch) (Contacts []*Contact, totalFound int64, err error)
 }

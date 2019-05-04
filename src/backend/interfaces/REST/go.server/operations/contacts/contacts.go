@@ -206,15 +206,19 @@ func PatchContact(ctx *gin.Context) {
 
 // DeleteContact handles DELETE /contacts/:contactID
 func DeleteContact(ctx *gin.Context) {
-	userID := ctx.MustGet("user_id").(string)
+	userId, err := operations.NormalizeUUIDstring(ctx.MustGet("user_id").(string))
 	contactID, err := operations.NormalizeUUIDstring(ctx.Param("contactID"))
+
 	if err != nil {
 		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
 	}
-	err = caliopen.Facilities.RESTfacility.DeleteContact(userID, contactID)
+	shard_id := ctx.MustGet("shard_id").(string)
+	user_info := &UserInfo{User_id: userId, Shard_id: shard_id}
+
+	err = caliopen.Facilities.RESTfacility.DeleteContact(user_info, contactID)
 	if err != nil {
 		e := swgErr.New(http.StatusInternalServerError, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)

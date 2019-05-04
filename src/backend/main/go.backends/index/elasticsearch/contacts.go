@@ -57,8 +57,8 @@ func (es *ElasticSearchBackend) UpdateContact(user *UserInfo, contact *Contact, 
 	return nil
 }
 
-func (es *ElasticSearchBackend) DeleteContact(contact *Contact) error {
-	_, err := es.Client.Delete().Index(contact.UserId.String()).Type(ContactIndexType).Id(contact.ContactId.String()).Do(context.TODO())
+func (es *ElasticSearchBackend) DeleteContact(user *UserInfo, contact *Contact) error {
+	_, err := es.Client.Delete().Index(user.Shard_id).Type(ContactIndexType).Id(contact.ContactId.String()).Do(context.TODO())
 	if err != nil {
 		return err
 	}
