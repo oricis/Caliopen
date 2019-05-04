@@ -22,7 +22,7 @@ import (
 )
 
 // CreateContact validates Contact before saving it to cassandra and ES
-func (rest *RESTfacility) CreateContact(contact *Contact) (err error) {
+func (rest *RESTfacility) CreateContact(user *UserInfo, contact *Contact) (err error) {
 	// add missing properties
 	contact.ContactId.UnmarshalBinary(uuid.NewV4().Bytes())
 	contact.DateInsert = time.Now()
@@ -39,7 +39,7 @@ func (rest *RESTfacility) CreateContact(contact *Contact) (err error) {
 		return err
 	}
 
-	err = rest.index.CreateContact(contact)
+	err = rest.index.CreateContact(user, contact)
 	if err != nil {
 		return err
 	}

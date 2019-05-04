@@ -25,7 +25,7 @@ type (
 		SuggestRecipients(user *UserInfo, query_string string) (suggests []RecipientSuggestion, err error)
 		GetSettings(user_id string) (settings *Settings, err error)
 		//contacts
-		CreateContact(contact *Contact) error
+		CreateContact(user *UserInfo, contact *Contact) error
 		RetrieveContacts(filter IndexSearch) (contacts []*Contact, totalFound int64, err error)
 		RetrieveContact(userID, contactID string) (*Contact, error)
 		RetrieveUserContact(userID string) (*Contact, error)

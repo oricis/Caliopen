@@ -51,7 +51,7 @@ func (cb ContactsBackend) LookupContactsByIdentifier(user_id, address, kind stri
 type ContactsIndex struct {
 }
 
-func (ci ContactsIndex) CreateContact(contact *Contact) error {
+func (ci ContactsIndex) CreateContact(user *UserInfo, contact *Contact) error {
 	return errors.New("CreateContact test interface not implemented")
 }
 

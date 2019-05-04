@@ -16,13 +16,13 @@ import (
 	"strings"
 )
 
-func (es *ElasticSearchBackend) CreateContact(contact *Contact) error {
+func (es *ElasticSearchBackend) CreateContact(user *UserInfo, contact *Contact) error {
 	es_contact, err := contact.MarshalES()
 	if err != nil {
 		log.WithError(err).Warnf("[ElasticSearchBackend] failed to parse contact to json : %s", string(es_contact))
 		return err
 	}
-	resp, err := es.Client.Index().Index(contact.UserId.String()).Type(ContactIndexType).Id(contact.ContactId.String()).
+	resp, err := es.Client.Index().Index(user.Shard_id).Type(ContactIndexType).Id(contact.ContactId.String()).
 		BodyString(string(es_contact)).
 		Do(context.TODO())
 	if err != nil {
