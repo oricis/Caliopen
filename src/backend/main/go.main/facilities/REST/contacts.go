@@ -22,7 +22,7 @@ import (
 )
 
 // CreateContact validates Contact before saving it to cassandra and ES
-func (rest *RESTfacility) CreateContact(contact *Contact) (err error) {
+func (rest *RESTfacility) CreateContact(user *UserInfo, contact *Contact) (err error) {
 	// add missing properties
 	contact.ContactId.UnmarshalBinary(uuid.NewV4().Bytes())
 	contact.DateInsert = time.Now()
@@ -39,7 +39,7 @@ func (rest *RESTfacility) CreateContact(contact *Contact) (err error) {
 		return err
 	}
 
-	err = rest.index.CreateContact(contact)
+	err = rest.index.CreateContact(user, contact)
 	if err != nil {
 		return err
 	}
@@ -207,12 +207,12 @@ func (rest *RESTfacility) UpdateContact(user *UserInfo, contact, oldContact *Con
 // DeleteContact deletes a contact in store & index, only if :
 // - contact belongs to user ;-)
 // - contact is not the user's contact card
-func (rest *RESTfacility) DeleteContact(userID, contactID string) error {
-	user, err := rest.store.RetrieveUser(userID)
+func (rest *RESTfacility) DeleteContact(info *UserInfo, contactID string) error {
+	user, err := rest.store.RetrieveUser(info.User_id)
 	if err != nil {
 		return err
 	}
-	contact, err := rest.store.RetrieveContact(userID, contactID)
+	contact, err := rest.store.RetrieveContact(info.User_id, contactID)
 	if err != nil {
 		return err
 	}
@@ -237,7 +237,7 @@ func (rest *RESTfacility) DeleteContact(userID, contactID string) error {
 	}(wg, errGroup, mx)
 
 	go func(wg *sync.WaitGroup, errGroup *[]string, mx *sync.Mutex) {
-		err = rest.index.DeleteContact(contact)
+		err = rest.index.DeleteContact(info, contact)
 		if err != nil {
 			mx.Lock()
 			*errGroup = append(*errGroup, err.Error())
