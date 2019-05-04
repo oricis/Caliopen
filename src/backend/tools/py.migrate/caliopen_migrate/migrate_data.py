@@ -3,17 +3,8 @@ import uuid
 
 from caliopen_main.user.core.user import User
 from caliopen_main.user.core import allocate_user_shard
-from caliopen_main.user.core.setups import setup_shard_index
 
 log = logging.getLogger(__name__)
-
-
-def prepare_index_shards(client, shards):
-
-    for shard_id in shards:
-        if not client.indices.exists(shard_id):
-            log.info('Creating shard {}'.format(shard_id))
-            setup_shard_index(shard_id)
 
 
 def migrate_all_users(new_domain, count=None):
