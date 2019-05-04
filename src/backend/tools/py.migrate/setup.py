@@ -20,7 +20,6 @@ if (os.path.isfile('./requirements.deps')):
         requires.extend(f_deps.read().split('\n'))
 
 setup(name=name,
-      namespace_packages=[name],
       version=version,
       description='Caliopen Data migration utilities`',
       long_description=README + '\n\n' + CHANGES,
@@ -39,5 +38,5 @@ setup(name=name,
       tests_require=requires,
       test_suite='',
       entry_points={
-          'console_scripts': 'caliopen = caliopen_migrate.cli:main',
+          'console_scripts': 'caliopmigre = caliopen_migrate.cli:main',
       })
