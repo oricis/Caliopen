@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - signup does not authenticate and crash
+- hardcoded references to "alpha.caliopen.org" in client
 
 ## [0.18.1] 2019-04-26
 
