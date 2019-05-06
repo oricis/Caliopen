@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import { Trans, withI18n } from '@lingui/react';
 import classnames from 'classnames';
+import Linkify from 'linkifyjs/react';
 import { withScrollTarget } from '../../../../modules/scroll';
 import { withPush } from '../../../../modules/routing';
 import { ParticipantLabel } from '../../../../modules/message';
@@ -77,7 +78,7 @@ class MailMessage extends Component {
     }
 
     return (
-      <TextBlock nowrap={false}><pre className="s-mail-message__content">{message.body}</pre></TextBlock>
+      <TextBlock nowrap={false}><Linkify tagName="pre" className="s-mail-message__content">{message.body}</Linkify></TextBlock>
     );
   }
 
