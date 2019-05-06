@@ -48,7 +48,6 @@ export default (req, res) => {
       ...initialStateSettings,
       settings: getDefaultSettings(getUserLocales()[0]),
     },
-    instanceConfig: getConfig(),
   };
 
   const store = configureStore(initialState);
