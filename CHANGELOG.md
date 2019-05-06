@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [0.18.2] 2019-04-26
 
+### Added
+
+- Activate links in plain text messages.
+
 ### Fixed
 
 - signup does not authenticate and crash

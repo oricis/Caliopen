@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import classNames from 'classnames';
+import Linkify from 'linkifyjs/react';
 import { withI18n, Trans } from '@lingui/react';
 import { withScrollTarget } from '../../../../modules/scroll';
 import { withPush } from '../../../../modules/routing';
@@ -187,7 +188,11 @@ class InstantMessage extends PureComponent {
           isLocked ?
             <LockedMessage encryptionStatus={encryptionStatus} />
             :
-            <TextBlock className="m-instant-message__content" nowrap={false}>{message.body}</TextBlock>
+            <TextBlock className="m-instant-message__content" nowrap={false}>
+              <Linkify>
+                {message.body}
+              </Linkify>
+            </TextBlock>
         }
       </article>
     );
