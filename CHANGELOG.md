@@ -30,6 +30,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [0.18.2] 2019-04-26
 
+### Changed
+
+- Do not display private key details, allow "download" instead.
+
 ### Fixed
 
 - signup does not authenticate and crash

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Trans, withI18n } from '@lingui/react';
 import classnames from 'classnames';
 import {
-  Spinner, Button, FieldErrors, CheckboxFieldGroup, MultiSelectFieldGroup, TextFieldGroup,
+  Spinner, Button, FieldErrors, CheckboxFieldGroup, SelectFieldGroup, TextFieldGroup,
   TextareaFieldGroup,
 } from '../../../../components';
 
@@ -153,7 +153,7 @@ class OpenPGPKeyForm extends Component {
           <form onSubmit={this.handleGenerateSubmit}>
             {
               emailOptions.length !== 1 && (
-                <MultiSelectFieldGroup
+                <SelectFieldGroup
                   className="m-account-openpgp-form__field-group"
                   label={i18n._('user.openpgp.form.email.label', null, { defaults: 'Email' })}
                   value={generateForm.email}
@@ -211,7 +211,7 @@ class OpenPGPKeyForm extends Component {
         {this.state.formType === FORM_TYPE_RAW && (
           <form onSubmit={this.handleImportSubmit}>
             {
-              importForm.errors.global && (
+              importForm.errors && importForm.errors.global && (
                 <FieldErrors
                   className="m-account-openpgp-form__field-group"
                   errors={importForm.errors.global.map(key => this.errorsLabels[key])}
