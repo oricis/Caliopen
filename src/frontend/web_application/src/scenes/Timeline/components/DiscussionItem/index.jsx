@@ -47,11 +47,14 @@ class DiscussionItem extends PureComponent {
   getParticipantsExceptUser = () => {
     const { discussion } = this.props;
 
-    return discussion.participants
+    const participants = discussion.participants
       .filter(participant => !(
         participant.contact_ids && participant.contact_ids
           .some(contactId => contactId === this.props.user.contact.contact_id)
       ));
+
+    return participants.length > 0 ?
+      participants : [discussion.participants[0]];
   }
 
   renderMessageSubject = (discussion) => {

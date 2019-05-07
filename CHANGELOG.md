@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - signup does not authenticate and crash
 - hardcoded references to "alpha.caliopen.org" in client
+- show at least 1 participant per discussion on timeline
 
 ## [0.18.1] 2019-04-26
 
