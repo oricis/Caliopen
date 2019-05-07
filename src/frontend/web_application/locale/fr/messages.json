@@ -462,7 +462,7 @@
   "tags.header.label": "Tags",
   "tags.header.title": "Tags <0>(Total: {nb})</0>",
   "tags.label.important": "Important",
-  "tags.label.inbox": "Inbox",
+  "tags.label.inbox": "Boite de réception",
   "tags.label.spam": "Spam",
   "take-a-tour.action.close": "Fermer",
   "take-a-tour.action.last-step": "Terminer",
