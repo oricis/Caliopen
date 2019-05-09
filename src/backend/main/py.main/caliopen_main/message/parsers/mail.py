@@ -75,6 +75,7 @@ class MailAttachment(object):
         - it has a Content-Disposition header with param "attachment"
         - the main part of the Content-Type header
                                         is within "attachment_types" list below
+        - the part is not a PGP/Mime encryption envelope
 
         see https://www.iana.org/assignments/media-types/media-types.xhtml
 
@@ -87,6 +88,9 @@ class MailAttachment(object):
             if bool(dispositions[0].lower() == "attachment") or \
                     bool(dispositions[0].lower() == "inline"):
                 return True
+
+        if part.get_content_subtype() == 'pgp-encrypted':
+            return False
 
         attachment_types = (
             "application", "image", "video", "audio", "message", "font")
