@@ -19,7 +19,8 @@ function getMarkup({ store, context, location }) {
       protocol, hostname, port, maxBodySize,
     } = getConfig();
     const config = { protocol, hostname, port };
-    const markup = ReactDOMServer.renderToString(React.createElement(Bootstrap, {
+    const hasSSR = process.env.HAS_SSR !== false && process.env.HAS_SSR !== 'false';
+    const markup = !hasSSR ? '' : ReactDOMServer.renderToString(React.createElement(Bootstrap, {
       context, location, store, config,
     }));
     const documentTitle = DocumentTitle.rewind();
