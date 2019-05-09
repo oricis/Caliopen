@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
+- Simple detection of PGP inline message
+- Apiv2 create and delete contacts does not use user.shard_id
+- Better logging for apiv2 and mq-worker
+- Do not fail if ContactLookup raise a NotFound
 - twitter nick not displayed on contact book
 
 ## [0.18.2] 2019-04-26
@@ -15,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - signup does not authenticate and crash
+- hardcoded references to "alpha.caliopen.org" in client
 
 ## [0.18.1] 2019-04-26
 

@@ -90,14 +90,16 @@ def setup_shard_index(shard):
         log.warn("failed to create index {} : {}".format(shard, exc))
         return
 
-    # PUT mappings for each type, if any
-    for name, kls in core_registry.items():
-        if getattr(kls, '_index_class', None) and \
-                hasattr(kls._model_class, 'user_id'):
-            idx_kls = kls._index_class()
-            if hasattr(idx_kls, "build_mapping"):
-                log.debug('Init index mapping for {}'.format(idx_kls))
-                idx_kls.create_mapping(shard)
+    # TOFIX
+    # core Message is no more in core_registry, use hard coded build mapping
+    from caliopen_main.message.store.message_index import IndexedMessage
+    from caliopen_main.contact.store.contact_index import IndexedContact
+    log.info('Creating index mapping for message and contact in shard {}'.
+             format(shard))
+    message_mapping = IndexedMessage.build_mapping()
+    message_mapping.save(shard, using=client)
+    contact_mapping = IndexedContact.build_mapping()
+    contact_mapping.save(shard, using=client)
 
 
 def setup_system_tags(user):

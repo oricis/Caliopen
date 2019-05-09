@@ -5,6 +5,8 @@ import {
   Spinner, Link, Label, Subtitle, PasswordStrength, FieldErrors, TextBlock, Modal, Button,
   TextFieldGroup, CheckboxFieldGroup, FormGrid, FormRow, FormColumn,
 } from '../../../../components';
+import { getConfig } from '../../../../services/config';
+
 import './style.scss';
 
 function generateStateFromProps(props) {
@@ -174,6 +176,7 @@ class SignupForm extends Component {
     const {
       form, errors = {}, i18n, isValidating,
     } = this.props;
+    const { hostname } = getConfig();
 
     return (
       <div className="s-signup">
@@ -200,7 +203,7 @@ class SignupForm extends Component {
                   onBlur={this.handleInputBlur}
                 />
                 <TextBlock className="s-signup__user">
-                  <span className="s-signup__username">{this.state.formValues.username}</span>@alpha.caliopen.org
+                  <span className="s-signup__username">{this.state.formValues.username}</span>@{hostname}
                 </TextBlock>
               </FormColumn>
             </FormRow>

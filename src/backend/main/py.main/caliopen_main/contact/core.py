@@ -207,8 +207,11 @@ class Contact(BaseUserCore, MixinCoreRelation, MixinCoreNested):
 
     @classmethod
     def lookup(cls, user, value):
-        lookup = ContactLookup._model_class.get(user_id=user.user_id,
+        try:
+            lookup = ContactLookup._model_class.get(user_id=user.user_id,
                                                     value=value)
+        except NotFound:
+            return None
         if lookup and lookup.contact_id:
             # as of 2019, april it is forbidden in Caliopen
             # to add an external address to more than one contact

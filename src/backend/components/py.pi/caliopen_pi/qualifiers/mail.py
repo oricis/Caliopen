@@ -37,7 +37,7 @@ class UserMessageQualifier(BaseQualifier):
         'hash': HashLookup,
     }
 
-    def lookup_discussion_sequence(self, mail, message, *args, **kwargs):
+    def lookup_discussion_sequence(self, mail, message):
         """
         Return list of lookups (type, value) from a mail message
         and the first lookup'hash from that list
@@ -103,9 +103,14 @@ class UserMessageQualifier(BaseQualifier):
 
         participants = []
         for p in email.participants:
-            participant, contact = self.get_participant(email, p)
-            new_message.participants.append(participant)
-            participants.append((participant, contact))
+            try:
+                participant, contact = self.get_participant(email, p)
+                new_message.participants.append(participant)
+                participants.append((participant, contact))
+            except Exception as exc:
+                log.error("process_inbound failed to lookup participant for email {} : {}".format(vars(email), exc))
+                raise exc
+
 
         if not participants:
             raise Exception("no participant found in raw email {}".format(

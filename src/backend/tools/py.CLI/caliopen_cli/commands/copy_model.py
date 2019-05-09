@@ -10,11 +10,11 @@ from caliopen_storage.config import Configuration
 
 def copy_model(**kwargs):
     conf = Configuration('global').configuration
-    cluster_source = Cluster(conf['cassandra']['hosts'])
-    source = cluster_source.connect(conf['cassandra']['keyspace'])
+    cluster_source = Cluster(conf['old_cassandra']['hosts'])
+    source = cluster_source.connect(conf['old_cassandra']['keyspace'])
     source.row_factory = dict_factory
-    cluster_dest = Cluster(conf['new_cassandra']['hosts'])
-    dest = cluster_dest.connect(conf['new_cassandra']['keyspace'])
+    cluster_dest = Cluster(conf['cassandra']['hosts'])
+    dest = cluster_dest.connect(conf['cassandra']['keyspace'])
 
     table = kwargs['model'].lower()
     fetch_size = kwargs.get('fetch_size', 100)

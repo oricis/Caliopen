@@ -159,16 +159,36 @@ func HashFromParticipantsUris(participants []Participant) (hash string, componen
 
 // ComputeNewParticipantHash computes a new participants_hash and update participants components
 // based on new uri->participant relation provided in params
-func ComputeNewParticipantHash(uri, participantUri string, current ParticipantHash) (new ParticipantHash, err error) {
+// if associate == true, uri will be replaced by contactId
+// else, uri must be dissociated from contactId
+func ComputeNewParticipantHash(uri, contactId string, current ParticipantHash, urisComponents []string, associate bool) (new ParticipantHash, err error) {
 	new.UserId = current.UserId
 	new.Kind = "participants"
 	participantsMap := map[string]struct{}{}
-	// replace uri by participant
-	for _, component := range current.Components {
-		if component == uri {
-			participantsMap[participantUri] = struct{}{}
-		} else {
-			participantsMap[component] = struct{}{}
+	if associate {
+		// replace uri by contactId
+		for _, component := range current.Components {
+			if component == uri {
+				participantsMap["contact:"+contactId] = struct{}{}
+			} else {
+				participantsMap[component] = struct{}{}
+			}
+		}
+	} else {
+		// re-add uri to participantsMap
+		for _, component := range current.Components {
+			if component == "contact:"+contactId {
+				// add uri to components
+				participantsMap[uri] = struct{}{}
+			} else {
+				participantsMap[component] = struct{}{}
+			}
+		}
+		// if contactId is linked to another uri, it must be kept in participants
+		for _, uriComponent := range urisComponents {
+			if _, ok := participantsMap[uriComponent]; !ok && uriComponent != uri {
+				participantsMap["contact:"+contactId] = struct{}{}
+			}
 		}
 	}
 	// compute new hash

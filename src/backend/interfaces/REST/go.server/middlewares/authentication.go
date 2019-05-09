@@ -100,8 +100,6 @@ func BasicAuthFromCache(cache backends.APICache, realm string) gin.HandlerFunc {
 			if valid == false {
 				log.Println("Verification of signature failed")
 				// kickUnauthorizedRequest(c, "Authorization failed")
-			} else {
-				log.Println("Verification of signature OK")
 			}
 		} else {
 			log.Println("No signature found for device ")
