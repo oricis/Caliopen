@@ -122,7 +122,8 @@ class InboundMailFeature(object):
 
         # Maybe pgp/inline ?
         if not is_encrypted:
-            if self.message.body_plain.startswith(PGP_MESSAGE_HEADER):
+            body = self.message.body_plain.decode('utf-8')
+            if body.startswith(PGP_MESSAGE_HEADER):
                 is_encrypted = True
 
         return {'message_encrypted': is_encrypted,
