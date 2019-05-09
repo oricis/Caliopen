@@ -89,9 +89,6 @@ class MailAttachment(object):
                     bool(dispositions[0].lower() == "inline"):
                 return True
 
-        if part.get_content_subtype() == 'pgp-encrypted':
-            return False
-
         attachment_types = (
             "application", "image", "video", "audio", "message", "font")
         if part.get_content_maintype() in attachment_types:
@@ -131,6 +128,7 @@ class MailMessage(object):
     def __init__(self, raw_data):
         """Parse an RFC2822,5322 mail message."""
         self.raw = raw_data
+        self._extra_parameters = {}
         try:
             self.mail = Message(raw_data)
         except Exception as exc:
@@ -272,6 +270,11 @@ class MailMessage(object):
         attchs = []
         for p in walk_with_boundary(self.mail, ""):
             if not p.is_multipart():
+                if p.get_content_subtype() == 'pgp-encrypted':
+                    # Special consideration. Do not present it as an attachment
+                    # but set _extra_parameters accordingly
+                    self._extra_parameters.update({'encrypted': 'pgp'})
+                    continue
                 if MailAttachment.is_attachment(p):
                     attchs.append(MailAttachment(p))
         return attchs
@@ -283,7 +286,8 @@ class MailMessage(object):
         lists_addr = getaddresses(lists) if lists else None
         lists_ids = [address[1] for address in lists_addr] \
             if lists_addr else []
-        return {'lists': lists_ids}
+        self._extra_parameters.update({'lists': lists_ids})
+        return self._extra_parameters
 
     # Others parameters specific for mail message
 

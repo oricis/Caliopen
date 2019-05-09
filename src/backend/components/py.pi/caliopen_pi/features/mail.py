@@ -116,9 +116,9 @@ class InboundMailFeature(object):
 
     def get_encryption_informations(self):
         """Get message encryption features."""
-        encrypted_parts = [x for x in self.message.attachments
-                           if 'pgp-encrypt' in x.content_type]
-        is_encrypted = True if encrypted_parts else False
+        is_encrypted = False
+        if 'encrypted' in self.message.extra_parameters:
+            is_encrypted = True
 
         # Maybe pgp/inline ?
         if not is_encrypted:
