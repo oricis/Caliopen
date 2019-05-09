@@ -24,10 +24,12 @@ class AttachmentManager extends Component {
     i18n: PropTypes.shape({}).isRequired,
     notifyError: PropTypes.func.isRequired,
     onDeleteAttachement: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
   };
 
   static defaultProps = {
     message: undefined,
+    disabled: false,
   };
 
   state = {
@@ -132,7 +134,7 @@ class AttachmentManager extends Component {
   }
 
   render() {
-    const { i18n, message } = this.props;
+    const { i18n, message, disabled } = this.props;
 
     return (
       <div className="m-attachement-manager">
@@ -159,6 +161,7 @@ class AttachmentManager extends Component {
           className="m-attachement-manager__button"
           onClick={this.handleOpenImportModal}
           icon={this.state.isAttachmentsLoading ? <Spinner isLoading display="inline" /> : <Icon type="paperclip" />}
+          disabled={disabled}
         >
           <Trans id="message.compose.action.open_import_attachements">Add an attachement</Trans>
         </Button>

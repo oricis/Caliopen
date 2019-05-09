@@ -129,7 +129,7 @@ class DraftMessage extends Component {
       ...props.draftMessage,
       body: state.draftMessage.body,
       subject: state.draftMessage.subject,
-      user_identities: [currIdentity.identity_id],
+      user_identities: currIdentity && [currIdentity.identity_id],
       participants: [
         identityToParticipant({ identity: currIdentity, user }),
         ...recipients,
@@ -230,7 +230,7 @@ class DraftMessage extends Component {
 
     if (!identity) {
       return [
-        (<Trans id="draft-message.errors.missing-identity">An identity is mandatory to send a message</Trans>),
+        (<Trans id="draft-message.errors.missing-identity">An identity is mandatory to create a draft</Trans>),
       ];
     }
 
@@ -554,6 +554,7 @@ class DraftMessage extends Component {
     } = this.props;
 
     const encryptionEnabled = isEncrypted && encryptionStatus === STATUS_DECRYPTED;
+    const identity = this.getIdentity();
 
     const isSubjectSupported = ({ draft }) => {
       if (!draft.identityId) {
@@ -582,7 +583,7 @@ class DraftMessage extends Component {
     return (
       <div className={classnames(className, 'm-draft-message-advanced')} ref={ref}>
         <div className="m-draft-message-advanced__toggle-simple">
-          {isReply && this.renderToggleAdvancedButton()}
+          {isReply && errors.length === 0 && this.renderToggleAdvancedButton()}
         </div>
         <div className="m-draft-message-advanced__container">
           <IdentitySelector
@@ -611,6 +612,7 @@ class DraftMessage extends Component {
               name="subject"
               value={this.state.draftMessage.subject}
               onChange={this.handleChange}
+              disabled={!identity}
             />
           )}
           {
@@ -626,6 +628,7 @@ class DraftMessage extends Component {
                     onChange: this.handleChange,
                     onFocus,
                     value: this.state.draftMessage.body,
+                    disabled: !identity,
                   }}
                 />
               )}
@@ -634,6 +637,7 @@ class DraftMessage extends Component {
             onUploadAttachments={this.handleFilesChange}
             onDeleteAttachement={this.handleDeleteAttachement}
             message={draftMessage}
+            disabled={!identity}
           />
         </div>
         <div className="m-draft-message-advanced__action-send">
