@@ -15,7 +15,7 @@ import (
 	"time"
 )
 
-var boundaryChars = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+:=?")
+var boundaryChars = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
 
 func randomString(n int) string {
 	b := make([]rune, n)
@@ -32,7 +32,7 @@ func randomString(n int) string {
 // bcharsnospace :=    DIGIT / ALPHA / "'" / "(" / ")" / "+"  / "_"
 //                / "," / "-" / "." / "/" / ":" / "=" / "?"
 func (b *EmailBroker) NewBoundary() string {
-	return randomString(42)
+	return "_mime_b_" + randomString(21)
 }
 
 // MarshalEncryptedEmail build an encrypted PGP/MIME email according to RFC 3156.
