@@ -63,3 +63,14 @@ class TestEncyption(unittest.TestCase):
         featurer.process(user, param, ([]))
         feats = param.privacy_features
         self.assertEqual(feats.get('transport_signed'), True)
+
+    def test_encrypted_message(self):
+        mail = load_mail('pgp_crypted_1.eml')
+        message = MailMessage(mail)
+        param = NewMessage()
+        user = FakeUser()
+        featurer = InboundMailFeature(message, {})
+        featurer.process(user, param, ([]))
+        feats = param.privacy_features
+        self.assertEqual(feats.get('message_encrypted'), True)
+        self.assertEqual(feats.get('message_encryption_method'), 'pgp')

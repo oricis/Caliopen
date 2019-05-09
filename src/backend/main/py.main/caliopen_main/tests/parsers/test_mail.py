@@ -53,6 +53,7 @@ class TestMailFormat(unittest.TestCase):
         self.assertEqual(len(mail.attachments), 1)
         self.assertEqual(mail.subject, 'crypted content')
         self.assertTrue(isinstance(mail.date, datetime))
+        self.assertTrue(mail.extra_parameters.get('encrypted', None), 'pgp')
 
 if __name__ == '__main__':
     unittest.main()
