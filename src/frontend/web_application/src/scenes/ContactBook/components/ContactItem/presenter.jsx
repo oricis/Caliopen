@@ -30,15 +30,11 @@ const getAddress = ({ attrName, attr }) => {
     case 'identities':
       switch (attr.type) {
         case TYPE_FACEBOOK:
-          return {
-            type: attr.type,
-            identifier: attr.name,
-          };
         case TYPE_TWITTER:
         default:
           return {
             type: attr.type,
-            identifier: attr.identifier,
+            identifier: attr.name,
           };
       }
 
