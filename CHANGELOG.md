@@ -26,6 +26,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - hardcoded references to "alpha.caliopen.org" in client
 - show at least 1 participant per discussion on timeline
 
+### Changed
+
+- Disable contact import
+
 ## [0.18.1] 2019-04-26
 
 ### Changed
