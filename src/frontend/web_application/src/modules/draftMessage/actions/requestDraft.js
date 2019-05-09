@@ -23,7 +23,7 @@ const requestDiscussionDraft = ({ internalId }) => async (dispatch) => {
     dispatch(getLastMessage({ discussionId: internalId })),
     dispatch(getUser()),
   ]);
-  const { participants, type: protocol } = parentMessage;
+  const { participants, protocol } = parentMessage;
   const identity = await dispatch(getDefaultIdentity({ participants, protocol }));
   const newDraft = new Message({
     // discussion_id is never saved for a draft, it set by the backend when the message is sent

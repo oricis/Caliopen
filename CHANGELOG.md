@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Apiv2 create and delete contacts does not use user.shard_id
 - Better logging for apiv2 and mq-worker
 - Do not fail if ContactLookup raise a NotFound
+- Select Twitter identity according to parent message on a new draft
 
 ## [0.18.2] 2019-04-26
 
