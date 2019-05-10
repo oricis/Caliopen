@@ -17,6 +17,7 @@ function getMarkup({ store, context, location }) {
   try {
     const {
       protocol, hostname, port, maxBodySize,
+      webServer,
     } = getConfig();
     const config = { protocol, hostname, port };
     const hasSSR = process.env.HAS_SSR !== false && process.env.HAS_SSR !== 'false';
@@ -28,7 +29,7 @@ function getMarkup({ store, context, location }) {
 
     return [
       { key: '</title>', value: `${documentTitle}</title>` },
-      { key: '</head>', value: `<script>window.__STORE__ = ${serialize(initialState)};window.__INSTANCE_CONFIG__ = ${serialize({ hostname, maxBodySize })}</script></head>` },
+      { key: '</head>', value: `<script>window.__STORE__ = ${serialize(initialState)};window.__INSTANCE_CONFIG__ = ${serialize({ hostname: webServer.hostname, maxBodySize })}</script></head>` },
       { key: '%MARKUP%', value: markup },
     ].reduce((str, current) => str.replace(current.key, current.value), template);
   } catch (e) {
