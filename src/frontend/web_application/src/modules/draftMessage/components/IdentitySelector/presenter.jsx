@@ -64,7 +64,7 @@ class IdentitySelector extends Component {
                   {' '}
                   &lt;
                   {identity.identifier}
-&gt;
+                  &gt;
                 </Fragment>
               ),
               value: identity.identity_id,
