@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Disable draft form in case there is no selected identity
+
 ### Fixed
 
 - Simple detection of PGP inline message

@@ -136,7 +136,7 @@
   "draft-message.encryption.ko": "Ce message n'est pas chiffré",
   "draft-message.encryption.ok": "Ce message est chiffré",
   "draft-message.errors.invalid-participant": "En fonction de votre identité, tous vos participants doivent utiliser une adresse {protocol} pour les contacter ensemble.",
-  "draft-message.errors.missing-identity": "Une identité est nécessaire pour envoyer un message.",
+  "draft-message.errors.missing-identity": "Une identité est nécessaire pour créer un brouillon.",
   "draft-message.form.identity.label": "De :",
   "draft-message.form.identity.placeholder": "Mon identité",
   "draft-message.form.placeholder.quick-reply": "Réponse rapide pour {recipients} par {protocol}",

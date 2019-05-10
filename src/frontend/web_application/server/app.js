@@ -1,5 +1,4 @@
 import express from 'express';
-import path from 'path';
 import applyAPI from './api';
 import applySecurity from './security';
 import applyAssets from './assets';
@@ -18,14 +17,7 @@ export default () => {
   applyAuth(app);
   applyAPI(app);
   applyExpressReact(app);
-
-  if (process.env.HAS_SSR !== false && process.env.HAS_SSR !== 'false') {
-    applySSR(app);
-  } else {
-    app.get('*', (req, res) => {
-      res.sendFile(path.resolve('./dist/server/template.html'));
-    });
-  }
+  applySSR(app);
   applyError(app);
 
   return app;
