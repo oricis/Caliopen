@@ -11,6 +11,7 @@ import { updateTagCollection as updateTagCollectionBase } from '../../modules/ta
 import { getNewContact } from '../../services/contact';
 import { userSelector } from '../../modules/user';
 import { withSearchParams } from '../../modules/routing';
+import { contactValidation } from './services/contactValidation';
 import Presenter from './presenter';
 
 const contactIdSelector = (state, ownProps) => ownProps.match.params.contactId;
@@ -84,5 +85,6 @@ export default compose(
   reduxForm({
     destroyOnUnmount: false,
     enableReinitialize: true,
+    validate: contactValidation,
   })
 )(Presenter);

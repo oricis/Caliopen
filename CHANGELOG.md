@@ -6,9 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Validation of twitter username in contact edition
+
 ### Changed
 
 - Disable draft form in case there is no selected identity
+- Facebook username is no more available in contact edition
 
 ### Fixed
 
