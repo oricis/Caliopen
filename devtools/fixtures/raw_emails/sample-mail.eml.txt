@@ -1,0 +1,66 @@
+From monsieur@lanza.fr  Wed Mar 27 12:55:45 2019
+Return-Path: <monsieur@lanza.fr>
+X-Original-To: mrlanza@protonmail.com
+Delivered-To: pmcatchall@protonmail.ch
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail21i.protonmail.ch (Postfix) with ESMTPS id C2CB03F1
+	for <mrlanza@protonmail.com>; Wed, 27 Mar 2019 12:55:44 +0000 (UTC)
+Authentication-Results: mail21i.protonmail.ch; dmarc=none (p=none dis=none) header.from=lanza.fr
+Authentication-Results: mail21i.protonmail.ch; spf=pass smtp.mailfrom=monsieur@lanza.fr
+Authentication-Results: mail21i.protonmail.ch; dkim=none
+X-Originating-IP: 37.173.108.150
+Received: from localhost (unknown [37.173.108.150])
+	(Authenticated sender: monsieur@lanza.fr)
+	by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 5724BE0014
+	for <mrlanza@protonmail.com>; Wed, 27 Mar 2019 12:55:44 +0000 (UTC)
+Content-Type: multipart/encrypted; boundary="wM+4IwYl8gmMA5PsnkRnGt=R0CsTG
+ =Y1yNY=BZJEnO"; protocol="application/pgp-encrypted"
+Date: Wed, 27 Mar 2019 12:55:43 +0000
+From: "monsieur@lanza.fr" <monsieur@lanza.fr>
+Message-Id: <4-bXLlVZ9yTpa1Zqu8wYzmZMKEI2asXWOcVW0I4Z-z8=@caliopen.org>
+Subject: Test again
+To: =?UTF-8?q?=C3=80_moi_M=C3=AAme?= <mrlanza@protonmail.com>
+X-Mailer: Caliopen-0.16.0
+X-GND-Spam-Score: 200
+X-GND-Status: SPAM
+X-Spam-Status: No, score=-1.0 required=4.0 tests=ENCRYPTED_MESSAGE,
+	MIME_HEADER_CTYPE_ONLY,RCVD_IN_DNSWL_LOW,SPF_PASS autolearn=no
+	autolearn_force=no version=3.4.2
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on maili.protonmail.ch
+
+--wM+4IwYl8gmMA5PsnkRnGt=R0CsTG=Y1yNY=BZJEnO
+Content-Description: PGP/MIME version identification
+Content-Type: application/pgp-encrypted
+
+Version: 1
+
+--wM+4IwYl8gmMA5PsnkRnGt=R0CsTG=Y1yNY=BZJEnO
+Content-Description: Caliopen PGP encrypted message
+Content-Disposition: inline; filename=encrypted.asc
+Content-Type: application/octet-stream; name=encrypted.asc
+
+-----BEGIN PGP MESSAGE-----
+Version: OpenPGP.js v4.2.1
+Comment: https://openpgpjs.org
+
+wcBMAxUZJmb0iiO6AQgAwvsnweNh/JB3dlM1tAu/qsii9ZtywnYpgw8kWJXC
+Z1i439sxqQT7aJ19fK/lA+Q2iKLo5dr8LuRyGokL+Crtgca/KUu5nJlekK/I
+YwgDjRv0tJwNzQkF+jAx037A7azBgppwdo3wJpSj177aTol0XAfWiutpshtA
+agQzML5q4hp+h6md79B3tCu8ufL0b//FC5Y8QJA59R0T5ID/6vOWC3D6ppE7
+47siewFPRuTCkZ4t0cjK0809vGOaCMNT+Ti5B93CQH+vVAWOSTZr6+kwF9Zo
+PUmZK4xFfCDwrYmnWSAk6F0bpriZ1VJMdGj29WWRqNIce37QRWoqiKdd+7m6
+nsHATAMg4lkksuit7wEIAKaIIXjVFH718OfEum916VdRw2TRlj87lDaX7RxG
+LIl5gkr0H48kPyePHa7XHdvpg9AlWxd5QOVEOjheh4seKd/alw8kHE3Zll6z
+wz7qHRYzIp4vuJEllY9r/xh8jdbk4AKtIShfBIZLYl44y04ihyWwLHeWUkMV
+Rs/H4hHtXKWrVA+QJ3d6NUNQ27wBZzCjskXZydLRBkroNMaoH2YDWjMV47Tq
+6ci41lcolrADW2jfX++eBHWtywHCc0Rs3WbzHWATvum/XzAbEZhm4lifrbHQ
+LMehtrgVXOih2iVcL67knytRVO7AN/J3EFR9avjUfVzrBVTCZzQp5T4I50XE
+UZLScQHlLZHQ6xtutWGqM+/Bja9NuQKiZYQY3Dx0lWi8toUDLla/NtwVBLqG
+95GxR9XoaKf175ljvLa6uDKl1e0ZUcP0FlY516bxqg5MJzhzMqcoQd5Y8QUB
+YY8ySp1pq0sKft+EDrZu2IAv5/9kMOnkmK66
+=rvuz
+-----END PGP MESSAGE-----
+
+--wM+4IwYl8gmMA5PsnkRnGt=R0CsTG=Y1yNY=BZJEnO--
