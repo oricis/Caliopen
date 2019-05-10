@@ -12,21 +12,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- show at least 1 participant per discussion on timeline
-- display correct domain in titlebar & signup.
-
-### Changed
-
-- Disable contact import
-
-### Fixed
-
 - Simple detection of PGP inline message
 - Apiv2 create and delete contacts does not use user.shard_id
 - Better logging for apiv2 and mq-worker
 - Do not fail if ContactLookup raise a NotFound
 - Twitter nick not displayed on contact book
 - Select Twitter identity according to parent message on a new draft
+- show at least 1 participant per discussion on timeline
+
+### Changed
+
+- Disable contact import
 
 ### Added
 
