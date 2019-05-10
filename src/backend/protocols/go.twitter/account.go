@@ -53,15 +53,17 @@ const (
 	dateFirstErrorKey = "firstErrorDate"
 	dateLastErrorKey  = "lastErrorDate"
 	errorsCountKey    = "errorsCount"
+	syncingKey        = "syncing"
 
 	defaultPollInterval = 10
+	syncingTimeout      = 1 // how many hours to wait before restarting sync op
 )
 
 // NewAccountHandler creates a handler dedicated to a specific twitter account.
 // It caches remote identity credentials and data, as well as user context connection to twitter API.
 func NewAccountHandler(userID, remoteID string, worker Worker) (accountHandler *AccountHandler, err error) {
 	accountHandler = new(AccountHandler)
-	accountHandler.WorkerDesk = make(chan uint, 3)
+	accountHandler.WorkerDesk = make(chan uint)
 	b, e := broker.Initialize(worker.Conf.BrokerConfig, worker.Store, worker.Index, worker.NatsConn, worker.Notifier)
 	if e != nil {
 		err = fmt.Errorf("[TwitterAccount]NewAccountHandler failed to initialize a twitter broker : %s", e)
@@ -170,19 +172,47 @@ func (worker *AccountHandler) Stop(closeDesk bool) {
 // PollDM calls Twitter API endpoint to fetch DMs
 // it passes unseen DM to its embedded broker
 func (worker *AccountHandler) PollDM() {
-	// do not forget to always write down last_check timestamp before leaving
-	defer func() {
-		e := worker.broker.Store.TimestampRemoteLastCheck(worker.userAccount.userID.String(), worker.userAccount.remoteID.String())
-		if e != nil {
-			log.WithError(e).Warnf("[AccountHandler %s] PollDM failed to update last_check state in db", worker.userAccount.remoteID.String())
-		}
-	}()
 	// retrieve user_identity.infos
 	accountInfos, retrieveErr := worker.broker.Store.RetrieveRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String())
 	if retrieveErr != nil {
 		log.WithError(retrieveErr).Warnf("[AccountHandler %s] PollDM failed to retrieve infos map", worker.userAccount.remoteID.String())
 		return
 	}
+	// check if a sync process is running
+	if syncing, ok := accountInfos[syncingKey]; ok && syncing != "" {
+		startDate, e := time.Parse(time.RFC3339, syncing)
+		if e == nil && time.Since(startDate)/time.Hour < syncingTimeout {
+			log.Infof("[PollDM] avoiding concurrent sync for <%s>. Syncing in progress since %s", worker.userAccount.remoteID, accountInfos["syncing"])
+			return
+		}
+	}
+	// save syncing state in db to prevent concurrent sync
+	accountInfos[syncingKey] = time.Now().Format(time.RFC3339)
+	err := worker.broker.Store.UpdateRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String(), accountInfos)
+	if err != nil {
+		log.WithError(err).Infof("[PollDM] failed to update syncing state user <%s>, identity <%s>", worker.userAccount.userID, worker.userAccount.remoteID)
+		return
+	}
+
+	// do not forget to always write down last_check timestamp
+	// and to remove syncing state before leaving
+	defer func() {
+		delete(accountInfos, lastErrorKey)
+		delete(accountInfos, errorsCountKey)
+		delete(accountInfos, dateFirstErrorKey)
+		delete(accountInfos, dateLastErrorKey)
+		delete(accountInfos, syncingKey)
+		e := worker.broker.Store.UpdateRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String(), accountInfos)
+		if e != nil {
+			log.WithError(e).Warnf("[AccountHandler %s] PollDM failed to update sync state in db", worker.userAccount.remoteID.String())
+		}
+		log.Infof("[AccountHandler %s] PollDM finished", worker.userAccount.remoteID.String())
+		e = worker.broker.Store.TimestampRemoteLastCheck(worker.userAccount.userID.String(), worker.userAccount.remoteID.String())
+		if e != nil {
+			log.WithError(e).Warnf("[AccountHandler %s] PollDM failed to update last_check state in db", worker.userAccount.remoteID.String())
+		}
+	}()
+
 	// retrieve DM list from twitter API
 	DMs, _, err := worker.twitterClient.DirectMessages.EventsList(&twitter.DirectMessageEventsListParams{Count: 50})
 	if err != nil {
@@ -274,15 +304,7 @@ func (worker *AccountHandler) PollDM() {
 			}
 		}
 	}
-	delete(accountInfos, lastErrorKey)
-	delete(accountInfos, errorsCountKey)
-	delete(accountInfos, dateFirstErrorKey)
-	delete(accountInfos, dateLastErrorKey)
-	e := worker.broker.Store.UpdateRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String(), accountInfos)
-	if e != nil {
-		log.WithError(e).Warnf("[AccountHandler %s] PollDM failed to update sync state in db", worker.userAccount.remoteID.String())
-	}
-	log.Infof("[AccountHandler %s] PollDM finished", worker.userAccount.remoteID.String())
+
 }
 
 func (worker *AccountHandler) dmNotSeen(event twitter.DirectMessageEvent) bool {
