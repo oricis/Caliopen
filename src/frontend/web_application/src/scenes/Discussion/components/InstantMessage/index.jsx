@@ -186,13 +186,17 @@ class InstantMessage extends PureComponent {
         </aside>
         {
           isLocked ?
-            <LockedMessage encryptionStatus={encryptionStatus} />
+            (
+              <LockedMessage encryptionStatus={encryptionStatus} />
+            )
             :
-            <TextBlock className="m-instant-message__content" nowrap={false}>
-              <Linkify>
-                {message.body}
-              </Linkify>
-            </TextBlock>
+            (
+              <TextBlock className="m-instant-message__content" nowrap={false}>
+                <Linkify>
+                  {message.body}
+                </Linkify>
+              </TextBlock>
+            )
         }
       </article>
     );
