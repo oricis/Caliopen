@@ -28,6 +28,7 @@ from caliopen_main.common.interfaces import (IAttachmentParser, IMessageParser,
 
 log = logging.getLogger(__name__)
 
+TEXT_CONTENT_TYPE = ['text', 'xml', 'vnd', 'xhtml', 'json' , 'msword']
 
 class MailAttachment(object):
     """Mail part structure."""
@@ -45,9 +46,8 @@ class MailAttachment(object):
         else:
             self.is_inline = True
         data = part.get_payload()
-        self.size = len(data) if data else 0
         self.can_index = False
-        if 'text' in part.get_content_type():
+        if any(x in part.get_content_type() for x in TEXT_CONTENT_TYPE):
             self.can_index = True
             charsets = part.get_charsets()
             if len(charsets) > 1:
@@ -66,6 +66,7 @@ class MailAttachment(object):
         else:
             self.mime_boundary = ""
         self.data = data
+        self.size = len(data) if data else 0
 
     @classmethod
     def is_attachment(cls, part):

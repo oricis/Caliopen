@@ -266,6 +266,13 @@ func addIdentityToContact(storeContact backends.ContactStorage, indexContact bac
 	newContact := *contact
 	switch identity.Protocol {
 	case EmailProtocol, ImapProtocol, SmtpProtocol:
+		// prevent duplicate
+		for _, email := range contact.Emails {
+			if email.Address == identity.Identifier {
+				log.Infof("[addIdentityToContact] email %s already exists for user %s, aborting", identity.Identifier, identity.UserId)
+				return contact, nil
+			}
+		}
 		ec := new(EmailContact)
 		ec.MarshallNew()
 		ec.Address = identity.Identifier
@@ -283,6 +290,13 @@ func addIdentityToContact(storeContact backends.ContactStorage, indexContact bac
 		}
 		updatedFields["Emails"] = newContact.Emails
 	case TwitterProtocol:
+		// prevent duplicate
+		for _, socialId := range contact.Identities {
+			if socialId.Type == TwitterProtocol && socialId.Name == identity.Identifier {
+				log.Infof("[addIdentityToContact] social identity %s already exists for user %s, aborting", identity.Identifier, identity.UserId)
+				return contact, nil
+			}
+		}
 		si := new(SocialIdentity)
 		si.MarshallNew()
 		si.Type = TwitterProtocol

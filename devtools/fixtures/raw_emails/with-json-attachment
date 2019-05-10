@@ -1,0 +1,114 @@
+Return-Path: <stan@sapienssapide.fr>
+Delivered-To: stan@mailden.net
+Received: from post.mailden.net ([9.6.71.30])
+	by box.mailden.net (Dovecot) with LMTP id jTfVOWCI1VxsvAAAz9GZsw
+	for <stan@mailden.net>; Fri, 10 May 2019 16:20:07 +0200
+Received: from post.mailden.net (localhost [127.0.0.1])
+	by post.mailden.net (Postfix) with ESMTP id 27B22B478B
+	for <stan@mailden.net>; Fri, 10 May 2019 16:20:07 +0200 (CEST)
+X-Spam-Checker-Version: SpamAssassin 3.4.1 (2015-04-28) on post.mailden.net
+X-Virus-Scanned: amavisd-new at mailden.net
+X-Spam-Flag: NO
+X-Spam-Score: -1.782
+X-Spam-Level:
+X-Spam-Status: No, score=-1.782 tagged_above=-999 required=4.2
+	tests=[AWL=0.117, BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+	UNPARSEABLE_RELAY=0.001] autolearn=ham autolearn_force=no
+X-Spam-Mailden: '1'
+Authentication-Results: post.mailden.net (amavisd-new);
+	dkim=pass (1024-bit key) header.d=mailden.net
+Received: from --IP masked by Mailden--
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by post.mailden.net (Postfix) with ESMTPSA id 2C3BDB4779
+	for <stan@mailden.net>; Fri, 10 May 2019 16:20:05 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 post.mailden.net 2C3BDB4779
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=mailden.net;
+	s=20140504mailden; t=1557498005;
+	bh=9QXLTY2bFXXlKjOPVaOwikPIGG41QGg7Qm2VmxV5c7M=;
+	h=To:From:Subject:Date;
+	z=To:=20stan@mailden.net|From:=20Stanislas=20SABATIER=20<stan@sapie
+	 nssapide.fr>|Subject:=20test=20json|Date:=20Fri,=2010=20May=202019
+	 =2016:20:04=20+0200;
+	b=Yj1UYKcnodCPc3KXai49s/grFCPFb9XtiR674Mi1dSTLagmzpkRO/Tav6JDWuAGS/
+	 XdmnvwY/kI2QTnos8gNOTWObt3iVS7Iu5JdA4j6dO8spbewvhDmT6sSu+sOLehQjqM
+	 eRjUG2s0v05VWgpthvL1wDAGB+7/BGE8sdeYGxug=
+To: stan@mailden.net
+From: Stanislas SABATIER <stan@sapienssapide.fr>
+Subject: test json
+Openpgp: preference=signencrypt
+Autocrypt: addr=stan@sapienssapide.fr; keydata=
+ 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
+ QM8RbF0GZ06V1LUeM7k=
+Message-ID: <900ef049-5635-d125-186e-da0ef4698638@sapienssapide.fr>
+Date: Fri, 10 May 2019 16:20:04 +0200
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+ boundary="------------CBFE033A7BB72330697873CF"
+Content-Language: fr-classic
+
+This is a multi-part message in MIME format.
+--------------CBFE033A7BB72330697873CF
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+
+-- 
+|||||||||||||||||||||||||||||||||||||||||||
+Stanislas SABATIER
+sapiens.sapide
+
+tél.: +33 (0)6 63 19 36 36
+|||||||||||||||||||||||||||||||||||||||||||
+Les emails de sapiens.sapide sont en lieu sûr : ils sont chez Mailden !
+
+
+--------------CBFE033A7BB72330697873CF
+Content-Type: application/json;
+ name="test.json"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename="test.json"
+
+ewogICJzdGFuIjoiZW1haWwiLAogICJvayI6IDEKfQ==
+--------------CBFE033A7BB72330697873CF--
