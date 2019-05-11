@@ -188,19 +188,22 @@ class RecipientList extends Component {
   }
 
   addUnknownParticipant(address) {
-    const protocol = Object.keys(protocolsConfig).reduce((previous, current) => {
+    const getProtocol = search => Object.keys(protocolsConfig).reduce((previous, current) => {
       if (!previous && protocolsConfig[current].default) {
         return current;
       }
 
       const { regexp } = protocolsConfig[current];
 
-      if (protocolsConfig[previous].default && regexp && regexp.test(address)) {
+      if (protocolsConfig[previous].default && regexp && regexp.test(search)) {
         return current;
       }
 
       return previous;
     });
+
+    const { identity } = this.props;
+    const protocol = identity ? identity.protocol : getProtocol(address);
 
     this.addParticipant(new Participant({
       address,

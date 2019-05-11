@@ -201,8 +201,8 @@ class DraftMessage extends Component {
     return i18n._('draft-message.form.placeholder.quick-start', null, { defaults: 'Start a new discussion' });
   }
 
-  getIdentity = () => this.props.availableIdentities
-    .find(ident => ident.identity_id === this.state.draftMessage.identityId);
+  getIdentity = ({ identityId }) => this.props.availableIdentities
+    .find(ident => ident.identity_id === identityId);
 
   getCanSend = () => {
     const { isReply } = this.props;
@@ -226,7 +226,7 @@ class DraftMessage extends Component {
 
   validate = () => {
     const currentDraft = this.state.draftMessage;
-    const identity = this.getIdentity();
+    const identity = this.getIdentity({ identityId: this.state.draftMessage.identityId });
 
     if (!identity) {
       return [
@@ -386,13 +386,31 @@ class DraftMessage extends Component {
     });
   }
 
-  handleIdentityChange = ({ identity = {} }) => {
-    this.setState(prevState => ({
-      draftMessage: {
-        ...prevState.draftMessage,
-        identityId: identity.identity_id,
-      },
-    }), () => {
+  forceParticipantsProtocol = ({ protocol, participants }) => participants.map(participant => ({
+    ...participant,
+    protocol,
+  }));
+
+  handleIdentityChange = async ({ identity = {} }) => {
+    this.setState((prevState) => {
+      const { isReply } = this.props;
+      const prevIdentity = this.getIdentity({ identityId: prevState.draftMessage.identityId });
+      let recipients;
+
+      if (!isReply && prevIdentity && prevIdentity.protocol !== identity.protocol) {
+        recipients = this.forceParticipantsProtocol({
+          protocol: identity.protocol, participants: prevState.draftMessage.recipients,
+        });
+      }
+
+      return {
+        draftMessage: {
+          ...prevState.draftMessage,
+          ...(recipients ? { recipients } : {}),
+          identityId: identity.identity_id,
+        },
+      };
+    }, () => {
       const { internalId, original, onEditDraft } = this.props;
 
       return onEditDraft({
@@ -462,7 +480,7 @@ class DraftMessage extends Component {
 
     if (canEditRecipients) {
       const { internalId } = this.props;
-      const identity = this.getIdentity();
+      const identity = this.getIdentity({ identityId: this.state.draftMessage.identityId });
 
       return (
         <RecipientList
@@ -554,15 +572,14 @@ class DraftMessage extends Component {
     } = this.props;
 
     const encryptionEnabled = isEncrypted && encryptionStatus === STATUS_DECRYPTED;
-    const identity = this.getIdentity();
+    const identity = this.getIdentity({ identityId: this.state.draftMessage.identityId });
 
     const isSubjectSupported = ({ draft }) => {
       if (!draft.identityId) {
         return false;
       }
 
-      const currIdentity = availableIdentities
-        .find(ident => ident.identity_id === draft.identityId);
+      const currIdentity = this.getIdentity({ identityId: draft.identityId });
 
       if (!currIdentity) {
         return false;
