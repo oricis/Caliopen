@@ -1,3 +1,4 @@
+import { IDENTITY_TYPE_TWITTER } from '../../../modules/contact';
 import { getIdentityProtocol } from './getIdentityProtocol';
 
 const getParticipantsContactsExceptUser = ({ contacts, participants, user }) => participants
@@ -25,7 +26,10 @@ const getAvailableProtocolsForTheContact = ({ contact }) => {
     protocols.push('email');
   }
 
-  if (contact.identities && contact.identities.filter(identity => identity.type === 'twitter').length >= 1) {
+  if (
+    contact.identities &&
+    contact.identities.filter(identity => identity.type === IDENTITY_TYPE_TWITTER).length >= 1
+  ) {
     protocols.push('twitter');
   }
 

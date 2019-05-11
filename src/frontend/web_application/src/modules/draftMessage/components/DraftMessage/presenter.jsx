@@ -16,6 +16,7 @@ import { STATUS_DECRYPTED, STATUS_ERROR } from '../../../../store/modules/encryp
 import RecipientList from '../RecipientList';
 import AttachmentManager from '../AttachmentManager';
 import IdentitySelector from '../IdentitySelector';
+import RecipientSelector from '../RecipientSelector';
 import { getIdentityProtocol } from '../../services/getIdentityProtocol';
 
 import './draft-message-quick.scss';
@@ -440,6 +441,19 @@ class DraftMessage extends Component {
     });
   }
 
+  handleChangeOne2OneRecipient = (ev) => {
+    // XXX: eventually select the identity that match the new protocol
+    const participant = ev.target.value;
+    this.setState(prevState => ({
+      draftMessage: {
+        ...prevState.draftMessage,
+        recipients: [
+          participant,
+        ],
+      },
+    }));
+  }
+
   renderPlaceholder() {
     const {
       className, draftFormRef, scrollTarget: { forwardRef },
@@ -476,7 +490,7 @@ class DraftMessage extends Component {
   }
 
   renderRecipientList({ className } = {}) {
-    const { canEditRecipients } = this.props;
+    const { canEditRecipients, isReply } = this.props;
 
     if (canEditRecipients) {
       const { internalId } = this.props;
@@ -489,6 +503,23 @@ class DraftMessage extends Component {
           recipients={this.state.draftMessage.recipients}
           onRecipientsChange={this.handleRecipientsChange}
           identity={identity}
+        />
+      );
+    }
+
+    const isOne2One = isReply &&
+      this.state.draftMessage.recipients.length === 1 &&
+      this.state.draftMessage.recipients[0].contact_ids &&
+      this.state.draftMessage.recipients[0].contact_ids.length > 0;
+    const [recipient] = (isOne2One && this.state.draftMessage.recipients) || [];
+
+    if (isOne2One) {
+      return (
+        <RecipientSelector
+          className={className}
+          contactId={recipient.contact_ids[0]}
+          current={recipient}
+          onChange={this.handleChangeOne2OneRecipient}
         />
       );
     }
