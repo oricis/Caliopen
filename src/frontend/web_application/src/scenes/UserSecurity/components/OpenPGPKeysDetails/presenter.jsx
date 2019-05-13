@@ -163,7 +163,7 @@ class OpenPGPKeysDetails extends Component {
             onImportFormChange={this.handleImportFormChange}
             onGenerateFromChange={this.handleGenerateFormChange}
             importForm={this.state.importForm}
-            generateForm={this.state.genereateForm}
+            generateForm={this.state.generateForm}
             isLoading={isLoading || this.state.isFormLoading}
             cancel={this.handleClickEditMode}
           />

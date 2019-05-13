@@ -23,16 +23,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 - Disable contact import
+- Do not display private key details, allow "download" instead.
 
 ### Added
 
 - Activate links in plain text messages.
 
 ## [0.18.2] 2019-04-26
-
-### Changed
-
-- Do not display private key details, allow "download" instead.
 
 ### Fixed
 

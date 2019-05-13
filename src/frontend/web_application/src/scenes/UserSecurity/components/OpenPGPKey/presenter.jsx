@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import { Trans, withI18n } from '@lingui/react';
 import Moment from 'react-moment';
 import {
-  Button, Spinner, Icon, TextareaFieldGroup, DefList, Link,
+  Button, Spinner, Icon, Link,
 } from '../../../../components';
 import getPGPManager from '../../../../services/openpgp-manager';
 import { strToBase64 } from '../../../../services/encode-utils';
@@ -99,7 +98,7 @@ class OpenPGPKey extends Component {
 
   render() {
     const {
-      i18n, locale, children, publicKeyArmored, privateKeyArmored, editMode,
+      i18n, locale, children, editMode,
     } = this.props;
     const openpgpStatuses = {
       invalid: i18n._('openpgp.status.invalid', null, { defaults: 'Invalid' }),
