@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Trans, withI18n } from '@lingui/react';
 import { Field } from 'redux-form';
 import renderReduxField from '../../../../services/renderReduxField';
+import { IDENTITY_TYPE_TWITTER } from '../../../../modules/contact';
 import {
   Button, Icon, FieldErrors, SelectFieldGroup as SelectFieldGroupBase,
   TextFieldGroup as TextFieldGroupBase, Fieldset, Legend, FormGrid, FormRow, FormColumn,
@@ -10,7 +11,7 @@ import {
 
 import './style.scss';
 
-const IDENTITY_TYPES = ['', 'twitter', 'facebook'];
+const IDENTITY_TYPES = [IDENTITY_TYPE_TWITTER];
 const TextFieldGroup = renderReduxField(TextFieldGroupBase);
 const SelectFieldGroup = renderReduxField(SelectFieldGroupBase);
 

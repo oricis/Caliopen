@@ -52,7 +52,7 @@ jest.mock('../../../modules/message', () => {
             discussion_id: '02',
             subject: 'Parent msg subject',
             is_draft: false,
-            type: 'email',
+            protocol: 'email',
             participants: [
               { address: 'to@bar.tld', type: 'To', protocol: 'email' },
               { address: 'me@example.tld', type: 'From', protocol: 'email' },
@@ -63,7 +63,7 @@ jest.mock('../../../modules/message', () => {
             message_id: 'twitter-msg',
             discussion_id: '03',
             is_draft: false,
-            type: 'twitter',
+            protocol: 'twitter',
             participants: [
               { address: 'me-twitter', type: 'To', protocol: 'twitter' },
               { address: 'From', type: 'From', protocol: 'twitter' },
@@ -81,12 +81,12 @@ jest.mock('../../../modules/message', () => {
           return Promise.resolve({
             message_id: messageId,
             body: 'saved draft',
-            type: 'email',
+            protocol: 'email',
           });
         case 'twitter-msg':
           return Promise.resolve({
             message_id: messageId,
-            type: 'twitter',
+            protocol: 'twitter',
           });
         default:
           return Promise.reject(undefined);
@@ -155,7 +155,7 @@ describe('modules draftMessage - actions - requestDraft', () => {
       const message = {
         message_id: 'saved',
         body: 'saved draft',
-        type: 'email',
+        protocol: 'email',
       };
       const expectedActions = [
         requestDraftBase({ internalId: 'saved' }),

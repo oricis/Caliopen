@@ -4,3 +4,4 @@ export * from './actions/updateContact';
 export { default as WithContacts } from './components/WithContacts';
 export * from './hoc/withContacts';
 export * from './services/addAddressToContact';
+export * from './services/identityTypes';

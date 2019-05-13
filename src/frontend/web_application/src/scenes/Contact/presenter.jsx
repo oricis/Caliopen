@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Trans, withI18n } from '@lingui/react';
 import { Switch, Route } from 'react-router-dom';
 import { ContactAvatarLetter } from '../../modules/avatar';
+import { IDENTITY_TYPE_TWITTER } from '../../modules/contact';
 import { getAveragePI } from '../../modules/pi';
 import { withPush } from '../../modules/routing';
 import { ScrollDetector } from '../../modules/scroll';
@@ -74,6 +75,7 @@ class Contact extends Component {
     push: PropTypes.func.isRequired,
     pristine: PropTypes.bool.isRequired,
     submitting: PropTypes.bool.isRequired,
+    valid: PropTypes.bool.isRequired,
     updateTagCollection: PropTypes.func.isRequired,
     tags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     // birthday: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -485,7 +487,7 @@ class Contact extends Component {
   );
 
   renderEditBar = () => {
-    const { submitting } = this.props;
+    const { submitting, valid } = this.props;
     const hasActivity = submitting || this.state.isSaving;
 
     return (
@@ -506,7 +508,7 @@ class Contact extends Component {
           icon={hasActivity ? (<Spinner isLoading display="inline" />) : 'check'}
           className="s-contact__action"
           shape="plain"
-          disabled={hasActivity}
+          disabled={hasActivity || !valid}
         >
           <Trans id="contact.action.validate_edit">Validate</Trans>
         </Button>
@@ -543,6 +545,7 @@ class Contact extends Component {
             component={(<IdentityForm />)}
             propertyName="identities"
             addButtonLabel={<Trans id="contact.action.add-identity">Add an identity</Trans>}
+            defaultValues={{ type: IDENTITY_TYPE_TWITTER }}
           />
           {this.renderEditBar()}
         </form>
