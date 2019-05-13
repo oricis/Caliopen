@@ -1,9 +1,9 @@
 import React from 'react';
 import { Trans } from '@lingui/react';
 import { IDENTITY_TYPE_TWITTER } from '../../../modules/contact';
+import protocolsConfig from '../../../services/protocols-config';
 
-// https://help.twitter.com/en/managing-your-account/twitter-username-rules
-const twitterHandleRegExpr = /^\w{1,15}$/;
+const twitterHandleRegExpr = protocolsConfig.twitter.regexp;
 
 export const contactValidation = (values) => {
   const errors = {};

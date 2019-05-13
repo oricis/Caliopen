@@ -9,11 +9,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - Validation of twitter username in contact edition
+- Address (and protocol) selection in a 1-to-1 discussion
 
 ### Changed
 
 - Disable draft form in case there is no selected identity
 - Facebook username is no more available in contact edition
+- In a draft, switch identity will change the protocol of all recipients as well
 
 ### Fixed
 
