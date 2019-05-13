@@ -10,12 +10,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Validation of twitter username in contact edition
 - Address (and protocol) selection in a 1-to-1 discussion
+- Activate links in plain text messages.
 
 ### Changed
 
 - Disable draft form in case there is no selected identity
 - Facebook username is no more available in contact edition
 - In a draft, switch identity will change the protocol of all recipients as well
+- Disable contact import
+- Do not display private key details, allow "download" instead.
 
 ### Fixed
 
@@ -26,15 +29,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Twitter nick not displayed on contact book
 - Select Twitter identity according to parent message on a new draft
 - show at least 1 participant per discussion on timeline
-
-### Changed
-
-- Disable contact import
-- Do not display private key details, allow "download" instead.
-
-### Added
-
-- Activate links in plain text messages.
 
 ## [0.18.2] 2019-04-26
 
