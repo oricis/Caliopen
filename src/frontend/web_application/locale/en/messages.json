@@ -239,6 +239,7 @@
   "new-device-info.text": "To respect privacy and security rules, your discussion history will not appear here for now. Please verify this device and eventually set restrictions from your trust client to use Caliopen on this client.",
   "new-device-info.title": "It's the first time you attemp to connect to your Caliopen account on this client.",
   "next-feature.generic": "This feature is not available for now but is planned to be added to Caliopen.",
+  "openpgp-key.download": "Save and keep in a safe place.",
   "openpgp.action.remove-key": "Remove",
   "openpgp.action.toggle-details": "Toggle details",
   "openpgp.details.algorithm": "Algorithm",

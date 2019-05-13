@@ -29,7 +29,9 @@ class OpenPGPKeyForm extends Component {
     onImport: PropTypes.func.isRequired,
     onGenerate: PropTypes.func.isRequired,
     onImportFormChange: PropTypes.func.isRequired,
+    onGenerateFromChange: PropTypes.func.isRequired,
     importForm: PropTypes.shape({}),
+    generateForm: PropTypes.shape({}),
     isLoading: PropTypes.bool,
     className: PropTypes.string,
     children: PropTypes.node,
@@ -40,6 +42,7 @@ class OpenPGPKeyForm extends Component {
   static defaultProps = {
     emails: [],
     importForm: {},
+    generateForm: {},
     isLoading: false,
     className: undefined,
     children: undefined,
@@ -50,26 +53,15 @@ class OpenPGPKeyForm extends Component {
     this.state = {
       formType: FORM_TYPE_GENERATE,
       hasPassphrase: false,
-      generateForm: {},
     };
 
     this.initTranslations();
   }
 
-  componentWillMount() {
-    this.emailOptions = this.props.emails.map(email => ({
-      label: email.address,
-      value: email.address,
-    }));
-
-    if (this.emailOptions.length === 1) {
-      this.setState({
-        generateForm: {
-          email: this.emailOptions[0].value,
-        },
-      });
-    }
-  }
+  getEmailOptions = () => this.props.emails.map(email => ({
+    label: email.address,
+    value: email.address,
+  }));
 
   handleSwitchFormType = (event) => {
     this.setState({
@@ -85,18 +77,16 @@ class OpenPGPKeyForm extends Component {
 
   handleGenerateChanges = (event) => {
     const { name, value } = event.target;
-    this.setState(prevState => ({
-      generateForm: {
-        ...prevState.generateForm,
-        [name]: value,
-      },
-    }));
+    const { onGenerateFromChange } = this.props;
+
+    onGenerateFromChange({ [name]: value });
   }
 
   handleGenerateSubmit = (event) => {
     event.preventDefault();
+    const { generateForm } = this.props;
 
-    this.props.onGenerate(this.state.generateForm);
+    this.props.onGenerate(generateForm);
   }
 
   handleImportChanges = (event) => {
@@ -131,10 +121,11 @@ class OpenPGPKeyForm extends Component {
     // not real time saved in redux store
     const {
       i18n, isLoading, className, children,
-      importForm,
+      importForm, generateForm,
     } = this.props;
     const generateHollowProp = this.state.formType === FORM_TYPE_GENERATE ? { shape: 'hollow' } : {};
     const rawHollowProp = this.state.formType === FORM_TYPE_RAW ? { shape: 'hollow' } : {};
+    const emailOptions = this.getEmailOptions();
 
     return (
       <div className={classnames('m-account-openpgp-form', className)}>
@@ -161,23 +152,23 @@ class OpenPGPKeyForm extends Component {
         {this.state.formType === FORM_TYPE_GENERATE && (
           <form onSubmit={this.handleGenerateSubmit}>
             {
-              this.emailOptions.length !== 1 && (
+              emailOptions.length !== 1 && (
                 <SelectFieldGroup
                   className="m-account-openpgp-form__field-group"
                   label={i18n._('user.openpgp.form.email.label', null, { defaults: 'Email' })}
-                  value={this.state.generateForm.email}
+                  value={generateForm.email}
                   onChange={this.handleGenerateChanges}
                   name="email"
-                  options={this.emailOptions}
+                  options={emailOptions}
                   required="true"
                 />
               )
             }
-            {this.emailOptions.length === 1 && (
+            {emailOptions.length === 1 && (
               <p className="m-account-openpgp-form__field-group">
                 <Trans id="user.openpgp.form.email.label">Email</Trans>
                 {' '}
-                {this.state.generateForm.email}
+                {generateForm.email}
               </p>
             )}
             <div className="m-account-openpgp-form__field-group">
@@ -196,7 +187,7 @@ class OpenPGPKeyForm extends Component {
                 <TextFieldGroup
                   label={i18n._('user.openpgp.form.passphrase.label', null, { defaults: 'Passphrase' })}
                   type="password"
-                  value={this.state.generateForm.passphrase}
+                  value={generateForm.passphrase}
                   onChange={this.handleGenerateChanges}
                   name="passphrase"
                 />
@@ -220,7 +211,7 @@ class OpenPGPKeyForm extends Component {
         {this.state.formType === FORM_TYPE_RAW && (
           <form onSubmit={this.handleImportSubmit}>
             {
-              importForm.errors.global && (
+              importForm.errors && importForm.errors.global && (
                 <FieldErrors
                   className="m-account-openpgp-form__field-group"
                   errors={importForm.errors.global.map(key => this.errorsLabels[key])}

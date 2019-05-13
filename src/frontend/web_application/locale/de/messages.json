@@ -239,6 +239,7 @@
   "new-device-info.text": "",
   "new-device-info.title": "",
   "next-feature.generic": "",
+  "openpgp-key.download": "",
   "openpgp.action.remove-key": "Löschen",
   "openpgp.action.toggle-details": "Details anzeigen",
   "openpgp.details.algorithm": "Algorithmus",

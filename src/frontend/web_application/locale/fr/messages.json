@@ -239,6 +239,7 @@
   "new-device-info.text": "Pour le respect de la confidentialité et des règles de sécurité, l'historique de vos discussions ne sera pas visible pour l'instant. Merci de vérifier cet appareil et éventuellement définir des restrictions depuis un appareil connu.",
   "new-device-info.title": "C'est la première fois que vous tentez de vous connecter à votre compte Caliopen avec cet appareil.",
   "next-feature.generic": "Cette fonctionnalité n'est pas disponible pour l'instant mais elle est plannifiée pour être ajoutée à Caliopen.",
+  "openpgp-key.download": "",
   "openpgp.action.remove-key": "Supprimer",
   "openpgp.action.toggle-details": "Afficher les détails",
   "openpgp.details.algorithm": "Algorithme",

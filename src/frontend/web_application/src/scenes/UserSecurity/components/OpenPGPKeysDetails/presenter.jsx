@@ -20,13 +20,18 @@ class OpenPGPKeysDetails extends Component {
 
   state = {
     importForm: { errors: {} },
+    generateForm: { errors: {} },
     editMode: false,
     keys: undefined,
     isFormLoading: false,
   };
 
   componentDidMount() {
-    this.updateKeyState({});
+    this.updateKeyState({
+      generateForm: {
+        email: this.getUserEmails(),
+      },
+    });
   }
 
   getPrivateKeys = () => Object.values(this.state.keys || {});
@@ -99,16 +104,26 @@ class OpenPGPKeysDetails extends Component {
     }));
   }
 
-  generateAndSaveKeys = async (generateForm) => {
+  handleGenerateFormChange = (newValue) => {
+    this.setState(prevState => ({
+      generateForm: {
+        ...prevState.generateForm,
+        ...newValue,
+      },
+    }));
+  }
+
+  generateAndSaveKeys = async () => {
+    this.setState({ isFormLoading: true });
     const options = {
-      passphrase: generateForm.passphrase,
-      userIds: generateForm.email,
+      passphrase: this.state.generateForm.passphrase,
+      userIds: this.state.generateForm.email,
       numbits: 4096,
     };
 
     const { privateKeyArmored, publicKeyArmored } = await generateKey(options);
     const error = await saveKey(publicKeyArmored, privateKeyArmored);
-    const newState = error ? {} : { importForm: {} };
+    const newState = error ? {} : { isFormLoading: false, importForm: {} };
     this.updateKeyState(newState);
 
     return error;
@@ -140,31 +155,18 @@ class OpenPGPKeysDetails extends Component {
       <div className="m-account-openpgp">
         {this.getPrivateKeys().map(this.renderPrivateKey)}
         {this.state.editMode ? (
-          <div>
-            <OpenPGPKeyForm
-              className="m-account-openpgp__form"
-              emails={user.contact.emails}
-              onImport={this.importKeys}
-              onGenerate={this.generateAndSaveKeys}
-              onImportFormChange={this.handleImportFormChange}
-              importForm={this.state.importForm}
-              isLoading={isLoading || this.state.isFormLoading}
-              cancel={this.handleClickEditMode}
-            />
-            <div className="m-account-openpgp__info">
-              <p>
-                This feature is in high development process and can evolve quickly.
-                The keys you will store here are available on your current browser only.
-                This will not be uploaded on the server and you will not able to see it on any
-                other devices.
-              </p>
-              <p>
-                Be warned, the key pair generation is pretty slow and will freeze this page for
-                approximatively 20 seconds (depends on your device capacities).
-                A fix is in progress but may takes time to become available.
-              </p>
-            </div>
-          </div>
+          <OpenPGPKeyForm
+            className="m-account-openpgp__form"
+            emails={user.contact.emails}
+            onImport={this.importKeys}
+            onGenerate={this.generateAndSaveKeys}
+            onImportFormChange={this.handleImportFormChange}
+            onGenerateFromChange={this.handleGenerateFormChange}
+            importForm={this.state.importForm}
+            generateForm={this.state.generateForm}
+            isLoading={isLoading || this.state.isFormLoading}
+            cancel={this.handleClickEditMode}
+          />
         ) : (
           <Button
             {...activeButtonProp}

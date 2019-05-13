@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 - Disable contact import
+- Do not display private key details, allow "download" instead.
 
 ### Added
 
