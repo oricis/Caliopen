@@ -6,6 +6,7 @@ from caliopen_main.user.core.user import User
 from caliopen_main.user.core import allocate_user_shard
 from caliopen_main.contact.objects.contact import Contact as ContactObject
 from caliopen_main.contact.objects.email import Email as EmailObject
+from caliopen_main.contact.core import ContactLookup
 
 log = logging.getLogger(__name__)
 
@@ -36,6 +37,12 @@ def fix_user_contact(user, new_domain, only_index=False):
     obj.marshall_db()
     obj.save_db()
     obj.create_index()
+    for email in obj.emails:
+        ContactLookup.create(user=user, contact_id=user.contact_id,
+                             value=email.address, type='email')
+    for ident in obj.identities:
+        ContactLookup.create(user=user, contact_id=user.contact_id,
+                             value=ident.address, type=ident.protocol)
 
 
 def migrate_user(model, new_domain):
