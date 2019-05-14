@@ -13,7 +13,7 @@ class RecipientSelector extends PureComponent {
   static propTypes = {
     className: PropTypes.string,
     onChange: PropTypes.func.isRequired,
-    contact: PropTypes.shape({}).isRequired,
+    contact: PropTypes.shape({}),
     current: PropTypes.shape({}),
     availableProtocols: PropTypes.arrayOf(PropTypes.string).isRequired,
   };
@@ -21,6 +21,7 @@ class RecipientSelector extends PureComponent {
   static defaultProps = {
     className: undefined,
     current: undefined,
+    contact: undefined,
   };
 
   renderRecipient = ({ recipient }) => {
@@ -48,6 +49,11 @@ class RecipientSelector extends PureComponent {
     const {
       className, contact, onChange, current, availableProtocols,
     } = this.props;
+
+    // the contact associated to the participant might be deleted
+    if (!contact) {
+      return null;
+    }
 
     const availableRecipients = [
       ...(contact.emails ? contact.emails.map(email => (new Participant({
