@@ -79,6 +79,7 @@ func (cb *CassandraBackend) CreateLookupsFromUris(userId UUID, uriHash string, u
 	participants := []Participant{}
 	now := time.Now()
 	for _, uri := range uris {
+		uri = strings.ToLower(uri)
 		uriSplit := strings.SplitN(uri, ":", 2)
 		if len(uriSplit) != 2 {
 			err := fmt.Errorf("[CreateLookupsFromUris] uri malformed : %s => %v", uri, uriSplit)

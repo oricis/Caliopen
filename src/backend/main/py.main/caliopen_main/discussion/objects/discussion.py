@@ -39,7 +39,7 @@ class Discussion(ObjectUser):
             self.participants = hash_lookup[0].components
             self.participants_hash = hash_lookup[0].value
         else:
-            parts = participants_from_uris(user, uris['URIs'],
+            parts = participants_from_uris(user, uris['uris'],
                                            uris['hash'])
             self.participants = parts['components']
             self.participants_hash = parts['hash']

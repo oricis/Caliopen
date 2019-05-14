@@ -11,6 +11,7 @@ import (
 	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
 	"regexp"
+	"strings"
 	"time"
 )
 
@@ -197,6 +198,7 @@ func (ui *UserIdentity) SetDefaults() {
 	if ui.DisplayName == "" {
 		ui.DisplayName = ui.Identifier
 	}
+	ui.Identifier = strings.ToLower(ui.Identifier)
 }
 
 func (ui *UserIdentity) UnmarshalCQLMap(input map[string]interface{}) error {

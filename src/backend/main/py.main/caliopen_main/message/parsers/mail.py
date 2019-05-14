@@ -265,7 +265,7 @@ class MailMessage(object):
                 else:
                     addrs.append(self.mail.get(header))
             for addr in addrs:
-                participant = MailParticipant(participant_type, addr)
+                participant = MailParticipant(participant_type, addr.lower())
                 participants.append(participant)
         return participants
 

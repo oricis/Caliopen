@@ -111,7 +111,6 @@ func (rest *RESTfacility) CreateUserIdentity(identity *UserIdentity) CaliopenErr
 	if len((*identity).Id.Bytes()) == 0 || (bytes.Equal((*identity).Id.Bytes(), EmptyUUID.Bytes())) {
 		_ = (*identity).Id.UnmarshalBinary(uuid.NewV4().Bytes())
 	}
-
 	// set defaults
 	identity.SetDefaults()
 

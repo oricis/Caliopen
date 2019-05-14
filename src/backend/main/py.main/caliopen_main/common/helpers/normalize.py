@@ -25,3 +25,6 @@ def clean_email_address(addr):
             log.info(exc)
     # unicode everywhere
     return (u'%s@%s' % (name, domain), email)
+
+def clean_twitter_address(addr):
+    return addr.strip('@').lower()

@@ -54,7 +54,7 @@ class UserMessageQualifier(BaseQualifier):
             participants = []
             for list_id in lists:
                 participant = Participant()
-                participant.address = list_id
+                participant.address = list_id.lower()
                 participant.protocol = 'email'
                 participant.type = 'list-id'
                 participants.append(participant)
@@ -103,6 +103,7 @@ class UserMessageQualifier(BaseQualifier):
 
         participants = []
         for p in email.participants:
+            p.address = p.address.lower()
             try:
                 participant, contact = self.get_participant(email, p)
                 new_message.participants.append(participant)

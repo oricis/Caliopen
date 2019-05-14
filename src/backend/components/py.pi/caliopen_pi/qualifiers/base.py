@@ -59,7 +59,7 @@ class BaseQualifier(object):
     def get_participant(self, message, participant):
         """Try to find a related contact and return a Participant instance."""
         p = Participant()
-        p.address = participant.address
+        p.address = participant.address.lower()
         p.type = participant.type
         p.label = participant.label
         p.protocol = message.message_protocol
