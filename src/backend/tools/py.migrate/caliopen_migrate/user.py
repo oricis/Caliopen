@@ -1,48 +1,86 @@
 import logging
 import uuid
 
-from caliopen_storage.exception import NotFound
+from cassandra.query import SimpleStatement
+from cassandra.cluster import Cluster
+from cassandra.query import dict_factory
+
+
+from caliopen_storage.config import Configuration
 from caliopen_main.user.core.user import User
 from caliopen_main.user.core import allocate_user_shard
 from caliopen_main.contact.objects.contact import Contact as ContactObject
 from caliopen_main.contact.objects.email import Email as EmailObject
+
 from caliopen_main.contact.core import ContactLookup
 
 log = logging.getLogger(__name__)
 
+EXCLUDE_COLUMS = ['tags']
 
-def fix_user_contact(user, new_domain, only_index=False):
-    try:
-        contact = ContactObject(user, contact_id=user.contact_id)
+
+def copy_contacts(user, only_id):
+    conf = Configuration('global').configuration
+    cluster_source = Cluster(conf['old_cassandra']['hosts'])
+    source = cluster_source.connect(conf['old_cassandra']['keyspace'])
+    source.row_factory = dict_factory
+    query = "SELECT * from contact where user_id = {}".format(user.user_id)
+    statement = SimpleStatement(query, fetch_size=200)
+    cluster_dest = Cluster(conf['cassandra']['hosts'])
+    dest = cluster_dest.connect(conf['cassandra']['keyspace'])
+    insert_query = "INSERT INTO contact ({0}) VALUES ({1})"
+
+    contact_ids = []
+    for row in source.execute(statement):
+        if not only_id:
+            columns = []
+            values = []
+            binds = []
+            for col, value in row.items():
+                if col not in EXCLUDE_COLUMS:
+                    columns.append(col)
+                    values.append(value)
+                    binds.append('?')
+
+            col_str = ','.join(columns)
+            col_bind = ','.join(binds)
+            insert_str = insert_query.format(col_str, col_bind)
+            insert = dest.prepare(insert_str)
+            bound = insert.bind(values)
+            dest.execute(bound)
+        contact_ids.append(row['contact_id'])
+    return contact_ids
+
+
+def fix_user_contacts(user, new_domain, only_index=False):
+    ids = copy_contacts(user, only_index)
+    for id in ids:
+        contact = ContactObject(user, contact_id=id)
         contact.get_db()
-        log.info('Found existing contact for user')
-        if only_index:
-            log.info('Recreate index')
-            contact.create_index()
-        return None
-    except NotFound:
-        pass
-    except Exception as exc:
-        log.exception('Unhandled error retrieving old contact {}'.format(exc))
-        raise exc
-    try:
-        local_addr = '{}@{}'.format(user.name, new_domain)
-    except UnicodeError:
-        log.error('Invalid user name encoding {}'.format(user.user_id))
-        return None
-    log.info('Creating user contact')
-    obj = ContactObject(user, contact_id=user.contact_id)
-    email = EmailObject(address=local_addr, type='home')
-    obj.emails.append(email)
-    obj.marshall_db()
-    obj.save_db()
-    obj.create_index()
-    for email in obj.emails:
-        ContactLookup.create(user=user, contact_id=user.contact_id,
-                             value=email.address, type='email')
-    for ident in obj.identities:
-        ContactLookup.create(user=user, contact_id=user.contact_id,
-                             value=ident.address, type=ident.protocol)
+        contact.unmarshall_db()
+
+        if not only_index:
+            if str(user.contact_id) == str(id):
+                log.info('Patching user contact')
+                found = [x.address for x in contact.emails
+                         if new_domain in x.address]
+                if not found:
+                    local_addr = '{}@{}'.format(user.name, new_domain)
+                    log.info('Creating new address {}'.format(local_addr))
+                    email = EmailObject(address=local_addr, type='home')
+                    contact.emails.append(email)
+                    contact.marshall_db()
+                    contact.save_db()
+
+            for email in contact.emails:
+                ContactLookup.create(user=user, contact_id=id,
+                                     value=email.address.lower(),
+                                     type='email')
+            for ident in contact.identities:
+                ContactLookup.create(user=user, contact_id=id,
+                                     value=ident.name.lower(),
+                                     type=ident.type.lower())
+        contact.create_index()
 
 
 def migrate_user(model, new_domain):
