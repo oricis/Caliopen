@@ -14,9 +14,14 @@ const getParticipantsContactsExceptUser = ({ contacts, participants, user }) => 
       return acc;
     }
 
+    const participantContacts = contactIds
+      .map(contactId => contacts.find(ct => ct.contact_id === contactId))
+      // filter deleted contact that still present in recipients
+      .filter(ct => !!ct);
+
     return [
       ...acc,
-      ...contactIds.map(contactId => contacts.find(contact => contact.contact_id === contactId)),
+      ...participantContacts,
     ];
   }, []);
 

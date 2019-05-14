@@ -508,6 +508,7 @@ class DraftMessage extends Component {
       );
     }
 
+    // /!\ the associated contact might be deleted
     const isOne2One = isReply &&
       this.state.draftMessage.recipients.length === 1 &&
       this.state.draftMessage.recipients[0].contact_ids &&
