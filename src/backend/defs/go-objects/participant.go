@@ -197,8 +197,9 @@ func ComputeNewParticipantHash(uri, contactId string, current ParticipantHash, u
 		components = append(components, k)
 	}
 	// embed new components slice
-	new.Components = components
 	new.Key = HashComponents(components)
+	new.Components = components
+	new.Value = current.Value
 	return
 }
 
