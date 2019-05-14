@@ -1,0 +1,40 @@
+//
+// --- Colors ---
+$co-color__primary: #1395ba; // caliopen blue
+$co-color__primary--soft: #8dceec; // for titles
+$co-color__primary--bright: #16ccda; // for gradient
+$co-color__contrast: #f1b941; // yellow
+$co-color__back: #1b1b1b;
+$co-color__back--low: #000;
+$co-color__text: #e8e8e8;
+$co-color__text--high: #fff;
+$co-color__text--low: #515151;
+//
+// --- page ---
+$co-page__width: 95rem;
+$co-page-col__width: 44.38rem;
+//
+// --- spacings ---
+$co-spacing__small: 1.25rem; // 20px
+$co-spacing__medium: 2.5rem; // 40px
+$co-spacing__large: 4.375rem; // 70px
+//
+//-- fonts ---
+$co-font__family: 'Open Sans', sans-serif;
+$co-font__size--small: .8125rem; // 13px
+$co-font__size--medium: 1.375rem; // 22px
+$co-font__size--large: 3.125rem; // 50px
+$co-font__size--xlarge: 4.25rem; // 68px
+//
+// --- Breakpoinst ---
+@mixin breakpoint($class) {
+  @if $class == xsmall {
+    @media (max-width: 321px) { @content; }
+  }  @else if $class == small {
+    @media (min-width: 520px) { @content; }
+  } @else if $class == medium {
+    @media (min-width: $co-page-col__width) { @content; }
+  }  @else if $class == large {
+    @media (min-width: $co-page__width) { @content; }
+  }
+ }

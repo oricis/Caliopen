@@ -1,0 +1,50 @@
+.row {
+  display: flex;
+  position: relative;
+  z-index: 1000;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  max-width: $co-page__width;
+  margin: auto;
+  padding: 0 $co-spacing__small * 2;
+
+  &--align-center {
+    max-width: 55rem;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  > .col {
+    flex-basis: auto;
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin-right: 0;
+
+    &--no-margin,
+    &:last-of-type {
+      margin-right: 0;
+    }
+  }
+}
+
+
+
+@include breakpoint(xsmall) {
+  .row {
+    padding: 0 $co-spacing__small;
+
+  }
+}
+
+
+@include breakpoint(medium) {
+  .row {
+    flex-direction: row;
+    padding: 0 $co-spacing__medium * 2;
+
+    > .col {
+      margin-right: $co-spacing__small;
+    }
+  }
+}
