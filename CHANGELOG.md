@@ -28,7 +28,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Do not fail if ContactLookup raise a NotFound
 - Twitter nick not displayed on contact book
 - Select Twitter identity according to parent message on a new draft
-- show at least 1 participant per discussion on timeline
+- Show at least 1 participant per discussion on timeline
+- Send a quick draft by pressing «Enter» and display a spinner
 
 ## [0.18.2] 2019-04-26
 

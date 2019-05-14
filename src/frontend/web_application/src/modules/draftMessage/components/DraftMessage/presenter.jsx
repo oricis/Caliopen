@@ -304,7 +304,8 @@ class DraftMessage extends Component {
   //   }
   // }
 
-  handleSend = async () => {
+  handleSend = async (ev) => {
+    ev.preventDefault();
     const {
       onSendDraft, internalId, original, notifyError, i18n, onSent, requestDraft, hasDiscussion,
     } = this.props;
@@ -543,54 +544,56 @@ class DraftMessage extends Component {
 
     return (
       <div className={classnames(className, 'm-draft-message-quick')} ref={ref}>
-        <div className={classnames(className, 'm-draft-message-quick__container')}>
-          <div className="m-draft-message-quick__toggle-advanced">
-            {this.renderToggleAdvancedButton()}
-          </div>
-          {
-            this.state.isLocked ?
-              <LockedMessage encryptionStatus={draftEncryption} />
-              : (
-                <InputText
-                  className={classnames(
-                    'm-draft-message-quick__input',
-                    { 'm-draft-message-quick__input--encrypted': encryptionEnabled }
-                  )}
-                  onChange={this.handleChange}
-                  onFocus={onFocus}
-                  name="body"
-                  value={this.state.draftMessage.body}
-                  placeholder={this.getQuickInputPlaceholder()}
-                />
-              )}
-          <div className={classnames(
-            'm-draft-message-quick__send',
+        <form onSubmit={this.handleSend}>
+          <div className={classnames(className, 'm-draft-message-quick__container')}>
+            <div className="m-draft-message-quick__toggle-advanced">
+              {this.renderToggleAdvancedButton()}
+            </div>
             {
-              'm-draft-message-quick__send--encrypted': encryptionEnabled,
-              'm-draft-message-quick__send--unencrypted': !encryptionEnabled,
-            }
-          )}
-          >
-            <Button
-              display="expanded"
-              shape="plain"
-              icon="paper-plane"
-              title={i18n._('draft-message.action.send', null, { defaults: 'Send' })}
-              className={classnames(
-                'm-draft-message-quick__send-button',
-                {
-                  'm-draft-message-quick__send-button--encrypted': encryptionEnabled,
-                  'm-draft-message-quick__send-button--unencrypted': !encryptionEnabled,
-                }
-              )}
-              onClick={this.handleSend}
-              disabled={!canSend}
-            />
+              this.state.isLocked ?
+                <LockedMessage encryptionStatus={draftEncryption} />
+                : (
+                  <InputText
+                    className={classnames(
+                      'm-draft-message-quick__input',
+                      { 'm-draft-message-quick__input--encrypted': encryptionEnabled }
+                    )}
+                    onChange={this.handleChange}
+                    onFocus={onFocus}
+                    name="body"
+                    value={this.state.draftMessage.body}
+                    placeholder={this.getQuickInputPlaceholder()}
+                  />
+                )}
+            <div className={classnames(
+              'm-draft-message-quick__send',
+              {
+                'm-draft-message-quick__send--encrypted': encryptionEnabled,
+                'm-draft-message-quick__send--unencrypted': !encryptionEnabled,
+              }
+            )}
+            >
+              <Button
+                type="submit"
+                display="expanded"
+                shape="plain"
+                icon={this.state.isSending ? (<Spinner loading display="block" />) : 'paper-plane'}
+                title={i18n._('draft-message.action.send', null, { defaults: 'Send' })}
+                className={classnames(
+                  'm-draft-message-quick__send-button',
+                  {
+                    'm-draft-message-quick__send-button--encrypted': encryptionEnabled,
+                    'm-draft-message-quick__send-button--unencrypted': !encryptionEnabled,
+                  }
+                )}
+                disabled={!canSend}
+              />
+            </div>
           </div>
-        </div>
-        <div className="m-draft-message-quick__encryption">
-          <Trans id={this.getEncryptionTranslation()} />
-        </div>
+          <div className="m-draft-message-quick__encryption">
+            <Trans id={this.getEncryptionTranslation()} />
+          </div>
+        </form>
       </div>
     );
   }
