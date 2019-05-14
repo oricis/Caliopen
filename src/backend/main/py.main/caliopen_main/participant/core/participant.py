@@ -38,13 +38,13 @@ def hash_participants_uri(participants):
     for participant in participants:
         if not participant.address or not participant.protocol:
             raise Exception("missing mandatory property in participant")
-        uri = participant.protocol + ":" + participant.address
+        uri = participant.protocol + ":" + participant.address.lower()
         URIs.add(uri)
 
     URIs = list(URIs)
     URIs.sort()
     hash = hashlib.sha256(''.join(URIs)).hexdigest()
-    return {'URIs': URIs, 'hash': hash}
+    return {'uris': URIs, 'hash': hash}
 
 
 def participants_from_uris(user, uris, uris_hash):

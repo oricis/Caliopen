@@ -7,6 +7,7 @@ from caliopen_main.message.parameters import NewInboundMessage
 from caliopen_main.message.parsers.twitter import TwitterDM
 from caliopen_main.discussion.core import Discussion
 from caliopen_main.participant.store import HashLookup
+from caliopen_main.common.helpers.normalize import clean_twitter_address
 
 from ..features import marshal_features
 from .base import BaseQualifier
@@ -55,6 +56,7 @@ class UserDMQualifier(BaseQualifier):
 
         participants = []
         for p in tweet.participants:
+            p.address = clean_twitter_address(p.address)
             participant, contact = self.get_participant(tweet, p)
             new_message.participants.append(participant)
             participants.append((participant, contact))

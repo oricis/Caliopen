@@ -22,6 +22,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 //GET …/identities/locals/{identity_id}
@@ -162,6 +163,7 @@ func NewRemoteIdentity(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
+	identity.Identifier = strings.ToLower(identity.Identifier)
 	// add UserId and type
 	identity.UserId.UnmarshalBinary(uuid.FromStringOrNil(userID).Bytes())
 	identity.Type = RemoteIdentity

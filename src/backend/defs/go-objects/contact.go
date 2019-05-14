@@ -7,6 +7,7 @@ import (
 	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
 	"sort"
+	"strings"
 	"sync"
 	"time"
 )
@@ -617,6 +618,7 @@ func (lookup *ContactByContactPoints) UpdateLookups(contacts ...interface{}) fun
 				oldContact := contacts[1].(*Contact)
 				for lookup := range oldContact.GetLookupKeys() {
 					lkp := lookup.(*ContactByContactPoints)
+					lkp.Value = strings.ToLower(lkp.Value)
 					lkpKey := lkp.UserID + lkp.Value + lkp.Type
 					oldLookups[lkpKey] = lkp
 					removedLookups[lkpKey] = lkp
@@ -625,6 +627,7 @@ func (lookup *ContactByContactPoints) UpdateLookups(contacts ...interface{}) fun
 			// iterate over contact's current state to add or update lookups
 			for lookup := range newContact.GetLookupKeys() {
 				lkp := lookup.(*ContactByContactPoints)
+				lkp.Value = strings.ToLower(lkp.Value)
 				lkpKey := lkp.UserID + lkp.Value + lkp.Type
 				// check if it's a new uri
 				err := session.Query(`INSERT INTO contact_lookup (user_id, value, type, contact_id) VALUES (?,?,?,?)`,
@@ -658,7 +661,6 @@ func (lookup *ContactByContactPoints) UpdateLookups(contacts ...interface{}) fun
 				// it remains lookups in the map, meaning these lookups references have been removed from contact
 				// need to cleanup lookup tables
 				for _, lookup := range removedLookups {
-					// try to get the contact_lookup
 					err := session.Query(`DELETE FROM contact_lookup WHERE user_id = ? AND value = ? AND type = ?`,
 						lookup.UserID,
 						lookup.Value,
@@ -717,6 +719,7 @@ func (lookup *ContactByContactPoints) CleanupLookups(contacts ...interface{}) fu
 // to be able to link URI with contact when building discussions
 // if associate == true, then lkp is associated with contact, else it is dissociated from contact
 func updateURIWithContact(session *gocql.Session, lkp *ContactByContactPoints, associate bool) error {
+	lkp.Value = strings.ToLower(lkp.Value)
 	// lookup uris_hashes where lkp's uri is embedded
 	lkpUri := lkp.Type + ":" + lkp.Value
 	uriLookups, err := session.Query(`SELECT * FROM hash_lookup WHERE user_id = ? AND uri = ?`, lkp.UserID, lkpUri).Iter().SliceMap()

@@ -9,6 +9,7 @@ import hashlib
 import zope.interface
 
 from caliopen_main.common.interfaces import (IMessageParser, IParticipantParser)
+from caliopen_main.common.helpers.normalize import clean_twitter_address
 
 log = logging.getLogger(__name__)
 
@@ -66,8 +67,8 @@ class TwitterDM(object):
     @property
     def participants(self):
         "one sender only for now"
-        return [TwitterParticipant("To", self.recipient_name),
-                TwitterParticipant("From", self.sender_name)]
+        return [TwitterParticipant("To", clean_twitter_address(self.recipient_name)),
+                TwitterParticipant("From", clean_twitter_address(self.sender_name))]
 
     @property
     def external_references(self):
@@ -94,5 +95,5 @@ class TwitterParticipant(object):
     def __init__(self, type, screen_name):
         """Parse a twitter address and create a participant."""
         self.type = type
-        self.address = screen_name
+        self.address = clean_twitter_address(screen_name)
         self.label = screen_name

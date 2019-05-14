@@ -146,7 +146,7 @@ func (p ByAddress) Swap(i, j int) {
 func HashFromParticipantsUris(participants []Participant) (hash string, components []string, err error) {
 	urisMap := map[string]struct{}{}
 	for _, participant := range participants {
-		uri := participant.Protocol + ":" + participant.Address
+		uri := participant.Protocol + ":" + strings.ToLower(participant.Address)
 		urisMap[uri] = struct{}{}
 	}
 	components = []string{}

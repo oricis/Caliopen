@@ -75,7 +75,6 @@ class Draft(NewInboundMessage):
             self.discussion_id = self.hash_participants
             self._update_external_references(user)
             self._build_subject_for_reply(parent_msg)
-
         elif self.discussion_id != self.hash_participants:
             # participants_hash has changed, update lookups
             self.discussion_id = self.hash_participants
@@ -109,7 +108,7 @@ class Draft(NewInboundMessage):
                         self.participants.pop(i)
 
         from_participant = Participant()
-        from_participant.address = user_identity.identifier
+        from_participant.address = user_identity.identifier.lower()
         from_participant.label = user_identity.display_name
         from_participant.protocol = user_identity.protocol
         from_participant.type = "From"
@@ -139,7 +138,9 @@ class Draft(NewInboundMessage):
         # TODO : manage reply to discussion-list
         # TODO : and to messages that have a `reply-to` header
         self.participants = []
+        sender['address'] = sender['address'].lower()
         for i, participant in enumerate(parent_msg.participants):
+            participant['address'] = participant['address'].lower()
             if not re.match(sender['address'], participant['address'],
                             re.IGNORECASE):
                 if re.match("from", participant['type'], re.IGNORECASE):
