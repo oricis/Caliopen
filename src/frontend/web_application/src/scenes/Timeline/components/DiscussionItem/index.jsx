@@ -78,11 +78,12 @@ class DiscussionItem extends PureComponent {
   );
 
   renderParticipants() {
+    const { discussion: { discussion_id: discussionId } } = this.props;
     const participants = this.getParticipantsExceptUser();
 
     return participants
       .map((participant, i) => (
-        <Fragment key={participant.address}>
+        <Fragment key={`${participant.address}-${participant.type}-${participant.protocol}-${discussionId}`}>
           {i > 0 && ', '}
           <ParticipantLabel participant={participant} />
         </Fragment>

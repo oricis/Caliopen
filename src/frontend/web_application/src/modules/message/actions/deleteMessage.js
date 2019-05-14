@@ -14,9 +14,14 @@ export const deleteMessage = ({ message }) => async (dispatch) => {
         const discussion = await tryCatchAxiosAction(() => (
           dispatch(requestDiscussion({ discussionId: message.discussion_id }))
         ));
+
+        // 1/2 Discussion is not removed when we get 404
         dispatch(removeDiscussionFromCollection({ discussionId: discussion.discussion_id }));
       } catch (apiErrors) {
-        if (!Array.isArray(apiErrors) || apiErrors[0].code !== 404) {
+        if (Array.isArray(apiErrors) && apiErrors[0].code === 404) {
+          // 2/2 But it should since it does not exists (anymore)
+          dispatch(removeDiscussionFromCollection({ discussionId: message.discussion_id }));
+        } else if (!Array.isArray(apiErrors) || apiErrors[0].code !== 404) {
           throw apiErrors;
         }
       }

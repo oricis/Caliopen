@@ -152,15 +152,15 @@ class OpenPGPKeyForm extends Component {
         {this.state.formType === FORM_TYPE_GENERATE && (
           <form onSubmit={this.handleGenerateSubmit}>
             {
-              emailOptions.length !== 1 && (
+              emailOptions.length > 1 && (
                 <SelectFieldGroup
                   className="m-account-openpgp-form__field-group"
                   label={i18n._('user.openpgp.form.email.label', null, { defaults: 'Email' })}
-                  value={generateForm.email}
+                  value={generateForm.email[0].email}
                   onChange={this.handleGenerateChanges}
                   name="email"
                   options={emailOptions}
-                  required="true"
+                  required
                 />
               )
             }
