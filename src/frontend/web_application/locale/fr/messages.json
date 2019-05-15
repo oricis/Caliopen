@@ -452,7 +452,7 @@
   "signup.privacy.modal.text.alpha_tester": "En tant que beta-testeur, votre contribution est précieuse et nous permet de travailler à la finalisation de Caliopen.",
   "signup.privacy.modal.text.desactivate_dnt": "Vous devez pour cela désactiver l'option DoNotTrack de votre navigateur (plus d'information ici http://donottrack.us) et autoriser l'installation de cookies.",
   "signup.privacy.modal.text.get_data": "Dans ce but, vous acceptez que nous recueillions certaines données relatives à votre utilisation de l’application (pages visitées, durées, clics, scrolls… en fait, pas loin de tout ce qui peut être tracé !).",
-  "signup.privacy.modal.text.piwik": "Nous utilisons l'outil de mesure d’audience open source https://piwik.org/, les données récoltées ne seront pas divulguées à qui que ce soit hors du contexte de l'alpha de Caliopen.",
+  "signup.privacy.modal.text.piwik": "Nous utilisons l'outil de mesure d’audience open source https://piwik.org/, les données récoltées ne seront pas divulguées à qui que ce soit hors du contexte de la version beta de Caliopen.",
   "signup.privacy.modal.title": "Caliopen est en développement !",
   "tag_list.all_contacts": "Tous les contacts",
   "tags.action.add": "Ajouter",
