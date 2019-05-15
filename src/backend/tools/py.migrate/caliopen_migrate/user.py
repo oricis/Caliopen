@@ -102,20 +102,26 @@ def copy_user_contacts(user, new_domain, old_domain, only_index=False):
 
 def migrate_user(user, new_domain):
     shard_id = allocate_user_shard(uuid.UUID(user.user_id))
+    if not shard_id or not user.shard_id:
+        log.error('No valid shard')
+        return False
     if user.shard_id != shard_id:
         user.model.shard_id = shard_id
         log.info('Allocate user {} to new shard {}'.
                  format(user.user_id, shard_id))
-        user.model.save()
-    try:
-        local_part = user.name.replace('@', '').lower()
-        local_address = '{}@{}'.format(local_part, new_domain)
-        ident = user.add_local_identity(local_address)
-        log.debug('Created identity {}'.format(ident.identity_id))
-    except Exception as exc:
-        log.exception('Error during identity creation for user {}: {}'.
-                      format(user.user_id, exc))
-        return False
+        try:
+            user.model.save()
+        except Exception as exc:
+            log.exception('Fail to save user with new_shard {}'.format(exc))
+            return False
+        try:
+            local_part = user.name.replace('@', '').lower()
+            local_address = '{}@{}'.format(local_part, new_domain)
+            user.add_local_identity(local_address)
+            log.debug('Created local identity {}'.format(local_address))
+        except Exception as exc:
+            log.exception('Error during identity creation for user {}: {}'.
+                          format(user.user_id, exc))
     return True
 
 
@@ -123,9 +129,7 @@ def migrate_all_users(new_domain, count=None):
     cpt = 0
     for model in User._model_class.all():
         user = User(model)
-        res = migrate_user(user, new_domain)
-        if not res:
-            break
+        migrate_user(user, new_domain)
         cpt += 1
         if count and cpt >= count:
             log.info("Limit to {} users, stop migration".format(count))
