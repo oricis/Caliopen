@@ -52,7 +52,33 @@ def copy_contacts(user, only_id):
     return contact_ids
 
 
-def fix_user_contacts(user, new_domain, only_index=False):
+def patch_user_contact(user, contact, new_domain, old_domain):
+    log.info('Patching user contact')
+    update = False
+    found = False
+    for old_email in contact.emails:
+        address = old_email.address.lower()
+        log.info('Testing user email addres {}'.format(address))
+        if address.endswith(new_domain):
+            found = True
+        if address.endswith(old_domain):
+            update = True
+            log.info('Remove old email {}'.format(address))
+            contact.emails.remove(old_email)
+    if not found:
+        update = True
+        local_addr = '{}@{}'.format(user.name, new_domain)
+        log.info('Creating new email {}'.format(local_addr))
+        email = EmailObject(address=local_addr, type='home')
+        contact.emails.append(email)
+
+    if update:
+        contact.marshall_db()
+        contact.save_db()
+    return update
+
+
+def copy_user_contacts(user, new_domain, old_domain, only_index=False):
     ids = copy_contacts(user, only_index)
     for id in ids:
         contact = ContactObject(user, contact_id=id)
@@ -61,16 +87,7 @@ def fix_user_contacts(user, new_domain, only_index=False):
 
         if not only_index:
             if str(user.contact_id) == str(id):
-                log.info('Patching user contact')
-                found = [x.address for x in contact.emails
-                         if new_domain in x.address]
-                if not found:
-                    local_addr = '{}@{}'.format(user.name, new_domain)
-                    log.info('Creating new address {}'.format(local_addr))
-                    email = EmailObject(address=local_addr, type='home')
-                    contact.emails.append(email)
-                    contact.marshall_db()
-                    contact.save_db()
+                patch_user_contact(user, contact, new_domain, old_domain)
 
             for email in contact.emails:
                 ContactLookup.create(user=user, contact_id=id,
@@ -83,14 +100,13 @@ def fix_user_contacts(user, new_domain, only_index=False):
         contact.create_index()
 
 
-def migrate_user(model, new_domain):
-    user = User(model)
+def migrate_user(user, new_domain):
     shard_id = allocate_user_shard(uuid.UUID(user.user_id))
-    if model.shard_id != shard_id:
-        model.shard_id = shard_id
+    if user.shard_id != shard_id:
+        user.model.shard_id = shard_id
         log.info('Allocate user {} to new shard {}'.
                  format(user.user_id, shard_id))
-        model.save()
+        user.model.save()
     try:
         local_part = user.name.replace('@', '').lower()
         local_address = '{}@{}'.format(local_part, new_domain)
@@ -106,10 +122,21 @@ def migrate_user(model, new_domain):
 def migrate_all_users(new_domain, count=None):
     cpt = 0
     for model in User._model_class.all():
-        res = migrate_user(model, new_domain)
+        user = User(model)
+        res = migrate_user(user, new_domain)
         if not res:
             break
         cpt += 1
         if count and cpt >= count:
             log.info("Limit to {} users, stop migration".format(count))
             break
+
+
+def compute_all_shards():
+    for model in User._model_class.all():
+        shard_id = allocate_user_shard(model.user_id)
+        if model.shard_id != shard_id:
+            model.shard_id = shard_id
+            log.info('Allocate user {} to new shard {}'.
+                     format(model.user_id, shard_id))
+            model.save()
