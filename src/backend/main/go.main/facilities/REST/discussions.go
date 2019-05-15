@@ -6,8 +6,8 @@ package REST
 
 import (
 	"errors"
-	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	log "github.com/Sirupsen/logrus"
 	"github.com/satori/go.uuid"
 	"sort"
 )
@@ -111,8 +111,7 @@ func (rest *RESTfacility) ExpandDiscussionSet(userId UUID, discussionId string) 
 		return
 	}
 	if len(participants_hash) > 1 {
-		err = fmt.Errorf("[DiscussionMetadata] found more than one participants_hash for user %s discussion %s", userId.String(), discussionId)
-		return
+		log.Warnf("[DiscussionMetadata] found more than one participants_hash for user %s discussion %s. possible inconsistency", userId.String(), discussionId)
 	}
 	if len(participants_hash) == 0 {
 		err = errors.New("not found")
