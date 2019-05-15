@@ -8,6 +8,8 @@ import './style.scss';
 
 class RemoteIdentitySettings extends Component {
   static propTypes = {
+    requestProviders: PropTypes.func.isRequired,
+    providers: PropTypes.shape(PropTypes.string),
     requestRemoteIdentities: PropTypes.func.isRequired,
     onIdentityChange: PropTypes.func.isRequired,
     onIdentityDelete: PropTypes.func.isRequired,
@@ -16,10 +18,12 @@ class RemoteIdentitySettings extends Component {
 
   static defaultProps = {
     identities: undefined,
+    providers: undefined,
   };
 
   componentDidMount() {
     this.props.requestRemoteIdentities();
+    this.props.requestProviders();
   }
 
   handleChange = async (...params) => {
@@ -57,13 +61,14 @@ class RemoteIdentitySettings extends Component {
   }
 
   render() {
-    const { onIdentityDelete, identities } = this.props;
+    const { onIdentityDelete, identities, providers } = this.props;
 
     return (
       <div className="s-settings-identities">
         <PageTitle />
         <div className="s-settings-identities__create">
           <NewIdentity
+            providers={providers}
             onRemoteIdentityChange={this.handleCreate}
             onRemoteIdentityDelete={onIdentityDelete}
             onClear={this.handleClear}

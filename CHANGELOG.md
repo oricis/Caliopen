@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - In a draft, switch identity will change the protocol of all recipients as well
 - Disable contact import
 - Do not display private key details, allow "download" instead.
+- Providers buttons are available according to backend configuration (api: `/api/v2/providers`)
 
 ### Fixed
 
