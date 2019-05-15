@@ -20,7 +20,7 @@
   "contact-book.action.select-all": "Tout sélectionner",
   "contact-book.confirm-delete.content": "{count, plural, one { La suppression est permanente, êtes-vous sûr de vouloir supprimer ce contact ? } other { La suppression est permanante, êtes-vous sûr de vouloir supprimer ces contacts ? }}",
   "contact-book.confirm-delete.title": "{count, plural, one {Supprimer le contact} other {Supprimer les contacts}}",
-  "contact-book.contacts.selected": "{count, plural, one {#/{totalCount} contact sélectionné :} other {#/{totalCount} contacts sélectionnées :}}",
+  "contact-book.contacts.selected": "{count, plural, one {#/{totalCount} contact sélectionné :} other {#/{totalCount} contacts sélectionnés :}}",
   "contact-book.contacts.title": "Contacts",
   "contact-book.groups.title": "Tags",
   "contact-book.my-contact-details": "Mes coordonnées",
