@@ -449,7 +449,7 @@
   "signup.go_signin": "I already have an account",
   "signup.privacy.modal.close": "Ok got it!",
   "signup.privacy.modal.label": "About Piwik",
-  "signup.privacy.modal.text.alpha_tester": "As an alpha-tester your contribution is precious and will allow us to finalize Caliopen.",
+  "signup.privacy.modal.text.alpha_tester": "As a beta-tester your contribution is precious and will allow us to finalize Caliopen.",
   "signup.privacy.modal.text.desactivate_dnt": "You need to deactivate the DoNotTrack setting from your browser preferences (more informations at http://donottrack.us), as well as allowing cookies.",
   "signup.privacy.modal.text.get_data": "For this purpose, you grant us the right to collect data related to your usage (displayed pages, timings, clics, scrolls ...almost everything that can be collected!).",
   "signup.privacy.modal.text.piwik": "We use https://piwik.org/ the open-source analytics plateform. The collected data will not be disclosed to any third party, and will stay scoped to Caliopen's alpha testing purpose.",
