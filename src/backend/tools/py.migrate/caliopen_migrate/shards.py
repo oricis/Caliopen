@@ -3,6 +3,7 @@ import logging
 from caliopen_storage.config import Configuration
 from caliopen_storage.helpers.connection import get_index_connection
 from caliopen_main.user.core.setups import setup_shard_index
+from caliopen_main.user.core import User
 
 log = logging.getLogger(__name__)
 
@@ -37,3 +38,31 @@ def create_all_shards(dry_run=True):
             log.info('Creating shard {}'.format(shard_id))
             if not dry_run:
                 setup_shard_index(shard_id)
+
+
+def recreate_user_alias(client, user, dry_run=True):
+    """Create an index alias mapping user_id -> shard_id."""
+    shards = Configuration('global').get('elasticsearch.shards')
+    if client.indices.exists_alias(name=user.user_id):
+        alias = client.indices.get_alias(name=user.user_id)
+        for index, alias_infos in alias.items():
+            if index not in shards:
+                if not dry_run:
+                    client.indices.delete_alias(index=index, name=user.user_id)
+                else:
+                    log.info('Alias exist {} with index {}, should delete'.
+                             format(user.user_id, index))
+    if not dry_run:
+        body = {'filter': {'term': {'user_id': user.user_id}}}
+        client.indices.put_alias(index=user.shard_id,
+                                 name=user.user_id,
+                                 body=body)
+    else:
+        log.info('Should create alias {}'.format(user.user_id))
+
+
+def recreate_all_user_aliases(dry_run=True):
+    """Recreate alias for all users."""
+    client = get_index_connection()
+    for user in User._model_class.all():
+        recreate_user_alias(client, user, dry_run)
