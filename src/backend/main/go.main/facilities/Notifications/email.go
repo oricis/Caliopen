@@ -239,7 +239,7 @@ func (notif *Notifier) SendOnboardingMails(user *User) error {
 	if err == nil {
 		participants := recipients
 		participants = append(participants, Participant{ // sender
-			Address:  "admin@caliopen.app", // TODO: use config
+			Address:  "contact@caliopen.org", // TODO: use config
 			Label:    "Caliopen",
 			Protocol: EmailProtocol,
 			Type:     ParticipantFrom,
@@ -257,7 +257,7 @@ func (notif *Notifier) SendOnboardingMails(user *User) error {
 	if err == nil {
 		participants := recipients
 		participants = append(participants, Participant{ // sender
-			Address:  "noreply@caliopen.app", // TODO: use config
+			Address:  "contact@caliopen.org", // TODO: use config
 			Label:    "Laurent Chemla",
 			Protocol: EmailProtocol,
 			Type:     ParticipantFrom,
