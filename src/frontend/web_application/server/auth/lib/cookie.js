@@ -4,10 +4,12 @@ import { getConfig } from '../../config';
 export const COOKIE_NAME = 'caliopen.web';
 export const COOKIE_OPTIONS = {
   signed: true,
+  domain: undefined,
+  path: '/',
 };
 
 export const authenticate = (res, { user }) => new Promise((resolve, reject) => {
-  const { seal: { secret } } = getConfig();
+  const { seal: { secret }, hostname } = getConfig();
 
   encode(
     user,
@@ -16,7 +18,7 @@ export const authenticate = (res, { user }) => new Promise((resolve, reject) => 
       if (err || !sealed) {
         return reject('Unexpected Error');
       }
-      res.cookie(COOKIE_NAME, sealed, COOKIE_OPTIONS);
+      res.cookie(COOKIE_NAME, sealed, { ...COOKIE_OPTIONS, domain: hostname });
 
       return resolve();
     }

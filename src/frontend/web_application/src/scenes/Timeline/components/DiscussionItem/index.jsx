@@ -47,11 +47,14 @@ class DiscussionItem extends PureComponent {
   getParticipantsExceptUser = () => {
     const { discussion } = this.props;
 
-    return discussion.participants
+    const participants = discussion.participants
       .filter(participant => !(
         participant.contact_ids && participant.contact_ids
           .some(contactId => contactId === this.props.user.contact.contact_id)
       ));
+
+    return participants.length > 0 ?
+      participants : [discussion.participants[0]];
   }
 
   renderMessageSubject = (discussion) => {
@@ -75,11 +78,12 @@ class DiscussionItem extends PureComponent {
   );
 
   renderParticipants() {
+    const { discussion: { discussion_id: discussionId } } = this.props;
     const participants = this.getParticipantsExceptUser();
 
     return participants
       .map((participant, i) => (
-        <Fragment key={participant.address}>
+        <Fragment key={`${participant.address}-${participant.type}-${participant.protocol}-${discussionId}`}>
           {i > 0 && ', '}
           <ParticipantLabel participant={participant} />
         </Fragment>

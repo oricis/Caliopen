@@ -7,12 +7,10 @@ from cassandra.cqlengine import columns
 from caliopen_storage.store.model import BaseModel
 from caliopen_storage.store.mixin import IndexedModelMixin
 from caliopen_main.pi.objects import PIModel
-from caliopen_main.common.core import BaseUserCore
 
 from .attachment import MessageAttachment
-from .external_references import ExternalReferences, \
-    MessageExternalRefLookup as ModelMessageExternalRefLookup
-from .participant import Participant
+from .external_references import ExternalReferences
+from caliopen_main.participant.store.participant import Participant
 from .message_index import IndexedMessage
 
 import uuid
@@ -33,7 +31,7 @@ class Message(BaseModel, IndexedModelMixin):
     date_delete = columns.DateTime()
     date_insert = columns.DateTime()
     date_sort = columns.DateTime()
-    discussion_id = columns.UUID()
+    discussion_id = columns.Text()
     external_references = columns.UserDefinedType(ExternalReferences)
     importance_level = columns.Integer()
     is_answered = columns.Boolean()
@@ -49,6 +47,3 @@ class Message(BaseModel, IndexedModelMixin):
     tags = columns.List(columns.Text(), db_field="tagnames")
     protocol = columns.Text()
     user_identities = columns.List(columns.UUID)
-
-
-

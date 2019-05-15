@@ -15,6 +15,7 @@ from email import message_from_string, message_from_file
 from mailbox import mbox, Maildir
 
 from caliopen_storage.exception import NotFound
+from caliopen_main.common.errors import DuplicateMessage
 
 log = logging.getLogger(__name__)
 
@@ -22,7 +23,7 @@ log = logging.getLogger(__name__)
 def import_email(email, import_path, format, contact_probability,
                  **kwargs):
     """Import emails for an user."""
-    from caliopen_main.user.core import User, UserIdentity
+    from caliopen_main.user.core import User
     from caliopen_main.contact.core import Contact, ContactLookup
     from caliopen_main.message.parsers.mail import MailMessage
     from caliopen_main.contact.parameters import NewContact, NewEmail
@@ -93,13 +94,19 @@ def import_email(email, import_path, format, contact_probability,
                         e_mail.address = participant.address
                         contact_param.emails = [e_mail]
                     Contact.create(user, contact_param)
-        log.info('No contact associated to raw {} '.format(raw.raw_msg_id))
+        else:
+            log.info('No contact associated to raw {} '.format(raw.raw_msg_id))
 
         processor = UserMailDelivery(user,
-                        user.local_identities[0])  # assume one local identity
+                                     user.local_identities[
+                                         0])  # assume one local identity
         try:
             obj_message = processor.process_raw(raw.raw_msg_id)
         except Exception as exc:
-            log.exception(exc)
+            if isinstance(exc, DuplicateMessage):
+                log.info('duplicate message {}, not imported'.format(
+                    raw.raw_msg_id))
+            else:
+                log.exception(exc)
         else:
             log.info('Created message {}'.format(obj_message.message_id))

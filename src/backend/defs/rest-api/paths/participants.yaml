@@ -47,15 +47,15 @@ participants_discussion:
     - participants
     security:
     - basicAuth: []
+    consumes:
+    - application/json
     parameters:
     - name: participants
       in: body
       schema:
-        properties:
-          sources:
-            type: array
-            items:
-              "$ref": "../objects/Participant.yaml"
+        type: array
+        items:
+          "$ref": "../objects/Participant.yaml"
       required: true
     produces:
     - application/json

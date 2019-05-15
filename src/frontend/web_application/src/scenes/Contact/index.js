@@ -6,11 +6,12 @@ import {
   requestContact, createContact, deleteContact, invalidate as invalidateContacts,
 } from '../../store/modules/contact';
 import { requestUser } from '../../store/modules/user';
-import { addAddressToContact, updateContact } from '../../modules/contact';
+import { addAddressToContact, updateContact, getContact } from '../../modules/contact';
 import { updateTagCollection as updateTagCollectionBase } from '../../modules/tags';
 import { getNewContact } from '../../services/contact';
 import { userSelector } from '../../modules/user';
 import { withSearchParams } from '../../modules/routing';
+import { contactValidation } from './services/contactValidation';
 import Presenter from './presenter';
 
 const contactIdSelector = (state, ownProps) => ownProps.match.params.contactId;
@@ -68,6 +69,7 @@ const updateTagCollection = (i18n, {
 const mapDispatchToProps = dispatch => ({
   ...bindActionCreators({
     requestContact,
+    getContact,
     updateContact,
     createContact,
     deleteContact,
@@ -83,5 +85,6 @@ export default compose(
   reduxForm({
     destroyOnUnmount: false,
     enableReinitialize: true,
+    validate: contactValidation,
   })
 )(Presenter);

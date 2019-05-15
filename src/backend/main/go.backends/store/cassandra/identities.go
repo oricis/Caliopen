@@ -14,6 +14,7 @@ import (
 	"github.com/gocassa/gocassa"
 	"github.com/gocql/gocql"
 	"gopkg.in/oleiade/reflections.v1"
+	"strings"
 	"time"
 )
 
@@ -41,6 +42,7 @@ func (cb *CassandraBackend) RetrieveLocalsIdentities(userId string) (identities 
 
 func (cb *CassandraBackend) CreateUserIdentity(userIdentity *UserIdentity) CaliopenError {
 
+	userIdentity.Identifier = strings.ToLower(userIdentity.Identifier)
 	userIdentityTable := cb.IKeyspace.Table("user_identity", &UserIdentity{}, gocassa.Keys{
 		PartitionKeys: []string{"user_id", "identity_id"},
 	}).WithOptions(gocassa.Options{TableName: "user_identity"})
@@ -110,6 +112,7 @@ func (cb *CassandraBackend) RetrieveUserIdentity(userId, identityId string, with
 }
 
 func (cb *CassandraBackend) UpdateUserIdentity(userIdentity *UserIdentity, fields map[string]interface{}) (err error) {
+	userIdentity.Identifier = strings.ToLower(userIdentity.Identifier)
 	// check if identity exists before executing UPDATE because `IF EXISTS` statement not supported by scylladb as of february 2019
 	if cb.SessionQuery(`SELECT user_id FROM user_identity WHERE user_id = ? AND identity_id = ?`, userIdentity.UserId.String(), userIdentity.Id.String()).Iter().NumRows() == 0 {
 		return errors.New("not found")
@@ -122,6 +125,10 @@ func (cb *CassandraBackend) UpdateUserIdentity(userIdentity *UserIdentity, field
 		if err != nil {
 			log.WithError(err).Warn("[CassandraBackend] UpdateUserIdentity failed to update credentials")
 		}
+	}
+
+	if identifier, ok := fields["identifier"]; ok {
+		fields["identifier"] = strings.ToLower(identifier.(string))
 	}
 
 	if len(fields) > 0 {
@@ -291,6 +298,7 @@ func (cb *CassandraBackend) LookupIdentityByIdentifier(identifier string, params
 		err = errors.New("identifier is mandatory")
 		return
 	}
+	identifier = strings.ToLower(identifier)
 	var rows []map[string]interface{}
 	switch len(params) {
 	case 0:

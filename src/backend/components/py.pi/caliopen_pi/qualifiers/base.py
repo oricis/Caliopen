@@ -6,13 +6,13 @@ import logging
 
 from caliopen_storage.exception import NotFound
 from caliopen_main.contact.core import Contact
-from caliopen_main.message.parameters import Participant
+from caliopen_main.participant.parameters import Participant
+
 
 log = logging.getLogger(__name__)
 
 
 class BaseQualifier(object):
-
     _lookups = {}
 
     def __init__(self, user, identity):
@@ -59,13 +59,17 @@ class BaseQualifier(object):
     def get_participant(self, message, participant):
         """Try to find a related contact and return a Participant instance."""
         p = Participant()
-        p.address = participant.address
+        p.address = participant.address.lower()
         p.type = participant.type
         p.label = participant.label
         p.protocol = message.message_protocol
         log.debug('Will lookup contact {} for user {}'.
                   format(participant.address, self.user.user_id))
-        c = Contact.lookup(self.user, participant.address)
+        try:
+            c = Contact.lookup(self.user, participant.address)
+        except Exception as exc:
+            log.error("Contact lookup failed in get_participant for participant {} : {}".format(vars(participant), exc))
+            raise exc
         if c:
             p.contact_ids = [c.contact_id]
         else:

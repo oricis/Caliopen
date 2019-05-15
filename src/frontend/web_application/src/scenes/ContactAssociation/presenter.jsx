@@ -16,6 +16,8 @@ class ContactAssociation extends Component {
   static propTypes = {
     i18n: PropTypes.shape({}).isRequired,
     loadMoreContacts: PropTypes.func.isRequired,
+    requestContacts: PropTypes.func.isRequired,
+    didInvalidate: PropTypes.bool.isRequired,
     isFetching: PropTypes.bool,
     searchParams: PropTypes.shape({
       label: PropTypes.string,
@@ -41,6 +43,18 @@ class ContactAssociation extends Component {
   };
 
   state = {};
+
+  componentDidMount() {
+    this.props.requestContacts();
+  }
+
+  componentDidUpdate() {
+    const { didInvalidate, isFetching, requestContacts } = this.props;
+
+    if (didInvalidate && !isFetching) {
+      requestContacts();
+    }
+  }
 
   handleClickContact = ({ contact }) => {
     const {

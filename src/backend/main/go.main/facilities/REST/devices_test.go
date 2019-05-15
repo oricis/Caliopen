@@ -17,7 +17,7 @@ import (
 func initRest() *RESTfacility {
 	rest := new(RESTfacility)
 	rest.Cache, _, _ = cache.InitializeTestCache()
-	rest.store = backendstest.APIStore{}
+	rest.store = new(backendstest.APIStore)
 	return rest
 }
 

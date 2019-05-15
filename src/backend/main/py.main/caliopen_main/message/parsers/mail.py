@@ -28,6 +28,7 @@ from caliopen_main.common.interfaces import (IAttachmentParser, IMessageParser,
 
 log = logging.getLogger(__name__)
 
+TEXT_CONTENT_TYPE = ['text', 'xml', 'vnd', 'xhtml', 'json' , 'msword']
 
 class MailAttachment(object):
     """Mail part structure."""
@@ -45,9 +46,8 @@ class MailAttachment(object):
         else:
             self.is_inline = True
         data = part.get_payload()
-        self.size = len(data) if data else 0
         self.can_index = False
-        if 'text' in part.get_content_type():
+        if any(x in part.get_content_type() for x in TEXT_CONTENT_TYPE):
             self.can_index = True
             charsets = part.get_charsets()
             if len(charsets) > 1:
@@ -66,6 +66,7 @@ class MailAttachment(object):
         else:
             self.mime_boundary = ""
         self.data = data
+        self.size = len(data) if data else 0
 
     @classmethod
     def is_attachment(cls, part):
@@ -75,6 +76,7 @@ class MailAttachment(object):
         - it has a Content-Disposition header with param "attachment"
         - the main part of the Content-Type header
                                         is within "attachment_types" list below
+        - the part is not a PGP/Mime encryption envelope
 
         see https://www.iana.org/assignments/media-types/media-types.xhtml
 
@@ -127,6 +129,7 @@ class MailMessage(object):
     def __init__(self, raw_data):
         """Parse an RFC2822,5322 mail message."""
         self.raw = raw_data
+        self._extra_parameters = {}
         try:
             self.mail = Message(raw_data)
         except Exception as exc:
@@ -225,7 +228,13 @@ class MailMessage(object):
         ref_addr = getaddresses(ref) if ref else None
         ref_ids = [address[1] for address in ref_addr] if ref_addr else []
         mid = clean_email_address(ext_id)[1] if ext_id else None
+        if not mid:
+            log.error('Unable to find correct message_id {}'.format(ext_id))
+            mid = ext_id
         pid = clean_email_address(parent_id)[1] if parent_id else None
+        if not pid:
+            log.error('Unable to find correct parent_id {}'.format(parent_id))
+            pid = parent_id
         return {
             'message_id': mid,
             'parent_id': pid,
@@ -256,7 +265,7 @@ class MailMessage(object):
                 else:
                     addrs.append(self.mail.get(header))
             for addr in addrs:
-                participant = MailParticipant(participant_type, addr)
+                participant = MailParticipant(participant_type, addr.lower())
                 participants.append(participant)
         return participants
 
@@ -268,6 +277,11 @@ class MailMessage(object):
         attchs = []
         for p in walk_with_boundary(self.mail, ""):
             if not p.is_multipart():
+                if p.get_content_subtype() == 'pgp-encrypted':
+                    # Special consideration. Do not present it as an attachment
+                    # but set _extra_parameters accordingly
+                    self._extra_parameters.update({'encrypted': 'pgp'})
+                    continue
                 if MailAttachment.is_attachment(p):
                     attchs.append(MailAttachment(p))
         return attchs
@@ -279,7 +293,8 @@ class MailMessage(object):
         lists_addr = getaddresses(lists) if lists else None
         lists_ids = [address[1] for address in lists_addr] \
             if lists_addr else []
-        return {'lists': lists_ids}
+        self._extra_parameters.update({'lists': lists_ids})
+        return self._extra_parameters
 
     # Others parameters specific for mail message
 

@@ -262,6 +262,7 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *EmailDeliveryAck) error {
 	// if needed :
 	// insert new entry into discussion_lookup table
 	// with message's external reference
+	/* TODO
 	if ack.EmailMessage.Message.External_references.Parent_id == "" {
 		err = b.Store.CreateThreadLookup(ack.EmailMessage.Message.User_id,
 			ack.EmailMessage.Message.Discussion_id,
@@ -270,6 +271,8 @@ func (b *EmailBroker) SaveIndexSentEmail(ack *EmailDeliveryAck) error {
 			log.WithError(err).Warn("[Email Broker] Store.CreateThreadLookup operation failed")
 		}
 	}
+	*/
+
 	return err
 }
 
@@ -337,7 +340,7 @@ func (b *EmailBroker) unmarshalParticipants(h mail.Header, address_type string, 
 			Contact_ids: []UUID{},
 		}
 		if len(user_id) == 1 {
-			contact_ids, err := b.Store.LookupContactsByIdentifier(user_id[0].String(), a.Address)
+			contact_ids, err := b.Store.LookupContactsByIdentifier(user_id[0].String(), a.Address, "email")
 			if err == nil {
 				for _, id := range contact_ids {
 					var contact_id UUID
@@ -413,10 +416,11 @@ func EmailToJsonRep(email string) (json_email EmailJson, err error) {
 		})
 		child := mm.Root.FirstChild()
 		if child != nil {
-			json_email.MimeRoot.Parts = addChildPart(json_email.MimeRoot.Parts, child)
-			for sibling := child.NextSibling(); sibling != nil; sibling = sibling.NextSibling() {
-				json_email.MimeRoot.Parts = addChildPart(json_email.MimeRoot.Parts, sibling)
-			}
+			json_email.MimeRoot.Parts = addPart(json_email.MimeRoot.Parts, child, true)
+		}
+
+		for sibling := mm.Root.NextSibling(); sibling != nil; sibling = mm.Root.NextSibling() {
+			json_email.MimeRoot.Parts = addPart(json_email.MimeRoot.Parts, sibling, false)
 		}
 
 	}
@@ -425,8 +429,7 @@ func EmailToJsonRep(email string) (json_email EmailJson, err error) {
 
 // Build part tree recursively
 // and compute properties for each part
-func addChildPart(parent []Part, part enmime.MIMEPart) []Part {
-
+func addPart(parent []Part, part enmime.MIMEPart, isChild bool) []Part {
 	child := Part{
 		Parts: []Part{},
 	}
@@ -443,10 +446,11 @@ func addChildPart(parent []Part, part enmime.MIMEPart) []Part {
 	child.Headers = part.Header()
 
 	disposition, _, _ := mime.ParseMediaType(part.Header().Get("Content-Disposition"))
-	if strings.ToLower(disposition) == "attachment" {
+	disposition = strings.ToLower(disposition)
+	if disposition == "attachment" {
 		child.Is_attachment = true
 	}
-	if strings.ToLower(disposition) == "inline" {
+	if disposition == "inline" {
 		child.Is_attachment = true
 		child.Is_inline = true
 	}
@@ -465,12 +469,13 @@ func addChildPart(parent []Part, part enmime.MIMEPart) []Part {
 		child.Is_attachment = true
 	}
 
+	for sibling := part.NextSibling(); sibling != nil; sibling = sibling.NextSibling() {
+		child.Parts = addPart(child.Parts, sibling, false)
+	}
+
 	sub_child := part.FirstChild()
 	if sub_child != nil {
-		child.Parts = addChildPart(child.Parts, sub_child)
-		for sibling := sub_child.NextSibling(); sibling != nil; sibling = sibling.NextSibling() {
-			child.Parts = addChildPart(child.Parts, sub_child)
-		}
+		child.Parts = addPart(child.Parts, sub_child, false)
 	}
 
 	return append(parent, child)

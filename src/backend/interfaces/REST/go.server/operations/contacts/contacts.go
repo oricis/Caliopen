@@ -18,6 +18,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 // GetContactList handles GET /contacts
@@ -27,6 +28,7 @@ func GetContactsList(ctx *gin.Context) {
 
 	user_uuid_str := ctx.MustGet("user_id").(string)
 	user_uuid, _ := uuid.FromString(user_uuid_str)
+	shard_id := ctx.MustGet("shard_id").(string)
 	user_UUID.UnmarshalBinary(user_uuid.Bytes())
 
 	query_values := ctx.Request.URL.Query()
@@ -40,10 +42,11 @@ func GetContactsList(ctx *gin.Context) {
 	}
 
 	filter := IndexSearch{
-		User_id: user_UUID,
-		Terms:   map[string][]string(query_values),
-		Limit:   limit,
-		Offset:  offset,
+		User_id:  user_UUID,
+		Shard_id: shard_id,
+		Terms:    map[string][]string(query_values),
+		Limit:    limit,
+		Offset:   offset,
 	}
 
 	list, totalFound, err := caliopen.Facilities.RESTfacility.RetrieveContacts(filter)
@@ -74,14 +77,17 @@ func GetContactsList(ctx *gin.Context) {
 
 // NewContact handles POST /contacts
 func NewContact(ctx *gin.Context) {
-	user_id := ctx.MustGet("user_id").(string)
-	userID, err := operations.NormalizeUUIDstring(user_id)
+	userId, err := operations.NormalizeUUIDstring(ctx.MustGet("user_id").(string))
+
 	if err != nil {
 		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
 	}
+	shard_id := ctx.MustGet("shard_id").(string)
+	user_info := &UserInfo{User_id: userId, Shard_id: shard_id}
+
 	contact := new(Contact)
 	contact.MarshallNew()
 	err = ctx.ShouldBindJSON(contact)
@@ -91,10 +97,15 @@ func NewContact(ctx *gin.Context) {
 		ctx.Abort()
 		return
 	}
-	contact.UserId.UnmarshalBinary(uuid.FromStringOrNil(userID).Bytes())
-	err = caliopen.Facilities.RESTfacility.CreateContact(contact)
+	contact.UserId.UnmarshalBinary(uuid.FromStringOrNil(userId).Bytes())
+	err = caliopen.Facilities.RESTfacility.CreateContact(user_info, contact)
 	if err != nil {
-		e := swgErr.New(http.StatusInternalServerError, err.Error())
+		var e error
+		if strings.HasPrefix(err.Error(), "uri <") {
+			e = swgErr.New(http.StatusForbidden, err.Error())
+		} else {
+			e = swgErr.New(http.StatusInternalServerError, err.Error())
+		}
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 	} else {
@@ -173,6 +184,8 @@ func PatchContact(ctx *gin.Context) {
 			returnedErr := new(swgErr.CompositeError)
 			if Cerr.Code() == FailDependencyCaliopenErr {
 				returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusFailedDependency, "[RESTfacility] PatchContact failed"), Cerr, Cerr.Cause())
+			} else if Cerr.Code() == ForbiddenCaliopenErr {
+				returnedErr = swgErr.CompositeValidationError(swgErr.New(http.StatusForbidden, "[RESTfacility] PatchContact forbidden"), Cerr, Cerr.Cause())
 			} else {
 				returnedErr = swgErr.CompositeValidationError(Cerr, Cerr.Cause())
 			}
@@ -193,15 +206,19 @@ func PatchContact(ctx *gin.Context) {
 
 // DeleteContact handles DELETE /contacts/:contactID
 func DeleteContact(ctx *gin.Context) {
-	userID := ctx.MustGet("user_id").(string)
+	userId, err := operations.NormalizeUUIDstring(ctx.MustGet("user_id").(string))
 	contactID, err := operations.NormalizeUUIDstring(ctx.Param("contactID"))
+
 	if err != nil {
 		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 		return
 	}
-	err = caliopen.Facilities.RESTfacility.DeleteContact(userID, contactID)
+	shard_id := ctx.MustGet("shard_id").(string)
+	user_info := &UserInfo{User_id: userId, Shard_id: shard_id}
+
+	err = caliopen.Facilities.RESTfacility.DeleteContact(user_info, contactID)
 	if err != nil {
 		e := swgErr.New(http.StatusInternalServerError, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)

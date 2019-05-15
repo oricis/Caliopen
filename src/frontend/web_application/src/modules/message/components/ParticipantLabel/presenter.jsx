@@ -35,7 +35,7 @@ class ParticipantLabel extends PureComponent {
   render() {
     const { className, contact } = this.props;
 
-    if (contact) {
+    if (contact && contact.given_name) {
       return (
         <Layout className={className} title={this.renderParticipantLabel()}>
           {contact.given_name}

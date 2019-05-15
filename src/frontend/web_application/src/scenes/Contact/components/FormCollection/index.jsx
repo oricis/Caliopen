@@ -13,15 +13,21 @@ class FormCollection extends PureComponent {
     component: PropTypes.element.isRequired,
     showAdd: PropTypes.bool,
     addButtonLabel: PropTypes.node,
+    validate: PropTypes.func,
+    defaultValues: PropTypes.shape({}),
   };
 
   static defaultProps = {
     showAdd: true,
     addButtonLabel: undefined,
+    validate: undefined,
+    defaultValues: {},
   };
 
   renderForms = ({ fields }) => {
-    const { component, showAdd, addButtonLabel } = this.props;
+    const {
+      component, showAdd, addButtonLabel, defaultValues,
+    } = this.props;
     const addLabel = addButtonLabel || (
       <Trans id="contact.action.add_new_field">Add new</Trans>
     );
@@ -40,7 +46,7 @@ class FormCollection extends PureComponent {
             <FormGrid>
               <FormRow>
                 <FormColumn>
-                  <Button icon="plus" shape="plain" onClick={() => fields.push({ })}>
+                  <Button icon="plus" shape="plain" onClick={() => fields.push({ ...defaultValues })}>
                     {addLabel}
                   </Button>
                 </FormColumn>
@@ -53,10 +59,10 @@ class FormCollection extends PureComponent {
   };
 
   render() {
-    const { propertyName } = this.props;
+    const { propertyName, validate } = this.props;
 
     return (
-      <FieldArray name={propertyName} component={this.renderForms} />
+      <FieldArray name={propertyName} component={this.renderForms} validate={validate} />
     );
   }
 }

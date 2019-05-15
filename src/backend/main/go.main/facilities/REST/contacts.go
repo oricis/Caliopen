@@ -22,7 +22,7 @@ import (
 )
 
 // CreateContact validates Contact before saving it to cassandra and ES
-func (rest *RESTfacility) CreateContact(contact *Contact) (err error) {
+func (rest *RESTfacility) CreateContact(user *UserInfo, contact *Contact) (err error) {
 	// add missing properties
 	contact.ContactId.UnmarshalBinary(uuid.NewV4().Bytes())
 	contact.DateInsert = time.Now()
@@ -34,34 +34,14 @@ func (rest *RESTfacility) CreateContact(contact *Contact) (err error) {
 	MarshalNested(contact)
 	MarshalRelated(contact)
 
-	// concurrent creation in db & index
-	wg := new(sync.WaitGroup)
-	wg.Add(2)
-	errGroup := new([]string)
-	mx := new(sync.Mutex)
-	go func(wg *sync.WaitGroup, errGroup *[]string, mx *sync.Mutex) {
-		err = rest.store.CreateContact(contact)
-		if err != nil {
-			mx.Lock()
-			*errGroup = append(*errGroup, err.Error())
-			mx.Unlock()
-		}
-		wg.Done()
-	}(wg, errGroup, mx)
+	err = rest.store.CreateContact(contact)
+	if err != nil {
+		return err
+	}
 
-	go func(wg *sync.WaitGroup, errGroup *[]string, mx *sync.Mutex) {
-		err = rest.index.CreateContact(contact)
-		if err != nil {
-			mx.Lock()
-			*errGroup = append(*errGroup, err.Error())
-			mx.Unlock()
-		}
-		wg.Done()
-	}(wg, errGroup, mx)
-
-	wg.Wait()
-	if len(*errGroup) > 0 {
-		return fmt.Errorf("%s", strings.Join(*errGroup, " / "))
+	err = rest.index.CreateContact(user, contact)
+	if err != nil {
+		return err
 	}
 
 	// notify external components
@@ -137,7 +117,8 @@ func (rest *RESTfacility) PatchContact(user *UserInfo, patch []byte, contactID s
 	var modifiedFields map[string]interface{}
 	newContact, modifiedFields, err := helpers.UpdateWithPatch(patch, current_contact, UserActor)
 	if err != nil {
-		log.WithError(err).Warn("[discoverKey] failed to publish discover key message")
+		log.WithError(err).Warn("[RESTfacility] PatchContact failed")
+		return WrapCaliopenErr(err, FailDependencyCaliopenErr, "[RESTfacility] PatchContact failed")
 	}
 
 	needNewTitle := false
@@ -148,7 +129,7 @@ func (rest *RESTfacility) PatchContact(user *UserInfo, patch []byte, contactID s
 		// check if title has to be re-computed
 		case "AdditionalName", "FamilyName", "GivenName", "NamePrefix", "NameSuffix":
 			needNewTitle = true
-		// Check if we can try to discover a public key
+			// Check if we can try to discover a public key
 		case "Emails", "Identities":
 			discoverKey = true
 		}
@@ -161,7 +142,11 @@ func (rest *RESTfacility) PatchContact(user *UserInfo, patch []byte, contactID s
 	// save updated resource
 	err = rest.UpdateContact(user, newContact.(*Contact), current_contact, modifiedFields)
 	if err != nil {
-		return WrapCaliopenErrf(err, FailDependencyCaliopenErr, "[RESTfacility] PatchContact failed with UpdateContact error : %s", err)
+		if strings.HasPrefix(err.Error(), "uri <") {
+			return WrapCaliopenErrf(err, ForbiddenCaliopenErr, "[RESTfacility] PatchContact forbidden : %s", err)
+		} else {
+			return WrapCaliopenErrf(err, FailDependencyCaliopenErr, "[RESTfacility] PatchContact failed with UpdateContact error : %s", err)
+		}
 	}
 	if discoverKey {
 		err = rest.launchKeyDiscovery(current_contact, modifiedFields)
@@ -222,12 +207,12 @@ func (rest *RESTfacility) UpdateContact(user *UserInfo, contact, oldContact *Con
 // DeleteContact deletes a contact in store & index, only if :
 // - contact belongs to user ;-)
 // - contact is not the user's contact card
-func (rest *RESTfacility) DeleteContact(userID, contactID string) error {
-	user, err := rest.store.RetrieveUser(userID)
+func (rest *RESTfacility) DeleteContact(info *UserInfo, contactID string) error {
+	user, err := rest.store.RetrieveUser(info.User_id)
 	if err != nil {
 		return err
 	}
-	contact, err := rest.store.RetrieveContact(userID, contactID)
+	contact, err := rest.store.RetrieveContact(info.User_id, contactID)
 	if err != nil {
 		return err
 	}
@@ -252,7 +237,7 @@ func (rest *RESTfacility) DeleteContact(userID, contactID string) error {
 	}(wg, errGroup, mx)
 
 	go func(wg *sync.WaitGroup, errGroup *[]string, mx *sync.Mutex) {
-		err = rest.index.DeleteContact(contact)
+		err = rest.index.DeleteContact(info, contact)
 		if err != nil {
 			mx.Lock()
 			*errGroup = append(*errGroup, err.Error())
@@ -281,6 +266,13 @@ func addIdentityToContact(storeContact backends.ContactStorage, indexContact bac
 	newContact := *contact
 	switch identity.Protocol {
 	case EmailProtocol, ImapProtocol, SmtpProtocol:
+		// prevent duplicate
+		for _, email := range contact.Emails {
+			if email.Address == identity.Identifier {
+				log.Infof("[addIdentityToContact] email %s already exists for user %s, aborting", identity.Identifier, identity.UserId)
+				return contact, nil
+			}
+		}
 		ec := new(EmailContact)
 		ec.MarshallNew()
 		ec.Address = identity.Identifier
@@ -298,6 +290,13 @@ func addIdentityToContact(storeContact backends.ContactStorage, indexContact bac
 		}
 		updatedFields["Emails"] = newContact.Emails
 	case TwitterProtocol:
+		// prevent duplicate
+		for _, socialId := range contact.Identities {
+			if socialId.Type == TwitterProtocol && socialId.Name == identity.Identifier {
+				log.Infof("[addIdentityToContact] social identity %s already exists for user %s, aborting", identity.Identifier, identity.UserId)
+				return contact, nil
+			}
+		}
 		si := new(SocialIdentity)
 		si.MarshallNew()
 		si.Type = TwitterProtocol

@@ -1,3 +1,4 @@
+import { IDENTITY_TYPE_TWITTER } from '../../../modules/contact';
 import { getIdentityProtocol } from './getIdentityProtocol';
 
 const getParticipantsContactsExceptUser = ({ contacts, participants, user }) => participants
@@ -13,9 +14,14 @@ const getParticipantsContactsExceptUser = ({ contacts, participants, user }) => 
       return acc;
     }
 
+    const participantContacts = contactIds
+      .map(contactId => contacts.find(ct => ct.contact_id === contactId))
+      // filter deleted contact that still present in recipients
+      .filter(ct => !!ct);
+
     return [
       ...acc,
-      ...contactIds.map(contactId => contacts.find(contact => contact.contact_id === contactId)),
+      ...participantContacts,
     ];
   }, []);
 
@@ -25,7 +31,10 @@ const getAvailableProtocolsForTheContact = ({ contact }) => {
     protocols.push('email');
   }
 
-  if (contact.identities && contact.identities.filter(identity => identity.type === 'twitter').length >= 1) {
+  if (
+    contact.identities &&
+    contact.identities.filter(identity => identity.type === IDENTITY_TYPE_TWITTER).length >= 1
+  ) {
     protocols.push('twitter');
   }
 

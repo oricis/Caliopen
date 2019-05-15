@@ -55,8 +55,8 @@ func TestRESTfacility_addIdentityToContact(t *testing.T) {
 	if newContact == nil {
 		t.Error("expected add twitter identity returned a reference to a new Contact, got nil")
 	}
-	if len(newContact.Identities) != 1 {
-		t.Errorf("expected newContact.Identities with 1 element, got %d", len(newContact.Identities))
+	if len(newContact.Identities) != 2 {
+		t.Errorf("expected newContact.Identities with 2 element, got %d", len(newContact.Identities))
 	} else {
 		contactTwitter := SocialIdentity{
 			Type: TwitterProtocol,
@@ -66,7 +66,7 @@ func TestRESTfacility_addIdentityToContact(t *testing.T) {
 				"screen_name": remoteTw.Identifier,
 			},
 		}
-		newContactTw := newContact.Identities[0]
+		newContactTw := newContact.Identities[1]
 		if newContactTw.Type != contactTwitter.Type {
 			t.Errorf("expected newContact.Identity.Type set to %s, got %s", contactTwitter.Type, newContactTw.Type)
 		}

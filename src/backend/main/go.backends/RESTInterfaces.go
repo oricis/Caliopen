@@ -17,6 +17,7 @@ type APIStorage interface {
 	IdentityStorage
 	KeysStorage
 	MessageStorage
+	UrisStorage
 	TagsStorage
 	UserNameStorage
 	UserStorage
@@ -25,6 +26,7 @@ type APIStorage interface {
 type APIIndex interface {
 	MessageIndex
 	ContactIndex
+	DiscussionIndex
 	RecipientsSuggest(user *UserInfo, query_string string) (suggests []RecipientSuggestion, err error)
 	Search(search IndexSearch) (result *IndexResult, err error)
 }

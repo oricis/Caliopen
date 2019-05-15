@@ -1,0 +1,47 @@
+@import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+$l-error-boundary__brand-height: 42px !default;
+$l-error-boundary__header-space: (
+  top: 86px,
+  bottom: 36px,
+);
+
+.l-error-boundary {
+  min-height: 100vh;
+  border-top: 8px solid $co-color__primary;
+
+  &__content {
+    max-width: 45rem;
+    margin: auto;
+  }
+
+  &__header {
+    padding-top: map-get($l-error-boundary__header-space, top);
+    padding-bottom: map-get($l-error-boundary__header-space, bottom);
+    text-align: center;
+  }
+
+  &__brand {
+    height: $l-error-boundary__brand-height;
+  }
+
+  &__body {
+    margin: 0 $co-margin * 2;
+  }
+
+  &__description {
+    margin-bottom: $co-margin;
+  }
+
+  &__error-details {
+    margin-top: $co-margin;
+    margin-bottom: $co-margin;
+  }
+
+  &__footer {
+    padding: $co-margin 0;
+    font-size: $co-font__size--small;
+    text-align: center;
+  }
+}

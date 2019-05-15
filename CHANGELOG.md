@@ -6,11 +6,39 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Validation of twitter username in contact edition
+- Address (and protocol) selection in a 1-to-1 discussion
+- Activate links in plain text messages.
+- Handle client crashes and provide a link to report an issue on https://feedback.caliopen.org
+
+### Changed
+
+- Disable draft form in case there is no selected identity
+- Facebook username is no more available in contact edition
+- In a draft, switch identity will change the protocol of all recipients as well
+- Disable contact import
+- Do not display private key details, allow "download" instead.
+- Providers buttons are available according to backend configuration (api: `/api/v2/providers`)
+
+### Fixed
+
+- Simple detection of PGP inline message
+- Apiv2 create and delete contacts does not use user.shard_id
+- Better logging for apiv2 and mq-worker
+- Do not fail if ContactLookup raise a NotFound
+- Twitter nick not displayed on contact book
+- Select Twitter identity according to parent message on a new draft
+- Show at least 1 participant per discussion on timeline
+- Send a quick draft by pressing «Enter» and display a spinner
+
 ## [0.18.2] 2019-04-26
 
 ### Fixed
 
 - signup does not authenticate and crash
+- hardcoded references to "alpha.caliopen.org" in client
 
 ## [0.18.1] 2019-04-26
 

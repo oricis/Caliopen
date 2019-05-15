@@ -13,7 +13,5 @@ def includeme(config):
 
     config.commit()
 
-    log.debug('Loading discussion API')
-    config.scan('caliopen_api.discussion.discussion')
     log.debug('Loading participants discussion API')
     config.scan('caliopen_api.discussion.participants')

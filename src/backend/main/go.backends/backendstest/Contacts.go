@@ -13,6 +13,12 @@ type ContactsBackend struct {
 	contacts map[string]*Contact
 }
 
+func GetContactBackend() ContactsBackend {
+	return ContactsBackend{
+		contacts: Contacts,
+	}
+}
+
 func (cb ContactsBackend) CreateContact(contact *Contact) error {
 	return errors.New("CreateContact test interface not implemented")
 }
@@ -33,11 +39,19 @@ func (cb ContactsBackend) ContactExists(userId, contactId string) bool {
 	return false
 }
 
+func (cb ContactsBackend) LookupContactsByIdentifier(user_id, address, kind string) ([]string, error) {
+	if contact_id, ok := ContactLookup[kind+":"+address]; ok {
+		return []string{contact_id}, nil
+	} else {
+		return nil, errors.New("not found")
+	}
+}
+
 // ContactIndex interface
 type ContactsIndex struct {
 }
 
-func (ci ContactsIndex) CreateContact(contact *Contact) error {
+func (ci ContactsIndex) CreateContact(user *UserInfo, contact *Contact) error {
 	return errors.New("CreateContact test interface not implemented")
 }
 
@@ -50,6 +64,6 @@ func (ci ContactsIndex) FilterContacts(search IndexSearch) (contacts []*Contact,
 	return nil, 0, errors.New("FilterContact test interface not implemented")
 }
 
-func (ci ContactsIndex) DeleteContact(contact *Contact) error {
+func (ci ContactsIndex) DeleteContact(user *UserInfo, contact *Contact) error {
 	return errors.New("DeleteContact test interface not implemented")
 }

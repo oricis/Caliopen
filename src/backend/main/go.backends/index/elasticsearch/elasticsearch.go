@@ -5,6 +5,7 @@
 package index
 
 import (
+	"encoding/json"
 	log "github.com/Sirupsen/logrus"
 	elastic "gopkg.in/olivere/elastic.v5"
 )
@@ -16,6 +17,24 @@ type (
 	}
 	ElasticSearchConfig struct {
 		Urls []string `mapstructure:"elastic_urls"`
+	}
+
+	Bucket struct {
+		DocCount        int             `json:"doc_count"`
+		Key             interface{}     `json:"key"`
+		SubBucket       json.RawMessage `json:"sub_bucket"`
+		UnreadCount     DocCounter      `json:"unread_count"`
+		ImportanceLevel json.RawMessage `json:"importance_level"`
+	}
+
+	Aggregation struct {
+		Buckets                 []Bucket `json:"buckets"`
+		DocCountErrorUpperBound int      `json:"doc_count_error_upper_bound"`
+		SumOtherDocCount        int      `json:"sum_other_doc_count"`
+	}
+
+	DocCounter struct {
+		DocCount int `json:"doc_count"`
 	}
 )
 

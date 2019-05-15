@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import sha1 from 'uuid/lib/sha1-browser';
 import bytesToUuid from 'uuid/lib/bytesToUuid';
+import isEqual from 'lodash.isequal';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -110,10 +111,9 @@ export const withDraftDiscussion = () => (C) => {
 
     componentDidUpdate(prevProps) {
       if (
-        this.props.draftMessage && (
-          !prevProps.draftMessage ||
-          prevProps.draftMessage.participants !== this.props.draftMessage.participants
-        )
+        this.props.draftMessage && (!prevProps.draftMessage || !isEqual(
+          prevProps.draftMessage.participants, this.props.draftMessage.participants
+        ))
       ) {
         this.fetchDiscussion();
       }

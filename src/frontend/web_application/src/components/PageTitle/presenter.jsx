@@ -10,17 +10,21 @@ class PageTitle extends PureComponent {
     // FIXME always undefined
     currentTab: PropTypes.shape({}),
     title: PropTypes.string,
+    hostname: PropTypes.string,
   };
 
   static defaultProps = {
     title: '',
+    hostname: 'unknown',
     currentTab: undefined,
     user: undefined,
   };
 
   render() {
-    const { user, title, currentTab } = this.props;
-    const userName = user ? `${user.name}@alpha.caliopen.org - ` : '';
+    const {
+      user, title, currentTab, hostname,
+    } = this.props;
+    const userName = user ? `${user.name}@${hostname} - ` : '';
     const currentTabLabel = currentTab ? `${currentTab.routeConfig.tab.renderLabel()} - ` : '';
     const pageTitle = title ? `${title} - ` : currentTabLabel;
     const documentTitle = `${pageTitle}${userName}${DEFAULT_DOCUMENT_TITLE}`;

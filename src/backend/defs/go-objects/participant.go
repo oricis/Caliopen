@@ -5,22 +5,42 @@
 package objects
 
 import (
+	"bytes"
+	"crypto/sha256"
+	"fmt"
+	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
+	"sort"
+	"strings"
+	"time"
 )
 
-type Participant struct {
-	Address     string `cql:"address"          json:"address,omitempty"`
-	Contact_ids []UUID `cql:"contact_ids"      json:"contact_ids,omitempty"             formatter:"rfc4122"`
-	Label       string `cql:"label"            json:"label,omitempty"`
-	Protocol    string `cql:"protocol"         json:"protocol,omitempty"`
-	Type        string `cql:"type"             json:"type,omitempty"`
-}
+type (
+	Participant struct {
+		Address     string `cql:"address"          json:"address,omitempty"`
+		Contact_ids []UUID `cql:"contact_ids"      json:"contact_ids,omitempty"             formatter:"rfc4122"`
+		Label       string `cql:"label"            json:"label,omitempty"`
+		Protocol    string `cql:"protocol"         json:"protocol,omitempty"`
+		Type        string `cql:"type"             json:"type,omitempty"`
+	}
 
-/*
-func (rcpt *Participant) MarshalJSON() ([]byte, error) {
-	return customJSONMarshaler(rcpt, "json")
-}
-*/
+	HashLookup struct {
+		UserId         UUID      `cql:"user_id"` // primary key
+		Uri            string    `cql:"uri"`     // primary key
+		Hash           string    `cql:"hash"`    // primary key
+		DateInsert     time.Time `cql:"date_insert"`
+		HashComponents []string  `cql:"hash_components"`
+	}
+
+	ParticipantHash struct {
+		UserId     UUID      `cql:"user_id"` // primary key
+		Kind       string    `cql:"kind"`    // primary key
+		Key        string    `cql:"key"`     // primary key
+		Value      string    `cql:"value"`   // primary key
+		Components []string  `cql:"components"`
+		DateInsert time.Time `cql:"date_insert"`
+	}
+)
 
 func (p *Participant) UnmarshalMap(input map[string]interface{}) error {
 	if address, ok := input["address"].(string); ok {
@@ -49,9 +69,62 @@ func (p *Participant) UnmarshalMap(input map[string]interface{}) error {
 	return nil //TODO: errors handling
 }
 
+func (pl *HashLookup) UnmarshalCQLMap(input map[string]interface{}) error {
+	if user_id, ok := input["user_id"].(gocql.UUID); ok {
+		pl.UserId.UnmarshalBinary(user_id.Bytes())
+	}
+	if uri, ok := input["uri"].(string); ok {
+		pl.Uri = uri
+	}
+	if hash, ok := input["hash"].(string); ok {
+		pl.Hash = hash
+	}
+	if dateInsert, ok := input["date_insert"].(time.Time); ok {
+		pl.DateInsert = dateInsert
+	}
+	if components, ok := input["hash_components"].([]string); ok {
+		pl.HashComponents = components
+	}
+	return nil
+}
+
 // part of CaliopenObject interface
 func (p *Participant) MarshallNew(...interface{}) {
 	// nothing to enforce
+}
+
+func (pl *HashLookup) MarshallNew(args ...interface{}) {
+	if len(pl.UserId) == 0 || (bytes.Equal(pl.UserId.Bytes(), EmptyUUID.Bytes())) {
+		if len(args) == 1 {
+			switch args[0].(type) {
+			case UUID:
+				pl.UserId = args[0].(UUID)
+			}
+		}
+	}
+	pl.HashComponents = []string{}
+}
+
+func (hl *ParticipantHash) UnmarshalCQLMap(input map[string]interface{}) error {
+	if user_id, ok := input["user_id"].(gocql.UUID); ok {
+		hl.UserId.UnmarshalBinary(user_id.Bytes())
+	}
+	if kind, ok := input["kind"].(string); ok {
+		hl.Kind = kind
+	}
+	if key, ok := input["key"].(string); ok {
+		hl.Key = key
+	}
+	if value, ok := input["value"].(string); ok {
+		hl.Value = value
+	}
+	if components, ok := input["components"].([]string); ok {
+		hl.Components = components
+	}
+	if dateInsert, ok := input["date_insert"].(time.Time); ok {
+		hl.DateInsert = dateInsert
+	}
+	return nil
 }
 
 // Sort interface implementation
@@ -67,4 +140,71 @@ func (p ByAddress) Less(i, j int) bool {
 
 func (p ByAddress) Swap(i, j int) {
 	p[i], p[j] = p[j], p[i]
+}
+
+// HashFromParticipatnsUris creates a hash from a collection of Participant
+func HashFromParticipantsUris(participants []Participant) (hash string, components []string, err error) {
+	urisMap := map[string]struct{}{}
+	for _, participant := range participants {
+		uri := participant.Protocol + ":" + strings.ToLower(participant.Address)
+		urisMap[uri] = struct{}{}
+	}
+	components = []string{}
+	for k, _ := range urisMap {
+		components = append(components, k)
+	}
+	hash = HashComponents(components)
+	return
+}
+
+// ComputeNewParticipantHash computes a new participants_hash and update participants components
+// based on new uri->participant relation provided in params
+// if associate == true, uri will be replaced by contactId
+// else, uri must be dissociated from contactId
+func ComputeNewParticipantHash(uri, contactId string, current ParticipantHash, urisComponents []string, associate bool) (new ParticipantHash, err error) {
+	new.UserId = current.UserId
+	new.Kind = "participants"
+	participantsMap := map[string]struct{}{}
+	if associate {
+		// replace uri by contactId
+		for _, component := range current.Components {
+			if component == uri {
+				participantsMap["contact:"+contactId] = struct{}{}
+			} else {
+				participantsMap[component] = struct{}{}
+			}
+		}
+	} else {
+		// re-add uri to participantsMap
+		for _, component := range current.Components {
+			if component == "contact:"+contactId {
+				// add uri to components
+				participantsMap[uri] = struct{}{}
+			} else {
+				participantsMap[component] = struct{}{}
+			}
+		}
+		// if contactId is linked to another uri, it must be kept in participants
+		for _, uriComponent := range urisComponents {
+			if _, ok := participantsMap[uriComponent]; !ok && uriComponent != uri {
+				participantsMap["contact:"+contactId] = struct{}{}
+			}
+		}
+	}
+	// compute new hash
+	components := []string{}
+	for k, _ := range participantsMap {
+		components = append(components, k)
+	}
+	// embed new components slice
+	new.Key = HashComponents(components)
+	new.Components = components
+	new.Value = current.Value
+	return
+}
+
+func HashComponents(c []string) string {
+	sort.Strings(c)
+	sum := sha256.Sum256([]byte(strings.Join(c, "")))
+	return fmt.Sprintf("%x", sum)
 }

@@ -111,7 +111,7 @@ func (notif *Notifier) SendEmailAdminToUser(user *User, participants []Participa
 	(*email).Date = now
 	(*email).Date_insert = now
 	(*email).Message_id.UnmarshalBinary(uuid.NewV4().Bytes())
-	(*email).Discussion_id.UnmarshalBinary(uuid.NewV4().Bytes())
+	//TODO : (*email).Discussion_id.UnmarshalBinary(uuid.NewV4().Bytes())
 	(*email).Is_draft = true
 	(*email).Participants = participants
 	(*email).Protocol = EmailProtocol
@@ -239,7 +239,7 @@ func (notif *Notifier) SendOnboardingMails(user *User) error {
 	if err == nil {
 		participants := recipients
 		participants = append(participants, Participant{ // sender
-			Address:  "contact@alpha.caliopen.org", // TODO: use config
+			Address:  "contact@caliopen.org", // TODO: use config
 			Label:    "Caliopen",
 			Protocol: EmailProtocol,
 			Type:     ParticipantFrom,
@@ -257,7 +257,7 @@ func (notif *Notifier) SendOnboardingMails(user *User) error {
 	if err == nil {
 		participants := recipients
 		participants = append(participants, Participant{ // sender
-			Address:  "noreply@alpha.caliopen.org", // TODO: use config
+			Address:  "contact@caliopen.org", // TODO: use config
 			Label:    "Laurent Chemla",
 			Protocol: EmailProtocol,
 			Type:     ParticipantFrom,

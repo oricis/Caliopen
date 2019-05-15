@@ -6,25 +6,13 @@ from cassandra.cqlengine import columns
 from caliopen_storage.store.model import BaseModel
 
 
-class Discussion(BaseModel):
-
-    """Discussion to group messages model."""
-
-    # XXX threading simplest model, most data are only in index
-    user_id = columns.UUID(primary_key=True)
-    discussion_id = columns.UUID(primary_key=True)
-    date_insert = columns.DateTime()
-    # privacy_index = columns.Integer()
-    importance_level = columns.Integer()
-    excerpt = columns.Text()
-
-
+# TODO : make user of ParticipantLookup table
 class DiscussionListLookup(BaseModel):
     """Lookup discussion by external list-id."""
 
     user_id = columns.UUID(primary_key=True)
     list_id = columns.Text(primary_key=True)
-    discussion_id = columns.UUID()
+    discussion_id = columns.UUID()  # TODO : primary ?
 
 
 class DiscussionThreadLookup(BaseModel):
@@ -35,9 +23,8 @@ class DiscussionThreadLookup(BaseModel):
     discussion_id = columns.UUID()
 
 
-class DiscussionGlobalLookup(BaseModel):
-    """Lookup discussion for many participants."""
-
+class DiscussionLookup(BaseModel):
     user_id = columns.UUID(primary_key=True)
-    hashed = columns.Text(primary_key=True)
-    discussion_id = columns.UUID()
+    key = columns.Text(primary_key=True)
+    value = columns.Text(primary_key=True)
+    date_insert = columns.DateTime()

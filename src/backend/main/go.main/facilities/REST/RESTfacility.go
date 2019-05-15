@@ -25,13 +25,13 @@ type (
 		SuggestRecipients(user *UserInfo, query_string string) (suggests []RecipientSuggestion, err error)
 		GetSettings(user_id string) (settings *Settings, err error)
 		//contacts
-		CreateContact(contact *Contact) error
+		CreateContact(user *UserInfo, contact *Contact) error
 		RetrieveContacts(filter IndexSearch) (contacts []*Contact, totalFound int64, err error)
 		RetrieveContact(userID, contactID string) (*Contact, error)
 		RetrieveUserContact(userID string) (*Contact, error)
 		UpdateContact(user *UserInfo, contact, oldContact *Contact, update map[string]interface{}) error
 		PatchContact(user *UserInfo, patch []byte, contactID string) error
-		DeleteContact(userID, contactID string) error
+		DeleteContact(user *UserInfo, contactID string) error
 		ContactExists(userID, contactID string) bool
 		//identities
 		RetrieveContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error)
@@ -48,6 +48,9 @@ type (
 		GetProviderOauthFor(userID, provider string) (Provider, CaliopenError)
 		CreateTwitterIdentity(requestToken, verifier string) (remoteId string, err CaliopenError)
 		CreateGmailIdentity(state, code string) (remoteId string, err CaliopenError)
+		//discussions
+		GetDiscussionsList(user *UserInfo, ILrange, PIrange [2]int8, limit, offset int) ([]Discussion, int, error)
+		DiscussionMetadata(user *UserInfo, discussionId string) (Discussion, error)
 		//messages
 		GetMessagesList(filter IndexSearch) (messages []*Message, totalFound int64, err error)
 		GetMessagesRange(filter IndexSearch) (messages []*Message, totalFound int64, err error)

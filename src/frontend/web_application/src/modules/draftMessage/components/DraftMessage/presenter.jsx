@@ -16,6 +16,7 @@ import { STATUS_DECRYPTED, STATUS_ERROR } from '../../../../store/modules/encryp
 import RecipientList from '../RecipientList';
 import AttachmentManager from '../AttachmentManager';
 import IdentitySelector from '../IdentitySelector';
+import RecipientSelector from '../RecipientSelector';
 import { getIdentityProtocol } from '../../services/getIdentityProtocol';
 
 import './draft-message-quick.scss';
@@ -129,7 +130,7 @@ class DraftMessage extends Component {
       ...props.draftMessage,
       body: state.draftMessage.body,
       subject: state.draftMessage.subject,
-      user_identities: [currIdentity.identity_id],
+      user_identities: currIdentity && [currIdentity.identity_id],
       participants: [
         identityToParticipant({ identity: currIdentity, user }),
         ...recipients,
@@ -201,8 +202,8 @@ class DraftMessage extends Component {
     return i18n._('draft-message.form.placeholder.quick-start', null, { defaults: 'Start a new discussion' });
   }
 
-  getIdentity = () => this.props.availableIdentities
-    .find(ident => ident.identity_id === this.state.draftMessage.identityId);
+  getIdentity = ({ identityId }) => this.props.availableIdentities
+    .find(ident => ident.identity_id === identityId);
 
   getCanSend = () => {
     const { isReply } = this.props;
@@ -226,11 +227,11 @@ class DraftMessage extends Component {
 
   validate = () => {
     const currentDraft = this.state.draftMessage;
-    const identity = this.getIdentity();
+    const identity = this.getIdentity({ identityId: this.state.draftMessage.identityId });
 
     if (!identity) {
       return [
-        (<Trans id="draft-message.errors.missing-identity">An identity is mandatory to send a message</Trans>),
+        (<Trans id="draft-message.errors.missing-identity">An identity is mandatory to create a draft</Trans>),
       ];
     }
 
@@ -303,7 +304,8 @@ class DraftMessage extends Component {
   //   }
   // }
 
-  handleSend = async () => {
+  handleSend = async (ev) => {
+    ev.preventDefault();
     const {
       onSendDraft, internalId, original, notifyError, i18n, onSent, requestDraft, hasDiscussion,
     } = this.props;
@@ -386,13 +388,31 @@ class DraftMessage extends Component {
     });
   }
 
-  handleIdentityChange = ({ identity = {} }) => {
-    this.setState(prevState => ({
-      draftMessage: {
-        ...prevState.draftMessage,
-        identityId: identity.identity_id,
-      },
-    }), () => {
+  forceParticipantsProtocol = ({ protocol, participants }) => participants.map(participant => ({
+    ...participant,
+    protocol,
+  }));
+
+  handleIdentityChange = async ({ identity = {} }) => {
+    this.setState((prevState) => {
+      const { isReply } = this.props;
+      const prevIdentity = this.getIdentity({ identityId: prevState.draftMessage.identityId });
+      let recipients;
+
+      if (!isReply && prevIdentity && prevIdentity.protocol !== identity.protocol) {
+        recipients = this.forceParticipantsProtocol({
+          protocol: identity.protocol, participants: prevState.draftMessage.recipients,
+        });
+      }
+
+      return {
+        draftMessage: {
+          ...prevState.draftMessage,
+          ...(recipients ? { recipients } : {}),
+          identityId: identity.identity_id,
+        },
+      };
+    }, () => {
       const { internalId, original, onEditDraft } = this.props;
 
       return onEditDraft({
@@ -420,6 +440,19 @@ class DraftMessage extends Component {
         message: original,
       });
     });
+  }
+
+  handleChangeOne2OneRecipient = (ev) => {
+    // XXX: eventually select the identity that match the new protocol
+    const participant = ev.target.value;
+    this.setState(prevState => ({
+      draftMessage: {
+        ...prevState.draftMessage,
+        recipients: [
+          participant,
+        ],
+      },
+    }));
   }
 
   renderPlaceholder() {
@@ -458,11 +491,11 @@ class DraftMessage extends Component {
   }
 
   renderRecipientList({ className } = {}) {
-    const { canEditRecipients } = this.props;
+    const { canEditRecipients, isReply } = this.props;
 
     if (canEditRecipients) {
       const { internalId } = this.props;
-      const identity = this.getIdentity();
+      const identity = this.getIdentity({ identityId: this.state.draftMessage.identityId });
 
       return (
         <RecipientList
@@ -471,6 +504,24 @@ class DraftMessage extends Component {
           recipients={this.state.draftMessage.recipients}
           onRecipientsChange={this.handleRecipientsChange}
           identity={identity}
+        />
+      );
+    }
+
+    // /!\ the associated contact might be deleted
+    const isOne2One = isReply &&
+      this.state.draftMessage.recipients.length === 1 &&
+      this.state.draftMessage.recipients[0].contact_ids &&
+      this.state.draftMessage.recipients[0].contact_ids.length > 0;
+    const [recipient] = (isOne2One && this.state.draftMessage.recipients) || [];
+
+    if (isOne2One) {
+      return (
+        <RecipientSelector
+          className={className}
+          contactId={recipient.contact_ids[0]}
+          current={recipient}
+          onChange={this.handleChangeOne2OneRecipient}
         />
       );
     }
@@ -494,54 +545,56 @@ class DraftMessage extends Component {
 
     return (
       <div className={classnames(className, 'm-draft-message-quick')} ref={ref}>
-        <div className={classnames(className, 'm-draft-message-quick__container')}>
-          <div className="m-draft-message-quick__toggle-advanced">
-            {this.renderToggleAdvancedButton()}
-          </div>
-          {
-            this.state.isLocked ?
-              <LockedMessage encryptionStatus={draftEncryption} />
-              : (
-                <InputText
-                  className={classnames(
-                    'm-draft-message-quick__input',
-                    { 'm-draft-message-quick__input--encrypted': encryptionEnabled }
-                  )}
-                  onChange={this.handleChange}
-                  onFocus={onFocus}
-                  name="body"
-                  value={this.state.draftMessage.body}
-                  placeholder={this.getQuickInputPlaceholder()}
-                />
-              )}
-          <div className={classnames(
-            'm-draft-message-quick__send',
+        <form onSubmit={this.handleSend}>
+          <div className={classnames(className, 'm-draft-message-quick__container')}>
+            <div className="m-draft-message-quick__toggle-advanced">
+              {this.renderToggleAdvancedButton()}
+            </div>
             {
-              'm-draft-message-quick__send--encrypted': encryptionEnabled,
-              'm-draft-message-quick__send--unencrypted': !encryptionEnabled,
-            }
-          )}
-          >
-            <Button
-              display="expanded"
-              shape="plain"
-              icon="paper-plane"
-              title={i18n._('draft-message.action.send', null, { defaults: 'Send' })}
-              className={classnames(
-                'm-draft-message-quick__send-button',
-                {
-                  'm-draft-message-quick__send-button--encrypted': encryptionEnabled,
-                  'm-draft-message-quick__send-button--unencrypted': !encryptionEnabled,
-                }
-              )}
-              onClick={this.handleSend}
-              disabled={!canSend}
-            />
+              this.state.isLocked ?
+                <LockedMessage encryptionStatus={draftEncryption} />
+                : (
+                  <InputText
+                    className={classnames(
+                      'm-draft-message-quick__input',
+                      { 'm-draft-message-quick__input--encrypted': encryptionEnabled }
+                    )}
+                    onChange={this.handleChange}
+                    onFocus={onFocus}
+                    name="body"
+                    value={this.state.draftMessage.body}
+                    placeholder={this.getQuickInputPlaceholder()}
+                  />
+                )}
+            <div className={classnames(
+              'm-draft-message-quick__send',
+              {
+                'm-draft-message-quick__send--encrypted': encryptionEnabled,
+                'm-draft-message-quick__send--unencrypted': !encryptionEnabled,
+              }
+            )}
+            >
+              <Button
+                type="submit"
+                display="expanded"
+                shape="plain"
+                icon={this.state.isSending ? (<Spinner loading display="block" />) : 'paper-plane'}
+                title={i18n._('draft-message.action.send', null, { defaults: 'Send' })}
+                className={classnames(
+                  'm-draft-message-quick__send-button',
+                  {
+                    'm-draft-message-quick__send-button--encrypted': encryptionEnabled,
+                    'm-draft-message-quick__send-button--unencrypted': !encryptionEnabled,
+                  }
+                )}
+                disabled={!canSend}
+              />
+            </div>
           </div>
-        </div>
-        <div className="m-draft-message-quick__encryption">
-          <Trans id={this.getEncryptionTranslation()} />
-        </div>
+          <div className="m-draft-message-quick__encryption">
+            <Trans id={this.getEncryptionTranslation()} />
+          </div>
+        </form>
       </div>
     );
   }
@@ -554,14 +607,14 @@ class DraftMessage extends Component {
     } = this.props;
 
     const encryptionEnabled = isEncrypted && encryptionStatus === STATUS_DECRYPTED;
+    const identity = this.getIdentity({ identityId: this.state.draftMessage.identityId });
 
     const isSubjectSupported = ({ draft }) => {
       if (!draft.identityId) {
         return false;
       }
 
-      const currIdentity = availableIdentities
-        .find(ident => ident.identity_id === draft.identityId);
+      const currIdentity = this.getIdentity({ identityId: draft.identityId });
 
       if (!currIdentity) {
         return false;
@@ -582,7 +635,7 @@ class DraftMessage extends Component {
     return (
       <div className={classnames(className, 'm-draft-message-advanced')} ref={ref}>
         <div className="m-draft-message-advanced__toggle-simple">
-          {isReply && this.renderToggleAdvancedButton()}
+          {isReply && errors.length === 0 && this.renderToggleAdvancedButton()}
         </div>
         <div className="m-draft-message-advanced__container">
           <IdentitySelector
@@ -611,6 +664,7 @@ class DraftMessage extends Component {
               name="subject"
               value={this.state.draftMessage.subject}
               onChange={this.handleChange}
+              disabled={!identity}
             />
           )}
           {
@@ -626,6 +680,7 @@ class DraftMessage extends Component {
                     onChange: this.handleChange,
                     onFocus,
                     value: this.state.draftMessage.body,
+                    disabled: !identity,
                   }}
                 />
               )}
@@ -634,6 +689,7 @@ class DraftMessage extends Component {
             onUploadAttachments={this.handleFilesChange}
             onDeleteAttachement={this.handleDeleteAttachement}
             message={draftMessage}
+            disabled={!identity}
           />
         </div>
         <div className="m-draft-message-advanced__action-send">

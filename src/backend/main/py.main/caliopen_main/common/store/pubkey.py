@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """Caliopen objects related to contact definition."""
 from __future__ import absolute_import, print_function, unicode_literals
-import datetime
-import pytz
+from datetime import datetime
 
 from cassandra.cqlengine import columns
 
@@ -19,7 +18,7 @@ class PublicKey(BaseModel):
     resource_type = columns.Text()
     label = columns.Text()
 
-    date_insert = columns.DateTime(default=datetime.datetime.now(tz=pytz.utc))
+    date_insert = columns.DateTime(default=datetime.utcnow)
     date_update = columns.DateTime()
     expire_date = columns.DateTime()
 

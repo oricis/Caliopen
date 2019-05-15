@@ -73,7 +73,7 @@ func (ldaStore *LDAStoreBackend) SeekMessageByExternalRef(userID, externalMessag
 	return EmptyUUID, errors.New("test interface not implemented")
 }
 
-func (ldaStore *LDAStoreBackend) LookupContactsByIdentifier(user_id, address string) (contact_ids []string, err error) {
+func (ldaStore *LDAStoreBackend) LookupContactsByIdentifier(user_id, address, kind string) (contact_ids []string, err error) {
 	return nil, errors.New("test interface not implemented")
 }
 

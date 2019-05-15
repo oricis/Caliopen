@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/Sirupsen/logrus"
 	"github.com/gocassa/gocassa"
 	"github.com/gocql/gocql"
 	"gopkg.in/oleiade/reflections.v1"
@@ -56,6 +57,15 @@ func (cb *CassandraBackend) UpdateMessage(msg *Message, fields map[string]interf
 		Where(gocassa.Eq("user_id", msg.User_id.String()), gocassa.Eq("message_id", msg.Message_id.String())).
 		Update(cassaFields).
 		Run()
+
+	if externalRefs, ok := fields["External_references"].(ExternalReferences); ok {
+		// need to update lookup table
+		err := cb.SessionQuery(`INSERT INTO message_external_ref_lookup (user_id,external_msg_id,identity_id,message_id) VALUES (?,?,?,?)`, msg.User_id, externalRefs.Message_id, msg.UserIdentities[0], msg.Message_id).Exec()
+		if err != nil {
+			logrus.WithError(err).Errorf("UpdateMessage failed to update external ref lookup for user %s, message id %s, user identity %s, external ref %s", msg.User_id, msg.Message_id, msg.UserIdentities[0], externalRefs.Message_id)
+		}
+	}
+
 	return err
 }
 

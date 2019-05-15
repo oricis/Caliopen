@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 // unable to use @lingui/macro due to a miss-interpolated value in Plural component
-import { Trans, Plural, withI18n } from '@lingui/react';
+import { Trans, withI18n } from '@lingui/react';
 import ContactList from './components/ContactList';
 import {
   PageTitle, Spinner, Button, ActionBarWrapper, ActionBar, Checkbox, SidebarLayout, NavList,
@@ -14,7 +14,8 @@ import {
   withTags, TagsForm, getCleanedTagCollection, getTagNamesInCommon,
 } from '../../modules/tags';
 import TagList from './components/TagList';
-import ImportContactButton from './components/ImportContactButton';
+// XXX : Disabled until fixed on backend.
+// import ImportContactButton from './components/ImportContactButton';
 import { withTagSearched } from './hoc/withTagSearched';
 import './style.scss';
 import './contact-book-menu.scss';
@@ -239,19 +240,17 @@ class ContactBook extends Component {
                       <Confirm
                         onConfirm={this.handleDeleteContacts}
                         title={(
-                          <Plural
+                          <Trans
                             id="contact-book.confirm-delete.title"
                             value={count}
-                            one="Delete contact"
-                            other="Delete contacts"
+                            defaults="{count, plural, one {Delete contact} other {Delete contacts}}"
                           />
                         )}
                         content={(
-                          <Plural
+                          <Trans
                             id="contact-book.confirm-delete.content"
                             value={count}
-                            one="The deletion is permanent, are you sure you want to delete this contact?"
-                            other="The deletion is permanent, are you sure you want to delete these contacts?"
+                            defaults="{count, plural, one { The deletion is permanent, are you sure you want to delete this contact? } other { The deletion is permanent, are you sure you want to delete these contacts? }}"
                           />
                         )}
                         render={confirm => (
@@ -354,12 +353,15 @@ class ContactBook extends Component {
                       <Trans id="contact-book.action.add">Add</Trans>
                     </Button>
                   </NavItem>
-                  <NavItem>
-                    <ImportContactButton
-                      className="s-contact-book__action-button"
-                      onUploadSuccess={this.handleUploadSuccess}
-                    />
-                  </NavItem>
+                  {
+                    // XXX : Disabled until fixed on backend.
+                    /* <NavItem>
+                      <ImportContactButton
+                        className="s-contact-book__action-button"
+                        onUploadSuccess={this.handleUploadSuccess}
+                      />
+                    </NavItem> */
+                  }
                 </NavList>
               </div>
               <div>

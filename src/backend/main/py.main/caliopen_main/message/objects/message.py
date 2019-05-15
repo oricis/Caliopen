@@ -13,7 +13,6 @@ import json
 import copy
 
 from caliopen_storage.config import Configuration
-from caliopen_storage.exception import NotFound
 from caliopen_main.pi.objects import PIObject
 
 from ..store import Message as ModelMessage
@@ -23,9 +22,9 @@ from ..parameters.draft import Draft
 from ..core import RawMessage
 from .attachment import MessageAttachment
 from .external_references import ExternalReferences
-from .participant import Participant
+from caliopen_main.participant.objects.participant import Participant
 from schematics.types import UUIDType
-from caliopen_main.message.parameters.participant import \
+from caliopen_main.participant.parameters import \
     Participant as IndexedParticipant
 from caliopen_main.common import errors as err
 
@@ -46,7 +45,7 @@ class Message(ObjectIndexable):
         'date_delete': datetime.datetime,
         'date_insert': datetime.datetime,
         'date_sort': datetime.datetime,
-        'discussion_id': UUID,
+        'discussion_id': types.StringType,
         'external_references': ExternalReferences,
         'importance_level': types.IntType,
         'is_answered': types.BooleanType,
@@ -117,7 +116,6 @@ class Message(ObjectIndexable):
                 "message_id",
                 "parent_id",
                 "participants",
-                "discussion_id",
                 "subject",
                 "user_identities",
                 "privacy_features",
@@ -131,7 +129,7 @@ class Message(ObjectIndexable):
                 draft_param.validate_uuid(user.user_id)
             else:
                 draft_param.message_id = uuid.uuid4()
-            draft_param.validate_consistency(user, True)
+            discussion_id = draft_param.validate_consistency(user, True)
         except Exception as exc:
             log.warn("create_draft error %r" % exc)
             raise exc
@@ -141,6 +139,7 @@ class Message(ObjectIndexable):
         message.user_id = UUID(user.user_id)
         message.is_draft = True
         message.is_received = False
+        message.discussion_id = discussion_id
 
         if not message.protocol:
             log.warn("failed to pick a protocol")
@@ -176,7 +175,6 @@ class Message(ObjectIndexable):
         except Exception as exc:
             log.info(exc)
             raise err.PatchError(message=exc.message)
-
         # silently remove unexpected props within patch if not in strict mode
         strict_patch = Configuration('global').get('apiV1.strict_patch', False)
         if not strict_patch:
@@ -233,25 +231,26 @@ class Message(ObjectIndexable):
 
         if "user_identities" not in params and self.user_identities:
             draft_param.user_identities = self_dict["user_identities"]
-
+        # make sure the <from> participant is present
+        # and is consistent with selected user's identity
         try:
-            draft_param.validate_consistency(self.user, False)
+            new_discussion_id = draft_param.validate_consistency(user, False)
         except Exception as exc:
             log.info("consistency validation failed with err : {}".format(exc))
             raise err.PatchError(message=exc.message)
 
-        # make sure the <from> participant is present
-        # and is consistent with selected user's identity
         validated_draft = draft_param.serialize()
         validated_params = copy.deepcopy(params)
         if "participants" in params:
             validated_params["participants"] = validated_draft["participants"]
+        if new_discussion_id != self.discussion_id:
+            # discussion_id has changed, update draft's discussion_id
+            current_state["discussion_id"] = self.discussion_id
+            validated_params["discussion_id"] = new_discussion_id
 
-        # remove empty UUIDs from current state if any
+        # remove empty ids from current state if any
         if "parent_id" in current_state and current_state["parent_id"] == "":
             del (current_state["parent_id"])
-        if "discussion_id" in current_state:
-            del (current_state["discussion_id"])
 
         # handle body key mapping to body_plain or body_html
         # TODO: handle plain/html flag to map to right field
@@ -274,29 +273,6 @@ class Message(ObjectIndexable):
         except Exception as exc:
             log.info("apply_patch() failed with error : {}".format(exc))
             raise exc
-
-    @classmethod
-    def by_discussion_id(cls, user, discussion_id, min_pi, max_pi,
-                         order=None, limit=None, offset=0):
-        """Get messages for a given discussion from index."""
-        res = cls._model_class.search(user, discussion_id=discussion_id,
-                                      min_pi=min_pi, max_pi=max_pi,
-                                      limit=limit,
-                                      offset=offset,
-                                      sort="-date_insert")
-        messages = []
-        if res.hits:
-            for x in res.hits:
-                try:
-                    obj = cls(user, message_id=x.meta.id)
-                    obj.get_db()
-                    obj.unmarshall_db()
-                    messages.append(obj)
-                except Exception as exc:
-                    log.warn(exc)
-            return {'hits': messages, 'total': res.hits.total}
-        else:
-            raise NotFound
 
     def unmarshall_json_dict(self, document, **options):
         super(Message, self).unmarshall_json_dict(document, **options)

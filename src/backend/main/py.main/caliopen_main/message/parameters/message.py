@@ -2,7 +2,7 @@
 """Caliopen parameters for message related classes."""
 from __future__ import absolute_import, print_function, unicode_literals
 
-import hashlib
+import logging
 
 from schematics.models import Model
 from schematics.types import (StringType, DateTimeType,
@@ -10,16 +10,19 @@ from schematics.types import (StringType, DateTimeType,
 from schematics.types.compound import ListType, ModelType, DictType
 from schematics.transforms import blacklist
 
-from .participant import Participant
 from .attachment import Attachment
 from .external_references import ExternalReferences
 from caliopen_main.pi.parameters import PIParameter
+from caliopen_main.participant.parameters import Participant
+from caliopen_main.participant.core import hash_participants_uri
 import caliopen_storage.helpers.json as helpers
 
 RECIPIENT_TYPES = ['To', 'From', 'Cc', 'Bcc', 'Reply-To', 'Sender']
 MESSAGE_PROTOCOLS = ['email', 'twitter', None]
 MESSAGE_STATES = ['draft', 'sending', 'sent', 'cancel',
                   'unread', 'read', 'deleted']
+
+log = logging.getLogger(__name__)
 
 
 class NewMessage(Model):
@@ -28,7 +31,7 @@ class NewMessage(Model):
     attachments = ListType(ModelType(Attachment), default=lambda: [])
     date = DateTimeType(serialized_format=helpers.RFC3339Milli,
                         tzd=u'utc')
-    discussion_id = UUIDType()
+    discussion_id = StringType() # = participants uris' hash
     external_references = ModelType(ExternalReferences)
     importance_level = IntType()
     is_answered = BooleanType()
@@ -56,16 +59,8 @@ class NewMessage(Model):
 
     @property
     def hash_participants(self):
-        """Create an hash from participants addresses for global lookup."""
-        addresses = []
-        for participant in self.participants:
-            if participant.contact_ids:
-                addresses.append(participant.contact_ids[0])
-            else:
-                addresses.append(participant.address.lower())
-        addresses = list(set(addresses))
-        addresses.sort()
-        return hashlib.sha256(''.join(addresses)).hexdigest()
+        ids_hash = hash_participants_uri(self.participants)
+        return ids_hash['hash']
 
 
 class NewInboundMessage(NewMessage):

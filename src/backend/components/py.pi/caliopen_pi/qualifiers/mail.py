@@ -5,11 +5,11 @@ from __future__ import absolute_import, print_function, unicode_literals
 import logging
 from caliopen_main.message.parameters import (NewInboundMessage,
                                               Attachment)
+from caliopen_main.participant.parameters.participant import Participant
 
 from caliopen_storage.config import Configuration
-from caliopen_main.discussion.core import (DiscussionThreadLookup,
-                                           DiscussionListLookup,
-                                           DiscussionGlobalLookup)
+from caliopen_main.participant.core import hash_participants_uri
+from caliopen_main.participant.store import HashLookup
 
 # XXX use a message formatter registry not directly mail format
 from caliopen_main.message.parsers.mail import MailMessage
@@ -33,31 +33,51 @@ class UserMessageQualifier(BaseQualifier):
     """
 
     _lookups = {
-        'global': DiscussionGlobalLookup,
-        'thread': DiscussionThreadLookup,
-        'list': DiscussionListLookup,
+        'list': HashLookup,
+        'hash': HashLookup,
     }
 
-    def lookup_discussion_sequence(self, mail, message, *args, **kwargs):
-        """Return list of lookup type, value from a mail message."""
+    def lookup_discussion_sequence(self, mail, message):
+        """
+        Return list of lookups (type, value) from a mail message
+        and the first lookup'hash from that list
+        """
         seq = []
 
-        # list lookup first
+        # lists lookup first
+        lists = []
         for list_id in mail.extra_parameters.get('lists', []):
-            seq.append(('list', list_id))
+            lists.append(list_id)
+        if len(lists) > 0:
+            # list_ids are considered `participants`
+            # build uris' hash and upsert lookup tables
+            participants = []
+            for list_id in lists:
+                participant = Participant()
+                participant.address = list_id.lower()
+                participant.protocol = 'email'
+                participant.type = 'list-id'
+                participants.append(participant)
+                discuss = Discussion(self.user)
+                discuss.upsert_lookups_for_participants(participants)
+                # add list-id as a participant to the message
+                message.participants.append(participant)
+            hash = hash_participants_uri(participants)
+            seq.append(('list', hash['hash']))
 
-        seq.append(('global', message.hash_participants))
+        # then participants
+        seq.append(('hash', message.hash_participants))
 
         # try to link message to external thread's root message-id
-        if len(message.external_references["ancestors_ids"]) > 0:
-            seq.append(("thread",
-                        message.external_references["ancestors_ids"][0]))
-        elif message.external_references["parent_id"]:
-            seq.append(("thread", message.external_references["parent_id"]))
-        elif message.external_references["message_id"]:
-            seq.append(("thread", message.external_references["message_id"]))
+        #        if len(message.external_references["ancestors_ids"]) > 0:
+        #            seq.append(("thread",
+        #                        message.external_references["ancestors_ids"][0]))
+        #        elif message.external_references["parent_id"]:
+        #            seq.append(("thread", message.external_references["parent_id"]))
+        #        elif message.external_references["message_id"]:
+        #            seq.append(("thread", message.external_references["message_id"]))
 
-        return seq
+        return seq, seq[0][1]
 
     def process_inbound(self, raw):
         """Process inbound message.
@@ -65,33 +85,39 @@ class UserMessageQualifier(BaseQualifier):
         @param raw: a RawMessage object
         @rtype: NewMessage
         """
-        message = MailMessage(raw.raw_data)
+        email = MailMessage(raw.raw_data)
         new_message = NewInboundMessage()
         new_message.raw_msg_id = raw.raw_msg_id
-        new_message.subject = message.subject
-        new_message.body_html = message.body_html
-        new_message.body_plain = message.body_plain
-        new_message.date = message.date
-        new_message.size = message.size
-        new_message.protocol = message.message_protocol
+        new_message.subject = email.subject
+        new_message.body_html = email.body_html
+        new_message.body_plain = email.body_plain
+        new_message.date = email.date
+        new_message.size = email.size
+        new_message.protocol = email.message_protocol
         new_message.is_unread = True
         new_message.is_draft = False
         new_message.is_answered = False
         new_message.is_received = True
         new_message.importance_level = 0  # XXX tofix on parser
-        new_message.external_references = message.external_references
+        new_message.external_references = email.external_references
 
         participants = []
-        for p in message.participants:
-            participant, contact = self.get_participant(message, p)
-            new_message.participants.append(participant)
-            participants.append((participant, contact))
+        for p in email.participants:
+            p.address = p.address.lower()
+            try:
+                participant, contact = self.get_participant(email, p)
+                new_message.participants.append(participant)
+                participants.append((participant, contact))
+            except Exception as exc:
+                log.error("process_inbound failed to lookup participant for email {} : {}".format(vars(email), exc))
+                raise exc
+
 
         if not participants:
-            raise Exception("no participant found in raw message {}".format(
+            raise Exception("no participant found in raw email {}".format(
                 raw.raw_msg_id))
 
-        for a in message.attachments:
+        for a in email.attachments:
             attachment = Attachment()
             attachment.content_type = a.content_type
             attachment.file_name = a.filename
@@ -103,7 +129,7 @@ class UserMessageQualifier(BaseQualifier):
 
         # Compute PI !!
         conf = Configuration('global').configuration
-        extractor = InboundMailFeature(message, conf)
+        extractor = InboundMailFeature(email, conf)
         extractor.process(self.user, new_message, participants)
 
         # compute tags
@@ -111,19 +137,16 @@ class UserMessageQualifier(BaseQualifier):
         if new_message.tags:
             log.debug('Resolved tags {}'.format(new_message.tags))
 
-        # lookup by external references
-        lookup_sequence = self.lookup_discussion_sequence(message, new_message)
-        lkp = self.lookup(lookup_sequence)
-        log.debug('Lookup with sequence {} give {}'.
-                  format(lookup_sequence, lkp))
+        # build discussion_id from lookup_sequence
+        lookup_sequence, discussion_id = self.lookup_discussion_sequence(email,
+                                                                         new_message)
+        log.debug('Lookup with sequence {} gives {}'.format(lookup_sequence,
+                                                            discussion_id))
+        new_message.discussion_id = discussion_id
 
-        if lkp:
-            new_message.discussion_id = lkp.discussion_id
-        else:
-            discussion = Discussion.create_from_message(self.user, message)
-            log.debug('Created discussion {}'.format(discussion.discussion_id))
-            new_message.discussion_id = discussion.discussion_id
-            self.create_lookups(lookup_sequence, new_message)
+        # upsert lookup tables
+        discuss = Discussion(self.user)
+        discuss.upsert_lookups_for_participants(new_message.participants)
         # Format features
         new_message.privacy_features = \
             marshal_features(new_message.privacy_features)

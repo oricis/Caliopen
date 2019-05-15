@@ -170,7 +170,7 @@ func ServeError(rw gin.ResponseWriter, r *http.Request, err error) {
 		var lastCode int
 		//get the last error code to return it to client
 		if lastErr, ok := er.Errors[0].(swgErr.Error); ok {
-		lastCode = int(lastErr.Code())
+			lastCode = int(lastErr.Code())
 		} else {
 			lastCode = int(e.Code())
 		}
@@ -200,6 +200,7 @@ func ServeError(rw gin.ResponseWriter, r *http.Request, err error) {
 			rw.Write(errorAsJSON(swgErr.New(http.StatusInternalServerError, err.Error())))
 		}
 	}
+	log.WithError(err).Error("Processing error")
 	rw.Flush()
 }
 

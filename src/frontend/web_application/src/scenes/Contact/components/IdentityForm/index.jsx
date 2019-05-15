@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Trans, withI18n } from '@lingui/react';
 import { Field } from 'redux-form';
 import renderReduxField from '../../../../services/renderReduxField';
+import { IDENTITY_TYPE_TWITTER } from '../../../../modules/contact';
 import {
   Button, Icon, FieldErrors, SelectFieldGroup as SelectFieldGroupBase,
   TextFieldGroup as TextFieldGroupBase, Fieldset, Legend, FormGrid, FormRow, FormColumn,
@@ -10,7 +11,7 @@ import {
 
 import './style.scss';
 
-const IDENTITY_TYPES = ['', 'twitter', 'facebook'];
+const IDENTITY_TYPES = [IDENTITY_TYPE_TWITTER];
 const TextFieldGroup = renderReduxField(TextFieldGroupBase);
 const SelectFieldGroup = renderReduxField(SelectFieldGroupBase);
 
@@ -60,7 +61,7 @@ class IdentityForm extends PureComponent {
                 name="name"
                 label={i18n._('contact.identity_form.identity.label', null, { defaults: 'Identity' })}
                 showLabelforSr
-                placeholder={i18n._('contact.identity_form.identity.placeholder', null, { defaults: '@username, account\'s URL...' })}
+                placeholder={i18n._('contact.identity_form.identity.placeholder', null, { defaults: 'username, account\'s URL...' })}
                 required
               />
             </FormColumn>
