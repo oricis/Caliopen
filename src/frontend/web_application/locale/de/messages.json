@@ -456,7 +456,7 @@
   "signup.privacy.modal.text.alpha_tester": "Als Alphatester ist Ihr Beitrag wertvoll und es ermöglicht uns, Caliopen fertigzumachen",
   "signup.privacy.modal.text.desactivate_dnt": "Sie müssen die DoNotTrack Option in Ihren Browsereinstellungen deaktivieren (weitere Informationen unter http://donottrack.us) und Cookies zulassen.",
   "signup.privacy.modal.text.get_data": "Zu diesem Zweck gewähren Sie uns das Recht, Daten zu Ihrer Nutzung zu sammeln (angezeigte Seiten, Timings, Clics, Scrolls ... fast alles, was gesammelt werden kann!).",
-  "signup.privacy.modal.text.piwik": "Wir benutzen https://piwik.org/, die Open-Source-Webanwendung. Die versammelte Daten werden mit keinem Dritte geteilt und werden nur im Rahmen Caliopens Alpha Kontext benutzt.",
+  "signup.privacy.modal.text.piwik": "Wir benutzen https://piwik.org/, die Open-Source-Webanwendung. Die versammelte Daten werden mit keinem Dritte geteilt und werden nur im Rahmen Caliopens Beta Kontext benutzt.",
   "signup.privacy.modal.title": "Caliopen wird noch entwickelt!",
   "tag_list.all_contacts": "Alle Kontakte",
   "tags.action.add": "",
