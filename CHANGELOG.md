@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Validation of twitter username in contact edition
 - Address (and protocol) selection in a 1-to-1 discussion
 - Activate links in plain text messages.
+- Handle client crashes and provide a link to report an issue on https://feedback.caliopen.org
 
 ### Changed
 

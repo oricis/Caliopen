@@ -10,6 +10,7 @@ import RoutingProvider from './modules/routing/components/RoutingProvider';
 import { PageTitle } from './components';
 import { initConfig } from './services/config';
 import { NotificationProvider } from './modules/notification';
+import ErrorBoundary from './layouts/ErrorBoundary';
 import './app.scss';
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -39,17 +40,19 @@ class App extends Component {
             networkDisabled
             render={settings => (
               <I18nLoader locale={settings.default_locale}>
-                <RoutingProvider settings={settings}>
-                  <PageTitle />
-                  <DeviceProvider>
-                    <RoutingConsumer
-                      render={({ routes }) => (
-                        <SwitchWithRoutes routes={routes} />
-                      )}
-                    />
-                  </DeviceProvider>
-                  <NotificationProvider />
-                </RoutingProvider>
+                <ErrorBoundary>
+                  <RoutingProvider settings={settings}>
+                    <PageTitle />
+                    <DeviceProvider>
+                      <RoutingConsumer
+                        render={({ routes }) => (
+                          <SwitchWithRoutes routes={routes} />
+                        )}
+                      />
+                    </DeviceProvider>
+                    <NotificationProvider />
+                  </RoutingProvider>
+                </ErrorBoundary>
               </I18nLoader>
             )}
           />
