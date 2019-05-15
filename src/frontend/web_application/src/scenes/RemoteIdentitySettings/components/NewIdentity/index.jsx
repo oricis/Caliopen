@@ -15,11 +15,13 @@ import './provider-email-button.scss';
 
 class NewIdentity extends Component {
   static propTypes = {
+    providers: PropTypes.arrayOf(PropTypes.string),
     onRemoteIdentityChange: PropTypes.func.isRequired,
     onClear: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
+    providers: [],
   };
 
   state = {
@@ -44,6 +46,8 @@ class NewIdentity extends Component {
   }
 
   render() {
+    const { providers } = this.props;
+
     return (
       <Section
         title={(<Trans id="remote_identity.add_account">Add an external account</Trans>)}
@@ -71,16 +75,24 @@ class NewIdentity extends Component {
           <Trans id="remote_identity.choose-provider.title">Select a provider</Trans>
         </Title>
         <ul className="m-provider-list">
-          <li className="m-provider-list__provider">
-            <ProviderButtonContainer label={(<Trans id="remote_identity.gmail.help">You will be redirected to gmail authentication</Trans>)}>
-              <AuthButton onDone={this.handleOAuthDone} providerName={PROVIDER_GMAIL} />
-            </ProviderButtonContainer>
-          </li>
-          <li className="m-provider-list__provider">
-            <ProviderButtonContainer label={(<Trans id="remote_identity.twitter.help">You will be redirected to twitter authentication and authorize the application</Trans>)}>
-              <AuthButton onDone={this.handleOAuthDone} providerName={PROVIDER_TWITTER} />
-            </ProviderButtonContainer>
-          </li>
+          {
+            providers.includes(PROVIDER_GMAIL) && (
+              <li className="m-provider-list__provider">
+                <ProviderButtonContainer label={(<Trans id="remote_identity.gmail.help">You will be redirected to gmail authentication</Trans>)}>
+                  <AuthButton onDone={this.handleOAuthDone} providerName={PROVIDER_GMAIL} />
+                </ProviderButtonContainer>
+              </li>
+            )
+          }
+          {
+            providers.includes(PROVIDER_TWITTER) && (
+              <li className="m-provider-list__provider">
+                <ProviderButtonContainer label={(<Trans id="remote_identity.twitter.help">You will be redirected to twitter authentication and authorize the application</Trans>)}>
+                  <AuthButton onDone={this.handleOAuthDone} providerName={PROVIDER_TWITTER} />
+                </ProviderButtonContainer>
+              </li>
+            )
+          }
           <li className="m-provider-list__provider">
             <ProviderButtonContainer label={(<Trans id="remote_identity.email.help">You will have to fill the form with your imap server&apos;s parameters</Trans>)}>
               <ProviderButton onClick={this.handleToggleFormEmail}>
