@@ -43,6 +43,7 @@ type (
 	// NATS
 	NatsConfig struct {
 		Url              string `mapstructure:"url"`
+		NatsQueue        string `mapstructure:"nats_queue"`
 		OutSMTP_topic    string `mapstructure:"outSMTP_topic"`
 		OutIMAP_topic    string `mapstructure:"outIMAP_topic"`
 		OutTWITTER_topic string `mapstructure:"outTWITTER_topic"`
