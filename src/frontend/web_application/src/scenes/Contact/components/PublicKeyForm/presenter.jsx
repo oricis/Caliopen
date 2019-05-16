@@ -104,7 +104,7 @@ class PublicKeyForm extends PureComponent {
                   />
                 ) : null}
                 <Button icon="remove" className="m-public-key-form__button-cancel" onClick={onCancel}><Trans id="contact.public_key_form.cancel">Cancel</Trans></Button>
-                <Button type="submit" icon="check" color="active" className="m-public-key-form__button-validate">
+                <Button type="submit" icon="check" shape="plain" className="m-public-key-form__button-validate">
                   <Trans id="contact.public_key_form.validate">Validate</Trans>
                 </Button>
               </FormColumn>
