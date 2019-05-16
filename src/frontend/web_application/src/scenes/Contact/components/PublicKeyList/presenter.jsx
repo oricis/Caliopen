@@ -123,7 +123,12 @@ class PublicKeyList extends Component {
     }
 
     return (
-      <Button onClick={this.enterAddMode} color="active" icon="key" type="button">
+      <Button
+        onClick={this.enterAddMode}
+        icon="key"
+        type="button"
+        shape="plain"
+      >
         <Trans id="contact.public_keys_list.add_key.label">Add public key</Trans>
       </Button>
     );
