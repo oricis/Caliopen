@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- participants algorithm
+- discussion last message sort
+
+### Changed
+
+- frontend style minor update
+
 ## [0.20.0] 2019-05-15
 
 ### Added
