@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"fmt"
+	"github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
 	"sort"
@@ -162,6 +163,12 @@ func HashFromParticipantsUris(participants []Participant) (hash string, componen
 // if associate == true, uri will be replaced by contactId
 // else, uri must be dissociated from contactId
 func ComputeNewParticipantHash(uri, contactId string, current ParticipantHash, urisComponents []string, associate bool) (new ParticipantHash, err error) {
+	logrus.Infoln("ComputeNewParticipantHash called")
+	logrus.Infoln(uri)
+	logrus.Infoln(contactId)
+	logrus.Infof("%+v", current)
+	logrus.Infoln(urisComponents)
+	logrus.Infoln(associate)
 	new.UserId = current.UserId
 	new.Kind = "participants"
 	participantsMap := map[string]struct{}{}
@@ -200,6 +207,7 @@ func ComputeNewParticipantHash(uri, contactId string, current ParticipantHash, u
 	new.Key = HashComponents(components)
 	new.Components = components
 	new.Value = current.Value
+	logrus.Infof("new : %+v", new)
 	return
 }
 
@@ -207,4 +215,53 @@ func HashComponents(c []string) string {
 	sort.Strings(c)
 	sum := sha256.Sum256([]byte(strings.Join(c, "")))
 	return fmt.Sprintf("%x", sum)
+}
+
+// StoreURIsParticipantsBijection stores uris_hash <-> participants_hash bijection
+// in participant_hash table
+func StoreURIsParticipantsBijection(session *gocql.Session, userId, uriHash, participantHash string, uriComponents, participantComponents []string) error {
+	now := time.Now()
+	// store uris_hash -> participants_hash
+	e1 := session.Query(`INSERT INTO participant_hash (user_id, kind, key, value, components, date_insert) VALUES (?,?,?,?,?,?)`,
+		userId, UrisKind, uriHash, participantHash, uriComponents, now).Exec()
+
+	// store participants_hash -> uris_hash
+	e2 := session.Query(`INSERT INTO participant_hash (user_id, kind, key, value, components, date_insert) VALUES (?,?,?,?,?,?)`,
+		userId, ParticipantsKind, participantHash, uriHash, participantComponents, now).Exec()
+	switch {
+	case e1 != nil:
+		return e1
+	case e2 != nil:
+		return e2
+	}
+	return nil
+}
+
+// RemoveURIsParticipantsBijection delete uris_hash <-> participants_hash bijection
+// in participant_hash table
+func RemoveURIsParticipantsBijection(session *gocql.Session, former ParticipantHash) error {
+	var first, second string
+	first = former.Kind
+	if first == ParticipantsKind {
+		second = UrisKind
+	} else {
+		second = ParticipantsKind
+	}
+	e1 := session.Query(`DELETE FROM participant_hash WHERE user_id = ? AND kind = ? AND key = ? AND value = ?`,
+		former.UserId,
+		first,
+		former.Key,
+		former.Value).Exec()
+	e2 := session.Query(`DELETE FROM participant_hash WHERE user_id = ? AND kind = ? AND key = ? AND value = ?`,
+		former.UserId,
+		second,
+		former.Value,
+		former.Key).Exec()
+	switch {
+	case e1 != nil:
+		return e1
+	case e2 != nil:
+		return e2
+	}
+	return nil
 }
