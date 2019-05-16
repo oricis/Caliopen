@@ -131,14 +131,14 @@ func (rest *RESTfacility) ExpandDiscussionSet(userId UUID, discussionId string) 
 
 // mergeDiscussionAliases return one Discussion with aggregated metadata from a discussions set
 func mergeDiscussionAliases(discussions []Discussion) Discussion {
-	earlier := new(Discussion)
+	earlier := Discussion{}
 	var msgCount int32
 	var unreadCount int32
 	aliases := []string{}
 	for _, disc := range discussions {
 		aliases = append(aliases, disc.DiscussionId)
 		if disc.LastMessageDate.After(earlier.LastMessageDate) {
-			earlier = &disc
+			earlier = disc
 		}
 		msgCount += disc.TotalCount
 		unreadCount += disc.UnreadCount
@@ -154,5 +154,5 @@ func mergeDiscussionAliases(discussions []Discussion) Discussion {
 		}
 		earlier.Aliases = aliases
 	}
-	return *earlier
+	return earlier
 }
