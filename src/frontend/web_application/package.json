@@ -33,12 +33,16 @@
     "test:unit:watch": "jest --watch",
     "test:unit:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
     "test:functional": "npm-run-all --sequential -n build:i18n build:browser:test build:server:test test:functional:start",
-    "test:functional:start": "npm-run-all -n --parallel --race start:mock-api test:functional:serve test:e2e:delay",
+    "test:functional:start": "npm-run-all -n --parallel --race start:mock-api test:functional:serve test:e2e:run",
     "test:functional:serve": "NODE_ENV=production CALIOPEN_API_HOSTNAME=localhost ./bin/server",
     "test:e2e": "protractor ./test/functional/protractor.conf.js",
     "test:e2e:debug": "node --inspect-brk node_modules/.bin/protractor ./test/functional/protractor.conf.js",
     "test:e2e:delay": "sleep 3 && protractor ./test/functional/protractor.conf.js",
     "test:e2e:init": "webdriver-manager update",
+    "test:e2e:run": "npm-run-all -n test:e2e:wait test:e2e:cypress",
+    "test:e2e:wait": "wait-on http://localhost:4000",
+    "test:e2e:cypress": "cypress run --record",
+    "cypress:open": "cypress open",
     "lint": "npm-run-all lint:js lint:styles",
     "lint:js": "eslint --ext .js --ext .jsx --ignore-pattern *.spec.js --ignore-pattern *.spec.jsx src/",
     "lint:styles": "stylelint 'src/**/*.scss'",
@@ -137,6 +141,7 @@
     "babel-preset-lingui-react": "^1.0.14",
     "cordova": "^7.1.0",
     "css-loader": "^2.1.1",
+    "cypress": "^3.2.0",
     "deep-freeze-strict": "^1.1.1",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.12.1",
@@ -180,6 +185,7 @@
     "stylelint-scss": "^3.6.0",
     "stylelint-webpack-plugin": "^0.10.5",
     "uglifyjs-webpack-plugin": "^2.1.2",
+    "wait-on": "^3.2.0",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.3.1",
@@ -196,6 +202,10 @@
     ]
   },
   "jest": {
+    "roots": [
+      "src/",
+      "server/"
+    ],
     "setupFilesAfterEnv": [
       "<rootDir>/test/unit/setup.js"
     ],

@@ -79,11 +79,11 @@ pipeline:
 
   test-frontend:
     group: test
-    image: node:8
+    image: cypress/base
     when:
       branch: [ develop, master ]
       event: [ pull_request ]
-    secrets: [ SAUCE_USERNAME , SAUCE_ACCESS_KEY, SAUCE_ADDRESS ]
+    secrets: [ CYPRESS_RECORD_KEY ]
     environment:
       - SAUCE_PORT=4445
       - FRONTEND_ADDRESS=test-frontend
@@ -421,11 +421,11 @@ pipeline:
 
 services:
 
-  sauce-connect:
-    image: joscha/docker-sauce-connect
-    secrets: [ SAUCE_USERNAME , SAUCE_ACCESS_KEY ]
-    when:
-      branch: [ develop, master ]
-      event: [ pull_request ]
-    commands:
-      - sc -u $${SAUCE_USERNAME} -k $${SAUCE_ACCESS_KEY} -i caliopen
+  # sauce-connect:
+  #   image: joscha/docker-sauce-connect
+  #   secrets: [ SAUCE_USERNAME , SAUCE_ACCESS_KEY ]
+  #   when:
+  #     branch: [ develop, master ]
+  #     event: [ pull_request ]
+  #   commands:
+  #     - sc -u $${SAUCE_USERNAME} -k $${SAUCE_ACCESS_KEY} -i caliopen

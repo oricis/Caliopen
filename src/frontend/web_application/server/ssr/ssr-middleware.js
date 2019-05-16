@@ -62,6 +62,7 @@ export default (req, res) => {
     });
     res.end();
   } else {
+    res.set('Content-Type', 'text/html');
     res.write(html);
     res.end();
   }

@@ -1,0 +1,9 @@
+{
+  "projectId": "rc4eih",
+  "baseUrl": "http://localhost:4000",
+  "screenshotOnRunFailure": true,
+  "video": true,
+  "reporterOption": {
+    "toConsole": true
+  }
+}
