@@ -246,7 +246,7 @@ class MailMessage(object):
         mail_date = self.mail.get('Date')
         if mail_date:
             tmp_date = parsedate_tz(mail_date)
-            return datetime.datetime.fromtimestamp(mktime_tz(tmp_date))
+            return datetime.datetime.fromtimestamp(mktime_tz(tmp_date), tz=pytz.utc)
         log.debug('No date on mail using now (UTC)')
         return datetime.datetime.now(tz=pytz.utc)
 
