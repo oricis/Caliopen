@@ -1,7 +1,7 @@
-import { getLanguage } from '../../../../modules/i18n';
+import { getBestLocale } from '../../../../modules/i18n';
 
 export const getDefaultSettings = locales => ({
-  default_locale: getLanguage(locales),
+  default_locale: getBestLocale(locales),
   message_display_format: 'rich_text',
   contact_display_format: 'given_name, family_name',
   contact_display_order: 'given_name',

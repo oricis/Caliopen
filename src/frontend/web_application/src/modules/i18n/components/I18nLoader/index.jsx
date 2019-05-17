@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { I18nProvider } from '@lingui/react';
+import { getBestLocale } from '../../services/getBestLocale';
 import { getLanguage } from '../../services/getLanguage';
 
 class I18nLoader extends Component {
@@ -61,7 +62,7 @@ class I18nLoader extends Component {
     return true;
   }
 
-  getLanguageFromProps = props => getLanguage([props.locale])
+  getLanguageFromProps = props => getLanguage(getBestLocale([props.locale]));
 
   updateCatalog = async (language) => {
     const catalog = await this.constructor.getCatalog(language);

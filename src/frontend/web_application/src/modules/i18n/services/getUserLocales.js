@@ -1,4 +1,4 @@
-import { DEFAULT_LANGUAGE } from './getLanguage';
+import { DEFAULT_LOCALE } from './getBestLocale';
 
 export const getUserLocales = () => {
   if (BUILD_TARGET === 'browser') {
@@ -6,7 +6,7 @@ export const getUserLocales = () => {
 
     return [
       ...languages,
-      ...(window.navigator.language || window.navigator.userLanguage || DEFAULT_LANGUAGE),
+      ...(window.navigator.language || window.navigator.userLanguage || DEFAULT_LOCALE),
     ];
   }
 

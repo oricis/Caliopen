@@ -5,7 +5,7 @@ import {
   SelectFieldGroup as SelectFieldGroupBase, FormGrid, FormRow, FormColumn,
 } from '../../../../components';
 import renderReduxField from '../../../../services/renderReduxField';
-import { AVAILABLE_LANGUAGES } from '../../../../modules/i18n';
+import { AVAILABLE_LOCALES } from '../../../../modules/i18n';
 
 const SelectFieldGroup = renderReduxField(SelectFieldGroupBase);
 
@@ -26,15 +26,15 @@ class InterfaceSettings extends PureComponent {
   initTranslations() {
     const { i18n } = this.props;
     this.i18n = {
-      fr: i18n._('settings.interface.language.options.fr', null, { defaults: 'French' }),
-      en: i18n._('settings.interface.language.options.en', null, { defaults: 'English' }),
-      de: i18n._('settings.interface.language.options.de', null, { defaults: 'German' }),
+      fr_FR: i18n._('settings.interface.language.options.fr', null, { defaults: 'French' }),
+      en_US: i18n._('settings.interface.language.options.en', null, { defaults: 'English' }),
+      de_DE: i18n._('settings.interface.language.options.de', null, { defaults: 'German' }),
     };
   }
 
   render() {
     const { i18n } = this.props;
-    const languageOptions = this.getOptionsFromArray(AVAILABLE_LANGUAGES);
+    const languageOptions = this.getOptionsFromArray(AVAILABLE_LOCALES);
 
     return (
       <FormGrid className="m-interface-form">
