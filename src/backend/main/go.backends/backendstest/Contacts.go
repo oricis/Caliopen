@@ -47,6 +47,10 @@ func (cb ContactsBackend) LookupContactsByIdentifier(user_id, address, kind stri
 	}
 }
 
+func (cb ContactsBackend) ContactsForParticipants(userID string, participants map[string]Participant) error {
+	return errors.New("ContactForParticipants test interface not implemented")
+}
+
 // ContactIndex interface
 type ContactsIndex struct {
 }
