@@ -11,6 +11,7 @@ import (
 	"github.com/satori/go.uuid"
 	"gopkg.in/oleiade/reflections.v1"
 	"sort"
+	"strings"
 	"time"
 )
 
@@ -487,4 +488,57 @@ func (ds ByDateSortAsc) Less(i, j int) bool {
 
 func (ds ByDateSortAsc) Swap(i, j int) {
 	ds[i], ds[j] = ds[j], ds[i]
+}
+
+// EmbedParticipantsDetails update messages slice in place
+// with data from Contact table related to participants
+func MessagesParticipantsDetails(session *gocql.Session, messages []Message) error {
+	if len(messages) > 0 {
+		// build a collection of unique participants from the messages list
+		uniqueParticipants := map[string]Participant{}
+		participants := []Participant{}
+		for _, msg := range messages {
+			participants = append(participants, msg.Participants...)
+		}
+		for _, p := range participants {
+			uri := strings.ToLower(p.Protocol + ":" + p.Address)
+			uniqueParticipants[uri] = p
+		}
+
+		// get related data from Contact if exist
+		ContactsForParticipants(session, messages[0].User_id.String(), uniqueParticipants)
+
+		// update messages with participants' data
+		for i, msg := range messages {
+			for j, p := range msg.Participants {
+				uri := strings.ToLower(p.Protocol + ":" + p.Address)
+				msg.Participants[j] = uniqueParticipants[uri]
+			}
+			messages[i] = msg
+		}
+	}
+	return nil
+}
+
+func DiscussionsParticipantsDetails(session *gocql.Session, discussions []Discussion) error {
+	if len(discussions) > 0 {
+		participants := []Participant{}
+		uniqueParticipants := map[string]Participant{}
+		for _, d := range discussions {
+			participants = append(participants, d.Participants...)
+		}
+		for _, p := range participants {
+			uri := strings.ToLower(p.Protocol + ":" + p.Address)
+			uniqueParticipants[uri] = p
+		}
+		ContactsForParticipants(session, discussions[0].UserId.String(), uniqueParticipants)
+		for i, d := range discussions {
+			for j, p := range d.Participants {
+				uri := strings.ToLower(p.Protocol + ":" + p.Address)
+				d.Participants[j] = uniqueParticipants[uri]
+			}
+			discussions[i] = d
+		}
+	}
+	return nil
 }
