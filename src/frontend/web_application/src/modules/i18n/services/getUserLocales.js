@@ -10,8 +10,8 @@ export const getUserLocales = () => {
     ];
   }
 
-  if (BUILD_TARGET === 'server' && global.USER_LOCALE) {
-    return [global.USER_LOCALE];
+  if (BUILD_TARGET === 'server' && global.USER_LOCALES) {
+    return global.USER_LOCALES;
   }
 
   // if (BUILD_TARGET === 'electron') {

@@ -1,5 +1,7 @@
-export const getDefaultSettings = locale => ({
-  default_locale: locale,
+import { getLanguage } from '../../../../modules/i18n';
+
+export const getDefaultSettings = locales => ({
+  default_locale: getLanguage(locales),
   message_display_format: 'rich_text',
   contact_display_format: 'given_name, family_name',
   contact_display_order: 'given_name',
