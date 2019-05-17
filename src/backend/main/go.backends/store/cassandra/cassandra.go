@@ -102,6 +102,10 @@ func (cb *CassandraBackend) Close() {
 	cb.Session.Close()
 }
 
+func (cb *CassandraBackend) GetSession() *gocql.Session {
+	return cb.Session
+}
+
 // SessionQuery is a wrapper to cb.Session.Query(…………) that re-init a Session if it has been closed
 func (cb *CassandraBackend) SessionQuery(stmt string, values ...interface{}) *gocql.Query {
 	if cb.Session.Closed() {
