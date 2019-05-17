@@ -28,10 +28,12 @@ class MessageResultItem extends PureComponent {
   };
 
   renderAuthor() {
-    const { message: { participants } } = this.props;
+    const { message: { participants }, term } = this.props;
     const author = participants.find(participant => participant.type === 'From');
 
-    return renderParticipant(author);
+    return (
+      <Highlights term={term} highlights={renderParticipant(author)} />
+    );
   }
 
   renderTags() {
@@ -53,20 +55,17 @@ class MessageResultItem extends PureComponent {
   }
 
   renderHighlights() {
-    const { term, highlights } = this.props;
-    const highlightsString = !highlights ? '' : Object.entries(highlights)
-      .reduce((acc, [, value]) => [...acc, ...value], [])
-      .join(' ... ');
+    const { term, message } = this.props;
 
     return (
-      <span title={highlightsString}>
-        <Highlights term={term} highlights={highlightsString} />
+      <span title={message.excerpt}>
+        <Highlights term={term} highlights={message.excerpt} />
       </span>
     );
   }
 
   render() {
-    const { message, locale } = this.props;
+    const { message, locale, term } = this.props;
     const resultItemClassNames = classnames(
       's-message-result-item',
       {
@@ -105,7 +104,11 @@ class MessageResultItem extends PureComponent {
                 {' '}
               </span>
             )}
-            {message.subject && (<span className="s-message-result-item__info-subject">{message.subject}</span>)}
+            {message.subject && (
+              <span className="s-message-result-item__info-subject">
+                <Highlights term={term} highlights={message.subject} />
+              </span>
+            )}
           </span>
           <span className="s-message-result-item__tags">
             {' '}

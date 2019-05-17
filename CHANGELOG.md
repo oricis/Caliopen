@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Use message's excerpt in search results instead of garbled highlights
+
 ## [0.20.0] 2019-05-15
 
 ### Added
