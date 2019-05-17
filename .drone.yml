@@ -80,6 +80,7 @@ pipeline:
   test-frontend:
     group: test
     image: cypress/base
+    shm_size: 4096000000
     when:
       branch: [ develop, master ]
       event: [ pull_request ]
