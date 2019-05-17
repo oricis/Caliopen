@@ -70,6 +70,28 @@ func (rest *RESTfacility) RetrieveContact(userID, contactID string) (contact *Co
 	return rest.store.RetrieveContact(userID, contactID)
 }
 
+func (rest *RESTfacility) LookupContactByUri(userID, uri string) (contacts []*Contact, totalFound int64, err error) {
+	contacts = []*Contact{}
+	uri = strings.ToLower(uri)
+	uriSplit := strings.SplitN(uri, ":", 2)
+	if len(uriSplit) != 2 {
+		err = fmt.Errorf("[LookupContactByUri] uri malformed : %s => %v", uri, uriSplit)
+		log.WithError(err)
+		return
+	}
+	ids, err := rest.store.LookupContactsByIdentifier(userID, uriSplit[1], uriSplit[0])
+	if err != nil {
+		return
+	}
+	for _, contactId := range ids {
+		c := Contact{}
+		c.ContactId = UUID(uuid.FromStringOrNil(contactId))
+		contacts = append(contacts, &c)
+		totalFound++
+	}
+	return
+}
+
 // RetrieveUserContact returns the contact entry belonging to user.
 // This is the contact that is auto-created for user and can't be deleted.
 func (rest *RESTfacility) RetrieveUserContact(userID string) (contact *Contact, err error) {
