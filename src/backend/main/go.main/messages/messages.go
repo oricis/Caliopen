@@ -85,7 +85,10 @@ func ExcerptMessage(msg Message, length int, wordWrap, addEllipsis bool) (excerp
 // algorithm to retrieve the more relevant excerpt from an HMTL doc.
 // still WIP in september 2017
 func excerptFromHMTL(source string) (excerpt string, err error) {
-	doc, err := html.Parse(strings.NewReader(source))
+	p := CaliopenPolicy()
+	sanitized := p.Sanitize(source)
+	sanitized = replaceBodyTag(sanitized)
+	doc, err := html.Parse(strings.NewReader(sanitized))
 	if err != nil {
 		return "", err
 	}
