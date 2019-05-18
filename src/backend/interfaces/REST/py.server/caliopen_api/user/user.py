@@ -53,6 +53,29 @@ def patch_device_key(key, param):
     return False
 
 
+def make_user_device_tokens(request, user, device, key):
+    """Return (key, tokens) informations for cache entry management."""
+    access_token = create_token()
+    refresh_token = create_token(80)
+
+    ttl = 86400
+    expires_at = (datetime.datetime.utcnow() +
+                  datetime.timedelta(seconds=ttl))
+    tokens = {'access_token': access_token,
+              'refresh_token': refresh_token,
+              'expires_in': ttl,  # TODO : remove this value
+              'shard_id': user.shard_id,
+              'expires_at': expires_at.isoformat()}
+    cache_key = '{}-{}'.format(user.user_id, device.device_id)
+    tokens.update({'key_id': str(key.key_id),
+                   'x': key.x,
+                   'y': key.y,
+                   'curve': key.crv})
+
+    request.cache.set(cache_key, tokens)
+    return tokens
+
+
 @resource(path='',
           collection_path='/authentications',
           name='Authentication',
@@ -116,31 +139,7 @@ class AuthenticationAPI(Api):
         except Exception as exc:
             log.exception('Device login failed: {0}'.format(exc))
 
-        access_token = create_token()
-        refresh_token = create_token(80)
-
-        # ttl = self.request.cache.client.ttl
-        # TODO: remove this ttl to go back to cache.client
-        ttl = 86400
-        expires_at = (datetime.datetime.utcnow() +
-                      datetime.timedelta(seconds=ttl))
-        tokens = {'access_token': access_token,
-                  'refresh_token': refresh_token,
-                  'expires_in': ttl,  # TODO : remove this value
-                  'shard_id': user.shard_id,
-                  'expires_at': expires_at.isoformat()}
-        cache_key = '{}-{}'.format(user.user_id, device.device_id)
-        session_data = tokens.copy()
-        if key:
-            session_data.update({'key_id': str(key.key_id),
-                                 'x': key.x,
-                                 'y': key.y,
-                                 'curve': key.crv})
-        else:
-            raise MethodFailure(detail='No public key found for device')
-
-        self.request.cache.set(cache_key, session_data)
-
+        tokens = make_user_device_tokens(self.request, user, device, key)
         tokens.pop('shard_id')
         return {'user_id': user.user_id,
                 'username': user.name,
