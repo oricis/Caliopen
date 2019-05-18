@@ -62,6 +62,9 @@ def make_user_device_tokens(request, user, device, key, ttl=86400):
         status = previous.get('user_status', 'unknown')
         log.info('Found current user device entry {} : {}'.
                  format(cache_key, status))
+        if status in ['locked', 'maintenance']:
+            raise AuthenticationError('Status {} does not permit operations'.
+                                      format(status))
 
     access_token = create_token()
     refresh_token = create_token(80)

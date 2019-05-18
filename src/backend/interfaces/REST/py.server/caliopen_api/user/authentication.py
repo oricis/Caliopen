@@ -66,6 +66,9 @@ class AuthenticatedUser(object):
             raise AuthenticationError
         if infos.get('access_token') != token:
             raise AuthenticationError
+        if infos.get('user_status', 'unknown') in ['locked', 'maintenance']:
+            raise AuthenticationError('Status {} does not permit operations'.
+                                      format(infos.get('user_status')))
 
         if self.request.headers.get('X-Caliopen-Device-Signature', None):
             valid = self._validate_signature(self.request, device_id, infos)
