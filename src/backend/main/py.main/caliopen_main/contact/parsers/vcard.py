@@ -94,9 +94,10 @@ class VcardPhone(VcardParameter):
 class VcardIdentity(VcardParameter):
 
     def _build(self):
-            social = NewSocialIdentity()
-            social.type = 'twitter'
-            social.name = self.param.value.lower().replace('@', '')
+        social = NewSocialIdentity()
+        social.type = 'twitter'
+        social.name = self.param.name.lower().replace('@', '')
+        return social
 
 
 class VcardAddress(VcardParameter):
@@ -233,22 +234,22 @@ class VcardContact(object):
                 else:
                     warnings['duplicate_phone'] += 1
 
-        emails = self.__parse_emails()
+        emails = list(self.__parse_emails())
         contact.emails, duplicates = self._deduplicate_list(emails, 'address')
         warnings['duplicate_email'] = duplicates
 
-        identities = self.__parse_social_identities()
-        if list(identities):
+        identities = list(self.__parse_social_identities())
+        if identities:
             contact.identities, duplicates = self._deduplicate_list(identities,
-                                                                    'value')
+                                                                    'name')
             warnings['duplicate_identity'] = duplicates
 
-        ims = self.__parse_impps()
+        ims = list(self.__parse_impps())
         contact.ims, duplicates = self._deduplicate_list(ims, 'address')
         warnings['duplicate_im'] = duplicates
 
-        contact.addresses = self.__parse_addresses()
-        contact.organizations = self.__parse_organizations()
+        contact.addresses = list(self.__parse_addresses())
+        contact.organizations = list(self.__parse_organizations())
         self.warnings = warnings
         self.contact = contact
 
