@@ -53,14 +53,19 @@ def patch_device_key(key, param):
     return False
 
 
-def make_user_device_tokens(request, user, device, key):
+def make_user_device_tokens(request, user, device, key, ttl=86400):
     """Return (key, tokens) informations for cache entry management."""
     cache_key = '{}-{}'.format(user.user_id, device.device_id)
+
+    previous = request.cache.get(cache_key)
+    if previous:
+        status = previous.get('user_status', 'unknown')
+        log.info('Found current user device entry {} : {}'.
+                 format(cache_key, status))
 
     access_token = create_token()
     refresh_token = create_token(80)
 
-    ttl = 86400
     expires_at = (datetime.datetime.utcnow() +
                   datetime.timedelta(seconds=ttl))
 
