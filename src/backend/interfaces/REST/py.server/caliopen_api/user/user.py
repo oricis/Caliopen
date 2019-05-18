@@ -80,7 +80,7 @@ def make_user_device_tokens(request, user, device, key, ttl=86400):
               'y': key.y,
               'curve': key.crv}
 
-    request.cache.setex(cache_key, ttl, tokens)
+    request.cache.set(cache_key, tokens)
     result = tokens.copy()
     result.pop('shard_id')
     return result
@@ -150,7 +150,6 @@ class AuthenticationAPI(Api):
             log.exception('Device login failed: {0}'.format(exc))
 
         tokens = make_user_device_tokens(self.request, user, device, key)
-        tokens.pop('shard_id')
         return {'user_id': user.user_id,
                 'username': user.name,
                 'tokens': tokens,
