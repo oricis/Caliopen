@@ -84,7 +84,9 @@ class VcardPhone(VcardParameter):
             normalized = phonenumbers.format_number(number, phone_format)
             if normalized:
                 phone.normalized_number = normalized
-        except:
+        except Exception as exc:
+            log.warning('Error during phone normalization {}: {}'.
+                        format(phone.number, exc))
             pass
         return phone
 
@@ -213,12 +215,12 @@ class VcardContact(object):
         # build list then dedup them
         warnings = {'duplicate_phone': 0, 'duplicate_email': 0,
                     'duplicate_identity': 0, 'duplicate_im': 0}
-        phones = self.__parse_phones()
+        phones = list(self.__parse_phones())
         normalized_phones = [x.normalized_number for x in phones
                              if x.normalized_number]
         distinct_numbers = []
         for phone in phones:
-            if phone.normalized_number in normalized_phones:
+            if phone.normalized_number not in normalized_phones:
                 if phone.normalized_number not in distinct_numbers:
                     distinct_numbers.append(phone.normalized_number)
                     contact.phones.append(phone)
