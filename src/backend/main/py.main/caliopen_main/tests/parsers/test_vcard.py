@@ -16,9 +16,9 @@ else:
 
 Configuration.load(conf_file, 'global')
 
-#from caliopen_main.interfaces import IMessageParser
+
 from caliopen_main.contact.parameters import NewContact
-from caliopen_main.contact.parsers import VcardContact
+from caliopen_main.contact.parsers import VcardContact, VcardParser
 
 
 def load_vcard(filename):
@@ -43,7 +43,7 @@ class TestVcardFormat(unittest.TestCase):
         contact = parse_vcard(vcard)
         self.assertIsNotNone(contact.family_name)
         self.assertIsNotNone(contact.given_name)
-    
+
     def test_address_vcard(self):
         data = load_vcard('vcard1.vcf')
         vcard = vobject.readOne(data)
@@ -64,6 +64,26 @@ class TestVcardFormat(unittest.TestCase):
         contact = parse_vcard(vcard)
         for i in contact.ims:
             self.assertIsNotNone(i.type)
+
+
+class TestVcardDedup(unittest.TestCase):
+
+    def test_duplicate(self):
+        data = load_vcard('dedup.vcf')
+        parser = VcardParser(data)
+        parser.parse()
+        self.assertEqual(parser.result.sum_conflicts, 3)
+        self.assertEqual(parser.result.sum_contacts, len(parser.contacts))
+        self.assertEqual(parser.result.sum_all_contacts, 5)
+
+    def test_no_duplicate(self):
+        data = load_vcard('multi.vcf')
+        parser = VcardParser(data)
+        parser.parse()
+        self.assertEqual(parser.result.sum_conflicts, 0)
+        self.assertEqual(parser.result.sum_contacts,
+                         parser.result.sum_all_contacts)
+
 
 if __name__ == '__main__':
     unittest.main()

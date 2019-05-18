@@ -248,6 +248,39 @@ class VcardParser(object):
         self._vcards = vobject.readComponents(f)
 
     def parse(self):
+        contacts = self._parse()
+        result = VcardParserResult()
+        known_ids = []
+        distinct_contacts = []
+        for contact in contacts:
+            result.sum_all_contacts += 1
+            contact_conflict = 0
+            for ident in contact.all_identifiers():
+                if ident not in known_ids:
+                    known_ids.append(ident)
+                else:
+                    contact_conflict += 1
+                    result.conflicts.append(ident)
+            if not contact_conflict:
+                distinct_contacts.append(contact)
+                result.sum_contacts += 1
+            else:
+                result.sum_conflicts += contact_conflict
+        self.result = result
+        self.contacts = distinct_contacts
+        return distinct_contacts
+
+    def _parse(self):
         """Generator on vcards objects read from read file."""
         for vcard in self._vcards:
             yield VcardContact(vcard, self.locale)
+
+
+class VcardParserResult(object):
+    """Result structure for a vcard parsing."""
+
+    def __init__(self):
+        self.sum_contacts = 0
+        self.sum_all_contacts = 0
+        self.sum_conflicts = 0
+        self.conflicts = []
