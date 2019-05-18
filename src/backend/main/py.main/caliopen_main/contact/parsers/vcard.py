@@ -4,6 +4,7 @@ import logging
 import vobject
 import phonenumbers
 
+from caliopen_main.common.helpers.normalize import clean_email_address
 from caliopen_main.contact.parameters import NewContact, NewEmail, EMAIL_TYPES
 from caliopen_main.contact.parameters import NewIM, IM_TYPES, NewPhone
 from caliopen_main.contact.parameters import NewSocialIdentity
@@ -17,9 +18,10 @@ class VcardContact(object):
 
     _meta = {}
 
-    def __init__(self, vcard):
+    def __init__(self, vcard, default_locale=None):
         """Parse a vcard contact."""
         self._vcard = vcard
+        self.locale = default_locale
         self._parse()
 
     def _get_not_empty(self, prop):
@@ -33,7 +35,8 @@ class VcardContact(object):
 
     def __build_email(self, param):
         email = NewEmail()
-        email.address = param.value
+        email.label = param.value
+        email.address = clean_email_address(param.value)[0]
         if 'TYPE' in param.params:
             email_type = param.params['TYPE'][0].lower()
             if email_type in EMAIL_TYPES:
@@ -70,7 +73,7 @@ class VcardContact(object):
         if 'PREF' in param.params:
             phone.is_primary = True
         try:
-            number = phonenumbers.parse(phone.number, None)
+            number = phonenumbers.parse(phone.number, self.locale)
             phone_format = phonenumbers.PhoneNumberFormat.INTERNATIONAL
             normalized = phonenumbers.format_number(number, phone_format)
             if normalized:
@@ -179,11 +182,12 @@ class VcardContact(object):
 class VcardParser(object):
     """Vcard format parser class."""
 
-    def __init__(self, f):
+    def __init__(self, f, locale=None):
         """Read a vcard file and create a generator on vcard objects."""
+        self.locale = locale
         self._vcards = vobject.readComponents(f)
 
     def parse(self):
         """Generator on vcards objects read from read file."""
         for vcard in self._vcards:
-            yield VcardContact(vcard)
+            yield VcardContact(vcard, self.locale)
