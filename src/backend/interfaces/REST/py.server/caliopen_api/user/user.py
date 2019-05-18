@@ -18,7 +18,7 @@ from .util import create_token
 
 from ..base import Api
 from ..base.exception import AuthenticationError, NotAcceptable
-from ..base.exception import Unprocessable, ValidationError, MethodFailure
+from ..base.exception import Unprocessable, ValidationError
 
 from caliopen_storage.exception import NotFound
 from caliopen_storage.config import Configuration
@@ -55,23 +55,25 @@ def patch_device_key(key, param):
 
 def make_user_device_tokens(request, user, device, key):
     """Return (key, tokens) informations for cache entry management."""
+    cache_key = '{}-{}'.format(user.user_id, device.device_id)
+
     access_token = create_token()
     refresh_token = create_token(80)
 
     ttl = 86400
     expires_at = (datetime.datetime.utcnow() +
                   datetime.timedelta(seconds=ttl))
+
     tokens = {'access_token': access_token,
               'refresh_token': refresh_token,
               'expires_in': ttl,  # TODO : remove this value
               'shard_id': user.shard_id,
               'expires_at': expires_at.isoformat(),
-              'user_status': 'active'}
-    cache_key = '{}-{}'.format(user.user_id, device.device_id)
-    tokens.update({'key_id': str(key.key_id),
-                   'x': key.x,
-                   'y': key.y,
-                   'curve': key.crv})
+              'user_status': 'active',
+              'key_id': str(key.key_id),
+              'x': key.x,
+              'y': key.y,
+              'curve': key.crv}
 
     request.cache.set(cache_key, tokens)
     return tokens
@@ -225,7 +227,7 @@ class UserAPI(Api):
         except Exception as exc:
             log.exception(
                 'Error when sending new_user notification on NATS : {0}'.
-                    format(exc))
+                format(exc))
 
         return {'location': user_url}
 
