@@ -65,7 +65,8 @@ def make_user_device_tokens(request, user, device, key):
               'refresh_token': refresh_token,
               'expires_in': ttl,  # TODO : remove this value
               'shard_id': user.shard_id,
-              'expires_at': expires_at.isoformat()}
+              'expires_at': expires_at.isoformat(),
+              'user_status': 'active'}
     cache_key = '{}-{}'.format(user.user_id, device.device_id)
     tokens.update({'key_id': str(key.key_id),
                    'x': key.x,
