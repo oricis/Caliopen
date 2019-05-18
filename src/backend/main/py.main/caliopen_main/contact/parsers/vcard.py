@@ -13,6 +13,102 @@ from caliopen_main.contact.parameters import NewPostalAddress, NewOrganization
 log = logging.getLogger(__name__)
 
 
+class VcardParameter(object):
+    """A vcard parameter important for processing"""
+
+    def __init__(self, param):
+        self.param = param
+        self.object = None
+
+    def build(self):
+        self.object = self._build()
+
+
+class VcardEmail(VcardParameter):
+
+    def _build(self, **kwargs):
+        email = NewEmail()
+        email.label = self.param.value
+        email.address = clean_email_address(self.param.value)[0]
+        if 'TYPE' in self.param.params:
+            email_type = self.param.params['TYPE'][0].lower()
+            if email_type in EMAIL_TYPES:
+                email.type = email_type
+        if 'PREF' in self.param.params:
+            email.is_primary = True
+        return email
+
+
+class VcardIM(VcardParameter):
+
+    def _build(self):
+        im = NewIM()
+        im.label = self.param.value
+        im.address = clean_email_address(self.param.value)[0]
+        if 'TYPE' in self.param.params and self.param.params['TYPE']:
+            im_type = self.param.params['TYPE'][0].lower()
+            if im_type in IM_TYPES:
+                im.type = im_type
+        if 'PREF' in self.param.params:
+            im.is_primary = True
+        return im
+
+
+class VcardPhone(VcardParameter):
+
+    def _build(self, locale=None):
+        # XXX TOFIX
+        _vcard_types = {
+            'text': 'other',
+            'voice': 'other',
+            'fax': 'fax',
+            'cell': 'mobile',
+            'video': 'other',
+            'pager': 'pager',
+            'textphone': 'other',
+        }
+
+        phone = NewPhone()
+        phone.number = self.param.value
+        if 'TYPE' in self.param.params and self.param.params['TYPE']:
+            phone_type = self.param.params['TYPE'][0].lower()
+            if phone_type in _vcard_types:
+                phone.type = _vcard_types[phone_type]
+            else:
+                phone.type = 'other'
+        if 'PREF' in self.param.params:
+            phone.is_primary = True
+        try:
+            number = phonenumbers.parse(phone.number, locale)
+            phone_format = phonenumbers.PhoneNumberFormat.INTERNATIONAL
+            normalized = phonenumbers.format_number(number, phone_format)
+            if normalized:
+                phone.normalized_number = normalized
+        except:
+            pass
+        return phone
+
+
+class VcardIdentity(VcardParameter):
+
+    def _build(self):
+            social = NewSocialIdentity()
+            social.type = 'twitter'
+            social.name = self.param.value.lower().replace('@', '')
+
+
+class VcardAddress(VcardParameter):
+
+    def _build(self):
+        adr = NewPostalAddress()
+        adr.city = self.param.value.city
+        adr.zip = self.param.value.code
+        adr.street = self.param.value.street
+        adr.region = self.param.value.region
+        adr.country = self.param.value.country
+        return adr
+
+
 class VcardContact(object):
     """Contact from a vcard entry."""
 
@@ -33,73 +129,26 @@ class VcardContact(object):
             return attr.value if attr.value else None
         return None
 
-    def __build_email(self, param):
-        email = NewEmail()
-        email.label = param.value
-        email.address = clean_email_address(param.value)[0]
-        if 'TYPE' in param.params:
-            email_type = param.params['TYPE'][0].lower()
-            if email_type in EMAIL_TYPES:
-                email.type = email_type
-        if 'PREF' in param.params:
-            email.is_primary = True
-        return email
-
     def __parse_emails(self):
         """Read vcard email property and build NewEmail instances."""
         for param in self._vcard.contents.get('email', []):
-            yield self.__build_email(param)
-
-    def __build_phone(self, param):
-        # XXX TOFIX
-        _vcard_types = {
-            'text': 'other',
-            'voice': 'other',
-            'fax': 'fax',
-            'cell': 'mobile',
-            'video': 'other',
-            'pager': 'pager',
-            'textphone': 'other',
-        }
-
-        phone = NewPhone()
-        phone.number = param.value
-        if 'TYPE' in param.params and param.params['TYPE']:
-            phone_type = param.params['TYPE'][0].lower()
-            if phone_type in _vcard_types:
-                phone.type = _vcard_types[phone_type]
-            else:
-                phone.type = 'other'
-        if 'PREF' in param.params:
-            phone.is_primary = True
-        try:
-            number = phonenumbers.parse(phone.number, self.locale)
-            phone_format = phonenumbers.PhoneNumberFormat.INTERNATIONAL
-            normalized = phonenumbers.format_number(number, phone_format)
-            if normalized:
-                phone.normalized_number = normalized
-        except:
-            pass
-        return phone
+            vcard = VcardEmail(param)
+            vcard.build()
+            yield vcard.object
 
     def __parse_phones(self):
         """Read vcard tel property and build NewPhone instances."""
         for param in self._vcard.contents.get('tel', []):
-            yield self.__build_phone(param)
-
-    def __build_address(self, param):
-        adr = NewPostalAddress()
-        adr.city = param.value.city
-        adr.zip = param.value.code
-        adr.street = param.value.street
-        adr.region = param.value.region
-        adr.country = param.value.country
-        return adr
+            vcard = VcardPhone(param)
+            vcard.build()
+            yield vcard.object
 
     def __parse_addresses(self):
         """Read vcard adr property and build NewPostalAddress instances."""
         for param in self._vcard.contents.get('adr', []):
-            yield self.__build_address(param)
+            vcard = VcardAddress(param)
+            vcard.build()
+            yield vcard.object
 
     def __build_organization(self, param):
         org = NewOrganization()
@@ -110,31 +159,18 @@ class VcardContact(object):
         for param in self._vcard.contents.get('org', []):
             yield self.__build_organization(param)
 
-    def __build_im(self, param):
-        im = NewIM()
-        im.label = param.value
-        im.address = clean_email_address(param.value)[0]
-        if 'TYPE' in param.params and param.params['TYPE']:
-            im_type = param.params['TYPE'][0].lower()
-            if im_type in IM_TYPES:
-                im.type = im_type
-        if 'PREF' in param.params:
-            im.is_primary = True
-        return im
-
     def __parse_impps(self):
         for param in self._vcard.contents.get('impp', []):
-            yield self.__build_im(param)
+            vcard = VcardIM(param)
+            vcard.build()
+            yield vcard.object
 
     def __parse_social_identities(self):
-        idents = []
         if 'x-twitter' in self._vcard.contents:
             for ident in self._vcard.contents.get('x-twitter', []):
-                social = NewSocialIdentity()
-                social.type = 'twitter'
-                social.name = ident.value.lower().replace('@', '')
-                idents.append(social)
-        return idents
+                vcard = VcardIdentity(ident)
+                vcard.build()
+                yield vcard.object
 
     def _deduplicate_list(self, objects, attribute_name):
         distinct_values = []
@@ -200,9 +236,10 @@ class VcardContact(object):
         warnings['duplicate_email'] = duplicates
 
         identities = self.__parse_social_identities()
-        contact.identities, duplicates = self._deduplicate_list(identities,
-                                                                'name')
-        warnings['duplicate_identity'] = duplicates
+        if list(identities):
+            contact.identities, duplicates = self._deduplicate_list(identities,
+                                                                    'value')
+            warnings['duplicate_identity'] = duplicates
 
         ims = self.__parse_impps()
         contact.ims, duplicates = self._deduplicate_list(ims, 'address')
