@@ -112,7 +112,8 @@ class VcardContact(object):
 
     def __build_im(self, param):
         im = NewIM()
-        im.address = param.value
+        im.label = param.value
+        im.address = clean_email_address(param.value)[0]
         if 'TYPE' in param.params and param.params['TYPE']:
             im_type = param.params['TYPE'][0].lower()
             if im_type in IM_TYPES:
@@ -131,9 +132,22 @@ class VcardContact(object):
             for ident in self._vcard.contents.get('x-twitter', []):
                 social = NewSocialIdentity()
                 social.type = 'twitter'
-                social.name = ident.value
+                social.name = ident.value.lower().replace('@', '')
                 idents.append(social)
         return idents
+
+    def _deduplicate_list(self, objects, attribute_name):
+        distinct_values = []
+        distinct_objects = []
+        duplicates = 0
+        for obj in objects:
+            value = getattr(obj, attribute_name)
+            if value not in distinct_values:
+                distinct_values.append(value)
+                distinct_objects.append(obj)
+            else:
+                duplicates += 1
+        return distinct_objects, duplicates
 
     def _parse(self):
         contact = NewContact()
@@ -160,12 +174,43 @@ class VcardContact(object):
             if value:
                 self._meta[prop] = value
 
-        contact.phones = self.__parse_phones()
-        contact.emails = self.__parse_emails()
+        # build list then dedup them
+        warnings = {'duplicate_phone': 0, 'duplicate_email': 0,
+                    'duplicate_identity': 0, 'duplicate_im': 0}
+        phones = self.__parse_phones()
+        normalized_phones = [x.normalized_number for x in phones
+                             if x.normalized_number]
+        distinct_numbers = []
+        for phone in phones:
+            if phone.normalized_number in normalized_phones:
+                if phone.normalized_number not in distinct_numbers:
+                    distinct_numbers.append(phone.normalized_number)
+                    contact.phones.append(phone)
+                else:
+                    warnings['duplicate_phone'] += 1
+            else:
+                if phone.number not in distinct_numbers:
+                    distinct_numbers.append(phone.number)
+                    contact.phones.append(phone)
+                else:
+                    warnings['duplicate_phone'] += 1
+
+        emails = self.__parse_emails()
+        contact.emails, duplicates = self._deduplicate_list(emails, 'address')
+        warnings['duplicate_email'] = duplicates
+
+        identities = self.__parse_social_identities()
+        contact.identities, duplicates = self._deduplicate_list(identities,
+                                                                'name')
+        warnings['duplicate_identity'] = duplicates
+
+        ims = self.__parse_impps()
+        contact.ims, duplicates = self._deduplicate_list(ims, 'address')
+        warnings['duplicate_im'] = duplicates
+
         contact.addresses = self.__parse_addresses()
         contact.organizations = self.__parse_organizations()
-        contact.ims = self.__parse_impps()
-        contact.identities = self.__parse_social_identities()
+        self.warnings = warnings
         self.contact = contact
 
     def serialize(self):
@@ -177,6 +222,21 @@ class VcardContact(object):
     def validate(self):
         """Validate contact parsed informations."""
         return self.contact.validate()
+
+    def all_identifiers(self):
+        """Return all distinct identifiers for this contact."""
+        for email in self.contact.emails:
+            yield ('email', email.address)
+        for im in self.contact.ims:
+            yield ('im', im.address)
+        for ident in self.contact.identities:
+            yield (ident.type, ident.name)
+        for phone in self.contact.phones:
+            if phone.normalized_number:
+                number = phone.normalized_number
+            else:
+                number = phone.number
+            yield ('phone', number)
 
 
 class VcardParser(object):
