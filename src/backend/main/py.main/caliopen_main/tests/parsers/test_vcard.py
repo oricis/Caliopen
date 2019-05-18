@@ -30,8 +30,8 @@ def load_vcard(filename):
     return data
 
 
-def parse_vcard(vcard):
-    contact = VcardContact(vcard)
+def parse_vcard(vcard, locale=None):
+    contact = VcardContact(vcard, locale)
     return contact.contact
 
 
@@ -64,6 +64,16 @@ class TestVcardFormat(unittest.TestCase):
         contact = parse_vcard(vcard)
         for i in contact.ims:
             self.assertIsNotNone(i.type)
+
+    def test_complete(self):
+        data = load_vcard('full.vcf')
+        vcard = vobject.readOne(data)
+        contact = parse_vcard(vcard, 'FR')
+        self.assertTrue(len(list(contact.emails)) > 0)
+        self.assertTrue(len(list(contact.phones)) > 0)
+        self.assertTrue(len(list(contact.identities)) > 0)
+        self.assertTrue(len(list(contact.organizations)) > 0)
+        self.assertTrue(len(list(contact.addresses)) > 0)
 
 
 class TestVcardDedup(unittest.TestCase):
