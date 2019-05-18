@@ -75,8 +75,10 @@ def make_user_device_tokens(request, user, device, key):
               'y': key.y,
               'curve': key.crv}
 
-    request.cache.set(cache_key, tokens)
-    return tokens
+    request.cache.setex(cache_key, ttl, tokens)
+    result = tokens.copy()
+    result.pop('shard_id')
+    return result
 
 
 @resource(path='',
