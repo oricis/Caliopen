@@ -153,6 +153,13 @@ class NewPhone(Model):
     type = StringType(choices=PHONE_TYPES, default='other')
     uri = StringType()
 
+    @property
+    def best_value(self):
+        """Output the best value for duplicate/merge processing."""
+        if self.normalized_number:
+            return self.normalized_number
+        return self.number
+
     class Options:
         serialize_when_none = False
 
@@ -211,6 +218,18 @@ class NewContact(Model):
     phones = ListType(ModelType(NewPhone), default=lambda: [])
     privacy_features = DictType(StringType(), default=lambda: {})
     tags = ListType(StringType(), default=lambda: [])
+
+    @property
+    def all_identifiers(self):
+        """Return all distinct identifiers for this contact."""
+        for email in self.emails:
+            yield ('email', email.address)
+        for im in self.ims:
+            yield ('im', im.address)
+        for ident in self.identities:
+            yield (ident.type, ident.name)
+        for phone in self.phones:
+            yield ('phone', phone.best_value)
 
     class Options:
         serialize_when_none = False

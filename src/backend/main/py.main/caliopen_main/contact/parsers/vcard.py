@@ -242,6 +242,7 @@ class VcardContact(object):
         contact.emails, duplicates = self._deduplicate_list(emails, 'address')
         warnings['duplicate_email'] = duplicates
 
+        # TODO deduplicate using protocol and not only identity name
         identities = list(self.__parse_social_identities())
         if identities:
             contact.identities, duplicates = self._deduplicate_list(identities,
@@ -266,21 +267,6 @@ class VcardContact(object):
     def validate(self):
         """Validate contact parsed informations."""
         return self.contact.validate()
-
-    def all_identifiers(self):
-        """Return all distinct identifiers for this contact."""
-        for email in self.contact.emails:
-            yield ('email', email.address)
-        for im in self.contact.ims:
-            yield ('im', im.address)
-        for ident in self.contact.identities:
-            yield (ident.type, ident.name)
-        for phone in self.contact.phones:
-            if phone.normalized_number:
-                number = phone.normalized_number
-            else:
-                number = phone.number
-            yield ('phone', number)
 
 
 class VcardParserResult(object):
@@ -316,7 +302,7 @@ class VcardParser(object):
         for contact in contacts:
             result.sum_all_contacts += 1
             contact_conflict = 0
-            for ident in contact.all_identifiers():
+            for ident in contact.contact.all_identifiers:
                 if ident not in known_ids:
                     known_ids.append(ident)
                 else:

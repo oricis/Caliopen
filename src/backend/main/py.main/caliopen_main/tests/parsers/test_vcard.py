@@ -75,6 +75,7 @@ class TestVcardFormat(unittest.TestCase):
         self.assertTrue(len(list(contact.identities)) > 0)
         self.assertTrue(len(list(contact.organizations)) > 0)
         self.assertTrue(len(list(contact.addresses)) > 0)
+        self.assertTrue(len(list(contact.all_identifiers)) > 0)
 
 
 class TestVcardDedup(unittest.TestCase):
