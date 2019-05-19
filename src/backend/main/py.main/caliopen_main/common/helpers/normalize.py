@@ -8,7 +8,12 @@ log = logging.getLogger(__name__)
 
 
 def clean_email_address(addr):
-    """Clean an email address for user resolve."""
+    """
+    Clean an email address for user resolve.
+
+    Return a tuple (normalized_value, real_value)
+    Normalization is : lowercase the real email value and keep + in local part
+    """
     real_name, email = parseaddr(addr.replace('\r', ''))
     err_msg = 'Invalid email address {}'.format(addr)
     if not email or '@' not in email:
@@ -18,13 +23,11 @@ def clean_email_address(addr):
     if '@' in domain:
         log.error(err_msg)
         return ("", "")
-    if '+' in name:
-        try:
-            name, ext = name.split('+', 1)
-        except Exception as exc:
-            log.info(exc)
+
     # unicode everywhere
     return (u'%s@%s' % (name, domain), email)
 
+
 def clean_twitter_address(addr):
+    """Clean a twitter address."""
     return addr.strip('@').lower()
