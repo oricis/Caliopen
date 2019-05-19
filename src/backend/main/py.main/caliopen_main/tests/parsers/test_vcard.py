@@ -32,6 +32,7 @@ def load_vcard(filename):
 
 def parse_vcard(vcard, locale=None):
     contact = VcardContact(vcard, locale)
+    contact.parse()
     return contact.contact
 
 

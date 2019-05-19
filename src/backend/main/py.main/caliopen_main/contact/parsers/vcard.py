@@ -121,6 +121,11 @@ class VcardContact(object):
         """Parse a vcard contact."""
         self._vcard = vcard
         self.locale = default_locale
+        self.contact = None
+        self.warnings = {'duplicate_phone': 0, 'duplicate_email': 0,
+                         'duplicate_identity': 0, 'duplicate_im': 0}
+
+    def parse(self):
         self._parse()
 
     def _get_not_empty(self, prop):
@@ -214,8 +219,7 @@ class VcardContact(object):
                 self._meta[prop] = value
 
         # build list then dedup them
-        warnings = {'duplicate_phone': 0, 'duplicate_email': 0,
-                    'duplicate_identity': 0, 'duplicate_im': 0}
+        warnings = self.warnings
         phones = list(self.__parse_phones())
         normalized_phones = [x.normalized_number for x in phones
                              if x.normalized_number]
@@ -313,7 +317,9 @@ class VcardParser(object):
     def _parse(self):
         """Generator on vcards objects read from read file."""
         for vcard in self._vcards:
-            yield VcardContact(vcard, self.locale)
+            contact = VcardContact(vcard, self.locale)
+            contact.parse()
+            yield contact
 
 
 class VcardParserResult(object):

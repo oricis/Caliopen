@@ -1,0 +1,17 @@
+BEGIN:VCARD
+VERSION:3.0
+FN:Complete contact
+N:contact;Complete;;;
+ADR;TYPE=WORK:;;63-65 Boulevard Massena;Paris;;75013;France
+ADR;TYPE=PERSONAL:;;1 bis rue du test;Paris;;75020;France
+X-EVOLUTION-FILE-AS:Complete\, contact
+EMAIL;TYPE=OTHER:contact@caliopen.org
+EMAIL;TYPE=PERSONAL:personal@caliopen.org
+IM;TYPE=OTHER:contact@caliopen.org
+TEL:+33 123456789
+TEL:0123456789
+X-TWITTER:@__someone
+ORG:some organization
+UID:pas-id-58AF0A5A00000000
+REV:2017-02-23T16:14:18Z(1)
+END:VCARD
