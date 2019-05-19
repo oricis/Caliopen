@@ -8,6 +8,13 @@ from cassandra.cqlengine import columns
 log = logging.getLogger(__name__)
 
 
+def get_user_index(user_id):
+    from caliopen_main.user.store import User
+    log.warning('We should not be there to get user.shard_id')
+    user = User.get(user_id=user_id)
+    return user.shard_id
+
+
 class IndexedModelMixin(object):
     """Mixin to transform model into indexed documents."""
 
@@ -61,7 +68,10 @@ class IndexedModelMixin(object):
         if not self._index_class:
             return False
         idx = self._index_class()
-        idx.meta.index = self.user_id
+        # XXX TODO TEMPORARY FIX
+        # Design on core object did not follow correctly user.shard_id logic
+
+        idx.meta.index = get_user_index(self.user_id)
 
         for name, desc in self._columns.items():
             if desc.is_primary_key:
@@ -80,11 +90,13 @@ class IndexedModelMixin(object):
         """Update an existing index with a list of new values"""
 
         idx = self._index_class()
-        idx.meta.index = self.user_id
+        idx.meta.index = get_user_index(self.user_id)
         idx.meta.id = object_id
 
         update_doc = {}
         for name in changed_columns:
+            if name == 'user_id':
+                raise Exception('Can not change user_id column')
             column = self._columns[name]
             self._process_column(column, idx)
             update_doc[name] = getattr(idx, name)
@@ -99,7 +111,8 @@ class IndexedModelMixin(object):
             except KeyError:
                 pass
             out[k] = v
-
+        # XXX This method is no more used, deprecate it smoothly
+        log.warning('Deprecation warning on IndexedModelMixin.update_index')
         idx.update(using=idx.client(), **out)
 
     @classmethod
@@ -107,7 +120,8 @@ class IndexedModelMixin(object):
                min_pi=0, max_pi=0, sort=None, **params):
         """Search in index using a dict parameter."""
         search = cls._index_class.search(using=cls._index_class.client(),
-                                         index=user.user_id)
+                                         index=user.shard_id)
+        search.filter('term', user_id=user.user_id)
         for k, v in params.items():
             term = {k: v}
             search = search.filter('match', **term)
@@ -121,4 +135,6 @@ class IndexedModelMixin(object):
         log.debug('Search is {}'.format(search.to_dict()))
         resp = search.execute()
         log.debug('Search result {}'.format(resp))
+        # XXX This method is no more used, deprecate it smoothly
+        log.warning('Deprecation warning on IndexedModelMixin.update_index')
         return resp

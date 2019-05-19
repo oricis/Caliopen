@@ -6,11 +6,10 @@ elasticsearch:
     url:
         - http://es.dev.caliopen.org:9200
     shards:
-        - e0a91650-dc36-4acf-a6a9-6c3d338d056b
-        - 6830c383-620f-4467-aa27-b8435029f1d2
-        - deca327e-0627-475f-bd7d-0bf56d349a1c
-        - e07958d5-e243-4f6e-bf10-22718db3e2dc
-        - 99c3b422-cfce-429c-b54a-d6269064dbab
+        - caliopen-dev-0001
+        - caliopen-dev-0002
+        - caliopen-dev-0003
+        - caliopen-dev-0004
 
 cassandra:
     keyspace: caliopen
