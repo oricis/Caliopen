@@ -14,26 +14,10 @@ elasticsearch:
     url: http://elasticsearch:9200
     mappings_version: v6
     shards:
-        - e0a91650-dc36-4acf-a6a9-6c3d338d056b
-        - 6830c383-620f-4467-aa27-b8435029f1d2
-        - deca327e-0627-475f-bd7d-0bf56d349a1c
-        - e07958d5-e243-4f6e-bf10-22718db3e2dc
-        - 99c3b422-cfce-429c-b54a-d6269064dbab
-        - f0dd30de-dec3-4d38-a897-cb7315fe5bff
-        - 921ebf4a-6b63-42e8-aeca-9ed6019d4886
-        - fe10e264-723e-4134-b4c3-0f689018acf2
-        - b50f2f78-3837-44b4-899e-ffe10dcd83ab
-        - a3f991b9-7c32-4c31-9a9a-4a79a86c35f0
-        - e569474b-9d23-4291-908c-22acfc66223a
-        - 1088208f-158f-4e55-a183-8d30272cf6be
-        - a09e8223-5477-405c-af1c-dd9568a5bd77
-        - d931548e-5622-420f-8f19-0eb68e909f69
-        - 4faae137-5938-42d3-bf1a-8e1a4e1868e1
-        - 06f73b88-3317-45f4-9b48-3fffd8e43482
-        - 53bf2c57-967d-47b8-98f1-dfb3394184f8
-        - 0301a1b0-f65e-4912-be67-35daa162db4c
-        - 9f6e6c42-ddbd-48a7-9ed8-8b162a82baa0
-        - 2ffa0b75-3375-4f9e-8241-3d21a5ccea2b
+        - caliopen-dev-0001
+        - caliopen-dev-0002
+        - caliopen-dev-0003
+        - caliopen-dev-0004
 
 cassandra:
     keyspace: caliopen
