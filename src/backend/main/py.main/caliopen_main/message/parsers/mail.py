@@ -28,7 +28,8 @@ from caliopen_main.common.interfaces import (IAttachmentParser, IMessageParser,
 
 log = logging.getLogger(__name__)
 
-TEXT_CONTENT_TYPE = ['text', 'xml', 'vnd', 'xhtml', 'json' , 'msword']
+TEXT_CONTENT_TYPE = ['text', 'xml', 'vnd', 'xhtml', 'json', 'msword']
+
 
 class MailAttachment(object):
     """Mail part structure."""
@@ -229,11 +230,10 @@ class MailMessage(object):
         ref_ids = [address[1] for address in ref_addr] if ref_addr else []
         mid = clean_email_address(ext_id)[1] if ext_id else None
         if not mid:
-            log.error('Unable to find correct message_id {}'.format(ext_id))
+            log.warning('Unable to find correct message_id {}'.format(ext_id))
             mid = ext_id
         pid = clean_email_address(parent_id)[1] if parent_id else None
         if not pid:
-            log.error('Unable to find correct parent_id {}'.format(parent_id))
             pid = parent_id
         return {
             'message_id': mid,
