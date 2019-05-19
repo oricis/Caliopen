@@ -8,8 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- participants algorithm
-- discussion last message sort
+- Participants algorithm edge case
+- Discussion last message sort better
+- Index user contact without alias using a workaround to bad core/mixin classes design
 
 ### Changed
 
