@@ -283,6 +283,23 @@ class VcardContact(object):
             yield ('phone', number)
 
 
+class VcardParserResult(object):
+    """Result structure for a vcard parsing."""
+
+    def __init__(self):
+        self.sum_contacts = 0
+        self.sum_all_contacts = 0
+        self.sum_conflicts = 0
+        self.conflicts = []
+
+    def to_dict(self):
+        """Dict representation of this result."""
+        return {'sum_contacts': self.sum_contacts,
+                'sum_all_contacts': self.sum_all_contacts,
+                'sum_conflicts': self.sum_conflicts,
+                'conflicts': self.conflicts}
+
+
 class VcardParser(object):
     """Vcard format parser class."""
 
@@ -320,13 +337,3 @@ class VcardParser(object):
             contact = VcardContact(vcard, self.locale)
             contact.parse()
             yield contact
-
-
-class VcardParserResult(object):
-    """Result structure for a vcard parsing."""
-
-    def __init__(self):
-        self.sum_contacts = 0
-        self.sum_all_contacts = 0
-        self.sum_conflicts = 0
-        self.conflicts = []
