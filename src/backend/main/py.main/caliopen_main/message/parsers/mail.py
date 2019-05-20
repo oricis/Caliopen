@@ -259,7 +259,7 @@ class MailMessage(object):
             participant_type = header.capitalize()
             if self.mail.get(header):
                 if ',' in self.mail.get(header):
-                    parts = self.mail.get(header).split(',')
+                    parts = self.mail.get(header).split('>,')
                     filtered = [x for x in parts if '@' in x]
                     addrs.extend(filtered)
                 else:
