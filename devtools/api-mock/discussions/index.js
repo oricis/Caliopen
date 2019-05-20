@@ -30,7 +30,7 @@ const reducer = {
 
     const discussion = {
       discussion_id: uuidv1(),
-      participants: [],
+      participants: body.participants,
       excerpt: body.body.slice(0, 100), // it works beccause created using POST message route
       privacy_index: 1,
       date_insert: new Date(),
