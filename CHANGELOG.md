@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Disable «Take a tour» which is not working properly
+
 ### Fixed
 
 - BSOD when changing identity in draft when no recipients (thanks peha)
