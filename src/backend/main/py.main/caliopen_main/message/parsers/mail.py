@@ -28,7 +28,8 @@ from caliopen_main.common.interfaces import (IAttachmentParser, IMessageParser,
 
 log = logging.getLogger(__name__)
 
-TEXT_CONTENT_TYPE = ['text', 'xml', 'vnd', 'xhtml', 'json' , 'msword']
+TEXT_CONTENT_TYPE = ['text', 'xml', 'vnd', 'xhtml', 'json', 'msword']
+
 
 class MailAttachment(object):
     """Mail part structure."""
@@ -257,15 +258,19 @@ class MailMessage(object):
             addrs = []
             participant_type = header.capitalize()
             if self.mail.get(header):
-                if ',' in self.mail.get(header):
-                    parts = self.mail.get(header).split('>,')
-                    filtered = [x for x in parts if '@' in x]
-                    addrs.extend(filtered)
-                else:
-                    addrs.append(self.mail.get(header))
+                parts = self.mail.get(header).split('>,')
+                if not parts:
+                    pass
+                if parts and parts[0] == 'undisclosed-recipients:;':
+                    pass
+                filtered = [x for x in parts if '@' in x]
+                addrs.extend(filtered)
             for addr in addrs:
                 participant = MailParticipant(participant_type, addr.lower())
-                participants.append(participant)
+                if participant.address == '' and participant.label == '':
+                    log.warn('Invalid email address {}'.format(addr))
+                else:
+                    participants.append(participant)
         return participants
 
     @property

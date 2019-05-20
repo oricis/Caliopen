@@ -16,7 +16,7 @@ def clean_email_address(addr):
         # Try something else
         log.info('Last chance email parsing for {}'.format(addr))
         matches = re.match('(.*)<(.*@.*)>', addr)
-        if matches.groups():
+        if matches and matches.groups():
             real_name, email = matches.groups()
         else:
             log.warn(err_msg)
