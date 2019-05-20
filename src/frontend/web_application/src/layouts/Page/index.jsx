@@ -75,7 +75,8 @@ class Page extends Component {
                   displayFirstLayer
                 >
                   <VerticalMenu>
-                    <VerticalMenuItem><TakeATour /></VerticalMenuItem>
+                    {/* FIXME: unable to get the router outside of the App */}
+                    {/* <VerticalMenuItem><TakeATour /></VerticalMenuItem> */}
                     <VerticalMenuItem>
                       <Link button expanded href="https://github.com/CaliOpen/Caliopen/blob/master/CHANGELOG.md" target="_blank">
                         <Trans id="header.help.last-changes">Last changes</Trans>
