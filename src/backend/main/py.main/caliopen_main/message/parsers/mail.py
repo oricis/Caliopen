@@ -233,7 +233,6 @@ class MailMessage(object):
             mid = ext_id
         pid = clean_email_address(parent_id)[1] if parent_id else None
         if not pid:
-            log.error('Unable to find correct parent_id {}'.format(parent_id))
             pid = parent_id
         return {
             'message_id': mid,

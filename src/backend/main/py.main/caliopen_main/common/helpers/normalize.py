@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Normalization functions for different values."""
 from __future__ import absolute_import, unicode_literals
+import re
 import logging
 from email.utils import parseaddr
 
@@ -12,8 +13,14 @@ def clean_email_address(addr):
     real_name, email = parseaddr(addr.replace('\r', ''))
     err_msg = 'Invalid email address {}'.format(addr)
     if not email or '@' not in email:
-        log.warn(err_msg)
-        return ("", "")
+        # Try something else
+        log.info('Last chance email parsing for {}'.format(addr))
+        matches = re.match('(.*)<(.*@.*)>', addr)
+        if matches.groups():
+            real_name, email = matches.groups()
+        else:
+            log.warn(err_msg)
+            return ("", "")
     name, domain = email.lower().split('@', 1)
     if '@' in domain:
         log.error(err_msg)
