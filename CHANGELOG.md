@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Disable the send button on quick draft when empty (thanks Sebbaz).
+
 ### Fixed
 
 - BSOD when changing identity in draft when no recipients (thanks peha)

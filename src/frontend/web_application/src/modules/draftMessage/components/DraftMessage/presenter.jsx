@@ -541,7 +541,7 @@ class DraftMessage extends Component {
 
     const encryptionEnabled = isEncrypted && encryptionStatus === STATUS_DECRYPTED;
 
-    const canSend = this.getCanSend();
+    const canSend = this.getCanSend() && this.state.draftMessage.body.length > 0;
 
     return (
       <div className={classnames(className, 'm-draft-message-quick')} ref={ref}>
