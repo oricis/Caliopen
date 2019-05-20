@@ -19,7 +19,7 @@ if (CALIOPEN_ENV === 'development') {
 }
 
 const locales = getUserLocales();
-const settings = getDefaultSettings(locales[0]);
+const settings = getDefaultSettings(locales);
 const getHistory = () => {
   const history = getRouterHistory();
   const { piwik: { siteId } } = getConfig();

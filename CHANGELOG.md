@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Default locale saved on account creation
+
 ## [0.20.0] 2019-05-15
 
 ### Added
