@@ -10,7 +10,11 @@ log = logging.getLogger(__name__)
 
 def clean_email_address(addr):
     """Clean an email address for user resolve."""
-    real_name, email = parseaddr(addr.replace('\r', ''))
+    try:
+        real_name, email = parseaddr(addr.replace('\r', ''))
+    except UnicodeError:
+        addr = addr.decode('utf-8', errors='ignore')
+        real_name, email = parseaddr(addr.replace('\r', ''))
     err_msg = 'Invalid email address {}'.format(addr)
     if not email or '@' not in email:
         # Try something else
@@ -32,6 +36,7 @@ def clean_email_address(addr):
             log.info(exc)
     # unicode everywhere
     return (u'%s@%s' % (name, domain), email)
+
 
 def clean_twitter_address(addr):
     return addr.strip('@').lower()

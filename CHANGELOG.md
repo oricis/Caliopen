@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - BSOD when changing identity in draft when no recipients (thanks peha)
+- Many encoding issues during mail delivery
 
 ### Fixed
 
