@@ -25,10 +25,10 @@ def to_utf8(input, charset):
     :param charset: string
     :return: utf-8 string
     """
-    matches = re.match('^charset.*"(.*)"', charset)
-    if matches and matches.groups():
-        charset = matches.groups()[0]
-    if charset is not None:
+    if charset:
+        matches = re.match('^charset.*"(.*)"', charset)
+        if matches and matches.groups():
+            charset = matches.groups()[0]
         try:
             return input.decode(charset, "replace"). \
                 encode("utf-8", "replace")
