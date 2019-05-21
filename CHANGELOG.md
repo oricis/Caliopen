@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 - Disable «Take a tour» which is not working properly
+- Disable the send button on quick draft when empty (thanks Sebbaz).
 
 ### Fixed
 
