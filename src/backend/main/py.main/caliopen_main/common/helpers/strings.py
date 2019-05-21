@@ -25,12 +25,15 @@ def to_utf8(input, charset):
     :param charset: string
     :return: utf-8 string
     """
+    matches = re.match('^charset.*"(.*)"', charset)
+    if matches and matches.groups():
+        charset = matches.groups()[0]
     if charset is not None:
         try:
             return input.decode(charset, "replace"). \
                 encode("utf-8", "replace")
-        except Exception as exc:
-            log.info("decoding <{}> string to utf-8 failed "
+        except UnicodeError as exc:
+            log.warn("decoding <{}> string to utf-8 failed "
                      "with error : {}".format(input, exc))
             return input
     else:
@@ -38,6 +41,6 @@ def to_utf8(input, charset):
             return input.decode("us-ascii", "replace"). \
                 encode("utf-8", "replace")
         except Exception as exc:
-            log.info("decoding <{}> string to utf-8 failed "
-                     "with error : {}".format(input, exc))
+            log.warn("decoding <{}> string to utf-8 failed "
+                     "with error : {}".format(bytes(input), exc))
             return input

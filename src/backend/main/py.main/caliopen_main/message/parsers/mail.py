@@ -40,6 +40,12 @@ class MailAttachment(object):
         """Extract attachment attributes from a mail part."""
         self.content_type = part.get_content_type()
         self.filename = part.get_filename()
+        if self.filename:
+            try:
+                self.filename = self.filename.decode('utf-8')
+            except UnicodeError:
+                log.warn('Invalid filename encoding')
+                self.filename = self.filename.decode('utf-8', errors='ignore')
         content_disposition = part.get("Content-Disposition")
         if content_disposition:
             dispositions = content_disposition.strip().split(";")
@@ -206,7 +212,11 @@ class MailMessage(object):
             return s[0][0].decode(charset, "replace"). \
                 encode("utf-8", "replace")
         else:
-            return s[0][0]
+            try:
+                return s[0][0].decode('utf-8', errors='ignore')
+            except UnicodeError:
+                log.warn('Invalid subject encoding')
+                return s[0][0]
 
     @property
     def size(self):
