@@ -1,0 +1,41 @@
+
+@mixin fontdef($FontPrefix, $FontVersion, $FontType) {
+  src:  url('#{$FontPrefix}-#{$FontType}.ttf') format('truetype');
+}
+
+// Open Sans
+$OpenSansTitle: 'Open Sans';
+$OpenSansPrefix: 'OpenSans';
+$OpenSansVersion: '1.1.0' !default;
+
+// Open Sans Regular
+@font-face {
+  @include fontdef($OpenSansPrefix, $OpenSansVersion, 'Regular');
+  font-family: $OpenSansTitle;
+  font-style: normal;
+  font-weight: 400;
+}
+
+// Open Sans Semibold
+@font-face {
+  @include fontdef($OpenSansPrefix, $OpenSansVersion, 'Semibold');
+  font-family: $OpenSansTitle;
+  font-style: normal;
+  font-weight: 600;
+}
+
+// Open Sans Bold
+@font-face {
+  @include fontdef($OpenSansPrefix, $OpenSansVersion, 'Bold');
+  font-family: $OpenSansTitle;
+  font-style: normal;
+  font-weight: 700;
+}
+
+// Open Sans ExtraBold
+@font-face {
+  @include fontdef($OpenSansPrefix, $OpenSansVersion, 'ExtraBold');
+  font-family: $OpenSansTitle;
+  font-style: normal;
+  font-weight: 800;
+}
