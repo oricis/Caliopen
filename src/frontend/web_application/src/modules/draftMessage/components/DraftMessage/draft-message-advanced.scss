@@ -34,7 +34,7 @@ $fa-font-path: '../../../../../node_modules/font-awesome/fonts';
   &__action-send {
     @include flex-grid-size(12);
     padding-right: map_get($co-margin_, 'xlarge');
-    background-color: #ecf9ff;
+    background-color: $co-color__bg__action;
   }
 
   &__errors {

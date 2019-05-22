@@ -1,5 +1,6 @@
 @import '../../../../styles/common';
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
+@import '../../../../styles/object/o-form-element';
 $fa-font-path: '../../../../../node_modules/font-awesome/fonts';
 @import 'font-awesome';
 
@@ -13,7 +14,7 @@ $fa-font-path: '../../../../../node_modules/font-awesome/fonts';
   &__container {
     @include flex-grid-row($size: expand);
     border: 1px solid #9a989b;
-    background-color: #fff;
+    background-color: $co-color__bg__action;
   }
 
   &__encryption {
@@ -28,6 +29,9 @@ $fa-font-path: '../../../../../node_modules/font-awesome/fonts';
 
   &__input {
     @include flex-grid-size;
+    @include o-form-element;
+    @include o-form-element--light;
+    width: 100%;
     border: none;
 
     &--encrypted {

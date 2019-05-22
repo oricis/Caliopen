@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- On quick reply, «Enter» will not send draft anymore, it must be CTRL+Enter.
+- Quick reply is now multilines.
+
 ### Fixed
 
 - Default locale saved on account creation
