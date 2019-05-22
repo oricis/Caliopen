@@ -190,6 +190,7 @@ class OpenPGPKeyForm extends Component {
                   value={generateForm.passphrase}
                   onChange={this.handleGenerateChanges}
                   name="passphrase"
+                  autocomplete="new-password"
                 />
               </div>
             )}

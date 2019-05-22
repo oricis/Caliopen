@@ -2,4 +2,7 @@
 @import '../../../../styles/vendor/bootstrap_foundation-sites.scss';
 
 .m-ask-passphrase {
+  &--input-fingerprint {
+    display: none;
+  }
 }
