@@ -42,7 +42,11 @@ def create_all_shards(dry_run=True):
 
 def recreate_user_alias(client, user, dry_run=True):
     """Create an index alias mapping user_id -> shard_id."""
+    if not user.shard_id:
+        log.error('No shard for user {}'.format(user.user_id))
+        return False
     shards = Configuration('global').get('elasticsearch.shards')
+    alias_exists = False
     if client.indices.exists_alias(name=user.user_id):
         alias = client.indices.get_alias(name=user.user_id)
         for index, alias_infos in alias.items():
@@ -52,13 +56,24 @@ def recreate_user_alias(client, user, dry_run=True):
                 else:
                     log.info('Alias exist {} with index {}, should delete'.
                              format(user.user_id, index))
+            else:
+                log.info('Alias on shard exist, skipping')
+                alias_exists = True
+    if alias_exists:
+        return True
     if not dry_run:
         body = {'filter': {'term': {'user_id': user.user_id}}}
-        client.indices.put_alias(index=user.shard_id,
-                                 name=user.user_id,
-                                 body=body)
+        try:
+            client.indices.put_alias(index=user.shard_id,
+                                     name=user.user_id,
+                                     body=body)
+        except Exception as exc:
+            log.exception('Error during alias creation for user {} : {}'.
+                          format(user.user_id, exc))
+            return False
     else:
         log.info('Should create alias {}'.format(user.user_id))
+    return True
 
 
 def recreate_all_user_aliases(dry_run=True):

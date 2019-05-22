@@ -115,7 +115,7 @@ class DraftMessage extends Component {
         body,
         subject: draftMessage.subject,
         identityId,
-        recipients,
+        ...(recipients ? { recipients } : {}),
       },
     };
   }
@@ -124,7 +124,6 @@ class DraftMessage extends Component {
     const { availableIdentities, userState: { user } } = props;
     const currIdentity = availableIdentities
       .find(identity => identity.identity_id === state.draftMessage.identityId);
-    const recipients = state.draftMessage.recipients ? state.draftMessage.recipients : [];
 
     return {
       ...props.draftMessage,
@@ -133,7 +132,7 @@ class DraftMessage extends Component {
       user_identities: currIdentity && [currIdentity.identity_id],
       participants: [
         identityToParticipant({ identity: currIdentity, user }),
-        ...recipients,
+        ...state.draftMessage.recipients,
       ],
     };
   }
@@ -174,6 +173,10 @@ class DraftMessage extends Component {
 
     const recipients = getRecipients(draftMessage);
 
+    if (!recipients) {
+      return '';
+    }
+
     if (recipients.length > 3) {
       return recipients.map(recipient => recipient.address).join(', ').concat('...');
     }
@@ -209,8 +212,7 @@ class DraftMessage extends Component {
     const { isReply } = this.props;
     const errors = this.validate();
     const isValid = errors.length === 0;
-    const hasRecipients = this.state.draftMessage.recipients &&
-      this.state.draftMessage.recipients.length > 0;
+    const hasRecipients = this.state.draftMessage.recipients.length > 0;
 
     return (isReply || hasRecipients) && !this.state.isSending && isValid;
   }
@@ -237,10 +239,7 @@ class DraftMessage extends Component {
 
     const protocol = getIdentityProtocol(identity);
 
-    if (
-      currentDraft.recipients &&
-      currentDraft.recipients.some(participant => participant.protocol !== protocol)
-    ) {
+    if (currentDraft.recipients.some(participant => participant.protocol !== protocol)) {
       return [
         (
           <Trans
@@ -388,10 +387,11 @@ class DraftMessage extends Component {
     });
   }
 
-  forceParticipantsProtocol = ({ protocol, participants }) => participants.map(participant => ({
-    ...participant,
-    protocol,
-  }));
+  forceParticipantsProtocol = ({ protocol, participants }) => participants
+    .map(participant => ({
+      ...participant,
+      protocol,
+    }));
 
   handleIdentityChange = async ({ identity = {} }) => {
     this.setState((prevState) => {
@@ -541,7 +541,7 @@ class DraftMessage extends Component {
 
     const encryptionEnabled = isEncrypted && encryptionStatus === STATUS_DECRYPTED;
 
-    const canSend = this.getCanSend();
+    const canSend = this.getCanSend() && this.state.draftMessage.body.length > 0;
 
     return (
       <div className={classnames(className, 'm-draft-message-quick')} ref={ref}>

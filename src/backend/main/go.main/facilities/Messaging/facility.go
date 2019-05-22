@@ -44,7 +44,7 @@ func NewCaliopenMessaging(config CaliopenConfig, notifier *Notifications.Notifie
 	if config.NatsConfig.Users_topic == "" {
 		return nil, errors.New("[NewCaliopenMessaging] wont subscribe to empty topic")
 	}
-	userSub, err := cm.natsConn.Subscribe(config.NatsConfig.Users_topic, cm.HandleUserAction)
+	userSub, err := cm.natsConn.QueueSubscribe(config.NatsConfig.Users_topic, config.NatsConfig.NatsQueue, cm.HandleUserAction)
 	if err != nil {
 		log.WithError(err).Errorf("[NewCaliopenMessaging] failed to subscribe to %s topic on NATS", config.NatsConfig.Users_topic)
 		return nil, err

@@ -82,6 +82,7 @@ type (
 
 	NatsConfig struct {
 		Url              string `mapstructure:"url"`
+		NatsQueue        string `mapstructure:"nats_queue"`
 		OutSMTP_topic    string `mapstructure:"outSMTP_topic"`
 		OutIMAP_topic    string `mapstructure:"outIMAP_topic"`
 		OutTWITTER_topic string `mapstructure:"outTWITTER_topic"`
@@ -130,6 +131,7 @@ func (server *REST_API) initialize(config APIConfig) error {
 		},
 		NatsConfig: obj.NatsConfig{
 			Url:              config.NatsConfig.Url,
+			NatsQueue:        config.NatsConfig.NatsQueue,
 			OutSMTP_topic:    config.NatsConfig.OutSMTP_topic,
 			OutIMAP_topic:    config.NatsConfig.OutIMAP_topic,
 			OutTWITTER_topic: config.NatsConfig.OutTWITTER_topic,

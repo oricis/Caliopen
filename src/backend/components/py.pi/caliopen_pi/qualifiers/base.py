@@ -73,6 +73,6 @@ class BaseQualifier(object):
         if c:
             p.contact_ids = [c.contact_id]
         else:
-            if p.address == self.identity.identifier:
+            if p.address == self.identity.identifier and self.user.contact_id:
                 p.contact_ids = [self.user.contact_id]
         return p, c

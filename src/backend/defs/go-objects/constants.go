@@ -60,6 +60,10 @@ const (
 	LocalIdentity  = "local"
 	RemoteIdentity = "remote"
 
+	//praticipants lookup
+	UrisKind         = "uris"
+	ParticipantsKind = "participants"
+
 	//device status
 	DeviceVerifiedStatus   = "verified"
 	DeviceUnverifiedStatus = "unverified"

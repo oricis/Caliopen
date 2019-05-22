@@ -7,6 +7,7 @@ from cassandra.query import dict_factory
 
 
 from caliopen_storage.config import Configuration
+from caliopen_storage.exception import NotFound
 from caliopen_main.user.core.user import User
 from caliopen_main.user.core import allocate_user_shard
 from caliopen_main.contact.objects.contact import Contact as ContactObject
@@ -19,15 +20,20 @@ log = logging.getLogger(__name__)
 EXCLUDE_COLUMS = ['tags']
 
 
-def copy_contacts(user, only_id):
-    conf = Configuration('global').configuration
-    cluster_source = Cluster(conf['old_cassandra']['hosts'])
-    source = cluster_source.connect(conf['old_cassandra']['keyspace'])
-    source.row_factory = dict_factory
+conf = Configuration('global').configuration
+cluster_source = Cluster(conf['old_cassandra']['hosts'])
+source = cluster_source.connect(conf['old_cassandra']['keyspace'])
+source.row_factory = dict_factory
+
+cluster_dest = Cluster(conf['cassandra']['hosts'])
+dest = cluster_dest.connect(conf['cassandra']['keyspace'])
+
+
+def copy_contacts(user, only_id, filter_id=None):
     query = "SELECT * from contact where user_id = {}".format(user.user_id)
+    if filter_id:
+        query = "{} AND contact_id = {}".format(query, filter_id)
     statement = SimpleStatement(query, fetch_size=200)
-    cluster_dest = Cluster(conf['cassandra']['hosts'])
-    dest = cluster_dest.connect(conf['cassandra']['keyspace'])
     insert_query = "INSERT INTO contact ({0}) VALUES ({1})"
 
     contact_ids = []
@@ -78,17 +84,27 @@ def patch_user_contact(user, contact, new_domain, old_domain):
     return update
 
 
-def copy_user_contacts(user, new_domain, old_domain, only_index=False):
-    ids = copy_contacts(user, only_index)
+def copy_user_contacts(user, new_domain, old_domain, only_index=False,
+                       filter_id=None):
+    ids = copy_contacts(user, only_index, filter_id)
     for id in ids:
         contact = ContactObject(user, contact_id=id)
-        contact.get_db()
+        try:
+            contact.get_db()
+        except NotFound:
+            log.error('Contact {} not found for user {}'.
+                      format(user.contact_id, user.user_id))
+            continue
         contact.unmarshall_db()
 
         if not only_index:
             if str(user.contact_id) == str(id):
-                patch_user_contact(user, contact, new_domain, old_domain)
-
+                try:
+                    patch_user_contact(user, contact, new_domain, old_domain)
+                except Exception as exc:
+                    log.exception('Error during user contact patch {}'.
+                                  format(user.user_id))
+                continue
             for email in contact.emails:
                 ContactLookup.create(user=user, contact_id=id,
                                      value=email.address.lower(),
