@@ -3,6 +3,7 @@ package objects
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
@@ -644,7 +645,7 @@ func (lookup *ContactByContactPoints) UpdateLookups(contacts ...interface{}) fun
 				}
 				if _, ok := oldLookups[lkpKey]; !ok || !update {
 					// do the job of updating participants and discussion related tables
-					err = updateURIWithContact(session, lkp, true)
+					err = UpdateURIWithContact(session, lkp.UserID, lkp.Type+":"+lkp.Value)
 					if err != nil {
 						// TODO : handle multiple error returns to merge into one error or break immediately ?
 						log.WithError(err).Errorf("[Contact.UpdateLookups] associateURIWithContact failed with lookup %+v", lkp)
@@ -673,7 +674,7 @@ func (lookup *ContactByContactPoints) UpdateLookups(contacts ...interface{}) fun
 							lookup.Type)
 					}
 					// do the job of updating participants and discussion related tables
-					err = updateURIWithContact(session, lookup, false)
+					err = UpdateURIWithContact(session, lookup.UserID, lookup.Type+":"+lookup.Value)
 					if err != nil {
 						// TODO : handle multiple error returns to merge into one error or break immediately ?
 					}
@@ -706,9 +707,10 @@ func (lookup *ContactByContactPoints) CleanupLookups(contacts ...interface{}) fu
 						lkp.Type)
 				}
 				// do the job of updating participants and discussion related tables
-				err = updateURIWithContact(session, lkp, false)
+				err = UpdateURIWithContact(session, contact.UserId.String(), lkp.Type+":"+lkp.Value)
 				if err != nil {
 					// TODO : handle multiple error returns to merge into one error or break immediately ?
+					log.WithError(err).Warnf("[CleanupLookups] for contacts failed to update uri with contact with lkp: %+v", lkp)
 				}
 			}
 			return nil
@@ -719,140 +721,71 @@ func (lookup *ContactByContactPoints) CleanupLookups(contacts ...interface{}) fu
 
 // updateURIWithContact is algorithm to update hashes in ParticipantHash table
 // to be able to link URI with contact when building discussions
-// if associate == true, then lkp is associated with contact, else it is dissociated from contact
-func updateURIWithContact(session *gocql.Session, lkp *ContactByContactPoints, associate bool) error {
-	lkp.Value = strings.ToLower(lkp.Value)
+func UpdateURIWithContact(session *gocql.Session, userId, uri string) error {
+
 	// lookup uris_hashes where lkp's uri is embedded
-	lkpUri := lkp.Type + ":" + lkp.Value
-	uriLookups, err := session.Query(`SELECT * FROM hash_lookup WHERE user_id = ? AND uri = ?`, lkp.UserID, lkpUri).Iter().SliceMap()
-	if err != nil {
+	uriLookups, err := session.Query(`SELECT hash, hash_components FROM hash_lookup WHERE user_id = ? AND uri = ?`, userId, uri).Iter().SliceMap()
+	if err != nil && err.Error() != "not found" {
 		return err
 	}
 
-	// for each uris_hash found, lookup its participant_hash counterpart
-	participantHashes := []ParticipantHash{}
-	urisComponents := map[string][]string{}
+	// for each uris_hash found
 	for _, lookup := range uriLookups {
-		var uriHash HashLookup
-		uriHash.UnmarshalCQLMap(lookup)
-		urisComponents[uriHash.Hash] = uriHash.HashComponents
-		participants, err := session.Query(`SELECT value FROM participant_hash WHERE user_id = ? AND kind = ? AND key = ?`, lkp.UserID, "uris", uriHash.Hash).Iter().SliceMap()
-		if err != nil {
-			log.WithError(err).Warnf("updateURIWithContact failed to query participant_hash for user_id = %s, kind = %s, key = %s", lkp.UserID, "uris", uriHash.Hash)
-			continue
-		}
-		if len(participants) == 0 {
-			// something is inconsistent…
-			// all participants_hash should have an entry in participant_hash table
-			// insert entry to participantHashes array, thus it'll be inserted in db again
-			participantHash := ParticipantHash{
-				UserId:     UUID(uuid.FromStringOrNil(lkp.UserID)),
-				Kind:       "participants",
-				Key:        uriHash.Hash,
-				Value:      uriHash.Hash,
-				Components: uriHash.HashComponents,
-			}
-			participantHashes = append(participantHashes, participantHash)
-			continue
-		}
-		for _, p := range participants {
-			row := map[string]interface{}{}
-			err = session.Query(`SELECT * FROM participant_hash WHERE user_id = ? AND kind = ? AND key = ?`, lkp.UserID, "participants", p["value"]).MapScan(row)
-			if err != nil {
-				if err.Error() == "not found" {
-					continue
-				} else {
-					log.WithError(err).Warnf("updateURIWithContact failed to query participant_hash for user_id = %s, kind = %s, key = %s", lkp.UserID, "participants", uriHash.Hash)
-					continue
-				}
-			}
-			var participantHash ParticipantHash
-			participantHash.UnmarshalCQLMap(row)
-			participantHashes = append(participantHashes, participantHash)
-		}
-	}
-
-	// for each participant_hash :
-	//     - compute a new participant_hash
-	//     - add new bijection uri_hash <-> new_participant_hash
-	//     - remove former bijection
-	for _, participantHash := range participantHashes {
-		var newParticipantHash ParticipantHash
-		var err error
-		newParticipantHash, err = ComputeNewParticipantHash(lkpUri, lkp.ContactID, participantHash, urisComponents[participantHash.Value], associate)
-		if err != nil {
-			log.WithError(err).Warnf("updateURIWithContact failed to compute new participant hash for uri <%s> and former participant hash : %+v", lkpUri, participantHash)
-		} else {
-			err = StoreURIsParticipantsBijection(
-				session,
-				UUID(uuid.FromStringOrNil(lkp.UserID)),
-				newParticipantHash.Value,
-				newParticipantHash.Key,
-				urisComponents[participantHash.Value],
-				newParticipantHash.Components,
-			)
-			if err != nil {
-				log.WithError(err).Warn("StoreURIsParticipantsBijection failed")
+		hashLookups, _ := session.Query(`SELECT * FROM participant_hash WHERE user_id = ? AND kind = ? AND key = ?`, userId, UrisKind, lookup["hash"]).Iter().SliceMap()
+		if len(hashLookups) == 0 {
+			// it should not happen because every uris hash must resolve to a participant hash
+			// creating one to be able to continue the update
+			uid := uuid.FromStringOrNil(userId)
+			if err == nil {
+				hashLookups = append(hashLookups, map[string]interface{}{
+					"user_id":    gocql.UUID(uid),
+					"kind":       UrisKind,
+					"key":        lookup["hash"],
+					"value":      lookup["hash"],
+					"components": lookup["hash_components"].([]string),
+				})
 			} else {
-				// remove former bijection
-				err = RemoveURIsParticipantsBijection(session, participantHash, newParticipantHash)
-				if err != nil {
-					log.WithError(err).Warn("RemoveURIsParticipantsBijection failed")
+				log.WithError(err).Warnf("[UpdateURIWithContact] failed to unmarshal user id : %s", userId)
+			}
+		}
+		for _, hashLookup := range hashLookups {
+			var participantHash ParticipantHash
+			participantHash.UnmarshalCQLMap(hashLookup)
+
+			// remove its obsolete participant_hash counterpart in hash_participant table
+			err = RemoveURIsParticipantsBijection(session, participantHash)
+			if err != nil {
+				log.WithError(err).Warnf("RemoveURIsParticipantsBijection failed for participantHash %+v", participantHash)
+			}
+
+			// recompute a participant_hash
+			participants := []Participant{}
+			for _, uri := range participantHash.Components {
+				uri = strings.ToLower(uri)
+				uriSplit := strings.SplitN(uri, ":", 2)
+				if len(uriSplit) != 2 {
+					err := fmt.Errorf("[CreateLookupsFromUris] uri malformed : %s => %v", uri, uriSplit)
+					log.WithError(err)
+					return err
 				}
+				var contactId string
+				session.Query(`SELECT contact_id FROM contact_lookup WHERE user_id= ? AND value= ? AND type= ?`, userId, uriSplit[1], uriSplit[0]).Scan(&contactId)
+				if contactId != "" {
+					participants = append(participants, Participant{Address: contactId, Protocol: "contact"})
+				} else {
+					participants = append(participants, Participant{Address: uriSplit[1], Protocol: uriSplit[0]})
+				}
+			}
+			participantsHash, participantsComponents, err := HashFromParticipantsUris(participants)
+			if err != nil {
+				return err
+			}
+			err = StoreURIsParticipantsBijection(session, userId, participantHash.Key, participantsHash, participantHash.Components, participantsComponents)
+			if err != nil {
+				log.WithError(err).Warnf("[updateURIWithContact] failed to store bijection for user %s, uriHash %s, participantHash %s, uriComponents %s, participantComponents %s", userId, participantHash.Key, participantsHash, participantHash.Components, participantsComponents)
 			}
 		}
 	}
 
-	return nil
-}
-
-// StoreURIsParticipantsBijection stores uris_hash <-> participants_hash bijection
-// in participant_hash table
-func StoreURIsParticipantsBijection(session *gocql.Session, userId UUID, uriHash, participantHash string, uriComponents, participantComponents []string) error {
-	now := time.Now()
-	// store uris_hash -> participants_hash
-	e1 := session.Query(`INSERT INTO participant_hash (user_id, kind, key, value, components, date_insert) VALUES (?,?,?,?,?,?)`,
-		userId, "uris", uriHash, participantHash, uriComponents, now).Exec()
-
-	// store participants_hash -> uris_hash
-	e2 := session.Query(`INSERT INTO participant_hash (user_id, kind, key, value, components, date_insert) VALUES (?,?,?,?,?,?)`,
-		userId, "participants", participantHash, uriHash, participantComponents, now).Exec()
-	switch {
-	case e1 != nil:
-		return e1
-	case e2 != nil:
-		return e2
-	}
-	return nil
-}
-
-// RemoveURIsParticipantsBijection delete uris_hash <-> participants_hash bijection
-// in participant_hash table
-func RemoveURIsParticipantsBijection(session *gocql.Session, former, new ParticipantHash) error {
-	if former.Value != new.Value || former.Key != new.Key { // prevent removing the new bijection that is equal to the former one
-		var first, second string
-		first = former.Kind
-		if first == "participants" {
-			second = "uris"
-		} else {
-			second = "participants"
-		}
-		e1 := session.Query(`DELETE FROM participant_hash WHERE user_id = ? AND kind = ? AND key = ? AND value = ?`,
-			former.UserId,
-			first,
-			former.Key,
-			former.Value).Exec()
-		e2 := session.Query(`DELETE FROM participant_hash WHERE user_id = ? AND kind = ? AND key = ? AND value = ?`,
-			former.UserId,
-			second,
-			former.Value,
-			former.Key).Exec()
-		switch {
-		case e1 != nil:
-			return e1
-		case e2 != nil:
-			return e2
-		}
-	}
 	return nil
 }

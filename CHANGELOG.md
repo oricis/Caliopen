@@ -8,7 +8,31 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
+- On quick reply, «Enter» will not send draft anymore, it must be CTRL+Enter.
+- Quick reply is now multilines.
 - Use message's excerpt in search results instead of garbled highlights
+
+### Fixed
+
+- Default locale saved on account creation
+- Responsiveness for the «new device page»
+
+## [0.20] \<Unreleased>
+
+### Changed
+
+- Disable «Take a tour» which is not working properly
+- Disable the send button on quick draft when empty (thanks Sebbaz).
+- Look and feel of GPG buttons which look like disabled.
+
+### Fixed
+
+- BSOD when changing identity in draft when no recipients (thanks peha)
+- Many encoding issues during mail delivery
+- Participants algorithm edge case
+- Discussion last message sort better
+- Index user contact without alias using a workaround to bad core/mixin classes design
+- Addresses emails parsing failed sometimes with strange values
 
 ## [0.20.0] 2019-05-15
 

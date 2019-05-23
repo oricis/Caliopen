@@ -7,7 +7,7 @@ import logging
 from caliopen_storage.config import Configuration
 from caliopen_storage.helpers.connection import connect_storage
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
 
 
 def shell(**kwargs):

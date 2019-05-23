@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import DocumentTitle from 'react-document-title';
 import serialize from 'serialize-javascript';
+import locale from 'locale';
 import Bootstrap from './components/Bootstrap';
 import configureStore from '../../src/store/configure-store';
 import { getUserLocales } from '../../src/modules/i18n';
@@ -39,7 +40,9 @@ function getMarkup({ store, context, location }) {
 }
 
 function applyUserLocaleToGlobal(req) {
-  global.USER_LOCALE = req.locale;
+  const locales = (new locale.Locales(req.headers['accept-language'])).toJSON();
+
+  global.USER_LOCALES = locales.map(loc => loc.code);
 }
 
 export default (req, res) => {
@@ -47,7 +50,7 @@ export default (req, res) => {
   const initialState = {
     settings: {
       ...initialStateSettings,
-      settings: getDefaultSettings(getUserLocales()[0]),
+      settings: getDefaultSettings(getUserLocales()),
     },
   };
 

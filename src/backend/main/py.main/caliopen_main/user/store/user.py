@@ -7,10 +7,6 @@ import logging
 import uuid
 
 from cassandra.cqlengine import columns
-from elasticsearch import Elasticsearch
-from elasticsearch.client.indices import IndicesClient
-
-from caliopen_storage.config import Configuration
 from caliopen_storage.store.model import BaseModel
 from caliopen_main.pi.objects import PIModel
 
@@ -85,22 +81,3 @@ class Settings(BaseModel):
 
 class IndexUser(object):
     """User index management class."""
-
-    __url__ = Configuration('global').get('elasticsearch.url')
-
-    @classmethod
-    def create(cls, user, **kwargs):
-        """Create user index."""
-        # Create index for user
-        client = Elasticsearch(cls.__url__)
-        indice = IndicesClient(client)
-        if indice.exists(index=user.user_id):
-            if 'delete_existing' in kwargs and kwargs['delete_existing']:
-                log.warn('Deleting existing index for user %s' % user.user_id)
-                indice.delete(index=user.user_id)
-            else:
-                log.warn('Index already exists for user %s' % user.user_id)
-                return False
-        log.info('Creating index for user %s' % user.user_id)
-        indice.create(index=user.user_id)
-        return True

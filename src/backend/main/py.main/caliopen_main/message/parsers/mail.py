@@ -28,7 +28,8 @@ from caliopen_main.common.interfaces import (IAttachmentParser, IMessageParser,
 
 log = logging.getLogger(__name__)
 
-TEXT_CONTENT_TYPE = ['text', 'xml', 'vnd', 'xhtml', 'json' , 'msword']
+TEXT_CONTENT_TYPE = ['text', 'xml', 'vnd', 'xhtml', 'json', 'msword']
+
 
 class MailAttachment(object):
     """Mail part structure."""
@@ -39,6 +40,12 @@ class MailAttachment(object):
         """Extract attachment attributes from a mail part."""
         self.content_type = part.get_content_type()
         self.filename = part.get_filename()
+        if self.filename:
+            try:
+                self.filename = self.filename.decode('utf-8')
+            except UnicodeError:
+                log.warn('Invalid filename encoding')
+                self.filename = self.filename.decode('utf-8', errors='ignore')
         content_disposition = part.get("Content-Disposition")
         if content_disposition:
             dispositions = content_disposition.strip().split(";")
@@ -205,7 +212,11 @@ class MailMessage(object):
             return s[0][0].decode(charset, "replace"). \
                 encode("utf-8", "replace")
         else:
-            return s[0][0]
+            try:
+                return s[0][0].decode('utf-8', errors='ignore')
+            except UnicodeError:
+                log.warn('Invalid subject encoding')
+                return s[0][0]
 
     @property
     def size(self):
@@ -233,7 +244,6 @@ class MailMessage(object):
             mid = ext_id
         pid = clean_email_address(parent_id)[1] if parent_id else None
         if not pid:
-            log.error('Unable to find correct parent_id {}'.format(parent_id))
             pid = parent_id
         return {
             'message_id': mid,
@@ -258,15 +268,19 @@ class MailMessage(object):
             addrs = []
             participant_type = header.capitalize()
             if self.mail.get(header):
-                if ',' in self.mail.get(header):
-                    parts = self.mail.get(header).split(',')
-                    filtered = [x for x in parts if '@' in x]
-                    addrs.extend(filtered)
-                else:
-                    addrs.append(self.mail.get(header))
+                parts = self.mail.get(header).split('>,')
+                if not parts:
+                    pass
+                if parts and parts[0] == 'undisclosed-recipients:;':
+                    pass
+                filtered = [x for x in parts if '@' in x]
+                addrs.extend(filtered)
             for addr in addrs:
                 participant = MailParticipant(participant_type, addr.lower())
-                participants.append(participant)
+                if participant.address == '' and participant.label == '':
+                    log.warn('Invalid email address {}'.format(addr))
+                else:
+                    participants.append(participant)
         return participants
 
     @property
