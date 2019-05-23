@@ -48,11 +48,22 @@ func init() {
 func imapLogin(rId *UserIdentity) (tlsConn *tls.Conn, imapClient *client.Client, provider Provider, err error) {
 	log.Println("Connecting to server...")
 	// Dial TLS directly to be able to dump tls connection state
+	// First try in secure mode, then retry in insecure mode if it fails
 	tlsConn, err = tls.Dial("tcp", rId.Infos["inserver"], nil)
 	if err != nil {
-		log.WithError(err).Error("[fetchMail] imapLogin failed to dial tls")
-		return
+		log.WithError(err).Warnf("[fetchMail] imapLogin failed to dial tls in secure mode for identity %s (user %s) server : %s", rId.Id, rId.UserId, rId.Infos["inserver"])
+		log.Info("[fetchMail] trying INSECURE mode for identity %s (user %s) server : %s", rId.Id, rId.UserId, rId.Infos["inserver"])
+		tlsConfig := tls.Config{
+			InsecureSkipVerify: true,
+		}
+		tlsConn, err = tls.Dial("tcp", rId.Infos["inserver"], &tlsConfig)
+		// TODO: save as many data as possible into user_identity table if remote cert is faulty
+		if err != nil {
+			log.WithError(err).Error("[fetchMail] imapLogin failed to dial INSECURE tls for identity %s (user %s) server : %s", rId.Id, rId.UserId, rId.Infos["inserver"])
+			return
+		}
 	}
+
 	imapClient, err = client.New(tlsConn)
 	if err != nil {
 		log.WithError(err).Error("[fetchMail] imapLogin failed to create IMAP client")
