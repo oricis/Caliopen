@@ -512,7 +512,8 @@ func MessagesParticipantsDetails(session *gocql.Session, messages []Message) err
 		for i, msg := range messages {
 			for j, p := range msg.Participants {
 				uri := strings.ToLower(p.Protocol + ":" + p.Address)
-				msg.Participants[j] = uniqueParticipants[uri]
+				msg.Participants[j].Label = uniqueParticipants[uri].Label
+				msg.Participants[j].Contact_ids = uniqueParticipants[uri].Contact_ids
 			}
 			messages[i] = msg
 		}
