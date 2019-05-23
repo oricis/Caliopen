@@ -229,8 +229,10 @@ class Message(ObjectIndexable):
                 indexed = IndexedParticipant(participant)
                 draft_param.participants.append(indexed)
 
+
         if "user_identities" not in params and self.user_identities:
             draft_param.user_identities = self_dict["user_identities"]
+
         # make sure the <from> participant is present
         # and is consistent with selected user's identity
         try:
@@ -241,6 +243,7 @@ class Message(ObjectIndexable):
 
         validated_draft = draft_param.serialize()
         validated_params = copy.deepcopy(params)
+
         if "participants" in params:
             validated_params["participants"] = validated_draft["participants"]
         if new_discussion_id != self.discussion_id:
@@ -268,6 +271,17 @@ class Message(ObjectIndexable):
             datetime.datetime.now(tz=pytz.utc)
 
         validated_params["current_state"] = current_state
+
+        if "participants" in current_state and self.participants:
+            # replace participants' label and contact_ids
+            # because frontend has up-to-date data for these properties
+            # which are probably not the one stored in db
+            db_parts = {}
+            for p in self_dict['participants']:
+                db_parts[p['protocol'] + p['type'] + p['address']] = p
+            for i, p in enumerate(current_state['participants']):
+                current_state['participants'][i] =  db_parts[p['protocol'] + p['type'] + p['address']]
+
         try:
             self.apply_patch(validated_params, **options)
         except Exception as exc:
