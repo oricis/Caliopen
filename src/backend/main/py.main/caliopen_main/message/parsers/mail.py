@@ -45,7 +45,6 @@ class MailAttachment(object):
                 self.filename = self.filename.decode('utf-8')
             except UnicodeError:
                 log.warn('Invalid filename encoding')
-                self.filename = self.filename.decode('utf-8', errors='ignore')
         content_disposition = part.get("Content-Disposition")
         if content_disposition:
             dispositions = content_disposition.strip().split(";")
@@ -255,8 +254,11 @@ class MailMessage(object):
         """Get UTC date from a mail message."""
         mail_date = self.mail.get('Date')
         if mail_date:
-            tmp_date = parsedate_tz(mail_date)
-            return datetime.datetime.fromtimestamp(mktime_tz(tmp_date))
+            try:
+                tmp_date = parsedate_tz(mail_date)
+                return datetime.datetime.fromtimestamp(mktime_tz(tmp_date))
+            except TypeError:
+                log.error('Invalid date in mail {}'.format(mail_date))
         log.debug('No date on mail using now (UTC)')
         return datetime.datetime.now(tz=pytz.utc)
 
