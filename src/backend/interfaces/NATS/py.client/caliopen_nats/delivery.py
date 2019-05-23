@@ -72,17 +72,18 @@ class UserMessageDelivery(object):
         obj.marshall_index()
         obj.save_index()
 
-        # store external_msg_id in lookup table
-        # but do not abort if it failed
-        try:
-            Merl.create(self.user,
-                        external_msg_id=obj.external_msg_id,
-                        identity_id=obj.user_identity,
-                        message_id=obj.message_id)
-        except Exception as exc:
-            log.exception("UserMessageDelivery failed "
-                          "to store message_external_ref : {}".format(exc))
-        return obj
+        if message.external_msg_id:
+            # store external_msg_id in lookup table
+            # but do not abort if it failed
+            try:
+                Merl.create(self.user,
+                            external_msg_id=obj.external_msg_id,
+                            identity_id=obj.user_identity,
+                            message_id=obj.message_id)
+            except Exception as exc:
+                log.exception("UserMessageDelivery failed "
+                              "to store message_external_ref : {}".format(exc))
+            return obj
 
 
 class UserMailDelivery(UserMessageDelivery):
