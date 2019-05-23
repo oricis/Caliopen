@@ -4,10 +4,11 @@
 $message_width: 45rem;
 
 .s-new-device-info {
-  width: $message_width;
-  margin: auto;
-  padding-top: 3 * $co-component__height;
-  padding-bottom: 3 * $co-component__height;
+  max-width: $message_width;
+  margin-right: map_get($co-margin_, 'medium');
+  margin-left: map_get($co-margin_, 'medium');
+  padding-top: map_get($co-margin_, 'medium');
+  padding-bottom: map_get($co-margin_, 'medium');
   text-align: justify;
 
   &__title {
@@ -15,7 +16,7 @@ $message_width: 45rem;
   }
 
   &__actions {
-    margin-top: 2 * $co-component__height;
+    margin-top: map_get($co-margin_, 'medium');
     text-align: center;
   }
 
@@ -28,5 +29,16 @@ $message_width: 45rem;
     max-width: 2 * map-get($co-form__width, 'xlarge');
     max-height: 100%;
     overflow: auto;
+  }
+
+  @include breakpoint(medium) {
+    margin-right: auto;
+    margin-left: auto;
+    padding-top: map_get($co-margin_, 'xlarge');
+    padding-bottom: map_get($co-margin_, 'xlarge');
+
+    &__actions {
+      margin-top: map-get($co-margin_, 'large');
+    }
   }
 }
