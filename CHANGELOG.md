@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - On quick reply, «Enter» will not send draft anymore, it must be CTRL+Enter.
 - Quick reply is now multilines.
+- Use message's excerpt in search results instead of garbled highlights
 
 ### Fixed
 

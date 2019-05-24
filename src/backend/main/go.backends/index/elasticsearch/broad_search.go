@@ -24,19 +24,24 @@ func (es *ElasticSearchBackend) Search(search IndexSearch) (result *IndexResult,
 	// Strictly filter on user_id
 	q = q.Filter(elastic.NewTermQuery("user_id", search.User_id))
 
+	cutoffFrequency := 0.05 //words that have a document frequency greater than xx% will be treated as common terms.
 	for field, value := range search.Terms {
-		q = q.Should(elastic.NewCommonTermsQuery(field, value).CutoffFrequency(0.01)) //words that have a document frequency greater than 1% will be treated as common terms.
+		q = q.Should(elastic.NewCommonTermsQuery(field, value).CutoffFrequency(cutoffFrequency))
 		// always add the common fields below to improve results
-		q = q.Should(elastic.NewCommonTermsQuery("body_plain", value).CutoffFrequency(0.01))
-		q = q.Should(elastic.NewCommonTermsQuery("body_plain.normalized", value).CutoffFrequency(0.01))
-		q = q.Should(elastic.NewCommonTermsQuery("body_html", value).CutoffFrequency(0.01))
-		q = q.Should(elastic.NewCommonTermsQuery("body_html.normalized", value).CutoffFrequency(0.01))
-		q = q.Should(elastic.NewCommonTermsQuery("subject", value).CutoffFrequency(0.01))
-		q = q.Should(elastic.NewCommonTermsQuery("subject.normalized", value).CutoffFrequency(0.01))
-		q = q.Should(elastic.NewCommonTermsQuery("given_name", value).CutoffFrequency(0.01))
-		q = q.Should(elastic.NewCommonTermsQuery("given_name.normalized", value).CutoffFrequency(0.01))
-		q = q.Should(elastic.NewCommonTermsQuery("family_name", value).CutoffFrequency(0.01))
-		q = q.Should(elastic.NewCommonTermsQuery("family_name.normalized", value).CutoffFrequency(0.01))
+		q = q.Should(elastic.NewCommonTermsQuery("body_plain", value).CutoffFrequency(cutoffFrequency))
+		q = q.Should(elastic.NewCommonTermsQuery("body_plain.normalized", value).CutoffFrequency(cutoffFrequency))
+		q = q.Should(elastic.NewCommonTermsQuery("body_html", value).CutoffFrequency(cutoffFrequency))
+		q = q.Should(elastic.NewCommonTermsQuery("body_html.normalized", value).CutoffFrequency(cutoffFrequency))
+		q = q.Should(elastic.NewCommonTermsQuery("subject", value).CutoffFrequency(cutoffFrequency)).Boost(2)
+		q = q.Should(elastic.NewCommonTermsQuery("subject.normalized", value).CutoffFrequency(cutoffFrequency)).Boost(2)
+		q = q.Should(elastic.NewCommonTermsQuery("given_name", value).CutoffFrequency(cutoffFrequency)).Boost(3)
+		q = q.Should(elastic.NewCommonTermsQuery("given_name.normalized", value).CutoffFrequency(cutoffFrequency)).Boost(3)
+		q = q.Should(elastic.NewCommonTermsQuery("family_name", value).CutoffFrequency(cutoffFrequency)).Boost(3)
+		q = q.Should(elastic.NewCommonTermsQuery("family_name.normalized", value).CutoffFrequency(cutoffFrequency)).Boost(3)
+		q = q.Should(elastic.NewCommonTermsQuery("title.raw", value).CutoffFrequency(cutoffFrequency)).Boost(5)
+		q = q.Should(elastic.NewCommonTermsQuery("participants.address.raw", value).CutoffFrequency(cutoffFrequency)).Boost(2)
+		q = q.Should(elastic.NewCommonTermsQuery("participants.label", value).CutoffFrequency(cutoffFrequency)).Boost(2)
+		q = q.Should(elastic.NewCommonTermsQuery("emails.address.raw", value).CutoffFrequency(cutoffFrequency)).Boost(2)
 	}
 
 	// make aggregation to file docs by type:
@@ -46,23 +51,23 @@ func (es *ElasticSearchBackend) Search(search IndexSearch) (result *IndexResult,
 	switch search.DocType {
 	case "":
 		// no doctype provided. Trigger search on all document types within index and build an aggregation
-		h := elastic.NewHighlight().Fields(elastic.NewHighlighterField("*").RequireFieldMatch(false))
-		top_hits := elastic.NewTopHitsAggregation().Size(5).FetchSource(true).Highlight(h)
+		/*highlight disabled*/                                                //h := elastic.NewHighlight().Fields(elastic.NewHighlighterField("*").RequireFieldMatch(false))
+		top_hits := elastic.NewTopHitsAggregation().Size(5).FetchSource(true) //.Highlight(h)
 		by_type := elastic.NewTermsAggregation().Field("_type").SubAggregation(sub_agg_key, top_hits)
 		//TODO/WIP
 		/*iq := elastic.NewIndicesQuery(elastic.NewRangeQuery("importance_level").Gte(search.ILrange[0]).Lte(search.ILrange[1]), MessageIndexType)
 		msg_hits := elastic.NewFilterAggregation().Filter(iq)
 		*/
-		s = es.Client.Search().Index(search.Shard_id).Query(q).FetchSource(false).Aggregation(agg_key, by_type).Highlight(h)
+		s = es.Client.Search().Index(search.Shard_id).Query(q).FetchSource(false).Aggregation(agg_key, by_type) //.Highlight(h)
 	case MessageIndexType:
 		// The search focuses on message document type, no aggregation needed, but importance level apply
-		h := elastic.NewHighlight().Fields(elastic.NewHighlighterField("*").RequireFieldMatch(false))
+		/*highlight disabled*/ //h := elastic.NewHighlight().Fields(elastic.NewHighlighterField("*").RequireFieldMatch(false))
 		rq := elastic.NewRangeQuery("importance_level").Gte(search.ILrange[0]).Lte(search.ILrange[1])
-		s = es.Client.Search().Index(search.Shard_id).Query(q).FetchSource(true).Highlight(h).PostFilter(rq)
+		s = es.Client.Search().Index(search.Shard_id).Query(q).FetchSource(true). /*.Highlight(h)*/ PostFilter(rq)
 	case ContactIndexType:
 		// The search focuses on contact document type, no aggregation needed and importance level not taken into account
-		h := elastic.NewHighlight().Fields(elastic.NewHighlighterField("*").RequireFieldMatch(false))
-		s = es.Client.Search().Index(search.Shard_id).Query(q).FetchSource(true).Highlight(h)
+		/*highlight disabled*/                                                   //h := elastic.NewHighlight().Fields(elastic.NewHighlighterField("*").RequireFieldMatch(false))
+		s = es.Client.Search().Index(search.Shard_id).Query(q).FetchSource(true) //.Highlight(h)
 	}
 
 	//prepare search
@@ -83,11 +88,11 @@ func (es *ElasticSearchBackend) Search(search IndexSearch) (result *IndexResult,
 
 	/** end of log **/
 	// execute the search
+	s.MinScore(0.1)
 	response, err := s.Do(context.TODO())
 	if err != nil {
 		return nil, err
 	}
-
 	// build IndexResult from ES response
 	result = &IndexResult{
 		Total:        response.TotalHits(),
@@ -163,8 +168,8 @@ func (es *ElasticSearchBackend) Search(search IndexSearch) (result *IndexResult,
 				hit := hh.(map[string]interface{})
 				h := new(IndexHit)
 				id, _ := hit["_id"].(string)
-				uuid, _ := uuid.FromString(id)
-				h.Id.UnmarshalBinary(uuid.Bytes())
+				uid, _ := uuid.FromString(id)
+				h.Id.UnmarshalBinary(uid.Bytes())
 				h.Score, _ = hit["_score"].(float64)
 				highlights, _ := hit["highlight"].(map[string]interface{})
 				h.Highlights = map[string][]string{}
