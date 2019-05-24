@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Always link participant to contact in a draft when contact exists (ensure message can be encrypted)
+
 ### Changed
 
 - On quick reply, «Enter» will not send draft anymore, it must be CTRL+Enter.

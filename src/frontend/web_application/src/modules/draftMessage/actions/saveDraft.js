@@ -5,6 +5,7 @@ import { calcSyncDraft } from '../services/calcSyncDraft';
 import { updateMessage } from '../../../store/actions/message';
 import { createMessage } from '../../message';
 import { editDraft as editDraftBase, syncDraft } from '../../../store/modules/draft-message';
+import { consolidateParticipants } from './consolidateParticipants';
 
 const UPDATE_WAIT_TIME = 5 * 1000;
 
@@ -32,15 +33,15 @@ const updateDraft = ({ internalId, draft, message }) => async (dispatch) => {
   }
 };
 
-const createOrUpdateDraft = ({ internalId, draft, message }) => (dispatch) => {
-  // XXX: look for participants with no associated contact and search for eventual contacts
-  // usefull for brand new draft with manual addresses set
-  // https://trello.com/c/uCA80Wln/209-an-api-to-find-a-contact-according-to-an-address
+const createOrUpdateDraft = ({ internalId, draft, message }) => async (dispatch) => {
+  const updatedParticipants = await dispatch(consolidateParticipants(draft));
+  const updatedDraft = { ...draft, participants: updatedParticipants };
+
   if (message) {
-    return dispatch(updateDraft({ internalId, draft, message }));
+    return dispatch(updateDraft({ internalId, draft: updatedDraft, message }));
   }
 
-  return dispatch(createDraft({ internalId, draft }));
+  return dispatch(createDraft({ internalId, draft: updatedDraft }));
 };
 
 const throttled = {};
