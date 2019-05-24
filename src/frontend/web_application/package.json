@@ -28,7 +28,7 @@
     "release:web:server": "NODE_ENV=production webpack --bail -p --progress --config webpack/webpack.config.server.js",
     "release:web:browser": "NODE_ENV=production webpack --bail -p --progress --config webpack/webpack.config.browser.js",
     "cordova": "cd cordova && cordova",
-    "test": "npm-run-all lint test:unit test:functional",
+    "test": "npm-run-all lint test:unit",
     "test:unit": "jest",
     "test:unit:watch": "jest --watch",
     "test:unit:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
