@@ -36,19 +36,6 @@ pipeline:
 ##          TEST ON MASTER OR DEVELOP PR             ##
 #######################################################
 
-  # test-go:
-  #   pull: true
-  #   group: test
-  #   image: public-registry.caliopen.org/caliopen_go
-  #   environment:
-  #     - BASE_DIR=src/backend
-  #   when:
-  #     branch: [ develop, master ]
-  #     event: [ pull_request ]
-  #   commands:
-  #     - . devtools/drone/files_changed.sh
-  #     - . devtools/drone/test_go.sh
-
   test-go:
     group: test
     pull: true
@@ -147,7 +134,7 @@ pipeline:
     environment:
       - PLUGIN_DOCKERFILE=src/backend/Dockerfile.mq-worker
       - PLUGIN_CONTEXT=/srv/caliopen/src/backend
-      - PLUGIN_REPO=registry.caliopen.org/caliopen_mq_worker
+      - PLUGIN_REPO=registry.caliopen.org/caliopen_mqworker
       - BASE_DIR=src/backend
       - LANG=python
       - PROG=interfaces/NATS/py.client
@@ -211,7 +198,7 @@ pipeline:
     environment:
       - PLUGIN_DOCKERFILE=src/backend/Dockerfile.identity-poller
       - PLUGIN_CONTEXT=/srv/caliopen/src/backend
-      - PLUGIN_REPO=registry.caliopen.org/caliopen_identity_poller
+      - PLUGIN_REPO=registry.caliopen.org/caliopen_identitypoller
       - PROG=workers/go.remoteIDs/cmd/idpoller
       - BASE_DIR=src/backend
       - LANG=go
@@ -232,7 +219,7 @@ pipeline:
     environment:
       - PLUGIN_DOCKERFILE=src/backend/Dockerfile.imap-worker
       - PLUGIN_CONTEXT=/srv/caliopen/src/backend
-      - PLUGIN_REPO=registry.caliopen.org/caliopen_imap_worker
+      - PLUGIN_REPO=registry.caliopen.org/caliopen_imapworker
       - PROG=protocols/go.imap/cmd/imapworker
       - BASE_DIR=src/backend
       - LANG=go
@@ -253,7 +240,7 @@ pipeline:
     environment:
     - PLUGIN_DOCKERFILE=src/backend/Dockerfile.twitter-worker
     - PLUGIN_CONTEXT=/srv/caliopen/src/backend
-    - PLUGIN_REPO=registry.caliopen.org/caliopen_twitter_worker
+    - PLUGIN_REPO=registry.caliopen.org/caliopen_twitterworker
     - PROG=protocols/go.twitter/cmd/twitterworker
     - BASE_DIR=src/backend
     - LANG=go
@@ -322,7 +309,7 @@ pipeline:
     image: plugins/docker
     dockerfile: src/backend/Dockerfile.mq-worker
     context: /srv/caliopen/src/backend
-    repo: registry.caliopen.org/caliopen_mq_worker
+    repo: registry.caliopen.org/caliopen_mqworker
     secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD, DOCKER_REGISTRY ]
     when:
       ref: [ "refs/tags/release-*" ]
@@ -364,7 +351,7 @@ pipeline:
     image: plugins/docker
     dockerfile: src/backend/Dockerfile.identity-poller
     context: /srv/caliopen/src/backend
-    repo: registry.caliopen.org/caliopen_identity_poller
+    repo: registry.caliopen.org/caliopen_identitypoller
     secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD, DOCKER_REGISTRY ]
     when:
       ref: [ "refs/tags/release-*" ]
@@ -378,7 +365,7 @@ pipeline:
     image: plugins/docker
     dockerfile: src/backend/Dockerfile.imap-worker
     context: /srv/caliopen/src/backend
-    repo: registry.caliopen.org/caliopen_imap_worker
+    repo: registry.caliopen.org/caliopen_imapworker
     secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD, DOCKER_REGISTRY ]
     when:
       ref: [ "refs/tags/release-*" ]
@@ -392,7 +379,7 @@ pipeline:
     image: plugins/docker
     dockerfile: src/backend/Dockerfile.twitter-worker
     context: /srv/caliopen/src/backend
-    repo: registry.caliopen.org/caliopen_twitter_worker
+    repo: registry.caliopen.org/caliopen_twitterworker
     secrets: [ DOCKER_USERNAME, DOCKER_PASSWORD, DOCKER_REGISTRY ]
     when:
       ref: [ "refs/tags/release-*" ]
