@@ -9,15 +9,16 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"sort"
+	"strconv"
+	"strings"
+	"time"
+
 	broker "github.com/CaliOpen/Caliopen/src/backend/brokers/go.twitter"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/go-twitter/twitter"
 	log "github.com/Sirupsen/logrus"
 	"github.com/dghubble/oauth1"
-	"sort"
-	"strconv"
-	"strings"
-	"time"
 )
 
 type (
@@ -197,19 +198,21 @@ func (worker *AccountHandler) PollDM() {
 	// do not forget to always write down last_check timestamp
 	// and to remove syncing state before leaving
 	defer func() {
-		delete(accountInfos, lastErrorKey)
-		delete(accountInfos, errorsCountKey)
-		delete(accountInfos, dateFirstErrorKey)
-		delete(accountInfos, dateLastErrorKey)
-		delete(accountInfos, syncingKey)
-		e := worker.broker.Store.UpdateRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String(), accountInfos)
-		if e != nil {
-			log.WithError(e).Warnf("[AccountHandler %s] PollDM failed to update sync state in db", worker.userAccount.remoteID.String())
-		}
-		log.Infof("[AccountHandler %s] PollDM finished", worker.userAccount.remoteID.String())
-		e = worker.broker.Store.TimestampRemoteLastCheck(worker.userAccount.userID.String(), worker.userAccount.remoteID.String())
-		if e != nil {
-			log.WithError(e).Warnf("[AccountHandler %s] PollDM failed to update last_check state in db", worker.userAccount.remoteID.String())
+		if worker.broker != nil {
+			delete(accountInfos, lastErrorKey)
+			delete(accountInfos, errorsCountKey)
+			delete(accountInfos, dateFirstErrorKey)
+			delete(accountInfos, dateLastErrorKey)
+			delete(accountInfos, syncingKey)
+			e := worker.broker.Store.UpdateRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String(), accountInfos)
+			if e != nil {
+				log.WithError(e).Warnf("[AccountHandler %s] PollDM failed to update sync state in db", worker.userAccount.remoteID.String())
+			}
+			log.Infof("[AccountHandler %s] PollDM finished", worker.userAccount.remoteID.String())
+			e = worker.broker.Store.TimestampRemoteLastCheck(worker.userAccount.userID.String(), worker.userAccount.remoteID.String())
+			if e != nil {
+				log.WithError(e).Warnf("[AccountHandler %s] PollDM failed to update last_check state in db", worker.userAccount.remoteID.String())
+			}
 		}
 	}()
 
@@ -258,6 +261,7 @@ func (worker *AccountHandler) PollDM() {
 						}
 					}
 				case 89: // invalid token or token expired. Suicide this accountworker thus it will be re-created with new oauth next time idpoller will order it
+					delete(accountInfos, syncingKey)
 					e := worker.saveErrorState(accountInfos, errorsMessages.String())
 					if e != nil {
 						log.WithError(e).Warnf("[AccountHandler %s] PollDM failed to update sync state in db", worker.userAccount.remoteID.String())
@@ -472,7 +476,7 @@ func (worker *AccountHandler) saveErrorState(infos map[string]string, err string
 
 }
 
-// sort interface
+// ByAscID implements sort interface
 type ByAscID []twitter.DirectMessageEvent
 
 func (bri ByAscID) Len() int {
