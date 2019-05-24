@@ -789,3 +789,29 @@ func UpdateURIWithContact(session *gocql.Session, userId, uri string) error {
 
 	return nil
 }
+
+// ContactsForUris lookups if a contact exists for each participant
+// and get related data from Contact table to fill-in Participant's Label accordingly
+// participants param is a map of unique participants : [uri]Participant
+func ContactsForParticipants(session *gocql.Session, userId string, participants map[string]Participant) error {
+	for uri, participant := range participants {
+		var contactId string
+		err := session.Query(`SELECT contact_id FROM contact_lookup WHERE user_id = ? AND value = ? AND type = ?`, userId, participant.Address, participant.Protocol).Scan(&contactId)
+		if err != nil && err.Error() != "not found" {
+			log.WithError(err).Warnf("contact_lookup failed for user %s, value %s, type %s", userId, participant.Address, participant.Protocol)
+		}
+		if contactId != "" {
+			participant.Contact_ids = []UUID{UUID(uuid.FromStringOrNil(contactId))}
+			var title string
+			err = session.Query(`SELECT title FROM contact WHERE user_id = ? and contact_id = ?`, userId, contactId).Scan(&title)
+			if title != "" {
+				participant.Label = title
+			}
+			participants[uri] = participant
+		} else {
+			participant.Contact_ids = []UUID{}
+			participants[uri] = participant
+		}
+	}
+	return nil
+}

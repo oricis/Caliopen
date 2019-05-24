@@ -8,7 +8,6 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"fmt"
-	"github.com/Sirupsen/logrus"
 	"github.com/gocql/gocql"
 	"github.com/satori/go.uuid"
 	"sort"
@@ -155,59 +154,6 @@ func HashFromParticipantsUris(participants []Participant) (hash string, componen
 		components = append(components, k)
 	}
 	hash = HashComponents(components)
-	return
-}
-
-// ComputeNewParticipantHash computes a new participants_hash and update participants components
-// based on new uri->participant relation provided in params
-// if associate == true, uri will be replaced by contactId
-// else, uri must be dissociated from contactId
-func ComputeNewParticipantHash(uri, contactId string, current ParticipantHash, urisComponents []string, associate bool) (new ParticipantHash, err error) {
-	logrus.Infoln("ComputeNewParticipantHash called")
-	logrus.Infoln(uri)
-	logrus.Infoln(contactId)
-	logrus.Infof("%+v", current)
-	logrus.Infoln(urisComponents)
-	logrus.Infoln(associate)
-	new.UserId = current.UserId
-	new.Kind = "participants"
-	participantsMap := map[string]struct{}{}
-	if associate {
-		// replace uri by contactId
-		for _, component := range current.Components {
-			if component == uri {
-				participantsMap["contact:"+contactId] = struct{}{}
-			} else {
-				participantsMap[component] = struct{}{}
-			}
-		}
-	} else {
-		// re-add uri to participantsMap
-		for _, component := range current.Components {
-			if component == "contact:"+contactId {
-				// add uri to components
-				participantsMap[uri] = struct{}{}
-			} else {
-				participantsMap[component] = struct{}{}
-			}
-		}
-		// if contactId is linked to another uri, it must be kept in participants
-		for _, uriComponent := range urisComponents {
-			if _, ok := participantsMap[uriComponent]; !ok && uriComponent != uri {
-				participantsMap["contact:"+contactId] = struct{}{}
-			}
-		}
-	}
-	// compute new hash
-	components := []string{}
-	for k, _ := range participantsMap {
-		components = append(components, k)
-	}
-	// embed new components slice
-	new.Key = HashComponents(components)
-	new.Components = components
-	new.Value = current.Value
-	logrus.Infof("new : %+v", new)
 	return
 }
 

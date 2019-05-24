@@ -18,6 +18,7 @@ type ContactStorage interface {
 	DeleteContact(contact *Contact) error
 	ContactExists(userId, contactId string) bool
 	LookupContactsByIdentifier(user_id, address, kind string) (contact_ids []string, err error)
+	ContactsForParticipants(userID string, participants map[string]Participant) error
 }
 
 type ContactIndex interface {

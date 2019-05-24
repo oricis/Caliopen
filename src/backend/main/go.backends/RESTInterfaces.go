@@ -6,6 +6,7 @@ package backends
 
 import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/gocql/gocql"
 )
 
 type APIStorage interface {
@@ -21,6 +22,7 @@ type APIStorage interface {
 	TagsStorage
 	UserNameStorage
 	UserStorage
+	GetSession() *gocql.Session
 }
 
 type APIIndex interface {

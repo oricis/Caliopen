@@ -225,3 +225,7 @@ func (cb *CassandraBackend) ContactExists(userId, contactId string) bool {
 	}
 	return true
 }
+
+func (cb *CassandraBackend) ContactsForParticipants(userID string, participants map[string]Participant) error {
+	return ContactsForParticipants(cb.Session, userID, participants)
+}
