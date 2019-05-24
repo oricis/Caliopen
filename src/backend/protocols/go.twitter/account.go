@@ -219,7 +219,8 @@ func (worker *AccountHandler) PollDM() {
 		if e, ok := err.(twitter.APIError); ok {
 			errorsMessages := new(strings.Builder)
 			for _, err := range e.Errors {
-				if err.Code == 88 {
+				switch err.Code {
+				case 88: // rate limit error => send throttling order to idpoller
 					var interval int
 					log.Infof("[AccountHandler %s] PollDM : twitter returned rate limit error, slowing down worker for account", worker.userAccount.remoteID)
 					if pollInterval, ok := accountInfos["pollinterval"]; ok {
@@ -256,6 +257,13 @@ func (worker *AccountHandler) PollDM() {
 							log.WithError(e).Warnf("[AccountHandler %s] PollDM : failed to publish new poll interval to idpoller", worker.userAccount.userID.String()+"/"+worker.userAccount.remoteID.String())
 						}
 					}
+				case 89: // invalid token or token expired. Suicide this accountworker thus it will be re-created with new oauth next time idpoller will order it
+					e := worker.saveErrorState(accountInfos, errorsMessages.String())
+					if e != nil {
+						log.WithError(e).Warnf("[AccountHandler %s] PollDM failed to update sync state in db", worker.userAccount.remoteID.String())
+					}
+					worker.Stop(true)
+					return
 				}
 				errorsMessages.WriteString(err.Message + " ")
 			}
