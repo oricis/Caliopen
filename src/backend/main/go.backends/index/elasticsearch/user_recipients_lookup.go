@@ -8,6 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"gopkg.in/olivere/elastic.v5"
@@ -33,7 +34,7 @@ type (
 	}
 )
 
-// build ES queries and responses for finding relevant recipients when an user compose a message
+// RecipientsSuggest builds ES queries and responses for finding relevant recipients when an user compose a message
 func (es *ElasticSearchBackend) RecipientsSuggest(user *UserInfo, query_string string) (suggests []RecipientSuggestion, err error) {
 	suggests = []RecipientSuggestion{}
 	q_string := query_string
@@ -91,7 +92,8 @@ func (es *ElasticSearchBackend) RecipientsSuggest(user *UserInfo, query_string s
 	search := es.Client.Search().
 		Index(user.Shard_id).
 		FetchSourceContext(fsc).
-		Size(30)
+		Size(30).
+		MinScore(0.1)
 	/** log the full json query to help development
 	source, _ := main_query.Source()
 	json_query, _ := json.Marshal(source)
