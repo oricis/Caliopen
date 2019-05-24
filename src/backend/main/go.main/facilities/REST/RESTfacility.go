@@ -33,6 +33,7 @@ type (
 		PatchContact(user *UserInfo, patch []byte, contactID string) error
 		DeleteContact(user *UserInfo, contactID string) error
 		ContactExists(userID, contactID string) bool
+		LookupContactByUri(userID, uri string) ([]*Contact, int64, error)
 		//identities
 		RetrieveContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error)
 		RetrieveLocalIdentities(user_id string) (identities []UserIdentity, err error)
