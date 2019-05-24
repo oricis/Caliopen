@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Discussion last message sort better
 - Index user contact without alias using a workaround to bad core/mixin classes design
 - Addresses emails parsing failed sometimes with strange values
+- Process better invalid or missing data and encoding problems in incoming message
 
 ## [0.20.0] 2019-05-15
 

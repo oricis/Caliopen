@@ -97,14 +97,8 @@ func (f *Fetcher) SyncRemoteWithLocal(order IMAPorder) error {
 	}
 	// Sync INBOX (only INBOX for now)
 	// TODO : sync other mailbox(es) from userIdentity.Infos params or from order
-	lastseenuid, err := strconv.Atoi(userIdentity.Infos["lastseenuid"])
-	if err != nil {
-		log.WithError(err).Warn("[SyncRemoteWithLocal] failed to get lastseenuid")
-	}
-	uidvalidity, err := strconv.Atoi(userIdentity.Infos["uidvalidity"])
-	if err != nil {
-		log.WithError(err).Warn("[SyncRemoteWithLocal] failed to get uidvalidity")
-	}
+	lastseenuid, _ := strconv.Atoi(userIdentity.Infos["lastseenuid"])
+	uidvalidity, _ := strconv.Atoi(userIdentity.Infos["uidvalidity"])
 	box := imapBox{
 		lastSeenUid: uint32(lastseenuid),
 		lastSync:    lastsync,
