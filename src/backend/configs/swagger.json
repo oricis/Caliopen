@@ -7474,7 +7474,7 @@
         }
       }
     },
-    "/v1/imports": {
+    "/v2/imports": {
       "post": {
         "consumes": [
           "multipart/form-data"
