@@ -5,9 +5,14 @@
 package contact
 
 import (
+	"bytes"
+	"encoding/base64"
+	"errors"
 	"github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
+	log "github.com/Sirupsen/logrus"
 	"github.com/emersion/go-vcard"
+	"github.com/keybase/go-crypto/openpgp"
 	"github.com/satori/go.uuid"
 	"strings"
 )
@@ -60,6 +65,47 @@ func parseIm(field *vcard.Field) *objects.IM {
 	return im
 }
 
+func readPgpKey(pubkey []byte) (*openpgp.Entity, error) {
+	reader := bytes.NewReader(pubkey)
+	var entitiesList openpgp.EntityList
+	var err error
+
+	entitiesList, err = openpgp.ReadArmoredKeyRing(reader)
+	if err != nil {
+		return nil, err
+	}
+
+	//handle only first key found for now
+	if len(entitiesList) > 1 {
+		return nil, errors.New("More than one key found in payload")
+	}
+	return entitiesList[0], nil
+}
+
+func parseKey(field *vcard.Field, contact *objects.Contact) (*objects.PublicKey, error) {
+	key := new(objects.PublicKey)
+	var err error
+
+	if field.Params["TYPE"] != nil && field.Params["TYPE"][0] == "PGP" {
+		key.KeyType = "pgp"
+	}
+	if field.Params["ENCODING"] != nil && field.Params["ENCODING"][0] == "b" {
+		pubkey, err := base64.StdEncoding.DecodeString(field.Value)
+		if err != nil {
+			return key, err
+		}
+		entity, err := readPgpKey(pubkey)
+		if err != nil {
+			return key, err
+		}
+		err = key.UnmarshalPGPEntity("PGP key", entity, contact)
+	} else {
+		return key, errors.New("Unknow key encoding")
+	}
+	log.Info("Have parsed PGP key ", key.Fingerprint, " with algorithm ", key.Algorithm)
+	return key, err
+}
+
 func parseAddress(addr *vcard.Address) *objects.PostalAddress {
 	address := new(objects.PostalAddress)
 	uid := new(objects.UUID)
@@ -80,6 +126,13 @@ func (parser *ContactParser) AddVcard(card vcard.Card) error {
 	if card.Name() != nil {
 		contact.FamilyName = card.Name().FamilyName
 		contact.GivenName = card.Name().GivenName
+	}
+
+	// check version
+	// TODO implement version 4.0 (rfc 6350)
+	version := card[vcard.FieldVersion]
+	if version != nil && version[0].Value != "3.0" {
+		return errors.New("Invalid vcard version")
 	}
 
 	// emails
@@ -121,6 +174,21 @@ func (parser *ContactParser) AddVcard(card vcard.Card) error {
 			contact.Addresses = append(contact.Addresses, *a)
 		}
 	}
+
+	// public keys
+	keys := card[vcard.FieldKey]
+	if keys != nil {
+		contact.PublicKeys = make([]objects.PublicKey, 0, len(keys))
+		for _, key := range keys {
+			k, err := parseKey(key, contact)
+			if err != nil {
+				log.Warn("Error during vcard KEY parsing ", err)
+			} else {
+				contact.PublicKeys = append(contact.PublicKeys, *k)
+			}
+		}
+	}
+
 	/*
 		TODO: Need to change index mappings of contact.infos
 		infos := make(map[string]string)
