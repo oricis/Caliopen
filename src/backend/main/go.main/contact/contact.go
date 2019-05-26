@@ -47,6 +47,19 @@ func parsePhone(field *vcard.Field) *objects.Phone {
 	return phone
 }
 
+func parseIm(field *vcard.Field) *objects.IM {
+	im := new(objects.IM)
+	uid := new(objects.UUID)
+	_ = uid.UnmarshalBinary(uuid.NewV4().Bytes())
+	im.IMId = *uid
+	im.Address = strings.ToLower(field.Value)
+	im.Label = field.Value
+	if field.Params["TYPE"] != nil {
+		im.Type = strings.ToLower(field.Params["TYPE"][0])
+	}
+	return im
+}
+
 func parseAddress(addr *vcard.Address) *objects.PostalAddress {
 	address := new(objects.PostalAddress)
 	uid := new(objects.UUID)
@@ -89,6 +102,15 @@ func (parser *ContactParser) AddVcard(card vcard.Card) error {
 		}
 	}
 	helpers.NormalizePhoneNumbers(contact)
+
+	ims := card[vcard.FieldIMPP]
+	if ims != nil {
+		contact.Ims = []objects.IM{}
+		for _, im := range ims {
+			i := parseIm(im)
+			contact.Ims = append(contact.Ims, *i)
+		}
+	}
 
 	// addresses
 	addrs := card.Addresses()
