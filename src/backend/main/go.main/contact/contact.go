@@ -99,17 +99,20 @@ func (parser *ContactParser) AddVcard(card vcard.Card) error {
 			contact.Addresses = append(contact.Addresses, *a)
 		}
 	}
-	infos := make(map[string]string)
-	if uid := card[vcard.FieldUID]; uid != nil {
-		infos["uid"] = uid[0].Value
-	}
-	if rev := card[vcard.FieldRevision]; rev != nil {
-		infos["revision"] = rev[0].Value
-	}
-	contact.Infos = make(map[string]string)
-	for k, v := range infos {
-		contact.Infos[k] = v
-	}
+	/*
+		TODO: Need to change index mappings of contact.infos
+		infos := make(map[string]string)
+		if uid := card[vcard.FieldUID]; uid != nil {
+			infos["uid"] = uid[0].Value
+		}
+		if rev := card[vcard.FieldRevision]; rev != nil {
+			infos["revision"] = rev[0].Value
+		}
+		contact.Infos = make(map[string]string)
+		for k, v := range infos {
+			contact.Infos[k] = v
+		}
+	*/
 
 	// Compute a title if none found
 	if contact.Title == "" {
