@@ -13,10 +13,11 @@ import (
 )
 
 type VcardParser interface {
-	ProcessVcard(objects.UUID, vcard.Card) (*objects.Contact, error)
+	AddVcard(vcard.Card) error
 }
 
 type ContactParser struct {
+	UserId   objects.UUID
 	Contacts []objects.Contact
 }
 
@@ -59,9 +60,9 @@ func parseAddress(addr *vcard.Address) *objects.PostalAddress {
 	return address
 }
 
-func (parser *ContactParser) ProcessVcard(user_id objects.UUID, card vcard.Card) (*objects.Contact, error) {
+func (parser *ContactParser) AddVcard(card vcard.Card) error {
 	contact := new(objects.Contact).NewEmpty().(*objects.Contact)
-	contact.UserId = user_id
+	contact.UserId = parser.UserId
 	contact.Title = card.PreferredValue(vcard.FieldFormattedName)
 	if card.Name() != nil {
 		contact.FamilyName = card.Name().FamilyName
@@ -114,6 +115,6 @@ func (parser *ContactParser) ProcessVcard(user_id objects.UUID, card vcard.Card)
 	if contact.Title == "" {
 		helpers.ComputeNewTitle(contact)
 	}
-
-	return contact, nil
+	parser.Contacts = append(parser.Contacts, *contact)
+	return nil
 }
