@@ -266,7 +266,8 @@ func (worker *AccountHandler) PollDM() {
 					if e != nil {
 						log.WithError(e).Warnf("[AccountHandler %s] PollDM failed to update sync state in db", worker.userAccount.remoteID.String())
 					}
-					worker.Stop(true)
+					// TOFIX Do not stop this way, the broker shutdown and nats connection dissapear
+					// worker.Stop(true)
 					return
 				}
 				errorsMessages.WriteString(err.Message + " ")
