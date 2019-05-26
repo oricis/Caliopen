@@ -17,15 +17,7 @@ import (
 	"strings"
 )
 
-type VcardParser interface {
-	AddVcard(vcard.Card) error
-}
-
-type ContactParser struct {
-	UserId   objects.UUID
-	Contacts []objects.Contact
-}
-
+// Parse EMAIL vcard field
 func parseEmail(field *vcard.Field) *objects.EmailContact {
 	email := new(objects.EmailContact)
 	uid := new(objects.UUID)
@@ -40,6 +32,7 @@ func parseEmail(field *vcard.Field) *objects.EmailContact {
 	return email
 }
 
+// Parse TEL vcard field
 func parsePhone(field *vcard.Field) *objects.Phone {
 	phone := new(objects.Phone)
 	uid := new(objects.UUID)
@@ -52,6 +45,7 @@ func parsePhone(field *vcard.Field) *objects.Phone {
 	return phone
 }
 
+// Parse IMPP vcard field
 func parseIm(field *vcard.Field) *objects.IM {
 	im := new(objects.IM)
 	uid := new(objects.UUID)
@@ -65,6 +59,7 @@ func parseIm(field *vcard.Field) *objects.IM {
 	return im
 }
 
+// Read an armored PGP public key and return an openpgp.Entity structure
 func readPgpKey(pubkey []byte) (*openpgp.Entity, error) {
 	reader := bytes.NewReader(pubkey)
 	var entitiesList openpgp.EntityList
@@ -82,6 +77,7 @@ func readPgpKey(pubkey []byte) (*openpgp.Entity, error) {
 	return entitiesList[0], nil
 }
 
+// Parse KEY vcard field and transform to a PublicKey that belong to a contact
 func parseKey(field *vcard.Field, contact *objects.Contact) (*objects.PublicKey, error) {
 	key := new(objects.PublicKey)
 	var err error
@@ -106,6 +102,7 @@ func parseKey(field *vcard.Field, contact *objects.Contact) (*objects.PublicKey,
 	return key, err
 }
 
+// Parse ADR vcard field
 func parseAddress(addr *vcard.Address) *objects.PostalAddress {
 	address := new(objects.PostalAddress)
 	uid := new(objects.UUID)
@@ -119,9 +116,10 @@ func parseAddress(addr *vcard.Address) *objects.PostalAddress {
 	return address
 }
 
-func (parser *ContactParser) AddVcard(card vcard.Card) error {
+// Transform a vcard into an objects.Contact structure
+func FromVcard(user *objects.UserInfo, card vcard.Card) (*objects.Contact, error) {
 	contact := new(objects.Contact).NewEmpty().(*objects.Contact)
-	contact.UserId = parser.UserId
+	contact.UserId = objects.UUID(uuid.FromStringOrNil(user.User_id))
 	contact.Title = card.PreferredValue(vcard.FieldFormattedName)
 	if card.Name() != nil {
 		contact.FamilyName = card.Name().FamilyName
@@ -132,7 +130,7 @@ func (parser *ContactParser) AddVcard(card vcard.Card) error {
 	// TODO implement version 4.0 (rfc 6350)
 	version := card[vcard.FieldVersion]
 	if version != nil && version[0].Value != "3.0" {
-		return errors.New("Invalid vcard version")
+		return contact, errors.New("Invalid vcard version")
 	}
 
 	// emails
@@ -208,6 +206,5 @@ func (parser *ContactParser) AddVcard(card vcard.Card) error {
 	if contact.Title == "" {
 		helpers.ComputeNewTitle(contact)
 	}
-	parser.Contacts = append(parser.Contacts, *contact)
-	return nil
+	return contact, nil
 }

@@ -288,26 +288,26 @@ func (rest *RESTfacility) ImportVcardFile(info *UserInfo, file io.Reader) error 
 		return err
 	}
 	log.Debug("[ImportVcardFile] Have parse ", len(vcards), " vcards")
-	parser := new(contact.ContactParser)
-	parser.UserId = UUID(uuid.FromStringOrNil(info.User_id))
+
+	importErrors := make([]error, 0, len(vcards))
 	for _, card := range vcards {
-		err := parser.AddVcard(card)
+		contact, err := contact.FromVcard(info, card)
 		if err != nil {
-			return err
-		}
-	}
-	errors := make([]error, 0, len(vcards))
-	for _, contact := range parser.Contacts {
-		err = rest.CreateContact(info, &contact)
-		if err != nil {
-			log.Warn("[ImportVcardFile] Create contact failed with error ", err)
-			errors = append(errors, err)
+			log.Warn("[ImportVcardFile] Error during vcard transformation ", err)
+			importErrors = append(importErrors, err)
 		} else {
-			if contact.PublicKeys != nil {
-				for _, key := range contact.PublicKeys {
-					err = rest.store.CreatePGPPubKey(&key)
-					if err != nil {
-						log.Warn("Create pgp public key failed ", err)
+			err = rest.CreateContact(info, contact)
+			if err != nil {
+				log.Warn("[ImportVcardFile] Create contact failed with error ", err)
+				importErrors = append(importErrors, err)
+			} else {
+				if contact.PublicKeys != nil {
+					for _, key := range contact.PublicKeys {
+						err = rest.store.CreatePGPPubKey(&key)
+						if err != nil {
+							log.Warn("Create pgp public key failed ", err)
+							importErrors = append(importErrors, err)
+						}
 					}
 				}
 			}
