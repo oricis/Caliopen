@@ -12,6 +12,7 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/middlewares"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main"
+	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
 	swgErr "github.com/go-openapi/errors"
 	"github.com/satori/go.uuid"
@@ -242,4 +243,41 @@ func DeleteContact(ctx *gin.Context) {
 		return
 	}
 	ctx.Status(http.StatusNoContent)
+}
+
+// ImportFile handles POST /imports and do logic depending on file mime type
+func ImportFile(ctx *gin.Context) {
+	userId, err := operations.NormalizeUUIDstring(ctx.MustGet("user_id").(string))
+
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+	shard_id := ctx.MustGet("shard_id").(string)
+	user_info := &UserInfo{User_id: userId, Shard_id: shard_id}
+
+	file, header, err := ctx.Request.FormFile("file")
+	if err != nil {
+		e := swgErr.New(http.StatusUnprocessableEntity, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+		return
+	}
+
+	filename := header.Filename
+	content_type := header.Header["Content-Type"][0]
+
+	log.Info("Importing file ", filename, " with content_type ", content_type)
+	err = caliopen.Facilities.RESTfacility.ImportVcardFile(user_info, file)
+	if err != nil {
+		var e error
+		e = swgErr.New(http.StatusInternalServerError, err.Error())
+		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+		ctx.Abort()
+	} else {
+		ctx.Status(http.StatusOK)
+	}
+	return
 }

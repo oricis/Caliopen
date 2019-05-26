@@ -285,21 +285,22 @@ func (rest *RESTfacility) ContactExists(userID, contactID string) bool {
 func (rest *RESTfacility) ImportVcardFile(info *UserInfo, file io.Reader) error {
 	vcards, err := contact.ParseVcardFile(file)
 	if err != nil {
-		errors.New("can't process vcard file")
+		return err
 	}
+	log.Debug("[ImportVcardFile] Have parse ", len(vcards), " vcards")
 	parser := new(contact.ContactParser)
 	parser.UserId = UUID(uuid.FromStringOrNil(info.User_id))
 	for _, card := range vcards {
 		err := parser.AddVcard(card)
 		if err != nil {
-			log.Fatal("Processing contact failed ", err)
+			return err
 		}
 	}
 	errors := make([]error, 0, len(vcards))
 	for _, contact := range parser.Contacts {
-		log.Info("Importing contact ", contact.Title)
 		err = rest.CreateContact(info, &contact)
 		if err != nil {
+			log.Warn("[ImportVcardFile] Create contact failed with error ", err)
 			errors = append(errors, err)
 		}
 	}
