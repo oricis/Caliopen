@@ -302,12 +302,13 @@ func (rest *RESTfacility) ImportVcardFile(info *UserInfo, file io.Reader) error 
 		if err != nil {
 			log.Warn("[ImportVcardFile] Create contact failed with error ", err)
 			errors = append(errors, err)
-		}
-		if contact.PublicKeys != nil {
-			for _, key := range contact.PublicKeys {
-				err = rest.store.CreatePGPPubKey(&key)
-				if err != nil {
-					log.Warn("Create pgp public key failed ", err)
+		} else {
+			if contact.PublicKeys != nil {
+				for _, key := range contact.PublicKeys {
+					err = rest.store.CreatePGPPubKey(&key)
+					if err != nil {
+						log.Warn("Create pgp public key failed ", err)
+					}
 				}
 			}
 		}
