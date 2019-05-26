@@ -6,58 +6,25 @@ package contact
 
 import (
 	"github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
 	"github.com/emersion/go-vcard"
+	"github.com/satori/go.uuid"
 	"strings"
 )
+
+type VcardParser interface {
+	ProcessVcard(objects.UUID, vcard.Card) (*objects.Contact, error)
+}
 
 type ContactParser struct {
 	Contacts []objects.Contact
 }
 
-/*
-
-type (
-	Contact struct {
-		Locker          *sync.Mutex       `cql:"-"                  json:"-"`
-		AdditionalName  string            `cql:"additional_name"    json:"additional_name,omitempty"      patch:"user"`
-		Addresses       []PostalAddress   `cql:"addresses"          json:"addresses,omitempty"            patch:"user"`
-		Avatar          string            `cql:"avatar"             json:"avatar,omitempty"               patch:"user"`
-		ContactId       UUID              `cql:"contact_id"         json:"contact_id,omitempty"   elastic:"omit"`
-		DateInsert      time.Time         `cql:"date_insert"        json:"date_insert,omitempty"          formatter:"RFC3339Milli"`
-		DateUpdate      time.Time         `cql:"date_update"        json:"date_update,omitempty"          formatter:"RFC3339Milli"`
-		Deleted         time.Time         `cql:"deleted"            json:"deleted,omitempty"              formatter:"RFC3339Milli"`
-		Emails          []EmailContact    `cql:"emails"             json:"emails,omitempty"               patch:"user"`
-		FamilyName      string            `cql:"family_name"        json:"family_name,omitempty"          patch:"user"`
-		GivenName       string            `cql:"given_name"         json:"given_name,omitempty"           patch:"user"`
-		Groups          []string          `cql:"groups"             json:"groups,omitempty"               patch:"user"`
-		Identities      []SocialIdentity  `cql:"identities"         json:"identities,omitempty"           patch:"user"`
-		Ims             []IM              `cql:"ims"                json:"ims,omitempty"                  patch:"user"`
-		Infos           map[string]string `cql:"infos"              json:"infos,omitempty"                patch:"user"`
-		NamePrefix      string            `cql:"name_prefix"        json:"name_prefix,omitempty"          patch:"user"`
-		NameSuffix      string            `cql:"name_suffix"        json:"name_suffix,omitempty"          patch:"user"`
-		Organizations   []Organization    `cql:"organizations"      json:"organizations,omitempty"        patch:"user"`
-		Phones          []Phone           `cql:"phones"             json:"phones,omitempty"               patch:"user"`
-		PrivacyIndex    *PrivacyIndex     `cql:"pi"                 json:"pi,omitempty"`
-		PublicKeys      []PublicKey       `cql:"-"                  json:"public_keys,omitempty"          patch:"user"`
-		PrivacyFeatures *PrivacyFeatures  `cql:"privacy_features"   json:"privacy_features,omitempty"`
-		Tags            []string          `cql:"tagnames"           json:"tags,omitempty"                 patch:"system"`
-		Title           string            `cql:"title"              json:"title,omitempty"                patch:"user"`
-		UserId          UUID              `cql:"user_id"            json:"user_id,omitempty"`
-	}
-
-	// ContactByContactPoints is the model of a Cassandra table to lookup contacts by address/email/phone/etc.
-	ContactByContactPoints struct {
-		ContactID string `cql:"contact_id"`
-		Type      string `cql:"type"`
-		UserID    string `cql:"user_id"`
-		Value     string `cql:"value"`
-	}
-)
-
-*/
-
 func parseEmail(field *vcard.Field) *objects.EmailContact {
 	email := new(objects.EmailContact)
+	uid := new(objects.UUID)
+	_ = uid.UnmarshalBinary(uuid.NewV4().Bytes())
+	email.EmailId = *uid
 	email.Address = strings.ToLower(field.Value)
 	if field.Params["TYPE"] != nil {
 		email.Type = strings.ToLower(field.Params["TYPE"][0])
@@ -67,8 +34,23 @@ func parseEmail(field *vcard.Field) *objects.EmailContact {
 	return email
 }
 
+func parsePhone(field *vcard.Field) *objects.Phone {
+	phone := new(objects.Phone)
+	uid := new(objects.UUID)
+	_ = uid.UnmarshalBinary(uuid.NewV4().Bytes())
+	phone.PhoneId = *uid
+	phone.Number = field.Value
+	if field.Params["TYPE"] != nil {
+		phone.Type = strings.ToLower(field.Params["TYPE"][0])
+	}
+	return phone
+}
+
 func parseAddress(addr *vcard.Address) *objects.PostalAddress {
 	address := new(objects.PostalAddress)
+	uid := new(objects.UUID)
+	_ = uid.UnmarshalBinary(uuid.NewV4().Bytes())
+	address.AddressId = *uid
 	address.City = addr.Locality
 	address.Country = addr.Country
 	address.Region = addr.Region
@@ -85,6 +67,8 @@ func (parser *ContactParser) ProcessVcard(user_id objects.UUID, card vcard.Card)
 		contact.FamilyName = card.Name().FamilyName
 		contact.GivenName = card.Name().GivenName
 	}
+
+	// emails
 	emails := card[vcard.FieldEmail]
 	if emails != nil {
 		contact.Emails = []objects.EmailContact{}
@@ -93,16 +77,33 @@ func (parser *ContactParser) ProcessVcard(user_id objects.UUID, card vcard.Card)
 			contact.Emails = append(contact.Emails, *e)
 		}
 	}
-	/*
-		phones := card[vcard.FieldPhone]
-		if phones != nil {
-			contact.Phones = []objects.PhoneContact{}
-			for _, phone := range phones {
-				p := parsePhone(phone)
-				contact.Phones = append(contact.Phones, *p)
-			}
+
+	// phones
+	phones := card[vcard.FieldTelephone]
+	if phones != nil {
+		contact.Phones = []objects.Phone{}
+		for _, phone := range phones {
+			p := parsePhone(phone)
+			contact.Phones = append(contact.Phones, *p)
 		}
-	*/
+	}
+	helpers.NormalizePhoneNumbers(contact)
+
+	// addresses
+	addrs := card.Addresses()
+	if addrs != nil {
+		contact.Addresses = []objects.PostalAddress{}
+		for _, addr := range addrs {
+			a := parseAddress(addr)
+			contact.Addresses = append(contact.Addresses, *a)
+		}
+	}
 	// TODO fill Contact.Infos with UID/REV informations
+
+	// Compute a title if none found
+	if contact.Title == "" {
+		helpers.ComputeNewTitle(contact)
+	}
+
 	return contact, nil
 }
