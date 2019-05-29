@@ -19,10 +19,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Default locale saved on account creation
-- Responsiveness for the «new device page»
-- BSOD while including regexp special chars in search query
-- Email icon was always on Timeline
+- Default locale saved on account creation.
+- Responsiveness for the «new device page».
+- BSOD while including regexp special chars in search query.
+- Email icon was always on Timeline.
+- Contact starting w/ a letter with a diacritic is not displayed on ContactBook.
 
 ## [0.20] \<Unreleased>
 
