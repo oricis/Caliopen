@@ -313,6 +313,9 @@ func (rest *RESTfacility) ImportVcardFile(info *UserInfo, file io.Reader) error 
 			}
 		}
 	}
+	for _, err := range importErrors {
+		log.Warn("Import vcard error: ", err)
+	}
 	return nil
 }
 
