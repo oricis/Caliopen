@@ -88,15 +88,15 @@ func parseKey(field *vcard.Field, contact *objects.Contact) (*objects.PublicKey,
 	if field.Params["ENCODING"] != nil && field.Params["ENCODING"][0] == "b" {
 		pubkey, err := base64.StdEncoding.DecodeString(field.Value)
 		if err != nil {
-			return key, err
+			return &objects.PublicKey{}, err
 		}
 		entity, err := readPgpKey(pubkey)
 		if err != nil {
-			return key, err
+			return &objects.PublicKey{}, err
 		}
 		err = key.UnmarshalPGPEntity("PGP key", entity, contact)
 	} else {
-		return key, errors.New("Unknow key encoding")
+		return &objects.PublicKey{}, errors.New("Unknow key encoding")
 	}
 	log.Info("Have parsed PGP key ", key.Fingerprint, " with algorithm ", key.Algorithm)
 	return key, err

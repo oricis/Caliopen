@@ -5,11 +5,8 @@
 package contact
 
 import (
-	"bufio"
-	"bytes"
 	"github.com/emersion/go-vcard"
 	"io"
-	"strings"
 )
 
 // Parse .vcf .vcard file, returting list of Card objects
@@ -23,7 +20,7 @@ func ParseVcardFile(file io.Reader) ([]vcard.Card, error) {
 		if err == io.EOF {
 			break
 		} else if err != nil {
-			return &[]vcard.Card{}, err
+			return []vcard.Card{}, err
 		}
 		cards = append(cards, card)
 	}
