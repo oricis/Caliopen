@@ -28,6 +28,7 @@ type (
 		Store           backends.LDAStore
 		WorkersGuard    *sync.RWMutex
 		Conf            WorkerConfig
+		Desk            chan DeskMessage // chan to allow accountworkers to communicate with their master
 	}
 
 	WorkerConfig struct {
@@ -36,13 +37,19 @@ type (
 		TwitterAppSecret string              `mapstructure:"twitter_app_secret"`
 		BrokerConfig     broker.BrokerConfig `mapstructure:"BrokerConfig"`
 	}
+
+	DeskMessage struct {
+		order   string
+		account *AccountHandler
+	}
 )
 
 const (
 	failuresThreshold = 72 // how many hours to wait before disabling a faulty remote.
 	noPendingJobErr   = "no pending job"
-	pollThrottling    = 30 * time.Second
+	pollThrottling    = 10 * time.Second
 	needJobOrderStr   = `{"worker":"%s","order":{"order":"need_job"}}`
+	closeAccountOrder = "close_account"
 )
 
 func InitWorker(conf WorkerConfig, verboseLog bool, id string) (worker *Worker, err error) {
@@ -158,6 +165,8 @@ func InitWorker(conf WorkerConfig, verboseLog bool, id string) (worker *Worker, 
 		log.WithError(err).Fatal("[TwitterWorker] initialization of NATS fetcher subscription failed")
 	}
 
+	worker.Desk = make(chan DeskMessage, 2)
+
 	return worker, nil
 }
 
@@ -168,6 +177,18 @@ func (worker *Worker) Start(throttling ...time.Duration) {
 	} else {
 		throttle = pollThrottling
 	}
+
+	go func() {
+		for msg := range worker.Desk {
+			switch msg.order {
+			case closeAccountOrder:
+				worker.RemoveAccountHandler(msg.account)
+			default:
+				log.Debugf("[TwitterWorker] received unknown order « %s » from account %s", msg.order, msg.account.userAccount.userID.String()+msg.account.userAccount.remoteID.String())
+			}
+		}
+	}()
+
 	// start throttled jobs polling
 	log.Infof("Twitter worker %s starting with %d sec throttling", worker.Id, throttle/time.Second)
 	for {
@@ -203,6 +224,7 @@ func (worker *Worker) stop() {
 	worker.Store.Close()
 	worker.Index.Close()
 	worker.HaltGroup.Done()
+	close(worker.Desk)
 	log.Infof("worker %s stopped", worker.Id)
 }
 
@@ -247,9 +269,11 @@ func (w *Worker) RegisterAccountHandler(accountHandler *AccountHandler) {
 }
 
 func (w *Worker) RemoveAccountHandler(accountHandler *AccountHandler) {
-	workerKey := accountHandler.userAccount.userID.String() + accountHandler.userAccount.remoteID.String()
-	w.WorkersGuard.Lock()
-	accountHandler.Stop(true)
-	delete(w.AccountHandlers, workerKey)
-	w.WorkersGuard.Unlock()
+	if accountHandler != nil {
+		workerKey := accountHandler.userAccount.userID.String() + accountHandler.userAccount.remoteID.String()
+		w.WorkersGuard.Lock()
+		accountHandler.Stop()
+		delete(w.AccountHandlers, workerKey)
+		w.WorkersGuard.Unlock()
+	}
 }

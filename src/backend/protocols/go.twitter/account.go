@@ -24,7 +24,9 @@ type (
 	AccountHandler struct {
 		AccountDesk      chan uint
 		broker           *broker.TwitterBroker
+		closed           bool
 		lastDMseen       string
+		MasterDesk       chan DeskMessage
 		twitterClient    *twitter.Client
 		userAccount      *TwitterAccount
 		usersScreenNames map[int64]string // a cache facility to avoid calling too often twitter API for screen_name lookup
@@ -118,10 +120,11 @@ func NewAccountHandler(userID, remoteID string, worker Worker) (accountHandler *
 // Start begins infinite loops, until receiving stop order. This func must be call within goroutine.
 func (worker *AccountHandler) Start() {
 	go func(w *AccountHandler) {
-		for {
+		for worker.broker != nil {
 			select {
 			case egress, ok := <-w.broker.Connectors.Egress:
 				if !ok {
+					worker.MasterDesk <- DeskMessage{closeAccountOrder, worker}
 					return
 				}
 				err := w.SendDM(egress.Order)
@@ -136,11 +139,9 @@ func (worker *AccountHandler) Start() {
 						Response: "OK",
 					}
 				}
-			case _, ok := <-w.broker.Connectors.Halt:
-				if !ok {
-					return
-				}
-				w.WorkerDesk <- Stop
+			case <-w.broker.Connectors.Halt:
+				worker.MasterDesk <- DeskMessage{closeAccountOrder, worker}
+				return
 			}
 		}
 	}(worker)
@@ -150,26 +151,28 @@ func (worker *AccountHandler) Start() {
 		case PollDM:
 			worker.PollDM()
 		case Stop:
-			worker.Stop(true)
+			worker.Stop()
+			return
 		default:
 			log.Warnf("worker received unknown command number %d", command)
 		}
 	}
 }
 
-func (worker *AccountHandler) Stop(closeDesk bool) {
-	// destroy broker
-	worker.broker.ShutDown()
-	worker.broker = nil
-	// close desk
-	if closeDesk {
-		close(worker.WorkerDesk)
+func (worker *AccountHandler) Stop() {
+	if !worker.closed {
+		close(worker.broker.Connectors.Egress)
+		close(worker.broker.Connectors.Halt)
+		close(worker.AccountDesk)
+		worker.closed = true
 	}
 }
 
 // PollDM calls Twitter API endpoint to fetch DMs
 // it passes unseen DM to its embedded broker
 func (worker *AccountHandler) PollDM() {
+	worker.MasterDesk <- DeskMessage{closeAccountOrder, worker}
+	return
 	// retrieve user_identity.infos
 	accountInfos, retrieveErr := worker.broker.Store.RetrieveRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String())
 	if retrieveErr != nil {
@@ -260,7 +263,7 @@ func (worker *AccountHandler) PollDM() {
 					if e != nil {
 						log.WithError(e).Warnf("[AccountHandler %s] PollDM failed to update sync state in db", worker.userAccount.remoteID.String())
 					}
-					worker.Stop(true)
+					worker.MasterDesk <- DeskMessage{closeAccountOrder, worker}
 					return
 				}
 				errorsMessages.WriteString(err.Message + " ")
