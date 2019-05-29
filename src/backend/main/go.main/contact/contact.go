@@ -202,9 +202,5 @@ func FromVcard(user *objects.UserInfo, card vcard.Card) (*objects.Contact, error
 		}
 	*/
 
-	// Compute a title if none found
-	if contact.Title == "" {
-		helpers.ComputeNewTitle(contact)
-	}
 	return contact, nil
 }

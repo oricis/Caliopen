@@ -5,6 +5,7 @@
 package contact
 
 import (
+	"errors"
 	"github.com/emersion/go-vcard"
 	"io"
 )
@@ -23,6 +24,9 @@ func ParseVcardFile(file io.Reader) ([]vcard.Card, error) {
 			return []vcard.Card{}, err
 		}
 		cards = append(cards, card)
+	}
+	if len(cards) == 0 {
+		return cards, errors.New("No vcard found in file")
 	}
 	return cards, nil
 }
