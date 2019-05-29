@@ -129,8 +129,8 @@ func FromVcard(user *objects.UserInfo, card vcard.Card) (*objects.Contact, error
 	// check version
 	// TODO implement version 4.0 (rfc 6350)
 	version := card[vcard.FieldVersion]
-	if version != nil && version[0].Value != "3.0" {
-		return contact, errors.New("Invalid vcard version")
+	if version != nil && version[0].Value == "4.0" {
+		return contact, errors.New("Not supported vcard version 4.0")
 	}
 
 	// emails
