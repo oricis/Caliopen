@@ -171,8 +171,6 @@ func (worker *AccountHandler) Stop() {
 // PollDM calls Twitter API endpoint to fetch DMs
 // it passes unseen DM to its embedded broker
 func (worker *AccountHandler) PollDM() {
-	worker.MasterDesk <- DeskMessage{closeAccountOrder, worker}
-	return
 	// retrieve user_identity.infos
 	accountInfos, retrieveErr := worker.broker.Store.RetrieveRemoteInfosMap(worker.userAccount.userID.String(), worker.userAccount.remoteID.String())
 	if retrieveErr != nil {
