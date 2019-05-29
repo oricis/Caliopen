@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Default locale saved on account creation
 - Responsiveness for the «new device page»
 - BSOD while including regexp special chars in search query
+- Email icon was always on Timeline
 
 ## [0.20] \<Unreleased>
 
