@@ -291,18 +291,18 @@ func (rest *RESTfacility) ImportVcardFile(info *UserInfo, file io.Reader) error 
 
 	importErrors := make([]error, 0, len(vcards))
 	for _, card := range vcards {
-		contact, err := contact.FromVcard(info, card)
+		c, err := contact.FromVcard(info, card)
 		if err != nil {
 			log.Warn("[ImportVcardFile] Error during vcard transformation ", err)
 			importErrors = append(importErrors, err)
 		} else {
-			err = rest.CreateContact(info, contact)
+			err = rest.CreateContact(info, c)
 			if err != nil {
 				log.Warn("[ImportVcardFile] Create contact failed with error ", err)
 				importErrors = append(importErrors, err)
 			} else {
-				if contact.PublicKeys != nil {
-					for _, key := range contact.PublicKeys {
+				if c.PublicKeys != nil {
+					for _, key := range c.PublicKeys {
 						err = rest.store.CreatePGPPubKey(&key)
 						if err != nil {
 							log.Warn("Create pgp public key failed ", err)
