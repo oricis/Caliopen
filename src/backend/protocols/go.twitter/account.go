@@ -22,7 +22,7 @@ import (
 
 type (
 	AccountHandler struct {
-		WorkerDesk       chan uint
+		AccountDesk      chan uint
 		broker           *broker.TwitterBroker
 		lastDMseen       string
 		twitterClient    *twitter.Client
@@ -41,7 +41,7 @@ type (
 )
 
 const (
-	//WorkerDesk commands
+	//AccountDesk commands
 	PollDM = uint(iota)
 	PollTimeLine
 	Stop
@@ -63,7 +63,8 @@ const (
 // It caches remote identity credentials and data, as well as user context connection to twitter API.
 func NewAccountHandler(userID, remoteID string, worker Worker) (accountHandler *AccountHandler, err error) {
 	accountHandler = new(AccountHandler)
-	accountHandler.WorkerDesk = make(chan uint)
+	accountHandler.AccountDesk = make(chan uint)
+	accountHandler.MasterDesk = worker.Desk
 	b, e := broker.Initialize(worker.Conf.BrokerConfig, worker.Store, worker.Index, worker.NatsConn, worker.Notifier)
 	if e != nil {
 		err = fmt.Errorf("[TwitterAccount]NewAccountHandler failed to initialize a twitter broker : %s", e)
@@ -144,7 +145,7 @@ func (worker *AccountHandler) Start() {
 		}
 	}(worker)
 
-	for command := range worker.WorkerDesk {
+	for command := range worker.AccountDesk {
 		switch command {
 		case PollDM:
 			worker.PollDM()
@@ -153,9 +154,6 @@ func (worker *AccountHandler) Start() {
 		default:
 			log.Warnf("worker received unknown command number %d", command)
 		}
-	}
-	if worker.broker != nil {
-		worker.Stop(false)
 	}
 }
 

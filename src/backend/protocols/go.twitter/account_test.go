@@ -49,7 +49,7 @@ func TestAccountHandler_Start(t *testing.T) {
 	// test if worker is reacting to the closing of its workerDesk
 	go ah.Start()
 	time.Sleep(100 * time.Millisecond)
-	close(ah.WorkerDesk)
+	close(ah.AccountDesk)
 	time.Sleep(100 * time.Millisecond)
 	if ah.broker != nil {
 		t.Error("expected broker has been destroyed, still got one")
@@ -71,12 +71,12 @@ func TestAccountHandler_Stop(t *testing.T) {
 
 	go ah.Start()
 	time.Sleep(100 * time.Millisecond)
-	ah.Stop(true)
+	ah.Stop()
 	time.Sleep(100 * time.Millisecond)
 	if ah.broker != nil {
 		t.Error("expected broker has been destroyed, still got one")
 	}
-	if _, ok := <-ah.WorkerDesk; ok {
+	if _, ok := <-ah.AccountDesk; ok {
 		t.Error("expected workerDesk to be closed, got true when reading")
 	}
 }

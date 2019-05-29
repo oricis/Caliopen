@@ -194,7 +194,7 @@ func (worker *Worker) Start(throttling ...time.Duration) {
 
 func (worker *Worker) stop() {
 	for _, w := range worker.AccountHandlers {
-		w.WorkerDesk <- Stop
+		w.AccountDesk <- Stop
 	}
 	for _, sub := range worker.NatsSubs {
 		sub.Unsubscribe()
