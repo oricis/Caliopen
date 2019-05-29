@@ -74,6 +74,7 @@ func initWorkerTest() (worker *Worker, natsServer *server.Server, err error) {
 	if err != nil {
 		return nil, nil, err
 	}
+	worker.Desk = make(chan DeskMessage)
 	return
 }
 
@@ -169,7 +170,7 @@ func TestWorker_RegisterAccountHandler(t *testing.T) {
 					Halt:   make(chan struct{}),
 				},
 			}
-			handler.WorkerDesk = make(chan uint)
+			handler.AccountDesk = make(chan uint)
 			w.RegisterAccountHandler(handler)
 			wg.Done()
 		}(i)
@@ -258,7 +259,7 @@ func TestWorker_RemoveAccountHandler(t *testing.T) {
 				Halt:   make(chan struct{}),
 			},
 		}
-		handler.WorkerDesk = make(chan uint)
+		handler.AccountDesk = make(chan uint)
 		w.RegisterAccountHandler(handler)
 	}
 

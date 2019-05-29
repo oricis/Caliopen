@@ -40,19 +40,10 @@ func TestAccountHandler_Start(t *testing.T) {
 		return
 	}
 	defer s.Shutdown()
-	ah, err := NewAccountHandler(backendstest.EmmaTommeUserId, "b91f0fa8-17a2-4729-8a5a-5ff58ee5c121", *w)
+	_, err = NewAccountHandler(backendstest.EmmaTommeUserId, "b91f0fa8-17a2-4729-8a5a-5ff58ee5c121", *w)
 	if err != nil {
 		t.Error(err)
 		return
-	}
-
-	// test if worker is reacting to the closing of its workerDesk
-	go ah.Start()
-	time.Sleep(100 * time.Millisecond)
-	close(ah.AccountDesk)
-	time.Sleep(100 * time.Millisecond)
-	if ah.broker != nil {
-		t.Error("expected broker has been destroyed, still got one")
 	}
 }
 
@@ -73,10 +64,13 @@ func TestAccountHandler_Stop(t *testing.T) {
 	time.Sleep(100 * time.Millisecond)
 	ah.Stop()
 	time.Sleep(100 * time.Millisecond)
-	if ah.broker != nil {
-		t.Error("expected broker has been destroyed, still got one")
-	}
 	if _, ok := <-ah.AccountDesk; ok {
-		t.Error("expected workerDesk to be closed, got true when reading")
+		t.Error("expected handler's accountDesk to be closed, still open")
+	}
+	if _, ok := <-ah.broker.Connectors.Halt; ok {
+		t.Error("expected handler.broker's connectors.halt to be closed, still open")
+	}
+	if _, ok := <-ah.broker.Connectors.Egress; ok {
+		t.Error("expected handler.broker's connectors.Egress to be closed, still open")
 	}
 }
