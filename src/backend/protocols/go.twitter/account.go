@@ -384,11 +384,13 @@ func (worker *AccountHandler) getAccountName(accountID string) (accountName stri
 	if err == nil {
 		var inCache bool
 		if accountName, inCache = worker.usersScreenNames[ID]; !inCache {
-			user, _, err := worker.twitterClient.Users.Show(&twitter.UserShowParams{UserID: ID})
+			user, resp, err := worker.twitterClient.Users.Show(&twitter.UserShowParams{UserID: ID})
 			if err == nil && user != nil {
 				(*worker).usersScreenNames[ID] = user.ScreenName
+				return user.ScreenName
+			} else {
+				log.WithError(err).Warnf("[AccountHandler] failed to getAccountName for twitter ID %s. Got user {%+v} and http response {%+v}", accountID, user, resp)
 			}
-			return user.ScreenName
 		}
 		return accountName
 	}
