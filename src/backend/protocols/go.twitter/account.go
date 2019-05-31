@@ -292,8 +292,17 @@ func (worker *AccountHandler) PollDM() {
 	for _, event := range DMs.Events {
 		if worker.dmNotSeen(event) {
 			//lookup sender & recipient's screen_names because there are not embedded in event object
-			(*event.Message).SenderScreenName = worker.getAccountName(event.Message.SenderID)
-			(*event.Message).Target.RecipientScreenName = worker.getAccountName(event.Message.Target.RecipientID)
+			accountName := worker.getAccountName(event.Message.SenderID)
+			if accountName == "" {
+				continue // we don't want to inject a message with an incomplete participant
+			}
+			(*event.Message).SenderScreenName = accountName
+			accountName = worker.getAccountName(event.Message.Target.RecipientID)
+			if accountName == "" {
+				continue // we don't want to inject a message with an incomplete participant
+			}
+			(*event.Message).Target.RecipientScreenName = accountName
+
 			err = worker.broker.ProcessInDM(worker.userAccount.userID, worker.userAccount.remoteID, &event, true)
 			if err != nil {
 				// something went wrong, forget this DM
