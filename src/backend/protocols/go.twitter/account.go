@@ -101,16 +101,30 @@ func NewAccountHandler(userID, remoteID string, worker Worker) (accountHandler *
 	if accountHandler.twitterClient = twitter.NewClient(httpClient); accountHandler.twitterClient == nil {
 		return nil, errors.New("[NewWorker] twitter api failed to create http client")
 	}
+	var twitterID int64
+	var screenName string
+	accountHandler.usersScreenNames = map[int64]string{}
+
+	// try to cache account's ID and screenName
 	if twitterid, ok := remote.Infos["twitterid"]; ok && twitterid != "" {
 		accountHandler.userAccount.twitterID = twitterid
+		twitterID, _ = strconv.ParseInt(twitterid, 10, 64)
+		if twittername, ok := remote.Infos["screen_name"]; ok && twittername != "" {
+			screenName = twittername
+		} else {
+			screenName = accountHandler.getAccountName(twitterid)
+		}
 	} else {
 		twitterUser, _, e := accountHandler.twitterClient.Users.Show(&twitter.UserShowParams{ScreenName: accountHandler.userAccount.screenName})
 		if e == nil {
 			accountHandler.userAccount.twitterID = twitterUser.IDStr
+			twitterID = twitterUser.ID
+			screenName = twitterUser.ScreenName
 		}
 	}
-	accountHandler.usersScreenNames = map[int64]string{}
-
+	if twitterID != 0 && screenName != "" {
+		accountHandler.usersScreenNames[twitterID] = screenName
+	}
 	return
 }
 
