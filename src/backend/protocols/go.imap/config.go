@@ -28,4 +28,5 @@ type (
 const (
 	syncingTimeout    = 24 // how many hours to wait before restarting sync op
 	failuresThreshold = 72 // how many hours to wait before disabling a faulty remote
+	pollThrottling    = 10 // how many seconds to pause before requesting jobs again to idpoller
 )
