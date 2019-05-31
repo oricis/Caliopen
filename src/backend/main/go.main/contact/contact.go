@@ -141,7 +141,9 @@ func FromVcard(user *objects.UserInfo, card vcard.Card) (*objects.Contact, error
 		contact.Emails = []objects.EmailContact{}
 		for _, email := range emails {
 			e := parseEmail(email)
-			contact.Emails = append(contact.Emails, *e)
+			if e.Address != "" {
+				contact.Emails = append(contact.Emails, *e)
+			}
 		}
 	}
 
@@ -151,7 +153,9 @@ func FromVcard(user *objects.UserInfo, card vcard.Card) (*objects.Contact, error
 		contact.Phones = []objects.Phone{}
 		for _, phone := range phones {
 			p := parsePhone(phone)
-			contact.Phones = append(contact.Phones, *p)
+			if p.Number != "" {
+				contact.Phones = append(contact.Phones, *p)
+			}
 		}
 	}
 	helpers.NormalizePhoneNumbers(contact)
@@ -161,7 +165,9 @@ func FromVcard(user *objects.UserInfo, card vcard.Card) (*objects.Contact, error
 		contact.Ims = []objects.IM{}
 		for _, im := range ims {
 			i := parseIm(im)
-			contact.Ims = append(contact.Ims, *i)
+			if i.Address != "" {
+				contact.Ims = append(contact.Ims, *i)
+			}
 		}
 	}
 
