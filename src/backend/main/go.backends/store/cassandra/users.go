@@ -83,10 +83,6 @@ func (cb *CassandraBackend) DeleteUser(user_id string) error {
 	if err != nil {
 		return err
 	}
-	err = cb.SessionQuery(`DELETE from user_name WHERE name = ?`, user.Name).Exec()
-	if err != nil {
-		return err
-	}
 	return err
 }
 
