@@ -75,6 +75,16 @@ func initWorkerTest() (worker *Worker, natsServer *server.Server, err error) {
 		return nil, nil, err
 	}
 	worker.Desk = make(chan DeskMessage)
+	go func() {
+		for msg := range worker.Desk {
+			switch msg.order {
+			case closeAccountOrder:
+				if msg.account != nil {
+					worker.RemoveAccountHandler(msg.account)
+				}
+			}
+		}
+	}()
 	return
 }
 
