@@ -39,7 +39,6 @@ class OpenPGPKey extends Component {
     i18n: PropTypes.shape({}).isRequired,
     locale: PropTypes.string,
     children: PropTypes.node,
-    publicKeyArmored: PropTypes.string.isRequired,
     privateKeyArmored: PropTypes.string,
     editMode: PropTypes.bool,
     onDeleteKey: PropTypes.func,

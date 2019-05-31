@@ -12,6 +12,7 @@ class OpenPGPKeysDetails extends Component {
   static propTypes = {
     user: PropTypes.shape({}).isRequired,
     isLoading: PropTypes.bool,
+    saveUserPublicKey: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -61,6 +62,7 @@ class OpenPGPKeysDetails extends Component {
   }
 
   importKeys = async () => {
+    const { saveUserPublicKey, user } = this.props;
     const { privateKeyArmored, passphrase } = this.state.importForm;
 
     this.setState({ isFormLoading: true });
@@ -80,6 +82,9 @@ class OpenPGPKeysDetails extends Component {
             passphrase: '',
           },
         };
+      if (!error) {
+        saveUserPublicKey(publicKeyArmored, user);
+      }
       this.updateKeyState(newState);
     } catch (e) {
       this.updateKeyState({

@@ -1,3 +1,11 @@
+import { bindActionCreators, connect } from 'react-redux';
+import { saveUserPublicKeyAction } from '../../../../modules/publicKey';
 import Presenter from './presenter';
 
-export default Presenter;
+const mapDispatchToProps = dispatch => ({
+  ...bindActionCreators({
+    saveUserPublicKey: saveUserPublicKeyAction,
+  }, dispatch),
+});
+
+export default connect(null, mapDispatchToProps)(Presenter);
