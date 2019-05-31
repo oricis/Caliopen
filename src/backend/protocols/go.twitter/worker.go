@@ -182,7 +182,9 @@ func (worker *Worker) Start(throttling ...time.Duration) {
 		for msg := range worker.Desk {
 			switch msg.order {
 			case closeAccountOrder:
-				worker.RemoveAccountHandler(msg.account)
+				if msg.account != nil {
+					worker.RemoveAccountHandler(msg.account)
+				}
 			default:
 				log.Debugf("[TwitterWorker] received unknown order « %s » from account %s", msg.order, msg.account.userAccount.userID.String()+msg.account.userAccount.remoteID.String())
 			}
@@ -269,11 +271,9 @@ func (w *Worker) RegisterAccountHandler(accountHandler *AccountHandler) {
 }
 
 func (w *Worker) RemoveAccountHandler(accountHandler *AccountHandler) {
-	if accountHandler != nil {
-		workerKey := accountHandler.userAccount.userID.String() + accountHandler.userAccount.remoteID.String()
-		w.WorkersGuard.Lock()
-		accountHandler.Stop()
-		delete(w.AccountHandlers, workerKey)
-		w.WorkersGuard.Unlock()
-	}
+	workerKey := accountHandler.userAccount.userID.String() + accountHandler.userAccount.remoteID.String()
+	w.WorkersGuard.Lock()
+	accountHandler.Stop()
+	delete(w.AccountHandlers, workerKey)
+	w.WorkersGuard.Unlock()
 }

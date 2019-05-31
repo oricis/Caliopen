@@ -124,6 +124,11 @@ func (worker *AccountHandler) Start() {
 			select {
 			case egress, ok := <-w.broker.Connectors.Egress:
 				if !ok {
+					if !worker.closed {
+						close(worker.broker.Connectors.Halt)
+						close(worker.AccountDesk)
+						worker.closed = true
+					}
 					worker.MasterDesk <- DeskMessage{closeAccountOrder, worker}
 					return
 				}
