@@ -54,14 +54,17 @@ func TestFromVcard(t *testing.T) {
 		r := strings.NewReader(test.s)
 		cards, err := ParseVcardFile(r)
 		if len(cards) != 1 {
-			t.Fatal("Expected only one vcard")
+			t.Error("Expected only one vcard")
 		}
 		contact, err := FromVcard(&info, cards[0])
 		if err != nil {
-			t.Fatal("Expecting null error ", err)
+			t.Error("Expecting null error ", err)
 		}
 		if len(contact.Emails) == 0 {
-			t.Fatal("No email found in test vcard ")
+			t.Error("No email found in test vcard ")
+		}
+		if len(contact.Phones) == 0 {
+			t.Error("No phone found in test vcard ")
 		}
 	}
 }
