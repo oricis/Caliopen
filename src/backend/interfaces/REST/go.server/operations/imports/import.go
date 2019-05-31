@@ -41,7 +41,7 @@ func ImportFile(ctx *gin.Context) {
 	err = caliopen.Facilities.RESTfacility.ImportVcardFile(user_info, file)
 	if err != nil {
 		var e error
-		e = swgErr.New(http.StatusInternalServerError, err.Error())
+		e = swgErr.New(http.StatusUnprocessableEntity, err.Error())
 		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
 		ctx.Abort()
 	} else {
