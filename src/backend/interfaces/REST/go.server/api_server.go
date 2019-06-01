@@ -12,6 +12,7 @@ import (
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/devices"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/discussions"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/identities"
+	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/imports"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/messages"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/notifications"
 	"github.com/CaliOpen/Caliopen/src/backend/interfaces/REST/go.server/operations/participants"
@@ -270,6 +271,10 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	dev.PATCH("/:deviceID", devices.PatchDevice)
 	dev.DELETE("/:deviceID", devices.DeleteDevice)
 	dev.POST("/:deviceID/actions", devices.Actions)
+
+	// imports
+	imp := api.Group(http_middleware.ImportsRoute, http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
+	imp.POST("", imports.ImportFile)
 
 	/** tags API **/
 	tag := api.Group(http_middleware.TagsRoute, http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))

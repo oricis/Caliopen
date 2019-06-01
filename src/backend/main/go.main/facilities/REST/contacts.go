@@ -11,11 +11,13 @@ import (
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/contact"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
 	log "github.com/Sirupsen/logrus"
 	"github.com/bitly/go-simplejson"
 	"github.com/pkg/errors"
 	"github.com/satori/go.uuid"
+	"io"
 	"strings"
 	"sync"
 	"time"
@@ -277,6 +279,47 @@ func (rest *RESTfacility) DeleteContact(info *UserInfo, contactID string) error 
 
 func (rest *RESTfacility) ContactExists(userID, contactID string) bool {
 	return rest.store.ContactExists(userID, contactID)
+}
+
+// Process a vcard file and create related contacts
+func (rest *RESTfacility) ImportVcardFile(info *UserInfo, file io.Reader) error {
+	vcards, err := contact.ParseVcardFile(file)
+	if err != nil {
+		return err
+	}
+	log.Debug("[ImportVcardFile] Have parse ", len(vcards), " vcards")
+
+	importErrors := make([]error, 0, len(vcards))
+	for _, card := range vcards {
+		c, err := contact.FromVcard(info, card)
+		if err != nil {
+			log.Warn("[ImportVcardFile] Error during vcard transformation ", err)
+			importErrors = append(importErrors, err)
+		} else {
+			err = rest.CreateContact(info, c)
+			if err != nil {
+				log.Warn("[ImportVcardFile] Create contact failed with error ", err)
+				importErrors = append(importErrors, err)
+			} else {
+				if c.PublicKeys != nil {
+					for _, key := range c.PublicKeys {
+						err = rest.store.CreatePGPPubKey(&key)
+						if err != nil {
+							log.Warn("Create pgp public key failed ", err)
+							importErrors = append(importErrors, err)
+						}
+					}
+				}
+			}
+		}
+	}
+	for _, err := range importErrors {
+		log.Warn("Import vcard error: ", err)
+	}
+	if len(importErrors) == len(vcards) {
+		return errors.New("No vcard imported")
+	}
+	return nil
 }
 
 // addIdentityToContact updates Contact card in db and index with data from UserIdentity
