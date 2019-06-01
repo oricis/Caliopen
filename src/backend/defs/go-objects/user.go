@@ -61,6 +61,7 @@ type Auth_cache struct {
 	Y             big.Int   `json:"y"`
 	Key_id        string    `json:"key_id"`
 	Shard_id      string    `json:"shard_id"`
+	User_status   string    `json:"user_status"`
 }
 
 // unmarshal a map[string]interface{} that must owns all Contact's fields
@@ -209,6 +210,7 @@ func (ac *Auth_cache) UnmarshalJSON(b []byte) error {
 		Y             big.Int `json:"y"`
 		Key_id        string  `json:"key_id"`
 		Shard_id      string  `json:"shard_id"`
+		User_status   string  `json:"user_status"`
 	}
 	if err := json.Unmarshal(b, &temp); err != nil {
 		return err
@@ -226,5 +228,6 @@ func (ac *Auth_cache) UnmarshalJSON(b []byte) error {
 	ac.Y = temp.Y
 	ac.Curve = temp.Curve
 	ac.Shard_id = temp.Shard_id
+	ac.User_status = temp.User_status
 	return nil
 }
