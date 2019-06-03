@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
 import isEqual from 'lodash.isequal';
 import { Trans } from '@lingui/react';
-import { MessageNotifications } from '../../modules/notification';
 import { withScrollManager, ScrollDetector } from '../../modules/scroll';
 import {
   Button, InfiniteScroll, ActionBarWrapper, ActionBar, CheckboxFieldGroup, PlaceholderBlock,
@@ -154,25 +153,6 @@ class Timeline extends Component {
     cb();
   }
 
-  renderNotifications = () => (
-    <MessageNotifications
-      key="1"
-      render={({ notifications, clearNotifications }) => {
-        if (!notifications.length) {
-          return null;
-        }
-
-        return (
-          <div className="s-timeline__new-msg">
-            <Button display="inline" onClick={this.makeHandleClickClearNotifications(clearNotifications)}>
-              <Trans id="timeline.new_messages" values={[notifications.length]}>You have {0} new messages</Trans>
-            </Button>
-          </div>
-        );
-      }}
-    />
-  )
-
   renderPlaceholder = () => (
     <ul className="s-timeline__discussion-list">
       {[1, 2, 3, 4, 5].map(n => (
@@ -263,7 +243,6 @@ class Timeline extends Component {
           {this.renderActionBar()}
           <InfiniteScroll onReachBottom={this.loadMore}>
             <Fragment>
-              {this.renderNotifications()}
               {this.renderDiscussions()}
             </Fragment>
           </InfiniteScroll>

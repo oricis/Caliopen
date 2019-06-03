@@ -56,4 +56,11 @@
       display: none;
     }
   }
+
+  &__goto-unread-button {
+    max-width: 47rem;
+    margin-right: auto;
+    margin-bottom: $co-margin;
+    margin-left: auto;
+  }
 }

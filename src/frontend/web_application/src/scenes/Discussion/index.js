@@ -19,32 +19,45 @@ const discussionStateSelector = state => state.discussion;
 
 const messageByIdSelector = state => state.message.messagesById;
 const messageCollectionStateSelector = createMessageCollectionStateSelector(() => 'discussion', discussionIdSelector);
+const sortedMessagesSelector = createSelector(
+  [messageByIdSelector, messageCollectionStateSelector],
+  (messagesById, { messageIds }) => sortMessages(
+    messageIds.map(messageId => messagesById[messageId])
+      .filter(msg => msg.is_draft === false),
+    false
+  )
+);
+
+const lastMessageSelector = createSelector(
+  [sortedMessagesSelector],
+  sortedMessages => getLastMessageFromArray(sortedMessages)
+);
+const firstUnreadMessageSelector = createSelector(
+  [sortedMessagesSelector],
+  sortedMessages => sortedMessages.filter(message => message.is_unread)[0]
+);
 
 const mapStateToProps = createSelector(
-  [messageByIdSelector, discussionStateSelector,
-    discussionIdSelector, UserSelector, messageCollectionStateSelector],
-  (messagesById, discussionState, discussionId, userState, {
-    didInvalidate, messageIds, hasMore, isFetching,
-  }) => {
+  [sortedMessagesSelector, lastMessageSelector, firstUnreadMessageSelector, messageByIdSelector,
+    discussionStateSelector, discussionIdSelector, UserSelector, messageCollectionStateSelector],
+  (sortedMessages, lastMessage, firstUnreadMessage, messagesById, discussionState, discussionId,
+    userState, {
+      didInvalidate, messageIds, hasMore, isFetching,
+    }) => {
     const canBeClosed = messageIds.length === 0;
-    const messages = sortMessages(
-      messageIds.map(messageId => messagesById[messageId])
-        .filter(msg => msg.is_draft === false),
-      false
-    );
-    const lastMessage = getLastMessageFromArray(messages);
 
     return {
       discussionId,
       user: userState.user,
       isUserFetching: userState.isFetching,
       discussion: discussionState.discussionsById[discussionId],
-      messages,
+      messages: sortedMessages,
       isFetching,
       didInvalidate,
       hasMore,
       canBeClosed,
       lastMessage,
+      firstUnreadMessage,
     };
   }
 );

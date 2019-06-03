@@ -11,6 +11,7 @@ class Link extends PureComponent {
     noDecoration: PropTypes.bool,
     className: PropTypes.string,
     button: PropTypes.bool,
+    badge: PropTypes.bool,
     expanded: PropTypes.bool,
     plain: PropTypes.bool,
     active: PropTypes.bool,
@@ -21,6 +22,7 @@ class Link extends PureComponent {
     noDecoration: false,
     className: undefined,
     button: false,
+    badge: false,
     expanded: false,
     active: false,
     plain: false,
@@ -28,7 +30,7 @@ class Link extends PureComponent {
 
   render() {
     const {
-      children, href, noDecoration, className, button, expanded, active, plain, ...props
+      children, href, noDecoration, className, button, badge, expanded, active, plain, ...props
     } = this.props;
 
     const linkProps = {
@@ -38,6 +40,7 @@ class Link extends PureComponent {
         'm-link',
         {
           'm-link--button': button,
+          'm-link--badge': badge,
           'm-link--plain': plain,
           'm-link--expanded': expanded,
           'm-link--text': !button && !noDecoration,

@@ -1,10 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { getNextNotifications } from '../../services/getNextNotifications';
-import MessageNotifier from '../MessageNotifier';
+import { withI18n } from '@lingui/react';
+import isEqual from 'lodash.isequal';
+import { withUser } from '../../../../hoc/user';
+import MessageNotificationHandler from '../MessageNotificationHandler';
 import { getConfig } from '../../../device/services/storage';
 import { signout } from '../../../routing';
 
+@withI18n()
+@withUser()
 class NotificationProvider extends Component {
   static propTypes = {
     children: PropTypes.node,
@@ -104,7 +108,12 @@ class NotificationProvider extends Component {
       return;
     }
     const { updateNotifications, notifications } = this.props;
-    updateNotifications(getNextNotifications(results.notifications, notifications));
+    const prevNotifIds = notifications.map(notif => notif.notif_id).sort();
+    const notifIds = results.notifications.map(notif => notif.notif_id).sort();
+
+    if (!isEqual(prevNotifIds, notifIds)) {
+      updateNotifications(results.notifications);
+    }
   }
 
   render() {
@@ -113,7 +122,7 @@ class NotificationProvider extends Component {
     return (
       <Fragment>
         {children}
-        <MessageNotifier />
+        <MessageNotificationHandler />
       </Fragment>
     );
   }

@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Always link participant to contact in a draft when contact exists (ensure message can be encrypted)
 - Validate body cannot be empty for a Twitter DM.
 - Upload user's public key when adding a private key.
+- Discussion has unread message button.
 
 ### Changed
 
@@ -19,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Use message's excerpt in search results instead of garbled highlights
 - Move vcard file import route on apiv2 to use contact uniqueness and lookups principles
 - Re-enable import contacts via vcard file.
+- New messages notification is not displayed anymore, it is now automatically loaded.
 
 ### Fixed
 
