@@ -12,10 +12,12 @@ const readArmored = async (armoredKey) => {
 
 export const updatePublicKey =
   (contact, publicKeyArmored) => async (dispatch) => {
-    const publicKey = readArmored(publicKeyArmored);
-    const keys = await tryCatchAxiosAction(requestPublicKeys(contact));
-    const existingKey = keys.find(
-      key => key.fingerprint === publicKey.getFingerprint().toUpperCase()
+    const publicKey = await readArmored(publicKeyArmored);
+    const keys = await tryCatchAxiosAction(() => dispatch(
+      requestPublicKeys({ contactId: contact.contact_id })
+    ));
+    const existingKey = keys.pubkeys.find(
+      key => key.fingerprint === publicKey.keys[0].getFingerprint().toUpperCase()
     );
 
     if (existingKey) {
@@ -36,8 +38,8 @@ export const updatePublicKey =
       key: publicKeyArmored,
     };
 
-    return createPublicKey({
+    return dispatch(createPublicKey({
       contactId: contact.contact_id,
       publicKey: publicKeyObject,
-    });
+    }));
   };

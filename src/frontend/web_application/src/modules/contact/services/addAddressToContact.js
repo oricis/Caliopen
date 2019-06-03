@@ -27,7 +27,7 @@ export const addAddressesToContact = (contact, addresses) => {
   const emails = [
     ...(contact.emails ? contact.emails : []),
     ...addresses.filter(address => address.protocol === PROTOCOL_EMAIL)
-      .map(address => ({ address: address.email, type: address.protocol })),
+      .map(address => ({ address: address.email })),
   ];
 
   const identities = [

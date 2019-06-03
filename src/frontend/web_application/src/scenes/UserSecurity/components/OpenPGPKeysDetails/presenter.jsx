@@ -82,9 +82,11 @@ class OpenPGPKeysDetails extends Component {
             passphrase: '',
           },
         };
+
       if (!error) {
         saveUserPublicKey(publicKeyArmored, user);
       }
+
       this.updateKeyState(newState);
     } catch (e) {
       this.updateKeyState({
@@ -119,6 +121,8 @@ class OpenPGPKeysDetails extends Component {
   }
 
   generateAndSaveKeys = async () => {
+    const { saveUserPublicKey, user } = this.props;
+
     this.setState({ isFormLoading: true });
     const options = {
       passphrase: this.state.generateForm.passphrase,
@@ -129,6 +133,11 @@ class OpenPGPKeysDetails extends Component {
     const { privateKeyArmored, publicKeyArmored } = await generateKey(options);
     const error = await saveKey(publicKeyArmored, privateKeyArmored);
     const newState = error ? {} : { isFormLoading: false, importForm: {} };
+
+    if (!error) {
+      saveUserPublicKey(publicKeyArmored, user);
+    }
+
     this.updateKeyState(newState);
 
     return error;

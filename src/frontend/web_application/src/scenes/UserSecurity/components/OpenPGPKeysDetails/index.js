@@ -1,4 +1,5 @@
-import { bindActionCreators, connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { saveUserPublicKeyAction } from '../../../../modules/publicKey';
 import Presenter from './presenter';
 
