@@ -26,6 +26,7 @@ import './draft-message-advanced.scss';
 import './draft-message-placeholder.scss';
 
 const PROTOCOL_EMAIL = 'email';
+const PROTOCOL_TWITTER = 'twitter';
 
 @withUser()
 @withI18n()
@@ -195,21 +196,30 @@ class DraftMessage extends Component {
       ];
     }
 
+    const errors = [];
     const protocol = getIdentityProtocol(identity);
 
     if (currentDraft.recipients.some(participant => participant.protocol !== protocol)) {
-      return [
-        (
-          <Trans
-            id="draft-message.errors.invalid-participant"
-            values={{ protocol }}
-            defaults="According to your identity, all your participants must use a {protocol} address to contact them all together"
-          />
-        ),
-      ];
+      errors.push(
+        <Trans
+          id="draft-message.errors.invalid-participant"
+          values={{ protocol }}
+          defaults="According to your identity, all your participants must use a {protocol} address to contact them all together"
+        />
+      );
     }
 
-    return [];
+    if (protocol === PROTOCOL_TWITTER && currentDraft.body.length === 0) {
+      errors.push(
+        <Trans
+          id="draft-message.errors.empty-body"
+          values={{ protocol }}
+          defaults="The body cannot be empty for a {protocol} message."
+        />
+      );
+    }
+
+    return errors;
   }
 
   handleToggleAdvancedForm = () => {
