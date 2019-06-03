@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - Always link participant to contact in a draft when contact exists (ensure message can be encrypted)
+- Validate body cannot be empty for a Twitter DM.
 
 ### Changed
 
