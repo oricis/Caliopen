@@ -19,7 +19,6 @@ import (
 	"github.com/satori/go.uuid"
 	"io"
 	"strings"
-	"sync"
 	"time"
 )
 
@@ -236,41 +235,25 @@ func (rest *RESTfacility) DeleteContact(info *UserInfo, contactID string) error 
 	if err != nil {
 		return err
 	}
-	contact, err := rest.store.RetrieveContact(info.User_id, contactID)
+	c, err := rest.store.RetrieveContact(info.User_id, contactID)
 	if err != nil {
 		return err
 	}
 
-	if user.ContactId == contact.ContactId {
+	if user.ContactId == c.ContactId {
 		return errors.New("can't delete contact card related to user")
 	}
 
-	// parallel deletion in db & index
-	wg := new(sync.WaitGroup)
-	wg.Add(2)
 	errGroup := new([]string)
-	mx := new(sync.Mutex)
-	go func(wg *sync.WaitGroup, errGroup *[]string, mx *sync.Mutex) {
-		err = rest.store.DeleteContact(contact)
-		if err != nil {
-			mx.Lock()
-			*errGroup = append(*errGroup, err.Error())
-			mx.Unlock()
-		}
-		wg.Done()
-	}(wg, errGroup, mx)
+	err = rest.store.DeleteContact(c)
+	if err != nil {
+		*errGroup = append(*errGroup, err.Error())
+	}
 
-	go func(wg *sync.WaitGroup, errGroup *[]string, mx *sync.Mutex) {
-		err = rest.index.DeleteContact(info, contact)
-		if err != nil {
-			mx.Lock()
-			*errGroup = append(*errGroup, err.Error())
-			mx.Unlock()
-		}
-		wg.Done()
-	}(wg, errGroup, mx)
-
-	wg.Wait()
+	err = rest.index.DeleteContact(info, c)
+	if err != nil {
+		*errGroup = append(*errGroup, err.Error())
+	}
 	if len(*errGroup) > 0 {
 		return fmt.Errorf("%s", strings.Join(*errGroup, " / "))
 	}
