@@ -14,8 +14,7 @@ import {
   withTags, TagsForm, getCleanedTagCollection, getTagNamesInCommon,
 } from '../../modules/tags';
 import TagList from './components/TagList';
-// XXX : Disabled until fixed on backend.
-// import ImportContactButton from './components/ImportContactButton';
+import ImportContactButton from './components/ImportContactButton';
 import { withTagSearched } from './hoc/withTagSearched';
 import './style.scss';
 import './contact-book-menu.scss';
@@ -353,15 +352,12 @@ class ContactBook extends Component {
                       <Trans id="contact-book.action.add">Add</Trans>
                     </Button>
                   </NavItem>
-                  {
-                    // XXX : Disabled until fixed on backend.
-                    /* <NavItem>
-                      <ImportContactButton
-                        className="s-contact-book__action-button"
-                        onUploadSuccess={this.handleUploadSuccess}
-                      />
-                    </NavItem> */
-                  }
+                  <NavItem>
+                    <ImportContactButton
+                      className="s-contact-book__action-button"
+                      onUploadSuccess={this.handleUploadSuccess}
+                    />
+                  </NavItem>
                 </NavList>
               </div>
               <div>

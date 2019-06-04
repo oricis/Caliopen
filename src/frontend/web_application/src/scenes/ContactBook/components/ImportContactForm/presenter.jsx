@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from '@lingui/react';
+import { Trans, withI18n } from '@lingui/react';
 import { Button, InputFileGroup, Spinner } from '../../../../components';
 import { getMaxSize } from '../../../../services/config';
-
 
 import './style.scss';
 
 const VALID_EXT = ['.vcf', '.vcard']; // Valid file extensions for input#file
 
+@withI18n()
 class ImportContactForm extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
@@ -17,7 +17,6 @@ class ImportContactForm extends Component {
     i18n: PropTypes.shape({}).isRequired,
     hasImported: PropTypes.bool,
     isLoading: PropTypes.bool,
-    formAction: PropTypes.string,
   };
 
   static defaultProps = {
@@ -25,7 +24,6 @@ class ImportContactForm extends Component {
     errors: {},
     hasImported: false,
     isLoading: false,
-    formAction: '',
   };
 
   state = {
@@ -86,14 +84,13 @@ class ImportContactForm extends Component {
 
   render() {
     const {
-      i18n, hasImported, errors, formAction,
+      i18n, hasImported, errors,
     } = this.props;
 
     return (
       <form
         className="m-import-contact-form"
         onSubmit={this.handleSubmitForm}
-        action={formAction}
         method="post"
         encType="multipart/form-data"
       >
