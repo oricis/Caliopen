@@ -1,3 +1,4 @@
+import isEqual from 'lodash.isequal';
 import { addAddressesToContact, updateContact } from '../../contact';
 import { PROTOCOL_EMAIL } from '../../remoteIdentity';
 import { updatePublicKey } from './updatePublicKey';
@@ -13,7 +14,7 @@ export const saveUserPublicKeyAction =
       .map(email => ({ email, protocol: PROTOCOL_EMAIL }));
     const contactWithNewEmails = addAddressesToContact(contact, missingEmails);
 
-    if (contactWithNewEmails !== contact) {
+    if (!isEqual(contact, contactWithNewEmails)) {
       // Await needed in case no email coincides in pubKey/contact.
       await updateContact({
         contact: contactWithNewEmails,
