@@ -647,11 +647,7 @@ class DraftMessage extends Component {
             disabled={!canSend}
           >
             {this.state.isSending && (<Spinner display="inline" theme="bright" />)}
-            {!this.state.isSending && (<Icon type="laptop" />)}
-            {' '}
-            ---
-            {' '}
-            <Icon type="user" />
+            {!this.state.isSending && (<Icon type="paper-plane" />)}
             {' '}
             <Trans id="draft-message.action.send">Send</Trans>
           </Button>
