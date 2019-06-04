@@ -343,7 +343,7 @@ class Discussion extends Component {
             to={{ hash: firstUnreadMessage.message_id, state: { key: Math.random() } }}
             badge
           >
-            <Trans id="discussion.action.goto_unread_message">Vous avez des messages non-lu ↑</Trans>
+            <Trans id="discussion.action.goto_unread_message">You have unread messages ↑</Trans>
           </Link>
         )}
         <div className={classnames('s-discussion__reply', { 's-discussion__reply--open': this.state.isDraftFocus })}>
