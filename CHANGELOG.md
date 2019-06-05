@@ -12,9 +12,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Validate body cannot be empty for a Twitter DM.
 - Upload user's public key when adding a private key.
 - Discussion has unread message button.
+- Dynamic contacts references embedded in messages
 
 ### Changed
 
+- FTS and participants lookup improvments
 - On quick reply, «Enter» will not send draft anymore, it must be CTRL+Enter.
 - Quick reply is now multilines.
 - Use message's excerpt in search results instead of garbled highlights
@@ -29,6 +31,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - BSOD while including regexp special chars in search query.
 - Email icon was always on Timeline.
 - Contact starting w/ a letter with a diacritic is not displayed on ContactBook.
+- Contacts list update after contact deletion
+- Twitter workers errors handling
+- Imap workers errors handling
+- Messages' excerpts showing html tags
 
 ## [0.20] \<Unreleased>
 
