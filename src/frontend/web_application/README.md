@@ -74,7 +74,6 @@ All the things related to react follows [this guide](https://medium.com/@alexmng
 Each build target has its folder:
 
 * server (the web server providing html pages thanks to SSR and the javascript browser client)
-* cordova (for platforms android, ios and WP)
 * electron (for linux, macos and windows)
 
 The `index.html` is generated using webpack and a `template`.

@@ -14,12 +14,5 @@ export const getUserLocales = () => {
     return global.USER_LOCALES;
   }
 
-  // if (BUILD_TARGET === 'electron') {
-  //   // eslint-disable-next-line
-  //   const { ipcRenderer } = require('electron');
-  //
-  //   return [ipcRenderer.sendSync('getLocale')];
-  // }
-
   return [];
 };
