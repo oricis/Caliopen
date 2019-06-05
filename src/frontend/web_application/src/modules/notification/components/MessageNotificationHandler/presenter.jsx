@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n } from '@lingui/react';
-import isequal from 'lodash.isequal';
+import isEqual from 'lodash.isequal';
 import { withSettings } from '../../../../modules/settings';
 import { notify as browserNotify } from '../../../../services/browser-notification';
 
@@ -29,9 +29,9 @@ class MessageNotificationHandler extends Component {
     this.handleNotifications(this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!this.state.hasActivity && !isequal(nextProps.newMessageIds, this.props.newMessageIds)) {
-      this.handleNotifications(nextProps);
+  componentDidUpdate(prevProps) {
+    if (!this.state.hasActivity && !isEqual(prevProps.newMessageIds, this.props.newMessageIds)) {
+      this.handleNotifications(this.props);
     }
   }
 
