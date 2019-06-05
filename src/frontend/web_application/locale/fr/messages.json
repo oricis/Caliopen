@@ -137,7 +137,7 @@
   "draft-message.action.toggle-advanced": "Formulaire avancé ou rapide",
   "draft-message.encryption.ko": "Ce message n'est pas chiffré",
   "draft-message.encryption.ok": "Ce message est chiffré",
-  "draft-message.errors.empty-body": "",
+  "draft-message.errors.empty-body": "Un texte est requis pour un message {protocol}.",
   "draft-message.errors.invalid-participant": "En fonction de votre identité, tous vos participants doivent utiliser une adresse {protocol} pour les contacter ensemble.",
   "draft-message.errors.missing-identity": "Une identité est nécessaire pour créer un brouillon.",
   "draft-message.form.contact-recipient-selector": "À :",
