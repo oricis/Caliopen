@@ -155,8 +155,6 @@
     "offline-plugin": "^5.0.6",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "postcss-loader": "^3.0.0",
-    "protractor": "5.4.2",
-    "protractor-console-plugin": "^0.1.1",
     "raf": "^3.4.1",
     "raw-loader": "^2.0.0",
     "react-addons-test-utils": "^15.6.2",
