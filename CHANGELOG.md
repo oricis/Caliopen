@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Move vcard file import route on apiv2 to use contact uniqueness and lookups principles
 - Re-enable import contacts via vcard file.
 - New messages notification is not displayed anymore, it is now automatically loaded.
+- Send button icon in advanced form.
 
 ### Fixed
 
