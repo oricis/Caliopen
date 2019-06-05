@@ -1,21 +1,14 @@
-import { bindActionCreators, compose } from 'redux';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { withI18n } from '@lingui/react';
-import { withUser } from '../../../../hoc/user';
 import { updateAll } from '../../../../store/modules/notification';
-import { messageNotificationsSelector } from '../../../../store/selectors/notification';
 import Presenter from './presenter';
 
 const mapStateToProps = state => ({
-  notifications: messageNotificationsSelector(state),
+  notifications: state.notification.notifications,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   updateNotifications: updateAll,
 }, dispatch);
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  withI18n(),
-  withUser()
-)(Presenter);
+export default connect(mapStateToProps, mapDispatchToProps)(Presenter);

@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import { withRouter } from 'react-router-dom';
 import { Trans, withI18n } from '@lingui/react';
 import {
-  ActionBarWrapper, ActionBar, ActionBarButton, Badge, Modal,
+  ActionBarWrapper, ActionBar, ActionBarButton, Badge, Modal, Link,
 } from '../../components';
 import MessageList from './components/MessageList';
 import ReplyExcerpt from './components/ReplyExcerpt';
@@ -52,6 +52,7 @@ class Discussion extends Component {
     getUser: PropTypes.func.isRequired,
     i18n: PropTypes.shape({}).isRequired,
     tags: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    firstUnreadMessage: PropTypes.shape({}),
   };
 
   static defaultProps = {
@@ -59,6 +60,7 @@ class Discussion extends Component {
     lastMessage: undefined,
     messages: [],
     user: undefined,
+    firstUnreadMessage: undefined,
   };
 
   state = {
@@ -202,6 +204,12 @@ class Discussion extends Component {
   //   closeTab();
   // };
 
+  getHash = () => {
+    const { location } = this.props;
+
+    return location.hash ? location.hash.slice(1) : null;
+  }
+
   renderTags = ({ tags }) => {
     const { i18n } = this.props;
 
@@ -306,11 +314,10 @@ class Discussion extends Component {
 
   render() {
     const {
-      discussionId, messages, scrollManager: { scrollToTarget }, isFetching, location,
-      hasMore, user, isUserFetching,
-      // discussion,
+      discussionId, messages, scrollManager: { scrollToTarget }, isFetching,
+      hasMore, user, isUserFetching, firstUnreadMessage,
     } = this.props;
-    const hash = location.hash ? location.hash.slice(1) : null;
+    const hash = this.getHash();
 
     return (
       <section id={`discussion-${discussionId}`} className="s-discussion">
@@ -330,6 +337,15 @@ class Discussion extends Component {
           user={user}
           isUserFetching={isUserFetching}
         />
+        {!!firstUnreadMessage && (
+          <Link
+            className="s-discussion__goto-unread-button"
+            to={{ hash: firstUnreadMessage.message_id, state: { key: Math.random() } }}
+            badge
+          >
+            <Trans id="discussion.action.goto_unread_message">You have unread messages ↑</Trans>
+          </Link>
+        )}
         <div className={classnames('s-discussion__reply', { 's-discussion__reply--open': this.state.isDraftFocus })}>
           <DraftMessage
             internalId={discussionId}
