@@ -441,7 +441,7 @@
   "signup.feedback.username_invalid_characters": "Le nom d'utilisateur ne peut contenir certains caractères spéciaux tels que {0} et espace",
   "signup.feedback.username_length": "La longueur du nom d'utilisateur doit être comprise entre 3 et 42",
   "signup.feedback.username_starting_ending_dot": "Le nom d'utilisateur ne peut commencer ou finir par un point (.)",
-  "signup.form.invitation_email.label": "Email d'invitation :",
+  "signup.form.invitation_email.label": "Adresse email de secours :",
   "signup.form.invitation_email.placeholder": "example@domaine.tld",
   "signup.form.invitation_email.tip": "Merci de renseigner un email pour que nous puissions vous informer des évolutions de Caliopen.",
   "signup.form.password.label": "Mot de passe :",
