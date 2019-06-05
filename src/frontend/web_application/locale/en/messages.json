@@ -137,7 +137,7 @@
   "draft-message.action.toggle-advanced": "Toggle advanced or quick message form",
   "draft-message.encryption.ko": "This message is not encrypted",
   "draft-message.encryption.ok": "This message is encrypted",
-  "draft-message.errors.empty-body": "The body cannot be empty for a {protocol} message.",
+  "draft-message.errors.empty-body": "A body is required for a {protocol} message.",
   "draft-message.errors.invalid-participant": "According to your identity, all your participants must use a(n) {protocol} address to contact them all together.",
   "draft-message.errors.missing-identity": "An identity is mandatory to create a draft.",
   "draft-message.form.contact-recipient-selector": "To:",
