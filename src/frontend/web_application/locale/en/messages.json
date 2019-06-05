@@ -441,7 +441,7 @@
   "signup.feedback.username_invalid_characters": "The username cannot contain some special characters like {0} and space",
   "signup.feedback.username_length": "The length of the username must be be between 3 and 42",
   "signup.feedback.username_starting_ending_dot": "The username cannot start or end with a dot (.)",
-  "signup.form.invitation_email.label": "Invitation email:",
+  "signup.form.invitation_email.label": "Rescue email address:",
   "signup.form.invitation_email.placeholder": "example@domain.tld",
   "signup.form.invitation_email.tip": "Please fill in an email so that we can send you updates about Caliopen.",
   "signup.form.password.label": "Password:",
