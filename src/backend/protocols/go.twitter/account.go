@@ -104,16 +104,30 @@ func NewAccountHandler(userID, remoteID string, worker Worker) (accountHandler *
 	if accountHandler.twitterClient = twitter.NewClient(httpClient); accountHandler.twitterClient == nil {
 		return nil, errors.New("[NewWorker] twitter api failed to create http client")
 	}
+	var twitterID int64
+	var screenName string
+	accountHandler.usersScreenNames = map[int64]string{}
+
+	// try to cache account's ID and screenName
 	if twitterid, ok := remote.Infos["twitterid"]; ok && twitterid != "" {
 		accountHandler.userAccount.twitterID = twitterid
+		twitterID, _ = strconv.ParseInt(twitterid, 10, 64)
+		if twittername, ok := remote.Infos["screen_name"]; ok && twittername != "" {
+			screenName = twittername
+		} else {
+			screenName = accountHandler.getAccountName(twitterid)
+		}
 	} else {
 		twitterUser, _, e := accountHandler.twitterClient.Users.Show(&twitter.UserShowParams{ScreenName: accountHandler.userAccount.screenName})
 		if e == nil {
 			accountHandler.userAccount.twitterID = twitterUser.IDStr
+			twitterID = twitterUser.ID
+			screenName = twitterUser.ScreenName
 		}
 	}
-	accountHandler.usersScreenNames = map[int64]string{}
-
+	if twitterID != 0 && screenName != "" {
+		accountHandler.usersScreenNames[twitterID] = screenName
+	}
 	return
 }
 
@@ -296,8 +310,17 @@ func (worker *AccountHandler) PollDM() {
 	for _, event := range DMs.Events {
 		if worker.dmNotSeen(event) {
 			//lookup sender & recipient's screen_names because there are not embedded in event object
-			(*event.Message).SenderScreenName = worker.getAccountName(event.Message.SenderID)
-			(*event.Message).Target.RecipientScreenName = worker.getAccountName(event.Message.Target.RecipientID)
+			accountName := worker.getAccountName(event.Message.SenderID)
+			if accountName == "" {
+				continue // we don't want to inject a message with an incomplete participant
+			}
+			(*event.Message).SenderScreenName = accountName
+			accountName = worker.getAccountName(event.Message.Target.RecipientID)
+			if accountName == "" {
+				continue // we don't want to inject a message with an incomplete participant
+			}
+			(*event.Message).Target.RecipientScreenName = accountName
+
 			err = worker.broker.ProcessInDM(worker.userAccount.userID, worker.userAccount.remoteID, &event, true)
 			if err != nil {
 				// something went wrong, forget this DM
@@ -388,11 +411,13 @@ func (worker *AccountHandler) getAccountName(accountID string) (accountName stri
 	if err == nil {
 		var inCache bool
 		if accountName, inCache = worker.usersScreenNames[ID]; !inCache {
-			user, _, err := worker.twitterClient.Users.Show(&twitter.UserShowParams{UserID: ID})
+			user, resp, err := worker.twitterClient.Users.Show(&twitter.UserShowParams{UserID: ID})
 			if err == nil && user != nil {
 				(*worker).usersScreenNames[ID] = user.ScreenName
+				return user.ScreenName
+			} else {
+				log.WithError(err).Warnf("[AccountHandler] failed to getAccountName for twitter ID %s. Got user {%+v} and http response {%+v}", accountID, user, resp)
 			}
-			return user.ScreenName
 		}
 		return accountName
 	}
