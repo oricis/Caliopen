@@ -16,8 +16,7 @@ const getBaseUrl = () => {
     return `${protocol}://${hostname}:${port}`;
   }
 
-  // FIXME: (for cordova/electron) get from config (yaml -> json -> settings -> here)
-  return 'http://notYetImplemented/api';
+  throw new Error(`Unsupported build target "${BUILD_TARGET}"`);
 };
 const getAPIBaseUrl = () => `${getBaseUrl()}/api`;
 
