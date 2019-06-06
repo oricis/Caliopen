@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.21] 2019-06-06
+
 ### Added
 
 - Always link participant to contact in a draft when contact exists (ensure message can be encrypted)
@@ -24,6 +26,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Re-enable import contacts via vcard file.
 - New messages notification is not displayed anymore, it is now automatically loaded.
 - Send button icon in advanced form.
+- Disable «Take a tour» which is not working properly
+- Disable the send button on quick draft when empty (thanks Sebbaz).
+- Look and feel of GPG buttons which look like disabled.
 
 ### Fixed
 
@@ -36,17 +41,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Twitter workers errors handling
 - Imap workers errors handling
 - Messages' excerpts showing html tags
-
-## [0.20] \<Unreleased>
-
-### Changed
-
-- Disable «Take a tour» which is not working properly
-- Disable the send button on quick draft when empty (thanks Sebbaz).
-- Look and feel of GPG buttons which look like disabled.
-
-### Fixed
-
 - BSOD when changing identity in draft when no recipients (thanks peha)
 - Many encoding issues during mail delivery
 - Participants algorithm edge case
