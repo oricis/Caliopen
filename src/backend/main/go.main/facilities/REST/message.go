@@ -48,6 +48,14 @@ func (rest *RESTfacility) GetMessagesList(filter IndexSearch) (messages []*Messa
 		m.SanitizeMessageBodies(msg)
 		(*msg).Body_excerpt = m.ExcerptMessage(*msg, 200, true, true)
 	}
+
+	// embed up-to-date participants's details
+	msgs := []Message{}
+	for _, msg := range messages {
+		msgs = append(msgs, *msg)
+	}
+	MessagesParticipantsDetails(rest.store.GetSession(), msgs)
+
 	return
 }
 
@@ -71,6 +79,14 @@ func (rest *RESTfacility) GetMessagesRange(filter IndexSearch) (messages []*Mess
 		m.SanitizeMessageBodies(msg)
 		(*msg).Body_excerpt = m.ExcerptMessage(*msg, 200, true, true)
 	}
+
+	// embed up-to-date participants's details
+	msgs := []Message{}
+	for _, msg := range messages {
+		msgs = append(msgs, *msg)
+	}
+	MessagesParticipantsDetails(rest.store.GetSession(), msgs)
+
 	return
 }
 

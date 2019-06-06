@@ -23,9 +23,11 @@ import (
 
 type (
 	AccountHandler struct {
-		WorkerDesk       chan uint
+		AccountDesk      chan uint
 		broker           *broker.TwitterBroker
+		closed           bool
 		lastDMseen       string
+		MasterDesk       chan DeskMessage
 		twitterClient    *twitter.Client
 		userAccount      *TwitterAccount
 		usersScreenNames map[int64]string // a cache facility to avoid calling too often twitter API for screen_name lookup
@@ -42,7 +44,7 @@ type (
 )
 
 const (
-	//WorkerDesk commands
+	//AccountDesk commands
 	PollDM = uint(iota)
 	PollTimeLine
 	Stop
@@ -64,7 +66,8 @@ const (
 // It caches remote identity credentials and data, as well as user context connection to twitter API.
 func NewAccountHandler(userID, remoteID string, worker Worker) (accountHandler *AccountHandler, err error) {
 	accountHandler = new(AccountHandler)
-	accountHandler.WorkerDesk = make(chan uint)
+	accountHandler.AccountDesk = make(chan uint)
+	accountHandler.MasterDesk = worker.Desk
 	b, e := broker.Initialize(worker.Conf.BrokerConfig, worker.Store, worker.Index, worker.NatsConn, worker.Notifier)
 	if e != nil {
 		err = fmt.Errorf("[TwitterAccount]NewAccountHandler failed to initialize a twitter broker : %s", e)
@@ -102,26 +105,46 @@ func NewAccountHandler(userID, remoteID string, worker Worker) (accountHandler *
 	if accountHandler.twitterClient = twitter.NewClient(httpClient); accountHandler.twitterClient == nil {
 		return nil, errors.New("[NewWorker] twitter api failed to create http client")
 	}
+	var twitterID int64
+	var screenName string
+	accountHandler.usersScreenNames = map[int64]string{}
+
+	// try to cache account's ID and screenName
 	if twitterid, ok := remote.Infos["twitterid"]; ok && twitterid != "" {
 		accountHandler.userAccount.twitterID = twitterid
+		twitterID, _ = strconv.ParseInt(twitterid, 10, 64)
+		if twittername, ok := remote.Infos["screen_name"]; ok && twittername != "" {
+			screenName = twittername
+		} else {
+			screenName = accountHandler.getAccountName(twitterid)
+		}
 	} else {
 		twitterUser, _, e := accountHandler.twitterClient.Users.Show(&twitter.UserShowParams{ScreenName: accountHandler.userAccount.screenName})
 		if e == nil {
 			accountHandler.userAccount.twitterID = twitterUser.IDStr
+			twitterID = twitterUser.ID
+			screenName = twitterUser.ScreenName
 		}
 	}
-	accountHandler.usersScreenNames = map[int64]string{}
-
+	if twitterID != 0 && screenName != "" {
+		accountHandler.usersScreenNames[twitterID] = screenName
+	}
 	return
 }
 
 // Start begins infinite loops, until receiving stop order. This func must be call within goroutine.
 func (worker *AccountHandler) Start() {
 	go func(w *AccountHandler) {
-		for {
+		for worker.broker != nil {
 			select {
 			case egress, ok := <-w.broker.Connectors.Egress:
 				if !ok {
+					if !worker.closed {
+						close(worker.broker.Connectors.Halt)
+						close(worker.AccountDesk)
+						worker.closed = true
+					}
+					worker.MasterDesk <- DeskMessage{closeAccountOrder, worker}
 					return
 				}
 				err := w.SendDM(egress.Order)
@@ -136,37 +159,32 @@ func (worker *AccountHandler) Start() {
 						Response: "OK",
 					}
 				}
-			case _, ok := <-w.broker.Connectors.Halt:
-				if !ok {
-					return
-				}
-				w.WorkerDesk <- Stop
+			case <-w.broker.Connectors.Halt:
+				worker.MasterDesk <- DeskMessage{closeAccountOrder, worker}
+				return
 			}
 		}
 	}(worker)
 
-	for command := range worker.WorkerDesk {
+	for command := range worker.AccountDesk {
 		switch command {
 		case PollDM:
 			worker.PollDM()
 		case Stop:
-			worker.Stop(true)
+			worker.Stop()
+			return
 		default:
 			log.Warnf("worker received unknown command number %d", command)
 		}
 	}
-	if worker.broker != nil {
-		worker.Stop(false)
-	}
 }
 
-func (worker *AccountHandler) Stop(closeDesk bool) {
-	// destroy broker
-	worker.broker.ShutDown()
-	worker.broker = nil
-	// close desk
-	if closeDesk {
-		close(worker.WorkerDesk)
+func (worker *AccountHandler) Stop() {
+	if !worker.closed {
+		close(worker.broker.Connectors.Egress)
+		close(worker.broker.Connectors.Halt)
+		close(worker.AccountDesk)
+		worker.closed = true
 	}
 }
 
@@ -266,8 +284,7 @@ func (worker *AccountHandler) PollDM() {
 					if e != nil {
 						log.WithError(e).Warnf("[AccountHandler %s] PollDM failed to update sync state in db", worker.userAccount.remoteID.String())
 					}
-					// TOFIX Do not stop this way, the broker shutdown and nats connection dissapear
-					// worker.Stop(true)
+					worker.MasterDesk <- DeskMessage{closeAccountOrder, worker}
 					return
 				}
 				errorsMessages.WriteString(err.Message + " ")
@@ -297,8 +314,17 @@ func (worker *AccountHandler) PollDM() {
 	for _, event := range DMs.Events {
 		if worker.dmNotSeen(event) {
 			//lookup sender & recipient's screen_names because there are not embedded in event object
-			(*event.Message).SenderScreenName = worker.getAccountName(event.Message.SenderID)
-			(*event.Message).Target.RecipientScreenName = worker.getAccountName(event.Message.Target.RecipientID)
+			accountName := worker.getAccountName(event.Message.SenderID)
+			if accountName == "" {
+				continue // we don't want to inject a message with an incomplete participant
+			}
+			(*event.Message).SenderScreenName = accountName
+			accountName = worker.getAccountName(event.Message.Target.RecipientID)
+			if accountName == "" {
+				continue // we don't want to inject a message with an incomplete participant
+			}
+			(*event.Message).Target.RecipientScreenName = accountName
+
 			err = worker.broker.ProcessInDM(worker.userAccount.userID, worker.userAccount.remoteID, &event, true)
 			if err != nil {
 				// something went wrong, forget this DM
@@ -389,11 +415,13 @@ func (worker *AccountHandler) getAccountName(accountID string) (accountName stri
 	if err == nil {
 		var inCache bool
 		if accountName, inCache = worker.usersScreenNames[ID]; !inCache {
-			user, _, err := worker.twitterClient.Users.Show(&twitter.UserShowParams{UserID: ID})
+			user, resp, err := worker.twitterClient.Users.Show(&twitter.UserShowParams{UserID: ID})
 			if err == nil && user != nil {
 				(*worker).usersScreenNames[ID] = user.ScreenName
+				return user.ScreenName
+			} else {
+				log.WithError(err).Warnf("[AccountHandler] failed to getAccountName for twitter ID %s. Got user {%+v} and http response {%+v}", accountID, user, resp)
 			}
-			return user.ScreenName
 		}
 		return accountName
 	}

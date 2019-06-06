@@ -103,10 +103,10 @@ class Draft(NewInboundMessage):
             self.participants = []
         else:
             if len(self.participants) > 0:
-                for i, participant in enumerate(self.participants):
+                parts = list(self.participants)
+                for i, participant in enumerate(parts):
                     if re.match("from", participant['type'], re.IGNORECASE):
                         self.participants.pop(i)
-
         from_participant = Participant()
         from_participant.address = user_identity.identifier.lower()
         from_participant.label = user_identity.display_name
@@ -149,7 +149,7 @@ class Draft(NewInboundMessage):
                 elif not re.match("list-id", participant['type'],
                                   re.IGNORECASE):
                     self.participants.append(participant)
-            elif not re.match("to|from", participant['type'], re.IGNORECASE):
+            elif not re.match("from", participant['type'], re.IGNORECASE):
                 self.participants.append(participant)
 
         # add sender

@@ -11,13 +11,14 @@ import (
 	"fmt"
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/contact"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/helpers"
 	log "github.com/Sirupsen/logrus"
 	"github.com/bitly/go-simplejson"
 	"github.com/pkg/errors"
 	"github.com/satori/go.uuid"
+	"io"
 	"strings"
-	"sync"
 	"time"
 )
 
@@ -68,6 +69,28 @@ func (rest *RESTfacility) RetrieveContacts(filter IndexSearch) (contacts []*Cont
 // RetrieveContact returns one contact
 func (rest *RESTfacility) RetrieveContact(userID, contactID string) (contact *Contact, err error) {
 	return rest.store.RetrieveContact(userID, contactID)
+}
+
+func (rest *RESTfacility) LookupContactByUri(userID, uri string) (contacts []*Contact, totalFound int64, err error) {
+	contacts = []*Contact{}
+	uri = strings.ToLower(uri)
+	uriSplit := strings.SplitN(uri, ":", 2)
+	if len(uriSplit) != 2 {
+		err = fmt.Errorf("[LookupContactByUri] uri malformed : %s => %v", uri, uriSplit)
+		log.WithError(err)
+		return
+	}
+	ids, err := rest.store.LookupContactsByIdentifier(userID, uriSplit[1], uriSplit[0])
+	if err != nil {
+		return
+	}
+	for _, contactId := range ids {
+		c := Contact{}
+		c.ContactId = UUID(uuid.FromStringOrNil(contactId))
+		contacts = append(contacts, &c)
+		totalFound++
+	}
+	return
 }
 
 // RetrieveUserContact returns the contact entry belonging to user.
@@ -212,41 +235,25 @@ func (rest *RESTfacility) DeleteContact(info *UserInfo, contactID string) error 
 	if err != nil {
 		return err
 	}
-	contact, err := rest.store.RetrieveContact(info.User_id, contactID)
+	c, err := rest.store.RetrieveContact(info.User_id, contactID)
 	if err != nil {
 		return err
 	}
 
-	if user.ContactId == contact.ContactId {
+	if user.ContactId == c.ContactId {
 		return errors.New("can't delete contact card related to user")
 	}
 
-	// parallel deletion in db & index
-	wg := new(sync.WaitGroup)
-	wg.Add(2)
 	errGroup := new([]string)
-	mx := new(sync.Mutex)
-	go func(wg *sync.WaitGroup, errGroup *[]string, mx *sync.Mutex) {
-		err = rest.store.DeleteContact(contact)
-		if err != nil {
-			mx.Lock()
-			*errGroup = append(*errGroup, err.Error())
-			mx.Unlock()
-		}
-		wg.Done()
-	}(wg, errGroup, mx)
+	err = rest.store.DeleteContact(c)
+	if err != nil {
+		*errGroup = append(*errGroup, err.Error())
+	}
 
-	go func(wg *sync.WaitGroup, errGroup *[]string, mx *sync.Mutex) {
-		err = rest.index.DeleteContact(info, contact)
-		if err != nil {
-			mx.Lock()
-			*errGroup = append(*errGroup, err.Error())
-			mx.Unlock()
-		}
-		wg.Done()
-	}(wg, errGroup, mx)
-
-	wg.Wait()
+	err = rest.index.DeleteContact(info, c)
+	if err != nil {
+		*errGroup = append(*errGroup, err.Error())
+	}
 	if len(*errGroup) > 0 {
 		return fmt.Errorf("%s", strings.Join(*errGroup, " / "))
 	}
@@ -255,6 +262,47 @@ func (rest *RESTfacility) DeleteContact(info *UserInfo, contactID string) error 
 
 func (rest *RESTfacility) ContactExists(userID, contactID string) bool {
 	return rest.store.ContactExists(userID, contactID)
+}
+
+// Process a vcard file and create related contacts
+func (rest *RESTfacility) ImportVcardFile(info *UserInfo, file io.Reader) error {
+	vcards, err := contact.ParseVcardFile(file)
+	if err != nil {
+		return err
+	}
+	log.Debug("[ImportVcardFile] Have parse ", len(vcards), " vcards")
+
+	importErrors := make([]error, 0, len(vcards))
+	for _, card := range vcards {
+		c, err := contact.FromVcard(info, card)
+		if err != nil {
+			log.Warn("[ImportVcardFile] Error during vcard transformation ", err)
+			importErrors = append(importErrors, err)
+		} else {
+			err = rest.CreateContact(info, c)
+			if err != nil {
+				log.Warn("[ImportVcardFile] Create contact failed with error ", err)
+				importErrors = append(importErrors, err)
+			} else {
+				if c.PublicKeys != nil {
+					for _, key := range c.PublicKeys {
+						err = rest.store.CreatePGPPubKey(&key)
+						if err != nil {
+							log.Warn("Create pgp public key failed ", err)
+							importErrors = append(importErrors, err)
+						}
+					}
+				}
+			}
+		}
+	}
+	for _, err := range importErrors {
+		log.Warn("Import vcard error: ", err)
+	}
+	if len(importErrors) == len(vcards) {
+		return errors.New("No vcard imported")
+	}
+	return nil
 }
 
 // addIdentityToContact updates Contact card in db and index with data from UserIdentity

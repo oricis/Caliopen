@@ -24,6 +24,7 @@ func (es *ElasticSearchBackend) CreateContact(user *UserInfo, contact *Contact) 
 	}
 	resp, err := es.Client.Index().Index(user.Shard_id).Type(ContactIndexType).Id(contact.ContactId.String()).
 		BodyString(string(es_contact)).
+		Refresh("wait_for").
 		Do(context.TODO())
 	if err != nil {
 		log.WithError(err).Warnf("[ElasticSearchBackend] CreateContact failed for user %s and contact %s", contact.UserId.String(), contact.ContactId.String())
@@ -58,7 +59,7 @@ func (es *ElasticSearchBackend) UpdateContact(user *UserInfo, contact *Contact, 
 }
 
 func (es *ElasticSearchBackend) DeleteContact(user *UserInfo, contact *Contact) error {
-	_, err := es.Client.Delete().Index(user.Shard_id).Type(ContactIndexType).Id(contact.ContactId.String()).Do(context.TODO())
+	_, err := es.Client.Delete().Index(user.Shard_id).Type(ContactIndexType).Id(contact.ContactId.String()).Refresh("wait_for").Do(context.TODO())
 	if err != nil {
 		return err
 	}

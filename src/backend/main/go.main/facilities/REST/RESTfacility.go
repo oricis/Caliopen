@@ -5,11 +5,9 @@
 package REST
 
 import (
-	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/cache"
-	"io"
-
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends"
+	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/cache"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/index/elasticsearch"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.backends/store/cassandra"
 	"github.com/CaliOpen/Caliopen/src/backend/main/go.main/facilities/Notifications"
@@ -17,6 +15,7 @@ import (
 	"github.com/gocql/gocql"
 	"github.com/nats-io/go-nats"
 	"github.com/tidwall/gjson"
+	"io"
 )
 
 type (
@@ -33,6 +32,8 @@ type (
 		PatchContact(user *UserInfo, patch []byte, contactID string) error
 		DeleteContact(user *UserInfo, contactID string) error
 		ContactExists(userID, contactID string) bool
+		LookupContactByUri(userID, uri string) ([]*Contact, int64, error)
+		ImportVcardFile(info *UserInfo, file io.Reader) error
 		//identities
 		RetrieveContactIdentities(user_id, contact_id string) (identities []ContactIdentity, err error)
 		RetrieveLocalIdentities(user_id string) (identities []UserIdentity, err error)

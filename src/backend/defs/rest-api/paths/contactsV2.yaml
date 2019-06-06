@@ -29,6 +29,11 @@ contacts:
       type: integer
       required: false
       description: number of pages to skip from the response
+    - name: uri
+      in: query
+      type: string
+      required: false
+      description: return contact that has this uri embedded, if any
     produces:
     - application/json
     responses:

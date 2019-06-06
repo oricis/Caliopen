@@ -36,18 +36,8 @@ class Poller {
     self.postMessage({ status: 'active' });
     this.installInterceptor(device);
     this.intervalId = setInterval(async () => {
-      const now = new Date();
       try {
         const { data: results } = await this.client.get('/api/v2/notifications');
-
-        if (results.total > 0) {
-          this.client.delete('/api/v2/notifications', {
-            params: {
-              until: now.toISOString(),
-            },
-          });
-        }
-
         self.postMessage({ results });
       } catch (err) {
         if (err.response.status === 401) {

@@ -12,6 +12,51 @@ const actions = {
   patchTags: createAction('Patch message\'s tags'),
 };
 
+const notifiedMessageIds = '12345'.split('').map((v) => `1aaa-bbbb-000${v}`);
+
+const getMessageFromNotifier = (messageId) => {
+  if (notifiedMessageIds.includes(messageId)) {
+    const now = new Date();
+
+    return {
+      attachments: [],
+      body: `notif ${messageId}`,
+      excerpt: `notif ${messageId}`,
+      date: now.toISOString(),
+      date_insert: now.toISOString(),
+      date_sort: now.toISOString(),
+      discussion_id: 'cd53e13a-267d-4d9c-97ee-d0fc59c64200',
+      user_identities: ['aaaa-bbbb-cccc-ddd1'],
+      importance_level: 0,
+      is_answered: false,
+      is_draft: false,
+      is_received: false,
+      message_id: messageId,
+      participants: [{
+        address: 'test@caliopen.local',
+        label: 'foo',
+        protocol: 'email',
+        type: 'Cc'
+      }, {
+        address: 'john@caliopen.local',
+        contact_ids: ['c-john-01'],
+        label: 'Jaune',
+        protocol: 'email',
+        type: 'From'
+      }, {
+        address: 'zoidberg@planet-express.tld',
+        contact_ids: ['0ba2e346-e4f8-4c45-9adc-eeb1d42fuie0'],
+        label: 'zoidberg',
+        protocol: 'email',
+        type: 'To'
+      }],
+    };
+  }
+
+  return undefined;
+}
+
+
 const selectors = {
   all: () => state => state.messages,
   last: () => state => [...state.messages].pop(),
@@ -41,7 +86,11 @@ const selectors = {
   byId: ({ message_id }) => createSelector(
     selectors.all(),
     messages => {
-      const result = messages.find(message => message.message_id === message_id);
+      let result = messages.find(message => message.message_id === message_id);
+
+      if (!result) {
+        result = getMessageFromNotifier(message_id);
+      }
 
       if (!result) {
         throw `no message found for ${message_id}`;

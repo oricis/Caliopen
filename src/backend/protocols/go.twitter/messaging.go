@@ -30,7 +30,7 @@ func (w *Worker) WorkerMsgHandler(msg *nats.Msg) {
 		log.Infof("received sync order for remote twitter ID %s", message.IdentityId)
 		if accountWorker := w.getOrCreateHandler(message.UserId, message.IdentityId); accountWorker != nil {
 			select {
-			case accountWorker.WorkerDesk <- PollDM:
+			case accountWorker.AccountDesk <- PollDM:
 				log.Infof("[DMmsgHandler] ordering to pollDM for remote %s (user %s)", message.IdentityId, message.UserId)
 			case <-time.After(30 * time.Second):
 				log.Warnf("[DMmsgHandler] worker's desk is full for remote %s (user %s)", message.IdentityId, message.UserId)

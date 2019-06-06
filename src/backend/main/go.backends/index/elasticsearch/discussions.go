@@ -62,7 +62,6 @@ func (es *ElasticSearchBackend) GetDiscussionsList(filter IndexSearch, withIL bo
 		var subHit = subBucket["hits"].(map[string]interface{})["hits"].([]interface{})[0].(map[string]interface{})
 
 		msg.UnmarshalMap(subHit["_source"].(map[string]interface{}))
-
 		// flatten importance levels distribution to an array of float64 for later computation
 		var importanceAgg Aggregation
 		json.Unmarshal(hit.ImportanceLevel, &importanceAgg)

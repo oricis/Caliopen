@@ -6,4 +6,5 @@ const (
 	TagsRoute       = "/tags"
 	ContactsRoute   = "/contacts"
 	DevicesRoute    = "/devices"
+	ImportsRoute    = "/imports"
 )

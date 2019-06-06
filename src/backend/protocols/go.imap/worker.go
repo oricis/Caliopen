@@ -31,7 +31,6 @@ type Worker struct {
 
 const (
 	noPendingJobErr = "no pending job"
-	pollThrottling  = 30 * time.Second
 	needJobOrderStr = `{"worker":"%s","order":{"order":"need_job"}}`
 )
 

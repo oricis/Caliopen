@@ -21,7 +21,7 @@ class DiscussionItem extends PureComponent {
       last_message_id: PropTypes.string.isRequired,
       unread_count: PropTypes.number.isRequired,
       pi: PropTypes.shape({}),
-      protocol: PropTypes.string,
+      participants: PropTypes.arrayOf(PropTypes.shape({ protocol: PropTypes.string })),
     }).isRequired,
     // i18n: PropTypes.shape({}).isRequired,
     onSelectDiscussion: PropTypes.func.isRequired,
@@ -94,7 +94,7 @@ class DiscussionItem extends PureComponent {
     const { settings, className } = this.props;
     const {
       excerpt, discussion_id: discussionId, total_count: total, date_update: date,
-      last_message_id: lastMessageId, unread_count: unreadCount, pi, protocol,
+      last_message_id: lastMessageId, unread_count: unreadCount, pi,
     } = this.props.discussion;
 
     // XXX: discussion does not support pi_message yet
@@ -103,7 +103,7 @@ class DiscussionItem extends PureComponent {
     // const { isDeleting, isDiscussionSelected, i18n } = this.props;
 
     const participants = this.getParticipantsExceptUser();
-    const iconProtocol = protocol || 'email';
+    const iconProtocol = this.props.discussion.participants[0].protocol;
 
     return (
       <li

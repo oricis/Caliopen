@@ -6,10 +6,11 @@ package REST
 
 import (
 	"errors"
+
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 )
 
-// Make use of index facility to return to user a list of suggested recipients
+// SuggestRecipients makes use of index facility to return to user a list of suggested recipients
 // within the context of composing a new message
 // list is ordered by relevance : first suggestion should be the best
 func (rest *RESTfacility) SuggestRecipients(user *UserInfo, query_string string) (suggests []RecipientSuggestion, err error) {

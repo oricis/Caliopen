@@ -1,11 +1,11 @@
 package objects
 
 import (
-	"github.com/satori/go.uuid"
 	"strings"
 	"testing"
 )
 
+/* deprecated
 func TestComputeNewParticipantHash(t *testing.T) {
 	current := ParticipantHash{
 		UserId:     UUID(uuid.FromStringOrNil("ede04443-b60f-4869-9040-20bd6b1e33c1")),
@@ -15,7 +15,7 @@ func TestComputeNewParticipantHash(t *testing.T) {
 	}
 	uri := "email:eliz@gnu.org"
 	contactId := "5f0baee8-1278-43eb-9931-01b7383b419b"
-	newH, err := ComputeNewParticipantHash(uri, contactId, current, current.Components, true)
+	newH, err := ComputeNewParticipantHash(uri, contactId, current, current.Components)
 	if err != nil {
 		t.Error(err)
 	}
@@ -23,7 +23,7 @@ func TestComputeNewParticipantHash(t *testing.T) {
 		t.Errorf("expected new.Key = a68a2042560695580765331e4fd528a611d27f5852b6d0dd499d8eccfc28f54b, got %s", newH.Key)
 	}
 }
-
+*/
 func TestHashFromParticipantsUris(t *testing.T) {
 	participants := []Participant{
 		{

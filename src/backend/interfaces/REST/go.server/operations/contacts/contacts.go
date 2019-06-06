@@ -25,6 +25,9 @@ import (
 func GetContactsList(ctx *gin.Context) {
 	var limit, offset int
 	var user_UUID UUID
+	var list []*Contact
+	var totalFound int64
+	var err error
 
 	user_uuid_str := ctx.MustGet("user_id").(string)
 	user_uuid, _ := uuid.FromString(user_uuid_str)
@@ -32,30 +35,43 @@ func GetContactsList(ctx *gin.Context) {
 	user_UUID.UnmarshalBinary(user_uuid.Bytes())
 
 	query_values := ctx.Request.URL.Query()
-	if l, ok := query_values["limit"]; ok {
-		limit, _ = strconv.Atoi(l[0])
-		query_values.Del("limit")
-	}
-	if o, ok := query_values["offset"]; ok {
-		offset, _ = strconv.Atoi(o[0])
-		query_values.Del("offset")
+	if uriFilter, ok := query_values["uri"]; ok {
+		// lookup contact by uri is made into store
+		list, totalFound, err = caliopen.Facilities.RESTfacility.LookupContactByUri(user_uuid_str, uriFilter[0])
+		if err != nil && err.Error() != "not found" {
+			e := swgErr.New(http.StatusInternalServerError, err.Error())
+			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+			ctx.Abort()
+			return
+		}
+	} else {
+		if l, ok := query_values["limit"]; ok {
+			limit, _ = strconv.Atoi(l[0])
+			query_values.Del("limit")
+		}
+		if o, ok := query_values["offset"]; ok {
+			offset, _ = strconv.Atoi(o[0])
+			query_values.Del("offset")
+		}
+
+		filter := IndexSearch{
+			User_id:  user_UUID,
+			Shard_id: shard_id,
+			Terms:    map[string][]string(query_values),
+			Limit:    limit,
+			Offset:   offset,
+		}
+
+		list, totalFound, err = caliopen.Facilities.RESTfacility.RetrieveContacts(filter)
+		if err != nil {
+			e := swgErr.New(http.StatusInternalServerError, err.Error())
+			http_middleware.ServeError(ctx.Writer, ctx.Request, e)
+			ctx.Abort()
+			return
+		}
 	}
 
-	filter := IndexSearch{
-		User_id:  user_UUID,
-		Shard_id: shard_id,
-		Terms:    map[string][]string(query_values),
-		Limit:    limit,
-		Offset:   offset,
-	}
-
-	list, totalFound, err := caliopen.Facilities.RESTfacility.RetrieveContacts(filter)
-	if err != nil {
-		e := swgErr.New(http.StatusInternalServerError, err.Error())
-		http_middleware.ServeError(ctx.Writer, ctx.Request, e)
-		ctx.Abort()
-		return
-	}
+	// render response
 	var respBuf bytes.Buffer
 	respBuf.WriteString("{\"total\": " + strconv.FormatInt(totalFound, 10) + ",")
 	respBuf.WriteString("\"contacts\":[")

@@ -62,19 +62,24 @@ func (rest *RESTfacility) GetDiscussionsList(user *UserInfo, ILrange, PIrange [2
 	// sort discussions by date_sort
 	sort.Sort(ByLastMessageDateDesc(discussionsList))
 
-	// apply offset and limit
 	if len(discussionsList) == 0 {
 		return discussionsList, discussionsCount, err
 	}
+
+	// apply offset and limit
 	if offset > len(discussionsList) {
 		return nil, 0, errors.New("offset is greater than result set")
 	}
-
 	if offset+limit > len(discussionsList) {
-		return discussionsList[offset:], discussionsCount, nil
+		discussionsList = discussionsList[offset:]
 	} else {
-		return discussionsList[offset : offset+limit], discussionsCount, nil
+		discussionsList = discussionsList[offset : offset+limit]
 	}
+
+	// update participants' data
+	DiscussionsParticipantsDetails(rest.store.GetSession(), discussionsList)
+
+	return discussionsList, discussionsCount, nil
 }
 
 // DiscussionMetadata returns one Discussion hydrated with metadata from its messages
@@ -100,6 +105,10 @@ func (rest *RESTfacility) DiscussionMetadata(user *UserInfo, discussionId string
 		return
 	}
 	discussion = mergeDiscussionAliases(discussions)
+
+	// update participants' data
+	DiscussionsParticipantsDetails(rest.store.GetSession(), []Discussion{discussion})
+
 	return
 }
 
@@ -154,5 +163,6 @@ func mergeDiscussionAliases(discussions []Discussion) Discussion {
 		}
 		earlier.Aliases = aliases
 	}
+
 	return earlier
 }

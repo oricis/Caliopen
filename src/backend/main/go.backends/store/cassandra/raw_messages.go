@@ -6,15 +6,15 @@ package store
 
 import (
 	"errors"
-	obj "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
+	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
 	log "github.com/Sirupsen/logrus"
 	"github.com/gocassa/gocassa"
 	"github.com/gocql/gocql"
 	"io"
 )
 
-func (cb *CassandraBackend) StoreRawMessage(msg obj.RawMessage) (err error) {
-	rawMsgTable := cb.IKeyspace.MapTable("raw_message", "raw_msg_id", &obj.RawMessage{})
+func (cb *CassandraBackend) StoreRawMessage(msg RawMessage) (err error) {
+	rawMsgTable := cb.IKeyspace.MapTable("raw_message", "raw_msg_id", &RawMessage{})
 	consistency := gocql.Consistency(cb.CassandraConfig.Consistency)
 
 	// need to overwrite default gocassa naming convention that add `_map_name` to the mapTable name
@@ -45,13 +45,13 @@ func (cb *CassandraBackend) StoreRawMessage(msg obj.RawMessage) (err error) {
 
 // returns a RawMessage object, with 'raw_data' property always filled
 // (even if raw_data was stored outside of cassandra)
-func (cb *CassandraBackend) GetRawMessage(raw_message_id string) (message obj.RawMessage, err error) {
+func (cb *CassandraBackend) GetRawMessage(raw_message_id string) (message RawMessage, err error) {
 
 	m := map[string]interface{}{}
 	q := cb.SessionQuery(`SELECT * FROM raw_message WHERE raw_msg_id = ?`, raw_message_id)
 	err = q.MapScan(m)
 	if err != nil {
-		return obj.RawMessage{}, err
+		return RawMessage{}, err
 	}
 	message.UnmarshalCQLMap(m)
 
@@ -59,18 +59,19 @@ func (cb *CassandraBackend) GetRawMessage(raw_message_id string) (message obj.Ra
 	if message.URI != "" && len(message.Raw_data) == 0 {
 		reader, e := cb.ObjectsStore.GetObject(message.URI)
 		if e != nil {
-			return obj.RawMessage{}, e
+			return RawMessage{}, e
 		}
 		raw_data := make([]byte, message.Raw_Size)
 		s, e := reader.Read(raw_data)
 		if s == 0 || e != io.EOF {
-			return obj.RawMessage{}, e
+			return RawMessage{}, e
 		}
 		if uint64(s) != message.Raw_Size {
 			log.Warnf("[cassandra.GetRawMessage] : Read %d bytes from Object Store, expected %d.", s, message.Raw_Size)
 		}
 		message.Raw_data = string(raw_data)
 	}
+
 	return
 }
 

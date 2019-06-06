@@ -82,11 +82,23 @@ class AskPassphraseForm extends Component {
             )}
           <FormRow>
             <FormColumn>
+              {
+                // this input is intended to enable multiple key/passphrase
+                // storage in password manager.
+              }
+              <input
+                type="text"
+                className="m-ask-passphrase--input-fingerprint"
+                name={`login-${fingerprint}`}
+                value={fingerprint.toUpperCase()}
+                readOnly
+              />
               <TextFieldGroup
                 type="password"
                 name={`passphrase-${fingerprint}`}
                 value={this.state.passphrase}
                 onChange={this.handleChange}
+                autocomplete="current-password"
               />
             </FormColumn>
             <FormColumn>

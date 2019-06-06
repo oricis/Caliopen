@@ -54,4 +54,15 @@ describe('parseHighlight', () => {
     expect(comp.text()).toEqual(highlights);
     expect(comp.html()).toEqual('<span><span>azertyuiop, </span><span><b class="s-search-results-highlights__term">bar</b></span><span> qsdfgh jklm.</span><span><b class="s-search-results-highlights__term">Foo</b></span><span> wxcvbn</span></span>');
   });
+
+  it('render with regex special chars', () => {
+    const highlights = 'azertyuiop, bar( qsdfgh jklm.Foo wxcvbn';
+    const terms = ') .foo bar( $\\}]^#|\\s\\*?-,';
+    const comp = shallow(
+      <Highlights highlights={highlights} term={terms} />
+    );
+
+    expect(comp.text()).toEqual(highlights);
+    expect(comp.html()).toEqual('<span><span>azertyuiop, </span><span><b class="s-search-results-highlights__term">bar(</b></span><span> qsdfgh jklm</span><span><b class="s-search-results-highlights__term">.Foo</b></span><span> wxcvbn</span></span>');
+  });
 });

@@ -18,6 +18,12 @@ export const UPDATE_TAGS = 'co/contact/UPDATE_TAGS';
 export const UPDATE_TAGS_SUCCESS = 'co/contact/UPDATE_TAGS_SUCCESS';
 export const UPDATE_TAGS_FAIL = 'co/contact/UPDATE_TAGS_FAIL';
 export const REMOVE_MULTIPLE_FROM_COLLECTION = 'co/contact/REMOVE_MULTIPLE_FROM_COLLECTION';
+export const REQUEST_CONTACT_IDS_FOR_URI = 'co/contact/REQUEST_CONTACT_IDS_FOR_URI';
+
+const PROTOCOL_PREFIXES = {
+  email: 'email',
+  twitter: 'twitter',
+};
 
 export function requestContacts(params = {}) {
   const { offset = 0, limit = 1000 } = params;
@@ -121,6 +127,20 @@ export function removeMultipleFromCollection({ contacts }) {
     type: REMOVE_MULTIPLE_FROM_COLLECTION,
     payload: {
       contacts,
+    },
+  };
+}
+
+export function requestContactIdsForURI({ protocol, address }) {
+  const protocolPrefix = PROTOCOL_PREFIXES[protocol];
+
+  return {
+    type: REQUEST_CONTACT_IDS_FOR_URI,
+    payload: {
+      request: {
+        method: 'get',
+        url: `/api/v2/contacts?uri=${protocolPrefix}:${address}`,
+      },
     },
   };
 }

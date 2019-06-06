@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withI18n } from '@lingui/react';
+import { withNotification } from '../../../../modules/userNotify';
 import getClient from '../../../../services/api-client';
 import ImportContactForm from '../ImportContactForm';
 import UploadFileAsFormField from '../../../../modules/file/services/uploadFileAsFormField';
 
+@withI18n()
+@withNotification()
 class ImportContact extends Component {
   static propTypes = {
     i18n: PropTypes.shape({}).isRequired,
@@ -28,7 +32,7 @@ class ImportContact extends Component {
     const data = new UploadFileAsFormField(file, 'file');
 
     this.setState({ isLoading: true });
-    getClient().post('/api/v1/imports', data)
+    getClient().post('/api/v2/imports', data)
       .then(this.handleImportContactSuccess, this.handleImportContactError)
       .then(() => this.setState({ isLoading: false }));
   }
@@ -65,7 +69,6 @@ class ImportContact extends Component {
         errors={this.state.errors}
         hasImported={this.state.hasImported}
         isLoading={this.state.isLoading}
-        formAction="/api/v1/imports"
       />
     );
   }

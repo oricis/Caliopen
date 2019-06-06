@@ -139,6 +139,12 @@
 			"revisionTime": "2016-06-06T18:21:33Z"
 		},
 		{
+			"checksumSHA1": "7hiLcyFx1AnUeixnLFAJgA/badQ=",
+			"path": "github.com/emersion/go-vcard",
+			"revision": "8856043f13c54edb075ad5121315e5e89c3f5bfa",
+			"revisionTime": "2019-01-05T22:58:39Z"
+		},
+		{
 			"checksumSHA1": "x2Km0Qy3WgJJnV19Zv25VwTJcBM=",
 			"path": "github.com/fsnotify/fsnotify",
 			"revision": "4da3e2cfbabc9f751898f250b49f2439785783a1",
