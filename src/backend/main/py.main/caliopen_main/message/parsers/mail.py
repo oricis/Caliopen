@@ -152,25 +152,29 @@ class MailMessage(object):
         attachments = []
         html_bodies = []
         text_bodies = []
+        # XXX define correctly these 2 values
         multipart_type = None
         in_alternative = False
         parts = self.mail.get_payload()
         self._parse_structure(parts, multipart_type, in_alternative,
                               attachments, html_bodies, text_bodies)
-        self.body_html = '\n'.join(html_bodies)
-        self.body_plain = '\n'.join(text_bodies)
+        # XXX decode charsets of bodies entities
+        self.body_html = '\n'.join([x.get_payload() for x in html_bodies])
+        self.body_plain = '\n'.join([x.get_payload() for x in text_bodies])
         self._attachments = attachments
 
     def _is_part_inline(self, part):
         """Return true if part is inline, false otherwise."""
         sub_type = part.get_content_subtype()
-        if sub_type in ['html', 'text']:
+        if sub_type in ['html', 'text', 'plain']:
             return True
         content_disposition = part.get("Content-Disposition")
         if content_disposition:
-            dispositions = content_disposition.strip().split(";")
-            return bool(dispositions[0].lower() == "inline")
-        return True
+            if ';' in content_disposition:
+                dispo_type, _ = content_disposition.split(';', 2)
+                if dispo_type.lower() == 'inline':
+                    return True
+        return False
 
     def _in_inline_media(self, part):
         """
@@ -201,7 +205,7 @@ class MailMessage(object):
                 subtype = part.get_content_subtype()
                 alternative = in_alternative or subtype == 'alternative'
                 self._parse_structure(part.get_payload(),
-                                      part.get_content_type(),
+                                      subtype,
                                       alternative,
                                       attachments,
                                       html_bodies,
@@ -211,22 +215,24 @@ class MailMessage(object):
                     if multipart_type == 'alternative':
                         subtype = part.get_content_subtype()
                         if subtype == 'html':
-                            html_bodies.append(part.get_payload())
+                            html_bodies.append(part)
                         elif subtype == 'plain':
-                            text_bodies.append(part.get_payload())
+                            text_bodies.append(part)
                         else:
                             attachments.append(part)
                     else:
                         if in_alternative:
                             # reset html_bodies and text_bodies ?
-                            log.warn('Please HELP')
+                            log.warn('In an alternative unknown')
                             pass
                         else:
                             subtype = part.get_content_subtype()
                             if subtype == 'html':
-                                html_bodies.append(part.get_payload())
+                                html_bodies.append(part)
                             elif subtype == 'plain':
-                                text_bodies.append(part.get_payload())
+                                text_bodies.append(part)
+                            else:
+                                log.warn('What to do with {}'.format(part))
                     if not (text_bodies or html_bodies) and \
                        self._is_part_inline(part):
                         attachments.append(part)
@@ -328,7 +334,8 @@ class MailMessage(object):
 
     @property
     def attachments(self):
-        return self._attachments
+        """List of attachments for this message."""
+        return [MailAttachment(x) for x in self._attachments]
 
     @property
     def extra_parameters(self):
