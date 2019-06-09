@@ -214,8 +214,8 @@ class MailMessage(object):
                                       text_bodies)
             else:
                 if is_inline:
+                    subtype = part.get_content_subtype()
                     if multipart_type == 'alternative':
-                        subtype = part.get_content_subtype()
                         if subtype == 'html':
                             html_bodies.append(part)
                         elif subtype == 'plain':
@@ -224,17 +224,17 @@ class MailMessage(object):
                             attachments.append(part)
                     else:
                         if in_alternative:
-                            # reset html_bodies and text_bodies ?
-                            log.warn('In an alternative unknown')
-                            pass
-                        else:
-                            subtype = part.get_content_subtype()
+                            if subtype == 'plain':
+                                html_bodies = []
                             if subtype == 'html':
-                                html_bodies.append(part)
-                            elif subtype == 'plain':
-                                text_bodies.append(part)
-                            else:
-                                log.warn('What to do with {}'.format(part))
+                                text_bodies = []
+
+                        if subtype == 'html':
+                            html_bodies.append(part)
+                        elif subtype == 'plain':
+                            text_bodies.append(part)
+                        else:
+                            log.warn('What to do with {}'.format(part))
                     if not (text_bodies or html_bodies) and \
                        self._is_part_inline(part):
                         attachments.append(part)
@@ -244,10 +244,12 @@ class MailMessage(object):
         if multipart_type == 'alternative' and html_bodies and text_bodies:
             if text_length == sum(len(x) for x in text_bodies) and \
                html_length != sum(len(x) for x in html_bodies):
+                log.warn('Not sure about this html processing ...')
                 for html in html_bodies:
                     text_bodies.append(html)
             if html_length == sum(len(x) for x in html_bodies) and \
                text_length != sum(len(x) for x in text_bodies):
+                log.warn('Not sure about this text processing ...')
                 for text in text_bodies:
                     html_bodies.append(text)
 
