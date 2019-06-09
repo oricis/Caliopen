@@ -152,9 +152,11 @@ class MailMessage(object):
         attachments = []
         html_bodies = []
         text_bodies = []
-        # XXX define correctly these 2 values
-        multipart_type = None
-        in_alternative = False
+        main_type = self.mail.get_content_maintype()
+        sub_type = self.mail.get_content_subtype()
+        multipart_type = sub_type if main_type == 'multipart' else None
+        in_alternative = True if sub_type == 'alternative' else False
+
         parts = self.mail.get_payload()
         self._parse_structure(parts, multipart_type, in_alternative,
                               attachments, html_bodies, text_bodies)
