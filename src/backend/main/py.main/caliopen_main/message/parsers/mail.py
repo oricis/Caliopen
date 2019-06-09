@@ -154,9 +154,9 @@ class MailMessage(object):
         text_bodies = []
         multipart_type = None
         in_alternative = False
-        for part in self.mail.get_payload():
-            self._parse_structure(part, multipart_type, in_alternative,
-                                  attachments, html_bodies, text_bodies)
+        parts = self.mail.get_payload()
+        self._parse_structure(parts, multipart_type, in_alternative,
+                              attachments, html_bodies, text_bodies)
         self.body_html = '\n'.join(html_bodies)
         self.body_plain = '\n'.join(text_bodies)
         self._attachments = attachments
@@ -201,7 +201,7 @@ class MailMessage(object):
                 subtype = part.get_content_subtype()
                 alternative = in_alternative or subtype == 'alternative'
                 self._parse_structure(part.get_payload(),
-                                      part.get_content_subtype(),
+                                      part.get_content_type(),
                                       alternative,
                                       attachments,
                                       html_bodies,
@@ -221,11 +221,13 @@ class MailMessage(object):
                             # reset html_bodies and text_bodies ?
                             log.warn('Please HELP')
                             pass
-                    if html_bodies:
-                        html_bodies.append(part.get_payload())
-                    if text_bodies:
-                        text_bodies.append(part.get_payload())
-                    if (not text_bodies or not html_bodies) and \
+                        else:
+                            subtype = part.get_content_subtype()
+                            if subtype == 'html':
+                                html_bodies.append(part.get_payload())
+                            elif subtype == 'plain':
+                                text_bodies.append(part.get_payload())
+                    if not (text_bodies or html_bodies) and \
                        self._is_part_inline(part):
                         attachments.append(part)
                 else:
