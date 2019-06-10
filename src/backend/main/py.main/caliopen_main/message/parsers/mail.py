@@ -227,35 +227,34 @@ class MailMessage(object):
         for part in parts:
             is_multipart = part.is_multipart()
             is_inline = self._is_part_inline(part)
+            sub_type = part.get_content_subtype()
             if is_multipart:
-                subtype = part.get_content_subtype()
-                alternative = in_alternative or subtype == 'alternative'
+                alternative = in_alternative or sub_type == 'alternative'
                 self._parse_structure(part.get_payload(),
-                                      subtype,
+                                      sub_type,
                                       alternative,
                                       attachments,
                                       html_bodies,
                                       text_bodies)
             else:
                 if is_inline:
-                    subtype = part.get_content_subtype()
                     if multipart_type == 'alternative':
-                        if subtype == 'html':
+                        if sub_type == 'html':
                             html_bodies.append(part)
-                        elif subtype == 'plain':
+                        elif sub_type == 'plain':
                             text_bodies.append(part)
                         else:
                             attachments.append(part)
                     else:
                         if in_alternative:
-                            if subtype == 'plain':
+                            if sub_type == 'plain':
                                 html_bodies = []
-                            if subtype == 'html':
+                            if sub_type == 'html':
                                 text_bodies = []
 
-                        if subtype == 'html':
+                        if sub_type == 'html':
                             html_bodies.append(part)
-                        elif subtype == 'plain':
+                        elif sub_type == 'plain':
                             text_bodies.append(part)
                         else:
                             log.warn('What to do with {}'.format(part))
