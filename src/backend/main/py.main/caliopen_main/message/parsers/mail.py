@@ -143,6 +143,9 @@ class MailMessage(object):
         """Parse an RFC2822,5322 mail message."""
         self.raw = raw_data
         self._extra_parameters = {}
+        self.body_plain = None
+        self.body_html = None
+        self._attachments = []
         try:
             self.mail = Message(raw_data)
         except Exception as exc:
@@ -171,12 +174,20 @@ class MailMessage(object):
         in_alternative = True if sub_type == 'alternative' else False
 
         parts = self.mail.get_payload()
-        self._parse_structure(parts, multipart_type, in_alternative,
-                              attachments, html_bodies, text_bodies)
-        self.body_html = '\n'.join([self._encode_part(x)
-                                    for x in html_bodies])
-        self.body_plain = '\n'.join([self._encode_part(x)
-                                     for x in text_bodies])
+        if not isinstance(parts, list):
+            # plain mail
+            content = self._encode_part(self.mail)
+            if sub_type == 'html':
+                self.body_html = content
+            if sub_type == 'plain':
+                self.body_plain = content
+        else:
+            self._parse_structure(parts, multipart_type, in_alternative,
+                                  attachments, html_bodies, text_bodies)
+            self.body_html = '\n'.join([self._encode_part(x)
+                                        for x in html_bodies])
+            self.body_plain = '\n'.join([self._encode_part(x)
+                                         for x in text_bodies])
         self._attachments = attachments
 
     def _is_part_inline(self, part):
