@@ -154,6 +154,12 @@ class MailMessage(object):
             self.warnings = self.mail.defects
         self._parse()
 
+    def _encode_part(self, part):
+        """Encode a part to utf-8."""
+        charsets = part.get_charsets()
+        charset = charsets[0] if charsets else None
+        return to_utf8(part.get_payload(), charset)
+
     def _parse(self):
         """Main function to build mail representation."""
         attachments = []
@@ -167,9 +173,10 @@ class MailMessage(object):
         parts = self.mail.get_payload()
         self._parse_structure(parts, multipart_type, in_alternative,
                               attachments, html_bodies, text_bodies)
-        # XXX decode charsets of bodies entities
-        self.body_html = '\n'.join([x.get_payload() for x in html_bodies])
-        self.body_plain = '\n'.join([x.get_payload() for x in text_bodies])
+        self.body_html = '\n'.join([self._encode_part(x)
+                                    for x in html_bodies])
+        self.body_plain = '\n'.join([self._encode_part(x)
+                                     for x in text_bodies])
         self._attachments = attachments
 
     def _is_part_inline(self, part):
