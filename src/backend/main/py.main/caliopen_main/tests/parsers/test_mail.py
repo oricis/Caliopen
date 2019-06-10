@@ -75,6 +75,14 @@ class TestMailFormat(unittest.TestCase):
         self.assertEqual(mail.body_html, '')
         self.assertEqual(mail.body_plain, '')
 
+    def test_html_alternative(self):
+        """Test a multipart/alternative mail in html format."""
+        data = load_mail_relative('alternative1.eml')
+        mail = MailMessage(data)
+        self.assertEqual(len(mail.attachments), 0)
+        self.assertNotEqual(mail.body_html, '')
+        self.assertEqual(mail.body_plain, '')
+
 
 class TestRawMail(unittest.TestCase):
     """Parse email from devtools/fixtures/raw_emails for particularities"""
