@@ -135,9 +135,6 @@ class MailMessage(object):
 
     recipient_headers = ['From', 'To', 'Cc', 'Bcc']
     message_protocol = 'email'
-    warnings = []
-    body_html = ""
-    body_plain = ""
 
     def __init__(self, raw_data):
         """Parse an RFC2822,5322 mail message."""
@@ -155,6 +152,8 @@ class MailMessage(object):
             # XXX what to do ?
             log.warn('Defects on parsed mail %r' % self.mail.defects)
             self.warnings = self.mail.defects
+        else:
+            self.warnings = []
         self._parse()
 
     def _encode_part(self, part):
