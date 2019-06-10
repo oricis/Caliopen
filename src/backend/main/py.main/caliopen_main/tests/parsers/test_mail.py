@@ -57,5 +57,13 @@ class TestMailFormat(unittest.TestCase):
         self.assertTrue(isinstance(mail.date, datetime))
         self.assertTrue(mail.extra_parameters.get('encrypted', None), 'pgp')
 
+    def test_only_png(self):
+        data = load_mail('png.eml')
+        mail = MailMessage(data)
+        self.assertEqual(len(mail.attachments), 1)
+        self.assertEqual(mail.attachments[0].content_type, 'image/png')
+        self.assertEqual(mail.body_html, '')
+        self.assertEqual(mail.body_plain, '')
+
 if __name__ == '__main__':
     unittest.main()

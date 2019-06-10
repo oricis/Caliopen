@@ -178,8 +178,10 @@ class MailMessage(object):
             content = self._encode_part(self.mail)
             if sub_type == 'html':
                 self.body_html = content
-            if sub_type == 'plain':
+            elif sub_type == 'plain':
                 self.body_plain = content
+            else:
+                attachments.append(self.mail)
         else:
             self._parse_structure(parts, multipart_type, in_alternative,
                                   attachments, html_bodies, text_bodies)
