@@ -166,5 +166,5 @@ class TestRawMail(unittest.TestCase):
 
         self.assertTrue(len(mail.body_html) == 0)
         self.assertTrue(len(mail.body_plain) > 0)
-        expected = {'encrypted': 'application/pgp-encrypted', 'lists': []}
+        expected = {'encrypted': 'pgp-inline', 'lists': []}
         self.assertEqual(mail.extra_parameters, expected)

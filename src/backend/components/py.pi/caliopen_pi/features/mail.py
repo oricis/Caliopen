@@ -22,9 +22,6 @@ TLS_VERSION_PI = {
 }
 
 
-PGP_MESSAGE_HEADER = '\n-----BEGIN PGP MESSAGE-----'
-
-
 class InboundMailFeature(object):
     """Process a parsed mail message and extract available privacy features."""
 
@@ -122,17 +119,6 @@ class InboundMailFeature(object):
             is_encrypted = True
 
         method = 'pgp' if 'pgp' in mail_value else mail_value
-        # Maybe pgp/inline ?
-        if not is_encrypted:
-            try:
-                body = self.message.body_plain.decode('utf-8')
-                if body.startswith(PGP_MESSAGE_HEADER):
-                    is_encrypted = True
-                    mail_value = 'pgp'
-            except UnicodeDecodeError:
-                log.warn('Invalid body_plain encoding for message')
-                pass
-
         res = {'message_encrypted': is_encrypted}
         if is_encrypted:
             res.update({'message_encryption_method': method})

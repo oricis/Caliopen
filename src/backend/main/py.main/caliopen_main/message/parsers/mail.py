@@ -30,6 +30,8 @@ log = logging.getLogger(__name__)
 
 TEXT_CONTENT_TYPE = ['text', 'xml', 'vnd', 'xhtml', 'json', 'msword']
 
+PGP_MESSAGE_HEADER = '-----BEGIN PGP MESSAGE-----'
+
 
 class MailAttachment(object):
     """Mail part structure."""
@@ -155,6 +157,20 @@ class MailMessage(object):
         else:
             self.warnings = []
         self._parse()
+        self._detect_pgp_inline()
+
+    def _detect_pgp_inline(self):
+        """PGP Inline is not an RFC, we have to detect header in body_plain."""
+        if 'pgp' in self._extra_parameters.get('encrypted', ''):
+            # Not inline, detected on mime structure
+            return
+        try:
+            body = self.body_plain.decode('utf-8')
+            if body.startswith(PGP_MESSAGE_HEADER):
+                self._extra_parameters.update({'encrypted': 'pgp-inline'})
+        except UnicodeDecodeError:
+            log.warn('Invalid body_plain encoding for message')
+            pass
 
     def _encode_part(self, part):
         """Encode a part to utf-8."""
