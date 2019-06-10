@@ -42,6 +42,8 @@ class TestMailFormat(unittest.TestCase):
         self.assertTrue(len(mail.participants) > 1)
         self.assertEqual(len(mail.attachments), 1)
         self.assertEqual(mail.subject, 'signed content')
+        self.assertEqual(mail.body_html, '')
+        self.assertTrue(len(mail.body_plain) > 0)
         self.assertTrue(isinstance(mail.date, datetime))
 
     def test_encrypted_mail(self):
