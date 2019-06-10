@@ -55,7 +55,8 @@ class TestMailFormat(unittest.TestCase):
         self.assertEqual(len(mail.attachments), 1)
         self.assertEqual(mail.subject, 'crypted content')
         self.assertTrue(isinstance(mail.date, datetime))
-        self.assertTrue(mail.extra_parameters.get('encrypted', None), 'pgp')
+        expected = {'encrypted': 'application/pgp-encrypted', 'lists': []}
+        self.assertEqual(mail.extra_parameters, expected)
 
     def test_only_png(self):
         data = load_mail('png.eml')

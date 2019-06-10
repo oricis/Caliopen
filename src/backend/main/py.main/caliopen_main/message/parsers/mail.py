@@ -229,9 +229,8 @@ class MailMessage(object):
         if multipart_type == 'encrypted':
             # rfc1847
             proto = self.mail.get_param('protocol')
-            if 'pgp' in proto.lower():
-                proto = 'pgp'
-            self._extra_parameters.update({'encrypted': proto})
+            if proto:
+                self._extra_parameters.update({'encrypted': proto.lower()})
 
             content = [x for x in parts
                        if x.get_content_subtype() == 'octet-stream']

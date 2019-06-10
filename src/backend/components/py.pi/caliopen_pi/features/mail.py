@@ -117,21 +117,24 @@ class InboundMailFeature(object):
     def get_encryption_informations(self):
         """Get message encryption features."""
         is_encrypted = False
-        if 'encrypted' in self.message.extra_parameters:
+        mail_value = self.message.extra_parameters.get('encrypted', None)
+        if mail_value:
             is_encrypted = True
 
+        method = 'pgp' if 'pgp' in mail_value else mail_value
         # Maybe pgp/inline ?
         if not is_encrypted:
             try:
                 body = self.message.body_plain.decode('utf-8')
                 if body.startswith(PGP_MESSAGE_HEADER):
                     is_encrypted = True
+                    mail_value = 'pgp'
             except UnicodeDecodeError:
                 log.warn('Invalid body_plain encoding for message')
                 pass
 
         return {'message_encrypted': is_encrypted,
-                'message_encryption_method': 'pgp' if is_encrypted else ''}
+                'message_encryption_method': method}
 
     def _get_features(self):
         """Extract privacy features."""
