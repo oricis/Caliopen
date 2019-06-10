@@ -199,8 +199,7 @@ class MailMessage(object):
         content_disposition = part.get("Content-Disposition")
         if content_disposition:
             if ';' in content_disposition:
-                dispo_type, _ = content_disposition.split(';', 2)
-                if dispo_type.lower() == 'inline':
+                if content_disposition.lower().startswith('inline'):
                     return True
         return False
 

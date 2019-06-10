@@ -2,6 +2,8 @@
 
 import unittest
 import os
+import logging
+
 
 from datetime import datetime
 from zope.interface.verify import verifyObject
@@ -21,6 +23,9 @@ Configuration.load(conf_file, 'global')
 
 from caliopen_main.common.interfaces import IMessageParser  # noqa
 from caliopen_main.message.parsers.mail import MailMessage  # noqa
+
+
+logging.basicConfig()
 
 
 def load_raw_mail(filename):
@@ -145,6 +150,20 @@ class TestRawMail(unittest.TestCase):
         data = load_raw_mail('signed-and-encrypted')
         mail = MailMessage(data)
         self.assertEqual(len(mail.attachments), 1)
+        self.assertTrue(len(mail.body_html) == 0)
+        self.assertTrue(len(mail.body_plain) > 0)
+        expected = {'encrypted': 'application/pgp-encrypted', 'lists': []}
+        self.assertEqual(mail.extra_parameters, expected)
+
+    def test_inline_pgp_signed_and_image(self):
+        data = load_raw_mail('pgp-inline-signed-and-attachment')
+        mail = MailMessage(data)
+        self.assertEqual(len(mail.attachments), 2)
+        self.assertTrue('application/pgp-signature'
+                        in [x.content_type for x in mail.attachments])
+        self.assertTrue('image/png'
+                        in [x.content_type for x in mail.attachments])
+
         self.assertTrue(len(mail.body_html) == 0)
         self.assertTrue(len(mail.body_plain) > 0)
         expected = {'encrypted': 'application/pgp-encrypted', 'lists': []}
