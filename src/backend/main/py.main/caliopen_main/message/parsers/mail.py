@@ -61,8 +61,9 @@ class MailAttachment(object):
                                 (charsets, part.get_payload()))
             self.charset = charsets[0]
             if 'Content-Transfer-Encoding' in part.keys():
-                if part.get('Content-Transfer-Encoding') == 'base64':
-                    data = base64.b64decode(data)
+                # https://tools.ietf.org/html/rfc2045#section-6.1
+                encoding = part['Content-Transfer-Encoding']
+                data = self._decode_data(data, encoding)
             if self.charset:
                 data = data.decode(self.charset, 'replace'). \
                     encode('utf-8')
@@ -73,6 +74,12 @@ class MailAttachment(object):
             self.mime_boundary = ""
         self.data = data
         self.size = len(data) if data else 0
+
+    def _decode_data(self, data, encoding):
+        if encoding.lower() == 'base64':
+            return base64.b64decode(data)
+        log.warn('Unhandled encoding {}'.format(encoding))
+        return data
 
     @classmethod
     def is_attachment(cls, part):
