@@ -133,8 +133,10 @@ class InboundMailFeature(object):
                 log.warn('Invalid body_plain encoding for message')
                 pass
 
-        return {'message_encrypted': is_encrypted,
-                'message_encryption_method': method}
+        res = {'message_encrypted': is_encrypted}
+        if is_encrypted:
+            res.update({'message_encryption_method': method})
+        return res
 
     def _get_features(self):
         """Extract privacy features."""
