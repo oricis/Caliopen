@@ -140,8 +140,8 @@ class MailMessage(object):
         """Parse an RFC2822,5322 mail message."""
         self.raw = raw_data
         self._extra_parameters = {}
-        self.body_plain = None
-        self.body_html = None
+        self.body_plain = ''
+        self.body_html = ''
         self._attachments = []
         try:
             self.mail = Message(raw_data)
