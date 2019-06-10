@@ -224,6 +224,22 @@ class MailMessage(object):
         """
         text_length = sum(len(x) for x in text_bodies) if text_bodies else -1
         html_length = sum(len(x) for x in html_bodies) if html_bodies else -1
+        if multipart_type == 'encrypted':
+            # rfc1847
+            proto = self.mail.get_param('protocol')
+            if 'pgp' in proto.lower():
+                proto = 'pgp'
+            self._extra_parameters.update({'encrypted': proto})
+
+            content = [x for x in parts
+                       if x.get_content_subtype() == 'octet-stream']
+            if content:
+                text_bodies.append(content[0])
+                # Add also as an attachment
+                attachments.append(content[0])
+            else:
+                log.warn('No encrypted data found')
+            return
         for part in parts:
             is_multipart = part.is_multipart()
             is_inline = self._is_part_inline(part)
