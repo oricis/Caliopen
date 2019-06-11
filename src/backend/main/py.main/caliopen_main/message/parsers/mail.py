@@ -217,9 +217,19 @@ class MailMessage(object):
             if ';' in content_disposition:
                 if content_disposition.lower().startswith('inline'):
                     return True
-        return False
+        # XXX : missing strange situation with multipart related and inline
+        """
+        &&
+            // If multipart/related, only the first part can be inline
+            // If a text part with a filename, and not the first item
+            // in the multipart, assume it is an attachment
+            ( i === 0 ||
+              ( multipartType != "related" &&
+                ( isInlineMediaType( part.type ) || !part.name ) ) );
+        """
+        return self._is_inline_media(part)
 
-    def _in_inline_media(self, part):
+    def _is_inline_media(self, part):
         """
         function isInlineMediaType ( type ) {
           return type.startsWith( 'image/' ) ||
@@ -289,7 +299,7 @@ class MailMessage(object):
                         elif sub_type == 'plain':
                             text_bodies.append(part)
                         else:
-                            log.warn('What to do with {}'.format(part))
+                            attachments.append(part)
                     if not (text_bodies or html_bodies) and \
                        self._is_part_inline(part):
                         attachments.append(part)
