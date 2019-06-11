@@ -92,7 +92,6 @@ func BasicAuthFromCache(cache backends.APICache, realm string) gin.HandlerFunc {
 		if auth.User_status == "maintenance" || auth.User_status == "locked" {
 			c.AbortWithError(401, errors.New("User status does not permit operations"))
 		}
-		log.Println("User status", auth.User_status)
 
 		if device_sign := c.Request.Header.Get("X-Caliopen-Device-Signature"); device_sign != "" {
 			query := getSignedQuery(c)

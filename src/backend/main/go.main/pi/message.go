@@ -59,6 +59,5 @@ func ComputePIMessage(message *Message) *PIMessage {
 		piMessage.Transport += 20
 	}
 	// TODO : normalize
-	log.Info("PI: result ", piMessage)
 	return piMessage
 }
