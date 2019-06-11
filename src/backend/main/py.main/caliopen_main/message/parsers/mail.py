@@ -33,6 +33,37 @@ TEXT_CONTENT_TYPE = ['text', 'xml', 'vnd', 'xhtml', 'json', 'msword']
 PGP_MESSAGE_HEADER = '-----BEGIN PGP MESSAGE-----'
 
 
+def is_inline_part(part):
+    """Return true if part is inline, false otherwise."""
+    sub_type = part.get_content_subtype()
+    if sub_type in ['html', 'text', 'plain']:
+        return True
+    content_disposition = part.get("Content-Disposition")
+    if content_disposition:
+        if ';' in content_disposition:
+            if content_disposition.lower().startswith('atttachment'):
+                return False
+    # XXX : missing strange situation with multipart related and inline
+    """
+    &&
+        // If multipart/related, only the first part can be inline
+        // If a text part with a filename, and not the first item
+        // in the multipart, assume it is an attachment
+        ( i === 0 ||
+          ( multipartType != "related" &&
+            ( isInlineMediaType( part.type ) || !part.name ) ) );
+    """
+    return is_inline_media(part)
+
+
+def is_inline_media(part):
+    """Return true if the media can be seen inline, false otherwise."""
+    maintype = part.get_content_maintype()
+    if maintype in ['image', 'audio', 'video']:
+        return True
+    return False
+
+
 class MailAttachment(object):
     """Mail part structure."""
 
@@ -207,41 +238,6 @@ class MailMessage(object):
                                          for x in text_bodies])
         self._attachments = attachments
 
-    def _is_part_inline(self, part):
-        """Return true if part is inline, false otherwise."""
-        sub_type = part.get_content_subtype()
-        if sub_type in ['html', 'text', 'plain']:
-            return True
-        content_disposition = part.get("Content-Disposition")
-        if content_disposition:
-            if ';' in content_disposition:
-                if content_disposition.lower().startswith('atttachment'):
-                    return False
-        # XXX : missing strange situation with multipart related and inline
-        """
-        &&
-            // If multipart/related, only the first part can be inline
-            // If a text part with a filename, and not the first item
-            // in the multipart, assume it is an attachment
-            ( i === 0 ||
-              ( multipartType != "related" &&
-                ( isInlineMediaType( part.type ) || !part.name ) ) );
-        """
-        return self._is_media_inline(part)
-
-    def _is_media_inline(self, part):
-        """
-        function isInlineMediaType ( type ) {
-          return type.startsWith( 'image/' ) ||
-                 type.startsWith( 'audio/' ) ||
-                 type.startsWith( 'video/' );
-        }
-        """
-        maintype = part.get_content_maintype()
-        if maintype in ['image', 'audio', 'video']:
-            return True
-        return False
-
     def _parse_structure(self, parts, multipart_type, in_alternative,
                          attachments, html_bodies, text_bodies):
         """
@@ -272,7 +268,7 @@ class MailMessage(object):
             parts.pop(parts.index(content[0]))
         for part in parts:
             is_multipart = part.is_multipart()
-            is_inline = self._is_part_inline(part)
+            is_inline = is_inline_part(part)
             sub_type = part.get_content_subtype()
             if is_multipart:
                 alternative = in_alternative or sub_type == 'alternative'
@@ -305,7 +301,7 @@ class MailMessage(object):
                         else:
                             attachments.append(part)
                     if not (text_bodies or html_bodies) and \
-                       self._is_part_inline(part):
+                       is_inline_part(part):
                         attachments.append(part)
                 else:
                     attachments.append(part)
