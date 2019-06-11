@@ -215,8 +215,8 @@ class MailMessage(object):
         content_disposition = part.get("Content-Disposition")
         if content_disposition:
             if ';' in content_disposition:
-                if content_disposition.lower().startswith('inline'):
-                    return True
+                if content_disposition.lower().startswith('atttachment'):
+                    return False
         # XXX : missing strange situation with multipart related and inline
         """
         &&
@@ -227,9 +227,9 @@ class MailMessage(object):
               ( multipartType != "related" &&
                 ( isInlineMediaType( part.type ) || !part.name ) ) );
         """
-        return self._is_inline_media(part)
+        return self._is_media_inline(part)
 
-    def _is_inline_media(self, part):
+    def _is_media_inline(self, part):
         """
         function isInlineMediaType ( type ) {
           return type.startsWith( 'image/' ) ||
