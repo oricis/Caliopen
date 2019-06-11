@@ -33,6 +33,7 @@ class AppLoader extends Component {
       <Trans id="app-loader.activity.macaroons">Baking macaroons, wait a moment please</Trans>,
       <Trans id="app-loader.activity.cats">Feeding the cats, wait a moment please</Trans>,
       <Trans id="app-loader.activity.chicken">Telling the chicken to get out from the kitchen, wait a moment please</Trans>,
+      <Trans id="app-loader.activity.beckett">Waiting for Godot, he'll soon be there, trust me</Trans>,
     ];
     const now = new Date();
     const hour = now.getHours();
