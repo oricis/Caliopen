@@ -54,7 +54,7 @@ class TestMailFormat(unittest.TestCase):
         self.assertTrue(verifyObject(IMessageParser, mail))
         self.assertTrue(len(mail.participants) > 1)
         self.assertEqual(len(mail.attachments), 1)
-        self.assertEqual(mail.attachments[0].is_inline, True)
+        self.assertEqual(mail.attachments[0].is_inline, False)
         self.assertEqual(mail.subject, 'signed content')
         self.assertEqual(mail.body_html, '')
         self.assertTrue(len(mail.body_plain) > 0)
@@ -67,7 +67,7 @@ class TestMailFormat(unittest.TestCase):
         self.assertTrue(verifyObject(IMessageParser, mail))
         self.assertTrue(len(mail.participants) > 1)
         self.assertEqual(len(mail.attachments), 1)
-        self.assertEqual(mail.attachments[0].is_inline, True)
+        self.assertEqual(mail.attachments[0].is_inline, False)
         self.assertEqual(mail.subject, 'crypted content')
         self.assertTrue(isinstance(mail.date, datetime))
         expected = {'encrypted': 'application/pgp-encrypted', 'lists': []}
@@ -141,7 +141,7 @@ class TestRawMail(unittest.TestCase):
         self.assertEqual(len(mail.attachments), 1)
         self.assertEqual(mail.attachments[0].content_type,
                          'application/pgp-signature')
-        self.assertEqual(mail.attachments[0].is_inline, True)
+        self.assertEqual(mail.attachments[0].is_inline, False)
         self.assertEqual(mail.body_html, '')
         self.assertTrue(len(mail.body_plain) > 0)
 
@@ -156,7 +156,7 @@ class TestRawMail(unittest.TestCase):
         data = load_raw_mail('signed-and-encrypted')
         mail = MailMessage(data)
         self.assertEqual(len(mail.attachments), 1)
-        self.assertEqual(mail.attachments[0].is_inline, True)
+        self.assertEqual(mail.attachments[0].is_inline, False)
         self.assertTrue(len(mail.body_html) == 0)
         self.assertTrue(len(mail.body_plain) > 0)
         expected = {'encrypted': 'application/pgp-encrypted', 'lists': []}
@@ -171,7 +171,7 @@ class TestRawMail(unittest.TestCase):
         self.assertEqual(mail.attachments[0].is_inline, False)
         self.assertTrue('image/png'
                         in [x.content_type for x in mail.attachments])
-        self.assertEqual(mail.attachments[1].is_inline, True)
+        self.assertEqual(mail.attachments[1].is_inline, False)
 
         self.assertTrue(len(mail.body_html) == 0)
         self.assertTrue(len(mail.body_plain) > 0)

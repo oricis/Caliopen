@@ -41,7 +41,7 @@ def is_inline_part(part):
     content_disposition = part.get("Content-Disposition")
     if content_disposition:
         if ';' in content_disposition:
-            if content_disposition.lower().startswith('atttachment'):
+            if content_disposition.lower().startswith('attachment'):
                 return False
     # XXX : missing strange situation with multipart related and inline
     """
@@ -78,12 +78,7 @@ class MailAttachment(object):
                 self.filename = self.filename.decode('utf-8')
             except UnicodeError:
                 log.warn('Invalid filename encoding')
-        content_disposition = part.get("Content-Disposition")
-        if content_disposition:
-            dispositions = content_disposition.strip().split(";")
-            self.is_inline = bool(dispositions[0].lower() == "inline")
-        else:
-            self.is_inline = True
+        self.is_inline = is_inline_part(part)
         data = part.get_payload()
         self.can_index = False
         if any(x in part.get_content_type() for x in TEXT_CONTENT_TYPE):
