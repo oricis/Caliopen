@@ -48,6 +48,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Index user contact without alias using a workaround to bad core/mixin classes design
 - Addresses emails parsing failed sometimes with strange values
 - Process better invalid or missing data and encoding problems in incoming message
+- Signout wasn't effective
 
 ## [0.20.0] 2019-05-15
 

@@ -78,6 +78,9 @@ const configureDevServer = () => {
 
   return {
     devServer: {
+      // using a hostname like caliopen.local, it requires this:
+      // https://github.com/webpack/webpack-dev-server/issues/1604
+      disableHostCheck: true,
       contentBase: false,
       hot: false,
       inline: true,

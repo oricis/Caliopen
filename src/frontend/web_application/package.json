@@ -9,8 +9,9 @@
   },
   "scripts": {
     "start": "npm-run-all -l build:clean build:i18n --parallel --race start:dev:server start:dev:assets",
+    "start:hostname": "CALIOPEN_HOSTNAME=caliopen.local CALIOPEN_WEB_SERVER_HOSTNAME=caliopen.local npm-run-all start",
     "start:dev": "HAS_SSR=false npm-run-all -l build:clean build:i18n --parallel --race start:dev:server start:dev:assets",
-    "start:dev:server": "CALIOPEN_API_HOSTNAME=localhost CALIOPEN_WEB_SERVER_PORT=4001 CALIOPEN_WEB_SERVER_HOSTNAME=127.0.0.1 bin/dev-server",
+    "start:dev:server": "CALIOPEN_API_HOSTNAME=localhost CALIOPEN_WEB_SERVER_PORT=4001 bin/dev-server",
     "start:dev:assets": "NODE_ENV=development CALIOPEN_MOTD='credentials: dev / 123456' webpack-dev-server --host 0.0.0.0 --progress --config webpack/webpack.config.browser.js --port 4000",
     "start:prod": "NODE_ENV=production ./bin/server",
     "start:mock-api": "../../../devtools/api-mock/bin/start",
