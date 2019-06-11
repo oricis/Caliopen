@@ -265,7 +265,11 @@ class MailMessage(object):
                 attachments.append(content[0])
             else:
                 log.warn('No encrypted data found')
-            return
+            # Remove the 2 related encrypted part from list
+            encaps = [x for x in parts
+                      if x.get_content_type() == proto]
+            parts.pop(parts.index(encaps[0]))
+            parts.pop(parts.index(content[0]))
         for part in parts:
             is_multipart = part.is_multipart()
             is_inline = self._is_part_inline(part)
