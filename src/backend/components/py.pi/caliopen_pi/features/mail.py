@@ -114,7 +114,7 @@ class InboundMailFeature(object):
     def get_encryption_informations(self):
         """Get message encryption features."""
         is_encrypted = False
-        mail_value = self.message.extra_parameters.get('encrypted', None)
+        mail_value = self.message.extra_parameters.get('encrypted', '')
         if mail_value:
             is_encrypted = True
 
