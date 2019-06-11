@@ -109,34 +109,6 @@ class MailAttachment(object):
         log.warn('Unhandled encoding {}'.format(encoding))
         return data
 
-    @classmethod
-    def is_attachment(cls, part):
-        """Check if a part conform to Caliopen's attachment definition.
-
-        A part is an "attachment" if it verifies ANY of this conditions :
-        - it has a Content-Disposition header with param "attachment"
-        - the main part of the Content-Type header
-                                        is within "attachment_types" list below
-        - the part is not a PGP/Mime encryption envelope
-
-        see https://www.iana.org/assignments/media-types/media-types.xhtml
-
-        :param part: an email/message's part as return by the walk() func.
-        :return: true or false
-        """
-        content_disposition = part.get("Content-Disposition")
-        if content_disposition:
-            dispositions = content_disposition.strip().split(";")
-            if bool(dispositions[0].lower() == "attachment") or \
-                    bool(dispositions[0].lower() == "inline"):
-                return True
-
-        attachment_types = (
-            "application", "image", "video", "audio", "message", "font")
-        if part.get_content_maintype() in attachment_types:
-            return True
-        return False
-
 
 class MailParticipant(object):
     """Mail participant parser."""
