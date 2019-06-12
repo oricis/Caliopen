@@ -1,7 +1,7 @@
 import proxy from 'express-http-proxy';
 import { getApiHost } from '../../config';
 
-const { COOKIE_NAME, authenticate } = require('../lib/cookie');
+const { authenticate, invalidate } = require('../lib/cookie');
 
 const createLoginRouting = (router) => {
   const target = getApiHost();
@@ -24,7 +24,7 @@ const createLoginRouting = (router) => {
   }));
 
   router.get('/signout', (req, res) => {
-    res.clearCookie(COOKIE_NAME);
+    invalidate(res);
     const redirect = (() => {
       const parts = req.originalUrl.split('redirect=');
 
