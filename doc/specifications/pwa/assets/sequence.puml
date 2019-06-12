@@ -1,0 +1,49 @@
+@startuml
+actor User
+participant Browser
+participant ServiceWorker
+participant Server
+
+User -> Browser : load / (or click refresh)
+activate Browser
+Browser -> ServiceWorker : get /
+activate ServiceWorker
+
+alt first loading or has network
+  ServiceWorker -> Server : get /
+  activate Server
+  Server -> ServiceWorker : new version of /
+  deactivate Server
+
+  group Preloading
+    ServiceWorker -> Server : get /<hash>.js
+    ServiceWorker -> Server : get /<hash>.css
+  end
+
+  ServiceWorker -> ServiceWorker : cache "/" and *.js and *.css
+  activate ServiceWorker
+  deactivate ServiceWorker
+  deactivate Server
+else no network
+  note over ServiceWorker : no operations
+end
+ServiceWorker -> Browser : return / from cache
+deactivate ServiceWorker
+
+loop on each asset in the html
+  Browser -> ServiceWorker : get /<hash>.js|css
+  activate ServiceWorker
+  alt has network
+    ServiceWorker -> Server : get /<hash>.js|css
+    ServiceWorker -> ServiceWorker : cache /<hash>.js|css
+    activate ServiceWorker
+    deactivate ServiceWorker
+  else no network
+    note over ServiceWorker : no operations
+  end
+  ServiceWorker -> Browser : return /<hash>.js|css from cache
+  deactivate ServiceWorker
+end
+Browser -> User : ready
+deactivate Browser
+@enduml
