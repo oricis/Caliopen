@@ -21,6 +21,8 @@ paths:
     "$ref": paths/users.yaml#/users_{user_id}_actions
   "/v2/username/isAvailable":
     "$ref": paths/users.yaml#/users_isAvailable
+  "/v2/logout":
+    "$ref": paths/logout.yaml#/logout
   "/v1/settings":
      "$ref": paths/settings.yaml#/settings
   "/v2/identities/locals":

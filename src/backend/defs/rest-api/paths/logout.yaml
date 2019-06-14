@@ -1,0 +1,27 @@
+---
+logout:
+  post:
+    description: Deconnect an user and its device
+    tags:
+    - users
+    security: []
+    consumes:
+    - application/json
+    # parameters:
+    # - name: logout
+    #   in: body
+    #   required: true
+    #   schema:
+    #     "$ref": "../objects/Logout.yaml"
+    produces:
+    - application/json
+    responses:
+      '200':
+        description: Successful logout
+        schema:
+          type: object
+  
+      '401':
+        description: Logout error
+        schema:
+          "$ref": "../objects/Error.yaml"

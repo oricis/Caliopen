@@ -223,6 +223,9 @@ func (server *REST_API) AddHandlers(api *gin.RouterGroup) {
 	/** username API **/
 	api.GET("/username/isAvailable", users.IsAvailable)
 
+	/** logout API **/
+	api.POST("/logout", users.Logout)
+
 	/** messages API **/
 	msg := api.Group("/messages", http_middleware.BasicAuthFromCache(caliopen.Facilities.Cache, "caliopen"))
 	msg.GET("", messages.GetMessagesList)

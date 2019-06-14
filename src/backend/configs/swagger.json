@@ -2075,6 +2075,52 @@
         }
       }
     },
+    "/v2/logout": {
+      "post": {
+        "description": "Deconnect an user and its device",
+        "tags": [
+          "users"
+        ],
+        "security": [],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful logout",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "401": {
+            "description": "Logout error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/settings": {
       "get": {
         "description": "Returns settings belonging to current user",
