@@ -24,3 +24,15 @@ class UserTag(NewUserTag):
     type = StringType()
     date_insert = DateTimeType(serialized_format=helpers.RFC3339Milli,
                                tzd=u'utc')
+
+class ImportedTag(Model):
+    """Create a tag from external label or flag"""
+
+    user_id = UUIDType()
+    label = StringType()
+    name = StringType()
+    type = StringType()
+
+    class Option:
+        roles = {'default': blacklist('user_id')}
+        serialize_when_none = False

@@ -132,8 +132,10 @@ class UserMessageQualifier(BaseQualifier):
         extractor = InboundMailFeature(email, conf)
         extractor.process(self.user, new_message, participants)
 
-        # compute tags
+        # compute user tags
         self._get_tags(new_message)
+        # embed external flags if any
+        new_message.ext_tags = email.external_flags
         if new_message.tags:
             log.debug('Resolved tags {}'.format(new_message.tags))
 
