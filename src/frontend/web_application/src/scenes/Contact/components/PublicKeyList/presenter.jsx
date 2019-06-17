@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/react';
-import { Button, Icon } from '../../../../components';
+import { Button, Icon, Link } from '../../../../components';
 import PublicKeyForm from '../PublicKeyForm';
+import { strToBase64 } from '../../../../services/encode-utils';
 
 import './style.scss';
 
@@ -76,6 +77,8 @@ class PublicKeyList extends Component {
     this.setState({ editMode: false });
   }
 
+  getPublicKeyDataUrl = ({ key }) => `data:application/x-pgp;base64,${strToBase64(key)}`;
+
   handleEdit = publicKey => () => this.setState({ editMode: true, editKey: publicKey.key_id });
 
   renderKeyItem = (publicKey) => {
@@ -104,6 +107,13 @@ class PublicKeyList extends Component {
         />
         <strong className="m-public-key-list__key-label">{publicKey.label}</strong>
         &nbsp;:&nbsp;{publicKey.fingerprint}
+        <Link
+          button
+          href={this.getPublicKeyDataUrl(publicKey)}
+          download={`${publicKey.label}.pubkey.asc`}
+        >
+          <Icon type="download" />
+        </Link>
         <Button icon="edit" className="m-public-key-list__edit-button" onClick={this.handleEdit(publicKey)} />
       </li>
     );
