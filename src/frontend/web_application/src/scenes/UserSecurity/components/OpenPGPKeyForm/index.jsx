@@ -4,8 +4,9 @@ import { Trans, withI18n } from '@lingui/react';
 import classnames from 'classnames';
 import {
   Spinner, Button, FieldErrors, CheckboxFieldGroup, SelectFieldGroup, TextFieldGroup,
-  TextareaFieldGroup,
+  InputFileGroup,
 } from '../../../../components';
+import { readAsText } from '../../../../modules/file';
 
 import {
   ERROR_UNABLE_READ_PRIVATE_KEY,
@@ -87,6 +88,13 @@ class OpenPGPKeyForm extends Component {
     const { generateForm } = this.props;
 
     this.props.onGenerate(generateForm);
+  }
+
+  handleFileChanges = async (file) => {
+    const { onImportFormChange } = this.props;
+    const privateKeyArmored = file ? await readAsText(file) : null;
+
+    onImportFormChange({ privateKeyArmored });
   }
 
   handleImportChanges = (event) => {
@@ -215,7 +223,7 @@ class OpenPGPKeyForm extends Component {
               importForm.errors && importForm.errors.global && (
                 <FieldErrors
                   className="m-account-openpgp-form__field-group"
-                  errors={importForm.errors.global.map(key => this.errorsLabels[key])}
+                  errors={importForm.errors.global.map(key => this.errorsLabels[key] || key)}
                 />
               )
              }
@@ -227,21 +235,17 @@ class OpenPGPKeyForm extends Component {
               name="passphrase"
               type="password"
             />
-            <TextareaFieldGroup
+            <InputFileGroup
               className="m-account-openpgp-form__field-group"
-              label={i18n._('user.openpgp.form.private-key.label', null, { defaults: 'Private key' })}
-              inputProps={{
-                value: importForm.privateKeyArmored,
-                onChange: this.handleImportChanges,
-                name: 'privateKeyArmored',
-              }}
-            />
-            {/*
+              descr={i18n._('user.openpgp.form.private-key.label', null, { defaults: 'Private key' })}
+              onInputChange={this.handleFileChanges}
+              name="privateKeyArmored"
+              accept="application/x-pgp"
               errors={
                 importForm.errors.privateKeyArmored &&
-                importForm.errors.privateKeyArmored.map(key => this.errorsLabels[key])
+                  importForm.errors.privateKeyArmored.map(key => this.errorsLabels[key] || key)
               }
-              */}
+            />
             <Button
               className="m-account-openpgp-form__field-group"
               type="submit"
