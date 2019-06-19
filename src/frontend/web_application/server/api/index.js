@@ -16,7 +16,7 @@ export default (app) => {
         rejectUnauthorized: checkCertificate,
       };
 
-      if (!srcReq.security) {
+      if (!srcReq.user) {
         return decoratedReqOpts;
       }
 

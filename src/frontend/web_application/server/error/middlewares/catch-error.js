@@ -1,6 +1,6 @@
-import createLogger from '../../logger';
+import { getLogger } from '../../logger';
 
-const logger = createLogger();
+const logger = getLogger();
 
 const isDev = process.env.NODE_ENV === 'development';
 

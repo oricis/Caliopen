@@ -10,7 +10,9 @@ import { getDefaultSettings } from '../../src/modules/settings';
 import template from '../../dist/server/template.html';
 import { getConfig } from '../config';
 import { initialState as initialStateSettings } from '../../src/store/modules/settings';
+import { getLogger } from '../logger';
 
+const logger = getLogger();
 /**
  * base html template
  */
@@ -33,10 +35,14 @@ function getMarkup({ store, context, location }) {
       { key: '%MARKUP%', value: markup },
     ].reduce((str, current) => str.replace(current.key, current.value), template);
   } catch (e) {
-    console.error('Unable to render markup:', e);
+    logger.error('Unable to render markup:', e);
 
     throw e;
   }
+}
+
+function applyUserToGlobal(req) {
+  global.user = req.user;
 }
 
 function applyUserLocaleToGlobal(req) {
@@ -45,7 +51,8 @@ function applyUserLocaleToGlobal(req) {
   global.USER_LOCALES = locales.map(loc => loc.code);
 }
 
-export default (req, res) => {
+export default (req, res, next) => {
+  applyUserToGlobal(req);
   applyUserLocaleToGlobal(req);
   const initialState = {
     settings: {
@@ -60,7 +67,8 @@ export default (req, res) => {
   const html = getMarkup({ store, location: req.url, context });
 
   if (context.url) {
-    res.writeHead(301, {
+    const status = context.action === 'PUSH' ? 302 : 301;
+    res.writeHead(status, {
       Location: context.url,
     });
     res.end();
