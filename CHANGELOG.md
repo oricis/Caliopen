@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## Added
+
+- The new about landpage.
+
 ### Changed
 
 - Upload PGP keys using files rather than textboxes.

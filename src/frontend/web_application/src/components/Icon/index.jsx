@@ -39,6 +39,7 @@ export const typeAssoc = {
   file: 'fa fa-file',
   filter: 'fa fa-filter',
   folder: 'fa fa-folder-open',
+  github: 'fa fa-github',
   google: 'fa fa-google',
   home: 'fa fa-home',
   'info-circle': 'fa fa-info-circle',
