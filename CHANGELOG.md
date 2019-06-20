@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Upload PGP keys using files rather than textboxes.
+
 ## [0.21] 2019-06-06
 
 ### Added

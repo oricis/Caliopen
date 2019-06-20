@@ -1,0 +1,41 @@
+@import '../../../../styles/common';
+@import '../../../../styles/object/o-clickable';
+@import '../../../../styles/object/o-form-element';
+@import '../../../../styles/object/o-hidden-element';
+@import '../../../../styles/vendor/bootstrap_foundation-sites';
+
+.m-reduxed-input-file-group {
+
+  &__file {
+    @include flex-grid-row;
+    @include o-form-element--light;
+    margin-top: $co-margin;
+    line-height: $co-component__height;
+
+    &__name {
+      @include flex-grid-column(6);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    &__size {
+      @include flex-grid-column(4);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: $co-color__fg__text--low;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    &__remove {
+      @include flex-grid-size(shrink);
+    }
+  }
+
+  &__label {
+    display: block;
+    margin-top: 1.5rem;
+  }
+}
