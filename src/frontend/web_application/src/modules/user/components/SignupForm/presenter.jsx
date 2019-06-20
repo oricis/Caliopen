@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { signup } from '../../modules/user';
-import { withPush } from '../../modules/routing';
+import { withI18n } from '@lingui/react';
+import { withPush } from '../../../../modules/routing';
+// prevent cycling deps
+import withSettings from '../../../../modules/settings/hoc/withSettings';
+import { withDevice } from '../../../../modules/device';
+import { signup } from '../../services/signup';
 import SignupForm from './components/SignupForm';
 import formValidator, { getLocalizedErrors, ERR_UNABLE_TO_SIGNUP } from './form-validator';
 
+@withSettings()
+@withI18n()
+@withDevice()
 @withPush()
 class Signup extends Component {
   static propTypes = {

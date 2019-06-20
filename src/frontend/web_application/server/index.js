@@ -5,9 +5,9 @@ import http from 'http';
 import getApp from './app';
 import { getConfig, initConfig } from './config';
 import { version } from '../package.json';
-import createLogger from './logger';
+import { getLogger } from './logger';
 
-const logger = createLogger();
+const logger = getLogger();
 
 const { options: { config: configPath } } = argv
   .option([

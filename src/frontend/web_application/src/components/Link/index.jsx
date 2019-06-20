@@ -8,6 +8,7 @@ class Link extends PureComponent {
   static propTypes = {
     children: PropTypes.node.isRequired,
     href: PropTypes.string,
+    target: PropTypes.string,
     noDecoration: PropTypes.bool,
     className: PropTypes.string,
     button: PropTypes.bool,
@@ -19,6 +20,7 @@ class Link extends PureComponent {
 
   static defaultProps = {
     href: undefined,
+    target: undefined,
     noDecoration: false,
     className: undefined,
     button: false,
@@ -30,11 +32,15 @@ class Link extends PureComponent {
 
   render() {
     const {
-      children, href, noDecoration, className, button, badge, expanded, active, plain, ...props
+      children, href, noDecoration, className, button, badge, expanded, active, plain, target,
+      ...props
     } = this.props;
 
     const linkProps = {
       ...props,
+      target,
+      // https://mathiasbynens.github.io/rel-noopener/
+      rel: target && 'noopener noreferrer',
       className: classnames(
         className,
         'm-link',

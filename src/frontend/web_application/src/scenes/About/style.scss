@@ -1,0 +1,80 @@
+@import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+.s-about {
+  @include flex-grid-row($size: expand);
+
+  &__info,
+  &__interactions {
+    @include flex-grid-column(12);
+    padding-top: map_get($co-margin_, small);
+    padding-bottom: map_get($co-margin_, small);
+
+    @include breakpoint(medium) {
+      @include flex-grid-column(6);
+    }
+  }
+
+  &__section-content {
+    padding: map_get($co-margin_, small);
+    background: $co-color__fg__back;
+  }
+
+  &__title {
+    color: $co-color__primary;
+    text-align: center;
+  }
+
+  &__brand {
+    position: relative;
+    margin-top: map_get($co-margin_, large);
+    text-align: center;
+  }
+
+  &__brand-logo {
+    max-width: 100%;
+    height: 4rem;
+    max-height: initial;
+  }
+
+  &__screenshot {
+    margin-top: map_get($co-margin_, large);
+    text-align: center;
+  }
+
+  &__screenshot-desktop {
+    display: none;
+    width: 100%;
+    max-width: 40rem;
+
+    @include breakpoint(medium) {
+      display: inline-block;
+    }
+  }
+  &__screenshot-smartphone {
+    @include breakpoint(medium) {
+      display: none;
+    }
+  }
+
+  &__purpose {}
+  &__purpose-signup {
+    margin-top: map_get($co-margin_, large);
+  }
+
+  &__signup-form {
+    max-height: 0;
+    // allow animation to happen, it must be higher than the actual height
+    transition: $co-animation__height-transition;
+    overflow: hidden;
+
+    &--opened {
+      max-height: 100rem;
+      padding: map-get($co-form__spacing, 'medium'); // cf. Section's padding
+    }
+  }
+
+  &__signup-beta-descr {
+    font-size: $co-font__size--xsmall;
+  }
+}

@@ -1,8 +1,8 @@
 import Schema from 'async-validator';
 import usernameDescriptor, {
   ERR_MIN_MAX, ERR_INVALID_CHARACTER, ERR_DOTS, ERR_DOUBLE_DOTS,
-} from '../../services/username-utils/username-validity';
-import usernameAvailability from '../../services/username-utils/username-availability';
+} from '../../../../services/username-utils/username-validity';
+import usernameAvailability from '../../../../services/username-utils/username-availability';
 
 export const ERR_REQUIRED_TOS = 'ERR_REQUIRED_TOS';
 export const ERR_REQUIRED_PRIVACY = 'ERR_REQUIRED_PRIVACY';

@@ -1,0 +1,50 @@
+@import '../../styles/common';
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
+$l-auth-page__brand-height: 42px !default;
+$l-auth-page__header-space: (
+  top: 86px,
+  bottom: 36px,
+);
+
+.l-about-page {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "content"
+    "footer"
+  ;
+  min-height: 100vh;
+
+  &__content {
+    grid-area: content;
+  }
+
+  &__footer {
+    grid-area: footer;
+    background-color: #e1f5ff; // cf. Page layout's header
+    line-height: $co-component__height;
+    white-space: nowrap;
+  }
+
+  &__footer-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &__footer-entry {
+    @include flex-grid-column(shrink);
+
+    @include breakpoint(medium) {
+      @include flex-grid-column;
+      text-align: center;
+    }
+  }
+
+  &__footer-brand {
+    vertical-align: middle;
+    // XXX .m-brand forces width 100%
+    width: initial !important;
+    height: $co-component__height - 1rem;
+  }
+}
