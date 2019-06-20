@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from '@lingui/react';
+import { Trans, withI18n } from '@lingui/react';
 import { Button, Icon, Link } from '../../../../components';
 import PublicKeyForm from '../PublicKeyForm';
 import { strToBase64 } from '../../../../services/encode-utils';
@@ -10,6 +10,7 @@ import './style.scss';
 const KEY_QUALITY_CLASSES = ['weak', 'average', 'good'];
 const KEY_QUALITY_ICONS = ['exclamation-triangle', 'expire-soon', 'info-circle'];
 
+@withI18n()
 class PublicKeyList extends Component {
   static propTypes = {
     contactId: PropTypes.string.isRequired,
@@ -18,6 +19,7 @@ class PublicKeyList extends Component {
     didInvalidate: PropTypes.bool,
     isFetching: PropTypes.bool.isRequired,
     needsFetching: PropTypes.bool.isRequired,
+    i18n: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -82,7 +84,7 @@ class PublicKeyList extends Component {
   handleEdit = publicKey => () => this.setState({ editMode: true, editKey: publicKey.key_id });
 
   renderKeyItem = (publicKey) => {
-    const { contactId } = this.props;
+    const { contactId, i18n } = this.props;
 
     if (this.state.editMode && this.state.editKey === publicKey.key_id) {
       return (
@@ -111,6 +113,7 @@ class PublicKeyList extends Component {
           button
           href={this.getPublicKeyDataUrl(publicKey)}
           download={`${publicKey.label}.pubkey.asc`}
+          title={i18n._('contact.public_key_list.download_key', null, { defaults: 'Download key' })}
         >
           <Icon type="download" />
         </Link>

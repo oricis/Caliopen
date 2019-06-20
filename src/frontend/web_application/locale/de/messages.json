@@ -102,6 +102,7 @@
   "contact.public_key_form.label.label": "",
   "contact.public_key_form.legend": "",
   "contact.public_key_form.validate": "",
+  "contact.public_key_list.download_key": "",
   "contact.public_keys_list.add_key.label": "",
   "contact_profile.action.edit_contact": "Bearbeiten",
   "contact_profile.form.birthday.label": "Geburtsdatum",

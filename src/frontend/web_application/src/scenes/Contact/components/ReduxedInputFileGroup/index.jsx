@@ -120,7 +120,7 @@ class ReduxedInputFileGroup extends PureComponent {
         {
           // label does not need to be unigue
           // see : https://www.w3.org/TR/html50/forms.html#dom-lfe-labels
-          label && <label htmlFor={actualId} className="m-label m-reduxed-input-ffile-group__label">{label}</label>
+          label && <label htmlFor={actualId} className="m-label m-reduxed-input-file-group__label">{label}</label>
         }
 
         {
@@ -133,7 +133,6 @@ class ReduxedInputFileGroup extends PureComponent {
               id={actualId}
               name="files"
               onChange={this.makeHandleEvent(input.onChange)}
-              onBlur={this.makeHandleEvent(input.onBlur)}
               accept={accept}
               errors={[]}
             />
