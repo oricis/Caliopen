@@ -46,6 +46,7 @@ class About extends Component {
               <Link to="/"><Brand className="s-about__brand-logo" /></Link>
               <br />
               <em>Be good.</em>
+              <p><Trans id="about.identity">Caliopen is a non-profit organization.</Trans></p>
             </div>
           </div>
         </div>
