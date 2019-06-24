@@ -16,8 +16,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- double redirections algorithm client and server when not authenticated
-- prevent target blank anchor's xss
+- Double redirections algorithm client and server when not authenticated
+- Prevent target blank anchor's xss.
+- Reload devices when changing page or when invalidated.
 
 ## [0.21] 2019-06-06
 
