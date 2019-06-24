@@ -96,7 +96,6 @@ class RoutingProvider extends Component {
             { path: '/auth/signup', component: Signup },
             { path: '/auth/forgot-password', component: ForgotPassword },
             { path: '/auth/passwords/reset/:key', component: ResetPassword },
-            { path: '/auth/signout', redirect: '/auth/signin' },
           ],
         },
         {
