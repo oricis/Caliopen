@@ -52,7 +52,7 @@ const configurePWA = () => ({
       ios: true,
     }),
     new OfflinePlugin({
-      appShell: '/',
+      appShell: '/about',
       responseStrategy: 'network-first',
       externals: [
         '/',
