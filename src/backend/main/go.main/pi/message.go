@@ -6,7 +6,6 @@ package pi
 
 import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
-	log "github.com/Sirupsen/logrus"
 	"math"
 	"strconv"
 	"strings"
