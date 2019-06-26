@@ -37,6 +37,7 @@
     "react/jsx-one-expression-per-line": ["warn", { "allow": "single-child" }],
     "react/no-array-index-key": 0,
     "react/no-multi-comp": "warn",
+    "react/no-unescaped-entities": ["warn", { "forbid": [">", "\"", "'", "}"] }],
     "react/no-unused-prop-types": "warn",
     "react/no-unused-state": "warn",
     "react/prefer-stateless-function": "warn",

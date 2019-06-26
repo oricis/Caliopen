@@ -7,17 +7,35 @@ import './style.scss';
 
 class DevicesSettings extends PureComponent {
   static propTypes = {
-    devices: PropTypes.arrayOf(PropTypes.shape({})),
     isCurrentDeviceVerified: PropTypes.bool,
+    devicesProps: PropTypes.shape({
+      devices: PropTypes.arrayOf(PropTypes.shape({})),
+      requestDevices: PropTypes.func.isRequired,
+      isFetching: PropTypes.bool,
+      didInvalidate: PropTypes.bool,
+    }).isRequired,
   };
 
   static defaultProps = {
-    devices: [],
     isCurrentDeviceVerified: undefined,
   };
 
+  componentDidMount() {
+    const { requestDevices } = this.props.devicesProps;
+
+    requestDevices();
+  }
+
+  componentDidUpdate() {
+    const { requestDevices, didInvalidate, isFetching } = this.props.devicesProps;
+
+    if (didInvalidate && !isFetching) {
+      requestDevices();
+    }
+  }
+
   render() {
-    const { devices, isCurrentDeviceVerified } = this.props;
+    const { devicesProps: { devices }, isCurrentDeviceVerified } = this.props;
 
     return (
       <div className="s-devices-settings">
@@ -42,7 +60,7 @@ class DevicesSettings extends PureComponent {
             </Section>
           </div>
         )}
-        {devices.map(device => (
+        {devices && devices.map(device => (
           <div key={device.device_id} className="s-devices-settings__device">
             <DeviceSettings device={device} />
           </div>

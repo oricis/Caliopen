@@ -5,13 +5,14 @@ import { withI18n, Trans } from '@lingui/react';
 import renderReduxField from '../../../../services/renderReduxField';
 import {
   Button, Confirm, FieldErrors, Fieldset, FormColumn, FormGrid, FormRow, Icon, Legend,
-  TextFieldGroup as TextFieldGroupBase, TextareaFieldGroup as TextareaFieldGroupBase,
+  TextFieldGroup as TextFieldGroupBase,
 } from '../../../../components';
+import { getMaxSize } from '../../../../services/config';
+import ReduxedInputFileGroup from '../ReduxedInputFileGroup';
 
 import './style.scss';
 
 const TextFieldGroup = renderReduxField(TextFieldGroupBase);
-const TextareaFieldGroup = renderReduxField(TextareaFieldGroupBase);
 
 @withI18n()
 class PublicKeyForm extends PureComponent {
@@ -52,7 +53,7 @@ class PublicKeyForm extends PureComponent {
         <FormGrid className="m-public-key-form">
           <Fieldset>
             <FormRow>
-              <FormColumn rightSpaced={false}>
+              <FormColumn bottomSpace>
                 <Legend>
                   <Icon rightSpaced type="key" />
                   <Trans id="contact.public_key_form.legend">Public Key</Trans>
@@ -61,23 +62,28 @@ class PublicKeyForm extends PureComponent {
               {errors.length > 0 && <FormColumn><FieldErrors errors={errors} /></FormColumn>}
             </FormRow>
             <FormRow>
-              <FormColumn rightSpaced={false}>
+              <FormColumn bottomSpace>
                 <Field
                   component={TextFieldGroup}
                   name="label"
                   label={i18n._('contact.public_key_form.label.label', null, { defaults: 'Key label' })}
                   required
+                  accept="application/x-pgp"
                 />
               </FormColumn>
             </FormRow>
             <FormRow>
-              <FormColumn rightSpaced={false}>
+              <FormColumn bottomSpace>
                 <Field
-                  component={TextareaFieldGroup}
+                  component={ReduxedInputFileGroup}
+                  fileAsContent
                   label={i18n._('contact.public_key_form.key.label', null, { defaults: 'Key (ascii armored)' })}
+                  maxSize={getMaxSize()}
                   name="key"
                   required={publicKey === undefined}
                   disabled={publicKey !== undefined}
+                  type="file"
+                  accept="application/x-pgp"
                 />
               </FormColumn>
             </FormRow>

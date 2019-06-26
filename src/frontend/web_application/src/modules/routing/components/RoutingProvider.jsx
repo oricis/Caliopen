@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import { matchPath } from 'react-router-dom';
 import { withI18n } from '@lingui/react';
 import { RoutingContext } from '../contexts/RoutingContext';
+import About from '../../../scenes/About';
 import Signin from '../../../scenes/Signin';
 import Signup from '../../../scenes/Signup';
 import ForgotPassword from '../../../scenes/ForgotPassword';
 import ResetPassword from '../../../scenes/ResetPassword';
 import Contact from '../../../scenes/Contact';
 import ContactAssociation from '../../../scenes/ContactAssociation';
+import AboutPageLayout from '../../../layouts/AboutPage';
 import AuthPageLayout from '../../../layouts/AuthPage';
 import PageLayout from '../../../layouts/Page';
 import SettingsLayout from '../../../layouts/Settings';
@@ -77,6 +79,14 @@ class RoutingProvider extends Component {
       // eslint-disable-next-line react/no-unused-state
       routes: [
         {
+          path: '/about',
+          component: AboutPageLayout,
+          app: 'auth',
+          routes: [
+            { path: '/about', component: About },
+          ],
+        },
+        {
           path: '/auth',
           component: AuthPageLayout,
           app: 'auth',
@@ -86,7 +96,6 @@ class RoutingProvider extends Component {
             { path: '/auth/signup', component: Signup },
             { path: '/auth/forgot-password', component: ForgotPassword },
             { path: '/auth/passwords/reset/:key', component: ResetPassword },
-            { path: '/auth/signout', redirect: '/auth/signin' },
           ],
         },
         {

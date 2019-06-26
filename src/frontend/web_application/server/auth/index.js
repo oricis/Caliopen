@@ -1,7 +1,7 @@
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import getRouter from './router';
-import { checkCookieMiddleware, decodeCookieMiddleware, checkTokenMiddleware, catchLoginErrorsMiddleware } from './middlewares';
+import { decodeCookieMiddleware } from './middlewares';
 import { getConfig } from '../config';
 
 export default (app) => {
@@ -11,10 +11,5 @@ export default (app) => {
   app.use('/auth', bodyParser.urlencoded({ extended: false }));
   app.use('/auth', getRouter());
 
-  app.use(
-    checkCookieMiddleware,
-    decodeCookieMiddleware,
-    checkTokenMiddleware,
-    catchLoginErrorsMiddleware
-  );
+  app.use(decodeCookieMiddleware);
 };

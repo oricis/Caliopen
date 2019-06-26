@@ -12,17 +12,18 @@ import './style.scss';
 
 const InputFile = ({
   onChange, className, accept, errors, multiple,
+  id,
 }) => {
-  const id = uuidV1();
+  const actualId = id || uuidV1();
 
   return (
     <div className={classnames('m-input-file', className)}>
-      <Label htmlFor={id} className="m-input-file__label">
+      <Label htmlFor={actualId} className="m-input-file__label">
         <Button className="m-input-file__label__button" icon="plus" shape="plain" />
         <span className="m-input-file__label__text"><Trans id="input-file.add_a_file.label">Add a file</Trans></span>
         <span className="m-input-file__label__icon"><Icon type="folder" /></span>
         <input
-          id={id}
+          id={actualId}
           type="file"
           name="files"
           className="m-input-file__input"
@@ -42,6 +43,7 @@ InputFile.propTypes = {
   accept: PropTypes.arrayOf(PropTypes.string),
   errors: PropTypes.arrayOf(PropTypes.node),
   className: PropTypes.string,
+  id: PropTypes.string,
 };
 
 InputFile.defaultProps = {
@@ -49,6 +51,7 @@ InputFile.defaultProps = {
   errors: null,
   multiple: false,
   accept: undefined,
+  id: undefined,
 };
 
 export default InputFile;

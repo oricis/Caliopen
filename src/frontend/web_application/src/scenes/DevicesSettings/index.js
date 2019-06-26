@@ -1,7 +1,9 @@
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { withDevices, withDevice, STATUS_VERIFIED } from '../../modules/device';
+import {
+  withDevices, withDevice, STATUS_VERIFIED,
+} from '../../modules/device';
 import Presenter from './presenter';
 import DeviceSettings from './components/DeviceSettings';
 

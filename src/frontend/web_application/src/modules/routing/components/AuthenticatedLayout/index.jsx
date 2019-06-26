@@ -41,10 +41,12 @@ class AuthenticatedLayout extends Component {
       user, settings, children, location: { pathname }, didLostAuth,
     } = this.props;
 
-    let redirectRequired = false;
+    const redirectRequired = !isAuthenticated();
 
-    if (BUILD_TARGET === 'browser') {
-      redirectRequired = !isAuthenticated();
+    if (redirectRequired && pathname === '/') {
+      return (
+        <Redirect push to="/about" />
+      );
     }
 
     if (didLostAuth || redirectRequired) {

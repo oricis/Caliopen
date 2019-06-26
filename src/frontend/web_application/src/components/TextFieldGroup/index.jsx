@@ -15,6 +15,7 @@ class TextFieldGroup extends PureComponent {
     label: PropTypes.node.isRequired,
     showLabelforSr: PropTypes.bool,
     errors: PropTypes.arrayOf(PropTypes.node),
+    onBlur: PropTypes.func,
     expanded: PropTypes.bool,
     className: PropTypes.string,
     display: PropTypes.oneOf(['inline', 'block']),
@@ -24,10 +25,25 @@ class TextFieldGroup extends PureComponent {
     id: undefined,
     showLabelforSr: false,
     errors: [],
+    onBlur: () => {},
     expanded: true,
     className: undefined,
     display: 'block',
   };
+
+  state = {
+    isPristine: true,
+  };
+
+  onBlur = (ev) => {
+    const { onBlur } = this.props;
+
+    this.setState({
+      isPristine: false,
+    });
+
+    return onBlur(ev);
+  }
 
   render() {
     const {
@@ -41,7 +57,7 @@ class TextFieldGroup extends PureComponent {
       ...inputProps
     } = this.props;
 
-    const hasError = errors.length > 0;
+    const hasError = errors.length > 0 && !this.state.isPristine;
 
     const groupClassName = classnames(className, 'm-text-field-group', {
       'm-text-field-group--inline': display === 'inline',

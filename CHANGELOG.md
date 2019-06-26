@@ -6,6 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## Added
+
+- The new about landpage.
+
+### Changed
+
+- Upload PGP keys using files rather than textboxes.
+
+### Fixed
+
+- Double redirections algorithm client and server when not authenticated
+- Prevent target blank anchor's xss.
+- Reload devices when changing page or when invalidated.
+- Page rendering after signout with unexpected content cached.
+
 ## [0.21] 2019-06-06
 
 ### Added
