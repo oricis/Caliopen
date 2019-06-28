@@ -2,9 +2,10 @@
 @import '../../styles/object/o-form-element';
 
 .m-advanced-select-field-group {
+  margin-bottom: $co-component__spacing;
+
   &__label {
     display: block;
-    margin-bottom: $co-component__spacing;
   }
 
   &__input {
@@ -18,9 +19,6 @@
 
   &__select-wrapper {
     @include o-form-element-select-wrapper;
-    &::after {
-      right: initial;
-    }
   }
 
   &__option-button {
@@ -36,9 +34,6 @@
   }
 
   &--inline {
-    &__label,
-    &__select-wrapper {
-      display: inline-block;
-    }
+    @include o-form-element--inline;
   }
 }
