@@ -46,7 +46,7 @@ class AdvancedSelectFieldGroup extends PureComponent {
     className: null,
     name: undefined,
     placeholder: null,
-    decorated: true,
+    decorated: false,
     inline: false,
   };
 
@@ -74,8 +74,17 @@ class AdvancedSelectFieldGroup extends PureComponent {
       errors, expanded, showLabelforSr, className, label, onChange, options, value, placeholder,
       decorated, inline, ...props
     } = this.props;
+    if (decorated) {
+      throw new Error('decorated prop is not supported yet');
+    }
+
     const id = uuidV1();
     const selectedOpt = options.find(opt => opt.value === value);
+    const selectClassName = classnames(
+      className,
+      'm-advanced-select-field-group',
+      { 'm-advanced-select-field-group--inline': inline }
+    );
     const selectWrapperClassName = classnames(
       'm-advanced-select-field-group__select-wrapper',
       {
@@ -88,19 +97,23 @@ class AdvancedSelectFieldGroup extends PureComponent {
       'show-for-sr': showLabelforSr,
     });
     const inputClassName = classnames('m-advanced-select-field-group__input', {
+      'm-advanced-select-field-group--inline__input': inline,
       'm-advanced-select-field-group__input--decorated': decorated,
       'm-advanced-select-field-group__input--has-placeholder': !!selectedOpt,
     });
+    const errorsClassname = classnames('m-advanced-select-field-group__errors', {
+      'm-advanced-select-field-group--inline__errors': inline,
+    });
 
     return (
-      <FieldGroup className={classnames('m-advanced-select-field-group', className)} errors={errors}>
+      <FieldGroup className={selectClassName} errorsClassname={errorsClassname} errors={errors}>
         <Label htmlFor={id} className={labelClassName}>{label}</Label>
         <div className={selectWrapperClassName} aria-hidden="true">
           <DropdownControl
             className={inputClassName}
             ref={this.dropdownControlRef}
           >
-            {this.renderSelected(selectedOpt)}
+            <TextBlock>{this.renderSelected(selectedOpt)}</TextBlock>
           </DropdownControl>
         </div>
         <Dropdown dropdownControlRef={this.dropdownControlRef} isMenu closeOnClick="all">
@@ -112,7 +125,7 @@ class AdvancedSelectFieldGroup extends PureComponent {
                   display="expanded"
                   className="m-advanced-select-field-group__option-button"
                 >
-                  {option.advancedlabel}
+                  <TextBlock>{option.advancedlabel}</TextBlock>
                 </Button>
               </VerticalMenuItem>
             ))}

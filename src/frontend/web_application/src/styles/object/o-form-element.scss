@@ -1,7 +1,7 @@
+@import '../../styles/vendor/bootstrap_foundation-sites';
+
 @mixin o-form-element {
   display: inline-block;
-  min-height: $co-component__height;
-  padding: $co-component__spacing;
   border: 0;
   background-color: transparent;
 
@@ -13,6 +13,7 @@
 @mixin o-form-element-select-wrapper {
   display: inline-block;
   position: relative;
+  padding-right: 12px;
 
   &,
   > * {
@@ -23,7 +24,7 @@
     content: '';
     position: absolute;
     top: 50%;
-    right: 7px;
+    right: 0;
     width: 0;
     margin-top: -3px;
     border-width: 6px 4px;
@@ -56,9 +57,16 @@
   }
 }
 
+@mixin o-form-element--decorated {
+  min-height: $co-component__height;
+  padding: $co-component__spacing;
+
+}
+
 @mixin o-form-element--dark {
   @include o-form-element-placeholder($co-color__contrast__text);
 
+  @include o-form-element--decorated;
   background-color: $co-color__contrast__back--lower;
   color: $co-color__fg__text;
 
@@ -71,6 +79,7 @@
 }
 
 @mixin o-form-element--light {
+  @include o-form-element--decorated;
   border: 1px solid $co-color__primary;
   background-color: $co-color__fg__back;
   color: $co-color__fg__text;
@@ -88,6 +97,7 @@
 }
 
 @mixin o-form-element--contrasted {
+  @include o-form-element--decorated;
   border-bottom: 2px solid $co-color__primary;
   background-color: $co-color__bg__back--higher;
   color: $co-color__fg__text;
@@ -102,4 +112,26 @@
   }
 
   @include o-form-element-placeholder($co-color__fg__text--high);
+}
+
+@mixin o-form-element--inline {
+  @include flex-grid-row($size: expand);
+
+  &__label {
+    @include flex-grid-size(shrink);
+    display: block;
+    padding-right: map_get($co-form__spacing, small);
+  }
+  &__select-wrapper {
+    display: block;
+    flex: 0 1 auto;
+    overflow: hidden;
+  }
+
+  &__input {
+    display: block;
+  }
+  &__errors {
+    @include flex-grid-size(12);
+  }
 }

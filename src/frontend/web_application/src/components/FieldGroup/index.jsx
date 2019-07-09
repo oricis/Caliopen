@@ -9,24 +9,28 @@ class FieldGroup extends PureComponent {
   static propTypes = {
     children: PropTypes.node.isRequired,
     className: PropTypes.string,
+    errorsClassname: PropTypes.string,
     errors: PropTypes.arrayOf(PropTypes.node),
   };
 
   static defaultProps = {
     className: null,
+    errorsClassname: null,
     errors: [],
   };
 
   state = {}
 
   render() {
-    const { className, children, errors } = this.props;
+    const {
+      className, children, errors, errorsClassname,
+    } = this.props;
 
     return (
       <div className={classnames('m-field-group', className)}>
         {children}
         {errors.length > 0 && (
-          <FieldErrors className="m-field-group__errors" errors={errors} />
+          <FieldErrors className={classnames('m-field-group__errors', errorsClassname)} errors={errors} />
         )}
       </div>
     );
