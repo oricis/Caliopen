@@ -46,7 +46,7 @@ class AdvancedSelectFieldGroup extends PureComponent {
     className: null,
     name: undefined,
     placeholder: null,
-    decorated: true,
+    decorated: false,
     inline: false,
   };
 
