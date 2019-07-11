@@ -1,6 +1,6 @@
 import validator from './form-validator';
 
-jest.mock('../../services/username-utils/username-availability', () =>
+jest.mock('../../../../services/username-utils/username-availability', () =>
   () => Promise.resolve(true)
 );
 

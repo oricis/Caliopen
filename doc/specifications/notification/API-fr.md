@@ -18,16 +18,16 @@ Décrire le mode de gestion de la file d'attente des notifications côté backen
 ```yaml  
 notifications:  
   - emitter: string      // backend entity that's emitting the message. (contacts facility, email facility, etc.)  
-    id: string           // universally unique id to unambiguously identify a notification message.  
+    notif_id: string           // universally unique id to unambiguously identify a notification message.  
     type: string         // a single word to describe message's type and give indication of importance level (event, info, feedback, warning, teaser, error, alert, etc.)  
     reference: string    // (optional) a reference number previously sent by frontend to link current notification to a previous action/event.  
     timestamp: int       // unix timestamp at which backend created the notification  
-    body: string         // could be a simple word or a more complex structure like a json, depending of the notification.  
+    body: string         // could be a simple word or a more complex structure like a json, depending of the notification. The structure can include other notifications, see new_message examples.
 ```
 
 ##### Les messages de notification comportent des 'headers' et un 'body'.
 
-les 'headers' (`emitter`, `id`, `type`, `references`) permettent d'identifier la notification et de la classifier.
+les 'headers' (`emitter`, `notif_id`, `type`, `references`) permettent d'identifier la notification et de la classifier.
 
 le `body` comporte le message/payload de la notification
 
@@ -43,28 +43,37 @@ le header `timestamp` est le timestamp unix du moment où la notification a ét�
 
 #### Exemples de notifications :
 
-##### notification de réception de email(s) :
+##### notification générique de réception de messages :
 
-```yaml  
+```yaml
+total: 1
 notifications:  
-  - emitter: lmtp  
-    id: xxxxx-xxxxx-xxxxx  
-    type: event  
+  - emitter: <notifier>(imap_worker|…)
+    notif_id: xxxxx-xxxxx-xxxxx  
+    type: new_message  
     timestamp: 1518691674517  
-    body:  
-      emailReceived: xxxxxx-xxxxx-xxxxx // uuid of new email  
-  - emitter: lmtp  
-    id: xxxxx-xxxxx-xxxxx  
-    type: event  
-    timestamp: 1518691674517  
-    body:  
-      emailReceived: xxxxxx-xxxxx-xxxxx // uuid of new email  
-  - emitter: lmtp  
-    id: xxxxx-xxxxx-xxxxx  
-    type: event  
-    timestamp: 1518691674517  
-    body:  
-      emailReceived: xxxxxx-xxxxx-xxxxx // uuid of new email  
+    body:
+      size: <nb>
+      elements:
+        - body:
+            message_id: xxxxxx-xxxxx-xxxxx
+            discussion_id: yyyyy-yyyy-yyyyy
+```
+
+##### notification de réception d'un grand nombre de message :
+
+```json
+{
+  "total": 1,
+  "notifications": [
+    {
+      "body": { "size": 646 },
+      "emitter": "imap_worker",
+      "notif_id": "e23fdf95-9750-11e9-a402-0242ac13000a",
+      "type": "new_message"
+    }
+  ]
+}
 ```
 
 ##### notification de fin d'import de vCards :
@@ -76,11 +85,21 @@ lors de son prochain call sur GET /v2/notifications, il pourrait recevoir la not
 ```yaml  
 notifications:  
   - emitter: contacts  
-    id: xxxxxx-xxxxx-xxxxx  
-    type: feedback  
+    notif_id: xxxxxx-xxxxx-xxxxx  
+    type: import_result
     reference: xxxxxxxxx     // could be a hash of the initial call to the API (POST /v1/imports + timestamp (+ headers ?))  
     timestamp: 1518691674517  
-    body: success  
+    body:
+     - body:
+        contact_id: xxx
+        status: imported
+     - body:
+        contact_id: yyy
+        status: error
+        error_msg: "something went wrong"
+     - body:
+        contact_id: zzz
+        status: ignored
 ```
 
 ##### notification d'échec d'envoi de email :
@@ -92,7 +111,7 @@ lors de son prochain call sur GET /v2/notifications, le frontend pourrait recevo
 ```yaml  
 notifications:  
   - emitter: email-broker  
-    id: xxxxx-xxxxx-xxxxx  
+    notif_id: xxxxx-xxxxx-xxxxx  
     type: warning  
     reference: xxxxxx-xxxxx-xxxx // uuid of email sent  
     timestamp: 1518691674517  
@@ -111,7 +130,7 @@ lors de son prochain call sur GET /v2/notifications, le frontend pourrait recevo
 ```yaml  
 notifications:  
   - emitter: contacts  
-    id: xxxxx-xxxxx-xxxxx  
+    notif_id: xxxxx-xxxxx-xxxxx  
     type: info  
     reference: xxxxxx-xxxxx-xxxx // uuid of contact modified  
     timestamp: 1518691674517  
@@ -123,7 +142,7 @@ notifications:
 ```yaml  
 notifications:  
   - emitter: notification-center  
-    id: xxxxx-xxxxx-xxxxx  
+    notif_id: xxxxx-xxxxx-xxxxx  
     type: teaser  
     timestamp: 1518691674517  
     body: Pour améliorer votre PI vous pourriez faire ceci…  
@@ -134,31 +153,31 @@ En l'absence de filtre lors du call sur `/api/v2/notifications`, toutes les noti
 ```yaml  
 notifications:  
   - emitter: lmtp  
-    id: xxxxx-xxxxx-xxxxx  
+    notif_id: xxxxx-xxxxx-xxxxx  
     type: event  
     timestamp: 1518691674517  
     body:  
       - emailReceived: xxxxxx-xxxxx-xxxxx   
   - emitter: contacts  
-    id: xxxxxx-xxxxx-xxxxx  
+    notif_id: xxxxxx-xxxxx-xxxxx  
     type: feedback  
     reference: xxxxxxxxx      
     timestamp: 1518691674517  
     body: success  
-  - emitter: lmtp 
-    id: xxxxx-xxxxx-xxxxx  
+  - emitter: lmtp
+    notif_id: xxxxx-xxxxx-xxxxx  
     type: event  
     timestamp: 1518691674517  
     body:  
       emailReceived: xxxxxx-xxxxx-xxxxx // uuid of new email  
   - emitter: lmtp  
-    id: xxxxx-xxxxx-xxxxx  
+    notif_id: xxxxx-xxxxx-xxxxx  
     type: event  
     timestamp: 1518691674517  
     body:  
       emailReceived: xxxxxx-xxxxx-xxxxx // uuid of new email  
   - emitter: notification-center  
-    id: xxxxx-xxxxx-xxxxx  
+    notif_id: xxxxx-xxxxx-xxxxx  
     type: teaser  
     timestamp: 1518691674517  
     body: Pour améliorer votre PI vous pourriez faire ceci…  
@@ -179,7 +198,7 @@ Le serveur répond avec un payload en JSON et ferme la connexion.
 `GET` pour obtenir des notifications en file d'attente :
 
 - sans params dans la query, toutes les notifications de la file d'attente sont retournées dans un seul document.
-- 2 params optionnels : `from` et `to` pour filtrer les notifications par timestamp.
+- 2 params optionnels : `from` et `to` pour filtrer les notifications par timestamp ou par IDs de notifications (en effet les IDs des notifs sont des séquences alphanumériques qui grandissent avec le temps)
 
 `DELETE` pour supprimer des notifications de la file d'attente
 
@@ -207,7 +226,7 @@ Le frontend peut refaire un `GET` xx secondes plus tard, il aura la même pile d
 
 Le frontend peut refaire un `GET` xx secondes plus tard en ajoutant le param from=xxxxxxx pour ne recevoir que les dernières notifications arrivées depuis son dernier call (ou depuis le timestamp de la notification la plus récente qu'il a reçu lors du dernier call)
 
-Le frontend peut explicitement purger la pile de notifications côté backend en faisant un call `DELETE` avec le param `until`
+Le frontend peut explicitement purger la pile de notifications côté backend en faisant un call `DELETE` avec le param `until` ou un numéro de notification
 
 ### Modèle de données :
 
@@ -219,7 +238,7 @@ La table des notifications est stockées dans cassandra.
 CREATE TABLE user_notification (  
 user_id uuid,  
 timestamp_ timestamp,  
-id uuid,  
+notif_id uuid,  
 type ascii,  
 emitter text,  
 reference text,  
@@ -228,4 +247,3 @@ primary key(user_id, timestamp, id));
 ```
 
 Ces `primary keys` permettent de retrouver/supprimer toutes les notifications d'un utilisateur, ou celles d'un utilisateur dans un range de timestamp.
-

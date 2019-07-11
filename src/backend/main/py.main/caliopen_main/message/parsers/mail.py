@@ -11,6 +11,7 @@ must be defined outside of this one.
 
 import logging
 import base64
+import string
 from itertools import groupby
 from mailbox import Message
 from email.header import decode_header
@@ -25,10 +26,15 @@ from caliopen_main.common.helpers.normalize import clean_email_address
 from caliopen_main.common.helpers.strings import to_utf8
 from caliopen_main.common.interfaces import (IAttachmentParser, IMessageParser,
                                              IParticipantParser)
+# from caliopen_main.common.objects.tag import ResourceTag as Tag
+from caliopen_main.user.parameters.tag import ImportedTag as Tag
 
 log = logging.getLogger(__name__)
 
 TEXT_CONTENT_TYPE = ['text', 'xml', 'vnd', 'xhtml', 'json', 'msword']
+EXCLUDED_EXT_FLAGS = ['\Seen', 'nonjunk', '$notjunk', 'notjunk', '$mdnsent',
+                      '$forwarded', '$sent', '\Recent', '\All', '\Archive',
+                      '\Drafts', '\Junk', '\Sent', '\Trash']
 
 
 class MailAttachment(object):
@@ -321,6 +327,7 @@ class MailMessage(object):
         Duplicate on headers exists, group them by name
         with a related list of values
         """
+
         def keyfunc(item):
             return item[0]
 
@@ -330,6 +337,27 @@ class MailMessage(object):
         for k, g in groupby(data, key=keyfunc):
             headers[k] = [x[1] for x in g]
         return headers
+
+    @property
+    def external_flags(self):
+        """
+        Get headers added by our fetcher that represent flags or labels
+        set by external provider,
+        returned as list of tags
+        """
+        tags = []
+        for h in ['X-Fetched-Imap-Flags', 'X-Fetched-X-GM-LABELS']:
+            enc_flags = self.mail.get(h)
+            if enc_flags:
+                flags_str = base64.decodestring(enc_flags)
+                for flag in string.split(flags_str, '\r\n'):
+                    if flag not in EXCLUDED_EXT_FLAGS:
+                        tag = Tag()
+                        tag.name = flag
+                        tag.label = flag
+                        tag.type = 'imported'
+                        tags.append(tag)
+        return tags
 
 
 def walk_with_boundary(message, boundary):

@@ -1,56 +1,58 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Trans } from '@lingui/react';
-import { usernameNormalizer } from '../../../../modules/user';
+import { Trans, withI18n } from '@lingui/react';
+import { Redirect, withRouter } from 'react-router-dom';
+import { usernameNormalizer } from '../../services/usernameNormalizer';
+import { withDevice, STATUS_VERIFIED } from '../../../../modules/device';
 import {
   Link, Spinner, FieldErrors, TextFieldGroup, Button, FormGrid, FormRow, FormColumn,
 } from '../../../../components';
-
+import getClient from '../../../../services/api-client';
 import './style.scss';
 
 const CONTEXT_SAFE = 'safe';
 // const CONTEXT_PUBLIC = 'public';
 // const CONTEXT_UNSECURE = 'unsecure';
 
-function generateStateFromProps(props) {
-  return {
-    ...props.formValues,
-  };
-}
+const URL_DEVICES = '/settings/new-device';
 
+const getRedirect = (queryString) => {
+  const paramRedirect = queryString.split(/[?|&]/).find(str => /^redirect/.test(str));
+
+  return paramRedirect ? paramRedirect.split('=')[1] : undefined;
+};
+
+@withRouter
+@withI18n()
+@withDevice()
 class SigninForm extends Component {
   static propTypes = {
     errors: PropTypes.shape({}),
     form: PropTypes.shape({}),
-    onSubmit: PropTypes.func.isRequired,
-    onChange: PropTypes.func,
+    clientDevice: PropTypes.shape({}),
     i18n: PropTypes.shape({}).isRequired,
+    location: PropTypes.shape({
+      search: PropTypes.string.isRequired,
+    }).isRequired,
   };
 
   static defaultProps = {
-    errors: {},
     form: {},
-    onChange: () => {},
   };
 
   state = {
     isMounted: false,
+    context: CONTEXT_SAFE,
     formValues: {
       username: '',
       password: '',
     },
+    errors: {},
+    isAuthenticated: false,
   };
-
-  componentWillMount() {
-    this.setState(generateStateFromProps(this.props));
-  }
 
   componentDidMount() {
     setTimeout(this.initialize(), 1);
-  }
-
-  componentWillReceiveProps(newProps) {
-    this.setState(generateStateFromProps(newProps));
   }
 
   initialize = () => {
@@ -65,38 +67,108 @@ class SigninForm extends Component {
     });
   }
 
-  handleInputChange = (event) => {
-    const { name, value } = event.target;
-    const { onChange } = this.props;
+  validate = (values) => {
+    const errors = {};
 
-    this.setState(prevState => ({
-      formValues: {
-        ...prevState.formValues,
-        [name]: value,
-      },
-    }), () => onChange());
-  }
+    if (values.username.length === 0) {
+      errors.username = [(<Trans id="signin.feedback.required_username">A username is required</Trans>)];
+    }
 
-  createHandleSubmit = context => (ev) => {
+    if (values.password.length === 0) {
+      errors.password = [(<Trans id="signin.feedback.required_password">A password is required</Trans>)];
+    }
+
+    return errors;
+  };
+
+  handleSignin = (ev) => {
     ev.preventDefault();
-    const { formValues } = this.state;
+    const { clientDevice: device } = this.props;
+    const { formValues, context } = this.state;
 
-    this.props.onSubmit(
-      context,
-      {
+    this.setState((prevState) => {
+      const errors = this.validate(prevState.formValues);
+
+      return { errors };
+    }, () => {
+      if (Object.keys(this.state.errors).length > 0) {
+        return;
+      }
+
+      getClient().post('/auth/signin', {
+        context,
         ...formValues,
         username: usernameNormalizer(formValues.username),
-      }
-    );
+        device,
+      }).then(this.handleSigninSuccess, this.handleSigninError);
+    });
+  }
+
+  handleSigninSuccess = async (response) => {
+    const nextState = {
+      isAuthenticated: true,
+    };
+
+    if (response.data.device.status !== STATUS_VERIFIED) {
+      nextState.redirectDevice = true;
+    }
+
+    this.setState(nextState);
+  }
+
+  handleSigninError = (err) => {
+    const isExpectedError = err.response &&
+      err.response.status >= 400 &&
+      err.response.status < 500 &&
+      err.response.data.errors;
+
+    if (isExpectedError) {
+      this.setState({
+        errors: { global: [(<Trans id="signin.feedback.invalid">Credentials are invalid</Trans>)] },
+      });
+    } else {
+      throw err;
+    }
+  }
+
+  handleChange = () => {
+    this.setState({ errors: {} });
+  }
+
+  handleInputChange = (event) => {
+    const { name, value } = event.target;
+
+    this.setState((prevState) => {
+      const formValues = {
+        ...prevState.formValues,
+        [name]: value,
+      };
+
+      return {
+        errors: this.validate(formValues),
+        formValues,
+      };
+    });
   }
 
   render() {
+    const { location: { search } } = this.props;
+    const redirect = getRedirect(search) || '/';
+
+    if (this.state.isAuthenticated && this.state.redirectDevice && !redirect.includes('/validate-device/')) {
+      return <Redirect push to={URL_DEVICES} />;
+    }
+
+    if (this.state.isAuthenticated) {
+      return <Redirect push to={redirect} />;
+    }
+
     const { errors = {}, form, i18n } = this.props;
 
     return (
       <div className="s-signin">
         <FormGrid className="s-signin__form">
-          <form method="post" {...form}>
+          <form method="post" onSubmit={this.handleSignin} {...form}>
             {errors.global && (
               <FormRow>
                 <FormColumn rightSpace={false} bottomSpace>
@@ -137,7 +209,6 @@ class SigninForm extends Component {
               <FormColumn rightSpace={false} className="s-signin__action" bottomSpace>
                 <Button
                   type="submit"
-                  onClick={this.createHandleSubmit(CONTEXT_SAFE)}
                   display="expanded"
                   shape="plain"
                   disabled={!this.state.isMounted}

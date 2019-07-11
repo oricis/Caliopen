@@ -9,6 +9,7 @@ $m-title__height: $co-component__height !default;
 
   &__text {
     display: inline-block;
+    max-width: 100%; // compat with TexetBlock
     color: $co-color__primary;
     font-size: 1rem;
     font-weight: 700;

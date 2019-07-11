@@ -14,8 +14,11 @@ type NotificationsStore interface {
 	UserByUsername(username string) (user *User, err error) // to retrieve admin user
 	RetrieveLocalsIdentities(user_id string) (identities []UserIdentity, err error)
 	PutNotificationInQueue(*Notification) error
-	RetrieveNotifications(userId string, from, to time.Time) ([]Notification, error)
+	NotificationsByTime(userId string, from, to time.Time) ([]Notification, error)
+	NotificationsByID(userId, from, to string) ([]Notification, error)
+	RetrieveNotification(userId, notificationId string) (Notification, error)
 	DeleteNotifications(userId string, until time.Time) error
+	DeleteNotification(userId, notificationId string) error
 }
 
 type NotificationsIndex interface {

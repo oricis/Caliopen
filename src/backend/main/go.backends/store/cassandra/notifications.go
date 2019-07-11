@@ -43,7 +43,7 @@ func (cb *CassandraBackend) PutNotificationInQueue(notif *Notification) error {
 	return notifT.Set(&n).WithOptions(gocassa.Options{TTL: time.Duration(ttl.TTLduration) * time.Second}).Run()
 }
 
-func (cb *CassandraBackend) RetrieveNotifications(userId string, from, to time.Time) ([]Notification, error) {
+func (cb *CassandraBackend) NotificationsByTime(userId string, from, to time.Time) ([]Notification, error) {
 
 	var query_builder strings.Builder
 	values := []interface{}{userId}
@@ -58,6 +58,40 @@ func (cb *CassandraBackend) RetrieveNotifications(userId string, from, to time.T
 
 	if !to.IsZero() {
 		query_builder.WriteString(` AND notif_id < maxTimeuuid(?)`)
+		values = append(values, to)
+	}
+
+	notifs_found, err := cb.SessionQuery(query_builder.String(), values...).Iter().SliceMap()
+	if err != nil {
+		return notifs, err
+	}
+	if len(notifs_found) == 0 {
+		return []Notification{}, errors.New("notifications not found")
+	}
+
+	for _, notif := range notifs_found {
+		n := new(Notification)
+		n.UnmarshalCQLMap(notif)
+		notifs = append(notifs, *n)
+	}
+
+	return notifs, nil
+}
+
+func (cb *CassandraBackend) NotificationsByID(userID, from, to string) ([]Notification, error) {
+	var query_builder strings.Builder
+	values := []interface{}{userID}
+	notifs := []Notification{}
+
+	query_builder.WriteString(`SELECT * FROM notification WHERE user_id = ?`)
+
+	if from != "" {
+		query_builder.WriteString(` AND notif_id > ?`)
+		values = append(values, from)
+	}
+
+	if to != "" {
+		query_builder.WriteString(` AND notif_id < ?`)
 		values = append(values, to)
 	}
 
@@ -108,7 +142,7 @@ func (cb *CassandraBackend) DeleteNotifications(userId string, until time.Time) 
 	iter := cb.SessionQuery(query_builder.String(), values...).Iter()
 
 	for iter.Scan(&notifId) {
-		e := cb.SessionQuery(`DELETE FROM notification WHERE user_id = ? AND notif_id = ?`, userId, notifId).Exec()
+		e := cb.DeleteNotification(userId, notifId.String())
 		if e != nil {
 			log.WithError(e).Warnf("[DeleteNotifications] failed to delete notif %s for user %s", notifId.String(), userId)
 		}
@@ -118,4 +152,22 @@ func (cb *CassandraBackend) DeleteNotifications(userId string, until time.Time) 
 		return err
 	}
 	return nil
+}
+
+func (cb *CassandraBackend) RetrieveNotification(userID, notifID string) (notif Notification, err error) {
+	notifs, err := cb.SessionQuery(`SELECT * FROM notification WHERE user_id = ? AND notif_id = ?`, userID, notifID).Iter().SliceMap()
+	if err != nil {
+		return
+	}
+	if len(notifs) == 0 {
+		err = errors.New("not found")
+		return
+	}
+	notif = Notification{}
+	notif.UnmarshalCQLMap(notifs[0])
+	return notif, nil
+}
+
+func (cb *CassandraBackend) DeleteNotification(userID, notifID string) error {
+	return cb.SessionQuery(`DELETE FROM notification WHERE user_id = ? AND notif_id = ?`, userID, notifID).Exec()
 }

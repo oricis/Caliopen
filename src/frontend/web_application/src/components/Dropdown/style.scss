@@ -3,6 +3,7 @@
 
 .m-dropdown {
   position: absolute;
+  max-width: 100%; // prevent too large content on small screens
   visibility: hidden;
   overflow-y: auto;
 

@@ -6,8 +6,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Better Timeline display for large and small screens.
+
+## [0.22] 2019-06-26
+
+## Added
+
+- The new about landpage.
+
+### Changed
+
+- Upload PGP keys using files rather than textboxes.
+- Notifications : output bach operations (external identities fetches for ex.) into one notification
+
 ### Fixed
 
+- Double redirections algorithm client and server when not authenticated
+- Prevent target blank anchor's xss.
+- Reload devices when changing page or when invalidated.
+- Page rendering after signout with unexpected content cached.
 - username validation to conform more tightly to specifications.
 
 ## [0.21] 2019-06-06
@@ -52,6 +71,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Index user contact without alias using a workaround to bad core/mixin classes design
 - Addresses emails parsing failed sometimes with strange values
 - Process better invalid or missing data and encoding problems in incoming message
+- Signout wasn't effective
 
 ## [0.20.0] 2019-05-15
 

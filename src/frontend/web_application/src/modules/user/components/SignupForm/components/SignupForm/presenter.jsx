@@ -4,8 +4,8 @@ import { Trans } from '@lingui/react';
 import {
   Spinner, Link, Label, Subtitle, PasswordStrength, FieldErrors, TextBlock, Modal, Button,
   TextFieldGroup, CheckboxFieldGroup, FormGrid, FormRow, FormColumn,
-} from '../../../../components';
-import { getConfig } from '../../../../services/config';
+} from '../../../../../../components';
+import { getConfig } from '../../../../../../services/config';
 
 import './style.scss';
 

@@ -6,7 +6,6 @@ package pi
 
 import (
 	. "github.com/CaliOpen/Caliopen/src/backend/defs/go-objects"
-	log "github.com/Sirupsen/logrus"
 	"math"
 	"strconv"
 	"strings"
@@ -59,6 +58,5 @@ func ComputePIMessage(message *Message) *PIMessage {
 		piMessage.Transport += 20
 	}
 	// TODO : normalize
-	log.Info("PI: result ", piMessage)
 	return piMessage
 }

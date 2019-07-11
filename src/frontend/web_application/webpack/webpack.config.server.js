@@ -40,7 +40,8 @@ const base = {
   module: {
     rules: [
       {
-        test: /\.(s?css|jpe?g|png|gif|svg)$/,
+        test: /\.(s?css)$/,
+        // test: /\.(s?css|jpe?g|png|gif|svg)$/,
         loader: 'null-loader',
       },
       {
@@ -87,6 +88,7 @@ const config = webpackMerge(
   common,
   configs.configureEnv('server'),
   configs.configureSrcBabelLoader({ isNode: true }),
+  configs.configureAssets(),
   base
 );
 

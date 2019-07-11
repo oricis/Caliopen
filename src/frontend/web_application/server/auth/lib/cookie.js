@@ -8,8 +8,14 @@ export const COOKIE_OPTIONS = {
   path: '/',
 };
 
+const getCookieOptions = () => {
+  const { hostname } = getConfig();
+
+  return { ...COOKIE_OPTIONS, domain: hostname };
+};
+
 export const authenticate = (res, { user }) => new Promise((resolve, reject) => {
-  const { seal: { secret }, hostname } = getConfig();
+  const { seal: { secret } } = getConfig();
 
   encode(
     user,
@@ -18,9 +24,11 @@ export const authenticate = (res, { user }) => new Promise((resolve, reject) => 
       if (err || !sealed) {
         return reject('Unexpected Error');
       }
-      res.cookie(COOKIE_NAME, sealed, { ...COOKIE_OPTIONS, domain: hostname });
+      res.cookie(COOKIE_NAME, sealed, getCookieOptions());
 
       return resolve();
     }
   );
 });
+
+export const invalidate = res => res.clearCookie(COOKIE_NAME, getCookieOptions());
