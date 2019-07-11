@@ -20,8 +20,11 @@ type (
 	Notifiers interface {
 		ByEmail(*Notification) CaliopenError
 		ByNotifQueue(*Notification) CaliopenError
-		RetrieveNotifications(userId string, from, to time.Time) ([]Notification, CaliopenError)
+		NotificationsByTime(userId string, from, to time.Time) ([]Notification, CaliopenError)
+		NotificationsByID(userId, from, to string) ([]Notification, CaliopenError)
+		RetrieveNotification(userId, notificationId string) (Notification, CaliopenError)
 		DeleteNotifications(userId string, until time.Time) CaliopenError
+		DeleteNotification(userId, notificationId string) CaliopenError
 	}
 
 	Notifier struct {
@@ -126,9 +129,9 @@ func (N *Notifier) LogNotification(method string, notif *Notification) {
 	}
 }
 
-func (N *Notifier) RetrieveNotifications(userId string, from, to time.Time) ([]Notification, CaliopenError) {
+func (N *Notifier) NotificationsByTime(userId string, from, to time.Time) ([]Notification, CaliopenError) {
 
-	notifs, err := N.Store.RetrieveNotifications(userId, from, to)
+	notifs, err := N.Store.NotificationsByTime(userId, from, to)
 	if err != nil {
 		return []Notification{}, WrapCaliopenErr(err, DbCaliopenErr, "[RetrieveNotifications] failed")
 	}
@@ -136,9 +139,36 @@ func (N *Notifier) RetrieveNotifications(userId string, from, to time.Time) ([]N
 	return notifs, nil
 }
 
+func (N *Notifier) NotificationsByID(userId, from, to string) ([]Notification, CaliopenError) {
+
+	notifs, err := N.Store.NotificationsByID(userId, from, to)
+	if err != nil {
+		return []Notification{}, WrapCaliopenErr(err, DbCaliopenErr, "[RetrieveNotifications] failed")
+	}
+
+	return notifs, nil
+}
+
+func (N *Notifier) RetrieveNotification(userID, notifID string) (Notification, CaliopenError) {
+	notif, err := N.Store.RetrieveNotification(userID, notifID)
+	if err != nil {
+		return Notification{}, WrapCaliopenErr(err, DbCaliopenErr, "[RetrieveNotification] failed")
+	}
+	return notif, nil
+}
+
 func (N *Notifier) DeleteNotifications(userId string, until time.Time) CaliopenError {
 
 	err := N.Store.DeleteNotifications(userId, until)
+	if err != nil {
+		return WrapCaliopenErr(err, DbCaliopenErr, "[Notifier]DeleteNotifications failed")
+	}
+
+	return nil
+}
+
+func (N *Notifier) DeleteNotification(userID, notifID string) CaliopenError {
+	err := N.Store.DeleteNotification(userID, notifID)
 	if err != nil {
 		return WrapCaliopenErr(err, DbCaliopenErr, "[Notifier]DeleteNotifications failed")
 	}

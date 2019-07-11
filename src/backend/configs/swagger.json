@@ -13014,17 +13014,15 @@
             "name": "from",
             "in": "query",
             "required": false,
-            "description": "oldest timestamp to retrieve (older notifications will not be fetched). RFC3339 format.",
-            "type": "string",
-            "format": "date-time"
+            "description": "oldest timestamp or uuid to retrieve (older notifications will not be fetched). RFC3339 format if time, UUIDv1 if id.",
+            "type": "string"
           },
           {
             "name": "to",
             "in": "query",
             "required": false,
-            "description": "earlest timestamp to retrieve (earler notifications will not be fetched). RFC3339 format.",
-            "type": "string",
-            "format": "date-time"
+            "description": "earlest timestamp or uuid to retrieve (earler notifications will not be fetched). RFC3339 format if time, UUIDv1 if id.",
+            "type": "string"
           }
         ],
         "produces": [
@@ -13063,6 +13061,30 @@
                       },
                       "user_id": {
                         "type": "string"
+                      },
+                      "children": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "body": {
+                              "type": "string"
+                            },
+                            "emitter": {
+                              "type": "string"
+                            },
+                            "notif_id": {
+                              "description": "notif_id is UUIDv1, including a timestamp",
+                              "type": "string"
+                            },
+                            "reference": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string"
+                            }
+                          }
+                        }
                       }
                     },
                     "additionalProperties": false
@@ -13120,7 +13142,7 @@
         }
       },
       "delete": {
-        "description": "Delete pending notifications",
+        "description": "Delete pending notifications by time range",
         "tags": [
           "notifications"
         ],
@@ -13145,6 +13167,226 @@
         "responses": {
           "204": {
             "description": "deletions executed, no body returned."
+          },
+          "400": {
+            "description": "malform request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/notifications/{notification_id}": {
+      "get": {
+        "description": "Returns a notification",
+        "tags": [
+          "notifications"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "notification_id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Notification found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "body": {
+                  "type": "string"
+                },
+                "emitter": {
+                  "type": "string"
+                },
+                "notif_id": {
+                  "description": "notif_id is UUIDv1, including a timestamp",
+                  "type": "string"
+                },
+                "reference": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "user_id": {
+                  "type": "string"
+                },
+                "children": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "body": {
+                        "type": "string"
+                      },
+                      "emitter": {
+                        "type": "string"
+                      },
+                      "notif_id": {
+                        "description": "notif_id is UUIDv1, including a timestamp",
+                        "type": "string"
+                      },
+                      "reference": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "400": {
+            "description": "malform request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Message not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "integer",
+                      "format": "int32"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a notification",
+        "tags": [
+          "notifications"
+        ],
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "notification_id",
+            "in": "path",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "deletion executed, no body returned."
           },
           "400": {
             "description": "malform request",
