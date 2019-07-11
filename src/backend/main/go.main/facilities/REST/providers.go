@@ -109,7 +109,7 @@ func (rest *RESTfacility) GetProviderOauthFor(userId, name, identifier string) (
 					RedirectURIs: rest.Hostname + fmt.Sprintf(users.CALLBACK_BASE_URI, "mastodon"),
 				})
 				if e != nil {
-					err = WrapCaliopenErrf(e, FailDependencyCaliopenErr, "[GetProviderOauthFor] failed to register on mastodon instance <%s>", userId, name)
+					err = WrapCaliopenErrf(e, FailDependencyCaliopenErr, "[GetProviderOauthFor] failed to register on mastodon instance <%s>", name)
 					return
 				}
 				// => save instance's params into db for next time
