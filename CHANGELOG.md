@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Prevent target blank anchor's xss.
 - Reload devices when changing page or when invalidated.
 - Page rendering after signout with unexpected content cached.
+- username validation to conform more tightly to specifications.
 
 ## [0.21] 2019-06-06
 

@@ -49,8 +49,10 @@ The regex engines used to validate the username string must be unicode aware/com
 ## Regex :
 Here is the general utf-8 PCRE regex implementation of the username format rules described above :
 ```
-^[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]]((\.[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]]|[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]])){1,40}((\.[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]])|([^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]]))$
+^(([^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]]|[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]]\.)){0,40}[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]]$
 ```
+**NB** : these regex will match username of 2 chars length, because they do not make use of lookhead pattern (lookhead is not implemented in GO). As a matter of fact, the minimum size of username must be enforced by an other mean.
+
 
 ## Languages implementations :
 
@@ -66,7 +68,7 @@ import (
 )
 
 func main() {
-    var re = regexp.MustCompile(`^[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]]((\.[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]]|[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]])){1,40}((\.[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]])|([^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]]))$`)
+    var re = regexp.MustCompile(`^(([^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]]|[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]]\.)){1,40}[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\x{0022},@\x{0060}:;<>[\\\]]$`)
     var str = `John.Dœuf`
 
     for i, match := range re.FindAllString(str, -1) {
@@ -87,7 +89,7 @@ _Note: for Python 2.7 compatibility, use ur"" to prefix the regex and u"" to pre
 
 import regex
 
-r = ur"^[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\u0022,@\u0060:;<>[\\\]]((\.[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\u0022,@\u0060:;<>[\\\]]|[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\u0022,@\u0060:;<>[\\\]])){1,40}((\.[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\u0022,@\u0060:;<>[\\\]])|([^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\u0022,@\u0060:;<>[\\\]]))$"
+r = ur"^(([^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\u0022,@\u0060:;<>[\\\]]|[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\u0022,@\u0060:;<>[\\\]]\.)){1,40}[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z}.\u0022,@\u0060:;<>[\\\]]$"
 
 username = u"John.Dœuf"
 
@@ -107,7 +109,7 @@ Built-in ECMAScript 6 regex implementation does not support the Unicode property
     ```
     var XRegExp = require('xregexp');
 
-    const x = XRegExp(/^[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z} .\u0022,@\u0060:;<>[\\\]]((\.[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z} .\u0022,@\u0060:;<>[\\\]]|[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z} .\u0022,@\u0060:;<>[\\\]])){1,40}((\.[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z} .\u0022,@\u0060:;<>[\\\]])|([^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z} .\u0022,@\u0060:;<>[\\\]]))$/g);
+    const x = XRegExp(/^(([^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z} .\u0022,@\u0060:;<>[\\\]]|[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z} .\u0022,@\u0060:;<>[\\\]]\.)){1,40}[^\p{C}\p{M}\p{Lm}\p{Sk}\p{Z} .\u0022,@\u0060:;<>[\\\]]$/g);
     console.log(x.test('John.Dœuf'));
     // → true
     ```
