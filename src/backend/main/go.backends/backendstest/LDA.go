@@ -106,6 +106,9 @@ func (ldaStore *LDAStoreBackend) RetrieveRemoteInfosMap(userId, remoteId string)
 func (ldaStore *LDAStoreBackend) TimestampRemoteLastCheck(userId, remoteId string, time ...time.Time) error {
 	return errors.New("test interface not implemented")
 }
+func (ldaStore *LDAStoreBackend) RetrieveProvider(name, instance string) (*Provider, CaliopenError) {
+	return nil, NewCaliopenErr(NotImplementedCaliopenErr, "test interface not implemented")
+}
 
 func (ldIndex *LDAIndexBackend) Close() {}
 func (ldIndex *LDAIndexBackend) CreateMessage(user *UserInfo, msg *Message) error {
