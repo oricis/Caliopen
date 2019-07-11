@@ -11,6 +11,7 @@ from caliopen_main.message.core import RawMessage
 from caliopen_main.message.core import MessageExternalRefLookup as Merl
 from caliopen_main.message.objects.message import Message
 from caliopen_pi.qualifiers import UserMessageQualifier, UserDMQualifier
+from caliopen_main.user.store.tag import UserTag as Tag
 
 log = logging.getLogger(__name__)
 
@@ -34,6 +35,21 @@ class UserMessageDelivery(object):
         log.debug('Retrieved raw message {}'.format(raw_msg_id))
 
         message = self.qualifier.process_inbound(raw)
+        # fill user_tag table with imported tags and embed in message
+        for tag in message.ext_tags:
+            try:
+                Tag.get(user_id=self.user.user_id, name=tag.name)
+            except NotFound:
+                try:
+                    Tag.create(user_id=self.user.user_id, name=tag.name,
+                               label=tag.label, type=tag.type,
+                               date_insert=datetime.datetime.now(tz=pytz.utc))
+                except Exception as exc:
+                    log.exception(
+                        "UserMessageDelivery failed to create tag : {}".format(
+                            exc))
+            message.tags.append(tag.name)
+
         if message.external_msg_id:
             external_refs = Merl._model_class.filter(
                 user_id=self.user.user_id,
@@ -55,6 +71,7 @@ class UserMessageDelivery(object):
                                 external_msg_id=msg.external_msg_id,
                                 identity_id=self.identity.identity_id,
                                 message_id=msg.message_id)
+                    # TODO: update flags ?
                 raise DuplicateObject(DUPLICATE_MESSAGE_EXC)
         else:
             log.warn('Message without external message_id for raw {}'.
@@ -83,7 +100,8 @@ class UserMessageDelivery(object):
             except Exception as exc:
                 log.exception("UserMessageDelivery failed "
                               "to store message_external_ref : {}".format(exc))
-            return obj
+
+        return obj
 
 
 class UserMailDelivery(UserMessageDelivery):

@@ -14,6 +14,7 @@ from .attachment import Attachment
 from .external_references import ExternalReferences
 from caliopen_main.pi.parameters import PIParameter
 from caliopen_main.participant.parameters import Participant
+from caliopen_main.user.parameters.tag import ImportedTag
 from caliopen_main.participant.core import hash_participants_uri
 import caliopen_storage.helpers.json as helpers
 
@@ -31,7 +32,7 @@ class NewMessage(Model):
     attachments = ListType(ModelType(Attachment), default=lambda: [])
     date = DateTimeType(serialized_format=helpers.RFC3339Milli,
                         tzd=u'utc')
-    discussion_id = StringType() # = participants uris' hash
+    discussion_id = StringType()  # = participants uris' hash
     external_references = ModelType(ExternalReferences)
     importance_level = IntType()
     is_answered = BooleanType()
@@ -46,6 +47,7 @@ class NewMessage(Model):
     raw_msg_id = UUIDType()
     subject = StringType()
     tags = ListType(StringType(), default=lambda: [])
+    ext_tags = ListType(ModelType(ImportedTag), default=lambda: [])
     protocol = StringType(choices=MESSAGE_PROTOCOLS, required=False)
     user_identities = ListType(UUIDType(), default=lambda: [])
 

@@ -4,7 +4,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 from cassandra.cqlengine import columns
 from elasticsearch_dsl import InnerObjectWrapper, Date, Integer
-from elasticsearch_dsl import Boolean, Keyword, Text
+from elasticsearch_dsl import Boolean, Keyword
 
 from caliopen_storage.store import BaseUserType
 
