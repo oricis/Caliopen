@@ -46,9 +46,10 @@ type (
 		IsRemoteIdentity(userId, remoteId string) bool
 		//providers
 		RetrieveProvidersList() (providers []Provider, err error)
-		GetProviderOauthFor(userID, provider string) (Provider, CaliopenError)
+		GetProviderOauthFor(userID, provider, instance string) (Provider, CaliopenError)
 		CreateTwitterIdentity(requestToken, verifier string) (remoteId string, err CaliopenError)
 		CreateGmailIdentity(state, code string) (remoteId string, err CaliopenError)
+		CreateMastodonIdentity(state, code string) (remoteId string, err CaliopenError)
 		//discussions
 		GetDiscussionsList(user *UserInfo, ILrange, PIrange [2]int8, limit, offset int) ([]Discussion, int, error)
 		DiscussionMetadata(user *UserInfo, discussionId string) (Discussion, error)
@@ -110,12 +111,13 @@ func NewRESTfacility(config CaliopenConfig, nats_conn *nats.Conn) (rest_facility
 	rest_facility = new(RESTfacility)
 	rest_facility.nats_conn = nats_conn
 	rest_facility.natsTopics = map[string]string{
-		Nats_outSMTP_topicKey:    config.NatsConfig.OutSMTP_topic,
-		Nats_outIMAP_topicKey:    config.NatsConfig.OutIMAP_topic,
-		Nats_Contacts_topicKey:   config.NatsConfig.Contacts_topic,
-		Nats_outTwitter_topicKey: config.NatsConfig.OutTWITTER_topic,
-		Nats_Keys_topicKey:       config.NatsConfig.Keys_topic,
-		Nats_IdPoller_topicKey:   config.NatsConfig.IdPoller_topic,
+		Nats_outSMTP_topicKey:     config.NatsConfig.OutSMTP_topic,
+		Nats_outIMAP_topicKey:     config.NatsConfig.OutIMAP_topic,
+		Nats_Contacts_topicKey:    config.NatsConfig.Contacts_topic,
+		Nats_outTwitter_topicKey:  config.NatsConfig.OutTWITTER_topic,
+		Nats_outMastodon_topicKey: config.NatsConfig.OutMASTODON_topic,
+		Nats_Keys_topicKey:        config.NatsConfig.Keys_topic,
+		Nats_IdPoller_topicKey:    config.NatsConfig.IdPoller_topic,
 	}
 	switch config.RESTstoreConfig.BackendName {
 	case "cassandra":

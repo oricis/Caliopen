@@ -4,7 +4,6 @@ import logging
 import json
 from datetime import datetime
 import pytz
-import hashlib
 
 import zope.interface
 

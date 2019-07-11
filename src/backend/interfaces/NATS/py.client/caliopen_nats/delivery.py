@@ -10,8 +10,8 @@ from caliopen_storage.exception import NotFound, DuplicateObject
 from caliopen_main.message.core import RawMessage
 from caliopen_main.message.core import MessageExternalRefLookup as Merl
 from caliopen_main.message.objects.message import Message
-from caliopen_pi.qualifiers import UserMessageQualifier, UserDMQualifier
 from caliopen_main.user.store.tag import UserTag as Tag
+from caliopen_pi.qualifiers import UserMessageQualifier, UserTwitterQualifier, UserMastodonQualifier
 
 log = logging.getLogger(__name__)
 
@@ -112,9 +112,17 @@ class UserMailDelivery(UserMessageDelivery):
         self.qualifier = UserMessageQualifier(self.user, self.identity)
 
 
-class UserTwitterDMDelivery(UserMessageDelivery):
+class UserTwitterDelivery(UserMessageDelivery):
     """Twitter Direct Message delivery processing"""
 
     def __init__(self, user, identity):
-        super(UserTwitterDMDelivery, self).__init__(user, identity)
-        self.qualifier = UserDMQualifier(self.user, self.identity)
+        super(UserTwitterDelivery, self).__init__(user, identity)
+        self.qualifier = UserTwitterQualifier(self.user, self.identity)
+
+
+class UserMastodonDelivery(UserMessageDelivery):
+    """Mastodon Direct Message delivery processing"""
+
+    def __init__(self, user, identity):
+        super(UserMastodonDelivery, self).__init__(user, identity)
+        self.qualifier = UserMastodonQualifier(self.user, self.identity)

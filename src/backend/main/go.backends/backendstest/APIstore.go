@@ -4,7 +4,9 @@
 
 package backendstest
 
-import "github.com/gocql/gocql"
+import (
+	"github.com/gocql/gocql"
+)
 
 type APIStore struct {
 	AttachmentStore
@@ -19,6 +21,7 @@ type APIStore struct {
 	TagsStore
 	UserNamesStore
 	UsersBackend
+	ProvidersStore
 }
 
 func (s *APIStore) GetSession() *gocql.Session {

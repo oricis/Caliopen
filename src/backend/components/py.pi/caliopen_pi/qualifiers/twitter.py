@@ -15,7 +15,7 @@ from .base import BaseQualifier
 log = logging.getLogger(__name__)
 
 
-class UserDMQualifier(BaseQualifier):
+class UserTwitterQualifier(BaseQualifier):
     """Process a Twitter direct message to unmarshal it in our stack."""
 
     _lookups = {

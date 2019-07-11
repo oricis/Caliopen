@@ -29,7 +29,8 @@ import './instant-message-participants.scss';
 
 const PROTOCOL_ICONS = {
   facebook: 'facebook',
-  twitter: 'twitter',
+  twitter: 'mastodon',
+  mastodon: 'mastodon',
   sms: 'phone',
   email: 'envelope',
   default: 'comment',
@@ -99,6 +100,24 @@ class InstantMessage extends PureComponent {
       ]
       :
       this.getRecipientsLabels(getRecipients(message));
+  }
+
+  renderBody() {
+    const { message } = this.props;
+
+    return message.body_is_plain ? (
+      <TextBlock className="m-instant-message__content" nowrap={false}>
+        <Linkify>
+          {message.body}
+        </Linkify>
+      </TextBlock>
+    ) : (
+      <TextBlock
+        nowrap={false}
+        className="m-instant-message__content"
+        dangerouslySetInnerHTML={{ __html: message.body }}
+      />
+    );
   }
 
   renderActions() {
@@ -190,13 +209,7 @@ class InstantMessage extends PureComponent {
               <LockedMessage encryptionStatus={encryptionStatus} />
             )
             :
-            (
-              <TextBlock className="m-instant-message__content" nowrap={false}>
-                <Linkify>
-                  {message.body}
-                </Linkify>
-              </TextBlock>
-            )
+            this.renderBody()
         }
       </article>
     );
