@@ -17,35 +17,35 @@ class Popup {
 
   detectionInc = 0
 
-  static getPopupName({ providerName }) {
+  static getPopupName({providerName}) {
     return `authorization_${providerName}`;
   }
 }
 
 export const withAuthorizePopup = () => (C) => {
   // a popup must be initialized in a synchronous way or it will be blocked by the browser
-  const initPopup = ({ providerName }) => {
+  const initPopup = ({providerName}) => {
     const popup = popups[providerName] || new Popup();
 
     if (!popup.window || popup.window.closed) {
-      popup.window = window.open('', Popup.getPopupName({ providerName }), 'resizable,scrollbars,status');
+      popup.window = window.open('', Popup.getPopupName({providerName}), 'resizable,scrollbars,status');
       popups[providerName] = popup;
     }
   };
 
-  const stopDetection = ({ popup }) => {
+  const stopDetection = ({popup}) => {
     popup.window.close();
     clearInterval(popup.detectionId);
     popups[popup.provider.name] = undefined;
   };
 
-  const detectPopupSuccess = ({ popup }) => new Promise((resolve, reject) => {
+  const detectPopupSuccess = ({popup}) => new Promise((resolve, reject) => {
     popup.detectionInc = 0;
     popup.detectionId = setInterval(() => {
       popup.detectionInc += 1;
       try {
         if (popup.window.location.href.includes(popup.provider.oauth_callback_uri)) {
-          stopDetection({ popup });
+          stopDetection({popup});
           resolve('success');
 
           return;
@@ -55,18 +55,18 @@ export const withAuthorizePopup = () => (C) => {
       }
 
       if (popup.window.closed) {
-        stopDetection({ popup });
+        stopDetection({popup});
         reject(new Error('popup has been closed'));
       }
 
       if (popup.detectionInc >= MAX_TIMEOUT) {
-        stopDetection({ popup });
+        stopDetection({popup});
         reject(new Error('popup timeout'));
       }
     }, 1000);
   });
 
-  const authorizePopup = ({ provider }) => {
+  const authorizePopup = ({provider}) => {
     const popup = popups[provider.name];
     if (!popup || popup.window.closed) {
       return Promise.reject(new Error('popup has been closed'));
@@ -75,7 +75,7 @@ export const withAuthorizePopup = () => (C) => {
     popup.provider = provider;
     popup.window.location.href = provider.oauth_request_url;
 
-    return detectPopupSuccess({ popup });
+    return detectPopupSuccess({popup});
   };
 
   const authorizeProps = {
