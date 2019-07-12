@@ -1,8 +1,8 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import NewIdentity from './components/NewIdentity';
 import RemoteIdentity from './components/RemoteIdentity';
-import {PageTitle} from '../../components';
+import { PageTitle } from '../../components';
 
 import './style.scss';
 
@@ -30,27 +30,27 @@ class RemoteIdentitySettings extends Component {
   }
 
   handleChange = async (...params) => {
-    const {onIdentityChange} = this.props;
+    const { onIdentityChange } = this.props;
 
     return onIdentityChange(...params);
   }
 
   handleDelete = async (...params) => {
-    const {onIdentityDelete} = this.props;
+    const { onIdentityDelete } = this.props;
 
     return onIdentityDelete(...params);
   }
 
   handleError = (error) => {
     console.log(error);
-    let errorMessage
+    let errorMessage;
     if (error.data && error.data.errors && error.data.errors.length > 0) {
-      errorMessage = error.data.errors[0].message
+      errorMessage = error.data.errors[0].message;
     } else {
-      errorMesasge = "new identity failed. See console for error"
+      errorMessage = 'new identity failed. See console for error';
     }
-    const {i18n, notifyError} = this.props;
-    notifyError({message: i18n._('', null, {defaults: errorMessage})});
+    const { i18n, notifyError } = this.props;
+    notifyError({ message: i18n._('', null, { defaults: errorMessage }) });
   }
 
   handleClear = () => {
@@ -64,10 +64,13 @@ class RemoteIdentitySettings extends Component {
 
   renderIdentity(identity) {
     return (
-      <div className="s-settings-identities__identity"
-           key={identity.identity_id}>
+      <div
+        className="s-settings-identities__identity"
+        key={identity.identity_id}
+      >
         <RemoteIdentity
           remoteIdentity={identity}
+          lint
           onRemoteIdentityChange={this.handleChange}
           onRemoteIdentityDelete={this.handleDelete}
           onClear={this.handleClear}
@@ -77,11 +80,11 @@ class RemoteIdentitySettings extends Component {
   }
 
   render() {
-    const {onIdentityDelete, identities, providers} = this.props;
+    const { onIdentityDelete, identities, providers } = this.props;
 
     return (
       <div className="s-settings-identities">
-        <PageTitle/>
+        <PageTitle />
         <div className="s-settings-identities__create">
           <NewIdentity
             providers={providers}

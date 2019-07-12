@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Trans} from '@lingui/macro'; // eslint-disable-line import/no-extraneous-dependencies
+import { Trans } from '@lingui/macro'; // eslint-disable-line import/no-extraneous-dependencies
 import classnames from 'classnames';
 import {
   Spinner,
@@ -9,7 +9,7 @@ import {
   FormRow,
   FormColumn,
 } from '../../../../components';
-import {capitalize} from '../../../../services/capitalize';
+import { capitalize } from '../../../../services/capitalize';
 import {
   PROVIDER_GMAIL,
   PROVIDER_TWITTER,
@@ -39,18 +39,18 @@ class AuthButton extends Component {
   };
 
   handleAcctChange = (event) => {
-    this.setState({mastodonAcct: event.target.value})
+    this.setState({ mastodonAcct: event.target.value });
   }
 
   authorize = async () => {
-    const {authorize, onDone, providerName} = this.props;
+    const { authorize, onDone, providerName } = this.props;
     const identifier = this.state.mastodonAcct;
     this.setState({
       hasActivity: true,
     });
 
     try {
-      const result = await authorize({providerName, identifier});
+      const result = await authorize({ providerName, identifier });
       onDone(result);
     } catch (err) {
       onDone(err);
@@ -62,7 +62,8 @@ class AuthButton extends Component {
   }
 
   render() {
-    const {className, providerName} = this.props;
+    const { className, providerName } = this.props;
+
     return (
       <FormGrid>
         <FormRow>
@@ -72,27 +73,29 @@ class AuthButton extends Component {
             className={classnames(className, 'm-oauth-button')}
             disabled={this.state.hasActivity}
           >
-            {this.state.hasActivity ? (<Spinner isloading/>) : (
-              <ProviderIcon className="m-oauth-button__logo"
-                            providerName={providerName}/>
+            {this.state.hasActivity ? (<Spinner isloading />) : (
+              <ProviderIcon
+                className="m-oauth-button__logo"
+                providerName={providerName}
+              />
             )}
             {capitalize(providerName)}
           </ProviderButton>
         </FormRow>
         {providerName === PROVIDER_MASTODON && (
-          <FormRow>
-            <FormColumn bottomSpace fluid>
-              <TextFieldGroup
-                label={(
-                  <Trans id="remote_identity.form.mastodon.instance_label">Before pushing Mastodon button, enter your account address below (ex.: username@instance.tld)</Trans>)}
-                value={this.state.mastodonAcct}
-                onChange={this.handleAcctChange}
-                name="mastodonAcct"
-                autoComplete="on"
-                required
-              />
-            </FormColumn>
-          </FormRow>
+        <FormRow>
+          <FormColumn bottomSpace fluid>
+            <TextFieldGroup
+              label={(
+                <Trans id="remote_identity.form.mastodon.instance_label">Before pushing Mastodon button, enter your account address below (ex.: username@instance.tld)</Trans>)}
+              value={this.state.mastodonAcct}
+              onChange={this.handleAcctChange}
+              name="mastodonAcct"
+              autoComplete="on"
+              required
+            />
+          </FormColumn>
+        </FormRow>
         )}
       </FormGrid>
     );

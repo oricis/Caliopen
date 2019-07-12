@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import RemoteIdentityEmail from './';
+import RemoteIdentityEmail from '.';
 
 jest.mock('../../../../modules/settings', () => ({
   WithSettings: ({ render }) => render({}, false),
