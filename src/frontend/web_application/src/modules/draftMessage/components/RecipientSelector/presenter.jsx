@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Trans } from '@lingui/react';
 import { AdvancedSelectFieldGroup, Icon } from '../../../../components';
-import { Participant } from '../../../../modules/message';
-import { IDENTITY_TYPE_TWITTER, IDENTITY_TYPE_MASTODON } from '../../../../modules/contact';
+import { Participant } from '../../../message';
+import { IDENTITY_TYPE_TWITTER, IDENTITY_TYPE_MASTODON } from '../../../contact';
 
 const PROTOCOL_EMAIL = 'email';
 const PROTOCOL_TWITTER = 'twitter';
@@ -32,22 +32,28 @@ class RecipientSelector extends PureComponent {
         return (
           <Fragment>
             <Icon type="email" />
-            {' '}{recipient.label}
-            {' '}&lt;{recipient.address}&gt;
+            {' '}
+            {recipient.label}
+            {' '}
+&lt;
+            {recipient.address}
+&gt;
           </Fragment>
         );
       case PROTOCOL_TWITTER:
         return (
           <Fragment>
             <Icon type="twitter" />
-            {' '}{recipient.address}
+            {' '}
+            {recipient.address}
           </Fragment>
         );
       case PROTOCOL_MASTODON:
         return (
           <Fragment>
             <Icon type="mastodon" />
-            {' '}{recipient.address}
+            {' '}
+            {recipient.address}
           </Fragment>
         );
     }

@@ -38,7 +38,8 @@ class ProtocolSwitch extends PureComponent {
     return (
       <div className={`m-protocol-switch ${getPiClass(pi)}`}>
         <div className="m-protocol-switch__bar" />
-        <i className={`fa fa-${this.protocolIcon(newProtocol)}`} />&nbsp;
+        <i className={`fa fa-${this.protocolIcon(newProtocol)}`} />
+&nbsp;
         <Moment fromNow locale={locale}>{date}</Moment>
       </div>
     );

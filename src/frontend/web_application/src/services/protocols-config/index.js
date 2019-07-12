@@ -22,5 +22,5 @@ export default {
   },
   mastodon: {
     regexp: /^^[a-z0-9.!#$%&*+=?_{}~-]+@([a-zA-Z0-9]+\.)+[a-zA-Z]{2,60}$/,
-  }
+  },
 };

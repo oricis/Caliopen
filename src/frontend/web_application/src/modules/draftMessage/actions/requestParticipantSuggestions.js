@@ -1,6 +1,6 @@
 import { suggest, searchSuccess } from '../../../store/modules/participant-suggestions';
-import { settingsSelector } from '../../../modules/settings';
-import { getContact } from '../../../modules/contact';
+import { settingsSelector } from '../../settings';
+import { getContact } from '../../contact';
 import { formatName } from '../../../services/contact';
 
 const getSuggestion = ({

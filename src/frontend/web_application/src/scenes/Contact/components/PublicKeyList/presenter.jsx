@@ -108,7 +108,8 @@ class PublicKeyList extends Component {
           rightSpaced
         />
         <strong className="m-public-key-list__key-label">{publicKey.label}</strong>
-        &nbsp;:&nbsp;{publicKey.fingerprint}
+        &nbsp;:&nbsp;
+        {publicKey.fingerprint}
         <Link
           button
           href={this.getPublicKeyDataUrl(publicKey)}

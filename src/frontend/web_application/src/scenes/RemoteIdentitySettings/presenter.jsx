@@ -42,6 +42,7 @@ class RemoteIdentitySettings extends Component {
   }
 
   handleError = (error) => {
+    // TODO : better error handling
     console.log(error);
     let errorMessage;
     if (error.data && error.data.errors && error.data.errors.length > 0) {

@@ -34,7 +34,9 @@ describe('modules identity - service - filterIdentities', () => {
       ],
     };
 
-    expect(filterIdentities({ identities, parentMessage, contacts, user })).toEqual([identities[0], identities[2]]);
+    expect(filterIdentities({
+      identities, parentMessage, contacts, user,
+    })).toEqual([identities[0], identities[2]]);
   });
 
   it('filter parent message protocol (twitter) (1-to-n)', () => {
@@ -47,7 +49,9 @@ describe('modules identity - service - filterIdentities', () => {
       ],
     };
 
-    expect(filterIdentities({ identities, parentMessage, contacts, user })).toEqual([identities[1]]);
+    expect(filterIdentities({
+      identities, parentMessage, contacts, user,
+    })).toEqual([identities[1]]);
   });
 
   it('filter discussion 1-to-1 available contact address', () => {
@@ -73,7 +77,9 @@ describe('modules identity - service - filterIdentities', () => {
       ],
     };
 
-    expect(filterIdentities({ identities, parentMessage, contacts, user })).toEqual([identities[1]]);
+    expect(filterIdentities({
+      identities, parentMessage, contacts, user,
+    })).toEqual([identities[1]]);
   });
 
   it('filter discussion 1-to-n with contacts', () => {

@@ -1,8 +1,8 @@
 import React from 'react';
-import {Trans} from '@lingui/react';
+import { Trans } from '@lingui/react';
 import {
   IDENTITY_TYPE_TWITTER,
-  IDENTITY_TYPE_MASTODON
+  IDENTITY_TYPE_MASTODON,
 } from '../../../modules/contact';
 import protocolsConfig from '../../../services/protocols-config';
 
@@ -25,7 +25,7 @@ export const contactValidation = (values) => {
         identityError.name = (
           <Trans
             id="contact.form.identity.not_twitter"
-            values={{name: identity.name}}
+            values={{ name: identity.name }}
             defaults="The twitter username {name} is invalid. It should be between 1 or 15 characters with no special characters. For example «caliopen_org»."
           />
         );
@@ -36,7 +36,7 @@ export const contactValidation = (values) => {
         identityError.name = (
           <Trans
             id="contact.form.identity.not_mastodon"
-            values={{name: identity.name}}
+            values={{ name: identity.name }}
             defaults="The mastodon username {name} is invalid. It should be in the format of an email. For example «my_friend@mastodon.instance»."
           />
         );

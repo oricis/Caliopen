@@ -3,8 +3,8 @@ import {
 } from '../../../store/modules/draft-message';
 import {
   getDraft, getMessage, getLastMessage, Message,
-} from '../../../modules/message';
-import { getUser } from '../../../modules/user';
+} from '../../message';
+import { getUser } from '../../user';
 import { draftSelector } from '../selectors/draft';
 import { getDefaultIdentity } from './getDefaultIdentity';
 import { changeAuthorInParticipants } from '../services/changeAuthorInParticipants';

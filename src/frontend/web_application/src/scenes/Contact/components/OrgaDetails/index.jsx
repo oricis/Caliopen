@@ -24,7 +24,12 @@ class OrgaDetails extends PureComponent {
             department,
           }}
         >
-          {jobDesc} at {orgaName} {department}
+          {jobDesc}
+          {' '}
+at
+          {orgaName}
+          {' '}
+          {department}
         </Trans>
       );
     }

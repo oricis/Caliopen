@@ -195,7 +195,10 @@ class ContactItem extends PureComponent {
                   {contact.name_prefix && (<span className="m-contact-item__contact-prefix">{contact.name_prefix}</span>)}
                   <span className="m-contact-item__contact-title">{contactTitle}</span>
                   {contact.name_suffix && (
-                    <span className="m-contact-item__contact-suffix">, {contact.name_suffix}</span>
+                    <span className="m-contact-item__contact-suffix">
+,
+                      {contact.name_suffix}
+                    </span>
                   )}
                 </TextBlock>
                 <div className="m-contact-item__tags">
