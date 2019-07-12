@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {Trans} from '@lingui/macro'; // eslint-disable-line import/no-extraneous-dependencies
 import classnames from 'classnames';
 import {
   Spinner,
@@ -82,7 +83,8 @@ class AuthButton extends Component {
           <FormRow>
             <FormColumn bottomSpace fluid>
               <TextFieldGroup
-                label="Before pushing Mastodon button, enter your account address below (ex.: username@instance.tld)"
+                label={(
+                  <Trans id="remote_identity.form.mastodon.instance_label">Before pushing Mastodon button, enter your account address below (ex.: username@instance.tld)</Trans>)}
                 value={this.state.mastodonAcct}
                 onChange={this.handleAcctChange}
                 name="mastodonAcct"
