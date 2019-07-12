@@ -27,6 +27,7 @@ import './draft-message-placeholder.scss';
 
 const PROTOCOL_EMAIL = 'email';
 const PROTOCOL_TWITTER = 'twitter';
+const PROTOCOL_MASTODON = 'mastodon';
 
 @withUser()
 @withI18n()

@@ -4,7 +4,11 @@ import { Trans } from '@lingui/macro'; // eslint-disable-line import/no-extraneo
 import {
   Section, Callout, Icon, Title,
 } from '../../../../components';
-import { PROVIDER_GMAIL, PROVIDER_TWITTER } from '../../../../modules/remoteIdentity';
+import {
+  PROVIDER_GMAIL,
+  PROVIDER_TWITTER,
+  PROVIDER_MASTODON
+} from '../../../../modules/remoteIdentity';
 import RemoteIdentityEmail from '../RemoteIdentityEmail';
 import AuthButton from '../AuthButton';
 import ProviderButtonContainer from '../ProviderButtonContainer';

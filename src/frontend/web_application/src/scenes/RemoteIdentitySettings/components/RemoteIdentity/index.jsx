@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Section, Icon } from '../../../../components';
 import {
-  PROVIDER_EMAIL, PROVIDER_GMAIL, PROVIDER_TWITTER, ProviderIcon,
+  PROVIDER_EMAIL, PROVIDER_GMAIL, PROVIDER_TWITTER, PROVIDER_MASTODON, ProviderIcon,
 } from '../../../../modules/remoteIdentity';
 import RemoteIdentityEmail from '../RemoteIdentityEmail';
 import RemoteIdentityOauth from '../RemoteIdentityOauth';
@@ -42,6 +42,7 @@ class RemoteIdentity extends Component {
         return renderComponent(RemoteIdentityEmail);
       case PROVIDER_GMAIL:
       case PROVIDER_TWITTER:
+      case PROVIDER_MASTODON:
         return renderComponent(RemoteIdentityOauth);
     }
   }

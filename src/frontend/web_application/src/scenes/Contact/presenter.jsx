@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Trans, withI18n } from '@lingui/react';
 import { Switch, Route } from 'react-router-dom';
 import { ContactAvatarLetter } from '../../modules/avatar';
-import { IDENTITY_TYPE_TWITTER } from '../../modules/contact';
+import { IDENTITY_TYPE_TWITTER, IDENTITY_TYPE_MASTODON } from '../../modules/contact';
 import { getAveragePI } from '../../modules/pi';
 import { withPush } from '../../modules/routing';
 import { ScrollDetector } from '../../modules/scroll';

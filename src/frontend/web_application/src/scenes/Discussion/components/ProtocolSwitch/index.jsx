@@ -19,6 +19,8 @@ class ProtocolSwitch extends PureComponent {
         return 'facebook-square';
       case 'twitter':
         return 'twitter';
+      case 'mastodon':
+        return 'mastodon';
       case 'sms':
         return 'phone';
       case 'email':

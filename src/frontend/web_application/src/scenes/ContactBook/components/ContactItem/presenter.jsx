@@ -12,6 +12,7 @@ import './style.scss';
 
 const TYPE_FACEBOOK = 'facebook';
 const TYPE_TWITTER = 'twitter';
+const TYPE_MASTODON = 'mastodon';
 
 const getAddress = ({ attrName, attr }) => {
   switch (attrName) {
@@ -31,6 +32,7 @@ const getAddress = ({ attrName, attr }) => {
       switch (attr.type) {
         case TYPE_FACEBOOK:
         case TYPE_TWITTER:
+        case TYPE_MASTODON:
         default:
           return {
             type: attr.type,
