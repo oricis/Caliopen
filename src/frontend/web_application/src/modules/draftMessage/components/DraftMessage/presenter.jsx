@@ -210,7 +210,8 @@ class DraftMessage extends Component {
       );
     }
 
-    if (protocol === PROTOCOL_TWITTER && currentDraft.body.length === 0) {
+    if ((protocol === PROTOCOL_TWITTER || protocol === PROTOCOL_MASTODON)
+      && currentDraft.body.length === 0) {
       errors.push(
         <Trans
           id="draft-message.errors.empty-body"

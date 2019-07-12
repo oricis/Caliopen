@@ -22,9 +22,7 @@ export const withAuthorize = () => (C) => {
 
         return authorizePopup({ provider });
       } catch (e) {
-        if (e.response) {
-          throw e;
-        }
+        throw e;
       }
     }
 
