@@ -9,7 +9,7 @@ import './style.scss';
 class RemoteIdentitySettings extends Component {
   static propTypes = {
     requestProviders: PropTypes.func.isRequired,
-    providers: PropTypes.shape(PropTypes.string),
+    providers: PropTypes.arrayOf(PropTypes.string),
     requestRemoteIdentities: PropTypes.func.isRequired,
     onIdentityChange: PropTypes.func.isRequired,
     onIdentityDelete: PropTypes.func.isRequired,
