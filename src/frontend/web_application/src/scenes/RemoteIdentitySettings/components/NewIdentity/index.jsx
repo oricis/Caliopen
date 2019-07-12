@@ -22,6 +22,7 @@ class NewIdentity extends Component {
     providers: PropTypes.arrayOf(PropTypes.string),
     onRemoteIdentityChange: PropTypes.func.isRequired,
     onClear: PropTypes.func.isRequired,
+    onError: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -47,7 +48,7 @@ class NewIdentity extends Component {
 
   handleOAuthDone = (result) => {
     if (result && result.response) {
-      console.log(result.response)
+      this.props.onError(result.response)
     }
     this.props.onClear();
   }

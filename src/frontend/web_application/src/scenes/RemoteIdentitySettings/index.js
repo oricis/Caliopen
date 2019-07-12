@@ -1,16 +1,22 @@
-import { createSelector } from 'reselect';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import {createSelector} from 'reselect';
+import {bindActionCreators, compose} from 'redux';
+import {connect} from 'react-redux';
 import {
-  createIdentity, deleteIdentity, updateIdentity, identitiesSelector, identityStateSelector,
+  createIdentity,
+  deleteIdentity,
+  updateIdentity,
+  identitiesSelector,
+  identityStateSelector,
 } from '../../modules/remoteIdentity';
-import { requestRemoteIdentities } from '../../store/modules/remote-identity';
-import { requestProviders } from '../../store/modules/provider';
-import { getModuleStateSelector } from '../../store/selectors/getModuleStateSelector';
+import {requestRemoteIdentities} from '../../store/modules/remote-identity';
+import {requestProviders} from '../../store/modules/provider';
+import {getModuleStateSelector} from '../../store/selectors/getModuleStateSelector';
+import {withNotification} from '../../modules/userNotify';
+import {withI18n} from '@lingui/react';
 import Presenter from './presenter';
 
 const providersSelector = (state) => {
-  const { providers } = getModuleStateSelector('provider')(state);
+  const {providers} = getModuleStateSelector('provider')(state);
 
   return providers && providers.map(provider => provider.name);
 };
@@ -25,12 +31,12 @@ const mapStateToProps = createSelector(
   })
 );
 
-const onIdentityChange = ({ identity }) => (dispatch) => {
+const onIdentityChange = ({identity}) => (dispatch) => {
   if (!identity.identity_id) {
-    return dispatch(createIdentity({ identity }));
+    return dispatch(createIdentity({identity}));
   }
 
-  return dispatch(updateIdentity({ identity }));
+  return dispatch(updateIdentity({identity}));
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators({
@@ -40,4 +46,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   requestProviders,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Presenter);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withI18n(),
+  withNotification()
+)(Presenter);
