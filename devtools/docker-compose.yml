@@ -206,6 +206,19 @@ services:
     volumes:
     - ../src/backend/configs:/etc/caliopen
 
+  mastodonworker:
+    build:
+      context: ../src/backend
+      dockerfile: Dockerfile.mastodon-worker
+    image: caliopen_mastodonworker
+    depends_on:
+    - cassandra
+    - objectstore
+    - elasticsearch
+    - nats
+    volumes:
+    - ../src/backend/configs:/etc/caliopen
+
   # Poller for remote identities
   identitypoller:
     build:
@@ -217,6 +230,7 @@ services:
       - mqworker
       - nats
       - twitterworker
+      - mastodonworker
     volumes:
       - ../src/backend/configs:/etc/caliopen
 
