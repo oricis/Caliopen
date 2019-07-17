@@ -357,6 +357,7 @@
   "remote_identity.form.serverPort.error": "port is required",
   "remote_identity.form.username.error": "login is required",
   "remote_identity.form.username.label": "Login:",
+  "remote_identity.form.mastodon.instance_label": "Before pushing Mastodon button, enter your account address below (ex.: username@instance.tld)",
   "remote_identity.gmail.help": "You will be redirected to gmail authentication",
   "remote_identity.how_to": "<0>External accounts are fetched every 15 minutes.<1/>Currently there is no indicator to inform that the account is correctly configured until first try is done.</0>",
   "remote_identity.last_connection": "Last connection: <0/>",

@@ -12,12 +12,15 @@ export default {
   sms: {
   },
   email: {
-    regexp: /^[a-z0-9.!#$%&*+=?_{}~-]+@([a-z0-9]+\.)?[a-z0-9][a-z0-9-]*\.[a-z]{2,60}$/,
+    regexp: /^[a-z0-9.!#$%&*+=?_{}~-]+@([a-zA-Z0-9]+\.)+[a-zA-Z]{2,60}$/,
   },
   twitter: {
     // https://help.twitter.com/en/managing-your-account/twitter-username-rules
     regexp: /^\w{1,15}$/,
   },
   facebook: {
+  },
+  mastodon: {
+    regexp: /^[a-z0-9.!#$%&*+=?_{}~-]+@([a-zA-Z0-9]+\.)+[a-zA-Z]{2,60}$/,
   },
 };

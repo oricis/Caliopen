@@ -1,12 +1,18 @@
 import { createSelector } from 'reselect';
-import { bindActionCreators } from 'redux';
+import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
+import { withI18n } from '@lingui/react';
 import {
-  createIdentity, deleteIdentity, updateIdentity, identitiesSelector, identityStateSelector,
+  createIdentity,
+  deleteIdentity,
+  updateIdentity,
+  identitiesSelector,
+  identityStateSelector,
 } from '../../modules/remoteIdentity';
 import { requestRemoteIdentities } from '../../store/modules/remote-identity';
 import { requestProviders } from '../../store/modules/provider';
 import { getModuleStateSelector } from '../../store/selectors/getModuleStateSelector';
+import { withNotification } from '../../modules/userNotify';
 import Presenter from './presenter';
 
 const providersSelector = (state) => {
@@ -40,4 +46,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   requestProviders,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Presenter);
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withI18n(),
+  withNotification()
+)(Presenter);

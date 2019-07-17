@@ -9,11 +9,14 @@ import './style.scss';
 class RemoteIdentitySettings extends Component {
   static propTypes = {
     requestProviders: PropTypes.func.isRequired,
-    providers: PropTypes.shape(PropTypes.string),
+    providers: PropTypes.arrayOf(PropTypes.string),
     requestRemoteIdentities: PropTypes.func.isRequired,
     onIdentityChange: PropTypes.func.isRequired,
     onIdentityDelete: PropTypes.func.isRequired,
     identities: PropTypes.arrayOf(PropTypes.shape({})),
+    i18n: PropTypes.shape({}).isRequired,
+    notifyError: PropTypes.func.isRequired,
+    notifySuccess: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -38,6 +41,19 @@ class RemoteIdentitySettings extends Component {
     return onIdentityDelete(...params);
   }
 
+  handleError = (error) => {
+    // TODO : better error handling
+    console.log(error);
+    let errorMessage;
+    if (error.data && error.data.errors && error.data.errors.length > 0) {
+      errorMessage = error.data.errors[0].message;
+    } else {
+      errorMessage = 'new identity failed. See console for error';
+    }
+    const { i18n, notifyError } = this.props;
+    notifyError({ message: i18n._('', null, { defaults: errorMessage }) });
+  }
+
   handleClear = () => {
     this.props.requestRemoteIdentities();
   }
@@ -49,9 +65,13 @@ class RemoteIdentitySettings extends Component {
 
   renderIdentity(identity) {
     return (
-      <div className="s-settings-identities__identity" key={identity.identity_id}>
+      <div
+        className="s-settings-identities__identity"
+        key={identity.identity_id}
+      >
         <RemoteIdentity
           remoteIdentity={identity}
+          lint
           onRemoteIdentityChange={this.handleChange}
           onRemoteIdentityDelete={this.handleDelete}
           onClear={this.handleClear}
@@ -72,6 +92,7 @@ class RemoteIdentitySettings extends Component {
             onRemoteIdentityChange={this.handleCreate}
             onRemoteIdentityDelete={onIdentityDelete}
             onClear={this.handleClear}
+            onError={this.handleError}
           />
         </div>
         <Fragment>

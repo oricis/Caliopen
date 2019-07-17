@@ -561,7 +561,8 @@ class Contact extends Component {
         isFetching
         actionsNode={(
           <Fragment>
-            <PlaceholderBlock shape="line" display="inline-block" width="small" />:
+            <PlaceholderBlock shape="line" display="inline-block" width="small" />
+:
             <PlaceholderBlock shape="line" display="inline-block" />
             <PlaceholderBlock shape="line" display="inline-block" width="large" />
           </Fragment>

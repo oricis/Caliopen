@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { bindActionCreators, compose } from 'redux';
 import { connect } from 'react-redux';
-import { identitiesSelector } from '../../../../modules/identity';
+import { identitiesSelector } from '../../../identity';
 import { getIdentityProtocol } from '../../services/getIdentityProtocol';
 import Presenter from './presenter';
 

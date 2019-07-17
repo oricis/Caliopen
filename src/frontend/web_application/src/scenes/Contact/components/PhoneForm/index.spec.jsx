@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import PhoneForm from './';
+import PhoneForm from '.';
 
 describe('component PhoneForm', () => {
   it('init form', () => {

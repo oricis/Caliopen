@@ -6,11 +6,11 @@ import {
   Button, Icon, TextareaFieldGroup, TextFieldGroup, Link, Confirm, PlaceholderBlock,
   Callout, FieldErrors, Spinner,
 } from '../../../../components';
-import { LockedMessage } from '../../../../modules/encryption';
-import { identityToParticipant } from '../../../../modules/identity';
-import { withScrollTarget } from '../../../../modules/scroll';
-import { withUser } from '../../../../modules/user';
-import { withNotification } from '../../../../modules/userNotify';
+import { LockedMessage } from '../../../encryption';
+import { identityToParticipant } from '../../../identity';
+import { withScrollTarget } from '../../../scroll';
+import { withUser } from '../../../user';
+import { withNotification } from '../../../userNotify';
 import { getRecipients } from '../../../../services/message';
 import { STATUS_DECRYPTED, STATUS_ERROR } from '../../../../store/modules/encryption';
 import RecipientList from '../RecipientList';
@@ -27,6 +27,7 @@ import './draft-message-placeholder.scss';
 
 const PROTOCOL_EMAIL = 'email';
 const PROTOCOL_TWITTER = 'twitter';
+const PROTOCOL_MASTODON = 'mastodon';
 
 @withUser()
 @withI18n()
@@ -209,7 +210,8 @@ class DraftMessage extends Component {
       );
     }
 
-    if (protocol === PROTOCOL_TWITTER && currentDraft.body.length === 0) {
+    if ((protocol === PROTOCOL_TWITTER || protocol === PROTOCOL_MASTODON)
+      && currentDraft.body.length === 0) {
       errors.push(
         <Trans
           id="draft-message.errors.empty-body"

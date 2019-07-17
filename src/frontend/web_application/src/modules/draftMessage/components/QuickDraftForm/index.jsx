@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withI18n } from '@lingui/react';
 import { Button, Spinner } from '../../../../components';
-import { LockedMessage } from '../../../../modules/encryption';
+import { LockedMessage } from '../../../encryption';
 import ToggleAdvancedFormButton from '../ToggleAdvancedFormButton';
 import { getRecipients } from '../../../../services/message';
 

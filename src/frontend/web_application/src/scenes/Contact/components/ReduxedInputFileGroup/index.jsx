@@ -94,7 +94,9 @@ class ReduxedInputFileGroup extends PureComponent {
         <Trans
           id="input-file-group.error.max_size"
         >
-          The file size must be under <FileSize size={maxSize} />
+          The file size must be under
+          {' '}
+          <FileSize size={maxSize} />
         </Trans>
       ));
     }

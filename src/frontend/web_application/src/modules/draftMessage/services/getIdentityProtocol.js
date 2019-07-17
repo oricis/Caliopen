@@ -3,6 +3,7 @@ const IDENTITY_PROTOCOLS = {
   smtp: 'email',
   imap: 'email',
   twitter: 'twitter',
+  mastodon: 'mastodon',
 };
 
 export const getIdentityProtocol = identity => IDENTITY_PROTOCOLS[identity.protocol];

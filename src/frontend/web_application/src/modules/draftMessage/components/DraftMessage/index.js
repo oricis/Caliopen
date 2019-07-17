@@ -5,7 +5,7 @@ import { createMessageCollectionStateSelector } from '../../../../store/selector
 import {
   deleteDraft, deleteDraftSuccess, clearDraft, syncDraft,
 } from '../../../../store/modules/draft-message';
-import { deleteMessage, getLastMessageFromArray } from '../../../../modules/message';
+import { deleteMessage, getLastMessageFromArray } from '../../../message';
 import { withContacts } from '../../../contact';
 import { updateTagCollection } from '../../../tags';
 import { saveDraft } from '../../actions/saveDraft';

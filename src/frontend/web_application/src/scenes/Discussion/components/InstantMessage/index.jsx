@@ -29,7 +29,7 @@ import './instant-message-participants.scss';
 
 const PROTOCOL_ICONS = {
   facebook: 'facebook',
-  twitter: 'mastodon',
+  twitter: 'twitter',
   mastodon: 'mastodon',
   sms: 'phone',
   email: 'envelope',

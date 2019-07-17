@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import ImForm from './';
+import ImForm from '.';
 
 describe('component ImForm', () => {
   it('init form', () => {
