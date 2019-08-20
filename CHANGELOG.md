@@ -4,9 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- No feedbacks were displayed when errors happend on signin form.
+- No spinner on activity on signin form.
+
 ## [0.23] 2019-07-19
 
-## Added
+### Added
 
 - Mastodon protocol
 - Tag email with imap flags when fetching external account

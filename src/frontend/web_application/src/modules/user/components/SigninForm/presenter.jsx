@@ -27,7 +27,6 @@ const getRedirect = (queryString) => {
 @withDevice()
 class SigninForm extends Component {
   static propTypes = {
-    errors: PropTypes.shape({}),
     form: PropTypes.shape({}),
     clientDevice: PropTypes.shape({}),
     i18n: PropTypes.shape({}).isRequired,
@@ -38,10 +37,12 @@ class SigninForm extends Component {
 
   static defaultProps = {
     form: {},
+    clientDevice: undefined,
   };
 
   state = {
     isMounted: false,
+    isLoading: false,
     context: CONTEXT_SAFE,
     formValues: {
       username: '',
@@ -88,8 +89,9 @@ class SigninForm extends Component {
 
     this.setState((prevState) => {
       const errors = this.validate(prevState.formValues);
+      const isLoading = Object.keys(errors).length === 0;
 
-      return { errors };
+      return { errors, isLoading };
     }, () => {
       if (Object.keys(this.state.errors).length > 0) {
         return;
@@ -100,7 +102,10 @@ class SigninForm extends Component {
         ...formValues,
         username: usernameNormalizer(formValues.username),
         device,
-      }).then(this.handleSigninSuccess, this.handleSigninError);
+      }).then(this.handleSigninSuccess, this.handleSigninError)
+        .finally(() => {
+          this.setState({ isLoading: false });
+        });
     });
   }
 
@@ -163,16 +168,16 @@ class SigninForm extends Component {
       return <Redirect push to={redirect} />;
     }
 
-    const { errors = {}, form, i18n } = this.props;
+    const { form, i18n } = this.props;
 
     return (
       <div className="s-signin">
         <FormGrid className="s-signin__form">
           <form method="post" onSubmit={this.handleSignin} {...form}>
-            {errors.global && (
+            {this.state.errors.global && (
               <FormRow>
                 <FormColumn rightSpace={false} bottomSpace>
-                  <FieldErrors errors={errors.global} />
+                  <FieldErrors errors={this.state.errors.global} />
                 </FormColumn>
               </FormRow>
             )}
@@ -185,7 +190,7 @@ class SigninForm extends Component {
                   placeholder={i18n._('signin.form.username.placeholder', null, { defaults: 'username' })}
                   name="username"
                   value={this.state.username}
-                  errors={errors.username}
+                  errors={this.state.errors.username}
                   onChange={this.handleInputChange}
                   inputRef={(input) => { this.usernameInputRef = input; }}
                 />
@@ -199,7 +204,7 @@ class SigninForm extends Component {
                   name="password"
                   type="password"
                   value={this.state.password}
-                  errors={errors.password}
+                  errors={this.state.errors.password}
                   onChange={this.handleInputChange}
                   inputRef={(input) => { this.passwordInputRef = input; }}
                 />
@@ -211,8 +216,8 @@ class SigninForm extends Component {
                   type="submit"
                   display="expanded"
                   shape="plain"
-                  disabled={!this.state.isMounted}
-                  icon={!this.state.isMounted ? <Spinner isLoading display="inline" /> : undefined}
+                  disabled={!this.state.isMounted || this.state.isLoading}
+                  icon={(!this.state.isMounted || this.state.isLoading) ? <Spinner isLoading display="inline" /> : undefined}
                 >
                   <Trans id="signin.action.login">Login</Trans>
                 </Button>
