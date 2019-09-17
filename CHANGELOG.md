@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.23.1] 2019-09-17
+
 ### Fixed
 
 - No feedbacks were displayed when errors happend on signin form.
