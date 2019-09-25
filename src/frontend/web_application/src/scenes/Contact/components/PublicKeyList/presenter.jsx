@@ -64,7 +64,7 @@ class PublicKeyList extends Component {
   getKeyQuality = (publicKey) => {
     let score = 2;
 
-    score -= Date.parse(publicKey.expire_date) > Date.now() ? 0 : 1;
+    score -= (publicKey.expire_date && (Date.parse(publicKey.expire_date) < Date.now())) ? 1 : 0;
     // XXX: not sure about this
     // score -= publicKey.size >= 2048 ? 0 : 1;
 
