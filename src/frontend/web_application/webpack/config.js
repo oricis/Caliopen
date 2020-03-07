@@ -102,12 +102,14 @@ const configureStylesheet = () => {
               loader: 'sass-loader',
               options: {
                 sourceMap: false,
-                includePaths: [
-                  path.resolve(__dirname, '../src'),
-                  path.resolve(__dirname, '../node_modules/foundation-sites/scss'),
-                  path.resolve(__dirname, '../node_modules/font-awesome/scss'),
-                  path.resolve(__dirname, '../node_modules/react-redux-notify/src'),
-                ],
+                sassOptions: {
+                  includePaths: [
+                    path.resolve(__dirname, '../src'),
+                    // XXX: use tilde ~ instead of those includes https://webpack.js.org/loaders/sass-loader/#resolving-import-at-rules
+                    path.resolve(__dirname, '../node_modules/foundation-sites/scss'),
+                    path.resolve(__dirname, '../node_modules/react-redux-notify/src'),
+                  ],
+                },
               },
             },
           ],
