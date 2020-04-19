@@ -9,7 +9,7 @@ const NavList = ({ className, dir, ...props }) => {
     'm-nav-list',
     {
       'm-nav-list--vertical': dir === 'vertical',
-    },
+    }
   );
 
   return (

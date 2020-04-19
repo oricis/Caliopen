@@ -18,7 +18,7 @@ class Message extends Component {
     scrollToMe: PropTypes.func,
     user: PropTypes.shape({}).isRequired,
     updateTagCollection: PropTypes.func,
-    i18n: PropTypes.shape({}).isRequired,
+    i18n: PropTypes.shape({ _: PropTypes.func }).isRequired,
     noInteractions: PropTypes.bool,
     isLocked: PropTypes.bool.isRequired,
     encryptionStatus: PropTypes.shape({}),
@@ -45,7 +45,7 @@ class Message extends Component {
     if (!isLocked && isVisible && message.is_unread) {
       onMessageRead({ message });
     }
-  }
+  };
 
   isMail = () => {
     const { message } = this.props;
@@ -60,14 +60,14 @@ class Message extends Component {
   };
 
   handleOpenTags = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       ...prevState,
       isTagModalOpen: true,
     }));
   };
 
   handleCloseTags = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       ...prevState,
       isTagModalOpen: false,
     }));
@@ -78,7 +78,7 @@ class Message extends Component {
     if (onMessageDelete) {
       onMessageDelete({ message });
     }
-  }
+  };
 
   renderTagsModal = () => {
     const { message, i18n } = this.props;
@@ -88,9 +88,7 @@ class Message extends Component {
         id="tags.header.title"
         defaults={'Tags <0>(Total: {nb})</0>'}
         values={{ nb }}
-        components={[
-          (<span className="m-tags-form__count" />),
-        ]}
+        components={[<span className="m-tags-form__count" />]}
       />
     );
 
@@ -101,11 +99,14 @@ class Message extends Component {
         title={title}
         onClose={this.handleCloseTags}
       >
-        <ManageEntityTags type="message" entity={message} onChange={this.handleTagsChange} />
+        <ManageEntityTags
+          type="message"
+          entity={message}
+          onChange={this.handleTagsChange}
+        />
       </Modal>
     );
-  }
-
+  };
 
   render() {
     const { noInteractions } = this.props;
@@ -118,7 +119,6 @@ class Message extends Component {
       ...this.props,
     };
 
-
     return (
       <VisibilitySensor
         partialVisibility="bottom"
@@ -127,12 +127,11 @@ class Message extends Component {
         scrollThrottle={2000}
       >
         <Fragment>
-          {
-            this.isMail() ?
-              <MailMessage {...commonProps} />
-              :
-              <InstantMessage {...commonProps} />
-          }
+          {this.isMail() ? (
+            <MailMessage {...commonProps} />
+          ) : (
+            <InstantMessage {...commonProps} />
+          )}
           {!noInteractions && this.renderTagsModal()}
         </Fragment>
       </VisibilitySensor>

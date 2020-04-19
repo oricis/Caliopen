@@ -16,14 +16,10 @@ export const withAuthorize = () => (C) => {
         initPopup, authorizePopup,
       } = this.props;
 
-      try {
-        const provider = await getProvider({ providerName, identifier });
-        initPopup({ providerName });
+      const provider = await getProvider({ providerName, identifier });
+      initPopup({ providerName });
 
-        return authorizePopup({ provider });
-      } catch (e) {
-        throw e;
-      }
+      return authorizePopup({ provider });
     }
 
     render() {

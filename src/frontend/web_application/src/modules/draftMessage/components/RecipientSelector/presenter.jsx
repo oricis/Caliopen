@@ -34,10 +34,8 @@ class RecipientSelector extends PureComponent {
             <Icon type="email" />
             {' '}
             {recipient.label}
-            {' '}
-&lt;
-            {recipient.address}
-&gt;
+            {' '}&lt;
+            {recipient.address}&gt;
           </Fragment>
         );
       case PROTOCOL_TWITTER:

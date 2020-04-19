@@ -1,7 +1,6 @@
 @import '../../../../styles/common';
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
-$fa-font-path: '../../../../../node_modules/font-awesome/fonts';
-@import 'font-awesome';
+@import '../../../../styles/vendor/bootstrap_font-awesome';
 
 .m-draft-message-advanced {
   @include flex-grid-row($size: expand);

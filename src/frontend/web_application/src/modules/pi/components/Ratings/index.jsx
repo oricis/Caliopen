@@ -42,7 +42,7 @@ const Ratings = ({
 }) => {
   const ratingsClassName = classnames(
     'm-pi-ratings',
-    { 'm-pi-ratings--mini': mini },
+    { 'm-pi-ratings--mini': mini }
   );
   const title = PI_PROPERTIES.map(name => `${name}: ${pi[name]}`).join(',\n');
 

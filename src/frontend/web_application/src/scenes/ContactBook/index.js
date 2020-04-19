@@ -39,5 +39,5 @@ const mapDispatchToProps = dispatch => bindActionCreators({
 
 export default compose(
   withUser(),
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(mapStateToProps, mapDispatchToProps)
 )(Presenter);

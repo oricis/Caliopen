@@ -3,8 +3,16 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { i18nMark, withI18n, Trans } from '@lingui/react';
 import {
-  Button, Icon, TextareaFieldGroup, TextFieldGroup, Link, Confirm, PlaceholderBlock,
-  Callout, FieldErrors, Spinner,
+  Button,
+  Icon,
+  TextareaFieldGroup,
+  TextFieldGroup,
+  Link,
+  Confirm,
+  PlaceholderBlock,
+  Callout,
+  FieldErrors,
+  Spinner,
 } from '../../../../components';
 import { LockedMessage } from '../../../encryption';
 import { identityToParticipant } from '../../../identity';
@@ -12,7 +20,10 @@ import { withScrollTarget } from '../../../scroll';
 import { withUser } from '../../../user';
 import { withNotification } from '../../../userNotify';
 import { getRecipients } from '../../../../services/message';
-import { STATUS_DECRYPTED, STATUS_ERROR } from '../../../../store/modules/encryption';
+import {
+  STATUS_DECRYPTED,
+  STATUS_ERROR,
+} from '../../../../store/modules/encryption';
 import RecipientList from '../RecipientList';
 import AttachmentManager from '../AttachmentManager';
 import IdentitySelector from '../IdentitySelector';
@@ -38,7 +49,7 @@ class DraftMessage extends Component {
     notifyError: PropTypes.func.isRequired,
     className: PropTypes.string,
     isReply: PropTypes.bool,
-    i18n: PropTypes.shape({}).isRequired,
+    i18n: PropTypes.shape({ _: PropTypes.func }).isRequired,
     availableIdentities: PropTypes.arrayOf(PropTypes.shape({})),
     scrollTarget: PropTypes.shape({ forwardRef: PropTypes.func }).isRequired,
     internalId: PropTypes.string.isRequired,
@@ -91,24 +102,49 @@ class DraftMessage extends Component {
     encryptionStatus: undefined,
   };
 
+  static initialState = {
+    initialized: false,
+    isLocked: false,
+    advancedForm: true,
+    isSending: false,
+    draftMessage: {
+      body: '',
+      identityId: '',
+      subject: '',
+      recipients: [],
+    },
+  };
+
   static genererateStateFromProps(props, prevState) {
     const {
-      draftMessage, isReply, availableIdentities, isFetching,
-      isEncrypted, draftEncryption, encryptionStatus,
+      draftMessage,
+      isReply,
+      availableIdentities,
+      isFetching,
+      isEncrypted,
+      draftEncryption,
+      encryptionStatus,
     } = props;
 
     if (!draftMessage) {
       return prevState;
     }
 
-    const isLocked = isEncrypted && ![STATUS_DECRYPTED, STATUS_ERROR].includes(encryptionStatus);
-    const { body } = (isEncrypted && encryptionStatus && encryptionStatus === STATUS_DECRYPTED) ?
-      draftEncryption.decryptedMessage : draftMessage;
+    const isLocked =
+      isEncrypted &&
+      ![STATUS_DECRYPTED, STATUS_ERROR].includes(encryptionStatus);
+    const { body } =
+      isEncrypted && encryptionStatus && encryptionStatus === STATUS_DECRYPTED
+        ? draftEncryption.decryptedMessage
+        : draftMessage;
 
     const recipients = getRecipients(draftMessage);
-    const identityId = (draftMessage.user_identities && draftMessage.user_identities[0]) || '';
+    const identityId =
+      (draftMessage.user_identities && draftMessage.user_identities[0]) || '';
 
-    const currIdentity = availableIdentities.find(identity => identity.identity_id === identityId);
+    const currIdentity = availableIdentities.find(
+      (identity) => identity.identity_id === identityId
+    );
 
     return {
       initialized: !isFetching && !isLocked,
@@ -124,9 +160,13 @@ class DraftMessage extends Component {
   }
 
   static getDraftFromState(state, props) {
-    const { availableIdentities, userState: { user } } = props;
-    const currIdentity = availableIdentities
-      .find(identity => identity.identity_id === state.draftMessage.identityId);
+    const {
+      availableIdentities,
+      userState: { user },
+    } = props;
+    const currIdentity = availableIdentities.find(
+      (identity) => identity.identity_id === state.draftMessage.identityId
+    );
 
     return {
       ...props.draftMessage,
@@ -140,33 +180,35 @@ class DraftMessage extends Component {
     };
   }
 
-  static initialState = {
-    initialized: false,
-    isLocked: false,
-    advancedForm: true,
-    isSending: false,
-    draftMessage: {
-      body: '',
-      identityId: '',
-      subject: '',
-      recipients: [],
-    },
-  };
-
-  state = this.constructor.genererateStateFromProps(this.props, this.constructor.initialState);
+  state = this.constructor.genererateStateFromProps(
+    this.props,
+    this.constructor.initialState
+  );
 
   componentDidUpdate(prevProps) {
-    const propNames = ['draftMessage', 'isReply', 'availableIdentities', 'isFetching', 'encryptionStatus'];
-    const hasChanged = propNames.some(propName => this.props[propName] !== prevProps[propName]);
+    const propNames = [
+      'draftMessage',
+      'isReply',
+      'availableIdentities',
+      'isFetching',
+      'encryptionStatus',
+    ];
+    const hasChanged = propNames.some(
+      (propName) => this.props[propName] !== prevProps[propName]
+    );
 
     if (!this.state.initialized && hasChanged) {
       // eslint-disable-next-line react/no-did-update-set-state
-      this.setState(prevState => this.constructor.genererateStateFromProps(this.props, prevState));
+      this.setState((prevState) =>
+        this.constructor.genererateStateFromProps(this.props, prevState)
+      );
     }
   }
 
-  getIdentity = ({ identityId }) => this.props.availableIdentities
-    .find(ident => ident.identity_id === identityId);
+  getIdentity = ({ identityId }) =>
+    this.props.availableIdentities.find(
+      (ident) => ident.identity_id === identityId
+    );
 
   getCanSend = () => {
     const { isReply } = this.props;
@@ -175,32 +217,41 @@ class DraftMessage extends Component {
     const hasRecipients = this.state.draftMessage.recipients.length > 0;
 
     return (isReply || hasRecipients) && !this.state.isSending && isValid;
-  }
+  };
 
   getEncryptionTranslation = () => {
     const { isEncrypted, encryptionStatus } = this.props;
 
-    const encryptionEnabled = isEncrypted && encryptionStatus === STATUS_DECRYPTED;
+    const encryptionEnabled =
+      isEncrypted && encryptionStatus === STATUS_DECRYPTED;
 
-    return encryptionEnabled ?
-      i18nMark('draft-message.encryption.ok') :
-      i18nMark('draft-message.encryption.ko');
+    return encryptionEnabled
+      ? i18nMark('draft-message.encryption.ok')
+      : i18nMark('draft-message.encryption.ko');
   };
 
   validate = () => {
     const currentDraft = this.state.draftMessage;
-    const identity = this.getIdentity({ identityId: this.state.draftMessage.identityId });
+    const identity = this.getIdentity({
+      identityId: this.state.draftMessage.identityId,
+    });
 
     if (!identity) {
       return [
-        (<Trans id="draft-message.errors.missing-identity">An identity is mandatory to create a draft</Trans>),
+        <Trans id="draft-message.errors.missing-identity">
+          An identity is mandatory to create a draft
+        </Trans>,
       ];
     }
 
     const errors = [];
     const protocol = getIdentityProtocol(identity);
 
-    if (currentDraft.recipients.some(participant => participant.protocol !== protocol)) {
+    if (
+      currentDraft.recipients.some(
+        (participant) => participant.protocol !== protocol
+      )
+    ) {
       errors.push(
         <Trans
           id="draft-message.errors.invalid-participant"
@@ -210,8 +261,10 @@ class DraftMessage extends Component {
       );
     }
 
-    if ((protocol === PROTOCOL_TWITTER || protocol === PROTOCOL_MASTODON)
-      && currentDraft.body.length === 0) {
+    if (
+      (protocol === PROTOCOL_TWITTER || protocol === PROTOCOL_MASTODON) &&
+      currentDraft.body.length === 0
+    ) {
       errors.push(
         <Trans
           id="draft-message.errors.empty-body"
@@ -222,37 +275,40 @@ class DraftMessage extends Component {
     }
 
     return errors;
-  }
+  };
 
   handleToggleAdvancedForm = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       advancedForm: !prevState.advancedForm,
     }));
-  }
+  };
 
   handleChange = (ev) => {
     const { name, value } = ev.target;
 
-    this.setState((prevState) => {
-      const draftMessage = {
-        ...prevState.draftMessage,
-        [name]: value,
-      };
+    this.setState(
+      (prevState) => {
+        const draftMessage = {
+          ...prevState.draftMessage,
+          [name]: value,
+        };
 
-      return {
-        draftMessage,
-        hasChanged: true,
-      };
-    }, () => {
-      const { internalId, original, onEditDraft } = this.props;
+        return {
+          draftMessage,
+          hasChanged: true,
+        };
+      },
+      () => {
+        const { internalId, original, onEditDraft } = this.props;
 
-      return onEditDraft({
-        internalId,
-        draft: this.constructor.getDraftFromState(this.state, this.props),
-        message: original,
-      });
-    });
-  }
+        return onEditDraft({
+          internalId,
+          draft: this.constructor.getDraftFromState(this.state, this.props),
+          message: original,
+        });
+      }
+    );
+  };
 
   // @deprecated: saving button has been removed
   // handleSave = async ({ draft }) => {
@@ -276,7 +332,14 @@ class DraftMessage extends Component {
   handleSend = async (ev) => {
     ev.preventDefault();
     const {
-      onSendDraft, internalId, original, notifyError, i18n, onSent, requestDraft, hasDiscussion,
+      onSendDraft,
+      internalId,
+      original,
+      notifyError,
+      i18n,
+      onSent,
+      requestDraft,
+      hasDiscussion,
     } = this.props;
 
     this.setState({ isSending: true });
@@ -301,15 +364,21 @@ class DraftMessage extends Component {
       onSent({ message });
     } catch (err) {
       notifyError({
-        message: i18n._('draft.feedback.send-error', null, { defaults: 'Unable to send the message' }),
+        message: i18n._('draft.feedback.send-error', null, {
+          defaults: 'Unable to send the message',
+        }),
       });
       this.setState({ isSending: false });
     }
-  }
+  };
 
   handleDelete = async () => {
     const {
-      original, internalId, onDeleteMessage, onDeleteMessageSuccessfull, requestDraft,
+      original,
+      internalId,
+      onDeleteMessage,
+      onDeleteMessageSuccessfull,
+      requestDraft,
       hasDiscussion,
     } = this.props;
 
@@ -323,7 +392,7 @@ class DraftMessage extends Component {
       await requestDraft({ internalId, hasDiscussion });
     }
     onDeleteMessageSuccessfull();
-  }
+  };
 
   // @deprecated: edit tags button has been removed
   // handleTagsChange = async ({ tags }) => {
@@ -336,98 +405,107 @@ class DraftMessage extends Component {
   // }
 
   handleFilesChange = async ({ attachments }) => {
-    const {
-      onUploadAttachments, i18n, original, internalId,
-    } = this.props;
+    const { onUploadAttachments, i18n, original, internalId } = this.props;
 
     return onUploadAttachments(internalId, i18n, original, {
       draft: this.constructor.getDraftFromState(this.state, this.props),
       attachments,
     });
-  }
+  };
 
   handleDeleteAttachement = (attachment) => {
-    const {
-      onDeleteAttachement, i18n, original, internalId,
-    } = this.props;
+    const { onDeleteAttachement, i18n, original, internalId } = this.props;
 
     return onDeleteAttachement(internalId, i18n, original, {
       draft: this.constructor.getDraftFromState(this.state, this.props),
       attachment,
     });
-  }
+  };
 
-  forceParticipantsProtocol = ({ protocol, participants }) => participants
-    .map(participant => ({
+  forceParticipantsProtocol = ({ protocol, participants }) =>
+    participants.map((participant) => ({
       ...participant,
       protocol,
     }));
 
   handleIdentityChange = async ({ identity = {} }) => {
-    this.setState((prevState) => {
-      const { isReply } = this.props;
-      const prevIdentity = this.getIdentity({ identityId: prevState.draftMessage.identityId });
-      let recipients;
+    this.setState(
+      (prevState) => {
+        const { isReply } = this.props;
+        const prevIdentity = this.getIdentity({
+          identityId: prevState.draftMessage.identityId,
+        });
+        let recipients;
 
-      if (!isReply && prevIdentity && prevIdentity.protocol !== identity.protocol) {
-        recipients = this.forceParticipantsProtocol({
-          protocol: identity.protocol, participants: prevState.draftMessage.recipients,
+        if (
+          !isReply &&
+          prevIdentity &&
+          prevIdentity.protocol !== identity.protocol
+        ) {
+          recipients = this.forceParticipantsProtocol({
+            protocol: identity.protocol,
+            participants: prevState.draftMessage.recipients,
+          });
+        }
+
+        return {
+          draftMessage: {
+            ...prevState.draftMessage,
+            ...(recipients ? { recipients } : {}),
+            identityId: identity.identity_id,
+          },
+        };
+      },
+      () => {
+        const { internalId, original, onEditDraft } = this.props;
+
+        return onEditDraft({
+          internalId,
+          draft: this.constructor.getDraftFromState(this.state, this.props),
+          message: original,
         });
       }
-
-      return {
-        draftMessage: {
-          ...prevState.draftMessage,
-          ...(recipients ? { recipients } : {}),
-          identityId: identity.identity_id,
-        },
-      };
-    }, () => {
-      const { internalId, original, onEditDraft } = this.props;
-
-      return onEditDraft({
-        internalId,
-        draft: this.constructor.getDraftFromState(this.state, this.props),
-        message: original,
-      });
-    });
-  }
+    );
+  };
 
   handleRecipientsChange = (recipients) => {
-    this.setState(prevState => ({
-      draftMessage: {
-        ...prevState.draftMessage,
-        // no need to merge author, backend does it
-        recipients,
-      },
-      hasChanged: true,
-    }), () => {
-      const { internalId, original, onEditDraft } = this.props;
+    this.setState(
+      (prevState) => ({
+        draftMessage: {
+          ...prevState.draftMessage,
+          // no need to merge author, backend does it
+          recipients,
+        },
+        hasChanged: true,
+      }),
+      () => {
+        const { internalId, original, onEditDraft } = this.props;
 
-      return onEditDraft({
-        internalId,
-        draft: this.constructor.getDraftFromState(this.state, this.props),
-        message: original,
-      });
-    });
-  }
+        return onEditDraft({
+          internalId,
+          draft: this.constructor.getDraftFromState(this.state, this.props),
+          message: original,
+        });
+      }
+    );
+  };
 
   handleChangeOne2OneRecipient = (ev) => {
     // XXX: eventually select the identity that match the new protocol
     const participant = ev.target.value;
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       draftMessage: {
         ...prevState.draftMessage,
-        recipients: [
-          participant,
-        ],
+        recipients: [participant],
       },
     }));
-  }
+  };
 
   renderPlaceholder() {
     const {
-      className, draftFormRef, scrollTarget: { forwardRef },
+      className,
+      draftFormRef,
+      scrollTarget: { forwardRef },
     } = this.props;
 
     const ref = (el) => {
@@ -437,7 +515,9 @@ class DraftMessage extends Component {
 
     return (
       <div ref={ref}>
-        <PlaceholderBlock className={classnames(className, 'm-draft-message-placeholder')} />
+        <PlaceholderBlock
+          className={classnames(className, 'm-draft-message-placeholder')}
+        />
       </div>
     );
   }
@@ -447,7 +527,9 @@ class DraftMessage extends Component {
 
     if (canEditRecipients) {
       const { internalId } = this.props;
-      const identity = this.getIdentity({ identityId: this.state.draftMessage.identityId });
+      const identity = this.getIdentity({
+        identityId: this.state.draftMessage.identityId,
+      });
 
       return (
         <RecipientList
@@ -461,7 +543,8 @@ class DraftMessage extends Component {
     }
 
     // /!\ the associated contact might be deleted
-    const isOne2One = isReply &&
+    const isOne2One =
+      isReply &&
       this.state.draftMessage.recipients.length === 1 &&
       this.state.draftMessage.recipients[0].contact_ids &&
       this.state.draftMessage.recipients[0].contact_ids.length > 0;
@@ -483,17 +566,26 @@ class DraftMessage extends Component {
 
   renderQuick() {
     const {
-      className, draftFormRef, onFocus, scrollTarget: { forwardRef },
-      draftEncryption, isEncrypted, encryptionStatus, availableIdentities, draftMessage,
+      className,
+      draftFormRef,
+      onFocus,
+      scrollTarget: { forwardRef },
+      draftEncryption,
+      isEncrypted,
+      encryptionStatus,
+      availableIdentities,
+      draftMessage,
     } = this.props;
     const ref = (el) => {
       draftFormRef(el);
       forwardRef(el);
     };
 
-    const encryptionEnabled = isEncrypted && encryptionStatus === STATUS_DECRYPTED;
+    const encryptionEnabled =
+      isEncrypted && encryptionStatus === STATUS_DECRYPTED;
 
-    const canSend = this.getCanSend() && this.state.draftMessage.body.length > 0;
+    const canSend =
+      this.getCanSend() && this.state.draftMessage.body.length > 0;
 
     return (
       <QuickDraftForm
@@ -507,9 +599,7 @@ class DraftMessage extends Component {
         isLocked={this.state.isLocked}
         body={this.state.draftMessage.body}
         canSend={canSend}
-        encryptionChildren={(
-          <Trans id={this.getEncryptionTranslation()} />
-        )}
+        encryptionChildren={<Trans id={this.getEncryptionTranslation()} />}
         availableIdentities={availableIdentities}
         draftMessage={draftMessage}
         isSending={this.state.isSending}
@@ -521,13 +611,25 @@ class DraftMessage extends Component {
 
   renderAdvanced() {
     const {
-      className, draftMessage, parentMessage, original, draftFormRef, isReply, availableIdentities,
-      onFocus, scrollTarget: { forwardRef }, encryptionStatus,
-      draftEncryption, isEncrypted,
+      className,
+      draftMessage,
+      parentMessage,
+      original,
+      draftFormRef,
+      isReply,
+      availableIdentities,
+      onFocus,
+      scrollTarget: { forwardRef },
+      encryptionStatus,
+      draftEncryption,
+      isEncrypted,
     } = this.props;
 
-    const encryptionEnabled = isEncrypted && encryptionStatus === STATUS_DECRYPTED;
-    const identity = this.getIdentity({ identityId: this.state.draftMessage.identityId });
+    const encryptionEnabled =
+      isEncrypted && encryptionStatus === STATUS_DECRYPTED;
+    const identity = this.getIdentity({
+      identityId: this.state.draftMessage.identityId,
+    });
 
     const isSubjectSupported = ({ draft }) => {
       if (!draft.identityId) {
@@ -553,7 +655,10 @@ class DraftMessage extends Component {
     const canSend = this.getCanSend();
 
     return (
-      <div className={classnames(className, 'm-draft-message-advanced')} ref={ref}>
+      <div
+        className={classnames(className, 'm-draft-message-advanced')}
+        ref={ref}
+      >
         <div className="m-draft-message-advanced__toggle-simple">
           {isReply && errors.length === 0 && (
             <ToggleAdvancedFormButton
@@ -569,10 +674,15 @@ class DraftMessage extends Component {
             identityId={this.state.draftMessage.identityId}
             onChange={this.handleIdentityChange}
           />
-          {this.renderRecipientList({ className: 'm-draft-message-advanced__recipient-list' })}
+          {this.renderRecipientList({
+            className: 'm-draft-message-advanced__recipient-list',
+          })}
           {parentMessage && (
             <div className="m-reply__parent">
-              <Link to={`#${parentMessage.message_id}`} className="m-reply__parent-link">
+              <Link
+                to={`#${parentMessage.message_id}`}
+                className="m-reply__parent-link"
+              >
                 <Trans
                   id="reply-form.in-reply-to"
                   values={{ 0: parentMessage.excerpt }}
@@ -585,30 +695,35 @@ class DraftMessage extends Component {
             <TextFieldGroup
               className="m-draft-message-advanced__subject"
               display="inline"
-              label={<Trans id="messages.compose.form.subject.label">Subject</Trans>}
+              label={
+                <Trans id="messages.compose.form.subject.label">Subject</Trans>
+              }
               name="subject"
               value={this.state.draftMessage.subject}
               onChange={this.handleChange}
               disabled={!identity}
             />
           )}
-          {
-            this.state.isLocked ?
-              <LockedMessage encryptionStatus={draftEncryption} />
-              : (
-                <TextareaFieldGroup
-                  className="m-draft-advanced__body"
-                  label={<Trans id="messages.compose.form.body.label">Type your message here...</Trans>}
-                  showLabelForSR
-                  inputProps={{
-                    name: 'body',
-                    onChange: this.handleChange,
-                    onFocus,
-                    value: this.state.draftMessage.body,
-                    disabled: !identity,
-                  }}
-                />
-              )}
+          {this.state.isLocked ? (
+            <LockedMessage encryptionStatus={draftEncryption} />
+          ) : (
+            <TextareaFieldGroup
+              className="m-draft-advanced__body"
+              label={
+                <Trans id="messages.compose.form.body.label">
+                  Type your message here...
+                </Trans>
+              }
+              showLabelForSR
+              inputProps={{
+                name: 'body',
+                onChange: this.handleChange,
+                onFocus,
+                value: this.state.draftMessage.body,
+                disabled: !identity,
+              }}
+            />
+          )}
           <AttachmentManager
             className="m-draft-message-advanced__attachments"
             onUploadAttachments={this.handleFilesChange}
@@ -621,9 +736,18 @@ class DraftMessage extends Component {
           {original && (
             <Confirm
               onConfirm={this.handleDelete}
-              title={(<Trans id="message-list.message.confirm-delete.title">Delete a message</Trans>)}
-              content={(<Trans id="message-list.message.confirm-delete.content">The deletion is permanent, are you sure you want to delete this message ?</Trans>)}
-              render={confirm => (
+              title={
+                <Trans id="message-list.message.confirm-delete.title">
+                  Delete a message
+                </Trans>
+              }
+              content={
+                <Trans id="message-list.message.confirm-delete.content">
+                  The deletion is permanent, are you sure you want to delete
+                  this message ?
+                </Trans>
+              }
+              render={(confirm) => (
                 <Button
                   onClick={confirm}
                   icon="trash"
@@ -648,9 +772,10 @@ class DraftMessage extends Component {
             onClick={this.handleSend}
             disabled={!canSend}
           >
-            {this.state.isSending && (<Spinner display="inline" theme="bright" />)}
-            {!this.state.isSending && (<Icon type="paper-plane" />)}
-            {' '}
+            {this.state.isSending && (
+              <Spinner display="inline" theme="bright" />
+            )}
+            {!this.state.isSending && <Icon type="paper-plane" />}{' '}
             <Trans id="draft-message.action.send">Send</Trans>
           </Button>
         </div>
@@ -672,7 +797,10 @@ class DraftMessage extends Component {
     }
 
     const {
-      availableIdentities, className, draftFormRef, scrollTarget: { forwardRef },
+      availableIdentities,
+      className,
+      draftFormRef,
+      scrollTarget: { forwardRef },
     } = this.props;
 
     if (availableIdentities.length === 0) {
@@ -687,9 +815,7 @@ class DraftMessage extends Component {
             <Trans
               id="draft-message.no-available-identities"
               defaults="You have no available identities for this discussion. You can add one in your <0>account</0>"
-              components={[
-                <Link to="/user/identities" />,
-              ]}
+              components={[<Link to="/user/identities" />]}
             />
           </Callout>
         </div>

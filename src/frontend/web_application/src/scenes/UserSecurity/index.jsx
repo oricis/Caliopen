@@ -24,5 +24,5 @@ export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withI18n(),
   withUser(),
-  withNotification(),
+  withNotification()
 )(Presenter);

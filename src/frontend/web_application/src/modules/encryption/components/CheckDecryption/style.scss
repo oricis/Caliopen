@@ -1,8 +1,7 @@
 @import '../../../../styles/common';
 @import '../../../../styles/util/breakpoint';
 @import '../../../../styles/vendor/bootstrap_foundation-sites';
-$fa-font-path: '../../../../../node_modules/font-awesome/fonts';
-@import 'font-awesome';
+@import '../../../../styles/vendor/bootstrap_font-awesome';
 
 .m-check-decryption {
   position: fixed;

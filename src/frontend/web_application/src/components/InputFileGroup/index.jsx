@@ -15,7 +15,9 @@ class InputFileGroup extends Component {
   static propTypes = {
     onInputChange: PropTypes.func.isRequired,
     errors: PropTypes.shape({}),
-    i18n: PropTypes.shape({}).isRequired,
+    i18n: PropTypes.shape({
+      _: PropTypes.func,
+    }).isRequired,
     multiple: PropTypes.bool,
     fileTypes: PropTypes.arrayOf(PropTypes.string),
     maxSize: PropTypes.number,

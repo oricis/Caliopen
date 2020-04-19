@@ -7,7 +7,9 @@ import './style.scss';
 
 class TakeATour extends Component {
   static propTypes = {
-    i18n: PropTypes.shape({}).isRequired,
+    i18n: PropTypes.shape({
+      _: PropTypes.func,
+    }).isRequired,
   };
 
   static defaultProps = {
@@ -18,7 +20,7 @@ class TakeATour extends Component {
   };
 
   handleToggleTour = () => {
-    this.setState(prevState => ({ isTourActive: !prevState.isTourActive }));
+    this.setState((prevState) => ({ isTourActive: !prevState.isTourActive }));
   }
 
   handleChangeStep = (step) => {

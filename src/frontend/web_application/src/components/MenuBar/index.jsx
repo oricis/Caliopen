@@ -28,7 +28,7 @@ class MenuBar extends PureComponent {
     const { className, navLinks, children } = this.props;
     const menuBarClassName = classnames(
       'm-menu-bar',
-      className,
+      className
     );
 
     return (

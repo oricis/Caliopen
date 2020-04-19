@@ -10,38 +10,55 @@
     "protractor": true
   },
   "rules": {
-    "comma-dangle": ["error", "always-multiline"],
+    "arrow-parens": "warn",
+    "camelcase": "warn",
+    "comma-dangle": ["error", {
+      "arrays": "always-multiline",
+      "objects": "always-multiline",
+      "imports": "always-multiline",
+      "exports": "always-multiline",
+      "functions": "never"
+    }],
+    "function-paren-newline": "off",
+    "indent": "off",
+    "implicit-arrow-linebreak": "off",
     "import/no-cycle": ["error", { "maxDepth": 1 }],
     "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.spec.js", "**/*.spec.jsx"]}],
     "import/no-useless-path-segments": "warn",
     "import/prefer-default-export": 0,
     "jsx-a11y/label-has-associated-control": ["error", {
+      "labelComponents": ["Label"],
       "controlComponents": ["Field"]
     }],
-    "jsx-a11y/label-has-for": [ "error", {
-      "components": [ "Label" ],
-      "required": {
-        "oneOf": [ "nesting", "id" ]
-      },
-      "allowChildren": false
-    }],
-    "jsx-a11y/anchor-is-valid": [ "warning", {
+    "jsx-a11y/anchor-is-valid": [ "warn", {
       "components": [ "Link" ],
       "specialLink": [ "to" ],
       "aspects": [ "noHref", "invalidHref", "preferButton" ]
     }],
+    "max-len": "warn",
     "newline-before-return": "error",
+    "no-async-promise-executor": "warn",
+    "no-confusing-arrow": "warn",
     "operator-linebreak": "off",
+    "object-curly-newline": "off",
     "object-property-newline": "off",
     "react/destructuring-assignment": "off",
-    "react/jsx-one-expression-per-line": ["warn", { "allow": "single-child" }],
+    "react/jsx-curly-newline": "off",
+    "react/jsx-fragments": "off",
+    "react/jsx-ident": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "react/jsx-props-no-spreading": "warn",
+    "react/jsx-wrap-multilines": "off",
     "react/no-array-index-key": 0,
     "react/no-multi-comp": "warn",
     "react/no-unescaped-entities": ["warn", { "forbid": [">", "\"", "'", "}"] }],
     "react/no-unused-prop-types": "warn",
     "react/no-unused-state": "warn",
     "react/prefer-stateless-function": "warn",
+    "react/prop-types": "warn",
     "react/require-default-props": "warn",
+    "react/static-property-placement": ["warn", "static public field"],
+    "react/state-in-constructor": "off",
     "prefer-promise-reject-errors": "warn"
   },
   "globals": {

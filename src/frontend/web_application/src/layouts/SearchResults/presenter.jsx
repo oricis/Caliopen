@@ -12,7 +12,15 @@ class SearchResults extends PureComponent {
       search: PropTypes.string.isRequired,
     }).isRequired,
     term: PropTypes.string,
-    searchResultsPreview: PropTypes.shape({}),
+    searchResultsPreview: PropTypes.shape({
+      total: PropTypes.number,
+      contact_hits: PropTypes.shape({
+        total: PropTypes.number,
+      }),
+      messages_hits: PropTypes.shape({
+        total: PropTypes.number,
+      }),
+    }),
     children: PropTypes.node,
   };
 

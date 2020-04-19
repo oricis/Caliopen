@@ -39,7 +39,7 @@ class Poller {
     this.installInterceptor(device);
     this.intervalId = setInterval(async () => {
       try {
-        const params = Object.keys(this.notificationFilters).map(key => `${key}=${this.notificationFilters[key]}`).join('&');
+        const params = Object.keys(this.notificationFilters).map((key) => `${key}=${this.notificationFilters[key]}`).join('&');
         const queryString = params.length > 0 ? `?${params}` : '';
         const { data: results } = await this.client.get(`/api/v2/notifications${queryString}`);
         self.postMessage({ results });
