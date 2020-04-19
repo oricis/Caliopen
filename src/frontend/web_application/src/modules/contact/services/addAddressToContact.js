@@ -27,14 +27,14 @@ export const addAddressToContact = (contact, { address, protocol }) => {
 export const addAddressesToContact = (contact, addresses) => {
   const emails = [
     ...(contact.emails ? contact.emails : []),
-    ...addresses.filter(address => address.protocol === PROTOCOL_EMAIL)
-      .map(address => ({ address: address.email })),
+    ...addresses.filter((address) => address.protocol === PROTOCOL_EMAIL)
+      .map((address) => ({ address: address.email })),
   ];
 
   const identities = [
     ...(contact.identities ? contact.identities : []),
-    ...addresses.filter(address => [PROTOCOL_TWITTER, PROTOCOL_MASTODON].includes(address.protocol))
-      .map(address => ({ address: address.identifier, type: address.protocol })),
+    ...addresses.filter((address) => [PROTOCOL_TWITTER, PROTOCOL_MASTODON].includes(address.protocol))
+      .map((address) => ({ address: address.identifier, type: address.protocol })),
   ];
 
   return {

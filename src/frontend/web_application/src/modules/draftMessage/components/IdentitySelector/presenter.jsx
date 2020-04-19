@@ -25,7 +25,7 @@ class IdentitySelector extends Component {
   handleChange = (ev) => {
     const { value } = ev.target;
     const { onChange, identities } = this.props;
-    const identity = identities.find(curr => curr.identity_id === value);
+    const identity = identities.find((curr) => curr.identity_id === value);
     onChange({ identity });
   }
 
@@ -56,7 +56,7 @@ class IdentitySelector extends Component {
           decorated={false}
           inline
           options={identities
-            .map(identity => ({
+            .map((identity) => ({
               label: `${identity.display_name} <${identity.identifier}>`,
               advancedlabel: (
                 <Fragment>

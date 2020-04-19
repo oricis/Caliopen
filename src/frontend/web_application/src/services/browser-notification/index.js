@@ -10,7 +10,7 @@ export const requestPermission = () => new Promise((resolve, reject) => {
     return;
   }
 
-  window.Notification.requestPermission(permission => resolve(permission));
+  window.Notification.requestPermission((permission) => resolve(permission));
 });
 
 export const isBrowserNotificationGrantedOrAsk = async () => {

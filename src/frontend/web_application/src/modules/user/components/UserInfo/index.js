@@ -7,10 +7,10 @@ import { requestLocalIdentities } from '../../../../store/modules/local-identity
 
 const mapStateToProps = createSelector(
   [userSelector],
-  user => ({
+  (user) => ({
     user,
   })
 );
-const mapDispatchToProps = dispatch => bindActionCreators({ requestLocalIdentities }, dispatch);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ requestLocalIdentities }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Presenter);

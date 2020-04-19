@@ -5,7 +5,7 @@ import { requestPublicKeys, deletePublicKey } from '../../../../store/modules/pu
 import Presenter from './presenter';
 
 const contactIdSelector = (state, ownProps) => ownProps.contactId;
-const publicKeysSelector = state => state.publicKey;
+const publicKeysSelector = (state) => state.publicKey;
 
 const mapStateToProps = createSelector(
   [contactIdSelector, publicKeysSelector],
@@ -21,7 +21,7 @@ const mapStateToProps = createSelector(
   }
 );
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators({
     requestPublicKeys,
     deletePublicKey,

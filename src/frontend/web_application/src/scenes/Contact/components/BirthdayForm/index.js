@@ -13,7 +13,7 @@ const mapStateToProps = createSelector(
   () => ({
   })
 );
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   changeField: autofill,
 }, dispatch);
 

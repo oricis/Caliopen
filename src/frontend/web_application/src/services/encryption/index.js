@@ -6,12 +6,12 @@ const DEFAULT_KEY_OPTIONS = { numBits: 4096 };
 
 const prepareKeys = async (openpgp, armoredKeys) => {
   const disarmoredKeys = await Promise
-    .all(armoredKeys.map(armoredKey => openpgp.key.readArmored(armoredKey.key || armoredKey)));
+    .all(armoredKeys.map((armoredKey) => openpgp.key.readArmored(armoredKey.key || armoredKey)));
 
   return disarmoredKeys.reduce((acc, disarmoredKey) => [...acc, ...disarmoredKey.keys], []);
 };
 
-export const isMessageEncrypted = message => !!message.privacy_features
+export const isMessageEncrypted = (message) => !!message.privacy_features
   && message.privacy_features.message_encrypted === 'True'
   && message.privacy_features.message_encryption_method === 'pgp';
 

@@ -276,7 +276,7 @@ export function getMessagesFromCollection(type, key, { state }) {
     return [];
   }
 
-  return state.messagesCollections[type][key].messages.map(id => state.messagesById[id]);
+  return state.messagesCollections[type][key].messages.map((id) => state.messagesById[id]);
 }
 
 function draftMessageReducer(state = {}, action) {
@@ -357,7 +357,7 @@ const messagesCollectionReducer = (state = {
         didInvalidate: false,
         messages: [...new Set([
           ...((state.didInvalidate && []) || state.messages),
-          ...action.payload.data.messages.map(message => message.message_id),
+          ...action.payload.data.messages.map((message) => message.message_id),
         ])],
         total: action.payload.data.total,
         request: action.meta.previousAction.payload.request,
@@ -366,7 +366,7 @@ const messagesCollectionReducer = (state = {
       return {
         ...state,
         messages: [...new Set(addMessageToCollection(
-          (type === 'timeline' && [TIMELINE_FILTER_ALL, TIMELINE_FILTER_DRAFT].some(k => k === key)) || key === action.payload.message.discussion_id ?
+          (type === 'timeline' && [TIMELINE_FILTER_ALL, TIMELINE_FILTER_DRAFT].some((k) => k === key)) || key === action.payload.message.discussion_id ?
             action.payload.message.message_id : undefined,
           state.messages
         ))],
@@ -374,7 +374,7 @@ const messagesCollectionReducer = (state = {
     case REMOVE_FROM_COLLECTION:
       return {
         ...state,
-        messages: state.messages.filter(id => id !== action.payload.message.message_id),
+        messages: state.messages.filter((id) => id !== action.payload.message.message_id),
       };
     case INVALIDATE_ALL_MESSAGES:
     case INVALIDATE_MESSAGES:

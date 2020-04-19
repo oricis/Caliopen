@@ -2,7 +2,7 @@ import React from 'react';
 import WithProviders from '../components/WithProviders';
 
 export const withProviders = () => (WrappedComp) => {
-  const Wrapper = props => (
+  const Wrapper = (props) => (
     <WithProviders
       render={({ providers, isFetching }) => (
         <WrappedComp providers={providers} providersIsFetching={isFetching} {...props} />

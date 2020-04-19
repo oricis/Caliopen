@@ -7,10 +7,10 @@ import AskPassphraseForm from '../AskPassphraseForm';
 
 import './style.scss';
 
-const messageEncryptionStatusSelector = state => state.encryption.messageEncryptionStatusById;
-const lockedMessagesSelector = messagesIds => createSelector(
+const messageEncryptionStatusSelector = (state) => state.encryption.messageEncryptionStatusById;
+const lockedMessagesSelector = (messagesIds) => createSelector(
   [messageEncryptionStatusSelector],
-  encryptionState => ({
+  (encryptionState) => ({
     lockedMessagesByKey: messagesIds.reduce((acc, messageId) => {
       const messageStatus = encryptionState[messageId];
 
@@ -28,7 +28,7 @@ const lockedMessagesSelector = messagesIds => createSelector(
 );
 
 const mapStateToProps = (state, ownProps) => (
-  lockedMessagesSelector(ownProps.messages.map(message => message.message_id))
+  lockedMessagesSelector(ownProps.messages.map((message) => message.message_id))
 );
 
 @connect(mapStateToProps)

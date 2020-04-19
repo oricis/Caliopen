@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withI18n } from '@lingui/react';
-import { withPush } from '../../../../modules/routing';
+import { withPush } from '../../../routing';
 // prevent cycling deps
-import withSettings from '../../../../modules/settings/hoc/withSettings';
-import { withDevice } from '../../../../modules/device';
+import withSettings from '../../../settings/hoc/withSettings';
+import { withDevice } from '../../../device';
 import { signup } from '../../services/signup';
 import SignupForm from './components/SignupForm';
 import formValidator, {

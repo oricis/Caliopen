@@ -118,7 +118,7 @@ class RecipientList extends Component {
     if (keyCode === KEY.UP &&
       this.props.searchResults.length > 0 &&
       this.state.activeSearchResultIndex > 0) {
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         activeSearchResultIndex: prevState.activeSearchResultIndex - 1,
       }));
     }
@@ -126,7 +126,7 @@ class RecipientList extends Component {
     if (keyCode === KEY.DOWN &&
       this.props.searchResults.length > 0 &&
       this.state.activeSearchResultIndex < this.props.searchResults.length - 1) {
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         activeSearchResultIndex: prevState.activeSearchResultIndex + 1,
       }));
     }
@@ -167,7 +167,7 @@ class RecipientList extends Component {
     const { recipients } = this.props;
     const nextRecipients = [
       ...recipients
-        .filter(previousParticipant => !compareParticipants(previousParticipant, participant)),
+        .filter((previousParticipant) => !compareParticipants(previousParticipant, participant)),
       participant,
     ];
 
@@ -188,7 +188,7 @@ class RecipientList extends Component {
   }
 
   addUnknownParticipant(address) {
-    const getProtocol = search => Object.keys(protocolsConfig).reduce((previous, current) => {
+    const getProtocol = (search) => Object.keys(protocolsConfig).reduce((previous, current) => {
       if (!previous && protocolsConfig[current].default) {
         return current;
       }
@@ -236,7 +236,7 @@ class RecipientList extends Component {
 
   removeRecipient(participant) {
     const { recipients } = this.props;
-    const nextRecipients = recipients.filter(curr => curr !== participant);
+    const nextRecipients = recipients.filter((curr) => curr !== participant);
     this.props.onRecipientsChange(nextRecipients);
   }
 
@@ -244,7 +244,7 @@ class RecipientList extends Component {
     const isContact = identity.source === 'contact';
     // results are sorted by contact
     const hasLabel = isContact &&
-      index === results.findIndex(result => result.contact_id === identity.contact_id);
+      index === results.findIndex((result) => result.contact_id === identity.contact_id);
 
     const infoClassName = classnames({
       'm-recipient-list__search-result-info': hasLabel,
@@ -297,7 +297,7 @@ class RecipientList extends Component {
             <Trans id="messages.compose.form.to.label">To</Trans>
           </span>
         )}
-        {recipients.map(participant => (
+        {recipients.map((participant) => (
           <Recipient
             key={`${participant.address}_${participant.protocol}`}
             className="m-recipient-list__recipient"

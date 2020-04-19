@@ -13,7 +13,7 @@ const mapStateToProps = createSelector(
     settings, isFetching, isInvalidated, didLostAuth,
   })
 );
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   requestSettings,
 }, dispatch);
 

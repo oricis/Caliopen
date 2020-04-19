@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Trans, withI18n } from '@lingui/react';
 import { Redirect, withRouter } from 'react-router-dom';
 import { usernameNormalizer } from '../../services/usernameNormalizer';
-import { withDevice, STATUS_VERIFIED } from '../../../../modules/device';
+import { withDevice, STATUS_VERIFIED } from '../../../device';
 import {
   Link,
   Spinner,

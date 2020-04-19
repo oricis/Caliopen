@@ -8,16 +8,16 @@ const getParticipantsContactsExceptUser = ({ contacts, participants, user }) => 
     }
 
     const contactIds = participant.contact_ids
-      .filter(contactId => contactId !== user.contact.contact_id);
+      .filter((contactId) => contactId !== user.contact.contact_id);
 
     if (contactIds.length === 0) {
       return acc;
     }
 
     const participantContacts = contactIds
-      .map(contactId => contacts.find(ct => ct.contact_id === contactId))
+      .map((contactId) => contacts.find((ct) => ct.contact_id === contactId))
       // filter deleted contact that still present in recipients
-      .filter(ct => !!ct);
+      .filter((ct) => !!ct);
 
     return [
       ...acc,
@@ -33,14 +33,14 @@ const getAvailableProtocolsForTheContact = ({ contact }) => {
 
   if (
     contact.identities &&
-    contact.identities.filter(identity => identity.type === IDENTITY_TYPE_TWITTER).length >= 1
+    contact.identities.filter((identity) => identity.type === IDENTITY_TYPE_TWITTER).length >= 1
   ) {
     protocols.push('twitter');
   }
 
   if (
     contact.identities &&
-    contact.identities.filter(identity => identity.type === IDENTITY_TYPE_MASTODON).length >= 1
+    contact.identities.filter((identity) => identity.type === IDENTITY_TYPE_MASTODON).length >= 1
   ) {
     protocols.push('mastodon');
   }
@@ -78,7 +78,7 @@ export const filterIdentities = ({
     participantsContacts.length > 1
   ) {
     return identities
-      .filter(identity => getIdentityProtocol(identity) === getMessageProtocol(parentMessage));
+      .filter((identity) => getIdentityProtocol(identity) === getMessageProtocol(parentMessage));
   }
 
   // in a discussion 1-to-1 we allow to switch identity of the protocol that the associated contact
@@ -86,5 +86,5 @@ export const filterIdentities = ({
   const [contact] = participantsContacts;
   const availableProtocols = getAvailableProtocolsForTheContact({ contact });
 
-  return identities.filter(identity => availableProtocols.includes(getIdentityProtocol(identity)));
+  return identities.filter((identity) => availableProtocols.includes(getIdentityProtocol(identity)));
 };

@@ -44,7 +44,7 @@ const Ratings = ({
     'm-pi-ratings',
     { 'm-pi-ratings--mini': mini }
   );
-  const title = PI_PROPERTIES.map(name => `${name}: ${pi[name]}`).join(',\n');
+  const title = PI_PROPERTIES.map((name) => `${name}: ${pi[name]}`).join(',\n');
 
   return (
     <div className={ratingsClassName} title={title}>
@@ -57,7 +57,7 @@ const Ratings = ({
           mini={mini}
         />
       )}
-      {PI_PROPERTIES.map(name => (
+      {PI_PROPERTIES.map((name) => (
         <Rating
           name={name}
           level={pi[name] || 0}

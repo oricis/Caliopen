@@ -2,7 +2,7 @@ import { getIdentities } from '../../identity';
 import { getIdentityProtocol } from '../services/getIdentityProtocol';
 
 const isIdentityUsed = ({ participants, identity }) => participants
-  .some(participant => participant.address === identity.identifier &&
+  .some((participant) => participant.address === identity.identifier &&
     participant.protocol === getIdentityProtocol(identity));
 
 export const getDefaultIdentity = ({ participants = undefined, protocol = 'email' } = { protocol: 'email' }) => async (dispatch) => {
@@ -17,7 +17,7 @@ export const getDefaultIdentity = ({ participants = undefined, protocol = 'email
 
         return 1;
       })]
-      .find(identity => getIdentityProtocol(identity) === protocol);
+      .find((identity) => getIdentityProtocol(identity) === protocol);
   }
 
   return identities.reduce((acc, curr) => {

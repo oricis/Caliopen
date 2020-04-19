@@ -9,7 +9,7 @@ export const identitiesSelector = createSelector(
   }, {
     localIdentities,
   }) => [
-    ...remoteIdentities.map(identityId => remoteIdentitiesById[identityId]),
+    ...remoteIdentities.map((identityId) => remoteIdentitiesById[identityId]),
     ...localIdentities,
   ]
 );

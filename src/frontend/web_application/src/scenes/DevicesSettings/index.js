@@ -9,7 +9,7 @@ import DeviceSettings from './components/DeviceSettings';
 
 export { DeviceSettings };
 
-const devicesSelector = state => state.device.devicesById;
+const devicesSelector = (state) => state.device.devicesById;
 
 const clientDeviceSelector = (state, { clientDevice }) => clientDevice;
 const currentDeviceSelector = createSelector(
@@ -19,7 +19,7 @@ const currentDeviceSelector = createSelector(
 
 const mapStateToProps = createSelector(
   [currentDeviceSelector],
-  currentDevice => ({
+  (currentDevice) => ({
     isCurrentDeviceVerified: currentDevice && currentDevice.status === STATUS_VERIFIED,
   })
 );

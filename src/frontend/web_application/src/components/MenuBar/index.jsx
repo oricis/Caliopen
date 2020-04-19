@@ -35,7 +35,7 @@ class MenuBar extends PureComponent {
       <div className={menuBarClassName}>
         {navLinks && (
           <NavList className="m-menu-bar__navlist">
-            {navLinks.map(link => (
+            {navLinks.map((link) => (
               <NavItem active={link.isActive} large key={link.key}>
                 <Link display="button" noDecoration title={link.title} to={link.to}>{link.label}</Link>
               </NavItem>

@@ -7,8 +7,8 @@ export const searchTags = (i18n, userTags, terms) => new Promise((resolve) => {
     return;
   }
 
-  const findTags = tags => tags
-    .filter(tag => getTagLabel(i18n, tag).toLowerCase().startsWith(terms.toLowerCase()));
+  const findTags = (tags) => tags
+    .filter((tag) => getTagLabel(i18n, tag).toLowerCase().startsWith(terms.toLowerCase()));
 
   resolve(findTags(userTags));
 });

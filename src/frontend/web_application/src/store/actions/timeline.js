@@ -17,7 +17,7 @@ const getQuery = (type) => {
   }
 };
 
-export const filterTimeline = type => (dispatch) => {
+export const filterTimeline = (type) => (dispatch) => {
   dispatch(setTimelineFilter(type));
 
   return dispatch(requestMessages('timeline', type, getQuery(type)));

@@ -35,8 +35,8 @@ ${this.state.errorInfo && this.state.errorInfo.componentStack}
       tags: 'BSOD',
       body: stackTrace,
     };
-    const esc = typeof encodeURIComponent !== 'undefined' ? encodeURIComponent : str => str;
-    const queryString = Object.keys(params).map(key => `${key}=${esc(params[key])}`).join('&');
+    const esc = typeof encodeURIComponent !== 'undefined' ? encodeURIComponent : (str) => str;
+    const queryString = Object.keys(params).map((key) => `${key}=${esc(params[key])}`).join('&');
 
     return `https://feedback.caliopen.org/new-topic?${queryString}`;
   }

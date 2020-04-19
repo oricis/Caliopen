@@ -6,4 +6,4 @@ const IDENTITY_PROTOCOLS = {
   mastodon: 'mastodon',
 };
 
-export const getIdentityProtocol = identity => IDENTITY_PROTOCOLS[identity.protocol];
+export const getIdentityProtocol = (identity) => IDENTITY_PROTOCOLS[identity.protocol];

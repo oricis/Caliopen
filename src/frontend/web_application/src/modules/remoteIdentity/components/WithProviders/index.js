@@ -11,7 +11,7 @@ const mapStateToProps = createSelector(
     isFetching, didInvalidate, providers /* FIXME sort */,
   })
 );
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   requestProviders,
 }, dispatch);
 

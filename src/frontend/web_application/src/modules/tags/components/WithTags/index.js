@@ -14,7 +14,7 @@ const mapStateToProps = createSelector(
     isInvalidated,
   })
 );
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   requestTags,
 }, dispatch);
 

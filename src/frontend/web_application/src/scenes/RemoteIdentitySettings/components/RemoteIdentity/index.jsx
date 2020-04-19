@@ -26,7 +26,7 @@ class RemoteIdentity extends Component {
       remoteIdentity,
     } = this.props;
 
-    const renderComponent = C => (
+    const renderComponent = (C) => (
       <C
         key={remoteIdentity.identity_id || 'new'}
         remoteIdentity={remoteIdentity}

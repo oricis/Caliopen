@@ -169,16 +169,16 @@ function contactsByIdReducer(state = {}, action = {}) {
 }
 
 const filterContactIds = ({ contactsIds, contacts }) => {
-  const contactIdsToRemove = contacts.map(contact => contact.contact_id);
+  const contactIdsToRemove = contacts.map((contact) => contact.contact_id);
 
-  return contactsIds.filter(contactId => !contactIdsToRemove.includes(contactId));
+  return contactsIds.filter((contactId) => !contactIdsToRemove.includes(contactId));
 };
 
 function contactListReducer(state = [], action = {}) {
   switch (action.type) {
     case REQUEST_CONTACTS_SUCCESS:
       return [...state]
-        .concat(action.payload.data.contacts.map(contact => contact.contact_id))
+        .concat(action.payload.data.contacts.map((contact) => contact.contact_id))
         .reduce((prev, curr) => {
           if (prev.indexOf(curr) === -1) {
             prev.push(curr);

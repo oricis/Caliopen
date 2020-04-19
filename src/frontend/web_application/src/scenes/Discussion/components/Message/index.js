@@ -29,7 +29,7 @@ const mapStateToProps = createSelector(
   }
 );
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   onReply,
   updateTagCollection,
 }, dispatch);

@@ -26,7 +26,7 @@ VerticalMenuItem.defaultProps = {
   className: undefined,
 };
 
-export const VerticalMenuTextItem = props => (
+export const VerticalMenuTextItem = (props) => (
   <VerticalMenuItem {...props} className="m-vertical-menu__item-content" />
 );
 

@@ -1,4 +1,4 @@
-const isObject = obj => obj === Object(obj);
+const isObject = (obj) => obj === Object(obj);
 
 /* following code is a refactor of :
  * https://github.com/axios/axios/blob/master/lib/helpers/buildURL.js
@@ -26,7 +26,7 @@ THE SOFTWARE.
  *
  */
 
-const encode = val => encodeURIComponent(val)
+const encode = (val) => encodeURIComponent(val)
   .replace(/%40/gi, '@')
   .replace(/%3A/gi, ':')
   .replace(/%24/g, '$')

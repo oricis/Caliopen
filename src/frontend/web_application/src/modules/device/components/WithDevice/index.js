@@ -10,7 +10,7 @@ const mapStateToProps = createSelector(
   ({ isGenerated }) => ({ isGenerated })
 );
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   requestDevice,
 }, dispatch);
 

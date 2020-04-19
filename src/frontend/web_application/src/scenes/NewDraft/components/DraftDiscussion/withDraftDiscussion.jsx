@@ -20,7 +20,7 @@ const getParticipantsHash = ({ participants }) => {
   }
 
   return bytesToUuid(sha1(participants
-    .map(participant => `${participant.address}_${participant.protocol}`)
+    .map((participant) => `${participant.address}_${participant.protocol}`)
     .sort()
     .join('+')));
 };
@@ -68,7 +68,7 @@ const requestDraftDiscussion = ({ participants, internalHash }) => async (dispat
   }
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   requestDraftDiscussion,
 }, dispatch);
 

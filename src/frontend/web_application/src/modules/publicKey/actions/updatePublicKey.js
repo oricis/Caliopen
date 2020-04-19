@@ -17,7 +17,7 @@ export const updatePublicKey =
       requestPublicKeys({ contactId: contact.contact_id })
     ));
     const existingKey = keys.pubkeys.find(
-      key => key.fingerprint === publicKey.keys[0].getFingerprint().toUpperCase()
+      (key) => key.fingerprint === publicKey.keys[0].getFingerprint().toUpperCase()
     );
 
     if (existingKey) {

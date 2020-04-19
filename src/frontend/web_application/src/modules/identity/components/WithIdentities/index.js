@@ -5,8 +5,8 @@ import Presenter from './presenter';
 import { getIdentities } from '../../actions/getIdentities';
 import { identitiesSelector } from '../../selectors/identitiesSelector';
 
-const remoteIdentitystateSelector = state => state.remoteIdentity;
-const localIdentityStateSelector = state => state.localIdentity;
+const remoteIdentitystateSelector = (state) => state.remoteIdentity;
+const localIdentityStateSelector = (state) => state.localIdentity;
 
 const mapStateToProps = createSelector(
   [remoteIdentitystateSelector, localIdentityStateSelector, identitiesSelector],
@@ -20,7 +20,7 @@ const mapStateToProps = createSelector(
     localIsFetching,
   })
 );
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   getIdentities,
 }, dispatch);
 

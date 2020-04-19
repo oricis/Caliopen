@@ -8,7 +8,7 @@ import Presenter from './presenter';
 const messageIdSelector = (state, ownProps) => ownProps.routeParams.messageId;
 const messageSelector = (state, ownProps) => createSelector(
   [messageIdSelector],
-  messageId => messageSelectorBase(state, { messageId })
+  (messageId) => messageSelectorBase(state, { messageId })
 )(state, ownProps);
 const mapStateToProps = createSelector(
   [messageIdSelector, messageSelector],
@@ -17,7 +17,7 @@ const mapStateToProps = createSelector(
     message,
   })
 );
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   getMessage,
 }, dispatch);
 

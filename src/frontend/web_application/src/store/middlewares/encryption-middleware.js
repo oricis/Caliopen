@@ -14,7 +14,7 @@ const modifyActionWithMessage = ({ action, message }) => {
   }
 };
 
-export default store => next => async (action) => {
+export default (store) => (next) => async (action) => {
   if (![CREATE_MESSAGE, UPDATE_MESSAGE].includes(action.type)) {
     return next(action);
   }

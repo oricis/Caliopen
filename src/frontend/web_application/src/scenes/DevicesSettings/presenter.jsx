@@ -60,7 +60,7 @@ class DevicesSettings extends PureComponent {
             </Section>
           </div>
         )}
-        {devices && devices.map(device => (
+        {devices && devices.map((device) => (
           <div key={device.device_id} className="s-devices-settings__device">
             <DeviceSettings device={device} />
           </div>

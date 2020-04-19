@@ -38,7 +38,7 @@ class Highlights extends Component {
       return [highlight];
     }
 
-    const escapedTerms = terms.map(term => term.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'));
+    const escapedTerms = terms.map((term) => term.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'));
     const termRegExp = RegExp(`(${escapedTerms.join('|')})`, 'gi');
     const parts = [];
     let results;

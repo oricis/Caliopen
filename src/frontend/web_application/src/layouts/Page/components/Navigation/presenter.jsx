@@ -112,7 +112,7 @@ class Navigation extends Component {
     return (
       <div className={classnames('l-navigation', className)}>
         <HorizontalScroll subscribedState={subscribedState}>
-          {tabs.map(tab => this.renderTab({ tab }))}
+          {tabs.map((tab) => this.renderTab({ tab }))}
           <NavbarItem key="compose-button" className={classnames('l-navigation__compose-item', { 'l-navigation__compose-item--sticky': isSticky })}>
             <Button onClick={this.handleClickCompose} shape="plain" display="expanded" className="l-navigation__compose-btn">
               <Icon type="pencil" />

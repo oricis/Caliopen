@@ -15,7 +15,7 @@ import { contactValidation } from './services/contactValidation';
 import Presenter from './presenter';
 
 const contactIdSelector = (state, ownProps) => ownProps.match.params.contactId;
-const contactSelector = state => state.contact;
+const contactSelector = (state) => state.contact;
 const dirtyValuesSelector = createSelector(
   [
     (state, ownProps) => ownProps.searchParams,
@@ -66,7 +66,7 @@ const updateTagCollection = (i18n, {
   return result;
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators({
     requestContact,
     getContact,
@@ -76,7 +76,7 @@ const mapDispatchToProps = dispatch => ({
     invalidateContacts,
     updateTagCollection,
   }, dispatch),
-  onSubmit: values => Promise.resolve(values),
+  onSubmit: (values) => Promise.resolve(values),
 });
 
 export default compose(

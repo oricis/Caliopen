@@ -47,8 +47,8 @@ class OpenPGPKeysDetails extends Component {
     return null;
   }
 
-  updateKeyState = newState => getPrimaryKeysByFingerprint()
-    .then(keys => this.setState(prevState => ({
+  updateKeyState = (newState) => getPrimaryKeysByFingerprint()
+    .then((keys) => this.setState((prevState) => ({
       ...prevState,
       ...newState,
       keys,
@@ -56,7 +56,7 @@ class OpenPGPKeysDetails extends Component {
 
 
   handleClickEditMode = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       editMode: !prevState.editMode,
     }));
   }
@@ -103,7 +103,7 @@ class OpenPGPKeysDetails extends Component {
   };
 
   handleImportFormChange = (newValue) => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       importForm: {
         ...prevState.importForm,
         ...newValue,
@@ -112,7 +112,7 @@ class OpenPGPKeysDetails extends Component {
   }
 
   handleGenerateFormChange = (newValue) => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       generateForm: {
         ...prevState.generateForm,
         ...newValue,

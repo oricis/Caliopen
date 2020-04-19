@@ -8,7 +8,7 @@ import Presenter from './presenter';
 const { hostname } = getConfig();
 const mapStateToProps = createSelector(
   [userSelector],
-  user => ({ user, hostname })
+  (user) => ({ user, hostname })
 );
 
 export default connect(mapStateToProps)(Presenter);

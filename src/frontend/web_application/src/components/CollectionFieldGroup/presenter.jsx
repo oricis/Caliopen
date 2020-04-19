@@ -19,7 +19,7 @@ const CollectionFieldGroup = ({
   };
 
   const handleDelete = ({ item: deletedItem }) => {
-    onChange(collection.filter(item => item !== deletedItem));
+    onChange(collection.filter((item) => item !== deletedItem));
   };
 
   return (

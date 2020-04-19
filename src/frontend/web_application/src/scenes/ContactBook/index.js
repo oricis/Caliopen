@@ -8,13 +8,13 @@ import { updateContactTags } from '../../modules/tags';
 import { requestContacts, loadMoreContacts, hasMore } from '../../store/modules/contact';
 import Presenter from './presenter';
 
-const contactStateSelector = state => state.contact;
+const contactStateSelector = (state) => state.contact;
 const userSelector = (state, ownProps) => ownProps.userState.user;
 const contactsExceptUserSelector = createSelector(
   [contactStateSelector, userSelector],
   (contactState, user) => contactState.contacts
-    .filter(contactId => !user || contactId !== user.contact.contact_id)
-    .map(contactId => contactState.contactsById[contactId])
+    .filter((contactId) => !user || contactId !== user.contact.contact_id)
+    .map((contactId) => contactState.contactsById[contactId])
 );
 const mapStateToProps = createSelector(
   [contactStateSelector, contactsExceptUserSelector, userSelector],
@@ -30,7 +30,7 @@ const mapStateToProps = createSelector(
     };
   }
 );
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   requestContacts,
   loadMoreContacts,
   deleteContacts,

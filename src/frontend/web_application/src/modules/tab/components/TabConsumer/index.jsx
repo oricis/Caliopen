@@ -13,7 +13,7 @@ class TabConsumer extends Component {
 
     return (
       <TabContext.Consumer>
-        {value => render(value)}
+        {(value) => render(value)}
       </TabContext.Consumer>
     );
   }

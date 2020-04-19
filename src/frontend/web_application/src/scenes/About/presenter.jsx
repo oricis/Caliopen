@@ -25,7 +25,7 @@ class About extends Component {
   };
 
   handleToggleCreate = () => this
-    .setState(prevState => ({ createFormOpen: !prevState.createFormOpen }));
+    .setState((prevState) => ({ createFormOpen: !prevState.createFormOpen }));
 
   render() {
     const { className } = this.props;

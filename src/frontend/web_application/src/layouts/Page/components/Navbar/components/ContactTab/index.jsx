@@ -9,7 +9,7 @@ import NavbarItem from '../NavbarItem';
 import ItemLink from '../ItemLink';
 import ItemButton from '../ItemButton';
 
-const contactState = state => state.contact;
+const contactState = (state) => state.contact;
 const tabSelector = (state, props) => props.tab;
 const routeConfigSelector = (state, props) => props.routeConfig;
 

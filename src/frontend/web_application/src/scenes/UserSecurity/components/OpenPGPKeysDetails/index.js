@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { saveUserPublicKeyAction } from '../../../../modules/publicKey';
 import Presenter from './presenter';
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   saveUserPublicKey: saveUserPublicKeyAction,
 }, dispatch);
 

@@ -5,11 +5,11 @@ import { UserSelector } from '../store/selectors/user';
 
 const mapStateToProps = createSelector(
   [UserSelector],
-  userState => ({
+  (userState) => ({
     user: userState.user,
   })
 );
 
-const withUser = () => Component => connect(mapStateToProps)(Component);
+const withUser = () => (Component) => connect(mapStateToProps)(Component);
 
 export { withUser };
