@@ -14,7 +14,7 @@ export const KEY = {
 @withI18n()
 class QuickDraftForm extends PureComponent {
   static propTypes = {
-    i18n: PropTypes.shape({}).isRequired,
+    i18n: PropTypes.shape({ _: PropTypes.func }).isRequired,
     encryptionChildren: PropTypes.node,
     className: PropTypes.string,
     innerRef: PropTypes.shape({}),
@@ -59,32 +59,54 @@ class QuickDraftForm extends PureComponent {
     }
 
     if (recipients.length > 3) {
-      return recipients.map(recipient => recipient.address).join(', ').concat('...');
+      return recipients
+        .map((recipient) => recipient.address)
+        .join(', ')
+        .concat('...');
     }
 
-    return recipients.map(recipient => recipient.address).join(', ');
-  }
+    return recipients.map((recipient) => recipient.address).join(', ');
+  };
 
   getQuickInputPlaceholder = () => {
     const { i18n, draftMessage, availableIdentities } = this.props;
 
-    const [identityId] = draftMessage && draftMessage.user_identities ?
-      draftMessage.user_identities : [];
-    const { identifier } = availableIdentities
-      .find(identity => identity.identity_id === identityId) || {};
+    const [identityId] =
+      draftMessage && draftMessage.user_identities
+        ? draftMessage.user_identities
+        : [];
+    const { identifier } =
+      availableIdentities.find(
+        (identity) => identity.identity_id === identityId
+      ) || {};
 
     const recipientsList = this.getRecipientList();
 
-    if (draftMessage && draftMessage.discussion_id && recipientsList && identifier) {
-      return i18n._('draft-message.form.placeholder.quick-reply', { recipients: recipientsList, protocol: identifier }, { defaults: 'Quick reply to {recipients} from {protocol}' });
+    if (
+      draftMessage &&
+      draftMessage.discussion_id &&
+      recipientsList &&
+      identifier
+    ) {
+      return i18n._(
+        'draft-message.form.placeholder.quick-reply',
+        { recipients: recipientsList, protocol: identifier },
+        { defaults: 'Quick reply to {recipients} from {protocol}' }
+      );
     }
 
     if (draftMessage && draftMessage.discussion_id && identifier) {
-      return i18n._('draft-message.form.placeholder.quick-reply-no-recipients', { identifier }, { defaults: 'Quick reply from {identifier}' });
+      return i18n._(
+        'draft-message.form.placeholder.quick-reply-no-recipients',
+        { identifier },
+        { defaults: 'Quick reply from {identifier}' }
+      );
     }
 
-    return i18n._('draft-message.form.placeholder.quick-start', null, { defaults: 'Start a new discussion' });
-  }
+    return i18n._('draft-message.form.placeholder.quick-start', null, {
+      defaults: 'Start a new discussion',
+    });
+  };
 
   handlePressSendShortKey = (ev) => {
     const { which: keyCode, ctrlKey } = ev;
@@ -92,65 +114,85 @@ class QuickDraftForm extends PureComponent {
       ev.preventDefault();
       this.props.handleSend(ev);
     }
-  }
+  };
 
   render() {
     const {
-      i18n, innerRef, className, handleSend, handleChange, onFocus, draftEncryption,
-      encryptionEnabled, isLocked, body, canSend, encryptionChildren, isSending, advancedForm,
+      i18n,
+      innerRef,
+      className,
+      handleSend,
+      handleChange,
+      onFocus,
+      draftEncryption,
+      encryptionEnabled,
+      isLocked,
+      body,
+      canSend,
+      encryptionChildren,
+      isSending,
+      advancedForm,
       handleToggleAdvancedForm,
     } = this.props;
 
     return (
-      <div className={classnames(className, 'm-draft-message-quick')} ref={innerRef}>
+      <div
+        className={classnames(className, 'm-draft-message-quick')}
+        ref={innerRef}
+      >
         <form onSubmit={handleSend}>
-          <div className={classnames(className, 'm-draft-message-quick__container')}>
+          <div
+            className={classnames(
+              className,
+              'm-draft-message-quick__container'
+            )}
+          >
             <div className="m-draft-message-quick__toggle-advanced">
               <ToggleAdvancedFormButton
                 advancedForm={advancedForm}
                 handleToggleAdvancedForm={handleToggleAdvancedForm}
               />
             </div>
-            {
-              isLocked ? (
-                <LockedMessage encryptionStatus={draftEncryption} />
-              ) : (
-                <textarea
-                  rows={/\n+/.test(body) ? 7 : 1}
-                  className={classnames(
-                    'm-draft-message-quick__input',
-                    { 'm-draft-message-quick__input--encrypted': encryptionEnabled }
-                  )}
-                  onChange={handleChange}
-                  onFocus={onFocus}
-                  onKeyPress={this.handlePressSendShortKey}
-                  name="body"
-                  value={body}
-                  placeholder={this.getQuickInputPlaceholder()}
-                />
-              )
-            }
-            <div className={classnames(
-              'm-draft-message-quick__send',
-              {
+            {isLocked ? (
+              <LockedMessage encryptionStatus={draftEncryption} />
+            ) : (
+              <textarea
+                rows={/\n+/.test(body) ? 7 : 1}
+                className={classnames('m-draft-message-quick__input', {
+                  'm-draft-message-quick__input--encrypted': encryptionEnabled,
+                })}
+                onChange={handleChange}
+                onFocus={onFocus}
+                onKeyPress={this.handlePressSendShortKey}
+                name="body"
+                value={body}
+                placeholder={this.getQuickInputPlaceholder()}
+              />
+            )}
+            <div
+              className={classnames('m-draft-message-quick__send', {
                 'm-draft-message-quick__send--encrypted': encryptionEnabled,
                 'm-draft-message-quick__send--unencrypted': !encryptionEnabled,
-              }
-            )}
+              })}
             >
               <Button
                 type="submit"
                 display="expanded"
                 shape="plain"
-                icon={isSending ? (<Spinner loading display="block" />) : 'paper-plane'}
-                title={i18n._('draft-message.action.send', null, { defaults: 'Send' })}
-                className={classnames(
-                  'm-draft-message-quick__send-button',
-                  {
-                    'm-draft-message-quick__send-button--encrypted': encryptionEnabled,
-                    'm-draft-message-quick__send-button--unencrypted': !encryptionEnabled,
-                  }
-                )}
+                icon={
+                  isSending ? (
+                    <Spinner loading display="block" />
+                  ) : (
+                    'paper-plane'
+                  )
+                }
+                title={i18n._('draft-message.action.send', null, {
+                  defaults: 'Send',
+                })}
+                className={classnames('m-draft-message-quick__send-button', {
+                  'm-draft-message-quick__send-button--encrypted': encryptionEnabled,
+                  'm-draft-message-quick__send-button--unencrypted': !encryptionEnabled,
+                })}
                 disabled={!canSend}
               />
             </div>
@@ -164,4 +206,6 @@ class QuickDraftForm extends PureComponent {
   }
 }
 
-export default forwardRef((props, ref) => (<QuickDraftForm {...props} innerRef={ref} />));
+export default forwardRef((props, ref) => (
+  <QuickDraftForm {...props} innerRef={ref} />
+));

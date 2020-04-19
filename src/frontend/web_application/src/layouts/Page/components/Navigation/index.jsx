@@ -14,5 +14,5 @@ const withRoutes = () => C => props => (
 
 export default compose(
   withTabs(),
-  withRoutes(),
+  withRoutes()
 )(Presenter);

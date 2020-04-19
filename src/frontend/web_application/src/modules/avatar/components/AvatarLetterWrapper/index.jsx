@@ -59,7 +59,7 @@ class AvatarLetterWrapper extends PureComponent {
           'm-avatar-letter-wrapper',
           className,
           classNameSize,
-          classNameShape,
+          classNameShape
         )}
       >
         {avatarLetter}

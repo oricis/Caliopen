@@ -50,5 +50,5 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
-  reduxForm(),
+  reduxForm()
 )(Presenter);

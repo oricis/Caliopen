@@ -191,11 +191,12 @@ class TourPortal extends TourPortalBase {
                         !lastStepNextButton && current === steps.length - 1
                       }
                     >
-                      {lastStepNextButton && current === steps.length - 1
-                        ? lastStepNextButton
-                        : nextButton
-                          ? nextButton
-                          : null
+                      {
+                        lastStepNextButton && current === steps.length - 1
+                          ? lastStepNextButton
+                          : nextButton
+                            ? nextButton
+                            : null
                       }
                     </Button>
                   )}

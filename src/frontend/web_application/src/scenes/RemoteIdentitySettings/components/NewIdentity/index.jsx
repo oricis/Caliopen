@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Trans } from '@lingui/macro'; // eslint-disable-line import/no-extraneous-dependencies
-import {
-  Section, Callout, Icon, Title,
-} from '../../../../components';
+import { Section, Callout, Icon, Title } from '../../../../components';
 import {
   PROVIDER_GMAIL,
   PROVIDER_TWITTER,
@@ -34,36 +32,35 @@ class NewIdentity extends Component {
   };
 
   handleToggleFormEmail = () => {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       emailFormOpened: !prevState.emailFormOpened,
     }));
-  }
+  };
 
   handleChangeRemoteIdentityEmail = async (...params) => {
     const { onRemoteIdentityChange } = this.props;
     await onRemoteIdentityChange(...params);
     this.handleToggleFormEmail();
     this.props.onClear();
-  }
+  };
 
   handleOAuthDone = (result) => {
     if (result && result.response) {
       this.props.onError(result.response);
     }
     this.props.onClear();
-  }
+  };
 
   render() {
     const { providers } = this.props;
 
     return (
       <Section
-        title={(
+        title={
           <Trans id="remote_identity.add_account">
-Add an external
-          account
+            Add an external account
           </Trans>
-)}
+        }
         titleProps={{ size: 'large' }}
         className="m-new-identity"
         shape="none"
@@ -71,9 +68,8 @@ Add an external
         <p className="m-new-identity__main-help">
           <Trans id="remote_identity.create_help">
             Add an external account will allow you to aggregate messages for
-            this account in your
-            Caliopen inbox and answer to your contacts using one of these
-            acounts.
+            this account in your Caliopen inbox and answer to your contacts
+            using one of these acounts.
           </Trans>
         </p>
         <Callout color="info">
@@ -82,81 +78,74 @@ Add an external
               External accounts are fetched every 15 minutes.
               <br />
               Currently there is no indicator to inform that the account is
-              correctly configured
-              until first try is done.
+              correctly configured until first try is done.
             </p>
           </Trans>
         </Callout>
         <Title hr>
           <Trans id="remote_identity.choose-provider.title">
-Select a
-            provider
+            Select a provider
           </Trans>
         </Title>
         <ul className="m-provider-list">
-          {
-            providers.includes(PROVIDER_GMAIL) && (
-              <li className="m-provider-list__provider">
-                <ProviderButtonContainer label={(
+          {providers.includes(PROVIDER_GMAIL) && (
+            <li className="m-provider-list__provider">
+              <ProviderButtonContainer
+                label={
                   <Trans id="remote_identity.gmail.help">
-You will be redirected
-                    to gmail authentication
+                    You will be redirected to gmail authentication
                   </Trans>
-)}
-                >
-                  <AuthButton
-                    onDone={this.handleOAuthDone}
-                    providerName={PROVIDER_GMAIL}
-                  />
-                </ProviderButtonContainer>
-              </li>
-            )
-          }
-          {
-            providers.includes(PROVIDER_TWITTER) && (
-              <li className="m-provider-list__provider">
-                <ProviderButtonContainer label={(
+                }
+              >
+                <AuthButton
+                  onDone={this.handleOAuthDone}
+                  providerName={PROVIDER_GMAIL}
+                />
+              </ProviderButtonContainer>
+            </li>
+          )}
+          {providers.includes(PROVIDER_TWITTER) && (
+            <li className="m-provider-list__provider">
+              <ProviderButtonContainer
+                label={
                   <Trans id="remote_identity.twitter.help">
-You will be
-                    redirected to twitter authentication and authorize the
-                    application
+                    You will be redirected to twitter authentication and
+                    authorize the application
                   </Trans>
-)}
-                >
-                  <AuthButton
-                    onDone={this.handleOAuthDone}
-                    providerName={PROVIDER_TWITTER}
-                  />
-                </ProviderButtonContainer>
-              </li>
-            )
-          }
-          {
-            providers.includes(PROVIDER_MASTODON) && (
-              <li className="m-provider-list__provider">
-                <ProviderButtonContainer label={(
+                }
+              >
+                <AuthButton
+                  onDone={this.handleOAuthDone}
+                  providerName={PROVIDER_TWITTER}
+                />
+              </ProviderButtonContainer>
+            </li>
+          )}
+          {providers.includes(PROVIDER_MASTODON) && (
+            <li className="m-provider-list__provider">
+              <ProviderButtonContainer
+                label={
                   <Trans id="remote_identity.mastodon.help">
-You will be
-                    redirected to mastodon authentication and authorize the
-                    application
+                    You will be redirected to mastodon authentication and
+                    authorize the application
                   </Trans>
-)}
-                >
-                  <AuthButton
-                    onDone={this.handleOAuthDone}
-                    providerName={PROVIDER_MASTODON}
-                  />
-                </ProviderButtonContainer>
-              </li>
-            )
-          }
+                }
+              >
+                <AuthButton
+                  onDone={this.handleOAuthDone}
+                  providerName={PROVIDER_MASTODON}
+                />
+              </ProviderButtonContainer>
+            </li>
+          )}
           <li className="m-provider-list__provider">
-            <ProviderButtonContainer label={(
-              <Trans id="remote_identity.email.help">
-You will have to fill the
-                form with your imap server&apos;s parameters
-              </Trans>
-)}
+            <ProviderButtonContainer
+              label={
+                <Trans id="remote_identity.email.help">
+                  You will have to fill the form with your imap server&apos;s
+                  parameters
+                </Trans>
+              }
             >
               <ProviderButton onClick={this.handleToggleFormEmail}>
                 <Icon
@@ -165,8 +154,7 @@ You will have to fill the
                   rightSpaced
                 />
                 <Trans id="remote_identity.action.toggle-email-form">
-Email (via
-                  IMAP)
+                  Email (via IMAP)
                 </Trans>
               </ProviderButton>
             </ProviderButtonContainer>

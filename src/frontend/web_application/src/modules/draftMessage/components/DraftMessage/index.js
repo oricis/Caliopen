@@ -61,7 +61,7 @@ const mapStateToProps = createSelector([
   {
     draftMessage, isRequestingDraft, isDeletingDraft, original,
   }, { messages }, internalId, availableIdentities, parentMessage, sentMessages,
-  { isFetching: isIdentitiesFetching }, messageEncryptionStatus,
+  { isFetching: isIdentitiesFetching }, messageEncryptionStatus
 ) => {
   const lastMessage = getLastMessageFromArray(sentMessages);
   const canEditRecipients = messages.some(message => !message.is_draft) === false;

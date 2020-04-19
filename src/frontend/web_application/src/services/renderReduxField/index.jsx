@@ -16,6 +16,7 @@ const renderReduxField = (WrappedComponent) => {
       // eslint-disable-next-line react/prop-types
       const { input, meta, ...props } = this.props;
 
+      // eslint-disable-next-line react/prop-types
       const errors = meta.error ? [meta.error] : [];
 
       return (

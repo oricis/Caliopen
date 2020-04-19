@@ -6,7 +6,10 @@ import FileSize from '../../../FileSize';
 class File extends PureComponent {
   static propTypes = {
     onRemove: PropTypes.func.isRequired,
-    file: PropTypes.shape({}).isRequired,
+    file: PropTypes.shape({
+      name: PropTypes.string,
+      size: PropTypes.number,
+    }).isRequired,
   };
 
   static defaultProps = {

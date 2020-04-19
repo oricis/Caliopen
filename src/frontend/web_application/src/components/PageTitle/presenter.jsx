@@ -6,9 +6,17 @@ const DEFAULT_DOCUMENT_TITLE = 'Caliopen, be good!';
 
 class PageTitle extends PureComponent {
   static propTypes = {
-    user: PropTypes.shape({}),
+    user: PropTypes.shape({
+      name: PropTypes.string,
+    }),
     // FIXME always undefined
-    currentTab: PropTypes.shape({}),
+    currentTab: PropTypes.shape({
+      routeConfig: PropTypes.shape({
+        tab: PropTypes.shape({
+          renderLabel: PropTypes.func,
+        }),
+      }),
+    }),
     title: PropTypes.string,
     hostname: PropTypes.string,
   };

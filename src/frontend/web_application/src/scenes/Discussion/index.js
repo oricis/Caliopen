@@ -93,5 +93,5 @@ const mapDispatchToProps = (dispatch, ownProps) => bindActionCreators({
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withTags(),
-  withPush(),
+  withPush()
 )(Discussion);

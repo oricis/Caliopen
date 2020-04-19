@@ -5,5 +5,5 @@ import Presenter from './presenter';
 
 export default compose(
   withI18n(),
-  withNotification(),
+  withNotification()
 )(Presenter);

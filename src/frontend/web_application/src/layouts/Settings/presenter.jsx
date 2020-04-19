@@ -13,7 +13,9 @@ class Settings extends PureComponent {
       pathname: PropTypes.string,
     }).isRequired,
     children: PropTypes.node,
-    i18n: PropTypes.shape({}).isRequired,
+    i18n: PropTypes.shape({
+      _: PropTypes.func,
+    }).isRequired,
   };
 
   static defaultProps = {

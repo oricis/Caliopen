@@ -36,11 +36,11 @@ class AddFieldGroup extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.setState(generateStateFromProps(this.props));
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState(generateStateFromProps(nextProps));
   }
 

@@ -14,7 +14,12 @@ class Tab extends PureComponent {
     onRemove: PropTypes.func,
     isActive: PropTypes.bool.isRequired,
     tab: PropTypes.instanceOf(TabModel).isRequired,
-    routeConfig: PropTypes.shape({}).isRequired,
+    routeConfig: PropTypes.shape({
+      tab: PropTypes.shape({
+        renderLabel: PropTypes.func,
+        icon: PropTypes.string,
+      }),
+    }).isRequired,
   };
 
   static defaultProps = {
