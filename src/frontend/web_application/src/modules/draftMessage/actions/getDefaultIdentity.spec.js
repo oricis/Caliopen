@@ -46,7 +46,8 @@ describe('modules identity - actions - getDefaultIdentity', () => {
         [remoteTwitterIdentity.identity_id]: remoteTwitterIdentity,
       },
       remoteIdentities: [
-        remoteEmailIdentity.identity_id, remoteEmailIdentity2.identity_id,
+        remoteEmailIdentity.identity_id,
+        remoteEmailIdentity2.identity_id,
         remoteTwitterIdentity.identity_id,
       ],
       total: 2,
@@ -54,8 +55,7 @@ describe('modules identity - actions - getDefaultIdentity', () => {
   });
 
   it('returns default local identity', async () => {
-    const expectedActions = [
-    ];
+    const expectedActions = [];
     const action = getDefaultIdentity();
 
     const result = await store.dispatch(action);
@@ -68,11 +68,14 @@ describe('modules identity - actions - getDefaultIdentity', () => {
       const protocol = 'email';
       const participants = [
         { address: localIdentity.identifier, type: 'To', protocol: 'email' },
-        { address: remoteEmailIdentity.identifier, type: 'From', protocol: 'email' },
+        {
+          address: remoteEmailIdentity.identifier,
+          type: 'From',
+          protocol: 'email',
+        },
       ];
       const action = getDefaultIdentity({ participants, protocol });
-      const expectedActions = [
-      ];
+      const expectedActions = [];
 
       const result = await store.dispatch(action);
       expect(result).toEqual(localIdentity);
@@ -83,11 +86,14 @@ describe('modules identity - actions - getDefaultIdentity', () => {
       const protocol = 'email';
       const participants = [
         { address: 'bar@contact.tld', type: 'To', protocol: 'email' },
-        { address: remoteEmailIdentity.identifier, type: 'From', protocol: 'email' },
+        {
+          address: remoteEmailIdentity.identifier,
+          type: 'From',
+          protocol: 'email',
+        },
       ];
       const action = getDefaultIdentity({ participants, protocol });
-      const expectedActions = [
-      ];
+      const expectedActions = [];
 
       const result = await store.dispatch(action);
       expect(result).toEqual(remoteEmailIdentity);
@@ -99,12 +105,19 @@ describe('modules identity - actions - getDefaultIdentity', () => {
       const protocol = 'email';
       const participants = [
         { address: 'bar@contact.tld', type: 'To', protocol: 'email' },
-        { address: remoteEmailIdentity.identifier, type: 'From', protocol: 'email' },
-        { address: remoteEmailIdentity2.identifier, type: 'To', protocol: 'email' },
+        {
+          address: remoteEmailIdentity.identifier,
+          type: 'From',
+          protocol: 'email',
+        },
+        {
+          address: remoteEmailIdentity2.identifier,
+          type: 'To',
+          protocol: 'email',
+        },
       ];
       const action = getDefaultIdentity({ participants, protocol });
-      const expectedActions = [
-      ];
+      const expectedActions = [];
 
       const result = await store.dispatch(action);
       expect(result).toEqual(remoteEmailIdentity);
@@ -118,8 +131,7 @@ describe('modules identity - actions - getDefaultIdentity', () => {
         { address: '@whateverToo', type: 'From', protocol: 'twitter' },
       ];
       const action = getDefaultIdentity({ participants, protocol });
-      const expectedActions = [
-      ];
+      const expectedActions = [];
 
       const result = await store.dispatch(action);
       expect(result).toEqual(remoteTwitterIdentity);

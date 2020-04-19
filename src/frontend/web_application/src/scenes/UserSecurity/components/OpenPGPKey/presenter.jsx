@@ -185,7 +185,7 @@ class OpenPGPKey extends Component {
                     {this.state.openpgpKey.expirationTime}
                   </Moment>
                 </span>
-            )}
+              )}
             {' '}
             {this.state.openpgpKey.keyStatus &&
               openpgpStatuses[this.state.openpgpKey.keyStatus]}

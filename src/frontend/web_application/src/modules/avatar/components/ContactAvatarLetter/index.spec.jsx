@@ -4,9 +4,7 @@ import ContactAvatarLetter from './';
 
 describe('component ContactAvatarLetter', () => {
   it('render', () => {
-    const comp = shallow(
-      <ContactAvatarLetter contact={{ title: 'Foobar' }} />
-    );
+    const comp = shallow(<ContactAvatarLetter contact={{ title: 'Foobar' }} />);
 
     expect(comp.find('AvatarLetter').length).toEqual(1);
   });

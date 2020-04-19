@@ -38,7 +38,12 @@ class ValidateDevice extends Component {
     }
 
     try {
-      const { requestDeviceVerification, match: { params: { token } } } = this.props;
+      const {
+        requestDeviceVerification,
+        match: {
+          params: { token },
+        },
+      } = this.props;
       this.setState({
         status: STATUS_IN_PROGRESS,
       });
@@ -51,16 +56,18 @@ class ValidateDevice extends Component {
         status: STATUS_FAILED,
       });
     }
-  }
+  };
 
   renderVerification() {
     switch (this.state.status) {
       default:
       case STATUS_IN_PROGRESS:
         return (
-          <Section className="s-validate-device__feedback" borderContext="disabled">
-            <Spinner isLoading />
-            {' '}
+          <Section
+            className="s-validate-device__feedback"
+            borderContext="disabled"
+          >
+            <Spinner isLoading />{' '}
             <Trans id="device.validation.in_progress">In progress.</Trans>
           </Section>
         );
@@ -68,20 +75,23 @@ class ValidateDevice extends Component {
         return (
           <Section className="s-validate-device__feedback" borderContext="safe">
             <Trans id="device.validation.suceed">
-              The device is now verified, you can continue to use <Link to="/">Caliopen</Link>.
+              The device is now verified, you can continue to use{' '}
+              <Link to="/">Caliopen</Link>.
             </Trans>
           </Section>
         );
       case STATUS_FAILED:
         return (
-          <Section className="s-validate-device__feedback" borderContext="unsecure">
+          <Section
+            className="s-validate-device__feedback"
+            borderContext="unsecure"
+          >
             <Trans id="device.validation.failed">
-              The device cannot be verified, the validation link might not be valid anymore or may
-              be the device has been revoked.
+              The device cannot be verified, the validation link might not be
+              valid anymore or may be the device has been revoked.
               <br />
               You can send the verification link from
-              <Link to="/settings/devices">the device list</Link>
-              .
+              <Link to="/settings/devices">the device list</Link>.
             </Trans>
           </Section>
         );

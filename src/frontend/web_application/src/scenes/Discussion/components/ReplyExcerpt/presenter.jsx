@@ -20,9 +20,7 @@ class ReplyExcerpt extends PureComponent {
   };
 
   render() {
-    const {
-      draft, draftExcerptRef, onFocus, className,
-    } = this.props;
+    const { draft, draftExcerptRef, onFocus, className } = this.props;
 
     return (
       <div

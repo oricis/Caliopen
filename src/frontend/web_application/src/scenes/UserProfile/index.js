@@ -20,13 +20,19 @@ const mapStateToProps = createSelector(
   })
 );
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  requestUser,
-  updateUser,
-  onSubmit: (values, disp, props) => updateContact({
-    contact: values.contact, original: props.initialValues.contact,
-  }),
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      requestUser,
+      updateUser,
+      onSubmit: (values, disp, props) =>
+        updateContact({
+          contact: values.contact,
+          original: props.initialValues.contact,
+        }),
+    },
+    dispatch
+  );
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),

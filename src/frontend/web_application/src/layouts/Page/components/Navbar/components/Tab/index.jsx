@@ -30,16 +30,14 @@ class Tab extends PureComponent {
   handleRemove = () => {
     const { tab, onRemove } = this.props;
     onRemove({ tab });
-  }
+  };
 
   render() {
     const {
       className,
       isActive,
       routeConfig,
-      tab: {
-        location,
-      },
+      tab: { location },
     } = this.props;
 
     return (
@@ -47,13 +45,23 @@ class Tab extends PureComponent {
         className={classnames('m-tab', className)}
         active={isActive}
         color="secondary"
-        contentChildren={(
-          <ItemLink to={getTabUrl(location)} title={routeConfig.tab.renderLabel()} className="m-tab__content">
+        contentChildren={
+          <ItemLink
+            to={getTabUrl(location)}
+            title={routeConfig.tab.renderLabel()}
+            className="m-tab__content"
+          >
             <Icon className="m-tab__icon" type={routeConfig.tab.icon} />
             {routeConfig.tab.renderLabel()}
           </ItemLink>
-        )}
-        actionChildren={<ItemButton onClick={this.handleRemove} icon="remove" className="m-tab__action" />}
+        }
+        actionChildren={
+          <ItemButton
+            onClick={this.handleRemove}
+            icon="remove"
+            className="m-tab__action"
+          />
+        }
       />
     );
   }

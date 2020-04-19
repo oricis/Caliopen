@@ -39,22 +39,26 @@ class NewDraft extends Component {
     if (message && (message.parent_id || !message.is_draft)) {
       this.redirectDiscussion();
     }
-  }
+  };
 
   handleSent = () => {
     this.redirectDiscussion();
-  }
+  };
 
   redirectDiscussion = () => {
     const { push, closeTab, message } = this.props;
 
     if (!message || !message.discussion_id) {
-      throw new Error(`Unable to redirect. No discussions for message "${message && message.message_id}"`);
+      throw new Error(
+        `Unable to redirect. No discussions for message "${
+          message && message.message_id
+        }"`
+      );
     }
     closeTab();
 
     return push(`/discussions/${message.discussion_id}#${message.message_id}`);
-  }
+  };
 
   render() {
     const { messageId, closeTab, message } = this.props;

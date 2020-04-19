@@ -6,7 +6,11 @@ import { Title, Link } from '../../../../components';
 import { withTags } from '../../../../modules/tags';
 import ContactItem from '../ContactItem';
 import { DEFAULT_SORT_DIR } from '../../presenter';
-import { getFirstLetter, formatName, getContactTitle } from '../../../../services/contact';
+import {
+  getFirstLetter,
+  formatName,
+  getContactTitle,
+} from '../../../../services/contact';
 
 import './style.scss';
 
@@ -52,7 +56,7 @@ class ContactList extends PureComponent {
           return (b || '').localeCompare(a);
       }
     });
-  }
+  };
 
   renderNav(firstLettersWithContacts = []) {
     const firstLetters = this.getNavLetter();
@@ -66,7 +70,9 @@ class ContactList extends PureComponent {
             <Link
               key={letter}
               href={`#letter-${letter}`}
-              className={classnames('m-contact-list__alpha-letter', { 'm-contact-list__alpha-letter--active': isActive })}
+              className={classnames('m-contact-list__alpha-letter', {
+                'm-contact-list__alpha-letter--active': isActive,
+              })}
               disabled={!isActive}
             >
               {letter}
@@ -101,8 +107,15 @@ class ContactList extends PureComponent {
 
   render() {
     const {
-      contacts, userContact, contactDisplayOrder, contactDisplayFormat: format, onSelectEntity,
-      selectedContactsIds, tags, mode, onClickContact,
+      contacts,
+      userContact,
+      contactDisplayOrder,
+      contactDisplayFormat: format,
+      onSelectEntity,
+      selectedContactsIds,
+      tags,
+      mode,
+      onClickContact,
     } = this.props;
 
     if (!contacts.length && !userContact) {
@@ -110,18 +123,20 @@ class ContactList extends PureComponent {
     }
 
     const contactsGroupedByLetter = contacts
-      .sort((a, b) => (a[contactDisplayOrder] || getContactTitle(a))
-        .localeCompare(b[contactDisplayOrder] || getContactTitle(b)))
+      .sort((a, b) =>
+        (a[contactDisplayOrder] || getContactTitle(a)).localeCompare(
+          b[contactDisplayOrder] || getContactTitle(b)
+        )
+      )
       .reduce((acc, contact) => {
-        const firstLetter =
-          getFirstLetter(contact[contactDisplayOrder] || formatName({ contact, format }), '#');
+        const firstLetter = getFirstLetter(
+          contact[contactDisplayOrder] || formatName({ contact, format }),
+          '#'
+        );
 
         return {
           ...acc,
-          [firstLetter]: [
-            ...(acc[firstLetter] || []),
-            contact,
-          ],
+          [firstLetter]: [...(acc[firstLetter] || []), contact],
         };
       }, {});
 
@@ -134,7 +149,16 @@ class ContactList extends PureComponent {
         <div className="m-contact-list__list">
           {userContact && (
             <div className="m-contact-list__group">
-              <Title caps hr size="large" className="m-contact-list__alpha-title"><Trans id="contact-book.my-contact-details">Mes coordonées</Trans></Title>
+              <Title
+                caps
+                hr
+                size="large"
+                className="m-contact-list__alpha-title"
+              >
+                <Trans id="contact-book.my-contact-details">
+                  Mes coordonées
+                </Trans>
+              </Title>
               <ContactItem
                 className="m-contact-list__contact"
                 contact={userContact}
@@ -145,26 +169,37 @@ class ContactList extends PureComponent {
               />
             </div>
           )}
-          {firstLetters.map((letter) => (
-            contactsGroupedByLetter[letter] && (
-              <div key={letter} className="m-contact-list__group">
-                <Title caps hr size="large" className="m-contact-list__alpha-title" id={`letter-${letter}`}>{letter}</Title>
-                {contactsGroupedByLetter[letter].map((contact) => (
-                  <ContactItem
-                    key={contact.contact_id}
-                    className="m-contact-list__contact"
-                    contact={contact}
-                    onSelectEntity={onSelectEntity}
-                    onClickContact={onClickContact}
-                    isContactSelected={selectedContactsIds.includes(contact.contact_id)}
-                    tags={tags}
-                    selectDisabled={mode === MODE_ASSOCIATION}
-                    mode={mode}
-                  />
-                ))}
-              </div>
-            )
-          ))}
+          {firstLetters.map(
+            (letter) =>
+              contactsGroupedByLetter[letter] && (
+                <div key={letter} className="m-contact-list__group">
+                  <Title
+                    caps
+                    hr
+                    size="large"
+                    className="m-contact-list__alpha-title"
+                    id={`letter-${letter}`}
+                  >
+                    {letter}
+                  </Title>
+                  {contactsGroupedByLetter[letter].map((contact) => (
+                    <ContactItem
+                      key={contact.contact_id}
+                      className="m-contact-list__contact"
+                      contact={contact}
+                      onSelectEntity={onSelectEntity}
+                      onClickContact={onClickContact}
+                      isContactSelected={selectedContactsIds.includes(
+                        contact.contact_id
+                      )}
+                      tags={tags}
+                      selectDisabled={mode === MODE_ASSOCIATION}
+                      mode={mode}
+                    />
+                  ))}
+                </div>
+              )
+          )}
         </div>
       </div>
     );

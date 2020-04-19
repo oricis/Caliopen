@@ -21,7 +21,7 @@ describe('message module - actions - getDraft', () => {
           a: {
             message_id: 'a',
             discussion_id: '02',
-            date_sort: new Date(now - (2 * 60 * 60 * 1000)),
+            date_sort: new Date(now - 2 * 60 * 60 * 1000),
             is_draft: true,
           },
           b: {
@@ -40,8 +40,7 @@ describe('message module - actions - getDraft', () => {
       },
     });
 
-    const expectedActions = [
-    ];
+    const expectedActions = [];
     const action = getDraft({ discussionId: '02' });
 
     const result = await store.dispatch(action);

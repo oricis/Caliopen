@@ -6,15 +6,15 @@ export class Message {
     Object.assign(this, props);
   }
 
-  message_id = uuidv4()
+  message_id = uuidv4();
 
-  discussion_id
+  discussion_id;
 
-  subject = ''
+  subject = '';
 
-  body = ''
+  body = '';
 
-  parent_id
+  parent_id;
 
-  user_identities
+  user_identities;
 }

@@ -9,8 +9,7 @@ export default {
   unknown: {
     default: true,
   },
-  sms: {
-  },
+  sms: {},
   email: {
     regexp: /^[a-z0-9.!#$%&*+=?_{}~-]+@([a-zA-Z0-9]+\.)+[a-zA-Z]{2,60}$/,
   },
@@ -18,8 +17,7 @@ export default {
     // https://help.twitter.com/en/managing-your-account/twitter-username-rules
     regexp: /^\w{1,15}$/,
   },
-  facebook: {
-  },
+  facebook: {},
   mastodon: {
     regexp: /^[a-z0-9.!#$%&*+=?_{}~-]+@([a-zA-Z0-9]+\.)+[a-zA-Z]{2,60}$/,
   },

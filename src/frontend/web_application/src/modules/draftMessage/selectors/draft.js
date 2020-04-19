@@ -1,3 +1,2 @@
-export const draftSelector = (state, { internalId }) => (
-  state.draftMessage.draftsByInternalId[internalId]
-);
+export const draftSelector = (state, { internalId }) =>
+  state.draftMessage.draftsByInternalId[internalId];

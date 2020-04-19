@@ -12,7 +12,7 @@ export const withCloseTab = () => (C) => (props) => (
         return removeTab({ tab });
       };
 
-      return (<C closeTab={closeTab} {...props} />);
+      return <C closeTab={closeTab} {...props} />;
     }}
   />
 );

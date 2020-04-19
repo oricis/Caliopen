@@ -18,7 +18,9 @@ const APPLICATIONS = {
 };
 
 export const getLabels = (i18n) => ({
-  discussions: i18n._('header.menu.discussions', null, { defaults: 'Discussions' }),
+  discussions: i18n._('header.menu.discussions', null, {
+    defaults: 'Discussions',
+  }),
   contacts: i18n._('header.menu.contacts', null, { defaults: 'Contacts' }),
 });
 
@@ -28,8 +30,9 @@ export const getInfosFromName = (name) => ({
 });
 
 export const getInfosFromRoute = (route) => {
-  const applicationName = Object.keys(APPLICATIONS)
-    .find((name) => APPLICATIONS[name].route === route);
+  const applicationName = Object.keys(APPLICATIONS).find(
+    (name) => APPLICATIONS[name].route === route
+  );
 
   if (!applicationName) {
     return undefined;
@@ -38,4 +41,5 @@ export const getInfosFromRoute = (route) => {
   return getInfosFromName(applicationName);
 };
 
-export const getApplications = () => Object.keys(APPLICATIONS).map(getInfosFromName);
+export const getApplications = () =>
+  Object.keys(APPLICATIONS).map(getInfosFromName);

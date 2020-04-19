@@ -4,13 +4,13 @@ export class Participant {
     Object.assign(this, props);
   }
 
-  address
+  address;
 
-  protocol
+  protocol;
 
-  label
+  label;
 
-  type = 'To'
+  type = 'To';
 
-  contact_ids = []
+  contact_ids = [];
 }

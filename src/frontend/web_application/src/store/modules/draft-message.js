@@ -8,7 +8,8 @@ export const REQUEST_DRAFT = 'co/draft-message/REQUEST_DRAFT';
 export const REQUEST_DRAFT_SUCCESS = 'co/draft-message/REQUEST_DRAFT_SUCCESS';
 export const DELETE_DRAFT = 'co/draft-message/DELETE_DRAFT';
 export const DELETE_DRAFT_SUCCESS = 'co/draft-message/DELETE_DRAFT_SUCCESS';
-export const SET_RECIPIENT_SEARCH_TERMS = 'co/draft-message/SET_RECIPIENT_SEARCH_TERMS';
+export const SET_RECIPIENT_SEARCH_TERMS =
+  'co/draft-message/SET_RECIPIENT_SEARCH_TERMS';
 export const DECRYPT_DRAFT_SUCCESS = 'co/draft-message/DECRYPT_DRAFT_SUCCESS';
 
 export function editDraft({ internalId, draft, message }) {
@@ -121,7 +122,10 @@ function dratfsByInternalIdReducer(state, action) {
     case DECRYPT_DRAFT_SUCCESS:
       return {
         ...state,
-        [action.payload.internalId]: draftReducer(state[action.payload.internalId], action),
+        [action.payload.internalId]: draftReducer(
+          state[action.payload.internalId],
+          action
+        ),
       };
     case CLEAR_DRAFT:
       return {
@@ -184,30 +188,43 @@ export default function reducer(state = initialState, action) {
     case CREATE_DRAFT:
       return {
         ...state,
-        draftsByInternalId: dratfsByInternalIdReducer(state.draftsByInternalId, action),
+        draftsByInternalId: dratfsByInternalIdReducer(
+          state.draftsByInternalId,
+          action
+        ),
       };
     case EDIT_DRAFT:
     case CLEAR_DRAFT:
     case SYNC_DRAFT:
       return {
         ...state,
-        draftsByInternalId: dratfsByInternalIdReducer(state.draftsByInternalId, action),
+        draftsByInternalId: dratfsByInternalIdReducer(
+          state.draftsByInternalId,
+          action
+        ),
       };
     case DELETE_DRAFT:
     case DELETE_DRAFT_SUCCESS:
     case REQUEST_DRAFT:
       return {
         ...state,
-        draftActivityByInternalId:
-          draftActivityByInternalIdReducer(state.draftActivityByInternalId, action),
+        draftActivityByInternalId: draftActivityByInternalIdReducer(
+          state.draftActivityByInternalId,
+          action
+        ),
       };
     case DECRYPT_DRAFT_SUCCESS:
     case REQUEST_DRAFT_SUCCESS:
       return {
         ...state,
-        draftActivityByInternalId:
-          draftActivityByInternalIdReducer(state.draftActivityByInternalId, action),
-        draftsByInternalId: dratfsByInternalIdReducer(state.draftsByInternalId, action),
+        draftActivityByInternalId: draftActivityByInternalIdReducer(
+          state.draftActivityByInternalId,
+          action
+        ),
+        draftsByInternalId: dratfsByInternalIdReducer(
+          state.draftsByInternalId,
+          action
+        ),
       };
     case SET_RECIPIENT_SEARCH_TERMS: {
       return {

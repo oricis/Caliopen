@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
 import PiwikReactRouter from 'piwik-react-router';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { install as PWAOfflineInstall, applyUpdate } from 'offline-plugin/runtime';
+import {
+  install as PWAOfflineInstall,
+  applyUpdate,
+} from 'offline-plugin/runtime';
 import App from './App';
 import configureStore from './store/configure-store';
 import { initialState as initialStateSettings } from './store/modules/settings';
@@ -22,7 +25,9 @@ const locales = getUserLocales();
 const settings = getDefaultSettings(locales);
 const getHistory = () => {
   const history = getRouterHistory();
-  const { piwik: { siteId } } = getConfig();
+  const {
+    piwik: { siteId },
+  } = getConfig();
   if (siteId) {
     const piwik = PiwikReactRouter({
       url: 'https://piwik.caliopen.org/analytics',
@@ -35,12 +40,15 @@ const getHistory = () => {
   return history;
 };
 
-const store = configureStore({
-  settings: {
-    ...initialStateSettings,
-    settings,
+const store = configureStore(
+  {
+    settings: {
+      ...initialStateSettings,
+      settings,
+    },
   },
-}, devTools);
+  devTools
+);
 
 PWAOfflineInstall({
   onUpdateReady: () => {
@@ -50,10 +58,8 @@ PWAOfflineInstall({
 });
 const rootEl = document.getElementById('root');
 ReactDOM.hydrate(
-  (
-    <Router history={getHistory()}>
-      <App store={store} />
-    </Router>
-  ),
+  <Router history={getHistory()}>
+    <App store={store} />
+  </Router>,
   rootEl
 );

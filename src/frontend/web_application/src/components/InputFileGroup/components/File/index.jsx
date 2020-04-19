@@ -12,8 +12,7 @@ class File extends PureComponent {
     }).isRequired,
   };
 
-  static defaultProps = {
-  };
+  static defaultProps = {};
 
   render() {
     const { file, onRemove } = this.props;

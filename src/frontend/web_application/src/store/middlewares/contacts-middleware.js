@@ -1,4 +1,8 @@
-import { getNextOffset, requestContacts, LOAD_MORE_CONTACTS } from '../modules/contact';
+import {
+  getNextOffset,
+  requestContacts,
+  LOAD_MORE_CONTACTS,
+} from '../modules/contact';
 
 export default (store) => (next) => (action) => {
   const result = next(action);

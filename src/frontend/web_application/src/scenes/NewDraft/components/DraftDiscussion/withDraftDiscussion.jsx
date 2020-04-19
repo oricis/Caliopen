@@ -19,39 +19,58 @@ const getParticipantsHash = ({ participants }) => {
     return undefined;
   }
 
-  return bytesToUuid(sha1(participants
-    .map((participant) => `${participant.address}_${participant.protocol}`)
-    .sort()
-    .join('+')));
+  return bytesToUuid(
+    sha1(
+      participants
+        .map((participant) => `${participant.address}_${participant.protocol}`)
+        .sort()
+        .join('+')
+    )
+  );
 };
 const discussionStateSelector = getModuleStateSelector('discussion');
 const messageStateSelector = getModuleStateSelector('message');
-const draftMessageSelector = (state, { messageId }) => (
-  draftSelector(state, { internalId: messageId })
-);
+const draftMessageSelector = (state, { messageId }) =>
+  draftSelector(state, { internalId: messageId });
 const discussionIdSelector = createSelector(
   [discussionStateSelector, draftMessageSelector],
   (discussionState, draftMessage) => {
-    if (!draftMessage || !draftMessage.participants || draftMessage.participants.length === 0) {
+    if (
+      !draftMessage ||
+      !draftMessage.participants ||
+      draftMessage.participants.length === 0
+    ) {
       return undefined;
     }
 
     const { participants } = draftMessage;
-    const { discussionId } = discussionState.discussionByParticipantsHash[getParticipantsHash({
-      participants,
-    })] || {};
+    const { discussionId } =
+      discussionState.discussionByParticipantsHash[
+        getParticipantsHash({
+          participants,
+        })
+      ] || {};
 
     return discussionId;
   }
 );
 const discussionSelector = createSelector(
   [discussionIdSelector, discussionStateSelector],
-  (discussionId, discussionState) => discussionState.discussionsById[discussionId]
+  (discussionId, discussionState) =>
+    discussionState.discussionsById[discussionId]
 );
-const messageCollectionStateSelector = createMessageCollectionStateSelector(() => 'discussion', discussionIdSelector);
+const messageCollectionStateSelector = createMessageCollectionStateSelector(
+  () => 'discussion',
+  discussionIdSelector
+);
 
 const mapStateToProps = createSelector(
-  [discussionSelector, messageCollectionStateSelector, messageStateSelector, draftMessageSelector],
+  [
+    discussionSelector,
+    messageCollectionStateSelector,
+    messageStateSelector,
+    draftMessageSelector,
+  ],
   (discussion, messageCollectionState, messageState, draftMessage) => ({
     draftMessage,
     discussion,
@@ -59,18 +78,27 @@ const mapStateToProps = createSelector(
   })
 );
 
-const requestDraftDiscussion = ({ participants, internalHash }) => async (dispatch) => {
-  const discussionId = await dispatch(requestDiscussionIdForParticipants({
-    participants, internalHash,
-  }));
+const requestDraftDiscussion = ({ participants, internalHash }) => async (
+  dispatch
+) => {
+  const discussionId = await dispatch(
+    requestDiscussionIdForParticipants({
+      participants,
+      internalHash,
+    })
+  );
   if (discussionId && discussionId.length > 0) {
     dispatch(requestDiscussion({ discussionId }));
   }
 };
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  requestDraftDiscussion,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      requestDraftDiscussion,
+    },
+    dispatch
+  );
 
 const connecting = connect(mapStateToProps, mapDispatchToProps);
 
@@ -99,7 +127,7 @@ export const withDraftDiscussion = () => (C) => {
       draftMessage: undefined,
       discussion: undefined,
       messages: [],
-    }
+    };
 
     componentDidMount() {
       const { draftMessage } = this.props;
@@ -111,9 +139,12 @@ export const withDraftDiscussion = () => (C) => {
 
     componentDidUpdate(prevProps) {
       if (
-        this.props.draftMessage && (!prevProps.draftMessage || !isEqual(
-          prevProps.draftMessage.participants, this.props.draftMessage.participants
-        ))
+        this.props.draftMessage &&
+        (!prevProps.draftMessage ||
+          !isEqual(
+            prevProps.draftMessage.participants,
+            this.props.draftMessage.participants
+          ))
       ) {
         this.fetchDiscussion();
       }
@@ -129,11 +160,15 @@ export const withDraftDiscussion = () => (C) => {
           internalHash: getParticipantsHash({ participants }),
         });
       }
-    }
+    };
 
     render() {
       const {
-        requestDraftDiscussion: unused, draftMessage, discussion, messages, ...props
+        requestDraftDiscussion: unused,
+        draftMessage,
+        discussion,
+        messages,
+        ...props
       } = this.props;
 
       const draftDiscussionProps = {
@@ -142,9 +177,7 @@ export const withDraftDiscussion = () => (C) => {
         messages,
       };
 
-      return (
-        <C draftDiscussion={draftDiscussionProps} {...props} />
-      );
+      return <C draftDiscussion={draftDiscussionProps} {...props} />;
     }
   }
 

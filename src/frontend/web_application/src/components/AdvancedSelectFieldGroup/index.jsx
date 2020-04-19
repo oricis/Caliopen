@@ -11,12 +11,18 @@ import Button from '../Button';
 
 import './style.scss';
 
-const propTypeOption = PropTypes.oneOfType([PropTypes.string, PropTypes.number]);
-const alphaNumPropType = PropTypes.oneOfType([PropTypes.string, PropTypes.number]);
+const propTypeOption = PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.number,
+]);
+const alphaNumPropType = PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.number,
+]);
 
-const DropdownControl = withDropdownControl(forwardRef((props, ref) => (
-  <div ref={ref} {...props} />
-)));
+const DropdownControl = withDropdownControl(
+  forwardRef((props, ref) => <div ref={ref} {...props} />)
+);
 
 class AdvancedSelectFieldGroup extends PureComponent {
   static propTypes = {
@@ -24,9 +30,13 @@ class AdvancedSelectFieldGroup extends PureComponent {
     showLabelforSr: PropTypes.bool,
     value: alphaNumPropType,
     expanded: PropTypes.bool,
-    options: PropTypes.arrayOf(PropTypes.shape({
-      advancedlabel: PropTypes.node, label: propTypeOption, value: alphaNumPropType,
-    })),
+    options: PropTypes.arrayOf(
+      PropTypes.shape({
+        advancedlabel: PropTypes.node,
+        label: propTypeOption,
+        value: alphaNumPropType,
+      })
+    ),
     errors: PropTypes.arrayOf(PropTypes.node),
     onChange: PropTypes.func.isRequired,
     className: PropTypes.string,
@@ -56,9 +66,11 @@ class AdvancedSelectFieldGroup extends PureComponent {
     const { name, onChange } = this.props;
 
     onChange({ target: { name, value } });
-  }
+  };
 
-  renderSelected = (selectedOpt = { advancedlabel: this.props.placeholder }) => {
+  renderSelected = (
+    selectedOpt = { advancedlabel: this.props.placeholder }
+  ) => {
     const { inline } = this.props;
     const { advancedlabel } = selectedOpt;
 
@@ -66,13 +78,23 @@ class AdvancedSelectFieldGroup extends PureComponent {
       return advancedlabel;
     }
 
-    return (<TextBlock>{advancedlabel}</TextBlock>);
-  }
+    return <TextBlock>{advancedlabel}</TextBlock>;
+  };
 
   render() {
     const {
-      errors, expanded, showLabelforSr, className, label, onChange, options, value, placeholder,
-      decorated, inline, ...props
+      errors,
+      expanded,
+      showLabelforSr,
+      className,
+      label,
+      onChange,
+      options,
+      value,
+      placeholder,
+      decorated,
+      inline,
+      ...props
     } = this.props;
     if (decorated) {
       throw new Error('decorated prop is not supported yet');
@@ -101,13 +123,22 @@ class AdvancedSelectFieldGroup extends PureComponent {
       'm-advanced-select-field-group__input--decorated': decorated,
       'm-advanced-select-field-group__input--has-placeholder': !!selectedOpt,
     });
-    const errorsClassname = classnames('m-advanced-select-field-group__errors', {
-      'm-advanced-select-field-group--inline__errors': inline,
-    });
+    const errorsClassname = classnames(
+      'm-advanced-select-field-group__errors',
+      {
+        'm-advanced-select-field-group--inline__errors': inline,
+      }
+    );
 
     return (
-      <FieldGroup className={selectClassName} errorsClassname={errorsClassname} errors={errors}>
-        <Label htmlFor={id} className={labelClassName}>{label}</Label>
+      <FieldGroup
+        className={selectClassName}
+        errorsClassname={errorsClassname}
+        errors={errors}
+      >
+        <Label htmlFor={id} className={labelClassName}>
+          {label}
+        </Label>
         <div className={selectWrapperClassName} aria-hidden="true">
           <DropdownControl
             className={inputClassName}
@@ -116,7 +147,11 @@ class AdvancedSelectFieldGroup extends PureComponent {
             <TextBlock>{this.renderSelected(selectedOpt)}</TextBlock>
           </DropdownControl>
         </div>
-        <Dropdown dropdownControlRef={this.dropdownControlRef} isMenu closeOnClick="all">
+        <Dropdown
+          dropdownControlRef={this.dropdownControlRef}
+          isMenu
+          closeOnClick="all"
+        >
           <VerticalMenu>
             {options.map((option) => (
               <VerticalMenuItem key={option.value}>
@@ -139,10 +174,7 @@ class AdvancedSelectFieldGroup extends PureComponent {
           {...props}
         >
           {options.map((selectOption) => (
-            <option
-              key={selectOption.label}
-              value={selectOption.value}
-            >
+            <option key={selectOption.label} value={selectOption.value}>
               {selectOption.label}
             </option>
           ))}

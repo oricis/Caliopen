@@ -46,7 +46,8 @@ export const getPlainTextFromMime = ({ body }) => {
   return body;
 };
 
-export const mimeEncapsulate = (body) => factory({
-  contentType: 'text/plain;charset=utf8',
-  body,
-});
+export const mimeEncapsulate = (body) =>
+  factory({
+    contentType: 'text/plain;charset=utf8',
+    body,
+  });

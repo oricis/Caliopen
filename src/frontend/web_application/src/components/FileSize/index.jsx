@@ -11,9 +11,7 @@ class FileSize extends Component {
   renderB() {
     const { size } = this.props;
 
-    return (
-      <Trans id="file.size.B">{size} B</Trans>
-    );
+    return <Trans id="file.size.B">{size} B</Trans>;
   }
 
   renderKB() {

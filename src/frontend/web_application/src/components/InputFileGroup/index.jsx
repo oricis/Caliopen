@@ -32,7 +32,7 @@ class InputFileGroup extends Component {
     multiple: false,
     className: null,
     descr: null,
-  }
+  };
 
   state = {
     files: [],
@@ -54,7 +54,7 @@ class InputFileGroup extends Component {
         return onInputChange(validatedFiles);
       })
       .catch((fieldErrors) => this.setState({ fieldErrors }));
-  }
+  };
 
   resetForm = () => {
     this.setState({
@@ -63,31 +63,35 @@ class InputFileGroup extends Component {
     });
 
     return this.props.onInputChange([]);
-  }
+  };
 
   validate = (file) => {
     const { i18n, fileTypes, maxSize } = this.props;
     const errors = [];
 
     if (!file) {
-      return Promise.reject(i18n._('input-file-group.error.file_is_required', null, { defaults: 'A file is required' }));
+      return Promise.reject(
+        i18n._('input-file-group.error.file_is_required', null, {
+          defaults: 'A file is required',
+        })
+      );
     }
 
     const ext = file.name ? `.${file.name.split('.').pop()}` : null;
     if (fileTypes && (!ext || !fileTypes.includes(ext))) {
-      errors.push((
-        <Trans id="input-file-group.error.no_valid_ext">Only files {fileTypes.join(', ')}</Trans>
-      ));
+      errors.push(
+        <Trans id="input-file-group.error.no_valid_ext">
+          Only files {fileTypes.join(', ')}
+        </Trans>
+      );
     }
 
     if (maxSize && file.size > maxSize) {
-      errors.push((
-        <Trans
-          id="input-file-group.error.max_size"
-        >
+      errors.push(
+        <Trans id="input-file-group.error.max_size">
           The file size must be under <FileSize size={maxSize} />
         </Trans>
-      ));
+      );
     }
 
     if (errors.length) {
@@ -95,22 +99,27 @@ class InputFileGroup extends Component {
     }
 
     return Promise.resolve(file);
-  }
+  };
 
   render() {
-    const {
-      errors, descr, className, fileTypes, multiple,
-    } = this.props;
-    const allErrors = errors ? Object.keys(errors).map((key) => errors[key]) : null;
+    const { errors, descr, className, fileTypes, multiple } = this.props;
+    const allErrors = errors
+      ? Object.keys(errors).map((key) => errors[key])
+      : null;
     const acceptProp = fileTypes ? { accept: fileTypes } : {};
 
     return (
-      <FieldGroup className={classnames('m-input-file-group', className)} errors={allErrors}>
+      <FieldGroup
+        className={classnames('m-input-file-group', className)}
+        errors={allErrors}
+      >
         {descr && <p>{descr}</p>}
 
-        {this.state.files.length > 0 ? this.state.files.map((file) => (
-          <File file={file} onRemove={this.resetForm} />
-        )) : (
+        {this.state.files.length > 0 ? (
+          this.state.files.map((file) => (
+            <File file={file} onRemove={this.resetForm} />
+          ))
+        ) : (
           <InputFile
             onChange={this.handleInputChange}
             errors={this.state.fieldErrors}

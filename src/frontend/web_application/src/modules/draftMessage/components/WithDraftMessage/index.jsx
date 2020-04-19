@@ -9,7 +9,8 @@ const internalIdSelector = (state, ownProps) => ownProps.internalId;
 const draftStateSelector = (state) => state.draftMessage;
 const draftActivitySelector = createSelector(
   [draftStateSelector, internalIdSelector],
-  (draftState, internalId) => draftState.draftActivityByInternalId[internalId] || {}
+  (draftState, internalId) =>
+    draftState.draftActivityByInternalId[internalId] || {}
 );
 const draftMessageSelector = createSelector(
   [draftStateSelector, internalIdSelector],
@@ -17,12 +18,16 @@ const draftMessageSelector = createSelector(
 );
 const messageSelector = createSelector(
   [messagesByIdSelector, draftMessageSelector],
-  (messagesById, draftMessage) => draftMessage && messagesById[draftMessage.message_id]
+  (messagesById, draftMessage) =>
+    draftMessage && messagesById[draftMessage.message_id]
 );
 
 const mapStateToProps = createSelector(
   [
-    internalIdSelector, draftActivitySelector, draftMessageSelector, messageSelector,
+    internalIdSelector,
+    draftActivitySelector,
+    draftMessageSelector,
+    messageSelector,
   ],
   (internalId, draftActivity, draftMessage, message) => {
     const { isRequestingDraft, isDeletingDraft } = draftActivity;
@@ -37,8 +42,12 @@ const mapStateToProps = createSelector(
   }
 );
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  requestDraft,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      requestDraft,
+    },
+    dispatch
+  );
 
 export default connect(mapStateToProps, mapDispatchToProps)(Presenter);

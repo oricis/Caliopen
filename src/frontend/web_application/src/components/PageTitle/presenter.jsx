@@ -29,17 +29,15 @@ class PageTitle extends PureComponent {
   };
 
   render() {
-    const {
-      user, title, currentTab, hostname,
-    } = this.props;
+    const { user, title, currentTab, hostname } = this.props;
     const userName = user ? `${user.name}@${hostname} - ` : '';
-    const currentTabLabel = currentTab ? `${currentTab.routeConfig.tab.renderLabel()} - ` : '';
+    const currentTabLabel = currentTab
+      ? `${currentTab.routeConfig.tab.renderLabel()} - `
+      : '';
     const pageTitle = title ? `${title} - ` : currentTabLabel;
     const documentTitle = `${pageTitle}${userName}${DEFAULT_DOCUMENT_TITLE}`;
 
-    return (
-      <DocumentTitle title={documentTitle} />
-    );
+    return <DocumentTitle title={documentTitle} />;
   }
 }
 

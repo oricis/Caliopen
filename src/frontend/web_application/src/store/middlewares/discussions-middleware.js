@@ -1,4 +1,8 @@
-import { getNextOffset, requestDiscussions, LOAD_MORE_DISCUSSIONS } from '../modules/discussion';
+import {
+  getNextOffset,
+  requestDiscussions,
+  LOAD_MORE_DISCUSSIONS,
+} from '../modules/discussion';
 
 export default (store) => (next) => (action) => {
   const result = next(action);

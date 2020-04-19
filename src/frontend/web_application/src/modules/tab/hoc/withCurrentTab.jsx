@@ -6,9 +6,7 @@ export const withCurrentTab = () => (C) => (props) => (
     render={({ getCurrentTab }) => {
       const currentTab = getCurrentTab();
 
-      return (
-        <C currentTab={currentTab} {...props} />
-      );
+      return <C currentTab={currentTab} {...props} />;
     }}
   />
 );

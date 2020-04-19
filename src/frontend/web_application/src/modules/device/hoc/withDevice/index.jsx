@@ -3,8 +3,6 @@ import WithDevice from '../../components/WithDevice';
 
 export const withDevice = () => (WrappedComponent) => (props) => (
   <WithDevice
-    render={(deviceProps) => (
-      <WrappedComponent {...props} {...deviceProps} />
-    )}
+    render={(deviceProps) => <WrappedComponent {...props} {...deviceProps} />}
   />
 );

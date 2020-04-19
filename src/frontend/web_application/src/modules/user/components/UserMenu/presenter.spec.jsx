@@ -6,11 +6,11 @@ jest.mock('../../../../modules/settings', () => ({
   WithSettings: ({ render }) => render({}, false),
 }));
 jest.mock('../../../../modules/userNotify', () => ({
-  withNotification: () => C => C,
+  withNotification: () => (C) => C,
 }));
 jest.mock('../../../../components/PageTitle', () => () => null);
 jest.mock('../../../../modules/userNotify/hoc/withNotification', () => ({
-  withNotification: () => noop => noop,
+  withNotification: () => (noop) => noop,
 }));
 
 describe('component UserMenu', () => {

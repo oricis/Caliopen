@@ -1,0 +1,4 @@
+dist/
+locale/_build/
+locale/**/*.js
+node_modules/

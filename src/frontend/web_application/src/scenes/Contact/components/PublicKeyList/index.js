@@ -1,7 +1,10 @@
 import { compose, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { requestPublicKeys, deletePublicKey } from '../../../../store/modules/public-key';
+import {
+  requestPublicKeys,
+  deletePublicKey,
+} from '../../../../store/modules/public-key';
 import Presenter from './presenter';
 
 const contactIdSelector = (state, ownProps) => ownProps.contactId;
@@ -22,11 +25,13 @@ const mapStateToProps = createSelector(
 );
 
 const mapDispatchToProps = (dispatch) => ({
-  ...bindActionCreators({
-    requestPublicKeys,
-    deletePublicKey,
-  }, dispatch),
+  ...bindActionCreators(
+    {
+      requestPublicKeys,
+      deletePublicKey,
+    },
+    dispatch
+  ),
 });
-
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(Presenter);

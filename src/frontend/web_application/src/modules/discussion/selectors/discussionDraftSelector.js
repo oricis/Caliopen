@@ -5,14 +5,16 @@ import { sortMessages } from '../../message/services/sortMessages';
 import { createMessageCollectionStateSelector } from '../../../store/selectors/message';
 import { discussionIdSelector } from './discussionIdSelector';
 
-const messageCollectionSelector = createMessageCollectionStateSelector(() => 'discussion', discussionIdSelector);
+const messageCollectionSelector = createMessageCollectionStateSelector(
+  () => 'discussion',
+  discussionIdSelector
+);
 
-export const discussionDraftSelector = (state, { discussionId }) => createSelector(
-  [messageCollectionSelector],
-  ({ messages }) => {
-    const [draft] = sortMessages(messages, true)
-      .filter((message) => message.is_draft === true);
+export const discussionDraftSelector = (state, { discussionId }) =>
+  createSelector([messageCollectionSelector], ({ messages }) => {
+    const [draft] = sortMessages(messages, true).filter(
+      (message) => message.is_draft === true
+    );
 
     return draft;
-  }
-)(state, { discussionId });
+  })(state, { discussionId });

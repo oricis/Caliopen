@@ -6,7 +6,10 @@ import Button from '../../../Button';
 import './style.scss';
 
 function generateStateFromProps(props) {
-  const item = typeof props.defaultValue === 'string' ? props.defaultValue : { ...props.defaultValue };
+  const item =
+    typeof props.defaultValue === 'string'
+      ? props.defaultValue
+      : { ...props.defaultValue };
 
   return { item };
 }
@@ -81,7 +84,9 @@ class AddFieldGroup extends Component {
           onClick={this.handleAdd}
           disabled={this.state.item.length === 0}
         >
-          <span className="show-for-sr"><Trans id="collection-field-group.action.add">Add</Trans></span>
+          <span className="show-for-sr">
+            <Trans id="collection-field-group.action.add">Add</Trans>
+          </span>
           <Icon type="plus" />
         </Button>
       </div>

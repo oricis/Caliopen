@@ -2,9 +2,12 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Link from './';
 
-
 jest.mock('react-router-dom', () => {
-  const BaseLink = ({ children, ...props }) => (<a href="" {...props}>{children}</a>);
+  const BaseLink = ({ children, ...props }) => (
+    <a href="" {...props}>
+      {children}
+    </a>
+  );
 
   return {
     Link: BaseLink,
@@ -13,11 +16,10 @@ jest.mock('react-router-dom', () => {
 
 describe('component Link', () => {
   it('render', () => {
-    const context = { router: { history: { push: () => {}, replace: () => {} } } };
-    const comp = shallow(
-      <Link to="/foo">Foo</Link>,
-      { context }
-    );
+    const context = {
+      router: { history: { push: () => {}, replace: () => {} } },
+    };
+    const comp = shallow(<Link to="/foo">Foo</Link>, { context });
 
     expect(comp.dive().text()).toEqual('Foo');
   });

@@ -14,10 +14,14 @@ const mapStateToProps = createSelector(
     formValues: formState[formName].values,
   })
 );
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  addFieldToCollection: arrayPush,
-  changeField: autofill,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      addFieldToCollection: arrayPush,
+      changeField: autofill,
+    },
+    dispatch
+  );
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),

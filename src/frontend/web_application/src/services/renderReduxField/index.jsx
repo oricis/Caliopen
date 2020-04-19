@@ -8,8 +8,7 @@ const renderReduxField = (WrappedComponent) => {
       input: PropTypes.shape({}).isRequired,
     };
 
-    static defaultProps = {
-    };
+    static defaultProps = {};
 
     render() {
       // extract unused props to prevent "Warning: Unknown prop"
@@ -19,9 +18,7 @@ const renderReduxField = (WrappedComponent) => {
       // eslint-disable-next-line react/prop-types
       const errors = meta.error ? [meta.error] : [];
 
-      return (
-        <WrappedComponent {...input} errors={errors} {...props} />
-      );
+      return <WrappedComponent {...input} errors={errors} {...props} />;
     }
   }
 
