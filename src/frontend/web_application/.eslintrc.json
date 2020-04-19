@@ -16,16 +16,10 @@
     "import/no-useless-path-segments": "warn",
     "import/prefer-default-export": 0,
     "jsx-a11y/label-has-associated-control": ["error", {
+      "labelComponents": ["Label"],
       "controlComponents": ["Field"]
     }],
-    "jsx-a11y/label-has-for": [ "error", {
-      "components": [ "Label" ],
-      "required": {
-        "oneOf": [ "nesting", "id" ]
-      },
-      "allowChildren": false
-    }],
-    "jsx-a11y/anchor-is-valid": [ "warning", {
+    "jsx-a11y/anchor-is-valid": [ "warn", {
       "components": [ "Link" ],
       "specialLink": [ "to" ],
       "aspects": [ "noHref", "invalidHref", "preferButton" ]
