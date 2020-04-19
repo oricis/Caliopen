@@ -29,12 +29,12 @@ export const decryptMessage = ({ message }) => async (dispatch, getState) => {
       return message;
     }
 
-    let usableKey = keys.find(key => key.isDecrypted());
+    let usableKey = keys.find((key) => key.isDecrypted());
     let passphrase = null;
 
     if (!usableKey) {
       const state = getState();
-      usableKey = keys.find(key => getKeyPassphrase(state, key.getFingerprint()));
+      usableKey = keys.find((key) => getKeyPassphrase(state, key.getFingerprint()));
 
       if (usableKey) {
         passphrase = getKeyPassphrase(state, usableKey.getFingerprint());
@@ -52,8 +52,8 @@ export const decryptMessage = ({ message }) => async (dispatch, getState) => {
     }
 
     if (!usableKey) {
-      keys.forEach(key => dispatch(askPassphrase({ fingerprint: key.getFingerprint() })));
-      dispatch(needPassphrase({ message, fingerprints: keys.map(key => key.getFingerprint()) }));
+      keys.forEach((key) => dispatch(askPassphrase({ fingerprint: key.getFingerprint() })));
+      dispatch(needPassphrase({ message, fingerprints: keys.map((key) => key.getFingerprint()) }));
 
       return message;
     }

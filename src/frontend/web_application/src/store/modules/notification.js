@@ -35,7 +35,7 @@ const removeNotificationsReducer = (state, action) => {
   const notifs = new Set(action.payload.notifications);
 
   return [
-    ...state.filter(notification => !notifs.has(notification)),
+    ...state.filter((notification) => !notifs.has(notification)),
   ];
 };
 

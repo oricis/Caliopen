@@ -7,7 +7,7 @@ import { View, WithViewModel, requestMessages } from '../../modules/view';
 import { withRouteParams } from '../../modules/routing';
 import { getModuleStateSelector } from '../../store/selectors/getModuleStateSelector';
 
-const withViewModel = () => C => withRouteParams()(({ routeParams: { viewId }, ...props }) => (
+const withViewModel = () => (C) => withRouteParams()(({ routeParams: { viewId }, ...props }) => (
   <WithViewModel viewId={viewId} render={({ view }) => (<C view={view} {...props} />)} />
 ));
 
@@ -21,8 +21,8 @@ const mapStateToProps = createSelector(
     view,
     isFetching: viewState && viewState.isFetching,
     messages: Object.keys(messagesById)
-      .map(messageId => messagesById[messageId])
-      .filter(message => view.has({ message }))
+      .map((messageId) => messagesById[messageId])
+      .filter((message) => view.has({ message }))
       .sort((a, b) => ((new Date(a.date_sort)) - (new Date(b.date_sort))) * -1),
   })
 );

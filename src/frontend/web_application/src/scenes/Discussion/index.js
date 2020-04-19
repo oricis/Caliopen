@@ -13,28 +13,28 @@ import { getUser } from '../../modules/user/actions/getUser';
 import { withPush } from '../../modules/routing/hoc/withPush';
 import Discussion from './presenter';
 
-const getDiscussionIdFromProps = props => props.match.params.discussionId;
+const getDiscussionIdFromProps = (props) => props.match.params.discussionId;
 const discussionIdSelector = (state, ownProps) => getDiscussionIdFromProps(ownProps);
-const discussionStateSelector = state => state.discussion;
+const discussionStateSelector = (state) => state.discussion;
 
-const messageByIdSelector = state => state.message.messagesById;
+const messageByIdSelector = (state) => state.message.messagesById;
 const messageCollectionStateSelector = createMessageCollectionStateSelector(() => 'discussion', discussionIdSelector);
 const sortedMessagesSelector = createSelector(
   [messageByIdSelector, messageCollectionStateSelector],
   (messagesById, { messageIds }) => sortMessages(
-    messageIds.map(messageId => messagesById[messageId])
-      .filter(msg => msg.is_draft === false),
+    messageIds.map((messageId) => messagesById[messageId])
+      .filter((msg) => msg.is_draft === false),
     false
   )
 );
 
 const lastMessageSelector = createSelector(
   [sortedMessagesSelector],
-  sortedMessages => getLastMessageFromArray(sortedMessages)
+  (sortedMessages) => getLastMessageFromArray(sortedMessages)
 );
 const firstUnreadMessageSelector = createSelector(
   [sortedMessagesSelector],
-  sortedMessages => sortedMessages.filter(message => message.is_unread)[0]
+  (sortedMessages) => sortedMessages.filter((message) => message.is_unread)[0]
 );
 
 const mapStateToProps = createSelector(
@@ -63,13 +63,13 @@ const mapStateToProps = createSelector(
 );
 
 const deleteDiscussion = ({ discussionId, messages }) => async (dispatch) => {
-  await Promise.all(messages.map(message => dispatch(deleteMessageRaw({ message }))));
+  await Promise.all(messages.map((message) => dispatch(deleteMessageRaw({ message }))));
 
   return dispatch(invalidate('discussion', discussionId));
 };
 
-const updateDiscussionTags = ({ i18n, messages, tags }) => async dispatch => (
-  Promise.all(messages.map(message => (
+const updateDiscussionTags = ({ i18n, messages, tags }) => async (dispatch) => (
+  Promise.all(messages.map((message) => (
     dispatch(updateTagCollection(i18n, { type: 'message', entity: message, tags }))
   )))
 );

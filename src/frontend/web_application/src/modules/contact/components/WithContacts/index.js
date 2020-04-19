@@ -10,13 +10,13 @@ const mapStateToProps = createSelector(
   ({
     contacts, contactsById, isFetching, didInvalidate,
   }) => ({
-    contacts: contacts.map(contactId => contactsById[contactId]),
+    contacts: contacts.map((contactId) => contactsById[contactId]),
     isFetching,
     didInvalidate,
   })
 );
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   requestContacts,
 }, dispatch);
 

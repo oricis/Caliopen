@@ -43,7 +43,7 @@ class MessageList extends Component {
 
   renderPlaceholder = () => (
     <div className="m-message-list">
-      {[1, 2, 3].map(n => (
+      {[1, 2, 3].map((n) => (
         <PlaceholderBlock key={n} className="m-message-list__placeholder" />
       ))}
     </div>

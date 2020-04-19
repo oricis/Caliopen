@@ -18,7 +18,7 @@ import Presenter from './presenter';
 const providersSelector = (state) => {
   const { providers } = getModuleStateSelector('provider')(state);
 
-  return providers && providers.map(provider => provider.name);
+  return providers && providers.map((provider) => provider.name);
 };
 
 const mapStateToProps = createSelector(
@@ -39,7 +39,7 @@ const onIdentityChange = ({ identity }) => (dispatch) => {
   return dispatch(updateIdentity({ identity }));
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   requestRemoteIdentities,
   onIdentityChange,
   onIdentityDelete: deleteIdentity,

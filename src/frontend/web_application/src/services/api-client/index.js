@@ -33,7 +33,7 @@ const buildClient = () => axios.create({
   baseURL: getBaseUrl(),
   responseType: 'json',
   headers,
-  paramsSerializer: params => queryStringify(params, headers),
+  paramsSerializer: (params) => queryStringify(params, headers),
   transformRequest: ([(data) => {
     if (data instanceof UploadFileAsFormField) {
       return data.toFormData();

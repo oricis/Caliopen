@@ -1,7 +1,7 @@
 import React from 'react';
 import TabConsumer from '../components/TabConsumer';
 
-export const withCloseTab = () => C => props => (
+export const withCloseTab = () => (C) => (props) => (
   <TabConsumer
     render={({ removeTab, getCurrentTab }) => {
       const closeTab = (tab) => {

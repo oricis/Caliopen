@@ -12,7 +12,7 @@ const loadMoreHandler = ({ store, action }) => {
   store.dispatch(requestMessages(type, key, { ...params, offset }));
 };
 
-export default store => next => (action) => {
+export default (store) => (next) => (action) => {
   const result = next(action);
 
   loadMoreHandler({ store, action });

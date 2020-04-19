@@ -81,7 +81,7 @@ class PublicKeyList extends Component {
 
   getPublicKeyDataUrl = ({ key }) => `data:application/x-pgp;base64,${strToBase64(key)}`;
 
-  handleEdit = publicKey => () => this.setState({ editMode: true, editKey: publicKey.key_id });
+  handleEdit = (publicKey) => () => this.setState({ editMode: true, editKey: publicKey.key_id });
 
   renderKeyItem = (publicKey) => {
     const { contactId, i18n } = this.props;
@@ -154,7 +154,7 @@ class PublicKeyList extends Component {
     return (
       <Fragment>
         <ul>
-          {publicKeys.map(publicKey => this.renderKeyItem(publicKey))}
+          {publicKeys.map((publicKey) => this.renderKeyItem(publicKey))}
         </ul>
         {this.renderAddForm()}
       </Fragment>

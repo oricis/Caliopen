@@ -22,9 +22,9 @@ export const changeAuthorInParticipants = ({ participants, user, identity = unde
   }
 
   const authorParticipant = (
-    identity && participants.find(participant => isIdentityParticipant({ identity, participant }))
+    identity && participants.find((participant) => isIdentityParticipant({ identity, participant }))
   ) || (
-    participants.find(participant => isUserParticipant({ user, participant }))
+    participants.find((participant) => isUserParticipant({ user, participant }))
   );
 
   return participants.reduce((acc, participant) => {

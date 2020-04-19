@@ -1,18 +1,18 @@
 import { isUserParticipant } from '../../modules/message';
 
-export const renderParticipant = participant => `${participant.label}` || `(${participant.address})`;
+export const renderParticipant = (participant) => `${participant.label}` || `(${participant.address})`;
 
-export const getAuthor = message => message.participants && message.participants
-  .find(participant => participant.type === 'From');
+export const getAuthor = (message) => message.participants && message.participants
+  .find((participant) => participant.type === 'From');
 
-export const getRecipients = message => message.participants && message.participants
-  .filter(participant => participant.type !== 'From');
+export const getRecipients = (message) => message.participants && message.participants
+  .filter((participant) => participant.type !== 'From');
 
 export const getRecipientsExceptUser = (message, user) => getRecipients(message)
-  .filter(participant => !isUserParticipant({ participant, user }));
+  .filter((participant) => !isUserParticipant({ participant, user }));
 
 export const getParticipantsExceptUser = (message, user) => message.participants &&
-  message.participants.filter(participant => !isUserParticipant({ participant, user }));
+  message.participants.filter((participant) => !isUserParticipant({ participant, user }));
 
 export const isMessageFromUser = (message, user) => {
   const author = getAuthor(message);
@@ -21,7 +21,7 @@ export const isMessageFromUser = (message, user) => {
 };
 
 export const isUserRecipient = (message, user) => getRecipients(message)
-  .some(recipient => isUserParticipant({ participant: recipient, user }));
+  .some((recipient) => isUserParticipant({ participant: recipient, user }));
 
 export const getParticipantsContactIds = ({ participants }) => participants
   .reduce((acc, participant) => {
@@ -34,4 +34,4 @@ export const getParticipantsContactIds = ({ participants }) => participants
   }, []);
 
 export const getParticipantsAddresses = ({ participants }) => participants
-  .map(participant => participant.address);
+  .map((participant) => participant.address);

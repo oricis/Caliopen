@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { verifyDevice } from '../../../../modules/device';
 import Presenter from './presenter';
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   onVerifyDevice: verifyDevice,
 }, dispatch);
 

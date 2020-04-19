@@ -1,7 +1,7 @@
 import { tryCatchAxiosAction } from '../../../services/api-client';
 import { requestDraft } from '../../../store/modules/message';
 // prevent circular reference to something in unit tests
-import { discussionDraftSelector } from '../../../modules/discussion/selectors/discussionDraftSelector';
+import { discussionDraftSelector } from '../../discussion/selectors/discussionDraftSelector';
 
 export const getDraft = ({ discussionId }) => async (dispatch, getState) => {
   let draft = discussionDraftSelector(getState(), { discussionId });

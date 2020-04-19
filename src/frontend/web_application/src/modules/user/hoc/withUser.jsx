@@ -2,7 +2,7 @@ import React from 'react';
 import WithUser from '../components/WithUser';
 
 export const withUser = ({ namespace = 'userState' } = {}) => (WrappedComp) => {
-  const WithUserHoc = props => (
+  const WithUserHoc = (props) => (
     <WithUser render={(user, isFetching, didLostAuth) => {
       const injected = {
         [namespace]: { user, isFetching, didLostAuth },

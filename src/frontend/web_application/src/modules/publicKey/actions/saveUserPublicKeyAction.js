@@ -8,10 +8,10 @@ export const saveUserPublicKeyAction =
     const openpgp = await import(/* webpackChunkName: "openpgp" */ 'openpgp');
     const publicKey = await openpgp.key.readArmored(publicKeyArmored);
     const keyEmails = publicKey.keys[0].users.map(({ userId }) => userId.email);
-    const contactEmails = contact.emails.map(email => email.address);
+    const contactEmails = contact.emails.map((email) => email.address);
 
-    const missingEmails = keyEmails.filter(email => !contactEmails.includes(email))
-      .map(email => ({ email, protocol: PROTOCOL_EMAIL }));
+    const missingEmails = keyEmails.filter((email) => !contactEmails.includes(email))
+      .map((email) => ({ email, protocol: PROTOCOL_EMAIL }));
     const contactWithNewEmails = addAddressesToContact(contact, missingEmails);
 
     if (!isEqual(contact, contactWithNewEmails)) {

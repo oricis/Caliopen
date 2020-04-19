@@ -109,7 +109,7 @@ function discussionIdsReducer(state = [], action = {}) {
   switch (action.type) {
     case REQUEST_DISCUSSIONS_SUCCESS:
       return [...state]
-        .concat(action.payload.data.discussions.map(discussion => discussion.discussion_id))
+        .concat(action.payload.data.discussions.map((discussion) => discussion.discussion_id))
         .reduce((prev, curr) => {
           if (prev.indexOf(curr) === -1) {
             prev.push(curr);
@@ -118,7 +118,7 @@ function discussionIdsReducer(state = [], action = {}) {
           return prev;
         }, []);
     case REMOVE_DISCUSSION_FROM_COLLECTION:
-      return [...state].filter(discussionId => discussionId !== action.payload.discussionId);
+      return [...state].filter((discussionId) => discussionId !== action.payload.discussionId);
     default:
       return state;
   }

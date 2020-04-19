@@ -9,16 +9,16 @@ const UPDATE_WAIT_TIME = 2 * 1000;
 
 const updateContactTagsConcrete = (i18n, contactIds, tags) => async (dispatch, getState) => {
   const { contact: { contactsById }, tag: { tags: userTags } } = getState();
-  const contacts = contactIds.map(id => contactsById[id]);
+  const contacts = contactIds.map((id) => contactsById[id]);
   const tagNamesInCommon = getTagNamesInCommon(contacts);
   const tagsInCommon = getCleanedTagCollection(userTags, tagNamesInCommon);
 
-  const deletedTags = tagsInCommon.filter(tag => !(new Set(tags)).has(tag));
-  const createdTags = tags.filter(tag => !(new Set(tagsInCommon)).has(tag));
+  const deletedTags = tagsInCommon.filter((tag) => !(new Set(tags)).has(tag));
+  const createdTags = tags.filter((tag) => !(new Set(tagsInCommon)).has(tag));
 
   const updateTagsColl = (contact) => {
     const tagsToSave = (contact.tags ? getCleanedTagCollection(userTags, contact.tags) : [])
-      .filter(tag => !(new Set(deletedTags)).has(tag))
+      .filter((tag) => !(new Set(deletedTags)).has(tag))
       .concat(createdTags);
 
     return tagsToSave;
@@ -35,7 +35,7 @@ const updateContactTagsConcrete = (i18n, contactIds, tags) => async (dispatch, g
       tags: updateTagsColl(firstContact),
       lazy: true,
     }));
-    await Promise.all(contacts.map(contact => dispatch(updateTagCollection(i18n, {
+    await Promise.all(contacts.map((contact) => dispatch(updateTagCollection(i18n, {
       type: 'contact',
       entity: contact,
       tags: updateTagsColl(contact),
@@ -62,14 +62,14 @@ const createThrottled = (resolve, reject, dispatch, { i18n, contactIds, tags }) 
 
 const throttleds = {};
 const sha1 = new JsSHA('SHA-1', 'TEXT');
-const getThrottleHash = contactIds => (contactIds.sort().reduce((sha, contactId) => {
+const getThrottleHash = (contactIds) => (contactIds.sort().reduce((sha, contactId) => {
   sha.update(contactId);
 
   return sha;
 }, sha1).getHash('HEX'));
 
 export const updateContactTags = (i18n, contactIds, tags, { withThrottle = true } = {}) => (
-  dispatch => new Promise(async (resolve, reject) => {
+  (dispatch) => new Promise(async (resolve, reject) => {
     const hash = getThrottleHash(contactIds);
 
     if (throttleds[hash]) {

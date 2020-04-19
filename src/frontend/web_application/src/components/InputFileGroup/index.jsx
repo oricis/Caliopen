@@ -43,7 +43,7 @@ class InputFileGroup extends Component {
     const { onInputChange, multiple } = this.props;
     const files = ev.target.files.length > 0 ? Array.from(ev.target.files) : [];
 
-    return Promise.all(files.map(file => this.validate(file)))
+    return Promise.all(files.map((file) => this.validate(file)))
       .then((validatedFiles) => {
         this.setState({ files: validatedFiles });
 
@@ -53,7 +53,7 @@ class InputFileGroup extends Component {
 
         return onInputChange(validatedFiles);
       })
-      .catch(fieldErrors => this.setState({ fieldErrors }));
+      .catch((fieldErrors) => this.setState({ fieldErrors }));
   }
 
   resetForm = () => {
@@ -101,14 +101,14 @@ class InputFileGroup extends Component {
     const {
       errors, descr, className, fileTypes, multiple,
     } = this.props;
-    const allErrors = errors ? Object.keys(errors).map(key => errors[key]) : null;
+    const allErrors = errors ? Object.keys(errors).map((key) => errors[key]) : null;
     const acceptProp = fileTypes ? { accept: fileTypes } : {};
 
     return (
       <FieldGroup className={classnames('m-input-file-group', className)} errors={allErrors}>
         {descr && <p>{descr}</p>}
 
-        {this.state.files.length > 0 ? this.state.files.map(file => (
+        {this.state.files.length > 0 ? this.state.files.map((file) => (
           <File file={file} onRemove={this.resetForm} />
         )) : (
           <InputFile

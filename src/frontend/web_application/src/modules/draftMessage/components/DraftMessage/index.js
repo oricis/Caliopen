@@ -40,12 +40,12 @@ const discussionIdSelector = (state, ownProps) => {
 const messageCollectionStateSelector = createMessageCollectionStateSelector(() => 'discussion', discussionIdSelector);
 const sentMessagesSelector = createSelector(
   [messageCollectionStateSelector],
-  ({ messages }) => messages.filter(item => item.is_draft !== true)
+  ({ messages }) => messages.filter((item) => item.is_draft !== true)
 );
 const parentMessageSelector = createSelector([
   draftSelector, sentMessagesSelector,
 ], ({ draftMessage }, sentMessages) => draftMessage && sentMessages
-  .find(item => item.message_id === draftMessage.parent_id));
+  .find((item) => item.message_id === draftMessage.parent_id));
 
 const availableIdentitiesSelector = createSelector([
   identityStateSelector, userSelector, contactsSelector, parentMessageSelector,
@@ -64,7 +64,7 @@ const mapStateToProps = createSelector([
   { isFetching: isIdentitiesFetching }, messageEncryptionStatus
 ) => {
   const lastMessage = getLastMessageFromArray(sentMessages);
-  const canEditRecipients = messages.some(message => !message.is_draft) === false;
+  const canEditRecipients = messages.some((message) => !message.is_draft) === false;
 
   return {
     key: draftMessage && draftMessage.message_id,
@@ -85,11 +85,11 @@ const mapStateToProps = createSelector([
 });
 
 const onEditDraft = ({ internalId, draft, message }) => (
-  dispatch => dispatch(saveDraft({ internalId, draft, message }, { withThrottle: true }))
+  (dispatch) => dispatch(saveDraft({ internalId, draft, message }, { withThrottle: true }))
 );
 
 const onSaveDraft = ({ internalId, draft, message }) => (
-  dispatch => dispatch(saveDraft({ internalId, draft, message }, { force: true }))
+  (dispatch) => dispatch(saveDraft({ internalId, draft, message }, { force: true }))
 );
 
 const onDeleteMessage = ({ message, internalId }) => async (dispatch) => {
@@ -175,7 +175,7 @@ const onSendDraft = ({ draft, message, internalId }) => async (dispatch) => {
   }
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   onEditDraft,
   onSaveDraft,
   onSendDraft,

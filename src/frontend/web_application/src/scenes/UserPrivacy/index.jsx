@@ -6,16 +6,16 @@ import { withUser } from '../../hoc/user';
 import { requestUser } from '../../store/modules/user';
 import Presenter from './presenter';
 
-const userSelector = state => state.user;
+const userSelector = (state) => state.user;
 
 const mapStateToProps = createSelector(
   [userSelector],
-  userState => ({
+  (userState) => ({
     isFetching: userState.isFetching,
   })
 );
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   requestUser,
 }, dispatch);
 

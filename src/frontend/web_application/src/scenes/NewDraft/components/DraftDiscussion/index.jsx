@@ -38,11 +38,11 @@ class DraftDiscussion extends Component {
     }
 
     return discussion.participants
-      .filter(participant => !(
+      .filter((participant) => !(
         participant.contact_ids && participant.contact_ids
-          .some(contactId => contactId === user.contact.contact_id)
+          .some((contactId) => contactId === user.contact.contact_id)
       ))
-      .map(participant => participant.label);
+      .map((participant) => participant.label);
   }
 
   render() {
@@ -63,7 +63,7 @@ class DraftDiscussion extends Component {
             Last messages with {participants}
           </Trans>
         </Title>
-        {messages.map(message => (
+        {messages.map((message) => (
           <Message
             key={message.message_id}
             message={message}

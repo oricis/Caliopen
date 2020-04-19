@@ -6,7 +6,7 @@ import { requestDraft } from '../../actions/requestDraft';
 import { messagesByIdSelector } from '../../../../store/selectors/message';
 
 const internalIdSelector = (state, ownProps) => ownProps.internalId;
-const draftStateSelector = state => state.draftMessage;
+const draftStateSelector = (state) => state.draftMessage;
 const draftActivitySelector = createSelector(
   [draftStateSelector, internalIdSelector],
   (draftState, internalId) => draftState.draftActivityByInternalId[internalId] || {}
@@ -37,7 +37,7 @@ const mapStateToProps = createSelector(
   }
 );
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   requestDraft,
 }, dispatch);
 

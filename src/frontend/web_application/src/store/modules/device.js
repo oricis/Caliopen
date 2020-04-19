@@ -144,7 +144,7 @@ function devicesByIdReducer(state, action) {
 function devicesReducer(state, action) {
   switch (action.type) {
     case REQUEST_DEVICES_SUCCESS:
-      return action.payload.data.devices.map(device => device.device_id);
+      return action.payload.data.devices.map((device) => device.device_id);
     default:
       return state;
   }

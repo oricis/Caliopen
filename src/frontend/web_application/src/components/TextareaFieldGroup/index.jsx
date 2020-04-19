@@ -21,7 +21,7 @@ class TextareaFieldGroup extends PureComponent {
   static defaultProps = {
     showLabelForSR: false,
     errors: [],
-    onChange: str => str,
+    onChange: (str) => str,
     className: undefined,
     inputProps: {},
   };

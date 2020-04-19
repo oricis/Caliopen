@@ -1,4 +1,4 @@
-export const flattenRouteConfig = routes => routes.reduce((acc, route) => {
+export const flattenRouteConfig = (routes) => routes.reduce((acc, route) => {
   const { routes: subRoutes, ...routeConfig } = route;
   let flattened = [...acc, routeConfig];
   if (subRoutes) {

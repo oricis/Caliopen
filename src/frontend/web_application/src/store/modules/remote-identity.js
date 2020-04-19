@@ -114,7 +114,7 @@ export default function reducer(state = initialState, action) {
           }), state.remoteIdentitiesById),
         remoteIdentities: state.didInvalidate === true ?
           [] :
-          action.payload.data.remote_identities.map(remoteIdentity => remoteIdentity.identity_id),
+          action.payload.data.remote_identities.map((remoteIdentity) => remoteIdentity.identity_id),
         total: action.payload.data.total,
       };
     case REQUEST_REMOTE_IDENTITY_SUCCESS:
@@ -135,7 +135,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         remoteIdentities: state.remoteIdentities
-          .filter(identityId => identityId !== action.payload.remoteIdentity.identity_id),
+          .filter((identityId) => identityId !== action.payload.remoteIdentity.identity_id),
         total: state.total - 1,
       };
     case INVALIDATE:

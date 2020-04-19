@@ -113,7 +113,7 @@ class Page extends Component {
 
           <ScrollDetector
             offset={136}
-            render={isSticky => (
+            render={(isSticky) => (
               <div className="l-navbar">
                 <div className={classnames('l-navbar__wrapper', { 'l-navbar__wrapper--sticky': isSticky })}>
                   <PageContainer>

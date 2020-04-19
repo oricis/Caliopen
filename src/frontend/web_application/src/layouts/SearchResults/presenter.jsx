@@ -71,7 +71,7 @@ class SearchResults extends PureComponent {
         label: (<Trans id="search-results.contacts" values={{ nbContacts }}>Contacts ({nbContacts})</Trans>),
         to: `/search-results?term=${term}&doctype=contact`,
       },
-    ].map(link => ({
+    ].map((link) => ({
       ...link,
       isActive: matchPath(location, { path: link.to, exact: false, strict: false }) && true,
     }));

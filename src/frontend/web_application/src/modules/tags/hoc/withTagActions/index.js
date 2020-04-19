@@ -5,7 +5,7 @@ import { requestTags } from '../../actions/requestTags';
 import { updateTag } from '../../actions/updateTag';
 import { deleteTag } from '../../actions/deleteTag';
 
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   createTag,
   requestTags,
   updateTag,

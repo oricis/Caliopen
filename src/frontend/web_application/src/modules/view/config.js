@@ -1,4 +1,4 @@
-export const getConfig = i18n => ([
+export const getConfig = (i18n) => ([
   {
     id: 'draft',
     // this can evolve in `conditions[{ propName, values[], test='equal|lower|in…'}]`

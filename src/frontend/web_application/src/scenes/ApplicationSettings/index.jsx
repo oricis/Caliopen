@@ -10,16 +10,16 @@ import { settingsSelector } from '../../store/selectors/settings';
 
 const mapStateToProps = createSelector(
   [settingsSelector],
-  settings => ({
+  (settings) => ({
     initialValues: settings,
   })
 );
 
-const normalizeValues = values => ({
+const normalizeValues = (values) => ({
   ...values,
   notification_delay_disappear: Number.parseInt(values.notification_delay_disappear, 10),
 });
-const mapDispatchToProps = dispatch => bindActionCreators({
+const mapDispatchToProps = (dispatch) => bindActionCreators({
   requestSettings,
   onSubmit: (values, disp, props) => updateSettings({
     settings: normalizeValues(values), original: props.initialValues,

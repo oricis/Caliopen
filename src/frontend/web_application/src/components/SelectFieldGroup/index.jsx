@@ -58,7 +58,7 @@ class SelectFieldGroup extends PureComponent {
             id={id}
             {...props}
           >
-            {options.map(selectOption => (
+            {options.map((selectOption) => (
               <option
                 key={selectOption.label}
                 value={selectOption.value}

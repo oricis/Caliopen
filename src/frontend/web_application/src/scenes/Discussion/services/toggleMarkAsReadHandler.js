@@ -1,4 +1,4 @@
-export const toggleMarkAsReadHandler = ctx => () => {
+export const toggleMarkAsReadHandler = (ctx) => () => {
   const { message, onMessageRead, onMessageUnread } = ctx.props;
 
   if (message.is_unread) {

@@ -4,9 +4,9 @@ export const getLocalstorage = () => {
   }
 
   return {
-    findAll: namespace => Object.keys(window.localStorage)
-      .filter(name => name.indexOf(namespace) === 0)
-      .map(name => ({
+    findAll: (namespace) => Object.keys(window.localStorage)
+      .filter((name) => name.indexOf(namespace) === 0)
+      .map((name) => ({
         id: name.replace(`${namespace}.`, ''),
         value: window.localStorage.getItem(name),
       })),

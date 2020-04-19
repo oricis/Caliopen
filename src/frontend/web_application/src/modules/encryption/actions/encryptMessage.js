@@ -1,4 +1,4 @@
-import { identitiesSelector } from '../../../modules/identity';
+import { identitiesSelector } from '../../identity';
 import { getKeysForEmail, PUBLIC_KEY } from '../../../services/openpgp-keychain-repository';
 import { getRecipientKeys } from './getRecipientKeys';
 import { encryptMessage as encryptMessageConcret } from '../../../services/encryption';
@@ -15,7 +15,7 @@ export const encryptMessage = ({ message }) => async (dispatch, getState) => {
     }
 
     const identity = identitiesSelector(getState())
-      .find(curr => message.user_identities.includes(curr.identity_id));
+      .find((curr) => message.user_identities.includes(curr.identity_id));
 
     // 1. we need to check all addresses to find keys.
     const [userKey, keys] = await Promise.all([

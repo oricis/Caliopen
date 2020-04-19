@@ -24,20 +24,20 @@ export const updateTags = (type, entity, { tags }) => (dispatch) => {
 };
 
 const getTagFromLabel = (i18n, tags, label) => tags
-  .find(tag => getTagLabel(i18n, tag).toLowerCase() === label.toLowerCase());
+  .find((tag) => getTagLabel(i18n, tag).toLowerCase() === label.toLowerCase());
 
 const createMissingTags = (i18n, tagCollection) => async (dispatch, getState) => {
   const { tags: userTags } = getState().tag;
-  const knownLabels = userTags.map(tag => getTagLabel(i18n, tag).toLowerCase());
+  const knownLabels = userTags.map((tag) => getTagLabel(i18n, tag).toLowerCase());
   const newTags = tagCollection
-    .filter(tag => !tag.name)
-    .filter(tag => !knownLabels.includes(getTagLabel(i18n, tag).toLowerCase()));
+    .filter((tag) => !tag.name)
+    .filter((tag) => !knownLabels.includes(getTagLabel(i18n, tag).toLowerCase()));
 
   if (!newTags.length) {
     return userTags;
   }
 
-  await Promise.all(newTags.map(tag => dispatch(createTag(tag))));
+  await Promise.all(newTags.map((tag) => dispatch(createTag(tag))));
 
   return dispatch(requestTags());
 };
@@ -61,9 +61,9 @@ export const updateTagCollection = (i18n, {
     ...acc,
     !tag.name ? getTagFromLabel(i18n, upToDateTags, tag.label) : tag,
   ], []);
-  const tagNames = normalizedTags.map(tag => tag.name);
+  const tagNames = normalizedTags.map((tag) => tag.name);
 
-  if (!isEqual(entity.tags, tagCollection.map(tag => tag.name))) {
+  if (!isEqual(entity.tags, tagCollection.map((tag) => tag.name))) {
     await dispatch(updateTags(type, entity, {
       tags: tagNames,
     }));

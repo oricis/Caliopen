@@ -14,7 +14,7 @@ export const ERR_INVALID_RECOVERY_EMAIL = 'ERR_INVALID_RECOVERY_EMAIL';
 export const ERR_REQUIRED_RECOVERY_EMAIL = 'ERR_REQUIRED_RECOVERY_EMAIL';
 export const ERR_UNABLE_TO_SIGNUP = 'ERR_UNABLE_TO_SIGNUP';
 
-export const getLocalizedErrors = i18n => ({
+export const getLocalizedErrors = (i18n) => ({
   [ERR_DOTS]: i18n._('signup.feedback.username_starting_ending_dot', null, { defaults: 'The username cannot start or end with a dot (.)' }),
   [ERR_MIN_MAX]: i18n._('signup.feedback.username_length', null, { defaults: 'The length of the username must be be between 3 and 42' }),
   [ERR_DOUBLE_DOTS]: i18n._('signup.feedback.username_double_dots', null, { defaults: 'The username cannot contain two dots (.) next to the other' }),
@@ -105,7 +105,7 @@ const extractErrors = (fieldsErrors, i18n) => {
   return Object.keys(fieldsErrors).reduce((prev, fieldname) => ({
     ...prev,
     [fieldname]: fieldsErrors[fieldname]
-      .map(error => localizedErrors[error.message] || error.message),
+      .map((error) => localizedErrors[error.message] || error.message),
   }), {});
 };
 const validate = (formValues, i18n, descriptorType = false) => new Promise((resolve, reject) => {

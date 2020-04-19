@@ -1,5 +1,5 @@
 export default ({ contacts, searchTerms }) => contacts.filter((contact) => {
-  const match = ({ item, props }) => props.find(propName => (
+  const match = ({ item, props }) => props.find((propName) => (
     item[propName] && item[propName].toLowerCase().includes(searchTerms.toLowerCase())
   ));
 
@@ -15,23 +15,23 @@ export default ({ contacts, searchTerms }) => contacts.filter((contact) => {
     return true;
   }
 
-  if (contact.identities && contact.identities.find(ident => match({ item: ident, props: ['infos', 'name', 'identity_id'] }))) {
+  if (contact.identities && contact.identities.find((ident) => match({ item: ident, props: ['infos', 'name', 'identity_id'] }))) {
     return true;
   }
 
-  if (contact.emails && contact.emails.find(ident => match({ item: ident, props: ['address'] }))) {
+  if (contact.emails && contact.emails.find((ident) => match({ item: ident, props: ['address'] }))) {
     return true;
   }
 
-  if (contact.ims && contact.ims.find(ident => match({ item: ident, props: ['address'] }))) {
+  if (contact.ims && contact.ims.find((ident) => match({ item: ident, props: ['address'] }))) {
     return true;
   }
 
-  if (contact.phones && contact.phones.find(ident => match({ item: ident, props: ['number'] }))) {
+  if (contact.phones && contact.phones.find((ident) => match({ item: ident, props: ['number'] }))) {
     return true;
   }
 
-  if (contact.tags && contact.tags.find(ident => match({ item: ident, props: ['name'] }))) {
+  if (contact.tags && contact.tags.find((ident) => match({ item: ident, props: ['name'] }))) {
     return true;
   }
 

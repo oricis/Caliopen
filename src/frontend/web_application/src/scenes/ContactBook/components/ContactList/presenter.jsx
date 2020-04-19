@@ -85,7 +85,7 @@ class ContactList extends PureComponent {
         {this.renderNav()}
         <div className="m-contact-list__list">
           <div className="m-contact-list__group">
-            {[1, 2, 3, 4, 5].map(key => (
+            {[1, 2, 3, 4, 5].map((key) => (
               <ContactItem
                 key={key}
                 className="m-contact-list__contact"
@@ -145,11 +145,11 @@ class ContactList extends PureComponent {
               />
             </div>
           )}
-          {firstLetters.map(letter => (
+          {firstLetters.map((letter) => (
             contactsGroupedByLetter[letter] && (
               <div key={letter} className="m-contact-list__group">
                 <Title caps hr size="large" className="m-contact-list__alpha-title" id={`letter-${letter}`}>{letter}</Title>
-                {contactsGroupedByLetter[letter].map(contact => (
+                {contactsGroupedByLetter[letter].map((contact) => (
                   <ContactItem
                     key={contact.contact_id}
                     className="m-contact-list__contact"

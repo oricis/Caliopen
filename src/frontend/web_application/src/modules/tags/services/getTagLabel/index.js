@@ -11,9 +11,9 @@ const SYSTEM_TAGS = {
 };
 
 export const getCleanedTagCollection = (tags, names) => tags
-  .filter(tag => names.includes(tag.name));
+  .filter((tag) => names.includes(tag.name));
 
-export const getTag = (tags, name) => tags.find(item => item.name === name);
+export const getTag = (tags, name) => tags.find((item) => item.name === name);
 
 export const getTagLabel = (i18n, tag) => {
   if (!tag.label) {

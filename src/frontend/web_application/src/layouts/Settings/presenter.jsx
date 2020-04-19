@@ -32,7 +32,7 @@ class Settings extends PureComponent {
       // { key: 'settings.signatures', label: i18n._('settings.signatures', null,
       // { defaults: 'Signatures' }),
       // to: '/settings/signatures' },
-    ].map(link => ({
+    ].map((link) => ({
       ...link,
       isActive: matchPath(pathname, { path: link.to, exact: false, strict: false }) && true,
     }));

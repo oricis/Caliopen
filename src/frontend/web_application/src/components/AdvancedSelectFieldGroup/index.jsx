@@ -52,7 +52,7 @@ class AdvancedSelectFieldGroup extends PureComponent {
 
   dropdownControlRef = createRef();
 
-  createHandleClick = value => () => {
+  createHandleClick = (value) => () => {
     const { name, onChange } = this.props;
 
     onChange({ target: { name, value } });
@@ -79,7 +79,7 @@ class AdvancedSelectFieldGroup extends PureComponent {
     }
 
     const id = uuidV1();
-    const selectedOpt = options.find(opt => opt.value === value);
+    const selectedOpt = options.find((opt) => opt.value === value);
     const selectClassName = classnames(
       className,
       'm-advanced-select-field-group',
@@ -118,7 +118,7 @@ class AdvancedSelectFieldGroup extends PureComponent {
         </div>
         <Dropdown dropdownControlRef={this.dropdownControlRef} isMenu closeOnClick="all">
           <VerticalMenu>
-            {options.map(option => (
+            {options.map((option) => (
               <VerticalMenuItem key={option.value}>
                 <Button
                   onClick={this.createHandleClick(option.value)}
@@ -138,7 +138,7 @@ class AdvancedSelectFieldGroup extends PureComponent {
           value={value}
           {...props}
         >
-          {options.map(selectOption => (
+          {options.map((selectOption) => (
             <option
               key={selectOption.label}
               value={selectOption.value}

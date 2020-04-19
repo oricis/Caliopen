@@ -9,13 +9,13 @@ const getSuggestion = ({
   label, address, protocol, ...opts,
 });
 
-const createGetContactSuggestions = format => (contact) => {
+const createGetContactSuggestions = (format) => (contact) => {
   let suggestions = [];
 
   if (contact.emails) {
     suggestions = [
       ...suggestions,
-      ...contact.emails.map(email => getSuggestion({
+      ...contact.emails.map((email) => getSuggestion({
         label: formatName({ contact, format }),
         address: email.address,
         protocol: 'email',
@@ -28,7 +28,7 @@ const createGetContactSuggestions = format => (contact) => {
   if (contact.identities) {
     suggestions = [
       ...suggestions,
-      ...contact.identities.map(identity => getSuggestion({
+      ...contact.identities.map((identity) => getSuggestion({
         label: formatName({ contact, format }),
         address: identity.name,
         protocol: identity.type,
@@ -41,31 +41,31 @@ const createGetContactSuggestions = format => (contact) => {
   return suggestions;
 };
 
-const createExtractSuggestionsFromContacts = getContactSuggestions => contacts => contacts
+const createExtractSuggestionsFromContacts = (getContactSuggestions) => (contacts) => contacts
   .reduce((acc, contact) => [
     ...acc,
     ...getContactSuggestions(contact),
   ], []);
 
-const getContactIdsFromSuggestions = results => results
-  .filter(result => result.source === 'contact')
-  .map(result => result.contact_id);
+const getContactIdsFromSuggestions = (results) => results
+  .filter((result) => result.source === 'contact')
+  .map((result) => result.contact_id);
 
-const getContacts = ({ contactIds }) => dispatch => (
-  Promise.all(contactIds.map(contactId => dispatch(getContact({ contactId }))))
+const getContacts = ({ contactIds }) => (dispatch) => (
+  Promise.all(contactIds.map((contactId) => dispatch(getContact({ contactId }))))
 );
 
 const sortResults = ({ contactSuggestions, rawSuggestions }) => contactSuggestions
   .reduce((acc, suggestion) => {
     // unset participant where address is used in contactSuggestions
-    const nextSuggestions = acc.filter(sugg => (
+    const nextSuggestions = acc.filter((sugg) => (
       sugg.address !== suggestion.address ||
       sugg.protocol !== suggestion.protocol ||
       !!sugg.contact_id
     ));
 
     const suggestionIndex = nextSuggestions
-      .findIndex(sugg => sugg.contact_id === suggestion.contact_id);
+      .findIndex((sugg) => sugg.contact_id === suggestion.contact_id);
 
     if (suggestionIndex === -1) {
       return [...nextSuggestions, suggestion];
@@ -78,10 +78,10 @@ const sortResults = ({ contactSuggestions, rawSuggestions }) => contactSuggestio
     ];
   }, rawSuggestions)
   // XXX: cf. empty suggestions https://github.com/CaliOpen/Caliopen/issues/1122
-  .filter(suggestion => suggestion.address)
+  .filter((suggestion) => suggestion.address)
   // deduplicate addresses
   .filter((suggestion, idx, arr) => (
-    idx === arr.findIndex(sugg => (
+    idx === arr.findIndex((sugg) => (
       sugg.address === suggestion.address && sugg.protocol === suggestion.protocol
     ))
   ));
