@@ -19,7 +19,8 @@ const mapStateToProps = createSelector(
   [messageEncryptionStatusSelector, messageSelector],
   (messageEncryptionStatus, message) => {
     const encryptionStatus = messageEncryptionStatus[message.message_id];
-    const isDecrypted = !!encryptionStatus && encryptionStatus.status === STATUS_DECRYPTED;
+    const isDecrypted =
+      !!encryptionStatus && encryptionStatus.status === STATUS_DECRYPTED;
 
     return {
       isLocked: isMessageEncrypted(message) && !isDecrypted,
@@ -29,9 +30,13 @@ const mapStateToProps = createSelector(
   }
 );
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  onReply,
-  updateTagCollection,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      onReply,
+      updateTagCollection,
+    },
+    dispatch
+  );
 
 export default connect(mapStateToProps, mapDispatchToProps)(Presenter);

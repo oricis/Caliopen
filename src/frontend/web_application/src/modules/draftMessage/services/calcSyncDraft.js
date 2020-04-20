@@ -1,9 +1,5 @@
 export const calcSyncDraft = ({ draft, message }) => {
-  const {
-    body,
-    subject,
-    identities,
-  } = draft;
+  const { body, subject, identities } = draft;
 
   const parentId = draft.parent_id || message.parent_id;
   const isInDiscussion = draft.parent_id && draft.parent_id.length > 0;

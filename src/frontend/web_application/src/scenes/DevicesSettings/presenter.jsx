@@ -27,7 +27,11 @@ class DevicesSettings extends PureComponent {
   }
 
   componentDidUpdate() {
-    const { requestDevices, didInvalidate, isFetching } = this.props.devicesProps;
+    const {
+      requestDevices,
+      didInvalidate,
+      isFetching,
+    } = this.props.devicesProps;
 
     if (didInvalidate && !isFetching) {
       requestDevices();
@@ -35,7 +39,10 @@ class DevicesSettings extends PureComponent {
   }
 
   render() {
-    const { devicesProps: { devices }, isCurrentDeviceVerified } = this.props;
+    const {
+      devicesProps: { devices },
+      isCurrentDeviceVerified,
+    } = this.props;
 
     return (
       <div className="s-devices-settings">
@@ -45,26 +52,28 @@ class DevicesSettings extends PureComponent {
             <Section>
               <div>
                 <Trans id="devices.feedback.unverified_device">
-                  It&apos;s the first time you attempt to connect to your Caliopen account on this
-                  device.
+                  It&apos;s the first time you attempt to connect to your
+                  Caliopen account on this device.
                 </Trans>
               </div>
               <div>
                 <Trans id="devices.feedback.unverified_device_more">
-                  To respect privacy and security rules, your discussions history will not fully
-                  appear according to Privacy settings<br />
-                  Please verify this device and eventually set restrictions from your trusted
-                  device.
+                  To respect privacy and security rules, your discussions
+                  history will not fully appear according to Privacy settings
+                  <br />
+                  Please verify this device and eventually set restrictions from
+                  your trusted device.
                 </Trans>
               </div>
             </Section>
           </div>
         )}
-        {devices && devices.map((device) => (
-          <div key={device.device_id} className="s-devices-settings__device">
-            <DeviceSettings device={device} />
-          </div>
-        ))}
+        {devices &&
+          devices.map((device) => (
+            <div key={device.device_id} className="s-devices-settings__device">
+              <DeviceSettings device={device} />
+            </div>
+          ))}
       </div>
     );
   }

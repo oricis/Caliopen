@@ -1,4 +1,8 @@
-import { LOAD_MORE_MESSAGES, requestMessages, getNextOffset } from '../modules/message';
+import {
+  LOAD_MORE_MESSAGES,
+  requestMessages,
+  getNextOffset,
+} from '../modules/message';
 
 const loadMoreHandler = ({ store, action }) => {
   if (action.type !== LOAD_MORE_MESSAGES) {
@@ -6,7 +10,9 @@ const loadMoreHandler = ({ store, action }) => {
   }
 
   const { type, key } = action.payload;
-  const collectionState = store.getState().message.messagesCollections[type][key];
+  const collectionState = store.getState().message.messagesCollections[type][
+    key
+  ];
   const offset = getNextOffset(collectionState);
   const { params = {} } = collectionState.request;
   store.dispatch(requestMessages(type, key, { ...params, offset }));

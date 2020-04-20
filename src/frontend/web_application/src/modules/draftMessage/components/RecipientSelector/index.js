@@ -12,7 +12,9 @@ const mapStateToProps = createSelector(
   [contactIdSelector, contactStateSelector, identitiesSelector],
   (contactId, contactState, identities) => ({
     contact: contactState.contactsById[contactId],
-    availableProtocols: identities.map((identity) => getIdentityProtocol(identity)),
+    availableProtocols: identities.map((identity) =>
+      getIdentityProtocol(identity)
+    ),
   })
 );
 const mapDispatchToProps = (dispatch) => bindActionCreators({}, dispatch);

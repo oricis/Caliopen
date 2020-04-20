@@ -11,7 +11,12 @@ describe('ducks module draft-message', () => {
         },
       };
       const body = 'foo';
-      expect(reducer(undefined, module.editDraft({ internalId: 'a111', draft: { ...draft, body } }))).toEqual({
+      expect(
+        reducer(
+          undefined,
+          module.editDraft({ internalId: 'a111', draft: { ...draft, body } })
+        )
+      ).toEqual({
         ...initialState,
         draftsByInternalId: {
           a111: {

@@ -64,17 +64,17 @@ class MessageSelector extends Component {
     return (
       <Confirm
         onConfirm={this.handleDelete}
-        title={(
+        title={
           <Trans id="message-list.confirm-delete.title">
             Delete message(s)
           </Trans>
-        )}
-        content={(
+        }
+        content={
           <Trans id="message-list.confirm-delete.content">
             The deletion is permanent, are you sure you want to delete these
             messages?
           </Trans>
-        )}
+        }
         render={(confirm) => (
           <ActionBarButton
             icon={isDeleting ? <Spinner isLoading display="inline" /> : 'trash'}

@@ -12,7 +12,13 @@ class Button extends PureComponent {
     shape: PropTypes.oneOf(['plain', 'hollow']),
     icon: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     display: PropTypes.oneOf(['inline', 'inline-block', 'block', 'expanded']),
-    color: PropTypes.oneOf(['success', 'alert', 'secondary', 'active', 'disabled']),
+    color: PropTypes.oneOf([
+      'success',
+      'alert',
+      'secondary',
+      'active',
+      'disabled',
+    ]),
     responsive: PropTypes.oneOf(['icon-only', 'text-only']),
     accessKey: PropTypes.string,
     noDecoration: PropTypes.bool,
@@ -44,46 +50,51 @@ class Button extends PureComponent {
         className: classnames(icon.props.className, className),
       };
 
-      return (<icon.type {...iconProps} />);
+      return <icon.type {...iconProps} />;
     }
 
-    return (<Icon className={className} type={icon} />);
+    return <Icon className={className} type={icon} />;
   }
 
   render() {
     const {
-      children, className, icon, display, color, shape, responsive, noDecoration, center, innerRef,
+      children,
+      className,
+      icon,
+      display,
+      color,
+      shape,
+      responsive,
+      noDecoration,
+      center,
+      innerRef,
       ...props
     } = this.props;
 
     const buttonProps = {
       ...props,
-      className: classnames(
-        className,
-        'm-button',
-        {
-          'm-button--center': center,
-          'm-button--active': color === 'active',
-          'm-button--alert': color === 'alert',
-          'm-button--secondary': color === 'secondary',
-          'm-button--success': color === 'success',
-          'm-button--disabled': color === 'disabled',
+      className: classnames(className, 'm-button', {
+        'm-button--center': center,
+        'm-button--active': color === 'active',
+        'm-button--alert': color === 'alert',
+        'm-button--secondary': color === 'secondary',
+        'm-button--success': color === 'success',
+        'm-button--disabled': color === 'disabled',
 
-          'm-button--expanded': display === 'expanded',
-          'm-button--inline': display === 'inline',
-          'm-button--text': display === 'inline' && !noDecoration,
-          'm-button--inline-block': display === 'inline-block',
-          'm-button--block': display === 'block',
+        'm-button--expanded': display === 'expanded',
+        'm-button--inline': display === 'inline',
+        'm-button--text': display === 'inline' && !noDecoration,
+        'm-button--inline-block': display === 'inline-block',
+        'm-button--block': display === 'block',
 
-          'm-button--plain': shape === 'plain',
-          'm-button--hollow': shape === 'hollow',
+        'm-button--plain': shape === 'plain',
+        'm-button--hollow': shape === 'hollow',
 
-          'm-button--icon': icon,
+        'm-button--icon': icon,
 
-          'm-button--icon-only': responsive === 'icon-only',
-          'm-button--text-only': responsive === 'text-only',
-        }
-      ),
+        'm-button--icon-only': responsive === 'icon-only',
+        'm-button--text-only': responsive === 'text-only',
+      }),
     };
 
     if (icon) {
@@ -95,8 +106,12 @@ class Button extends PureComponent {
       );
     }
 
-    return <RawButton {...buttonProps} ref={innerRef}>{children}</RawButton>;
+    return (
+      <RawButton {...buttonProps} ref={innerRef}>
+        {children}
+      </RawButton>
+    );
   }
 }
 
-export default forwardRef((props, ref) => (<Button {...props} innerRef={ref} />));
+export default forwardRef((props, ref) => <Button {...props} innerRef={ref} />);

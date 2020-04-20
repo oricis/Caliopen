@@ -1,6 +1,10 @@
 import {
-  TIMELINE_FILTER_ALL, TIMELINE_FILTER_RECEIVED, TIMELINE_FILTER_SENT, TIMELINE_FILTER_DRAFT,
-  setTimelineFilter, requestMessages,
+  TIMELINE_FILTER_ALL,
+  TIMELINE_FILTER_RECEIVED,
+  TIMELINE_FILTER_SENT,
+  TIMELINE_FILTER_DRAFT,
+  setTimelineFilter,
+  requestMessages,
 } from '../modules/message';
 
 const getQuery = (type) => {

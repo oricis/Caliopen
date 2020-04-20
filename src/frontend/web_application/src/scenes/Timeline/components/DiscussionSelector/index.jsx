@@ -63,12 +63,12 @@ class DiscussionSelector extends Component {
         title={
           <Trans id="timeline.confirm-delete.title">Delete discussion(s)</Trans>
         }
-        content={(
+        content={
           <Trans id="timeline.confirm-delete.content">
             The deletion is permanent, are you sure you want to delete these
             discussions ?
           </Trans>
-        )}
+        }
         render={(confirm) => (
           <Button
             icon={isDeleting ? <Spinner isLoading display="inline" /> : 'trash'}
@@ -99,16 +99,16 @@ class DiscussionSelector extends Component {
             <Plural
               id="timeline.discussions.selected"
               value={{ count, totalCount }}
-              one={(
+              one={
                 <Trans>
                   {count}/{totalCount} discussion:
                 </Trans>
-              )}
-              other={(
+              }
+              other={
                 <Trans>
                   {count}/{totalCount} discussions:
                 </Trans>
-              )}
+              }
             />
           </span>
         )}

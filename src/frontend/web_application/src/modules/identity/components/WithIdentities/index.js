@@ -10,18 +10,18 @@ const localIdentityStateSelector = (state) => state.localIdentity;
 
 const mapStateToProps = createSelector(
   [remoteIdentitystateSelector, localIdentityStateSelector, identitiesSelector],
-  ({
-    remoteIsFetching,
-  }, {
-    localIsFetching,
-  }, identities) => ({
+  ({ remoteIsFetching }, { localIsFetching }, identities) => ({
     identities,
     remoteIsFetching,
     localIsFetching,
   })
 );
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  getIdentities,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      getIdentities,
+    },
+    dispatch
+  );
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(Presenter);

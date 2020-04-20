@@ -11,9 +11,7 @@ describe('component TextareaFieldGroup', () => {
       },
     };
 
-    const comp = shallow(
-      <TextareaFieldGroup {...props} />
-    );
+    const comp = shallow(<TextareaFieldGroup {...props} />);
 
     expect(comp.find('FieldGroup').length).toEqual(1);
     expect(comp.find('Textarea').length).toEqual(1);

@@ -17,7 +17,11 @@ describe('modules identity - service - calcSyncDraft', () => {
   });
 
   it('should write discussion_id or read only props', () => {
-    const draft = { participants: [], body: 'new body', discussion_id: undefined };
+    const draft = {
+      participants: [],
+      body: 'new body',
+      discussion_id: undefined,
+    };
     const message = {
       body: 'old body',
       message_id: '111',
@@ -34,24 +38,38 @@ describe('modules identity - service - calcSyncDraft', () => {
   });
 
   it('message with new attachments', () => {
-    const draft = { participants: [], body: 'new body', attachments: [{ file_name: 'foo.png', temp_id: 'aabbb111' }] };
+    const draft = {
+      participants: [],
+      body: 'new body',
+      attachments: [{ file_name: 'foo.png', temp_id: 'aabbb111' }],
+    };
     const message = {
       body: 'old body',
       message_id: '111',
       discussion_id: '112',
-      attachments: [{ file_name: 'foo.png', temp_id: 'aabbb111' }, { file_name: 'bar.png', temp_id: 'aabbb222' }],
+      attachments: [
+        { file_name: 'foo.png', temp_id: 'aabbb111' },
+        { file_name: 'bar.png', temp_id: 'aabbb222' },
+      ],
     };
     expect(calcSyncDraft({ draft, message })).toEqual({
       participants: [],
       body: 'new body',
       message_id: '111',
       discussion_id: '112',
-      attachments: [{ file_name: 'foo.png', temp_id: 'aabbb111' }, { file_name: 'bar.png', temp_id: 'aabbb222' }],
+      attachments: [
+        { file_name: 'foo.png', temp_id: 'aabbb111' },
+        { file_name: 'bar.png', temp_id: 'aabbb222' },
+      ],
     });
   });
 
   it('message with removed attachments', () => {
-    const draft = { participants: [], body: 'new body', attachments: [{ file_name: 'foo.png', temp_id: 'aabbb111' }] };
+    const draft = {
+      participants: [],
+      body: 'new body',
+      attachments: [{ file_name: 'foo.png', temp_id: 'aabbb111' }],
+    };
     const message = {
       body: 'old body',
       message_id: '111',

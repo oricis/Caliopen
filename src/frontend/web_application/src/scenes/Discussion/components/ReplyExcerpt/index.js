@@ -8,12 +8,13 @@ import Presenter from './presenter';
 const messageDraftSelector = (state) => state.draftMessage.draftsByInternalId;
 const discussionIdSelector = (state, ownProps) => ownProps.discussionId;
 const internalIdSelector = (state, ownProps) => ownProps.internalId;
-const messageCollectionStateSelector = createMessageCollectionStateSelector(() => 'discussion', discussionIdSelector);
+const messageCollectionStateSelector = createMessageCollectionStateSelector(
+  () => 'discussion',
+  discussionIdSelector
+);
 
 const mapStateToProps = createSelector(
-  [
-    messageDraftSelector, internalIdSelector, messageCollectionStateSelector,
-  ],
+  [messageDraftSelector, internalIdSelector, messageCollectionStateSelector],
   (drafts, internalId, { messages }) => {
     const message = messages && messages.find((item) => item.is_draft === true);
     const draft = drafts[internalId] || message;
@@ -24,7 +25,4 @@ const mapStateToProps = createSelector(
   }
 );
 
-export default compose(
-  connect(mapStateToProps),
-  withI18n()
-)(Presenter);
+export default compose(connect(mapStateToProps), withI18n())(Presenter);

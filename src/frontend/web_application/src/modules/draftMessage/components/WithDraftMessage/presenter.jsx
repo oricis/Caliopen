@@ -26,7 +26,12 @@ class WithDraftMessage extends Component {
 
   componentDidMount() {
     const {
-      draftMessage, isRequestingDraft, isDeletingDraft, requestDraft, internalId, hasDiscussion,
+      draftMessage,
+      isRequestingDraft,
+      isDeletingDraft,
+      requestDraft,
+      internalId,
+      hasDiscussion,
       messageId,
     } = this.props;
 
@@ -37,11 +42,20 @@ class WithDraftMessage extends Component {
 
   render() {
     const {
-      render, requestDraft, draftMessage, original, isRequestingDraft, isDeletingDraft,
+      render,
+      requestDraft,
+      draftMessage,
+      original,
+      isRequestingDraft,
+      isDeletingDraft,
     } = this.props;
 
     return render({
-      requestDraft, draftMessage, original, isRequestingDraft, isDeletingDraft,
+      requestDraft,
+      draftMessage,
+      original,
+      isRequestingDraft,
+      isDeletingDraft,
     });
   }
 }

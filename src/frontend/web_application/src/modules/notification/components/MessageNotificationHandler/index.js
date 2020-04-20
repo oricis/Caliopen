@@ -10,11 +10,13 @@ const mapStateToProps = (state) => ({
   initialized: state.notification.initialized,
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  invalidateCollections: invalidateAll,
-  invalidateDiscussions: invalidate,
-}, dispatch);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators(
+    {
+      invalidateCollections: invalidateAll,
+      invalidateDiscussions: invalidate,
+    },
+    dispatch
+  );
 
-export default compose(
-  connect(mapStateToProps, mapDispatchToProps)
-)(Presenter);
+export default compose(connect(mapStateToProps, mapDispatchToProps))(Presenter);

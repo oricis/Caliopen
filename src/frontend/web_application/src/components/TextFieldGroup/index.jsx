@@ -8,7 +8,6 @@ import FieldGroup from '../FieldGroup';
 
 import './style.scss';
 
-
 class TextFieldGroup extends PureComponent {
   static propTypes = {
     id: PropTypes.string,
@@ -43,7 +42,7 @@ class TextFieldGroup extends PureComponent {
     });
 
     return onBlur(ev);
-  }
+  };
 
   render() {
     const {
@@ -78,7 +77,9 @@ class TextFieldGroup extends PureComponent {
 
     return (
       <FieldGroup className={groupClassName} errors={errors}>
-        <Label htmlFor={id} className={labelClassName}>{label}</Label>
+        <Label htmlFor={id} className={labelClassName}>
+          {label}
+        </Label>
         <InputText
           id={id}
           className={inputClassName}

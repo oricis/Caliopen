@@ -10,7 +10,9 @@ export const getDraft = ({ discussionId }) => async (dispatch, getState) => {
     return draft;
   }
 
-  const response = await tryCatchAxiosAction(() => dispatch(requestDraft({ discussionId })));
+  const response = await tryCatchAxiosAction(() =>
+    dispatch(requestDraft({ discussionId }))
+  );
   [draft] = response.messages;
 
   return draft;

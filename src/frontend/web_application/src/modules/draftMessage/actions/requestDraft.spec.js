@@ -2,27 +2,31 @@ import configureMockStore from 'redux-mock-store';
 import promiseMiddleware from '../../../store/middlewares/promise-middleware';
 import thunkMiddleware from '../../../store/middlewares/thunk-middleware';
 import { requestDraft } from './requestDraft';
-import { requestDraft as requestDraftBase, requestDraftSuccess, createDraft } from '../../../store/modules/draft-message';
+import {
+  requestDraft as requestDraftBase,
+  requestDraftSuccess,
+  createDraft,
+} from '../../../store/modules/draft-message';
 
 const mockStore = configureMockStore([promiseMiddleware, thunkMiddleware]);
-const getStore = () => mockStore({
-  message: {
-    messagesById: {},
-  },
-  draftMessage: {
-    draftsByInternalId: {
+const getStore = () =>
+  mockStore({
+    message: {
+      messagesById: {},
     },
-  },
-  user: {
+    draftMessage: {
+      draftsByInternalId: {},
+    },
     user: {
-      contact: {
-        contact_id: 'unused',
+      user: {
+        contact: {
+          contact_id: 'unused',
+        },
       },
     },
-  },
-});
+  });
 jest.mock('../../user', () => ({
-  getUser: () => dispatch => dispatch({ type: 'getUser', payload: {} }),
+  getUser: () => (dispatch) => dispatch({ type: 'getUser', payload: {} }),
 }));
 jest.mock('../../../modules/message', () => {
   const actualModule = jest.requireActual('../../../modules/message');
@@ -95,8 +99,13 @@ jest.mock('../../../modules/message', () => {
   };
 });
 jest.mock('./getDefaultIdentity', () => ({
-  getDefaultIdentity: ({ participants, protocol = 'email' } = {}) => (dispatch) => {
-    dispatch({ type: 'getDefaultIdentity', payload: { participants, protocol } });
+  getDefaultIdentity: ({ participants, protocol = 'email' } = {}) => (
+    dispatch
+  ) => {
+    dispatch({
+      type: 'getDefaultIdentity',
+      payload: { participants, protocol },
+    });
 
     if (protocol === 'twitter') {
       return Promise.resolve({
@@ -134,7 +143,11 @@ describe('modules draftMessage - actions - requestDraft', () => {
           draft,
         }),
       ];
-      const action = requestDraft({ internalId: 'unknown', hasDiscussion: false, messageId: 'whatever' });
+      const action = requestDraft({
+        internalId: 'unknown',
+        hasDiscussion: false,
+        messageId: 'whatever',
+      });
 
       const result = await store.dispatch(action);
       expect(result).toEqual(draft);
@@ -144,7 +157,11 @@ describe('modules draftMessage - actions - requestDraft', () => {
 
     it('has default identity', async () => {
       const store = getStore();
-      const action = requestDraft({ internalId: 'unknown', hasDiscussion: false, messageId: 'whatever' });
+      const action = requestDraft({
+        internalId: 'unknown',
+        hasDiscussion: false,
+        messageId: 'whatever',
+      });
 
       const result = await store.dispatch(action);
       expect(result.user_identities).toEqual(['ident-default-mail']);
@@ -165,7 +182,11 @@ describe('modules draftMessage - actions - requestDraft', () => {
           draft: message,
         }),
       ];
-      const action = requestDraft({ internalId: 'saved', hasDiscussion: false, messageId: 'saved' });
+      const action = requestDraft({
+        internalId: 'saved',
+        hasDiscussion: false,
+        messageId: 'saved',
+      });
 
       const result = await store.dispatch(action);
       expect(result).toEqual(message);

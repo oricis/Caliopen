@@ -1,17 +1,24 @@
 // import calcObjectForPatch from '../../services/api-patch';
 export const REQUEST_DISCUSSIONS = 'co/discussion/REQUEST_DISCUSSIONS';
-export const REQUEST_DISCUSSIONS_SUCCESS = 'co/discussion/REQUEST_DISCUSSIONS_SUCCESS';
-export const REQUEST_DISCUSSIONS_FAIL = 'co/discussion/REQUEST_DISCUSSIONS_FAIL';
+export const REQUEST_DISCUSSIONS_SUCCESS =
+  'co/discussion/REQUEST_DISCUSSIONS_SUCCESS';
+export const REQUEST_DISCUSSIONS_FAIL =
+  'co/discussion/REQUEST_DISCUSSIONS_FAIL';
 export const INVALIDATE_DISCUSSIONS = 'co/discussion/INVALIDATE_DISCUSSIONS';
-export const REMOVE_DISCUSSION_FROM_COLLECTION = 'co/discussion/REMOVE_DISCUSSION_FROM_COLLECTION';
+export const REMOVE_DISCUSSION_FROM_COLLECTION =
+  'co/discussion/REMOVE_DISCUSSION_FROM_COLLECTION';
 export const LOAD_MORE_DISCUSSIONS = 'co/discussion/LOAD_MORE_DISCUSSIONS';
 export const FILTER_IMPORTANCE = 'co/discussion/FILTER_IMPORTANCE';
 export const REQUEST_DISCUSSION = 'co/discussion/REQUEST_DISCUSSION';
-export const REQUEST_DISCUSSION_SUCCESS = 'co/discussion/REQUEST_DISCUSSION_SUCCESS';
+export const REQUEST_DISCUSSION_SUCCESS =
+  'co/discussion/REQUEST_DISCUSSION_SUCCESS';
 export const REQUEST_DISCUSSION_FAIL = 'co/discussion/REQUEST_DISCUSSION_FAIL';
-export const REQUEST_DISCUSSION_BY_PARTICIPANTS = 'co/discussion/REQUEST_DISCUSSION_BY_PARTICIPANTS';
-export const REQUEST_DISCUSSION_BY_PARTICIPANTS_SUCCESS = 'co/discussion/REQUEST_DISCUSSION_BY_PARTICIPANTS_SUCCESS';
-export const REQUEST_DISCUSSION_BY_PARTICIPANTS_FAIL = 'co/discussion/REQUEST_DISCUSSION_BY_PARTICIPANTS_FAIL';
+export const REQUEST_DISCUSSION_BY_PARTICIPANTS =
+  'co/discussion/REQUEST_DISCUSSION_BY_PARTICIPANTS';
+export const REQUEST_DISCUSSION_BY_PARTICIPANTS_SUCCESS =
+  'co/discussion/REQUEST_DISCUSSION_BY_PARTICIPANTS_SUCCESS';
+export const REQUEST_DISCUSSION_BY_PARTICIPANTS_FAIL =
+  'co/discussion/REQUEST_DISCUSSION_BY_PARTICIPANTS_FAIL';
 export const UPDATE_DISCUSSION = 'co/discussion/UPDATE_DISCUSSION';
 export const REMOVE_DISCUSSION = 'co/discussion/REMOVE_DISCUSSION';
 
@@ -54,7 +61,10 @@ export function requestDiscussion({ discussionId }) {
   };
 }
 
-export function requestDiscussionByParticipants({ internalHash, participants }) {
+export function requestDiscussionByParticipants({
+  internalHash,
+  participants,
+}) {
   return {
     type: REQUEST_DISCUSSION_BY_PARTICIPANTS,
     payload: {
@@ -91,10 +101,13 @@ export function updateDiscussion() {
 function discussionsByIdReducer(state = {}, action = {}) {
   switch (action.type) {
     case REQUEST_DISCUSSIONS_SUCCESS:
-      return action.payload.data.discussions.reduce((previousState, discussion) => ({
-        ...previousState,
-        [discussion.discussion_id]: discussion,
-      }), state);
+      return action.payload.data.discussions.reduce(
+        (previousState, discussion) => ({
+          ...previousState,
+          [discussion.discussion_id]: discussion,
+        }),
+        state
+      );
     case REMOVE_DISCUSSION_FROM_COLLECTION:
       return {
         ...state,
@@ -109,7 +122,11 @@ function discussionIdsReducer(state = [], action = {}) {
   switch (action.type) {
     case REQUEST_DISCUSSIONS_SUCCESS:
       return [...state]
-        .concat(action.payload.data.discussions.map((discussion) => discussion.discussion_id))
+        .concat(
+          action.payload.data.discussions.map(
+            (discussion) => discussion.discussion_id
+          )
+        )
         .reduce((prev, curr) => {
           if (prev.indexOf(curr) === -1) {
             prev.push(curr);
@@ -118,7 +135,9 @@ function discussionIdsReducer(state = [], action = {}) {
           return prev;
         }, []);
     case REMOVE_DISCUSSION_FROM_COLLECTION:
-      return [...state].filter((discussionId) => discussionId !== action.payload.discussionId);
+      return [...state].filter(
+        (discussionId) => discussionId !== action.payload.discussionId
+      );
     default:
       return state;
   }
@@ -227,8 +246,11 @@ export default function reducer(state = initialState, action) {
         ...state,
         discussionByParticipantsHash: {
           ...state.discussionByParticipantsHash,
-          [action.meta.previousAction.payload.internalHash]: discussionByParticipantsHashReducer(
-            state.discussionByParticipantsHash[action.meta.previousAction.payload.internalHash],
+          [action.meta.previousAction.payload
+            .internalHash]: discussionByParticipantsHashReducer(
+            state.discussionByParticipantsHash[
+              action.meta.previousAction.payload.internalHash
+            ],
             action
           ),
         },

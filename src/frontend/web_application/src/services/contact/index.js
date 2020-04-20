@@ -21,7 +21,8 @@ export function getContactTitle(contact) {
 }
 
 export function formatName({ contact, format }) {
-  const title = format.split(',')
+  const title = format
+    .split(',')
     .map((field) => field.trim())
     .map((field) => contact[field])
     .join(' ')

@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import './style.scss';
 
-const TextBlock = ({
-  inline, nowrap, size, weight, className, ...props
-}) => {
+const TextBlock = ({ inline, nowrap, size, weight, className, ...props }) => {
   const textBlockClassName = classnames(
     'm-text-block',
     {
@@ -17,9 +15,7 @@ const TextBlock = ({
     className
   );
 
-  return (
-    <span className={textBlockClassName} {...props} />
-  );
+  return <span className={textBlockClassName} {...props} />;
 };
 
 TextBlock.propTypes = {

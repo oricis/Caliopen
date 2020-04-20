@@ -7,8 +7,14 @@ import FieldGroup from '../FieldGroup';
 
 import './style.scss';
 
-const propTypeOption = PropTypes.oneOfType([PropTypes.string, PropTypes.number]);
-const alphaNumPropType = PropTypes.oneOfType([PropTypes.string, PropTypes.number]);
+const propTypeOption = PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.number,
+]);
+const alphaNumPropType = PropTypes.oneOfType([
+  PropTypes.string,
+  PropTypes.number,
+]);
 
 class SelectFieldGroup extends PureComponent {
   static propTypes = {
@@ -16,7 +22,9 @@ class SelectFieldGroup extends PureComponent {
     showLabelforSr: PropTypes.bool,
     value: alphaNumPropType,
     expanded: PropTypes.bool,
-    options: PropTypes.arrayOf(PropTypes.shape({ label: propTypeOption, value: propTypeOption })),
+    options: PropTypes.arrayOf(
+      PropTypes.shape({ label: propTypeOption, value: propTypeOption })
+    ),
     errors: PropTypes.arrayOf(PropTypes.node),
     onChange: PropTypes.func,
     className: PropTypes.string,
@@ -35,7 +43,14 @@ class SelectFieldGroup extends PureComponent {
 
   render() {
     const {
-      errors, expanded, showLabelforSr, className, label, onChange, options, ...props
+      errors,
+      expanded,
+      showLabelforSr,
+      className,
+      label,
+      onChange,
+      options,
+      ...props
     } = this.props;
     const id = uuidV1();
     const selectWrapperClassName = classnames(
@@ -49,8 +64,13 @@ class SelectFieldGroup extends PureComponent {
     });
 
     return (
-      <FieldGroup className={classnames('m-select-field-group', className)} errors={errors}>
-        <Label htmlFor={id} className={labelClassName}>{label}</Label>
+      <FieldGroup
+        className={classnames('m-select-field-group', className)}
+        errors={errors}
+      >
+        <Label htmlFor={id} className={labelClassName}>
+          {label}
+        </Label>
         <div className={selectWrapperClassName}>
           <select
             onChange={onChange}
@@ -59,10 +79,7 @@ class SelectFieldGroup extends PureComponent {
             {...props}
           >
             {options.map((selectOption) => (
-              <option
-                key={selectOption.label}
-                value={selectOption.value}
-              >
+              <option key={selectOption.label} value={selectOption.value}>
                 {selectOption.label}
               </option>
             ))}

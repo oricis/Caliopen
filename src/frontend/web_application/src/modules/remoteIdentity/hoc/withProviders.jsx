@@ -5,11 +5,17 @@ export const withProviders = () => (WrappedComp) => {
   const Wrapper = (props) => (
     <WithProviders
       render={({ providers, isFetching }) => (
-        <WrappedComp providers={providers} providersIsFetching={isFetching} {...props} />
+        <WrappedComp
+          providers={providers}
+          providersIsFetching={isFetching}
+          {...props}
+        />
       )}
     />
   );
-  Wrapper.displayName = `Wrapper(${WrappedComp.displayName || WrappedComp.name || 'Component'})`;
+  Wrapper.displayName = `Wrapper(${
+    WrappedComp.displayName || WrappedComp.name || 'Component'
+  })`;
 
   return Wrapper;
 };
